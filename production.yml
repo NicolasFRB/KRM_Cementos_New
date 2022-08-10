@@ -1,0 +1,54 @@
+version: "3"
+
+volumes:
+  krm_prod_postgres_data: {}
+  krm_prod_postgres_data_backups: {}
+  krm_prod_django_media: {}
+  krm_prod_django_logs: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: krm_prod_django
+    depends_on:
+      - postgres
+    env_file:
+      - ./.envs/.prod/.django
+      - ./.envs/.prod/.postgres
+      - ./.envs/.prod/.email
+      - ./.envs/.prod/.ubuntu
+    volumes:
+      - krm_prod_django_media:/krm-media
+      - krm_prod_django_logs:/krm-logs
+    command: /start
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.5
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: krm_prod_postgres
+    volumes:
+      - krm_prod_postgres_data:/var/lib/postgresql/data
+      - krm_prod_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.prod/.postgres
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.6
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/production/nginx/Dockerfile
+    image: krm_prod_nginx
+    depends_on:
+      - django
+    volumes:
+      - krm_prod_django_media:/krm-media
+    env_file:
+      - ./.envs/.prod/.nginx

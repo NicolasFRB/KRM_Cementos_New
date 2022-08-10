@@ -1,0 +1,12 @@
+-r ./base.txt
+
+django_debug_toolbar==3.5.0
+ipdb==0.13.9
+
+#Testing
+# mypy==0.910
+# pytest==6.2.4
+# pytest-sugar==0.9.4
+# pytest-django==4.4.0
+# factory-boy==3.2.0
+# pytest-cov==2.12.1

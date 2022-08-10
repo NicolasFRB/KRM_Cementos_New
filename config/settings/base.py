@@ -1,0 +1,426 @@
+import environ
+from pathlib import Path
+import os
+from django.urls import reverse_lazy
+
+env = environ.Env()
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = environ.Path(__file__) - 3
+APPS_DIR = ROOT_DIR.path("krm")
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '9mgu=0t7adojsh2zgkfn2kw(a!@ob(t^3f6ebch3_q7(2=yn)v'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env.bool("KRM_DJANGO_DEBUG")
+
+ALLOWED_HOSTS = []
+
+# Language and timezone
+TIME_ZONE = "Europe/Madrid"
+LANGUAGE_CODE = "es"
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+prefix_default_language = False
+
+# Application definition
+
+DJANGO_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+THIRD_PARTY_APPS = [
+    "crispy_forms",
+    'django_extensions',
+]
+
+LOCAL_APPS = [
+    'users',
+    'configuration',
+    # 'companies',
+    # 'customers',
+    # 'layout',
+    # 'configuration',
+    # 'sage',
+    # 'krm.users.apps.UsersAppConfig',
+    # 'krm.companies.apps.CompaniesAppConfig',
+    # 'krm.customers.apps.CustomersAppConfig',
+
+    # "celery",
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+AUTH_USER_MODEL = 'users.User'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'config.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'libraries': {
+                'theme': 'metronic.templatetags.theme',
+            },
+            'builtins': [
+                'django.templatetags.static',
+                'metronic.templatetags.theme',
+            ]
+        },
+    },
+]
+
+WSGI_APPLICATION = 'config.wsgi.application'
+
+# DATABASES
+DATABASES = {
+    "default": env.db("DATABASE_URL"),
+}
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+LANGUAGE_CODE = 'es-ES'
+TIME_ZONE = "Europe/Madrid"
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, '_locale'),
+]
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    str(ROOT_DIR.path("krm").path('static')),
+]
+
+# Media
+MEDIA_ROOT = "/krm-media"
+MEDIA_URL = "/media/"
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+TEMPLATES_DIR = str(APPS_DIR.path("_templates"))
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [TEMPLATES_DIR, ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'libraries': {
+                'theme': 'metronic.templatetags.theme',
+            },
+            'builtins': [
+                'django.templatetags.static',
+                'metronic.templatetags.theme',
+            ]
+        },
+    },
+]
+
+
+# Email
+EMAIL_BACKEND = env("KRM_DJANGO_EMAIL_BACKEND")
+SERVER_EMAIL = "it@krctool.com"
+
+# Admin
+ADMIN_URL = "admin/"
+ADMINS = [
+    ("""Bienvenido Sáez Muelas""", "bienvenidosaez@baetica.com"),
+]
+MANAGERS = ADMINS
+
+LOCALE_PATHS = (str(APPS_DIR.path("locale")),)
+
+ROSETTA_MESSAGES_SOURCE_LANGUAGE_CODE = "es"
+ROSETTA_MESSAGES_SOURCE_LANGUAGE_NAME = "Spanish"
+ROSETTA_MESSAGES_PER_PAGE = 100
+
+LOGIN_REDIRECT_URL = "/"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# URL config
+SITE_URL = env.str("KRM_SITE_URL")
+
+FILE_UPLOAD_PERMISSIONS = 0o640  # De audax
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = reverse_lazy('users:login')
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': env('KRM_REDIS_URL'),
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#             'IGNORE_EXCEPTIONS': True,
+#         }
+#     }
+# }
+
+
+######################
+# Keenthemes Settings
+######################
+
+# Theme Templates And "src" directories
+
+KT_THEME_DIR = 'layout'
+
+
+# Theme Mode
+# Value: light | dark | system
+
+KT_THEME_MODE_DEFAULT = 'light'
+KT_THEME_MODE_SWITCH_ENABLED = True
+
+
+# Theme Direction
+# Value: ltr | rtl
+
+KT_THEME_DIRECTION = 'ltr'
+
+
+# Theme Assets
+
+KT_THEME_ASSETS = {
+    "favicon": "media/logos/favicon.ico",
+    "fonts": [
+        'https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700',
+    ],
+    "css": [
+        "plugins/global/plugins.bundle.css",
+        "css/style.bundle.css"
+    ],
+    "js": [
+        "plugins/global/plugins.bundle.js",
+        "js/scripts.bundle.js"
+    ]
+}
+
+
+# Theme Vendors
+
+KT_THEME_VENDORS = {
+    "datatables": {
+        "css": [
+            "plugins/custom/datatables/datatables.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/datatables/datatables.bundle.js"
+        ]
+    },
+    "formrepeater": {
+        "js": [
+            "plugins/custom/formrepeater/formrepeater.bundle.js"
+        ]
+    },
+    "fullcalendar": {
+        "css": [
+            "plugins/custom/fullcalendar/fullcalendar.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/fullcalendar/fullcalendar.bundle.js"
+        ]
+    },
+    "flotcharts": {
+        "js": [
+            "plugins/custom/flotcharts/flotcharts.bundle.js"
+        ]
+    },
+    "google-jsapi": {
+        "js": [
+            "//www.google.com/jsapi"
+        ]
+    },
+    "tinymce": {
+        "js": [
+            "plugins/custom/tinymce/tinymce.bundle.js"
+        ]
+    },
+    "ckeditor-classic": {
+        "js": [
+            "plugins/custom/ckeditor/ckeditor-classic.bundle.js"
+        ]
+    },
+    "ckeditor-inline": {
+        "js": [
+            "plugins/custom/ckeditor/ckeditor-inline.bundle.js"
+        ]
+    },
+    "ckeditor-balloon": {
+        "js": [
+            "plugins/custom/ckeditor/ckeditor-balloon.bundle.js"
+        ]
+    },
+    "ckeditor-balloon-block": {
+        "js": [
+            "plugins/custom/ckeditor/ckeditor-balloon-block.bundle.js"
+        ]
+    },
+    "ckeditor-document": {
+        "js": [
+            "plugins/custom/ckeditor/ckeditor-document.bundle.js"
+        ]
+    },
+    "draggable": {
+        "js": [
+            "plugins/custom/draggable/draggable.bundle.js"
+        ]
+    },
+    "fslightbox": {
+        "js": [
+            "plugins/custom/fslightbox/fslightbox.bundle.js"
+        ]
+    },
+    "jkanban": {
+        "css": [
+            "plugins/custom/jkanban/jkanban.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/jkanban/jkanban.bundle.js"
+        ]
+    },
+    "typedjs": {
+        "js": [
+            "plugins/custom/typedjs/typedjs.bundle.js"
+        ]
+    },
+    "cookiealert": {
+        "css": [
+            "plugins/custom/cookiealert/cookiealert.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/cookiealert/cookiealert.bundle.js"
+        ]
+    },
+    "cropper": {
+        "css": [
+            "plugins/custom/cropper/cropper.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/cropper/cropper.bundle.js"
+        ]
+    },
+    "vis-timeline": {
+        "css": [
+            "plugins/custom/vis-timeline/vis-timeline.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/vis-timeline/vis-timeline.bundle.js"
+        ]
+    },
+    "jstree": {
+        "css": [
+            "plugins/custom/jstree/jstree.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/jstree/jstree.bundle.js"
+        ]
+    },
+    "prismjs": {
+        "css": [
+            "plugins/custom/prismjs/prismjs.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/prismjs/prismjs.bundle.js"
+        ]
+    },
+    "leaflet": {
+        "css": [
+            "plugins/custom/leaflet/leaflet.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/leaflet/leaflet.bundle.js"
+        ]
+    },
+    "amcharts": {
+        "js": [
+            "https://cdn.amcharts.com/lib/5/index.js",
+            "https://cdn.amcharts.com/lib/5/xy.js",
+            "https://cdn.amcharts.com/lib/5/percent.js",
+            "https://cdn.amcharts.com/lib/5/radar.js",
+            "https://cdn.amcharts.com/lib/5/themes/Animated.js"
+        ]
+    },
+    "amcharts-maps": {
+        "js": [
+            "https://cdn.amcharts.com/lib/5/index.js",
+            "https://cdn.amcharts.com/lib/5/map.js",
+            "https://cdn.amcharts.com/lib/5/geodata/worldLow.js",
+            "https://cdn.amcharts.com/lib/5/geodata/continentsLow.js",
+            "https://cdn.amcharts.com/lib/5/geodata/usaLow.js",
+            "https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js",
+            "https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js",
+            "https://cdn.amcharts.com/lib/5/themes/Animated.js"
+        ]
+    },
+    "amcharts-stock": {
+        "js": [
+            "https://cdn.amcharts.com/lib/5/index.js",
+            "https://cdn.amcharts.com/lib/5/xy.js",
+            "https://cdn.amcharts.com/lib/5/themes/Animated.js"
+        ]
+    },
+    "bootstrap-select": {
+        "css": [
+            "plugins/custom/bootstrap-select/bootstrap-select.bundle.css"
+        ],
+        "js": [
+            "plugins/custom/bootstrap-select/bootstrap-select.bundle.js"
+        ]
+    }
+}

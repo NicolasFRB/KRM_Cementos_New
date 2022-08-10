@@ -1,0 +1,13 @@
+DJANGO_DEBUG=False
+DJANGO_DEV=False
+DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+
+DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
+
+DJANGO_SETTINGS_MODULE=config.settings.production
+DJANGO_ALLOWED_HOSTS=manuscritos.penguinrandomhousegrupoeditorial.com,www.manuscritos.penguinrandomhousegrupoeditorial.com
+
+TZ=Europe/Madrid
+SITE_URL=http://manuscritos.penguinrandomhousegrupoeditorial.com
+
+REDIS_URL=redis://:V78jXv!qcm@redis:6379/0

@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/dev/django/Dockerfile
+    image: krm_dev_django
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.dev/.django
+      - ./.envs/.dev/.postgres
+      - ./.envs/.dev/.email
+      - ./.envs/.dev/.ubuntu
+    ports:
+      - "8000:8000"
+    command: /start
+
+  # redis:
+  #   image: 'redis:alpine'
+  #   command: redis-server /usr/local/etc/redis/redis.conf
+  #   volumes:
+  #     - ./compose/dev/redis/redis.conf:/usr/local/etc/redis/redis.conf
+  #   expose:
+  #     - "6379"
+  #   ports:
+  #     - "6379:6379"

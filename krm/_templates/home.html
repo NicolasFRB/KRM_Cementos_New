@@ -1,0 +1,21 @@
+<!--
+Define in dashboards/views.py file
+context.update({
+    'layout': KTTheme.setLayout('default.html', context),
+})
+-->
+{% extends layout %}
+
+{% load i18n %}
+
+{% block title %}{% translate "Dashboard Two" %}{% endblock %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div id="kt_content_container" class="container-xxl">
+  Index Dashboard Two
+</div>
+<!--end::Container-->
+
+{% endblock content %}
