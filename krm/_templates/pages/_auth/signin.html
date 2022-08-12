@@ -2,17 +2,24 @@
 
 {% load i18n %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}{% translate "Login" %}{% endblock %}
 
 {% block content %}
+<div class="text-center mb-12">
+  <a href="/" class="login-logo">
+    <img style="max-width: 180px;" src="{% static 'media/logos/krm-logo.svg' %}" alt="KRM Tool - Logo" />
+  </a>
+</div>
 
 <!--begin::Form-->
-<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="/" action="#">
+<form class="form w-100" action="" method="post">
     <!--begin::Heading-->
     <div class="text-center mb-11">
         <!--begin::Title-->
         <h1 class="text-dark fw-bolder mb-3">
-            {% trans 'Iniciar Sesión' %}
+            {% trans 'Iniciar sesión en KRM Tool' %}
         </h1>
         <!--end::Title-->
     </div>
@@ -21,14 +28,14 @@
     <!--begin::Input group--->
     <div class="fv-row mb-8">
         <!--begin::Email-->
-        <input type="text" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent"/> 
+        {{ form.username|as_crispy_field }}
         <!--end::Email-->
     </div>
 
     <!--end::Input group--->
     <div class="fv-row mb-3">    
         <!--begin::Password-->
-        <input type="password" placeholder="Password" name="password" autocomplete="off" class="form-control bg-transparent"/>
+        {{ form.password|as_crispy_field }}
         <!--end::Password-->
     </div>
     <!--end::Input group--->
@@ -38,7 +45,7 @@
         <div></div>
 
         <!--begin::Link-->
-        <a href="/reset-password" class="link-primary">
+        <a href="{% url 'users:remember_password_form' %}" class="link-primary">
             {% trans 'He olvidado mi contraseña' %}
         </a>
         <!--end::Link-->

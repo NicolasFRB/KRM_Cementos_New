@@ -17,11 +17,10 @@ from krm.users.views import (
     UserUpdate,
     UserDelete,
     UserDetail,
-    LoginCode,
     # UserProfile,
     # UserProfileUpdate,
     # UserCompanyImport,
-    TestView
+    # TestView
 )
 
 
@@ -32,11 +31,11 @@ urlpatterns = [
         name='dashboard'
     ),
 
-    path(
-        'pruebas/',
-        TestView.as_view(),
-        name='test'
-    ),
+    # path(
+    #     'pruebas/',
+    #     TestView.as_view(),
+    #     name='test'
+    # ),
 
     # path(
     #     'dashboard/',

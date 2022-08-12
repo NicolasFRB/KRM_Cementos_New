@@ -8,35 +8,21 @@ from django.urls import path
 from django.conf.urls.i18n import i18n_patterns
 from django.utils.translation import gettext_lazy as _
 
-# from krm.layout.views import get_sage_code
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('',
-         include(('krm.layout.urls', 'layout'),
-                 namespace='layout')
-         ),
+    # path('',
+    #      include(('krm.layout.urls', 'layout'),
+    #              namespace='layout')
+    #      ),
     path('',
          include(('krm.users.urls', 'users'),
                  namespace='users')
          ),
-    # path('companies/',
-    #      include(('krm.companies.urls', 'companies'),
-    #              namespace='companies')
-    #      ),
-    # path('customers/',
-    #      include(('krm.customers.urls.customer_urls', 'customers'),
-    #              namespace='customers')
-    #      ),
-    # path('rates/',
-    #      include(('krm.customers.urls.rate_urls', 'rates'),
-    #              namespace='rates')
-    #      ),
-    # path('sage/',
-    #      include(('krm.sage.urls', 'sage'),
-    #              namespace='sage')
-    #      ),
+    path('',
+         include(('krm.configuration.urls', 'configuration'),
+                 namespace='configuration')
+         ),
 ]
 
 

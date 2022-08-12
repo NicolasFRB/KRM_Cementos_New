@@ -6,14 +6,15 @@
     .app-sidebar {
         background-color: $app-sidebar-dark-bg-color;
         border-right: 0 !important;
+        box-shadow: 1px 0px 0.8em #666;
 
         .hover-scroll-overlay-y {        
             @include scrollbar-color($app-sidebar-dark-scrollbar-color, $app-sidebar-dark-scrollbar-color-hover);
         }
 
-        .app-sidebar-logo {
-            border-bottom: 1px dashed $app-sidebar-dark-separator-color;
-        }
+        // .app-sidebar-logo {
+        //     border-bottom: 1px dashed $app-sidebar-dark-separator-color;
+        // }
 
         .btn-custom {
             @include button-custom-variant(

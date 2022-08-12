@@ -1,0 +1,66 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{% translate "Login" %}{% endblock %}
+
+{% block content %}
+<div class="text-center mb-12">
+  <a href="/" class="login-logo">
+    <img style="max-width: 180px;" src="{% static 'media/logos/krm-logo.svg' %}" alt="KRM Tool - Logo" />
+  </a>
+</div>
+
+<!--begin::Form-->
+<form class="form w-100" action="" method="post">
+    {% csrf_token %}
+    <!--begin::Heading-->
+    <div class="text-center mb-11">
+        <!--begin::Title-->
+        <h1 class="text-dark fw-bolder mb-3">
+            {% trans 'Iniciar sesión en KRM Tool' %}
+        </h1>
+        <!--end::Title-->
+    </div>
+    <!--begin::Heading-->
+
+    <!--begin::Input group--->
+    <div class="fv-row mb-8">
+        <!--begin::Email-->
+        {{ form.username|as_crispy_field }}
+        <!--end::Email-->
+    </div>
+
+    <!--end::Input group--->
+    <div class="fv-row mb-3">    
+        <!--begin::Password-->
+        {{ form.password|as_crispy_field }}
+        <!--end::Password-->
+    </div>
+    <!--end::Input group--->
+
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
+        <div></div>
+
+        <!--begin::Link-->
+        <a href="{% url 'users:remember_password_form' %}" class="link-primary">
+            {% trans 'He olvidado mi contraseña' %}
+        </a>
+        <!--end::Link-->
+    </div>
+    <!--end::Wrapper-->    
+
+    <!--begin::Submit button-->
+    <div class="d-grid mb-10">
+        <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
+            {% trans 'Iniciar sesión' %}
+        </button>
+    </div>
+    <!--end::Submit button-->
+</form>
+<!--end::Form--> 
+
+{% endblock content %}

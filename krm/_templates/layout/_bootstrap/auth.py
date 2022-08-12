@@ -9,4 +9,5 @@ The init() function will be called in _keenthemes/__init__.py
 class KTBootstrapAuth:
 
     def init(context):
-        KTTheme.addHtmlClass('body', 'app-blank')
+        # KTTheme.addHtmlClass('body', 'app-blank')
+        pass

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Packages used by yarn, npm, gulp and webpack",
   "main": "gulpfile.js",
-  "type": "module",
+  // "type": "module",
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^34.0.0",
     "@ckeditor/ckeditor5-build-balloon": "^34.0.0",

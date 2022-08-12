@@ -1,4 +1,3 @@
-import requests
 from django.shortcuts import render
 
 from django.views.generic import (
@@ -13,34 +12,47 @@ from django.views.generic import (
 from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.utils.translation import ugettext_lazy as _
+
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
+from krm.configuration.forms import ConfigurationUpdateForm
+from krm.configuration.models import Configuration
 
-class HomeView(TemplateView):
-    # template_name = "pages/dashboards/dashboard-1.html"
-    template_name = "home.html"
+# class HomeView(TemplateView):
+#     # template_name = "pages/dashboards/dashboard-1.html"
+#     template_name = "home.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context = KTLayout.init(context)
+#         KTTheme.addVendors([])
+#         return context
+
+
+@method_decorator([login_required, ], name='dispatch')
+class DomainUpdate(UpdateView):
+    form_class = ConfigurationUpdateForm
+    model = Configuration
+    template_name = 'configuration/ConfigurationUpdate.html'
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-
-        """
-        # Example to get page name. Refer to dashboards/urls.py file.
-        url_name = resolve(self.request.path_info).url_name
-
-        if url_name == 'dashboard-2':
-            # Example to override settings at the runtime
-            settings.KT_THEME_DIRECTION = 'rtl'
-        else:
-            settings.KT_THEME_DIRECTION = 'ltr'
-        """
-
-        # A function to init the global layout. It is defined in _keenthemes/__init__.py file
         context = KTLayout.init(context)
-
-        # Include vendors and javascript files for dashboard widgets
         KTTheme.addVendors([])
-
         return context
+
+    def get_success_url(self):
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            _('Dominio de riesgo actualizado correctamente')
+        )
+        return reverse_lazy(
+            'users:dashboard'
+        )
