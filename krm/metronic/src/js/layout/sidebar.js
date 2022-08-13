@@ -94,15 +94,15 @@ var KTAppSidebar = function () {
 			}
 
 			if ( toggle ) {
-				handleToggle();	
+				//handleToggle();	
 			}
 
 			if ( menuWrapper ) {
-				handleMenuScroll();
+				//handleMenuScroll();
 			}
 
 			if ( menuDashboardsCollapse ) {
-				handleShowMore();
+				//handleShowMore();
 			}
 		}
 	};

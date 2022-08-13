@@ -58,18 +58,18 @@ class DashboardView(TemplateView):
         context = KTLayout.init(context)
 
         # Include vendors and javascript files for dashboard widgets
-        KTTheme.addVendors([])
+        KTTheme.addVendors(['datatables', ])
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Clientes'), 'url': reverse('users:dashboard')},
+            # {'title': _('Clientes'), 'url': reverse('users:dashboard')},
         ]
         context['page_title'] = _('Dashboard para el Administrador Global')
-        context['actions'] = [
-            {'title': _('Nuevo cliente'), 'url': reverse('users:dashboard')},
-            {'title': _('Listado de clientes'), 'url': reverse(
-                'users:dashboard'), 'primary': True},
-        ]
+        # context['actions'] = [
+        #     {'title': _('Nuevo cliente'), 'url': reverse('users:dashboard')},
+        #     {'title': _('Listado de clientes'), 'url': reverse(
+        #         'users:dashboard'), 'primary': True},
+        # ]
         context['breadcrums'] = breadcrums
 
         return context

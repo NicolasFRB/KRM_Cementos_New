@@ -1,4 +1,10 @@
 {% load i18n %}
+
+{% url 'users:dashboard' as ga_dashboard %}
+{% url 'domain_risks:ga_domain_risk_list' as ga_domain_risk_list %}
+{% url 'risk_masters:ga_risk_master_list' as ga_risk_master_list %}
+{% url 'configuration:configuration_detail' as configuration_detail %}
+
 <!--begin::sidebar menu-->
 <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
 	<!--begin::Menu wrapper-->
@@ -20,11 +26,20 @@
       </div>
       <!--end:Menu item-->
 
+      <div class="menu-item">
+        <!--begin:Menu link-->
+        <a class="menu-link {% if request.path == ga_dashboard %}active{% endif %}" href="{% url 'users:dashboard' %}">
+          <span class="menu-icon">{% getSvgIcon 'duotune/general/gen001.svg' 'svg-icon svg-icon-2' %}</span>
+          <span class="menu-title">{% trans 'Dashboard' %}</span>
+        </a>
+        <!--end:Menu link-->
+      </div>
+
       <!--begin:Menu item-->
-      <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+      <div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if request.path == ga_domain_risk_list or request.path == ga_risk_master_list %}show{% endif %}">
         <!--begin:Menu link-->
         <span class="menu-link">
-          <span class="menu-icon">{% getSvgIcon 'duotune/communication/com005.svg' 'svg-icon svg-icon-2' %}</span>
+          <span class="menu-icon">{% getSvgIcon 'duotune/files/fil012.svg' 'svg-icon svg-icon-2' %}</span>
           <span class="menu-title">{% trans 'Maestros' %}</span>
           <span class="menu-arrow"></span>
         </span>
@@ -34,7 +49,7 @@
           <!--begin:Menu item-->
           <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link" href="?page=pages/user-profile/overview">
+            <a class="menu-link {% if request.path == ga_domain_risk_list %}active{% endif %}" href="{% url 'domain_risks:ga_domain_risk_list' %}">
               <span class="menu-bullet">
                 <span class="bullet bullet-dot"></span>
               </span>
@@ -46,11 +61,11 @@
           <!--begin:Menu item-->
           <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link" href="?page=pages/user-profile/projects">
+            <a class="menu-link {% if request.path == ga_risk_master_list %}active{% endif %}" href="{% url 'risk_masters:ga_risk_master_list' %}">
               <span class="menu-bullet">
                 <span class="bullet bullet-dot"></span>
               </span>
-              <span class="menu-title">{% trans 'Riesgos Nivel 1' %}</span>
+              <span class="menu-title">{% trans 'Riesgos Maestros' %}</span>
             </a>
             <!--end:Menu link-->
           </div>
@@ -62,7 +77,7 @@
               <span class="menu-bullet">
                 <span class="bullet bullet-dot"></span>
               </span>
-              <span class="menu-title">{% trans 'Riesgos Nivel 2' %}</span>
+              <span class="menu-title">{% trans 'Riesgos' %}</span>
             </a>
             <!--end:Menu link-->
           </div>
@@ -74,8 +89,8 @@
 
       <div class="menu-item">
         <!--begin:Menu link-->
-        <a class="menu-link" href="{% url 'configuration:configuration_detail' %}">
-          <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
+        <a class="menu-link {% if request.path == configuration_detail %}active{% endif %}" href="{% url 'configuration:configuration_detail' %}">
+          <span class="menu-icon">{% getSvgIcon 'duotune/general/gen019.svg' 'svg-icon svg-icon-2' %}</span>
           <span class="menu-title">{% trans 'Configuración' %}</span>
         </a>
         <!--end:Menu link-->

@@ -1,13 +1,8 @@
-from xmlrpc.client import DateTime
-from django.utils import timezone
-import requests
-
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
 
 from krm.utils.models import SingletonModel
-# Create your models here.
 
 
 class Configuration(SingletonModel):

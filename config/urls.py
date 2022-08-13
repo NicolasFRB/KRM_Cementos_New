@@ -23,6 +23,14 @@ urlpatterns = [
          include(('krm.configuration.urls', 'configuration'),
                  namespace='configuration')
          ),
+    path('domain-risks/',
+         include(('krm.risks.urls.domain_risk_urls', 'domain_risks'),
+                 namespace='domain_risks')
+         ),
+    path('risk-masters/',
+         include(('krm.risks.urls.risk_master_urls', 'risk_masters'),
+                 namespace='risk_masters')
+         ),
 ]
 
 

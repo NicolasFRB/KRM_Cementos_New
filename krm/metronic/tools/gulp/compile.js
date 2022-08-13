@@ -170,9 +170,9 @@ let buildBundleTask = (cb) => {
 };
 
 // don't clean assets if compile only 1 type
-// if (!args.sass && !args.js && !args.media) {
-//     tasks.push(cleanTask);
-// }
+if (!args.sass && !args.js && !args.media) {
+    tasks.push(cleanTask);
+}
 
 if (typeof build.config.compile.rtl !== "undefined" && build.config.compile.rtl.enabled) {
     tasks.push(rtlTask);

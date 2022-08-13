@@ -74,7 +74,17 @@
         <script src="{% static file %}"></script>
         {% endfor %}
         <!--end::Custom Javascript-->
+
+        <!--begin::Custom Javascript(optional)-->
+        {% for file in js_template %}
+        <script src="{% static file %}"></script>
+        {% endfor %}
+        <!--end::Custom Javascript-->
         {% endblock javascript %}
+
+        {% block js_footer %}
+
+        {% endblock js_footer %}
 
     </body>
     <!--end::Body-->

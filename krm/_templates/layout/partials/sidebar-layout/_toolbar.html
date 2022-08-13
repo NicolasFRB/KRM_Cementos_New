@@ -9,7 +9,11 @@
     {% if actions %}
       <div class="d-flex align-items-center gap-2 gap-lg-3">
         {% for action in actions %}
-          <a href="{{ action.url }}" class="btn btn-sm fw-bold {% if action.primary %}btn-primary{% else %}bg-body btn-color-gray-700 btn-active-color-primary{% endif %}">{{ action.title }}</a>
+          <a href="{{ action.url }}" class="btn btn-sm fw-bold {% if action.primary %}btn-primary{% else %}bg-body btn-color-gray-700 btn-active-color-primary{% endif %}">
+          {% if action.icon %}
+            {{ action.icon|safe }}
+          {% endif %}
+          {{ action.title }}</a>
         {% endfor %}
       </div>
     {% endif %}

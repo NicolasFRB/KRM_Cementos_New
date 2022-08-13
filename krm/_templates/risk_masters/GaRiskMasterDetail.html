@@ -1,0 +1,96 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Riesgo Maestro' %}: {{ risk_master.name }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Dominio de Riesgo' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span><a href="{% url 'domain_risks:ga_domain_risk_detail' risk_master.domain_risk.pk %}">{{ risk_master.domain_risk.name }}</a></span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+    <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Referencia' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ risk_master.ref }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+      
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Nombre' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ risk_master.name }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Descripción' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ risk_master.description|safe }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'risk_masters:ga_risk_master_update' risk_master.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-pencil"></i>
+      {% trans 'Editar' %}</a>
+      <a href="{% url 'risk_masters:ga_risk_master_list' %}" class="btn btn-sm btn-secondary ms-2"><i
+            class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+
+<!--end::Container-->
+
+{% endblock content %}
