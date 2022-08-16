@@ -44,7 +44,7 @@ class GaDomainRiskListView(ListView):
             {'title': _('Dominios de Riesgo'), 'url': reverse(
                 'domain_risks:ga_domain_risk_list')},
         ]
-        context['page_title'] = _('Maestro de Dominios de Riesgo')
+        context['page_title'] = _('Dominios de Riesgo')
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
@@ -80,7 +80,7 @@ class GaDomainRiskDetailView(DetailView):
                 'title': _('Editar'),
                 'url': reverse('domain_risks:ga_domain_risk_update', kwargs={'pk': self.object.pk}),
                 'primary': True,
-                'icon': '<i class="bi bi-plus-lg"></i>'
+                'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
 
@@ -186,3 +186,37 @@ class GaDomainRiskUpdateView(UpdateView):
         return reverse_lazy(
             'domain_risks:ga_domain_risk_list'
         )
+
+
+@method_decorator([login_required, ], name='dispatch')
+class GaDomainRiskDeleteView(DeleteView):
+    model = DomainRisk
+    template_name = "_includes/_base_confirm_delete.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Dominios de Riesgo'), 'url': reverse(
+                'domain_risks:ga_domain_risk_list')},
+            {'title': _('Eliminar')},
+        ]
+        context['page_title'] = _(
+            "Eliminar Dominio de Riesgo: #%s") % str(self.object.name)
+        context['breadcrums'] = breadcrums
+
+        return context
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Dominio de Riesgo eliminado correctamente")
+        )
+        return reverse_lazy("domain_risks:ga_domain_risk_list")
+
+    def get_confirm_text_message(self):
+        return _(
+            '<span class="kt-font-bold">¿Seguro que desea eliminar el Dominio de Riesgo, Riesgos Maestros y los riesgos asociados?: </span> {0} {1}? <span class="kt-font-bold">Se borrarán todos los riesgos y controles asociados al mismo.</span>'
+        ).format(str(self.object.ref), self.object.name)

@@ -28,7 +28,7 @@ class KTBootstrapDefault:
     def initAssets(context):
         # Include global vendors
         KTTheme.addVendors(
-            ['datatables', 'ckeditor-classic'])
+            ['datatables', 'ckeditor-custom'])
 
         # Include global javascript files
         KTTheme.addJavascriptFile('js/widgets.bundle.js')

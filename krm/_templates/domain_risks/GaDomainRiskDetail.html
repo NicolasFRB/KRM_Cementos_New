@@ -8,6 +8,8 @@
 
 {% block content %}
 
+{% include '_includes/Messages.html' %}
+
 <!--begin::Container-->
 <div class="card mb-8">
   <!--begin::Card header-->
@@ -70,7 +72,10 @@
     <a href="{% url 'domain_risks:ga_domain_risk_update' domain_risk.pk %}" class="btn btn-sm btn-primary">
       <i class="bi bi-pencil"></i>
       {% trans 'Editar' %}</a>
-      <a href="{% url 'domain_risks:ga_domain_risk_list' %}" class="btn btn-sm btn-secondary ms-2"><i
+    <a href="{% url 'domain_risks:ga_domain_risk_delete' domain_risk.pk %}" class="btn btn-sm btn-danger ms-2">
+      <i class="bi bi-trash"></i>
+      {% trans 'Eliminar' %}</a>
+      <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i
             class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
   </div>
   <!--end::Card footer-->
@@ -97,13 +102,13 @@
         </tr>
       </thead>
       <tbody>
-        {% for risk in domain_risk.risks.all %}
+        {% for risk_master in domain_risk.risks.all %}
         <tr>
-          <td class="text-center"><a href="{% url 'risk_masters:ga_risk_master_detail' risk.pk %}"><i
+          <td class="text-center"><a href="{% url 'risk_masters:ga_risk_master_detail' risk_master.pk %}"><i
                 class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-          <td class="text-center">{{ risk.ref }}</td>
-          <td>{{ risk.name }}</td>
-          <td>{{ risk.description|striptags|safe|truncatechars:200 }}</td>
+          <td class="text-center">{{ risk_master.ref }}</td>
+          <td>{{ risk_master.name }}</td>
+          <td>{{ risk_master.description|striptags|safe|truncatechars:200 }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -119,7 +124,7 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'domain_risks:ga_domain_risk_update' domain_risk.pk %}" class="btn btn-sm btn-primary">
+    <a href="{% url 'risk_masters:ga_risk_master_create' domain_risk.pk %}" class="btn btn-sm btn-primary">
       <i class="bi bi-plus-lg"></i>
       {% trans 'Añadir' %}</a>
   </div>

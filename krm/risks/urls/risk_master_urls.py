@@ -5,7 +5,8 @@ from krm.risks.views import (
     GaRiskMasterListView,
     GaRiskMasterCreateView,
     GaRiskMasterDetailView,
-    GaRiskMasterUpdateView
+    GaRiskMasterUpdateView,
+    GaRiskMasterDeleteView
 )
 
 urlpatterns = [
@@ -20,9 +21,19 @@ urlpatterns = [
         name='ga_risk_master_update'
     ),
     path(
+        'delete/<pk>/',
+        GaRiskMasterDeleteView.as_view(),
+        name='ga_risk_master_delete'
+    ),
+    path(
         '',
         GaRiskMasterListView.as_view(),
         name='ga_risk_master_list'
+    ),
+    path(
+        'create/<domain_risk>/',
+        GaRiskMasterCreateView.as_view(),
+        name='ga_risk_master_create'
     ),
     path(
         'create/',

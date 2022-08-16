@@ -90,3 +90,8 @@ def addHtmlClass(scope, value):
 @register.simple_tag
 def getHtmlAttribute(scope, attribute):
     return KTTheme.htmlAttributes[scope][attribute]
+
+
+@register.simple_tag
+def to_list(*args):
+    return args

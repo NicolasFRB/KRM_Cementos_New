@@ -409,7 +409,7 @@ const gulpConfig = {
 					dist: {
 						scripts: "{$config.dist}/plugins/custom/tinymce/tinymce.bundle.js",
 					}
-				},
+        },
 				ckeditorclassic: {
 					src: {
 						scripts: [

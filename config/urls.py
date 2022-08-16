@@ -31,6 +31,10 @@ urlpatterns = [
          include(('krm.risks.urls.risk_master_urls', 'risk_masters'),
                  namespace='risk_masters')
          ),
+    path('risks/',
+         include(('krm.risks.urls.risk_urls', 'risks'),
+                 namespace='risks')
+         ),
 ]
 
 
@@ -41,6 +45,6 @@ if 'debug_toolbar' in settings.INSTALLED_APPS and settings.DEBUG:
     ]
 
 
-admin.site.index_title = _('KRM TOOL')
-admin.site.site_header = _('KRM TOOL')
-admin.site.site_title = _('KRM TOOL')
+admin.site.index_title = _('KRM Tool')
+admin.site.site_header = _('KRM Tool')
+admin.site.site_title = _('KRM Tool')

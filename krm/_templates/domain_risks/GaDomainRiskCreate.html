@@ -10,23 +10,21 @@
       .create(
         document.querySelector('#domain_risk_description'),
         {
-          toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
-          heading: {
-            options: [
-              { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-              { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-              { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-            ]
-          },
-          language: 'es',
-          uiColor: 'red'
+          language: {
+            // The UI will be English.
+            ui: 'es',
+
+            // But the content will be edited in Arabic.
+            content: 'es'
+          }
         }
       )
       .then(editor => {
-        // console.log(editor);
+        const wordCountPlugin = editor.plugins.get('WordCount');
+        const wordCountWrapper = document.getElementById('word-count');
+        wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
       })
       .catch(error => {
-        // console.error(error);
       });
   });
 </script>
@@ -49,17 +47,24 @@
       <div class="card-body">
         <div class="row">
           <div class="col-12 col-md-6">
-            <div class="row mb-4">
-              <div class="col-12 col-md-6 mb-4">
-                {{ form.ref|as_crispy_field }}
+            <fieldset>
+              <legend>{% trans 'Datos del Dominio de Riesgo' %}</legend>
+              <div class="row mb-4">
+                <div class="col-12 col-md-4 mb-4">
+                  {{ form.ref|as_crispy_field }}
+                </div>
+                <div class="col-12 col-md-8 mb-4">
+                  {{ form.name|as_crispy_field }}
+                </div>
+                <div class="col-12 mb-4">
+                  <fieldset>
+                    <legend>{% trans 'Descripción' %}</legend>
+                    {{ form.description|as_crispy_field }}
+                    <div id="word-count"></div>
+                  </fieldset>
+                </div>
               </div>
-              <div class="col-12 col-md-6 mb-4">
-                {{ form.name|as_crispy_field }}
-              </div>
-              <div class="col-12 mb-4">
-                {{ form.description|as_crispy_field }}
-              </div>
-            </div>
+            </fieldset>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
 from django.views.generic import (
     FormView,
@@ -26,7 +27,7 @@ from krm.metronic.libs.theme import KTTheme
 
 from krm.risks.forms import RiskMasterCreateForm
 
-from krm.risks.models import RiskMaster
+from krm.risks.models import RiskMaster, DomainRisk
 
 
 @method_decorator([login_required, ], name='dispatch')
@@ -80,7 +81,7 @@ class GaRiskMasterDetailView(DetailView):
                 'title': _('Editar'),
                 'url': reverse('risk_masters:ga_risk_master_update', kwargs={'pk': self.object.pk}),
                 'primary': True,
-                'icon': '<i class="bi bi-plus-lg"></i>'
+                'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
 
@@ -92,6 +93,17 @@ class GaRiskMasterCreateView(CreateView):
     form_class = RiskMasterCreateForm
     model = RiskMaster
     template_name = 'risk_masters/GaRiskMasterCreate.html'
+
+    def get_initial(self):
+        if 'domain_risk' in self.kwargs:
+            domain_risk = get_object_or_404(
+                DomainRisk, pk=self.kwargs.get('domain_risk')
+            )
+            return {
+                'domain_risk': domain_risk
+            }
+        else:
+            return {}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -121,7 +133,7 @@ class GaRiskMasterCreateView(CreateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@ method_decorator([login_required, ], name='dispatch')
 class GaRiskMasterUpdateView(UpdateView):
     form_class = RiskMasterCreateForm
     model = RiskMaster
@@ -152,3 +164,37 @@ class GaRiskMasterUpdateView(UpdateView):
         return reverse_lazy(
             'risk_masters:ga_risk_master_list'
         )
+
+
+@method_decorator([login_required, ], name='dispatch')
+class GaRiskMasterDeleteView(DeleteView):
+    model = RiskMaster
+    template_name = "_includes/_base_confirm_delete.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Riesgos Maestros'), 'url': reverse(
+                'risk_masters:ga_risk_master_list')},
+            {'title': _('Eliminar')},
+        ]
+        context['page_title'] = _(
+            "Eliminar Riesgo Maestro: %s") % str(self.object.name)
+        context['breadcrums'] = breadcrums
+
+        return context
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Riesgo Maestro eliminado correctamente")
+        )
+        return reverse_lazy("risk_masters:ga_risk_master_list")
+
+    def get_confirm_text_message(self):
+        return _(
+            '<span class="kt-font-bold">¿Seguro que desea eliminar el Riesgo Maestro y todos los riesgos asociados?: </span> {0} {1}? <span class="kt-font-bold">Se borrarán todos los riesgos y controles asociados al mismo.</span>'
+        ).format(str(self.object.ref), self.object.name)

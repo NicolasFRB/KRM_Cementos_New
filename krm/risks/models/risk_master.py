@@ -62,9 +62,9 @@ class RiskMaster(AuditModel):
 
     def save(self, *args, **kwargs):
         if not self.ref:
-            max_ref = RiskMaster.objects.all().count()
-            if max_ref > 0:
-                self.ref = max_ref + 1
-            else:
-                self.ref = 1
+            max_ref = RiskMaster.objects.filter(
+                domain_risk__pk=self.domain_risk.pk).count()
+            max_ref = max_ref + 1
+            max_ref = str(max_ref).zfill(3)
+            self.ref = f"{self.domain_risk.ref}{max_ref}"
         super().save(*args, **kwargs)

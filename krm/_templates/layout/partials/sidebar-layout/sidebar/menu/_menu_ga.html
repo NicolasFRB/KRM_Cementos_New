@@ -1,8 +1,19 @@
 {% load i18n %}
 
 {% url 'users:dashboard' as ga_dashboard %}
+
 {% url 'domain_risks:ga_domain_risk_list' as ga_domain_risk_list %}
+{% url 'domain_risks:ga_domain_risk_detail' domain_risk.pk as ga_domain_risk_list %}
+{% url 'domain_risks:ga_domain_risk_create' as ga_domain_risk_list %}
+
 {% url 'risk_masters:ga_risk_master_list' as ga_risk_master_list %}
+{% url 'risk_masters:ga_risk_master_detail' risk_master.pk as ga_risk_master_detail %}
+{% url 'risk_masters:ga_risk_master_create' as ga_risk_master_create %}
+
+{% url 'risks:ga_risk_list' as ga_risk_list %}
+{% url 'risks:ga_risk_create' risk.pk as ga_risk_create %}
+{% url 'risks:ga_risk_detail' ridk.pk as ga_risk_detail %}
+
 {% url 'configuration:configuration_detail' as configuration_detail %}
 
 <!--begin::sidebar menu-->
@@ -36,7 +47,10 @@
       </div>
 
       <!--begin:Menu item-->
-      <div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if request.path == ga_domain_risk_list or request.path == ga_risk_master_list %}show{% endif %}">
+      <!-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if request.path in menu_url.risks or request.path in menu_url.risk_masters or request.path in menu_url.domain_risks %}show{% endif %}"> -->
+      <div data-kt-menu-trigger="click"
+        class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in RISKS_MASTER_URLS %}show{% endif %}">
+
         <!--begin:Menu link-->
         <span class="menu-link">
           <span class="menu-icon">{% getSvgIcon 'duotune/files/fil012.svg' 'svg-icon svg-icon-2' %}</span>
@@ -49,7 +63,7 @@
           <!--begin:Menu item-->
           <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link {% if request.path == ga_domain_risk_list %}active{% endif %}" href="{% url 'domain_risks:ga_domain_risk_list' %}">
+            <a class="menu-link {% if request.path in DOMAIN_RISKS_URLS %}active{% endif %}" href="{% url 'domain_risks:ga_domain_risk_list' %}">
               <span class="menu-bullet">
                 <span class="bullet bullet-dot"></span>
               </span>
@@ -61,7 +75,7 @@
           <!--begin:Menu item-->
           <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link {% if request.path == ga_risk_master_list %}active{% endif %}" href="{% url 'risk_masters:ga_risk_master_list' %}">
+            <a class="menu-link {% if request.path in RISKS_MASTER_URLS %}active{% endif %}" href="{% url 'risk_masters:ga_risk_master_list' %}">
               <span class="menu-bullet">
                 <span class="bullet bullet-dot"></span>
               </span>
@@ -73,7 +87,8 @@
           <!--begin:Menu item-->
           <div class="menu-item">
             <!--begin:Menu link-->
-            <a class="menu-link" href="?page=pages/user-profile/projects">
+            <a class="menu-link {% if request.path in RISKS_URLS %}active{% endif %}"
+              href="{% url 'risks:ga_risk_list' %}">
               <span class="menu-bullet">
                 <span class="bullet bullet-dot"></span>
               </span>

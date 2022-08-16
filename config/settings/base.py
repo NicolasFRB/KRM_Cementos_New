@@ -75,28 +75,30 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-            'libraries': {
-                'theme': 'metronic.templatetags.theme',
-            },
-            'builtins': [
-                'django.templatetags.static',
-                'metronic.templatetags.theme',
-            ]
-        },
-    },
-]
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [],
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.contrib.messages.context_processors.messages',
+#                 'krm.utils.context_processors.py.get_menu_urls',
+#                 'krm.utils.context_processors.textcontext',
+#             ],
+#             'libraries': {
+#                 'theme': 'metronic.templatetags.theme',
+#             },
+#             'builtins': [
+#                 'django.templatetags.static',
+#                 'metronic.templatetags.theme',
+#             ]
+#         },
+#     },
+# ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -158,6 +160,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'krm.utils.context_processors.get_menu_urls',
             ],
             'libraries': {
                 'theme': 'metronic.templatetags.theme',
@@ -292,9 +295,14 @@ KT_THEME_VENDORS = {
             "plugins/custom/tinymce/tinymce.bundle.js"
         ]
     },
+    "ckeditor-custom": {
+        "js": [
+            "js/custom/custom-ckeditor/ckeditor.js",
+        ]
+    },
     "ckeditor-classic": {
         "js": [
-            "plugins/custom/ckeditor/ckeditor-classic.bundle.js"
+            "plugins/custom/ckeditor/ckeditor-classic.bundle.js",
         ]
     },
     "ckeditor-inline": {

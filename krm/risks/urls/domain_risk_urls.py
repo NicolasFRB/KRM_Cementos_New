@@ -5,7 +5,8 @@ from krm.risks.views import (
     GaDomainRiskListView,
     GaDomainRiskCreateView,
     GaDomainRiskDetailView,
-    GaDomainRiskUpdateView
+    GaDomainRiskUpdateView,
+    GaDomainRiskDeleteView
 )
 
 urlpatterns = [
@@ -18,6 +19,11 @@ urlpatterns = [
         'update/<pk>/',
         GaDomainRiskUpdateView.as_view(),
         name='ga_domain_risk_update'
+    ),
+    path(
+        'delete/<pk>/',
+        GaDomainRiskDeleteView.as_view(),
+        name='ga_domain_risk_delete'
     ),
     path(
         '',

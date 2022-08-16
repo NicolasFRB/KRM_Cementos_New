@@ -12,9 +12,7 @@ class DomainRisk(AuditModel):
 
     ref = models.CharField(
         verbose_name=_("Ref"),
-        max_length=50,
-        blank=True,
-        null=True,
+        max_length=50
     )
 
     name = models.CharField(

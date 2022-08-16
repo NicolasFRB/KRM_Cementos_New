@@ -8,12 +8,14 @@
 
 {% block content %}
 
+{% include '_includes/Messages.html' %}
+
 <!--begin::Container-->
 <div class="card">
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Maestro de Dominios de Riesgo' %}</div>
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -36,7 +38,7 @@
             <td class="text-center">{{ domain_risk.ref }}</td>
             <td>{{ domain_risk.name }}</td>
             <td>{{ domain_risk.description|striptags|safe }}</td>
-            <td class="text-center">{{ domain_risk.risks.count }}</td>
+            <td class="text-center"><span class="badge badge-info">{{ domain_risk.risks.count }}</span></td>
           </tr>
           {% endfor %}
       </tbody>
