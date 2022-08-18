@@ -47,6 +47,7 @@ LOCAL_APPS = [
     'users',
     'configuration',
     'risks',
+    'controls',
     # 'companies',
     # 'customers',
     # 'layout',

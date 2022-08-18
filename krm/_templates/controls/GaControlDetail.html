@@ -1,0 +1,168 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Control' %}: {{ control.name }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+
+    <div class="row">
+      <div class="col col-md-4">
+        <fieldset>
+          <legend class="mb-8">{% trans 'Datos del Control' %}</legend>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold">{% trans 'Referencia' %}</div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.ref }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+  
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold">{% trans 'Nombre' %}</div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.name }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold">{% trans 'Riesgo' %}</div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span><a href="{% url 'risks:ga_risk_detail' control.risk.pk %}">{{ control.risk.name }}</a></span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+        </fieldset>
+      </div>
+      <div class="col col-md-4">
+        <fieldset>
+          <legend class="mb-8">{% trans 'Impacto' %}</legend>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-6">
+              <div class="fs-6 fw-semibold">{% trans 'Impacto inherente' %}</div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-6">
+              <div class="fs-6">
+                <span>{{ control.get_impact_inherent_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-6">
+              <div class="fs-6 fw-semibold">{% trans 'Impacto residual' %}</div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-6">
+              <div class="fs-6">
+                <span>{{ control.get_impact_residual_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col col-md-4">
+        <fieldset>
+          <legend class="mb-8">{% trans 'Probabilidad' %}</legend>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-6">
+              <div class="fs-6 fw-semibold">{% trans 'Probabilidad inherente' %}</div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-6">
+              <div class="fs-6">
+                <span>{{ control.get_probability_inherent_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-6">
+              <div class="fs-6 fw-semibold">{% trans 'Probabilidad residual' %}</div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-6">
+              <div class="fs-6">
+                <span>{{ control.get_probability_residual_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="col col-12">
+        <fieldset>
+          <legend class="mb-8">{% trans 'Descripción' %}</legend>
+          <div class="fs-6 fw-semibold">{% trans 'Descripción del Riesgo' %}</div>
+          <div>{{ control.description|safe }}</div>
+        </fieldset>
+      </div>
+    </div>
+
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'controls:ga_control_update' control.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-pencil"></i>
+      {% trans 'Editar' %}</a>
+    <a href="{% url 'controls:ga_control_delete' control.pk %}" class="btn btn-sm btn-danger ms-2">
+      <i class="bi bi-trash"></i>
+      {% trans 'Eliminar' %}</a>
+      <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i
+            class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+<!--end::Container-->
+{% endblock content %}

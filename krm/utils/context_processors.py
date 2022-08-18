@@ -16,6 +16,10 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('risk_masters:ga_risk_master_list'),
         reverse_lazy('risk_masters:ga_risk_master_list'),
     ]
+    control_urls = [
+        reverse_lazy('controls:ga_control_list'),
+        reverse_lazy('controls:ga_control_create'),
+    ]
 
     if pk is not None:
         domain_risks_urls = domain_risks_urls + [
@@ -59,13 +63,28 @@ def get_menu_urls(request, pk=None):
                 'risk_masters:ga_risk_master_update',
                 kwargs={'pk': pk}
             ),
-            # reverse_lazy(
-            #     'risk_masters:ga_risk_master_delete',
-            #     kwargs={'pk': pk}
-            # )
+            reverse_lazy(
+                'risk_masters:ga_risk_master_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+        control_urls = control_urls + [
+            reverse_lazy(
+                'controls:ga_control_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'controls:ga_risk_control_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'controls:ga_risk_control_delete',
+                kwargs={'pk': pk}
+            )
         ]
     return {
         'RISKS_URLS': risks_urls,
         'DOMAIN_RISKS_URLS': domain_risks_urls,
         'RISKS_MASTER_URLS': risk_masters_urls,
+        'CONTROLS_URLS': control_urls,
     }

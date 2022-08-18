@@ -35,6 +35,10 @@ urlpatterns = [
          include(('krm.risks.urls.risk_urls', 'risks'),
                  namespace='risks')
          ),
+    path('controls/',
+         include(('krm.controls.urls.control_urls', 'controls'),
+                 namespace='controls')
+         ),
 ]
 
 

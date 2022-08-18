@@ -1,0 +1,166 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+<script>
+  $(document).ready(function () {
+    ClassicEditor
+      .create(
+        document.querySelector('#control_description'),
+        {}
+      )
+      .then(editor => {
+        // const wordCountPlugin = editor.plugins.get('WordCount');
+        // const wordCountWrapper = document.getElementById('word-count');
+        // wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+      })
+      .catch(error => {
+      });
+
+    ClassicEditor
+      .create(
+        document.querySelector('#control_name'),
+        {}
+      )
+      .then(editor => {
+        // const wordCountPlugin = editor.plugins.get('WordCount');
+        // const wordCountWrapper = document.getElementById('word-count');
+        // wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+      })
+      .catch(error => {
+      });
+
+    ClassicEditor
+      .create(
+        document.querySelector('#control_testing_procedure'),
+        {}
+      )
+      .then(editor => {
+        // const wordCountPlugin = editor.plugins.get('WordCount');
+        // const wordCountWrapper = document.getElementById('word-count');
+        // wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+      })
+      .catch(error => {
+      });
+  });
+</script>
+{% endblock js_footer %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            {% include '_includes/FormErrors.html' %}
+          </div>
+          <div class="col-12 mb-4">
+            <fieldset>
+              <legend>{% trans 'Datos del Control' %}</legend>
+              <div class="row">
+                <div class="mb-4 col-md-4 col-12">
+                  {{ form.ref|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-4 col-12">
+                  {{ form.risk|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-4 col-12">
+                  {{ form.key_control|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12">
+                  {{ form.name|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12">
+                  <div class="row">
+                    <div class="mb-4 col-md-3 col-12">
+                      {{ form.control_type|as_crispy_field }}
+                    </div>
+                    <div class="mb-4 col-md-3 col-12">
+                      {{ form.automation|as_crispy_field }}
+                    </div>
+                    <div class="mb-4 col-md-3 col-12">
+                      {{ form.systems|as_crispy_field }}
+                    </div>
+                    <div class="mb-4 col-md-3 col-12">
+                      {{ form.control_frequency|as_crispy_field }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 mb-4">
+                  <fieldset>
+                    <legend>{% trans 'Descripción' %}</legend>
+                    {{ form.description|as_crispy_field }}
+                    <div id="word-count"></div>
+                  </fieldset>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-12 col-md-6 mb-4">
+            <fieldset>
+              <legend>{% trans 'Procedimiento de testeo' %}</legend>
+              <div class="mb-4">
+                {{ form.testing_procedure|as_crispy_field }}
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-12 col-md-6 mb-4">
+            <fieldset>
+              <legend>{% trans 'Asertions' %}</legend>
+              <div class="row">
+                <div class="mb-4 col-12 col-md-4">
+                  {{ form.is_gap|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12 col-md-4">
+                  {{ form.assert_existence|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12 col-md-4">
+                  {{ form.assert_completeness|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12 col-md-4">
+                  {{ form.assert_valuation|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12 col-md-4">
+                  {{ form.assert_rights|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12 col-md-4">
+                  {{ form.assert_disclosure|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12 col-md-4">
+                  {{ form.assert_accurancy|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-12 col-md-4">
+                  {{ form.assert_froud|as_crispy_field }}
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+        </div>
+      </div>
+      <!--end::Body-->
+    
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+        <a href="{% url 'controls:ga_control_list' %}"
+          class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+{% endblock content %}
