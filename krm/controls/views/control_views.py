@@ -63,7 +63,7 @@ class GaControlListView(ListView):
 class GaControlDetailView(DetailView):
     model = Control
     template_name = 'controls/GaControlDetail.html'
-    context_object_name = 'Control'
+    context_object_name = 'control'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -72,9 +72,9 @@ class GaControlDetailView(DetailView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Controles'), 'url': reverse(
                 'controls:ga_control_list')},
-            {'title': self.object.name}
+            {'title': self.object.ref}
         ]
-        context['page_title'] = f"{_('Control')} : {self.object.name}"
+        context['page_title'] = f"{_('Control')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
@@ -181,8 +181,7 @@ class GaControlDeleteView(DeleteView):
                 'controls:ga_control_list')},
             {'title': _('Eliminar')},
         ]
-        context['page_title'] = _(
-            "Eliminar Riesgo: %s") % str(self.object.name)
+        context['page_title'] = _("Eliminar Riesgo")
         context['breadcrums'] = breadcrums
 
         return context
@@ -196,5 +195,5 @@ class GaControlDeleteView(DeleteView):
 
     def get_confirm_text_message(self):
         return _(
-            '<span class="kt-font-bold">¿Seguro que desea eliminar el Control: </span> {0} {1}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
-        ).format(str(self.object.ref), self.object.name)
+            '<span class="kt-font-bold">¿Seguro que desea eliminar el Control: </span> {0}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
+        ).format(str(self.object))

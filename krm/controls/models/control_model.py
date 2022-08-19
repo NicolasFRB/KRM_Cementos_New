@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import strip_tags
 
 from krm.utils.models import AuditModel
 
@@ -114,7 +115,10 @@ class Control(AuditModel):
     )
 
     def __str__(self):
-        return str(self.ref)
+        clean_name = strip_tags(self.name)
+        if len(clean_name) > 100:
+            clean_name = clean_name[:100] + "..."
+        return f"{self.ref} - {clean_name}"
 
     class Meta:
         verbose_name = _("Control")

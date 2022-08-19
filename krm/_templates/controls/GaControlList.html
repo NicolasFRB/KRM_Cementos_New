@@ -27,18 +27,16 @@
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
           <th>{% trans 'Riesgo Maestro' %}</th>
-          <th>{% trans 'Nombre' %}</th>
-          <th width="60%">{% trans 'Descripción' %}</th>
+          <th width="60%">{% trans 'Objetivo' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for control in controls %}
           <tr>
-            <td class="text-center"><a href="{% url 'risks:ga_risk_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
             <td class="text-center">{{ control.ref }}</td>
-            <td>{{ control.risk }}</td>
-            <td>{{ control.name }}</td>
-            <td>{{ control.description|striptags|safe|truncatechars:200 }}</td>
+            <td>{{ control.risk.ref }}</td>
+            <td>{{ control }}</td>
           </tr>
           {% endfor %}
       </tbody>

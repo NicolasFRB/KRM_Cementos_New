@@ -74,11 +74,11 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             ),
             reverse_lazy(
-                'controls:ga_risk_control_update',
+                'controls:ga_control_update',
                 kwargs={'pk': pk}
             ),
             reverse_lazy(
-                'controls:ga_risk_control_delete',
+                'controls:ga_control_delete',
                 kwargs={'pk': pk}
             )
         ]
