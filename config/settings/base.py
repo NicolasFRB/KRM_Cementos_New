@@ -41,6 +41,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "crispy_forms",
     'django_extensions',
+    'django_countries',
+    'ckeditor',
 ]
 
 LOCAL_APPS = [
@@ -48,6 +50,7 @@ LOCAL_APPS = [
     'configuration',
     'risks',
     'controls',
+    'companies',
     # 'companies',
     # 'customers',
     # 'layout',
@@ -433,4 +436,24 @@ KT_THEME_VENDORS = {
             "plugins/custom/bootstrap-select/bootstrap-select.bundle.js"
         ]
     }
+}
+
+
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Format', ],
+            ['Bold',
+             'Italic',
+             'Link',
+             'Unlink',
+             'NulletedList',
+             'NumberedList',
+             'RemoveFormat', ],
+            ['Undo',
+             'Redo',
+             'Source']
+        ]
+    },
 }

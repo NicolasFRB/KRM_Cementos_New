@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import strip_tags
 
+from ckeditor.fields import RichTextField
+
 from krm.utils.models import AuditModel
 
 
@@ -14,16 +16,28 @@ class Control(AuditModel):
     ref = models.CharField(verbose_name=_(
         "Identificador de Control"), max_length=140)
 
-    name = models.TextField(
-        _("Objetivo del Control"), max_length=10000, null=True, blank=True
+    name = RichTextField(
+        _("Objetivo del Control"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        null=True,
+        blank=True
     )
 
-    description = models.TextField(
-        _("Descripción del Control"), max_length=10000, null=True, blank=True
+    description = RichTextField(
+        _("Descripción del Control"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        null=True,
+        blank=True
     )
 
-    testing_procedure = models.TextField(
-        _("Procedimiento de testeo"), max_length=10000, null=True, blank=True
+    testing_procedure = RichTextField(
+        _("Procedimiento de testeo"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        null=True,
+        blank=True
     )
 
     risk = models.ForeignKey(
