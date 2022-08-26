@@ -68,90 +68,94 @@
             {% include '_includes/FormErrors.html' %}
           </div>
           <div class="col-12 mb-4">
-            <fieldset>
-              <legend>{% trans 'Datos del Control' %}</legend>
-              <div class="row">
-                <div class="mb-4 col-md-4 col-12">
-                  {{ form.ref|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-md-4 col-12">
-                  {{ form.risk|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-md-4 col-12">
-                  {{ form.key_control|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12">
-                  {{ form.name|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12">
-                  <div class="row">
-                    <div class="mb-4 col-md-3 col-12">
-                      {{ form.control_type|as_crispy_field }}
-                    </div>
-                    <div class="mb-4 col-md-3 col-12">
-                      {{ form.automation|as_crispy_field }}
-                    </div>
-                    <div class="mb-4 col-md-3 col-12">
-                      {{ form.systems|as_crispy_field }}
-                    </div>
-                    <div class="mb-4 col-md-3 col-12">
-                      {{ form.control_frequency|as_crispy_field }}
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 mb-4">
-                  <fieldset>
-                    <legend>{% trans 'Descripción' %}</legend>
-                    {{ form.description|as_crispy_field }}
-                    <div id="word-count"></div>
-                  </fieldset>
-                </div>
+            <legend>{% trans 'Datos del Control' %}</legend>
+            <div class="row">
+              <div class="mb-4 col-md-4 col-12">
+                {{ form.ref|as_crispy_field }}
               </div>
-            </fieldset>
-          </div>
-          <div class="col-12 col-md-6 mb-4">
-            <fieldset>
-              <legend>{% trans 'Procedimiento de testeo' %}</legend>
-              <div class="mb-4">
-                {{ form.testing_procedure|as_crispy_field }}
+              <div class="mb-4 col-md-4 col-12">
+                {{ form.key_control|as_crispy_field }}
               </div>
-            </fieldset>
-          </div>
-          <div class="col-12 col-md-6 mb-4">
-            <fieldset>
-              <legend>{% trans 'Asertions' %}</legend>
-              <div class="row">
-                <div class="mb-4 col-12 col-md-4">
-                  {{ form.is_gap|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12 col-md-4">
-                  {{ form.assert_existence|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12 col-md-4">
-                  {{ form.assert_completeness|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12 col-md-4">
-                  {{ form.assert_valuation|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12 col-md-4">
-                  {{ form.assert_rights|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12 col-md-4">
-                  {{ form.assert_disclosure|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12 col-md-4">
-                  {{ form.assert_accurancy|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12 col-md-4">
-                  {{ form.assert_froud|as_crispy_field }}
-                </div>
+              <div class="mb-4 col-12">
+                {{ form.risks|as_crispy_field }}
               </div>
-            </fieldset>
-          </div>
+              <div class="mb-4 col-12">
+                {{ form.sub_processes|as_crispy_field }}
+              </div>
+            </div>
 
+            <div class="separator my-10"></div>
+            <div class="row">
+              <legend>{% trans 'Atributos del Control' %}</legend>
+              <div class="mb-4 col-md-3 col-12">
+                {{ form.control_type|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-md-3 col-12">
+                {{ form.automation|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-md-3 col-12">
+                {{ form.systems|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-md-3 col-12">
+                {{ form.control_frequency|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="separator my-10"></div>
+            <div class="row">
+              <div class="mb-4 col-12">
+                <legend>{% trans 'Objetivo del Control' %}</legend>
+                {{ form.name|as_crispy_field }}
+              </div>
+              <div class="separator my-10"></div>
+              <div class="col-12 mb-4">
+                <fieldset>
+                  <legend>{% trans 'Descripción' %}</legend>
+                  {{ form.description|as_crispy_field }}
+                  <div id="word-count"></div>
+                </fieldset>
+              </div>
+              <div class="separator my-10"></div>
+              <div class="col-12 mb-4">
+                <legend>{% trans 'Procedimiento de testeo' %}</legend>
+                <div class="mb-4">
+                  {{ form.testing_procedure|as_crispy_field }}
+                </div>
+              </div>
+            </div>
+
+            <div class="separator my-10"></div>
+            <div class="row">
+              <legend>{% trans 'Asertions' %}</legend>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.is_gap|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.assert_existence|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.assert_completeness|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.assert_valuation|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.assert_rights|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.assert_disclosure|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.assert_accurancy|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.assert_froud|as_crispy_field }}
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-      <!--end::Body-->
     
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>

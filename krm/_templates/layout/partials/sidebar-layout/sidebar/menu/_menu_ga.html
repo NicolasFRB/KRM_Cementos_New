@@ -14,106 +14,131 @@
 		<!--begin::Menu-->
 		<div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu" data-kt-menu="true"
 			data-kt-menu-expand="false">
-
-      <!--begin:Menu item-->
-      <div class="menu-item">
-        <!--begin:Menu content-->
-        <div class="menu-content">
-          <span class="menu-heading fw-semibold text-uppercase fs-7">{% trans 'GLOBAL ADMIN' %}</span>
+      {% if request.user.is_superuser %}
+        <!--begin:Menu item-->
+        <div class="menu-item">
+          <!--begin:Menu content-->
+          <div class="menu-content">
+            <span class="menu-heading fw-semibold text-uppercase fs-7">{% trans 'GLOBAL ADMIN' %}</span>
+          </div>
+          <!--end:Menu content-->
         </div>
-        <!--end:Menu content-->
-      </div>
-      <!--end:Menu item-->
+        <!--end:Menu item-->
 
-      <div class="menu-item">
-        <!--begin:Menu link-->
-        <a class="menu-link {% if request.path == ga_dashboard %}active{% endif %}" href="{% url 'users:dashboard' %}">
-          <span class="menu-icon">{% getSvgIcon 'duotune/general/gen001.svg' 'svg-icon svg-icon-2' %}</span>
-          <span class="menu-title">{% trans 'Dashboard' %}</span>
-        </a>
-        <!--end:Menu link-->
-      </div>
-
-      <!--begin:Menu item-->
-      <!-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if request.path in menu_url.risks or request.path in menu_url.risk_masters or request.path in menu_url.domain_risks %}show{% endif %}"> -->
-      <div data-kt-menu-trigger="click"
-        class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in RISKS_MASTER_URLS or request.path in CONTROLS_URLS %}show{% endif %}">
-
-        <!--begin:Menu link-->
-        <span class="menu-link">
-          <span class="menu-icon">{% getSvgIcon 'duotune/files/fil012.svg' 'svg-icon svg-icon-2' %}</span>
-          <span class="menu-title">{% trans 'Maestros' %}</span>
-          <span class="menu-arrow"></span>
-        </span>
-        <!--end:Menu link-->
-        <!--begin:Menu sub-->
-        <div class="menu-sub menu-sub-accordion">
-          <!--begin:Menu item-->
-          <div class="menu-item">
-            <!--begin:Menu link-->
-            <a class="menu-link {% if request.path in DOMAIN_RISKS_URLS %}active{% endif %}" href="{% url 'domain_risks:ga_domain_risk_list' %}">
-              <span class="menu-bullet">
-                <span class="bullet bullet-dot"></span>
-              </span>
-              <span class="menu-title">{% trans 'Dominios de riesgo' %}</span>
-            </a>
-            <!--end:Menu link-->
-          </div>
-          <!--end:Menu item-->
-          <!--begin:Menu item-->
-          <div class="menu-item">
-            <!--begin:Menu link-->
-            <a class="menu-link {% if request.path in RISKS_MASTER_URLS %}active{% endif %}" href="{% url 'risk_masters:ga_risk_master_list' %}">
-              <span class="menu-bullet">
-                <span class="bullet bullet-dot"></span>
-              </span>
-              <span class="menu-title">{% trans 'Riesgos Maestros' %}</span>
-            </a>
-            <!--end:Menu link-->
-          </div>
-          <!--end:Menu item-->
-          <!--begin:Menu item-->
-          <div class="menu-item">
-            <!--begin:Menu link-->
-            <a class="menu-link {% if request.path in RISKS_URLS %}active{% endif %}"
-              href="{% url 'risks:ga_risk_list' %}">
-              <span class="menu-bullet">
-                <span class="bullet bullet-dot"></span>
-              </span>
-              <span class="menu-title">{% trans 'Riesgos' %}</span>
-            </a>
-            <!--end:Menu link-->
-          </div>
-          <!--end:Menu item-->
-          <!--begin:Menu item-->
-          <div class="menu-item">
-            <!--begin:Menu link-->
-            <a class="menu-link {% if request.path in CONTROLS_URLS %}active{% endif %}" href="{% url 'controls:ga_control_list' %}">
-              <span class="menu-bullet">
-                <span class="bullet bullet-dot"></span>
-              </span>
-              <span class="menu-title">{% trans 'Controles' %}</span>
-            </a>
-            <!--end:Menu link-->
-          </div>
-          <!--end:Menu item-->
+        <div class="menu-item">
+          <!--begin:Menu link-->
+          <a class="menu-link {% if request.path == ga_dashboard %}active{% endif %}" href="{% url 'users:dashboard' %}">
+            <span class="menu-icon">{% getSvgIcon 'duotune/general/gen001.svg' 'svg-icon svg-icon-2' %}</span>
+            <span class="menu-title">{% trans 'Dashboard' %}</span>
+          </a>
+          <!--end:Menu link-->
         </div>
-        <!--end:Menu sub-->
-      </div>
-      <!--end:Menu item-->
+
+        <!--begin:Menu item-->
+        <div data-kt-menu-trigger="click"
+          class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in RISKS_MASTER_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS %}show{% endif %}">
+
+          <!--begin:Menu link-->
+          <span class="menu-link">
+            <span class="menu-icon">{% getSvgIcon 'duotune/files/fil012.svg' 'svg-icon svg-icon-2' %}</span>
+            <span class="menu-title">{% trans 'Maestros' %}</span>
+            <span class="menu-arrow"></span>
+          </span>
+          <!--end:Menu link-->
+          <!--begin:Menu sub-->
+          <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path in DOMAIN_RISKS_URLS %}active{% endif %}" href="{% url 'domain_risks:ga_domain_risk_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Dominios de riesgo' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path in RISKS_MASTER_URLS %}active{% endif %}" href="{% url 'risk_masters:ga_risk_master_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Riesgos Maestros' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path in RISKS_URLS %}active{% endif %}"
+                href="{% url 'risks:ga_risk_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Riesgos' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path in CONTROLS_URLS %}active{% endif %}" href="{% url 'controls:ga_control_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Controles' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path in COMPANIES_URLS %}active{% endif %}" href="{% url 'companies:ga_company_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Compañías' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path in USERS_URLS %}active{% endif %}"
+                href="{% url 'users:ga_user_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Usuarios' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+          </div>
+          <!--end:Menu sub-->
+        </div>
+        <!--end:Menu item-->
+
+        <div class="menu-item">
+          <!--begin:Menu link-->
+          <a class="menu-link {% if request.path == configuration_detail %}active{% endif %}" href="{% url 'configuration:configuration_detail' %}">
+            <span class="menu-icon">{% getSvgIcon 'duotune/general/gen019.svg' 'svg-icon svg-icon-2' %}</span>
+            <span class="menu-title">{% trans 'Configuración' %}</span>
+          </a>
+          <!--end:Menu link-->
+        </div>
+      {% endif %}
 
       <div class="menu-item">
         <!--begin:Menu link-->
-        <a class="menu-link {% if request.path == configuration_detail %}active{% endif %}" href="{% url 'configuration:configuration_detail' %}">
-          <span class="menu-icon">{% getSvgIcon 'duotune/general/gen019.svg' 'svg-icon svg-icon-2' %}</span>
-          <span class="menu-title">{% trans 'Configuración' %}</span>
-        </a>
-        <!--end:Menu link-->
-      </div>
-
-      <div class="menu-item">
-        <!--begin:Menu link-->
-        <a class="menu-link" href="{% url 'users:logout' %}">
+        <a class="menu-link" href="{% url 'auth:logout' %}">
           <span class="menu-icon">{% getSvgIcon 'duotune/abstract/abs012.svg' 'svg-icon svg-icon-2' %}</span>
           <span class="menu-title">{% trans 'Cerrar Sesión' %}</span>
         </a>

@@ -1,0 +1,65 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Datos de la Compañía' %}: {{ company.vat }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col col-md-4">
+        <span class="fs-6 fw-semibold">{% trans 'Nombre' %}: </span> <span>{{ company.name }}</span>
+      </div>
+      <div class="col col-md-4">
+        <span class="fs-6 fw-semibold">{% trans 'VAT' %}: </span> <span>{{ company.vat|default_if_none:"" }}</span>
+      </div>
+      <div class="col col-md-4">
+        <span class="fs-6 fw-semibold">{% trans 'Email' %}: </span> <span>{{ company.email|default_if_none:"" }}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-4 col-12">
+          <span class="fs-6 fw-semibold">{% trans 'Dirección' %}: </span> <span>{{ company.address|default_if_none:"" }}</span>
+      </div>
+      <div class="mb-4 col-md-4 col-12">
+          <span class="fs-6 fw-semibold">{% trans 'Población' %}: </span> <span>{{ company.state|default_if_none:"" }}</span>
+      </div>
+      <div class="mb-4 col-md-4 col-12">
+          <span class="fs-6 fw-semibold">{% trans 'Código Postal' %}: </span> <span>{{ company.cp|default_if_none:"" }}</span>
+      </div>
+      <div class="mb-4 col-md-4 col-12">
+          <span class="fs-6 fw-semibold">{% trans 'País' %}: </span> <span>{{ company.country.name }}</span>
+      </div>
+    </div>
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'companies:ga_company_update' company.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-pencil"></i>
+      {% trans 'Editar' %}</a>
+    <a href="{% url 'companies:ga_company_delete' company.pk %}" class="btn btn-sm btn-danger ms-2">
+      <i class="bi bi-trash"></i>
+      {% trans 'Eliminar' %}</a>
+      <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i
+            class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+<!--end::Container-->
+{% endblock content %}

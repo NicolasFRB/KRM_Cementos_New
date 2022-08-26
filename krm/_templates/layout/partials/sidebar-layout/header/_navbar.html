@@ -45,7 +45,7 @@
 
     </div>
 	<div class="app-navbar-item ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
-    <a href="{% url 'users:logout' %}" class="btn btn-sm fw-bold btn-danger px-4 pt-2 pb-2">{% trans 'Salir' %}</a>
+    <a href="{% url 'auth:logout' %}" class="btn btn-sm fw-bold btn-danger px-4 pt-2 pb-2">{% trans 'Salir' %}</a>
 		{% include 'partials/menus/_user-account-menu.html' %}
 	</div>
 	<!--end::User menu-->

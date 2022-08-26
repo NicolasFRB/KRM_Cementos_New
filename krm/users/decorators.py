@@ -24,6 +24,18 @@ class is_global_admin(object):
         raise PermissionDenied
 
 
+class in_kpmg_group(object):
+
+    def __init__(self, view_func):
+        self.view_func = view_func
+        wraps(view_func)(self)
+
+    def __call__(self, request, *args, **kwargs):
+        response = self.view_func(request, *args, **kwargs)
+        if request.user and request.user.groups.filter(name='Kpmg').exists():
+            return response
+        raise PermissionDenied
+
 # def user_can_view_manuscript(function):
 #     def wrap(request, *args, **kwargs):
 #         try:

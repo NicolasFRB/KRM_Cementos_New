@@ -10,3 +10,7 @@ from .models import Control
 class ControlAdmin(admin.ModelAdmin):
     model = Control
     # list_display = ('ref', 'name', )
+    filter_horizontal = (
+        'sub_processes',
+        'risks'
+    )

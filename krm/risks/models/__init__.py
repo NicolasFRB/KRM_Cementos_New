@@ -1,3 +1,3 @@
-from .domain_risk import DomainRisk
-from .risk_master import RiskMaster
-from .risk import Risk
+from .domain_risk_model import DomainRisk
+from .risk_master_model import RiskMaster
+from .risk_model import Risk

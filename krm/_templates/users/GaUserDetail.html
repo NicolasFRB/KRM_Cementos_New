@@ -1,0 +1,112 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Datos del Usuario' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    <fieldset>
+      <div class="row">
+        <div class="col-12 mb-4">
+          <span class="fs-6 fw-semibold">{% trans 'Nombre' %}: </span> <span>{{ user.first_name }}</span>
+        </div>
+        <div class="col-12 mb-4">
+          <span class="fs-6 fw-semibold">{% trans 'Apellidos' %}: </span> <span>{{ user.last_name|default_if_none:"" }}</span>
+        </div>
+        <div class="col-12 mb-4">
+          <span class="fs-6 fw-semibold">{% trans 'Email' %}: </span> <span>{{ user.email|default_if_none:"" }}</span>
+        </div>
+        <div class="col-12 mb-4">
+          <span class="fs-6 fw-semibold">{% trans 'Último inicio de sesión' %}: </span> <span>{{ user.last_login|default_if_none:"" }}</span>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'users:ga_user_update' user.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-pencil"></i>
+      {% trans 'Editar' %}</a>
+    <a href="{% url 'users:ga_user_delete' user.pk %}" class="btn btn-sm btn-danger ms-2">
+      <i class="bi bi-trash"></i>
+      {% trans 'Eliminar' %}</a>
+      <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i
+            class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+
+<div class="card mb-8">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Compañías a las que pertenece' %}</div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="mb-4 col-12">
+        <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+          <thead>
+            <tr class="fw-semibold fs-6">
+              <th class="text-center">{% trans 'Acción' %}</th>
+              <th class="text-center">{% trans 'VAT' %}</th>
+              <th>{% trans 'Nombre' %}</th>
+              <th>{% trans 'País' %}</th>
+              <th>{% trans 'Email' %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for company in user.companies.all %}
+            <tr>
+              <td class="text-center"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i
+                    class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+              <td class="text-center">{{ company.vat }}</td>
+              <td>{{ company.name }}</td>
+              <td>{{ company.country.name }}</td>
+              <td>{{ company.email|default_if_none:"" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-8">
+  <div class="card-header">
+        <div class="card-title fs-3 fw-bold">{% trans 'Registro de acciones' %}</div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-sm-8">
+        {% if object.actions_log.all.count > 0 %}
+        <ul>
+          {% for action in object.actions_log.all %}
+          <li>{{ action.created }} - {{ action.action_description }}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>{% trans 'Sin acciones hasta el momento' %}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<!--end::Container-->
+{% endblock content %}

@@ -40,11 +40,16 @@ class Control(AuditModel):
         blank=True
     )
 
-    risk = models.ForeignKey(
-        "risks.Risk",
-        verbose_name=_("Riesgo asociado"),
-        related_name="controls",
-        on_delete=models.CASCADE,
+    risks = models.ManyToManyField(
+        "risks.risk",
+        verbose_name=_("Riesgos asociados"),
+        blank=True,
+    )
+
+    sub_processes = models.ManyToManyField(
+        "process.SubProcess",
+        verbose_name=_("SubProcesos asociados"),
+        blank=True,
     )
 
     key_control = models.BooleanField(
@@ -137,5 +142,4 @@ class Control(AuditModel):
     class Meta:
         verbose_name = _("Control")
         verbose_name_plural = _("Controles")
-        ordering = ["risk", "ref"]
-        unique_together = ["risk", "ref"]
+        ordering = ["ref", ]

@@ -16,9 +16,17 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('risk_masters:ga_risk_master_list'),
         reverse_lazy('risk_masters:ga_risk_master_list'),
     ]
-    control_urls = [
+    controls_urls = [
         reverse_lazy('controls:ga_control_list'),
         reverse_lazy('controls:ga_control_create'),
+    ]
+    companies_urls = [
+        reverse_lazy('companies:ga_company_list'),
+        reverse_lazy('companies:ga_company_create'),
+    ]
+    users_urls = [
+        reverse_lazy('users:ga_user_list'),
+        reverse_lazy('users:ga_user_create'),
     ]
 
     if pk is not None:
@@ -68,7 +76,7 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             )
         ]
-        control_urls = control_urls + [
+        controls_urls = controls_urls + [
             reverse_lazy(
                 'controls:ga_control_detail',
                 kwargs={'pk': pk}
@@ -82,9 +90,39 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             )
         ]
+        companies_urls = companies_urls + [
+            reverse_lazy(
+                'companies:ga_company_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'companies:ga_company_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'companies:ga_company_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+        users_urls = users_urls + [
+            reverse_lazy(
+                'users:ga_user_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'users:ga_user_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'users:ga_user_delete',
+                kwargs={'pk': pk}
+            )
+        ]
     return {
         'RISKS_URLS': risks_urls,
         'DOMAIN_RISKS_URLS': domain_risks_urls,
         'RISKS_MASTER_URLS': risk_masters_urls,
-        'CONTROLS_URLS': control_urls,
+        'CONTROLS_URLS': controls_urls,
+        'COMPANIES_URLS': companies_urls,
+        'USERS_URLS': users_urls,
     }

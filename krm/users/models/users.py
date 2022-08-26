@@ -8,9 +8,6 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
-
-from krm.utils.models import AuditModel
-
 import hashlib
 from random import choice
 
@@ -41,3 +38,69 @@ class User(AbstractUser):
     Extend from Django's Abstract User, change the username field
     to email and add some extra fields.
     """
+
+    companies = models.ManyToManyField(
+        'companies.Company',
+        related_name="employees",
+        verbose_name=_("Compañías a las que pertenece"),
+        blank=True,
+    )
+
+    remember_key = models.CharField(
+        blank=True,
+        null=True,
+        max_length=32,
+        verbose_name=_("Clave de recuperación de contraseña"),
+    )
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def save(self, *args, **kwargs):
+        self.username = self.email
+        if not self.remember_key:
+            self.remember_key = md5_generate()
+        super(User, self).save(*args, **kwargs)
+
+    def add_action(self, action_description):
+        from krm.users.models import ActionLogUser
+        ActionLogUser.objects.create(
+            user=self, action_description=action_description
+        )
+
+    def update_remember_key(self):
+        self.remember_key = md5_generate()
+        self.save()
+
+    def send_welcome_email(self):
+        from django.conf import settings
+
+        self.update_remember_key()
+        remember_url = settings.SITE_URL + reverse(
+            "auth:type_your_password", kwargs={"remember_key": self.remember_key}
+        )
+
+        context = {"remember_url": remember_url}
+        body_html = render_to_string(
+            "emails/users/welcome_email.html", context)
+        context = {"content": body_html,
+                   "preheader": _("Establecer contraseña")}
+        body_html = render_to_string("emails/base-inline.html", context)
+        from_email = settings.EMAIL_FROM
+        if settings.EMAIL_BCC:
+            bcc = settings.EMAIL_BCC
+        else:
+            bcc = ""
+
+        subject, from_email, to = (
+            _("KRM Tool - Nueva cuenta de usuario"),
+            from_email,
+            self.email,
+        )
+        msg = EmailMultiAlternatives(
+            subject, body_html, from_email, [to], [bcc])
+        msg.content_subtype = "html"
+
+        self.add_action(_("Welcome email"))
+        return msg.send(fail_silently=False)

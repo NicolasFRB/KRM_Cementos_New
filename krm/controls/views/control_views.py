@@ -20,7 +20,6 @@ from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
 
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
@@ -29,8 +28,10 @@ from krm.controls.forms import ControlCreateForm
 from krm.controls.models import Control
 from krm.risks.models import Risk
 
+from krm.users.decorators import is_global_admin
 
-@method_decorator([login_required, ], name='dispatch')
+
+@method_decorator([is_global_admin, ], name='dispatch')
 class GaControlListView(ListView):
     model = Control
     template_name = 'controls/GaControlList.html'
@@ -59,7 +60,7 @@ class GaControlListView(ListView):
         return context
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([is_global_admin, ], name='dispatch')
 class GaControlDetailView(DetailView):
     model = Control
     template_name = 'controls/GaControlDetail.html'
@@ -88,7 +89,7 @@ class GaControlDetailView(DetailView):
         return context
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([is_global_admin, ], name='dispatch')
 class GaControlCreateView(CreateView):
     form_class = ControlCreateForm
     model = Control
@@ -133,7 +134,7 @@ class GaControlCreateView(CreateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([is_global_admin, ], name='dispatch')
 class GaControlUpdateView(UpdateView):
     form_class = ControlCreateForm
     model = Control
@@ -166,7 +167,7 @@ class GaControlUpdateView(UpdateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([is_global_admin, ], name='dispatch')
 class GaControlDeleteView(DeleteView):
     model = Control
     template_name = "_includes/_base_confirm_delete.html"

@@ -51,16 +51,7 @@ LOCAL_APPS = [
     'risks',
     'controls',
     'companies',
-    # 'companies',
-    # 'customers',
-    # 'layout',
-    # 'configuration',
-    # 'sage',
-    # 'krm.users.apps.UsersAppConfig',
-    # 'krm.companies.apps.CompaniesAppConfig',
-    # 'krm.customers.apps.CustomersAppConfig',
-
-    # "celery",
+    'process',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -78,31 +69,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': [],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#                 'krm.utils.context_processors.py.get_menu_urls',
-#                 'krm.utils.context_processors.textcontext',
-#             ],
-#             'libraries': {
-#                 'theme': 'metronic.templatetags.theme',
-#             },
-#             'builtins': [
-#                 'django.templatetags.static',
-#                 'metronic.templatetags.theme',
-#             ]
-#         },
-#     },
-# ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -206,18 +172,7 @@ SITE_URL = env.str("KRM_SITE_URL")
 
 FILE_UPLOAD_PERMISSIONS = 0o640  # De audax
 LOGIN_REDIRECT_URL = "/"
-LOGIN_URL = reverse_lazy('users:login')
-
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django_redis.cache.RedisCache',
-#         'LOCATION': env('KRM_REDIS_URL'),
-#         'OPTIONS': {
-#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-#             'IGNORE_EXCEPTIONS': True,
-#         }
-#     }
-# }
+LOGIN_URL = reverse_lazy('auth:login')
 
 
 ######################
@@ -457,3 +412,14 @@ CKEDITOR_CONFIGS = {
         ]
     },
 }
+
+
+# Email
+EMAIL_BACKEND = env.str("KRM_DJANGO_EMAIL_BACKEND")
+EMAIL_FROM = env.str("KRM_EMAIL_FROM")
+EMAIL_HOST = env.str("KRM_EMAIL_HOST")
+EMAIL_PORT = env.int("KRM_EMAIL_PORT")
+EMAIL_USE_TLS = env.bool("KRM_EMAIL_USE_TLS")
+EMAIL_HOST_USER = env.str("KRM_EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env.str("KRM_EMAIL_HOST_PASSWORD")
+EMAIL_BCC = env.str("KRM_EMAIL_BCC")

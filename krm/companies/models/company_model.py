@@ -21,13 +21,6 @@ class Company(AuditModel):
 
     name = models.CharField(verbose_name=_("Nombre"), max_length=200)
 
-    # business_group = models.ForeignKey(
-    #     "business_group.BusinessGroup",
-    #     verbose_name=_("Grupo empresarial al que pertenece"),
-    #     related_name="companies",
-    #     on_delete=models.CASCADE,
-    # )
-
     vat = models.CharField(
         _("CIF"),
         max_length=20,

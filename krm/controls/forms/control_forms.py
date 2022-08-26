@@ -15,7 +15,11 @@ class ControlCreateForm(ModelForm):
         self.fields["description"].widget.attrs["id"] = "control_description"
         self.fields["testing_procedure"].widget.attrs["id"] = "control_testing_procedure"
 
-        self.fields["risk"].widget.attrs["class"] = "form-select"
+        self.fields["risks"].widget.attrs["class"] = "form-select"
+        self.fields["sub_processes"].widget.attrs["class"] = "form-select"
+        self.fields["risks"].widget.attrs["data-control"] = "select2"
+        self.fields["sub_processes"].widget.attrs["data-control"] = "select2"
+
         self.fields["control_type"].widget.attrs["class"] = "form-select"
         self.fields["automation"].widget.attrs["class"] = "form-select"
         self.fields["control_frequency"].widget.attrs["class"] = "form-select"
