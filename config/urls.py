@@ -31,10 +31,10 @@ urlpatterns = [
          include(('krm.risks.urls.domain_risk_urls', 'domain_risks'),
                  namespace='domain_risks')
          ),
-    path('risk-masters/',
-         include(('krm.risks.urls.risk_master_urls', 'risk_masters'),
-                 namespace='risk_masters')
-         ),
+    # path('risk-masters/',
+    #      include(('krm.risks.urls.risk_master_urls', 'risk_masters'),
+    #              namespace='risk_masters')
+    #      ),
     path('risks/',
          include(('krm.risks.urls.risk_urls', 'risks'),
                  namespace='risks')
@@ -46,6 +46,10 @@ urlpatterns = [
     path('companies/',
          include(('krm.companies.urls.company_urls', 'companies'),
                  namespace='companies')
+         ),
+    path('process/',
+         include(('krm.process.urls.process_urls', 'process'),
+                 namespace='process')
          ),
     path(
         '',

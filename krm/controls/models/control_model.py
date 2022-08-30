@@ -44,12 +44,14 @@ class Control(AuditModel):
         "risks.risk",
         verbose_name=_("Riesgos asociados"),
         blank=True,
+        related_name='controls'
     )
 
     sub_processes = models.ManyToManyField(
         "process.SubProcess",
         verbose_name=_("SubProcesos asociados"),
         blank=True,
+        related_name='controls'
     )
 
     key_control = models.BooleanField(

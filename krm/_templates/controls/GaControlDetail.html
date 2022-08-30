@@ -23,13 +23,31 @@
   <div class="card-body">
     <fieldset>
       <div class="row">
-        <div class="col col-md-4">
+        <div class="col col-12 mb-4">
           <span class="fs-6 fw-semibold">{% trans 'Referencia' %}: </span> <span>{{ control.ref }}</span>
         </div>
-        <div class="col col-md-4">
-          <span class="fs-6 fw-semibold">{% trans 'Riesgo' %}: </span> <span><a href="{% url 'risks:ga_risk_detail' control.risk.pk %}">{{ control.risk.name }}</a></span>
+        <div class="col col-12 mb-4">
+          <span class="fs-6 fw-semibold">{% trans 'Riesgos' %}: </span> 
+            {% if control.risks.count %}
+              {% for risk in control.risks.all %}
+                <span><a href="{% url 'risks:ga_risk_detail' risk.pk %}">{{ risk.name }}</a></span>{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            {% else %}
+              <p>{% trans 'Sin riesgos asociados' %}</p>
+            {% endif %}
         </div>
-        <div class="col col-md-4">
+        <div class="col col-12 mb-4">
+          <span class="fs-6 fw-semibold">{% trans 'Subprocesos' %}: </span>
+          {% if control.sub_processes.count %}
+            {% for subprocess in control.sub_processes.all %}
+              <span><a href="{% url 'risks:ga_risk_detail' subprocess.pk %}">{{ subprocess.name }}</a></span>
+              {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          {% else %}
+            <span>{% trans 'Sin subprocesos asociados' %}</span>
+          {% endif %}
+        </div>
+        <div class="col col-12 mb-4">
           <span class="fs-6 fw-semibold">{% trans '¿Es Key Control?' %}</span> <span>{{ control.key_control|yesno:_("Si, No") }}</span>
         </div>
       </div>

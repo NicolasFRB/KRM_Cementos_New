@@ -20,21 +20,22 @@ from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
 
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
-from krm.risks.forms import RiskCreateForm
+from krm.process.forms import ProcessCreateForm
+from krm.process.models import Process
 
-from krm.risks.models import Risk
+from krm.users.decorators import is_global_admin
+from django.contrib.auth.decorators import login_required
 
 
-@method_decorator([login_required, ], name='dispatch')
-class GaRiskListView(ListView):
-    model = Risk
-    template_name = 'risks/GaRiskList.html'
-    context_object_name = 'risks'
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
+class GaProcessListView(ListView):
+    model = Process
+    template_name = 'process/GaProcessList.html'
+    context_object_name = 'processes'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,15 +43,15 @@ class GaRiskListView(ListView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
-                'risks:ga_risk_list')},
+            {'title': _('Procesos'), 'url': reverse(
+                'process:ga_process_list')},
         ]
-        context['page_title'] = _('Riesgos')
+        context['page_title'] = _('Procesos')
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
                 'title': _('Nuevo'),
-                'url': reverse('risks:ga_risk_create'),
+                'url': reverse('process:ga_process_create'),
                 'primary': True,
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
@@ -59,27 +60,27 @@ class GaRiskListView(ListView):
         return context
 
 
-@method_decorator([login_required, ], name='dispatch')
-class GaRiskDetailView(DetailView):
-    model = Risk
-    template_name = 'risks/GaRiskDetail.html'
-    context_object_name = 'risk'
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
+class GaProcessDetailView(DetailView):
+    model = Process
+    template_name = 'process/GaProcessDetail.html'
+    context_object_name = 'process'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Dominios de Riesgo'), 'url': reverse(
-                'risks:ga_risk_list')},
-            {'title': self.object.name}
+            {'title': _('Procesos'), 'url': reverse(
+                'process:ga_process_list')},
+            {'title': self.object.ref}
         ]
-        context['page_title'] = f"{_('Dominio de Riesgo')} : {self.object.name}"
+        context['page_title'] = f"{_('Proceso')} : {self.object.name}"
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
                 'title': _('Editar'),
-                'url': reverse('risks:ga_risk_update', kwargs={'pk': self.object.pk}),
+                'url': reverse('process:ga_process_update', kwargs={'pk': self.object.pk}),
                 'primary': True,
                 'icon': '<i class="bi bi-pencil"></i>'
             },
@@ -88,22 +89,11 @@ class GaRiskDetailView(DetailView):
         return context
 
 
-@method_decorator([login_required, ], name='dispatch')
-class GaRiskCreateView(CreateView):
-    form_class = RiskCreateForm
-    model = Risk
-    template_name = 'risks/GaRiskCreate.html'
-
-    def get_initial(self):
-        if 'domain_risk' in self.kwargs:
-            risk_master = get_object_or_404(
-                RiskMaster, pk=self.kwargs.get('risk_master')
-            )
-            return {
-                'risk_master': risk_master
-            }
-        else:
-            return {}
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
+class GaProcessCreateView(CreateView):
+    form_class = ProcessCreateForm
+    model = Process
+    template_name = 'process/GaProcessCreate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -111,12 +101,12 @@ class GaRiskCreateView(CreateView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
-                'risks:ga_risk_list')},
-            {'title': _('Nuevo'), 'url': reverse(
-                'risks:ga_risk_create')},
+            {'title': _('Procesos'), 'url': reverse(
+                'process:ga_process_list')},
+            {'title': _('Nuevo Proceso'), 'url': reverse(
+                'process:ga_process_create')},
         ]
-        context['page_title'] = _('Nuevo Riesgo')
+        context['page_title'] = _('Nuevo Proceso')
         context['breadcrums'] = breadcrums
 
         return context
@@ -126,18 +116,18 @@ class GaRiskCreateView(CreateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Riesgo creado correctamente')
+            _('Proceso creado correctamente')
         )
         return reverse_lazy(
-            'risks:ga_risk_list'
+            'process:ga_process_list'
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
-class GaRiskUpdateView(UpdateView):
-    form_class = RiskCreateForm
-    model = Risk
-    template_name = 'risks/GaRiskCreate.html'
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
+class GaProcessUpdateView(UpdateView):
+    form_class = ProcessCreateForm
+    model = Process
+    template_name = 'process/GaProcessCreate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -145,11 +135,11 @@ class GaRiskUpdateView(UpdateView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Dominios de Riesgo'), 'url': reverse(
-                'risks:ga_risk_list')},
+            {'title': _('Procesos'), 'url': reverse(
+                'process:ga_process_list')},
             {'title': _('Editar')},
         ]
-        context['page_title'] = _('Editar Riesgo')
+        context['page_title'] = _('Editar Proceso')
         context['breadcrums'] = breadcrums
 
         return context
@@ -159,16 +149,16 @@ class GaRiskUpdateView(UpdateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Riesgo actualizado correctamente')
+            _('Proceso actualizado correctamente')
         )
         return reverse_lazy(
-            'risks:ga_risk_list'
+            'process:ga_process_list'
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
-class GaRiskDeleteView(DeleteView):
-    model = Risk
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
+class GaProcessDeleteView(DeleteView):
+    model = Process
     template_name = "_includes/_base_confirm_delete.html"
 
     def get_context_data(self, **kwargs):
@@ -177,12 +167,11 @@ class GaRiskDeleteView(DeleteView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
-                'risks:ga_risk_list')},
+            {'title': _('Procesos'), 'url': reverse(
+                'process:ga_process_list')},
             {'title': _('Eliminar')},
         ]
-        context['page_title'] = _(
-            "Eliminar Riesgo: %s") % str(self.object.name)
+        context['page_title'] = _("Eliminar Proceso")
         context['breadcrums'] = breadcrums
 
         return context
@@ -190,11 +179,11 @@ class GaRiskDeleteView(DeleteView):
     def get_success_url(self):
         messages.add_message(
             self.request, messages.SUCCESS, _(
-                "Riesgo eliminado correctamente")
+                "Proceso eliminado correctamente")
         )
-        return reverse_lazy("risks:ga_risk_list")
+        return reverse_lazy("process:ga_process_list")
 
     def get_confirm_text_message(self):
         return _(
-            '<span class="kt-font-bold">¿Seguro que desea eliminar el Riesgo: </span> {0} {1}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
-        ).format(str(self.object.ref), self.object.name)
+            '<span class="kt-font-bold">¿Seguro que desea eliminar el Proceso y todas sus evaluaciónes?: </span> {0}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
+        ).format(str(self.object))

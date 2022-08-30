@@ -59,13 +59,13 @@
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
-              <div class="fs-6 fw-semibold">{% trans 'Riesgo' %}</div>
+              <div class="fs-6 fw-semibold">{% trans 'Dominio de Riesgo' %}</div>
             </div>
             <!--end::Col-->
             <!--begin::Col-->
             <div class="col-xl-7">
               <div class="fs-6">
-                <span><a href="{% url 'risk_masters:ga_risk_master_detail' risk.risk_master.pk %}">{{ risk.risk_master.name }}</a></span>
+                <span><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.domain_risk.pk %}">{{ risk.domain_risk.name }}</a></span>
               </div>
             </div>
             <!--end::Col-->

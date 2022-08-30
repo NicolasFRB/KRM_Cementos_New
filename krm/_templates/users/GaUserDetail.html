@@ -33,7 +33,7 @@
           <span class="fs-6 fw-semibold">{% trans 'Email' %}: </span> <span>{{ user.email|default_if_none:"" }}</span>
         </div>
         <div class="col-12 mb-4">
-          <span class="fs-6 fw-semibold">{% trans 'Último inicio de sesión' %}: </span> <span>{{ user.last_login|default_if_none:"" }}</span>
+          <span class="fs-6 fw-semibold">{% trans 'Último inicio de sesión' %}: </span> <span>{{ user.last_login|default_if_none:"No ha iniciado sesión todavía" }}</span>
         </div>
       </div>
     </fieldset>
@@ -95,9 +95,9 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12 col-sm-8">
-        {% if object.actions_log.all.count > 0 %}
+        {% if user.actions_log.all.count > 0 %}
         <ul>
-          {% for action in object.actions_log.all %}
+          {% for action in user.actions_log.all %}
           <li>{{ action.created }} - {{ action.action_description }}</li>
           {% endfor %}
         </ul>

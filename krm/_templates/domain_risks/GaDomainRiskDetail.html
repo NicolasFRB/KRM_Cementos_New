@@ -85,7 +85,7 @@
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Riesgos maestros asociados' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Riesgos asociados' %}</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -102,13 +102,13 @@
         </tr>
       </thead>
       <tbody>
-        {% for risk_master in domain_risk.risks.all %}
+        {% for risk in domain_risk.risks.all %}
         <tr>
-          <td class="text-center"><a href="{% url 'risk_masters:ga_risk_master_detail' risk_master.pk %}"><i
+          <td class="text-center"><a href="{% url 'risks:ga_risk_detail' risk.pk %}"><i
                 class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-          <td class="text-center">{{ risk_master.ref }}</td>
-          <td>{{ risk_master.name }}</td>
-          <td>{{ risk_master.description|striptags|safe|truncatechars:200 }}</td>
+          <td class="text-center">{{ risk.ref }}</td>
+          <td>{{ risk.name }}</td>
+          <td>{{ risk.description|striptags|safe|truncatechars:200 }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -116,7 +116,7 @@
     {% else %}
     <div class="row mt-2 mb-2">
       <div class="col-sm">
-        <div class="alert alert-primary">{% trans 'No existen riesgos maestros asociados a este dominio de riesgo' %}.</div>
+        <div class="alert alert-primary">{% trans 'No existen riesgos asociados a este dominio de riesgo' %}.</div>
       </div>
     </div>
     {% endif %}
@@ -124,7 +124,7 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'risk_masters:ga_risk_master_create' domain_risk.pk %}" class="btn btn-sm btn-primary">
+    <a href="{% url 'risks:ga_risk_create' domain_risk.pk %}" class="btn btn-sm btn-primary">
       <i class="bi bi-plus-lg"></i>
       {% trans 'Añadir' %}</a>
   </div>

@@ -11,7 +11,7 @@ class RiskCreateForm(ModelForm):
             'ref',
             'name',
             'description',
-            'risk_master',
+            'domain_risk',
             'impact_inherent',
             'probability_inherent',
             'impact_residual',
@@ -22,8 +22,8 @@ class RiskCreateForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["description"].widget.attrs["id"] = "risk_description"
-        self.fields["risk_master"].widget.attrs["class"] = "form-select"
-        self.fields["risk_master"].widget.attrs["data-control"] = "select2"
+        self.fields["domain_risk"].widget.attrs["class"] = "form-select"
+        self.fields["domain_risk"].widget.attrs["data-control"] = "select2"
         self.fields["impact_inherent"].widget.attrs["class"] = "form-select"
         self.fields["probability_inherent"].widget.attrs["class"] = "form-select"
         self.fields["impact_residual"].widget.attrs["class"] = "form-select"

@@ -12,10 +12,6 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('risks:ga_risk_list'),
         reverse_lazy('risks:ga_risk_create'),
     ]
-    risk_masters_urls = [
-        reverse_lazy('risk_masters:ga_risk_master_list'),
-        reverse_lazy('risk_masters:ga_risk_master_list'),
-    ]
     controls_urls = [
         reverse_lazy('controls:ga_control_list'),
         reverse_lazy('controls:ga_control_create'),
@@ -27,6 +23,10 @@ def get_menu_urls(request, pk=None):
     users_urls = [
         reverse_lazy('users:ga_user_list'),
         reverse_lazy('users:ga_user_create'),
+    ]
+    process_urls = [
+        reverse_lazy('process:ga_process_list'),
+        reverse_lazy('process:ga_process_create'),
     ]
 
     if pk is not None:
@@ -54,25 +54,9 @@ def get_menu_urls(request, pk=None):
             reverse_lazy(
                 'risks:ga_risk_update',
                 kwargs={'pk': pk}
-            )
-        ]
-        # urls['risks'].append(
-        #     reverse_lazy(
-        #         'risks:ga_risk_delete',
-        #         kwargs={'pk': pk}
-        #     )
-        # )
-        risk_masters_urls = risk_masters_urls + [
-            reverse_lazy(
-                'risk_masters:ga_risk_master_detail',
-                kwargs={'pk': pk}
             ),
             reverse_lazy(
-                'risk_masters:ga_risk_master_update',
-                kwargs={'pk': pk}
-            ),
-            reverse_lazy(
-                'risk_masters:ga_risk_master_delete',
+                'risks:ga_risk_delete',
                 kwargs={'pk': pk}
             )
         ]
@@ -118,11 +102,25 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             )
         ]
+        process_urls = process_urls + [
+            reverse_lazy(
+                'process:ga_process_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'process:ga_process_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'process:ga_process_delete',
+                kwargs={'pk': pk}
+            )
+        ]
     return {
         'RISKS_URLS': risks_urls,
         'DOMAIN_RISKS_URLS': domain_risks_urls,
-        'RISKS_MASTER_URLS': risk_masters_urls,
         'CONTROLS_URLS': controls_urls,
         'COMPANIES_URLS': companies_urls,
         'USERS_URLS': users_urls,
+        'PROCESS_URLS': process_urls,
     }
