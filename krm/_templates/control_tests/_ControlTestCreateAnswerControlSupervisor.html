@@ -1,0 +1,159 @@
+{% extends 'layout/_base.html' %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}KRC Tool | {% trans 'Test de Control' %}{% endblock %}
+
+{% block css_page %}
+
+{% endblock %}
+
+{% block js_page %}
+
+<script>
+  $(document).ready(function () {
+    $('.error-empty-textarea').hide();
+
+    $('#id_more_information').on('change', function () {
+      if ($(this).is(":checked")) {
+        $('#id_description').prop("required", true);
+        if ($('#id_description').val().length == 0) {
+          $('.error-empty-textarea').show();
+        } else {
+          $('.error-empty-textarea').hide();
+        }
+      } else {
+        $('#id_description').prop("required", false);
+        $('.error-empty-textarea').hide();
+      }
+    });
+  });
+
+</script>
+
+{% endblock %}
+
+{% block breadcrums %}
+<div class="kt-subheader__main">
+  <span class="kt-subheader__separator kt-hidden"></span>
+  <div class="kt-subheader__breadcrumbs">
+    <a href="{% url 'users:dashboard' %}" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+    <span class="kt-subheader__breadcrumbs-separator"></span>
+    <a href="{% url 'process_test:ga_process_test_list' %}" class="kt-subheader__breadcrumbs-link">
+      {% trans 'Tests de Proceso' %}</a>
+    <span class="kt-subheader__breadcrumbs-separator"></span>
+    <a href="{% url 'process_test:ga_process_test_detail' control_test.process_test.pk %}"
+      class="kt-subheader__breadcrumbs-link">
+      {% trans 'Test de Proceso: ' %} {{ control_test.process_test.identifier }}</a>
+    <span class="kt-subheader__breadcrumbs-separator"></span>
+    {% trans 'Test de Control: ' %} {{ control_test }}
+  </div>
+</div>
+{% endblock %}
+
+{% block main_content %}
+
+<div class="row">
+
+  {% comment %} <div class="col-12">
+    {% include 'includes/risk/ga/_risk_detail.html' with risk=control_test.risk %}
+  </div> {% endcomment %}
+
+  <div class="col-12">
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+          <span class="kt-portlet__head-icon">
+            <span class="kt-menu__link-icon">
+              {% include 'includes/icons/_ControlIcon.html' %}
+            </span>
+          </span>
+          <h3 class="kt-portlet__head-title">
+            {% trans 'Datos del Test de Control' %}: {{ control_test.identifier }}
+          </h3>
+        </div>
+      </div>
+      <div class="kt-portlet__body">
+        <div class="kt-section kt-section--first">
+          <div class="kt-section__body">
+            {% include 'includes/risk/_risk_info_head.html' with risk=control_test.control.risk %}
+            <div class="kt-space-20"></div>
+            <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+            <div class="kt-space-20"></div>
+            {% include 'includes/control_test/_control_test_info_head.html' with control_test=control_test %}
+            <div class="kt-space-40"></div>
+            <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+            <div class="kt-space-20"></div>
+          </div>
+        </div>
+
+        <div class="kt-section">
+          <h5>{% trans 'RESPUESTAS' %}</h5>
+          <div class="kt-space-20"></div>
+          {% if control_test.answers.count > 0 %}
+          {% for answer in control_test.answers.all %}
+          {% include 'includes/control_test/ga/_control_test_answer.html' %}
+          {% if not forloop.last %}
+          <div class="kt-space-20"></div>
+          <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+          <div class="kt-space-20"></div>
+          {% endif %}
+          {% endfor %}
+          {% else %}
+          <p class="kt-font-info kt-font-bold">
+            {% trans 'Todavía no hay respuestas para este test de control' %}
+          </p>
+          {% endif %}
+
+          <div class="kt-space-20"></div>
+          <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+          <div class="kt-space-20"></div>
+
+          {% if control_test.remediation_plans.all.count > 0 %}
+          <h5>{% trans 'PLANES DE REMEDIACIÓN' %}</h5>
+          <div class="kt-space-20"></div>
+          {% for rm in control_test.remediation_plans.all %}
+          {% include 'includes/remediation_plan/ga/_remediation_plan.html' with rm=rm %}
+          <div class="kt-space-20"></div>
+          <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+          <div class="kt-space-20"></div>
+          {% endfor %}
+          {% endif %}
+
+          {% if control_test.status == 'WS' and request.user == control_test.control_test_supervisor and control_test.result != 'FI' %}
+
+          <h5>{% trans 'NUEVA RESPUESTA' %}</h5>
+
+          <form method="post" class="kt-form kt-form--label-right" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="kt-section__body">
+              {% include 'includes/FormErrors.html' %}
+              {{ form.description|as_crispy_field }}
+              <p>
+                <strong>{% trans 'Si necesita más información para poder marcar el control como Completado, marque la siguiente casilla. Esto le devolverá el control al responsable de cumplimentarlo para que pueda aportar más información. Utilice el campo de texto anterior para requerir la información necesaria.' %}</strong>
+              </p>
+              {{ form.more_information|as_crispy_field }}
+              <p class="kt-font-danger kt-font-bold error-empty-textarea">
+                {% trans 'Es necesario especificar la información que necesita utilizando caja de texto de arriba' %}
+              </p>
+
+              <div class="form-row">
+                <div class="col-12  col-md-6">
+                  <button type="submit" class="btn btn-sm btn-primary mr-3">{% trans 'Revisión completada' %}</button>
+                  <button class="btn btn-sm btn-secondary backHistory">{% trans 'Cancelar' %}</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

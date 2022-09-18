@@ -104,7 +104,7 @@
       <tbody>
         {% for subprocess in process.sub_processes.all %}
         <tr>
-          <td class="text-center"><a href="{% url 'process:ga_process_detail' subprocess.pk %}"><i
+          <td class="text-center"><a href="{% url 'subprocess:ga_sub_process_detail' subprocess.pk %}"><i
                 class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
           <td class="text-center">{{ subprocess.ref }}</td>
           <td>{{ subprocess.name }}</td>
@@ -125,7 +125,7 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="#" class="btn btn-sm btn-primary">
+    <a href="{% url 'subprocess:ga_sub_process_create' process.pk %}" class="btn btn-sm btn-primary">
       <i class="bi bi-plus-lg"></i>
       {% trans 'Añadir' %}</a>
   </div>

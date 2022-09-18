@@ -1,0 +1,140 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    <div class="row mb-8">
+      <!--begin::Col-->
+      <div class="col-xl-3">
+        <div class="fs-6 fw-semibold">{% trans 'REF' %}</div>
+      </div>
+      <!--end::Col-->
+      <!--begin::Col-->
+      <div class="col-xl-9">
+        <div class="fs-6">
+          <span>{{ subprocess.ref }}</span>
+        </div>
+      </div>
+      <!--end::Col-->
+    </div>
+
+    <div class="row mb-8">
+      <!--begin::Col-->
+      <div class="col-xl-3">
+        <div class="fs-6 fw-semibold">{% trans 'Nombre' %}</div>
+      </div>
+      <!--end::Col-->
+      <!--begin::Col-->
+      <div class="col-xl-9">
+        <div class="fs-6">
+          <span>{{ subprocess.name }}</span>
+        </div>
+      </div>
+      <!--end::Col-->
+    </div>
+
+    <div class="row mb-8">
+      <!--begin::Col-->
+      <div class="col-xl-3">
+        <div class="fs-6 fw-semibold">{% trans 'Proceso' %}</div>
+      </div>
+      <!--end::Col-->
+      <!--begin::Col-->
+      <div class="col-xl-9">
+        <div class="fs-6">
+          <span><a href="{% url 'process:ga_process_detail' subprocess.process.pk %}">{{ subprocess.process.name }}</a></span>
+        </div>
+      </div>
+      <!--end::Col-->
+    </div>
+
+    <div class="row mb-8">
+      <!--begin::Col-->
+      <div class="col-xl-3">
+        <div class="fs-6 fw-semibold">{% trans 'Descripción' %}</div>
+      </div>
+      <!--end::Col-->
+      <!--begin::Col-->
+      <div class="col-xl-9">
+        <div class="fs-6">
+          <span>{{ subprocess.description|safe }}</span>
+        </div>
+      </div>
+      <!--end::Col-->
+    </div>
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'subprocess:ga_sub_process_update' subprocess.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-pencil"></i>
+      {% trans 'Editar' %}</a>
+    <a href="{% url 'subprocess:ga_sub_process_delete' subprocess.pk %}" class="btn btn-sm btn-danger ms-2">
+      <i class="bi bi-trash"></i>
+      {% trans 'Eliminar' %}</a>
+    <a href="{% url 'subprocess:ga_sub_process_list' %}" class="btn btn-sm btn-secondary ms-2"><i
+        class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Riesgos asociados' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if subprocess.controls.all %}
+      <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+        <thead>
+          <tr class="fw-semibold fs-6">
+            <th class="text-center">{% trans 'Acción' %}</th>
+            <th class="text-center">{% trans 'REF' %}</th>
+            <th width="60%">{% trans 'Objetivo' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for control in subprocess.controls.all %}
+          <tr>
+            <td class="text-center"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i
+                  class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center">{{ control.ref }}</td>
+            <td>{{ control }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen riesgos asociados a este sub proceso' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+{% endblock content %}

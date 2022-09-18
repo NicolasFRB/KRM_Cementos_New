@@ -151,7 +151,8 @@ class GaUserUpdateView(UpdateView):
         )
 
         return reverse_lazy(
-            'users:ga_user_list'
+            'users:ga_user_detail',
+            kwargs={'pk': self.object.pk}
         )
 
 

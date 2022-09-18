@@ -8,7 +8,8 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404
 
 from krm.users.models import User
-# from krm.manuscripts.models import Manuscript
+from krm.evaluations.models import Evaluation
+from krm.evaluations.models import ControlTest
 
 
 class is_global_admin(object):
@@ -36,20 +37,68 @@ class in_kpmg_group(object):
             return response
         raise PermissionDenied
 
-# def user_can_view_manuscript(function):
-#     def wrap(request, *args, **kwargs):
-#         try:
-#             p = Manuscript.objects.get(pk=kwargs["pk"])
-#         except Manuscript.DoesNotExist:
-#             raise Http404
 
-#         if request.user.is_superuser:
-#             return function(request, *args, **kwargs)
+class is_company_admin(object):
 
-#         # Si su grupo empresarial tiene derecho a usar el proceso
-#         if p.office in [office for office in request.user.offices.all()]:
-#             return function(request, *args, **kwargs)
+    def __init__(self, view_func):
+        self.view_func = view_func
+        wraps(view_func)(self)
 
-#         raise PermissionDenied
+    def __call__(self, request, *args, **kwargs):
+        response = self.view_func(request, *args, **kwargs)
+        if request.user.is_company_admin:
+            return response
+        raise PermissionDenied
 
-#     return wrap
+
+def user_can_assign_control_test(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            ct = ControlTest.objects.get(pk=kwargs["pk"])
+        except ControlTest.DoesNotExist:
+            raise Http404
+
+        if request.user.is_superuser:
+            return function(request, *args, **kwargs)
+
+        if ct.evaluation.company in request.user.companies_admin.all():
+            return function(request, *args, **kwargs)
+
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_view_control_test(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            ct = ControlTest.objects.get(pk=kwargs["pk"])
+        except ControlTest.DoesNotExist:
+            raise Http404
+
+        if (
+            request.user.is_superuser
+            or request.user == ct.control_test_supervisor
+            or request.user == ct.control_test_owner
+            or ct.evaluation.company in request.user.companies_admin.all()
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_view_evaluation(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            evaluation = Evaluation.objects.get(pk=kwargs["pk"])
+        except Evaluation.DoesNotExist:
+            raise Http404
+
+        if (
+            evaluation.company in request.user.companies_admin.all()
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap

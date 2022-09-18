@@ -21,6 +21,8 @@ from django.utils.translation import gettext as _
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
+from krm.users.decorators import is_global_admin
+
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
@@ -29,7 +31,7 @@ from krm.risks.forms import DomainRiskCreateForm
 from krm.risks.models import DomainRisk
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaDomainRiskListView(ListView):
     model = DomainRisk
     template_name = 'domain_risks/GaDomainRiskList.html'
@@ -58,7 +60,7 @@ class GaDomainRiskListView(ListView):
         return context
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaDomainRiskDetailView(DetailView):
     model = DomainRisk
     template_name = 'domain_risks/GaDomainRiskDetail.html'
@@ -86,40 +88,6 @@ class GaDomainRiskDetailView(DetailView):
 
         return context
 
-
-# @method_decorator([login_required, ], name='dispatch')
-# class ConfigurationUpdateView(UpdateView):
-#     form_class = ConfigurationUpdateForm
-#     model = Configuration
-#     template_name = 'configuration/ConfigurationUpdate.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context = KTLayout.init(context)
-#         breadcrums = [
-#             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-#             {'title': _('Configuración'), 'url': reverse(
-#                 'configuration:configuration_detail')},
-#             {'title': _('Editar'), 'url': reverse(
-#                 'configuration:configuration_update')},
-#         ]
-#         context['page_title'] = _('Editar Configuración Global')
-#         context['breadcrums'] = breadcrums
-#         return context
-
-#     def get_object(self):
-#         return Configuration.objects.first()
-
-#     def get_success_url(self):
-
-#         messages.add_message(
-#             self.request,
-#             messages.SUCCESS,
-#             _('Configuración actualizada correctamente')
-#         )
-#         return reverse_lazy(
-#             'configuration:configuration_detail'
-#         )
 
 @method_decorator([login_required, ], name='dispatch')
 class GaDomainRiskCreateView(CreateView):
@@ -155,7 +123,7 @@ class GaDomainRiskCreateView(CreateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaDomainRiskUpdateView(UpdateView):
     form_class = DomainRiskCreateForm
     model = DomainRisk
@@ -188,7 +156,7 @@ class GaDomainRiskUpdateView(UpdateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaDomainRiskDeleteView(DeleteView):
     model = DomainRisk
     template_name = "_includes/_base_confirm_delete.html"

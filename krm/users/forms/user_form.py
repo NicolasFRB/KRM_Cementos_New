@@ -101,6 +101,7 @@ class UserUpdateForm(forms.ModelForm):
             'first_name',
             'last_name',
             'companies',
+            'companies_admin'
         )
 
     def __init__(self, *args, **kwargs):
@@ -108,6 +109,8 @@ class UserUpdateForm(forms.ModelForm):
         self.fields['first_name'].required = True
         self.fields["companies"].widget.attrs["class"] = "form-select"
         self.fields["companies"].widget.attrs["data-control"] = "select2"
+        self.fields["companies_admin"].widget.attrs["class"] = "form-select"
+        self.fields["companies_admin"].widget.attrs["data-control"] = "select2"
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -222,6 +225,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': (
                 (
                     'companies',
+                    'companies_admin'
                 ),
             )
         }),
@@ -245,5 +249,6 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = (
         # 'user_permissions',
         'groups',
-        'companies'
+        'companies',
+        'companies_admin'
     )

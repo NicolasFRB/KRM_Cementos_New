@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<p>
+  {% blocktrans with recovery_url=recovery_url %}
+  Hola {{ user_email }},<br><br>
+
+  Dispone de controles pendientes de cumplimentar dentro de la plataforma <strong>KRM Tool</strong> correspondientes a la Autoevaluación del Proceso de <strong>{{ evaluation_ref }}</strong> que tendrá lugar en el periodo desde el <strong>{{ evaluation_date_begin }}</strong> hasta el <strong>{{ evaluation_date_intermediate }}</strong>.<br><br>
+
+  Acceda desde <a href="{{ site_url }}">esta url</a> con sus datos de acceso para poder completarlos.<br><br>
+
+  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href="{{ recovery_url }}">esta url</a> indicando su correo electrónico.<br><br>
+
+  Gracias.
+  {% endblocktrans %}
+</p>

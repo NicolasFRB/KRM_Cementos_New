@@ -1,0 +1,141 @@
+{% extends 'layout/_base.html' %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}KRC Tool | {% trans 'Test de Control' %}{% endblock %}
+
+{% block css_page %}
+
+{% endblock %}
+
+{% block js_page %}
+  <script src="{% static 'assets/js/custom/summernote.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block breadcrums %}
+  <div class="kt-subheader__main">
+    <span class="kt-subheader__separator kt-hidden"></span>
+    <div class="kt-subheader__breadcrumbs">
+      <a href="{% url 'users:dashboard' %}" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+      <span class="kt-subheader__breadcrumbs-separator"></span>
+      {% trans 'Test de Control: ' %} {{ object }}
+    </div>
+  </div>
+{% endblock %}
+
+{% block main_content %}
+
+  <div class="row">
+
+    {% comment %} <div class="col-12">
+      {% include 'includes/risk/ga/_risk_detail.html' with risk=object.risk %}
+    </div> {% endcomment %}
+
+    <div class="col-12">
+      <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+          <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+              <span class="kt-menu__link-icon">
+                {% include 'includes/icons/_ControlIcon.html' %}
+              </span>
+            </span>
+            <h3 class="kt-portlet__head-title">
+              {% trans 'Datos del Test de Control' %}: {{ object.identifier }}
+            </h3>
+          </div>
+        </div>
+        <div class="kt-portlet__body">
+          <div class="kt-section kt-section--first">
+            <div class="kt-section__body">
+                {% include 'includes/risk/_risk_info_head.html' with risk=object.control.risk %}
+                <div class="kt-space-20"></div>
+                <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+                <div class="kt-space-20"></div>
+                {% include 'includes/control_test/_control_test_info_head.html' with control_test=object %}
+              <div class="kt-space-40"></div>
+              <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+              <div class="kt-space-20"></div>
+            </div>
+
+          </div>
+
+          <div class="kt-section">
+            <h5>{% trans 'RESPUESTAS' %}</h5>
+            <div class="kt-space-20"></div>
+            {% if object.answers.count > 0 %}
+              {% for answer in object.answers.all %}
+                {% include 'includes/control_test/ga/_control_test_answer.html' %}
+                {% if not forloop.last %}
+                  <div class="kt-space-20"></div>
+                  <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+                  <div class="kt-space-20"></div>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+            <p class="kt-font-info kt-font-bold">
+              {% trans 'Todavía no hay respuestas para este test de control' %}
+            </p>
+            {% endif %}
+            <div class="kt-space-20"></div>
+            <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+            <div class="kt-space-20"></div>
+
+            {% if object.remediation_plans.all.count > 0 %}
+              <h5>{% trans 'PLANES DE REMEDIACIÓN' %}</h5>
+              <div class="kt-space-20"></div>
+              {% for rm in object.remediation_plans.all %}
+                {% include 'includes/remediation_plan/ga/_remediation_plan.html' with rm=rm %}
+                {% if not forloop.last %}
+                  <div class="kt-space-20"></div>
+                  <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+                  <div class="kt-space-20"></div>
+                {% endif %}
+              {% endfor %}
+              <div class="kt-space-20"></div>
+              <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
+              <div class="kt-space-20"></div>
+            {% endif %}
+
+            {% if object.status == 'WO' and request.user == object.control_test_owner and object.result != 'FI'  %}
+              <h5>{% trans 'NUEVA RESPUESTA' %}</h5>
+
+              <form method="post" class="kt-form kt-form--label-right" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="kt-section__body">
+                  {% include 'includes/FormErrors.html' %}
+                  {{ form.description|as_crispy_field }}
+                  <div class="form-group">
+                    <label>{% trans 'Fichero adjunto de evidencias del control' %}</label>
+                    <div></div>
+                    <div class="custom-file">
+                      {{ form.attachment }}
+                      <label class="custom-file-label" style="text-align: left;" for="customFile">{% trans 'Selecciona un fichero' %}</label>
+                    </div>
+                  </div>
+
+                  {{ form.control_result|as_crispy_field }}
+
+                  <div class="form-row">
+                    <div class="col-12  col-md-6">
+                      <button type="submit" class="btn btn-sm btn-primary mr-3">{% trans 'Testeo finalizado' %}</button>
+                      <button class="btn btn-sm btn-secondary backHistory">{% trans 'Cancelar' %}</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+{% endblock %}
+
+

@@ -1,0 +1,260 @@
+import React from "react";
+import { useState, useEffect } from "react";
+
+import configService from "../services/config.js";
+
+import SelectCompaniess from "./SelectCompanies.js";
+import SelectProcess from "./SelectProcess.js";
+import SelectRisk from "./SelectRisk.js";
+import SelectDomainRisk from "./SelectDomainRisk.js";
+import EvaluationCreateSteps from "./EvaluationCreateSteps.js";
+
+let $ = window.$;
+
+function SelectControls(props) {
+  const [error, setError] = useState(null);
+  const [isControlsLoaded, setIsControlsLoaded] = useState(false);
+  const [controls, setControls] = useState([]);
+
+  const [selectedControls, setSelectedControls] = useState([]);
+  const [selectedDomainRisks, setSelectedDomainRisks] = useState([]);
+  const [selectedProcesses, setSelectedProcesses] = useState([]);
+  const [selectedRisks, setSelectedRisks] = useState([]);
+  const [selectedCompanies, setSelectedCompanies] = useState([]);
+
+  const [formData, setFormData] = useState({'completed': false});
+
+  const [controlsToEvaluate, setControlsToEvaluate] = useState([]);
+
+  const selectAllControl = () => {
+    const newSelectedControls = selectedControls.map(control => {
+      return {...control, checked: true};
+    });
+    setSelectedControls(newSelectedControls);
+  }
+
+  useEffect(() => {
+    const newSelectedControls = selectedControls.filter(control => control.checked);
+    setControlsToEvaluate(newSelectedControls);
+  }, [selectedControls]);
+
+  useEffect(() => { 
+    const newControlToEvaluate = selectedControls.filter(control => control.checked).map(control => { return control.pk });
+    setControlsToEvaluate(newControlToEvaluate);
+  }, [selectedControls]);
+
+  const deSelectAllControl = () => {
+    const newSelectedControls = selectedControls.map(control => {
+      return {...control, checked: false};
+    });
+    setSelectedControls(newSelectedControls);
+    setControlsToEvaluate([]);
+  }
+
+  const selectControl = (pk) => {
+    const newSelectedControls = selectedControls.map(control => {
+      if (control.pk === pk) {
+        return {...control, checked: !control.checked};
+      }
+      return control;
+    });
+    setSelectedControls(newSelectedControls);
+  }
+
+  const readFormData = () => {
+    let newFormData = {};
+    newFormData.ref = $('#e_ref').val();
+    newFormData.date_begin = $('#e_date_begin').val();
+    newFormData.date_intermediate = $('#e_date_intermediate').val();
+    newFormData.date_end = $('#e_date_end').val();
+    newFormData.description = $('#e_description').val();
+    newFormData.completed = newFormData.ref !== '' && newFormData.date_begin !== '' && newFormData.date_intermediate !== '' && newFormData.date_end !== '';
+    setFormData(newFormData);
+  }
+
+  const sendForm = (e) => {
+    e.preventDefault();
+    if (formData.completed === false) {
+      alert('Falta algún dato imprescindible en el formulario');
+      return false;
+    }
+    if (selectedCompanies.length === 0) {
+      alert('No se ha seleccionado ninguna empresa');
+      return false;
+    }
+    if (controlsToEvaluate.length === 0) {
+      alert('No se ha seleccionado ningún control a evaluar');
+      return false;
+    }
+    document.getElementById("evaluation_create").submit();
+  }
+
+  useEffect(() => {
+    fetch(`${configService.apiGetControls}`)
+      .then((res) => res.json())
+      .then(
+        (res) => {
+          let controlsWithChecked = res.results.map(control => {
+            return { ...control, checked: false };
+          })
+          setControls(controlsWithChecked);
+          setIsControlsLoaded(true);
+        },
+        (error) => {
+          setIsControlsLoaded(true);
+          setError(error);
+        }
+      );
+    $('#e_ref, #e_date_begin, #e_date_intermediate, #e_date_end, #e_description').on('change', readFormData);
+  // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    let controlsByDomainRisks = controls.filter(control => control.domain_risks.some(r => selectedDomainRisks.indexOf(r) >= 0))
+
+    let controlsByProcess = controls.filter(control => control.processes.some(r => selectedProcesses.indexOf(r) >= 0))
+
+    let controlsByRisks = controls.filter(control => control.risks.some(r => selectedRisks.indexOf(r) >= 0))
+
+    let newSelectedControls = controlsByProcess.concat(controlsByRisks).concat(controlsByDomainRisks)
+    let uniqueSelectedControls = newSelectedControls.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
+
+    setSelectedControls(uniqueSelectedControls);
+  }, [selectedDomainRisks, selectedProcesses, selectedRisks, controls])
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  } else if (!isControlsLoaded) {
+    return <h5>Cargando...</h5>;
+  } else {
+    return (
+
+    <div className="App">
+      <div className="row">
+        <div className="col-12">
+          <h3 className="mb-6">Paso 2: Seleccione las compañías para evaluar</h3>
+          {formData.completed === false && (
+            <>
+              <div className="alert alert-primary">Complete todos los datos obligatorios sobre la evaluación</div>
+            </>
+            )
+          }
+          <div className={(formData.completed ? '' : 'd-none')}>
+              <SelectCompaniess selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} />
+          </div>
+          <div className="separator my-10"></div>
+        </div>
+        <div className="col-12">
+          <h3 className="mb-5">Paso 3: Filtros</h3>
+        </div>
+        {selectedCompanies.length === 0 && (
+          <>
+            <div className="alert alert-primary">Seleccione al menos una compañía</div>
+          </>
+          )
+        }
+        <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
+          <div className="col col-12 col-md-4">
+              <SelectDomainRisk selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
+          </div>
+          <div className="col col-12 col-md-4">
+            <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
+          </div>
+          <div className="col col-12 col-md-4">
+            <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} />
+          </div>
+        </div>
+        <div className="separator my-10"></div>
+        <div className="col-12">
+          <h3 className="mb-5">Paso 4: Selección de controles a evaluar</h3>
+          <div>
+            {isControlsLoaded && (
+              <>
+                <div className="table-responsive">
+                  { selectedControls.length > 0 && (
+                    <> 
+                      <table className="table table-striped gy-7 gs-7">
+                        <thead>
+                          <tr className="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
+                            <th><span><i onClick={selectAllControl} className="bi bi-shield-check"></i></span> <span className="mb-2"><i onClick={deSelectAllControl} className="bi bi-shield"></i></span></th>
+                            <th>REF</th>
+                            <th>Objetivo</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <td colSpan="3">Se han seleccionado <strong>{controlsToEvaluate.length}</strong> controles</td>
+                          </tr>
+                        </tfoot>
+                        <tbody>
+                          {selectedControls.map((value, index) => {
+                            return <tr key={index}>
+                              <td>
+                                <label className="form-check form-check-inline form-check-solid me-5">
+                                  <input onChange={() => selectControl(value.pk)} checked={value.checked} className="form-check-input" type="checkbox" value={value.pk}  />
+                                </label>
+                              </td>
+                              <td>{value.ref}</td>
+                              <td>
+                                <span dangerouslySetInnerHTML={{__html:value.name}}></span>
+                              </td>
+                            </tr>
+                          })}
+                        </tbody>
+                      </table>
+                      <input type="hidden" name="controls" value={controlsToEvaluate} />
+                    </>
+                    )
+                  }
+                  {selectedControls.length === 0 && (
+                      <div className="alert alert-primary">No hay controles que cumplan con los criterios</div>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="separator my-10"></div>
+        <div className="col-12">
+          <h3 className="mb-5">Paso 5: Resumen del lanzamiento</h3>
+          {controlsToEvaluate.length > 0 && (
+            <div className="mt-5 mb-5">
+              <div className="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6">
+                <span className="svg-icon svg-icon-2tx svg-icon-primary me-4">
+                  <span className="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path opacity="0.3" d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z" fill="currentColor"/>
+                  <path d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z" fill="currentColor"/>
+                  </svg>
+                  </span>
+                </span>
+                <div className="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                  <div className="mb-3 mb-md-0 fw-semibold">
+                    <h4 className="text-gray-900 fw-bold">Elementos que serán creados</h4>
+                    <div className="fs-6 text-gray-700 pe-7">
+                      <ul>
+                        <li>Se van a crear un total de { selectedCompanies.length } evaluaciones</li>
+                        <li>Cada evaluación contendrá un total de { controlsToEvaluate.length } controles</li>
+                        <li>En total se lanzarán { selectedCompanies.length * controlsToEvaluate.length } controles</li>
+                      </ul>
+                    </div>
+                  </div>
+                    <button onClick={sendForm} className="btn btn-primary px-6 align-self-center text-nowrap">Crear Evaluaciones</button>
+                </div>
+              </div>
+            </div>
+          )}
+          {controlsToEvaluate.length === 0 && (
+              <div className="alert alert-primary">Selecciona al menos un control para poder lanzar la evaluación</div>
+          )}
+        </div>
+      </div>
+        <EvaluationCreateSteps
+          selectedCompanies={selectedCompanies.length > 0}
+          formData={formData.completed}
+          controlToEvaluate={controlsToEvaluate.length > 0} selectedControls={selectedControls.length > 0} />
+    </div>
+    );
+  }
+}
+
+export default SelectControls;

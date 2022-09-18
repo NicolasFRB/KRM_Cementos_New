@@ -38,6 +38,11 @@
         <link href="{% static file %}" rel="stylesheet" type="text/css" />
         {% endfor %}
         <!--end::Global Stylesheets-->
+        <style>
+          .django-ckeditor-widget {
+            width: 100%;
+          }
+        </style>
         {% endblock css %}
 
         <!--begin::Tracking-->
@@ -85,8 +90,6 @@
         {% block js_footer %}
 
         {% endblock js_footer %}
-
-        "use strict";
         
         <script>
           jQuery(document).ready(function() {
@@ -98,7 +101,7 @@
           });
         </script>
 
-
+    <div id="pk" data-pk="{{ request.user.pk }}" style="display: none;"></div>
     </body>
     <!--end::Body-->
 </html>

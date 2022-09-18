@@ -4,26 +4,27 @@
 
 {% block content %}
 
+{% include '_includes/Messages.html' %}
+
 <!--begin::Container-->
   <div class="card">
     <!--begin::Card header-->
     <div class="card-header">
       <!--begin::Card header-->
-      <div class="card-title fs-3 fw-bold">Dashboard para el Administrador Global</div>
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
       <!--end::Card header-->
     </div>
     <!--end::Card header-->
     <!--begin::Card body-->
     <div class="card-body">
       <div class="row mb-8">
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi voluptas ipsum enim vel dolore esse molestiae eveniet numquam repudiandae omnis voluptates temporibus ut maxime unde atque fugiat, perspiciatis illo cumque!</p>
+        <p>Por definir</p>
       </div>
     </div>
     <!--end::Card body-->
     <!--begin::Card footer-->
     <div class="card-footer py-6">
-      <button type="submit" class="btn btn-sm btn-primary">{% trans 'Guardar' %}</button>
-      <a href="{% url 'users:dashboard' %}" class="btn btn-sm btn-light btn-active-light-primary ms-2">{% trans 'Cancelar' %}</a>
+      <a href="{% url 'auth:logout' %}" class="btn btn-sm btn-danger">{% trans 'Salir' %}</a>
     </div>
     <!--end::Card footer-->
   </div>

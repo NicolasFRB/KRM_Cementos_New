@@ -20,12 +20,22 @@ ALLOWED_HOSTS = []
 
 # Language and timezone
 TIME_ZONE = "Europe/Madrid"
-LANGUAGE_CODE = "es"
+LANGUAGE_CODE = 'es'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
 prefix_default_language = False
+
+
+def gettext(s):
+    return s
+
+
+LANGUAGES = (
+    ("es", gettext("Spanish")),
+    ("en", gettext("English")),
+)
 
 # Application definition
 
@@ -43,6 +53,8 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'django_countries',
     'ckeditor',
+    'django_filters',
+    'rest_framework'
 ]
 
 LOCAL_APPS = [
@@ -52,6 +64,8 @@ LOCAL_APPS = [
     'controls',
     'companies',
     'process',
+    'evaluations',
+    "taskapp",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -61,6 +75,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -91,12 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-LANGUAGE_CODE = 'es-ES'
-TIME_ZONE = "Europe/Madrid"
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, '_locale'),
@@ -423,3 +433,18 @@ EMAIL_USE_TLS = env.bool("KRM_EMAIL_USE_TLS")
 EMAIL_HOST_USER = env.str("KRM_EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("KRM_EMAIL_HOST_PASSWORD")
 EMAIL_BCC = env.str("KRM_EMAIL_BCC")
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 50,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]

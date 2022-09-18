@@ -46,6 +46,13 @@ class User(AbstractUser):
         blank=True,
     )
 
+    companies_admin = models.ManyToManyField(
+        'companies.Company',
+        related_name="admins",
+        verbose_name=_("Compañías qué administra"),
+        blank=True,
+    )
+
     remember_key = models.CharField(
         blank=True,
         null=True,
@@ -56,6 +63,24 @@ class User(AbstractUser):
     @property
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
+
+    @property
+    def is_company_admin(self):
+        return self.companies_admin.count() > 0
+
+    @property
+    def is_admin(self):
+        return self.is_company_admin or self.is_superuser
+
+    def controls_test_supervisor_pending(self):
+        return self.controls_test_supervisor.filter(status="WS")
+
+    def controls_test_owner_pending(self):
+        return self.controls_test_owner.filter(status="WO")
+
+    def controls_test_administrator_pending(self):
+        from krm.evaluations.models import ControlTest
+        return ControlTest.objects.filter(status="WA", evaluation__company__in=self.companies_admin.all())
 
     def save(self, *args, **kwargs):
         self.username = self.email
@@ -104,3 +129,32 @@ class User(AbstractUser):
 
         self.add_action(_("Welcome email"))
         return msg.send(fail_silently=False)
+
+    def send_email_remember_password(self):
+        self.update_remember_key()
+        remember_url = settings.SITE_URL + reverse(
+            "auth:type_your_password", kwargs={"remember_key": self.remember_key}
+        )
+
+        context = {"remember_url": remember_url}
+        body_html = render_to_string(
+            "emails/users/remember_password.html", context)
+        context = {"content": body_html, "preheader": _("Recordar contraseña")}
+        body_html = render_to_string("emails/base-inline.html", context)
+        from_email = settings.EMAIL_FROM
+        if settings.EMAIL_BCC:
+            bcc = settings.EMAIL_BCC
+        else:
+            bcc = ""
+
+        subject, from_email, to = (
+            _("KRM Tool - Cambio de contraseña"),
+            from_email,
+            self.email,
+        )
+        msg = EmailMultiAlternatives(
+            subject, body_html, from_email, [to], [bcc])
+        msg.content_subtype = "html"
+
+        self.add_action(_("Reset password email"))
+        msg.send(fail_silently=False)

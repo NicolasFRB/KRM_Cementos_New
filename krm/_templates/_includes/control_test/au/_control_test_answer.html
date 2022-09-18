@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<div class="c-control-test-answer">
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <p><span class="kt-font-bold">{% trans 'FECHA' %}: </span> {{ answer.created }}</p>
+      <p><span class="kt-font-bold">{% trans 'USUARIO' %}: </span> {{ answer.user }}</p>
+      <p><span class="kt-font-bold">{% trans 'FICHERO ADJUNTO' %}: </span>
+      {% if answer.attachment %}
+        <a target="blank" href="{{ MEDIA_URL }}{{ answer.attachment }}"> {% trans 'Descargar adjunto' %}</a>
+
+      {% else %}
+        {% trans 'No se ha adjuntado ningún fichero' %}
+      {% endif %}</p>
+    </div>
+    <div class="col-12 col-md-6">
+      <p><span class="kt-font-bold">{% trans 'DESCRIPCIÓN' %}: </span> </p>
+      {{ answer.description|safe }}
+    </div>
+  </div>
+</div>

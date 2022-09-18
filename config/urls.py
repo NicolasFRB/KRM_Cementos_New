@@ -7,13 +7,46 @@ from django.conf.urls.static import static
 from django.urls import path
 from django.conf.urls.i18n import i18n_patterns
 from django.utils.translation import gettext_lazy as _
+from rest_framework import routers
 
 from krm.users.views import (
     DashboardView,
 )
 
-urlpatterns = [
+from krm.controls.api import ControlViewSet
+from krm.risks.api import (
+    RiskViewSet,
+    DomainRiskViewSet
+)
+from krm.process.api import (
+    ProcessViewSet,
+    SubProcessViewSet,
+)
+
+from krm.companies.api import (
+    CompanyViewSet,
+)
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'controls', ControlViewSet)
+router.register(r'risks', RiskViewSet)
+router.register(r'process', ProcessViewSet)
+router.register(r'subprocesses', SubProcessViewSet)
+router.register(r'domain-risks', DomainRiskViewSet)
+router.register(r'companies', CompanyViewSet)
+
+urlpatterns = i18n_patterns(
+
+    path(
+        '',
+        DashboardView.as_view(),
+        name='dashboard'
+    ),
+
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
 
     path('auth/',
          include(('krm.users.urls.user_auth_urls', 'users'),
@@ -31,10 +64,6 @@ urlpatterns = [
          include(('krm.risks.urls.domain_risk_urls', 'domain_risks'),
                  namespace='domain_risks')
          ),
-    # path('risk-masters/',
-    #      include(('krm.risks.urls.risk_master_urls', 'risk_masters'),
-    #              namespace='risk_masters')
-    #      ),
     path('risks/',
          include(('krm.risks.urls.risk_urls', 'risks'),
                  namespace='risks')
@@ -51,12 +80,19 @@ urlpatterns = [
          include(('krm.process.urls.process_urls', 'process'),
                  namespace='process')
          ),
-    path(
-        '',
-        DashboardView.as_view(),
-        name='dashboard'
-    ),
-]
+    path('subprocess/',
+         include(('krm.process.urls.sub_process_urls', 'subprocess'),
+                 namespace='subprocess')
+         ),
+    path('evaluations/',
+         include(('krm.evaluations.urls.evaluations_urls', 'evaluations'),
+                 namespace='evaluations')
+         ),
+    path('evaluations/control-test/',
+         include(('krm.evaluations.urls.control_test_urls', 'control_tests'),
+                 namespace='control_tests')
+         ),
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 if 'debug_toolbar' in settings.INSTALLED_APPS and settings.DEBUG:

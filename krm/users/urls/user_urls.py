@@ -7,6 +7,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 from krm.users.views import (
     DashboardView,
+
+    CaDashboardView,
+    GaDashboardView,
+    RuDashboardView,
+
     GaUserListView,
     GaUserCreateView,
     GaUserUpdateView,
@@ -17,9 +22,24 @@ from krm.users.views import (
 
 urlpatterns = [
     path(
-        'dashboard/',
+        'dashboard-redirect/',
         DashboardView.as_view(),
         name='dashboard'
+    ),
+    path(
+        'ga-dashboard/',
+        GaDashboardView.as_view(),
+        name='ga_dashboard'
+    ),
+    path(
+        'ca-dashboard/',
+        CaDashboardView.as_view(),
+        name='ca_dashboard'
+    ),
+    path(
+        'ru-dashboard/',
+        RuDashboardView.as_view(),
+        name='ru_dashboard'
     ),
     path(
         '',

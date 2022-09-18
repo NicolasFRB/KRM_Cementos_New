@@ -1,0 +1,57 @@
+{% load i18n %}
+
+<div class="kt-portlet">
+  <div class="kt-portlet__head">
+    <div class="kt-portlet__head-label">
+      <span class="kt-portlet__head-icon">
+        <span class="kt-menu__link-icon">
+          <span class="kt-menu__link-icon">
+            {% include 'includes/icons/_RiskIcon.html' %}
+          </span>
+        </span>
+      </span>
+      <h3 class="kt-portlet__head-title">
+        {% trans 'Riesgos que pertenecen al Sub Proceso' %}
+      </h3>
+    </div>
+  </div>{# /kt-portlet__head #}
+  <div class="kt-portlet__body">
+    {% if sub_process.risks.count > 0 %}
+      <table class="table table-striped- table-bordered table-hover datatable">
+        <thead>
+          <tr>
+            <th style="width: 10px;">{% trans '#' %}</th>
+            <th>{% trans 'DESCRIPCIÓN' %}</th>
+            <th>{% trans 'CONTROLES' %}</th>
+            <th>{% trans 'MARCOS NORMATIVOS' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for risk in sub_process.risks.all %}
+            <tr>
+              <td><a href="{% url 'process:au_risk_detail' risk.pk %}">{{ risk.ref }}</a></td>
+              <td>{{ risk.description|safe }}</a></td>
+              <td>
+                {% if risk.controls.count > 0 %}
+                  {% for control in risk.controls.all %}
+                    <a href="{% url 'process:au_control_detail' control.pk %}">#{{ control.ref }} {{ control.description_safe|truncatechars:250 }}</a><br />
+                  {% endfor %}
+                {% else %}
+                  {% trans 'Sin controles definidos para este riesgo' %}
+                {% endif %}
+              </td>
+              <td>
+                {% for rf in risk.get_regulatory_frameworks %}
+                  {{ rf.acronym }} - {{ rf.name }}<br>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>{% trans 'No se han creado riesgos para este Sub Proceso' %}</p>
+    {% endif %}
+  </div>{# /kt-portlet__body #}
+
+</div>{# /kt-portlet #}

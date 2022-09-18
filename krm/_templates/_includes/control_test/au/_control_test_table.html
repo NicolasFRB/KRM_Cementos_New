@@ -1,0 +1,51 @@
+{% load i18n %}
+{% trans "Sin asignar" as without_set %}
+
+{% if cts.count > 0 %}
+
+<table class="table table-striped table-bordered table-hover datatable">
+  <thead>
+    <tr>
+      <th width="70px">{% trans 'REF' %}</th>
+      <th>{% trans 'CONTROL' %}</th>
+      <th>{% trans 'CONTROL OWNER' %}</th>
+      <th>{% trans 'CONTROL SUPERVISOR' %}</th>
+      <th>{% trans 'STATUS' %}</th>
+      <th>{% trans 'RESULTADO' %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ct in cts %}
+      <tr>
+          {% if link %}
+            <td><a href="{% url 'process_test:au_control_test_detail' ct.pk %}">#{{ ct.identifier }}</a></td>
+          {% else %}
+            <td>#{{ ct.identifier }}</td>
+          {% endif %}
+          <td>
+            {% if ct.control.description_safe|length > 200 %}
+              {{ct.control.description_safe|slice:200}}...
+            {% else  %}
+                {{ct.control.description_safe }}
+            {% endif %}
+          </td>
+          <td>
+            {{ ct.control_test_owner }}
+          </td>
+          <td>
+            {{ ct.control_test_supervisor }}
+          </td>
+          <td>{{ ct.get_status_display }}</td>
+          <td>{{ ct.get_result_display }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+
+  <div class="alert alert-solid-dark alert-bold" role="alert">
+    {% trans 'Sin controles' %}
+  </div>
+
+{% endif %}

@@ -13,8 +13,7 @@ class Risk(AuditModel):
     ref = models.CharField(
         verbose_name=_("REF"),
         max_length=50,
-        blank=True,
-        null=True,
+        unique=True
     )
 
     name = models.CharField(

@@ -1,0 +1,44 @@
+{% load i18n %}
+{% trans "Sin asignar" as without_set %}
+<table class="table table-striped table-bordered table-hover datatable">
+  <thead>
+    <tr>
+      <th width="70px">{% trans 'REF' %}</th>
+      <th>{% trans 'CONTROL' %}</th>
+      <th>{% trans 'CONTROL OWNER' %}</th>
+      <th>{% trans 'CONTROL SUPERVISOR' %}</th>
+      <th>{% trans 'STATUS' %}</th>
+      <th>{% trans 'RESULTADO' %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ct in cts %}
+      <tr>
+          <td><a href="{% url 'process_test:ga_control_test_detail' ct.pk %}">#{{ ct.identifier }}</a></td>
+          <td>
+            {% if ct.control.description_safe|length > 200 %}
+              {{ct.control.description_safe|slice:200}}...
+            {% else  %}
+                {{ct.control.description_safe }}
+            {% endif %}
+          </td>
+          <td>
+            {% if ct.control_test_owner %}
+              {{ ct.control_test_owner }}
+            {% else %}
+              <a href="{% url 'process_test:ga_control_test_assign' ct.pk %}">{% trans 'Asignar' %}</a>
+            {% endif %}
+          </td>
+          <td>
+            {% if ct.control_test_supervisor %}
+              {{ ct.control_test_supervisor }}
+            {% else %}
+              <a href="{% url 'process_test:ga_control_test_assign' ct.pk %}">{% trans 'Asignar' %}</a>
+            {% endif %}
+          </td>
+          <td>{{ ct.get_status_display }}</td>
+          <td>{{ ct.get_result_display }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

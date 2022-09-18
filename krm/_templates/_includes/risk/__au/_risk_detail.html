@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<div class="kt-portlet kt-portlet--mobile">
+  <div class="kt-portlet__head kt-portlet__head--lg">
+    <div class="kt-portlet__head-label">
+      <span class="kt-portlet__head-icon">
+        <span class="kt-menu__link-icon">
+          {% include 'includes/icons/_RiskIcon.html' %}
+        </span>
+      </span>
+      <h3 class="kt-portlet__head-title">
+        {% trans 'Datos del Riesgo' %}
+      </h3>
+    </div>
+  </div>
+  <div class="kt-portlet__body">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <p><span class="kt-font-bold">{% trans 'Referencia' %}: </span>{{ risk.ref }}</p>
+        <p><span class="kt-font-bold">{% trans 'Descripción' %}: </span><br>{{ risk.description|safe }}</p>
+        <p><span class="kt-font-bold">{% trans 'Sub Proceso' %}: </span>{{ risk.sub_process }}</p>
+      </div>
+      <div class="col-12 col-md-6">
+        <p><span class="kt-font-bold">{% trans 'Categoría' %}: </span>{{ risk.get_category_display }}</p>
+        <p><span class="kt-font-bold">{% trans 'Impacto' %}: </span>{{ risk.get_impact_display }}</p>
+        <p><span class="kt-font-bold">{% trans 'Probabilidad' %}: </span>{{ risk.get_probability_display }}</p>
+        <p><span class="kt-font-bold">{% trans 'Rating' %}: </span>{{ risk.get_rating_display }}</p>
+      </div>
+    </div>
+  </div>
+</div>

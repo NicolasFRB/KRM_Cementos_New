@@ -31,17 +31,6 @@ urlpatterns = [
         name='dashboard'
     ),
 
-    # path(
-    #     'pruebas/',
-    #     TestView.as_view(),
-    #     name='test'
-    # ),
-
-    # path(
-    #     'dashboard/',
-    #     DashboardView.as_view(),
-    #     name='dashboard'
-    # ),
     path(
         'login/',
         LoginView.as_view(),

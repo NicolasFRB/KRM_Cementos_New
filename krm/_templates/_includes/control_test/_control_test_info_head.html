@@ -1,0 +1,102 @@
+{% load i18n %}
+
+
+<div class="row">
+  <div class="col col-12 col-md-6">
+    <p><span class="fs-6 fw-semibold">{% trans 'Evaluación' %}: </span> <span>{{ control_test.evaluation.ref }}</span></p>
+    <p><span class="fs-6 fw-semibold">{% trans 'Fecha de comienzo' %}: </span> <span>{{ control_test.date_begin }}</span></p>
+    <p><span class="fs-6 fw-semibold">{% trans 'Estado' %}: </span> <span>{{ control_test.get_status_display }}</span></p>
+    <p><span class="fs-6 fw-semibold">{% trans 'Resultado' %}: </span> <span>{{ control_test.get_result_display }}</span></p>
+  </div>
+  <div class="col col-12 col-md-6">
+    <p><span class="fs-6 fw-semibold">{% trans 'Control Owner' %}: </span> <span>{{ control_test.control_test_owner }}</span></p>
+    <p><span class="fs-6 fw-semibold">{% trans 'Control Supervisor' %}: </span> <span>{{ control_test.control_test_supervisor }}</span></p>
+  </div>
+</div>
+{% if request.user.is_admin %}
+  <div class="row mt-5">
+    <div class="col">
+      <a href="{% url 'control_tests:control_test_update' control_test.pk %}" class="btn btn-sm btn-primary">
+        <i class="bi bi-pencil"></i>
+        {% trans 'Editar' %}</a>
+      <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+    </div>
+  </div>
+{% endif %}
+
+<div class="separator my-10"></div>
+
+<div class="row">
+  <legend class="mb-8">{% trans 'Datos del control' %}</legend>
+  {% if request.user.is_admin %}
+    <div class="col col-12 mb-4">
+      <span class="fs-6 fw-semibold">{% trans 'Referencia' %}: </span> <span><a href="{% url 'controls:ga_control_detail' control_test.control.pk %}">{{ control_test.control.ref }}</span></a>
+    </div>
+    <div class="col col-12 mb-4">
+      <span class="fs-6 fw-semibold">{% trans 'Riesgos' %}: </span>
+      {% if control_test.control.risks.count %}
+        {% for risk in control_test.control.risks.all %}
+          <span><a href="{% url 'risks:ga_risk_detail' risk.pk %}">{{ risk.name }}</a></span>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      {% else %}
+        <p>{% trans 'Sin riesgos asociados' %}</p>
+      {% endif %}
+    </div>
+    <div class="col col-12 mb-4">
+      <span class="fs-6 fw-semibold">{% trans 'Subprocesos' %}: </span>
+      {% if control_test.control.sub_processes.count %}
+        {% for subprocess in control_test.control.sub_processes.all %}
+          <span><a href="{% url 'risks:ga_risk_detail' subprocess.pk %}">{{ subprocess.name }}</a></span>
+          {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      {% else %}
+        <span>{% trans 'Sin subprocesos asociados' %}</span>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="col col-12 mb-4">
+      <span class="fs-6 fw-semibold">{% trans 'Referencia' %}: </span> <span>{{ control_test.control.ref }}</span>
+    </div>
+    <div class="col col-12 mb-4">
+      <span class="fs-6 fw-semibold">{% trans 'Riesgos' %}: </span>
+      {% if control_test.control.risks.count %}
+        {% for risk in control_test.control.risks.all %}
+          <span>{{ risk.name }}</span>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      {% else %}
+        <p>{% trans 'Sin riesgos asociados' %}</p>
+      {% endif %}
+    </div>
+    <div class="col col-12 mb-4">
+      <span class="fs-6 fw-semibold">{% trans 'Subprocesos' %}: </span>
+      {% if control_test.control.sub_processes.count %}
+        {% for subprocess in control_test.control.sub_processes.all %}
+          <span>{{ subprocess.name }}</span>
+          {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      {% else %}
+        <span>{% trans 'Sin subprocesos asociados' %}</span>
+      {% endif %}
+    </div>
+  {% endif %}
+  <div class="col col-12 mb-4">
+    <span class="fs-6 fw-semibold">{% trans '¿Es Key Control?' %}</span> <span>{{ control_test.control.key_control|yesno:_("Si, No") }}</span>
+  </div>
+</div>
+
+<div class="separator my-10"></div>
+
+<div class="row">
+  <div class="col col-12 col-md-4">
+    <div class="fs-6 fw-semibold">{% trans 'Objetivo' %}</div>
+    <div>{{ control_test.control.name|safe }}</div>
+  </div>
+  <div class="col col-12 col-md-4">
+    <div class="fs-6 fw-semibold">{% trans 'Descripción' %}</div>
+    <div>{{ control_test.control.description|safe }}</div>
+  </div>
+  <div class="col col-12 col-md-4">
+    <div class="fs-6 fw-semibold">{% trans 'Procedimiento de testeo' %}</div>
+    <div>{{ control_test.control.testing_procedure|safe }}</div>
+  </div>
+</div>

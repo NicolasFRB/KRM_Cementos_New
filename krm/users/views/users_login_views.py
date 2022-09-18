@@ -47,32 +47,26 @@ decorators = [
 
 
 @method_decorator(login_required, name='dispatch')
-class DashboardView(TemplateView):
-    template_name = 'dashboards/ga/GaDashboard.html'
+class DashboardView(RedirectView):
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
+    def get_redirect_url(self, **kwargs):
+        if self.request.user.is_superuser:
+            return reverse("users:ga_dashboard")
+        elif self.request.user.is_company_admin:
+            return reverse("users:ca_dashboard")
+        else:
+            return reverse("users:ru_dashboard")
 
-        # A function to init the global layout. It is defined in _keenthemes/__init__.py file
-        context = KTLayout.init(context)
-
-        # Include vendors and javascript files for dashboard widgets
-        KTTheme.addVendors(['datatables', ])
-
-        breadcrums = [
-            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            # {'title': _('Clientes'), 'url': reverse('users:dashboard')},
-        ]
-        context['page_title'] = _('Dashboard para el Administrador Global')
-        # context['actions'] = [
-        #     {'title': _('Nuevo cliente'), 'url': reverse('users:dashboard')},
-        #     {'title': _('Listado de clientes'), 'url': reverse(
-        #         'users:dashboard'), 'primary': True},
-        # ]
-        context['breadcrums'] = breadcrums
-
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context = KTLayout.init(context)
+    #     breadcrums = [
+    #         {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+    #     ]
+    #     context['page_title'] = _(
+    #         'Dashboard para el Administrador de Compañía')
+    #     context['breadcrums'] = breadcrums
+    #     return context
 
 
 # @method_decorator(decorators, name='dispatch')
@@ -118,7 +112,15 @@ class LoginView(FormView):
 class RememberPassword(FormView):
     template_name = 'users/login/UsersRememberPassword.html'
     form_class = RememberForm
-    success_url = reverse_lazy('users:remember_password_email_sended')
+    success_url = reverse_lazy('auth:remember_password_email_sended')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        context.update({
+            'layout': KTTheme.setLayout('auth.html', context),
+        })
+        return context
 
     def form_valid(self, form):
         email = form.cleaned_data.get('email')
@@ -136,6 +138,14 @@ class RememberPassword(FormView):
 class TypeYourPassword(FormView):
     form_class = PasswordForm
     template_name = 'users/login/UsersTypePassword.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        context.update({
+            'layout': KTTheme.setLayout('auth.html', context),
+        })
+        return context
 
     def get_initial(self):
         user = get_object_or_404(
@@ -164,14 +174,22 @@ class TypeYourPassword(FormView):
         messages.add_message(
             self.request, messages.SUCCESS,
             _('Password cambiado correctamente'))
-        return reverse_lazy('users:login')
+        return reverse_lazy('auth:login')
 
 
 class RememberEmailSended(TemplateView):
     template_name = 'users/login/UsersPasswordResetOk.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        context.update({
+            'layout': KTTheme.setLayout('auth.html', context),
+        })
+        return context
+
 
 @login_required
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('users:login'))
+    return HttpResponseRedirect(reverse('auth:login'))

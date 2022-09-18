@@ -9,6 +9,7 @@ from krm.controls.views import (
     GaControlUpdateView
 )
 
+
 urlpatterns = [
     path(
         '',

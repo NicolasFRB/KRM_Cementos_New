@@ -17,12 +17,36 @@ services:
       - "8000:8000"
     command: /start
 
-  # redis:
-  #   image: 'redis:alpine'
-  #   command: redis-server /usr/local/etc/redis/redis.conf
-  #   volumes:
-  #     - ./compose/dev/redis/redis.conf:/usr/local/etc/redis/redis.conf
-  #   expose:
-  #     - "6379"
-  #   ports:
-  #     - "6379:6379"
+  celeryworker:
+    <<: *django
+    image: krm_local_celeryworker
+    depends_on:
+      - redis
+      - django
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: krm_local_celerybeat
+    depends_on:
+      - redis
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: krm_local_flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
+
+  redis:
+    image: 'redis:alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./compose/dev/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"

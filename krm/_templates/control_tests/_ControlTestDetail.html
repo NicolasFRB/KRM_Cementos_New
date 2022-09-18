@@ -1,0 +1,29 @@
+{% extends 'control_test/ga/ControlTestDetail.html' %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}KRC Tool | {% trans 'Test de Control' %}{% endblock %}
+
+{% block css_page %}
+
+{% endblock %}
+
+{% block breadcrums %}
+  <div class="kt-subheader__main">
+    <span class="kt-subheader__separator kt-hidden"></span>
+    <div class="kt-subheader__breadcrumbs">
+      <a href="{% url 'users:dashboard' %}" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+      <span class="kt-subheader__breadcrumbs-separator"></span>
+      <a href="{% url 'process_test:ru_control_test_list' %}" class="kt-subheader__breadcrumbs-link">
+        {% trans 'Controles' %}</a>
+    </div>
+  </div>
+{% endblock %}
+
+{% block main_content %}
+    {% with no_edit_control_test=True %}
+        {{ block.super }}
+    {% endwith%}
+{% endblock main_content%}

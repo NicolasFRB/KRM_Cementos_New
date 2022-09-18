@@ -145,3 +145,17 @@ class Control(AuditModel):
         verbose_name = _("Control")
         verbose_name_plural = _("Controles")
         ordering = ["ref", ]
+
+    def domain_risks(self):
+        domain_risks = []
+        for risk in self.risks.all():
+            if risk.domain_risk.pk not in domain_risks:
+                domain_risks.append(risk.domain_risk.pk)
+        return domain_risks
+
+    def processes(self):
+        processes = []
+        for sub_process in self.sub_processes.all():
+            if sub_process.process.pk not in processes:
+                processes.append(sub_process.process.pk)
+        return processes

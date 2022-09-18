@@ -1,0 +1,83 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+<script>
+  $(document).ready(function () {
+    ClassicEditor
+      .create(
+        document.querySelector('#subprocess_description'),
+        {
+          language: {
+            // The UI will be English.
+            ui: 'es',
+
+            // But the content will be edited in Arabic.
+            content: 'es'
+          }
+        }
+      )
+      .then(editor => {
+        const wordCountPlugin = editor.plugins.get('WordCount');
+        const wordCountWrapper = document.getElementById('word-count');
+        wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+      })
+      .catch(error => {
+      });
+  });
+</script>
+{% endblock js_footer %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            {% include '_includes/FormErrors.html' %}
+          </div>
+          <div class="col-12 mb-4">
+            <div class="row">
+              <div class="mb-4 col-md-3 col-12">
+                {{ form.ref|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-md-5 col-12">
+                {{ form.process|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12 col-md-8">
+                {{ form.name|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12">
+                {{ form.description|as_crispy_field }}
+                <div id="word-count"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::Body-->
+    
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+        <a href="{% url 'process:ga_process_list' %}"
+          class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+{% endblock content %}

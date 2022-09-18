@@ -1,0 +1,83 @@
+{% extends 'layout/default.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $(".datepicker").flatpickr({
+      "locale": "es",
+      dateFormat: "d/m/Y",
+    });
+  });
+</script>
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Datos del Control Test' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right">
+      {% csrf_token %}
+
+      
+      <div class="card-body">
+        {% include '_includes/FormErrors.html' %}
+        <div class="row">
+          <div class="row mb-4">
+            <div class="col-12 col-md-6 col-xl-4 mb-4">
+              {{ form.status|as_crispy_field }}
+            </div>
+            <div class="col-12  col-md-6 col-xl-4 mb-4">
+              {{ form.result|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12 col-md-6 col-xl-4 mb-4">
+              {{ form.control_test_owner|as_crispy_field }}
+            </div>
+            <div class="col-12  col-md-6 col-xl-4 mb-4">
+              {{ form.control_test_supervisor|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12 col-md-6 col-xl-4 mb-4">
+              {{ form.date_begin|as_crispy_field }}
+            </div>
+            <div class="col-12  col-md-6 col-xl-4 mb-4">
+              {{ form.remediation_plan_needed|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12 col-md-6 col-xl-8 mb-4">
+              {{ form.send_notification|as_crispy_field }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::Body-->
+    
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+        <a href="{% url 'control_tests:control_test_detail' object.pk %}"
+          class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+
+{% endblock content %}

@@ -99,7 +99,7 @@ from krm.users.forms import LoginForm
 
 # class BaseTest(TestCase):
 #     def setUp(self):
-#         self.login_url = reverse('users:login')
+#         self.login_url = reverse('auth:login')
 #         self.correct_user_data = {
 #             'first_name': 'Bienvenido',
 #             'last_name': 'Sáez Muelas',
@@ -158,7 +158,7 @@ class BaseTest(TestCase):
 class LoginViewTest(BaseTest):
 
     def test_can_access_page(self):
-        response = self.client.get(reverse('users:login'))
+        response = self.client.get(reverse('auth:login'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'users/UsersLogin.html')
 
@@ -176,7 +176,7 @@ class LoginViewTest(BaseTest):
 
     def test_login_form(self):
         resp = self.client.post(
-            reverse('users:login'), {
+            reverse('auth:login'), {
                 'username': 'bienvenidosaez@baetica.com',
                 'password': 'admin123',
             }
@@ -293,7 +293,7 @@ class DashboardViewTest(BaseTest):
             'password': 'Masters'
         }
 
-        req = factory.post(reverse('users:login'), data=data)
+        req = factory.post(reverse('auth:login'), data=data)
         req.user = AnonymousUser()
 
         req._dont_enforce_csrf_checks = True
