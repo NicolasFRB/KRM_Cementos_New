@@ -38,6 +38,8 @@ router.register(r'companies', CompanyViewSet)
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 urlpatterns += i18n_patterns(
@@ -49,8 +51,6 @@ urlpatterns += i18n_patterns(
     ),
 
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls')),
 
     path('auth/',
          include(('krm.users.urls.user_auth_urls', 'users'),
