@@ -82,6 +82,10 @@ class User(AbstractUser):
         from krm.evaluations.models import ControlTest
         return ControlTest.objects.filter(status="WA", evaluation__company__in=self.companies_admin.all())
 
+    def controls_test_administrator_finished(self):
+        from krm.evaluations.models import ControlTest
+        return ControlTest.objects.filter(status="FI", evaluation__company__in=self.companies_admin.all())
+
     def save(self, *args, **kwargs):
         self.username = self.email
         if not self.remember_key:

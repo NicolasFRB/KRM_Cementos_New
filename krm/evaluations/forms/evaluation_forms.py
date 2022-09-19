@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import FileExtensionValidator
 
 from krm.evaluations.models import Evaluation
+from django.core.validators import FileExtensionValidator
 
 
 class EvaluationCreateForm(ModelForm):
@@ -74,8 +75,9 @@ class EvaluationUpdateForm(ModelForm):
         self.fields["certification_year"].widget.attrs["class"] = "form-select"
 
 
-class EvaluationInitForm(forms.Form):
+class EvaluationActionForm(forms.Form):
     evaluation_pk = forms.IntegerField()
+    action = forms.CharField(required=False)
 
 
 class EvaluationTemplateAssignDownload(forms.Form):
@@ -94,8 +96,7 @@ class EvaluationDownload(forms.Form):
 
 
 class EvaluationAssignImportForm(forms.Form):
-    process_test = forms.IntegerField()
-    process_assign_file = forms.FileField(
-        label=_(u'Plantilla de asignación en excel a importar'),
+    evaluation_assign_file = forms.FileField(
+        label=_('Plantilla de asignación en excel a importar'),
         validators=[FileExtensionValidator(allowed_extensions=['xlsx', 'xls'])]
     )

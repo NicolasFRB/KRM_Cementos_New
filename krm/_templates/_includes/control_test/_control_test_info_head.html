@@ -28,7 +28,7 @@
 
 <div class="row">
   <legend class="mb-8">{% trans 'Datos del control' %}</legend>
-  {% if request.user.is_admin %}
+  {% if request.user.is_superuser %}
     <div class="col col-12 mb-4">
       <span class="fs-6 fw-semibold">{% trans 'Referencia' %}: </span> <span><a href="{% url 'controls:ga_control_detail' control_test.control.pk %}">{{ control_test.control.ref }}</span></a>
     </div>

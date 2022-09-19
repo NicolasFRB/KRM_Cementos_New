@@ -26,10 +26,18 @@
       .catch(error => {
       });
 
-    $(".datepicker").flatpickr({
-          "locale": "es",
-          dateFormat: "d/m/Y",
-    });
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      $(".datepicker").flatpickr({
+        "locale": "es",
+        dateFormat: "d/m/Y",
+      });
+    {% else %}
+      $(".datepicker").flatpickr({
+            "locale": "en",
+            dateFormat: "Y-m-d",
+      });
+    {% endif %}
   });
 
 </script>

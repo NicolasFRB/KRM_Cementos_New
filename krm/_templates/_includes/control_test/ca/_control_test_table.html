@@ -1,6 +1,9 @@
 {% load i18n %}
 {% trans "Sin asignar" as without_set %}
-<table class="table table-striped table-bordered table-hover datatable">
+
+{% if cts.count > 0 %}
+
+<table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
   <thead>
     <tr>
       <th width="70px">{% trans 'REF' %}</th>
@@ -14,20 +17,22 @@
   <tbody>
     {% for ct in cts %}
       <tr>
-          <td><a href="{% url 'process_test:ga_control_test_detail' ct.pk %}">#{{ ct.identifier }}</a></td>
-          <td>{{ ct.control.ref }}</td>
+          <td><a href="{% url 'control_tests:ca_control_test_detail' ct.pk %}">#{{ ct.identifier }}</a></td>
+          <td>
+            {{ct.control.ref }}
+          </td>
           <td>
             {% if ct.control_test_owner %}
-              {{ ct.control_test_owner }}
+                {{ ct.control_test_owner }}
             {% else %}
-              <a href="{% url 'process_test:ga_control_test_assign' ct.pk %}">{% trans 'Asignar' %}</a>
+                {% trans 'Sin asignar' %}
             {% endif %}
           </td>
           <td>
             {% if ct.control_test_supervisor %}
               {{ ct.control_test_supervisor }}
             {% else %}
-              <a href="{% url 'process_test:ga_control_test_assign' ct.pk %}">{% trans 'Asignar' %}</a>
+              {% trans 'Asignar' %}
             {% endif %}
           </td>
           <td>{{ ct.get_status_display }}</td>
@@ -36,3 +41,11 @@
     {% endfor %}
   </tbody>
 </table>
+
+{% else %}
+
+  <div class="alert alert-primary" role="alert">
+    {% trans 'Sin controles' %}
+  </div>
+
+{% endif %}

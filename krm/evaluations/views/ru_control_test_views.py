@@ -23,7 +23,7 @@ from django.shortcuts import get_object_or_404
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationInitForm, EvaluationTemplateAssignDownload
+from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload
 from krm.evaluations.models.control_test_model import ControlTest
 
 from krm.metronic.__init__ import KTLayout
@@ -33,7 +33,8 @@ from krm.evaluations.forms import (
     ControlTestAnswerCreateForm,
     ControlTestAnswerSupervisorCreateForm,
     ControlTestAnswerOwnerCreateForm,
-    RemediationPlanCreateForm
+    RemediationPlanCreateForm,
+    ControlTestCaForm
 )
 
 from krm.users.decorators import (
@@ -73,6 +74,8 @@ class RuControlTestDetail(CreateView):
             and self.control_test.status == "WS"
         ):
             return ControlTestAnswerSupervisorCreateForm
+        elif self.control_test.evaluation.company in self.request.user.companies_admin.all():
+            return ControlTestCaForm
         else:
             return ControlTestAnswerCreateForm
 
@@ -88,6 +91,8 @@ class RuControlTestDetail(CreateView):
         context['page_title'] = f"{_('Control Test')} : {self.control_test.identifier}"
         context['breadcrums'] = breadcrums
         context['control_test'] = self.control_test
+        if self.control_test.evaluation.company in self.request.user.companies_admin.all():
+            context['ca'] = True
         return context
 
     def form_valid(self, form):
@@ -114,6 +119,11 @@ class RuControlTestDetail(CreateView):
                     self.control_test.result = "SE"
                 else:
                     self.control_test.status = "WA"
+
+        # Ha respondido el control administrator
+        elif isinstance(form, ControlTestCaForm):
+            self.control_test.status = form.cleaned_data["status"]
+            self.control_test.result = form.cleaned_data["result"]
 
         # Apuntamos en el diario del usuario la acción
         self.request.user.add_action(
@@ -172,6 +182,13 @@ class RuControlTestDetail(CreateView):
             "evaluations:ga_evaluation_detail",
             kwargs={"pk": self.control_test.pk},
         )
+
+    def get_initial(self):
+        control_test = ControlTest.objects.get(pk=self.kwargs.get("pk"))
+        return {
+            'status': control_test.status,
+            'result': control_test.result
+        }
 
 
 @method_decorator((login_required, user_can_view_control_test), name="dispatch")

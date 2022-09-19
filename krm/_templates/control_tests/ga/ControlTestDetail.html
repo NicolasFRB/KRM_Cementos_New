@@ -28,11 +28,20 @@
       })
       .catch(error => {
       });
-  
-    $(".datepicker").flatpickr({
-          "locale": "es",
-          dateFormat: "d/m/Y",
-    });
+    
+      {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      $(".datepicker").flatpickr({
+        "locale": "es",
+        dateFormat: "d/m/Y",
+      });
+    {% else %}
+      $(".datepicker").flatpickr({
+            "locale": "en",
+            dateFormat: "Y-m-d",
+      });
+    {% endif %}
+
   });
 </script>
 {% endblock js_footer %}
@@ -101,125 +110,127 @@
   </div>
 </div>
 
-{% if control_test.status == 'WS' and request.user == control_test.control_test_supervisor %}
-  <div class="card">
-    <div class="card-header">
-      <!--begin::Card header-->
-      <div class="card-title fs-3 fw-bold">{% trans 'NUEVA RESPUESTA' %}</div>
-      <!--end::Card header-->
-    </div>
+{% if control_test.status != 'WS' or control_test.status != 'WO' %}
+    {% if control_test.status == 'WS' and request.user == control_test.control_test_supervisor %}
+      <div class="card">
+        <div class="card-header">
+          <!--begin::Card header-->
+          <div class="card-title fs-3 fw-bold">{% trans 'NUEVA RESPUESTA' %}</div>
+          <!--end::Card header-->
+        </div>
 
-    <form method="post" enctype='multipart/form-data'>
-      {% csrf_token %}
-      <div class="card-body">
-        {% include '_includes/FormErrors.html' %}
-        <div class="row mb-4">
-          <div class="col-12 col-xl-10 mb-4">
-            <div class="mb-8 col-12">
-              <legend class="mb-8">{% trans 'Supervisión del control' %}</legend>
-              <p><strong>{% trans 'Si necesita más información para poder marcar el control como Completado, marque la siguiente casilla. Esto le devolverá el control al responsable de cumplimentarlo para que pueda aportar más información. Utilice el campo de texto anterior para requerir la información necesaria.' %}</strong></p>
-              {{ form.more_information|as_crispy_field }}
-            </div>
-            <div class="mb-8 col-12">
-              <legend>{% trans 'Descripción' %}</legend>
-              {{ form.description|as_crispy_field }}
-              <div id="word-count"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer py-6">
-        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Revisión completada' %}</button>
-        <button
-        class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button>
-      </div>
-    </form>
-  </div>
-{% endif %}
-
-{% if control_test.status == 'WO' and request.user == control_test.control_test_owner %}
-  <div class="card">
-    {% if control_test.remediation_plan_needed %}
-      <div class="card-header">
-        <!--begin::Card header-->
-        <div class="card-title fs-3 fw-bold">{% trans 'NUEVO PLAN DE REMEDIACIÓN' %}</div>
-        <!--end::Card header-->
-      </div>
-      <form method="post" enctype='multipart/form-data'>
-        {% csrf_token %}
-        <div class="card-body">
-          <div class="row mb-4">
+        <form method="post" enctype='multipart/form-data'>
+          {% csrf_token %}
+          <div class="card-body">
             {% include '_includes/FormErrors.html' %}
-            <div class="col-12 col-xl-5 mb-4">
-              <div class="mb-8 col-8">
-                <legend>{% trans 'Datos del plan de remediación' %}</legend>
-                {{ form.date_end|as_crispy_field }}
+            <div class="row mb-4">
+              <div class="col-12 col-xl-10 mb-4">
+                <div class="mb-8 col-12">
+                  <legend class="mb-8">{% trans 'Supervisión del control' %}</legend>
+                  <p><strong>{% trans 'Si necesita más información para poder marcar el control como Completado, marque la siguiente casilla. Esto le devolverá el control al responsable de cumplimentarlo para que pueda aportar más información. Utilice el campo de texto anterior para requerir la información necesaria.' %}</strong></p>
+                  {{ form.more_information|as_crispy_field }}
+                </div>
+                <div class="mb-8 col-12">
+                  <legend>{% trans 'Descripción' %}</legend>
+                  {{ form.description|as_crispy_field }}
+                  <div id="word-count"></div>
+                </div>
               </div>
-              <div class="mb-8">
-                  {{ form.attachment|as_crispy_field }}
-              </div>
-            </div>
-            <div class="col-12 col-xl-7 mb-4">
-              <fieldset>
-                <legend>{% trans 'Descripción' %}</legend>
-                {{ form.description|as_crispy_field }}
-                <div id="word-count"></div>
-              </fieldset>
             </div>
           </div>
-        </div>
-        
-        <div class="card-footer py-6">
-          <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
-          <button
-          class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button>
-        </div>
-      </form>
-    {% else %}
-      <div class="card-header">
-        <!--begin::Card header-->
-        <div class="card-title fs-3 fw-bold">{% trans 'NUEVA RESPUESTA' %}</div>
-        <!--end::Card header-->
+          <div class="card-footer py-6">
+            <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Revisión completada' %}</button>
+            <button
+            class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button>
+          </div>
+        </form>
       </div>
-      <form method="post" enctype='multipart/form-data'>
-        {% csrf_token %}
-        <div class="card-body">
-          <div class="row mb-4">
-            {% include '_includes/FormErrors.html' %}
-            <div class="col-12 col-xl-5 mb-4">
-              <div class="mb-8 col-8">
-                <legend>{% trans 'Resultado y evidencias' %}</legend>
-                {{ form.control_result|as_crispy_field }}
-              </div>
-              <div class="mb-8">
-                  {{ form.attachment_1|as_crispy_field }}
-              </div>
-              <div class="mb-8">
-                {{ form.attachment_2|as_crispy_field }}
-              </div>
-              <div class="mb-8">
-                {{ form.attachment_3|as_crispy_field }}
-              </div>
-            </div>
-            <div class="col-12 col-xl-7 mb-4">
-              <fieldset>
-                <legend>{% trans 'Descripción' %}</legend>
-                {{ form.description|as_crispy_field }}
-                <div id="word-count"></div>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card-footer py-6">
-          <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Testeo finalizado' %}</button>
-          <!-- <button
-          class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button> -->
-        </div>
-        
-      </form>
     {% endif %}
-  </div>
+
+    {% if control_test.status == 'WO' and request.user == control_test.control_test_owner %}
+      <div class="card">
+        {% if control_test.remediation_plan_needed %}
+          <div class="card-header">
+            <!--begin::Card header-->
+            <div class="card-title fs-3 fw-bold">{% trans 'NUEVO PLAN DE REMEDIACIÓN' %}</div>
+            <!--end::Card header-->
+          </div>
+          <form method="post" enctype='multipart/form-data' novalidate>
+            {% csrf_token %}
+            <div class="card-body">
+              <div class="row mb-4">
+                {% include '_includes/FormErrors.html' %}
+                <div class="col-12 col-xl-5 mb-4">
+                  <div class="mb-8 col-8">
+                    <legend>{% trans 'Datos del plan de remediación' %}</legend>
+                    {{ form.date_end|as_crispy_field }}
+                  </div>
+                  <div class="mb-8">
+                      {{ form.attachment|as_crispy_field }}
+                  </div>
+                </div>
+                <div class="col-12 col-xl-7 mb-4">
+                  <fieldset>
+                    <legend>{% trans 'Descripción' %}</legend>
+                    {{ form.description|as_crispy_field }}
+                    <div id="word-count"></div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-footer py-6">
+              <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+              <button
+              class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button>
+            </div>
+          </form>
+        {% else %}
+          <div class="card-header">
+            <!--begin::Card header-->
+            <div class="card-title fs-3 fw-bold">{% trans 'NUEVA RESPUESTA' %}</div>
+            <!--end::Card header-->
+          </div>
+          <form method="post" enctype='multipart/form-data' novalidate>
+            {% csrf_token %}
+            <div class="card-body">
+              <div class="row mb-4">
+                {% include '_includes/FormErrors.html' %}
+                <div class="col-12 col-xl-5 mb-4">
+                  <div class="mb-8 col-8">
+                    <legend>{% trans 'Resultado y evidencias' %}</legend>
+                    {{ form.control_result|as_crispy_field }}
+                  </div>
+                  <div class="mb-8">
+                      {{ form.attachment_1|as_crispy_field }}
+                  </div>
+                  <div class="mb-8">
+                    {{ form.attachment_2|as_crispy_field }}
+                  </div>
+                  <div class="mb-8">
+                    {{ form.attachment_3|as_crispy_field }}
+                  </div>
+                </div>
+                <div class="col-12 col-xl-7 mb-4">
+                  <fieldset>
+                    <legend>{% trans 'Descripción' %}</legend>
+                    {{ form.description|as_crispy_field }}
+                    <div id="word-count"></div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-footer py-6">
+              <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Testeo finalizado' %}</button>
+              <!-- <button
+              class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button> -->
+            </div>
+            
+          </form>
+        {% endif %}
+      </div>
+    {% endif %}
 {% endif %}
 
 {% endblock content %}

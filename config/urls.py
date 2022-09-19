@@ -36,7 +36,11 @@ router.register(r'subprocesses', SubProcessViewSet)
 router.register(r'domain-risks', DomainRiskViewSet)
 router.register(r'companies', CompanyViewSet)
 
-urlpatterns = i18n_patterns(
+urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
+]
+
+urlpatterns += i18n_patterns(
 
     path(
         '',
@@ -92,6 +96,7 @@ urlpatterns = i18n_patterns(
          include(('krm.evaluations.urls.control_test_urls', 'control_tests'),
                  namespace='control_tests')
          ),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

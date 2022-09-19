@@ -21,8 +21,8 @@ ALLOWED_HOSTS = []
 # Language and timezone
 TIME_ZONE = "Europe/Madrid"
 LANGUAGE_CODE = 'es'
-USE_I18N = True
 USE_L10N = True
+USE_I18N = True
 USE_TZ = True
 
 prefix_default_language = False
@@ -33,8 +33,8 @@ def gettext(s):
 
 
 LANGUAGES = (
-    ("es", gettext("Spanish")),
     ("en", gettext("English")),
+    ("es", gettext("Spanish")),
 )
 
 # Application definition

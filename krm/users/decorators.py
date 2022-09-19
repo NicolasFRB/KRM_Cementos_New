@@ -96,7 +96,7 @@ def user_can_view_evaluation(function):
             raise Http404
 
         if (
-            evaluation.company in request.user.companies_admin.all()
+            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
         ):
             return function(request, *args, **kwargs)
         raise PermissionDenied

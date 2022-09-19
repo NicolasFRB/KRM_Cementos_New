@@ -36,6 +36,9 @@
                 <div class="mb-4 col-12">
                   {{ form.last_name|as_crispy_field }}
                 </div>
+                <div class="mb-4 col-12">
+                  {{ form.is_superuser|as_crispy_field }}
+                </div>
               </div>
             </fieldset>
           </div>
@@ -56,9 +59,13 @@
             </div>
           </div>
           <div class="separator my-10"></div>
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-6">
             <legend>{% trans 'Empresas a la que pertenece' %}</legend>
-              {{ form.companies|as_crispy_field }}
+            {{ form.companies|as_crispy_field }}
+          </div>
+          <div class="col-12 col-md-6">
+            <legend>{% trans 'Empresas que administra' %}</legend>
+            {{ form.companies_admin|as_crispy_field }}
           </div>
         </div>
       </div>

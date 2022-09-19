@@ -19,6 +19,7 @@ from django.db.models import Count
 
 from django.contrib import messages
 
+from django.utils import translation
 
 from django.views.generic import (
     FormView,
@@ -98,6 +99,8 @@ class LoginView(FormView):
         user = authenticate(username=usuario, password=password)
 
         if user is not None:
+            from django.utils import translation
+            translation.activate('es')
             login(self.request, user)
             return HttpResponseRedirect(
                 reverse('users:dashboard')

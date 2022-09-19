@@ -23,7 +23,7 @@ from django.shortcuts import get_object_or_404
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationInitForm, EvaluationTemplateAssignDownload
+from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload
 from krm.evaluations.models.control_test_model import ControlTest
 
 from krm.metronic.__init__ import KTLayout

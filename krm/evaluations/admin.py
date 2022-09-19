@@ -21,7 +21,7 @@ class EvaluationAdmin(admin.ModelAdmin):
 @admin.register(ControlTest)
 class ControlTestAdmin(admin.ModelAdmin):
     model = ControlTest
-    list_display = ('evaluation', 'control', 'status')
+    list_display = ('evaluation', 'control', 'identifier', 'status')
     list_filter = ('status', 'evaluation__company', 'evaluation')
 
 

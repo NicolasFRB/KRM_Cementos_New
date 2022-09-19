@@ -39,6 +39,7 @@ class UserCreateForm(forms.ModelForm):
             'send_email_init_password',
             'is_superuser',
             'companies',
+            'companies_admin',
         )
 
     def __init__(self, *args, **kwargs):
@@ -47,6 +48,8 @@ class UserCreateForm(forms.ModelForm):
         self.fields['email'].required = True
         self.fields["companies"].widget.attrs["class"] = "form-select"
         self.fields["companies"].widget.attrs["data-control"] = "select2"
+        self.fields["companies_admin"].widget.attrs["class"] = "form-select"
+        self.fields["companies_admin"].widget.attrs["data-control"] = "select2"
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -101,7 +104,8 @@ class UserUpdateForm(forms.ModelForm):
             'first_name',
             'last_name',
             'companies',
-            'companies_admin'
+            'companies_admin',
+            'is_superuser'
         )
 
     def __init__(self, *args, **kwargs):

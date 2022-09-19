@@ -23,10 +23,10 @@
             <legend>{% trans 'Establecer Supervisor y Owner del Test de Control' %}</legend>
             {% include '_includes/FormErrors.html' %}
             <div class="row mb-4">
-              <div class="col col-md-4 mb-4">
+              <div class="col col-12 col-xl-5 mb-4">
                 {{ form.control_test_owner|as_crispy_field }}
               </div>
-              <div class="col col-md-4 mb-4">
+              <div class="col col-12 col-xl-5 mb-4">
                 {{ form.control_test_supervisor|as_crispy_field }}
               </div>
             </div>
