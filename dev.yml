@@ -34,12 +34,12 @@ services:
     ports: []
     command: /start-celerybeat
 
-  flower:
-    <<: *django
-    image: krm_local_flower
-    ports:
-      - "5555:5555"
-    command: /start-flower
+  # flower:
+  #   <<: *django
+  #   image: krm_local_flower
+  #   ports:
+  #     - "5555:5555"
+  #   command: /start-flower
 
   redis:
     image: 'redis:alpine'
@@ -48,5 +48,5 @@ services:
       - ./compose/dev/redis/redis.conf:/usr/local/etc/redis/redis.conf
     expose:
       - "6379"
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
