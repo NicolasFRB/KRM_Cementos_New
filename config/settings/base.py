@@ -447,4 +447,9 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://app.krmtool.com',
+    'https://app.krmtool.com'
 ]
+
+
+KRM_ACTIVATE = env.bool("KRM_ACTIVATE")
