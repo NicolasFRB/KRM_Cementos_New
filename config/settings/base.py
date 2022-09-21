@@ -478,4 +478,6 @@ ALLOWED_HOSTS = [
     'app.krmtool.com',
 ]
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 KRM_ACTIVATE = env.bool("KRM_ACTIVATE")
