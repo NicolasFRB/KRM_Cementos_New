@@ -446,18 +446,36 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
     'http://localhost:8000',
+    'http://localhost:3000',
     'http://app.krmtool.com',
-    'https://app.krmtool.com'
+    'https://app.krmtool.com',
+    'localhost:8000',
+    'localhost:3000',
+    'app.krmtool.com',
+    'app.krmtool.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://localhost:3000',
     'http://app.krmtool.com',
-    'https://app.krmtool.com'
+    'https://app.krmtool.com',
+    'localhost:8000',
+    'localhost:3000',
+    'app.krmtool.com',
+    'app.krmtool.com',
 ]
 
+ALLOWED_HOSTS = [
+    'http://localhost:8000',
+    'http://localhost:3000',
+    'http://app.krmtool.com',
+    'https://app.krmtool.com',
+    'localhost:8000',
+    'localhost:3000',
+    'app.krmtool.com',
+    'app.krmtool.com',
+]
 
 KRM_ACTIVATE = env.bool("KRM_ACTIVATE")
