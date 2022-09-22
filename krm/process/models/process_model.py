@@ -24,7 +24,9 @@ class Process(AuditModel):
     """
 
     ref = models.CharField(
-        verbose_name=_("Identificador"), max_length=140
+        _("REF"),
+        max_length=140,
+        unique=True
     )
 
     name = models.CharField(verbose_name=_("Nombre"), max_length=500)
@@ -47,6 +49,10 @@ class Process(AuditModel):
         verbose_name = _("Proceso")
         verbose_name_plural = _("Procesos")
         ordering = ["name"]
+
+    def save(self, *args, **kwargs):
+        self.ref = self.ref.upper()
+        super().save(*args, **kwargs)
 
     # @property
     # def description_safe(self):

@@ -74,6 +74,13 @@ class EvaluationUpdateForm(ModelForm):
 
         self.fields["certification_year"].widget.attrs["class"] = "form-select"
 
+    def clean_ref(self):
+        ref = self.cleaned_data.get("ref").upper()
+        if Evaluation.objects.filter(ref=ref).count() > 0:
+            raise forms.ValidationError(
+                _('Ya existe una evaluación con esa REF'))
+        return ref
+
 
 class EvaluationActionForm(forms.Form):
     evaluation_pk = forms.IntegerField()

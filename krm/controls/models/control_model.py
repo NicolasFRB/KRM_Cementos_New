@@ -13,8 +13,11 @@ class Control(AuditModel):
     Modelo que usaremos para representar un control para un riesgo asociado
     """
 
-    ref = models.CharField(verbose_name=_(
-        "Identificador de Control"), max_length=140)
+    ref = models.CharField(
+        _("REF"),
+        max_length=140,
+        unique=True
+    )
 
     name = RichTextField(
         _("Objetivo del Control"),
@@ -145,6 +148,10 @@ class Control(AuditModel):
         verbose_name = _("Control")
         verbose_name_plural = _("Controles")
         ordering = ["ref", ]
+
+    def save(self, *args, **kwargs):
+        self.ref = self.ref.upper()
+        super().save(*args, **kwargs)
 
     def domain_risks(self):
         domain_risks = []

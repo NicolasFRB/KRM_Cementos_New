@@ -149,8 +149,14 @@ class CaControlTestDetail(FormView):
                 CaControlTestDetail,
                 self
             ).form_invalid(form)
-        self.control_test.status = form.cleaned_data["control_status"]
-        self.control_test.result = form.cleaned_data["control_result"]
+
+        if form.cleaned_data["control_status"] == 'RE':
+            self.control_test.status = 'WO'
+            self.control_test.result = 'SE'
+            self.control_test.answers.all().delete()
+        else:
+            self.control_test.status = form.cleaned_data["control_status"]
+            self.control_test.result = form.cleaned_data["control_result"]
 
         # Apuntamos en el diario del usuario la acción
         self.request.user.add_action(

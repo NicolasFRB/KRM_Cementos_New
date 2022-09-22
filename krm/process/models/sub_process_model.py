@@ -12,13 +12,21 @@ class SubProcess(AuditModel):
     """
 
     ref = models.CharField(
-        verbose_name=_("Identificador de subproceso"), max_length=140
+        _("Identificador de subproceso"),
+        max_length=140,
+        unique=True
     )
 
-    name = models.CharField(verbose_name=_("Nombre"), max_length=500)
+    name = models.CharField(
+        ("Nombre"),
+        max_length=500
+    )
 
     description = models.TextField(
-        _("Descripción"), max_length=10000, null=True, blank=True
+        _("Descripción"),
+        max_length=10000,
+        null=True,
+        blank=True
     )
 
     process = models.ForeignKey(
@@ -38,17 +46,7 @@ class SubProcess(AuditModel):
         unique_together = ["process", "ref"]
 
     def save(self, *args, **kwargs):
-        if not self.ref:
-            max_ref = (
-                SubProcess.objects.filter(process=self.process, ref__gte=0)
-                .order_by("-ref")
-                .first()
-            )
-            print(max_ref)
-            if max_ref is not None and max_ref.ref is not None:
-                self.ref = max_ref.ref + 1
-            else:
-                self.ref = 1
+        self.ref = self.ref.upper()
         super().save(*args, **kwargs)
 
     # @property

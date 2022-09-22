@@ -12,7 +12,8 @@ class DomainRisk(AuditModel):
 
     ref = models.CharField(
         verbose_name=_("Ref"),
-        max_length=50
+        max_length=50,
+        unique=True
     )
 
     name = models.CharField(
@@ -34,10 +35,15 @@ class DomainRisk(AuditModel):
         ordering = ["ref", "name"]
 
     def save(self, *args, **kwargs):
-        if not self.ref:
-            max_ref = DomainRisk.objects.all().count()
-            if max_ref > 0:
-                self.ref = max_ref + 1
-            else:
-                self.ref = 1
+        self.ref = self.ref.upper()
         super().save(*args, **kwargs)
+
+        from krm.companies.models import Company
+        from krm.companies.models import CompanyDomainRiskExperts
+        for domain_risk in DomainRisk.objects.all():
+            for company in Company.objects.all():
+                if CompanyDomainRiskExperts.objects.filter(company=company, domain_risk=domain_risk).count() == 0:
+                    CompanyDomainRiskExperts.objects.create(
+                        company=company,
+                        domain_risk=domain_risk
+                    )

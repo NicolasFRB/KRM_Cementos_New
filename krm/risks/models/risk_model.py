@@ -2,6 +2,8 @@ from django.db import models
 
 from django.utils.translation import gettext_lazy as _
 
+from ckeditor.fields import RichTextField
+
 from krm.utils.models import AuditModel
 
 
@@ -21,8 +23,9 @@ class Risk(AuditModel):
         max_length=140
     )
 
-    description = models.TextField(
+    description = RichTextField(
         _("Descripción"),
+        config_name='awesome_ckeditor',
         max_length=10000
     )
 
@@ -65,23 +68,33 @@ class Risk(AuditModel):
         default=3
     )
 
-    # IMPACT_RISK_CHOICES = (
-    #     (1, _("Muy bajo")),
-    #     (2, _("Bajo")),
-    #     (3, _("Medio")),
-    #     (4, _("Alto")),
-    #     (5, _("Muy alto")),
-    # )
+    krm_activity_affected = RichTextField(
+        _("Actividad afectada"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        blank=True
+    )
 
-    # impact = models.PositiveIntegerField(_("Impacto"), choices=IMPACT_RISK_CHOICES)
+    krm_main_events = RichTextField(
+        _("Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        blank=True
+    )
 
-    # probability = models.PositiveIntegerField(
-    #     _("Probabilidad"), choices=IMPACT_RISK_CHOICES
-    # )
+    krm_exposed_staff = RichTextField(
+        _("Personal especialmente expuesto al Riesgo"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        blank=True
+    )
 
-    # rating = models.PositiveIntegerField(
-    #     _("Rating"), blank=True, null=True, choices=IMPACT_RISK_CHOICES
-    # )
+    krm_main_elements = RichTextField(
+        _("Principales elementos del Riesgo"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        blank=True
+    )
 
     def __str__(self):
         return self.name
@@ -92,10 +105,5 @@ class Risk(AuditModel):
         ordering = ["domain_risk", "name"]
 
     def save(self, *args, **kwargs):
-        if not self.ref:
-            max_ref = Risk.objects.filter(
-                domain_risk__pk=self.domain_risk.pk).count()
-            max_ref = max_ref + 1
-            max_ref = str(max_ref).zfill(3)
-            self.ref = f"{self.domain_risk.ref}{max_ref}"
+        self.ref = self.ref.upper()
         super().save(*args, **kwargs)

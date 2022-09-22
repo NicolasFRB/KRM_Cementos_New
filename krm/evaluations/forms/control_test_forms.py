@@ -144,11 +144,12 @@ class ControlTestCaForm(ModelForm):
         label=_("Resultado del control")
     )
     CONTROL_STATUS_CHOICES = (
-        ("SI", _("Sin iniciar")),
-        ("WO", _("En espera de respuesta del Control Owner")),
-        ("WS", _("En espera de respuesta del Control Supervisor")),
-        ("WA", _("En espera de respuesta del Control Administrator")),
+        ("WO", _("Enviar de nuevo al Control Owner")),
+        ("WS", _("Enviar de neuvo al Control Supervisor")),
+        ("WA", _("Por revisar por el Control Administrator")),
         ("FI", _("Finalizado")),
+        ("RE", _("Reiniciar respuestas y devolver al Control Owner"))
+
     )
     control_status = forms.ChoiceField(
         required=True,

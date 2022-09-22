@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
 
+from django.conf import settings
+
 
 def get_menu_urls(request, pk=None):
     if 'pk' in request.resolver_match.kwargs:
@@ -169,6 +171,11 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             )
         ]
+    if settings.KRM_ACTIVATE:
+        KRM_ACTIVATE = True
+    else:
+        KRM_ACTIVATE = False
+
     return {
         'RISKS_URLS': risks_urls,
         'DOMAIN_RISKS_URLS': domain_risks_urls,
@@ -179,4 +186,5 @@ def get_menu_urls(request, pk=None):
         'SUBPROCESS_URLS': sub_process_urls,
         'EVALUATIONS_URLS': evaluations_urls,
         'CA_EVALUATIONS_URLS': ca_evaluations_urls,
+        'KRM_ACTIVATE': KRM_ACTIVATE
     }

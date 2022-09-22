@@ -6,45 +6,35 @@
 {% block js_footer %}
 <script>
   $(document).ready(function () {
-    ClassicEditor
-      .create(
-        document.querySelector('#control_description'),
-        {}
-      )
-      .then(editor => {
-        // const wordCountPlugin = editor.plugins.get('WordCount');
-        // const wordCountWrapper = document.getElementById('word-count');
-        // wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-      })
-      .catch(error => {
-      });
 
-    ClassicEditor
-      .create(
-        document.querySelector('#control_name'),
-        {}
-      )
-      .then(editor => {
-        // const wordCountPlugin = editor.plugins.get('WordCount');
-        // const wordCountWrapper = document.getElementById('word-count');
-        // wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-      })
-      .catch(error => {
-      });
+    let textAreas = [
+      '#control_description',
+      '#control_name',
+      '#control_testing_procedure',
+    ]
+    textAreas.forEach(createCkEditor);
 
-    ClassicEditor
-      .create(
-        document.querySelector('#control_testing_procedure'),
-        {}
-      )
-      .then(editor => {
-        // const wordCountPlugin = editor.plugins.get('WordCount');
-        // const wordCountWrapper = document.getElementById('word-count');
-        // wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-      })
-      .catch(error => {
-      });
+    function createCkEditor(item) {
+      ClassicEditor
+        .create(
+          document.querySelector(item),
+          {
+            language: {
+              ui: 'es',
+              content: 'es'
+            }
+          }
+        )
+        .then(editor => {
+          // const wordCountPlugin = editor.plugins.get('WordCount');
+          // const wordCountWrapper = document.getElementById('word-count');
+          // wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+        })
+        .catch(error => {
+        });
+    }
   });
+
 </script>
 {% endblock js_footer %}
 
@@ -104,20 +94,17 @@
             <div class="separator my-10"></div>
             <div class="row">
               <div class="mb-4 col-12">
-                <legend>{% trans 'Objetivo del Control' %}</legend>
                 {{ form.name|as_crispy_field }}
               </div>
               <div class="separator my-10"></div>
               <div class="col-12 mb-4">
                 <fieldset>
-                  <legend>{% trans 'Descripción' %}</legend>
                   {{ form.description|as_crispy_field }}
                   <div id="word-count"></div>
                 </fieldset>
               </div>
               <div class="separator my-10"></div>
               <div class="col-12 mb-4">
-                <legend>{% trans 'Procedimiento de testeo' %}</legend>
                 <div class="mb-4">
                   {{ form.testing_procedure|as_crispy_field }}
                 </div>

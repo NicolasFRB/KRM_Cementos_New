@@ -6,7 +6,8 @@ from krm.controls.views import (
     GaControlCreateView,
     GaControlDeleteView,
     GaControlDetailView,
-    GaControlUpdateView
+    GaControlUpdateView,
+    GaControlImport
 )
 
 
@@ -40,5 +41,10 @@ urlpatterns = [
         'create/',
         GaControlCreateView.as_view(),
         name='ga_control_create'
+    ),
+    path(
+        'import/',
+        GaControlImport.as_view(),
+        name='ga_control_import'
     ),
 ]

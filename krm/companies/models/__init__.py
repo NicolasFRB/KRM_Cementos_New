@@ -1,1 +1,2 @@
 from .company_model import Company
+from .company_domain_risk_experts import CompanyDomainRiskExperts

@@ -6,7 +6,9 @@ from krm.companies.views import (
     GaCompanyCreateView,
     GaCompanyDeleteView,
     GaCompanyDetailView,
-    GaCompanyUpdateView
+    GaCompanyUpdateView,
+
+    GaCompanyDomainRiskExpertsUpdateView
 )
 
 urlpatterns = [
@@ -35,4 +37,11 @@ urlpatterns = [
         GaCompanyCreateView.as_view(),
         name='ga_company_create'
     ),
+
+    path(
+        'assign-expert/<pk>/',
+        GaCompanyDomainRiskExpertsUpdateView.as_view(),
+        name='ga_company_assign_expert_update'
+    ),
+
 ]

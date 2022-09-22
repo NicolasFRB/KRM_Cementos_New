@@ -7,14 +7,13 @@ from krm.utils.models import AuditModel
 
 class Risk(AuditModel):
     """Risk model.
-    Model for represent a Risk
+    Model for represent a Risk Master
     """
 
     ref = models.CharField(
-        verbose_name=_("Ref"),
+        verbose_name=_("REF"),
         max_length=50,
-        blank=True,
-        null=True,
+        unique=True
     )
 
     name = models.CharField(
@@ -27,9 +26,9 @@ class Risk(AuditModel):
         max_length=10000
     )
 
-    risk_master = models.ForeignKey(
-        "risks.RiskMaster",
-        verbose_name=_("Riesgo Maestro"),
+    domain_risk = models.ForeignKey(
+        "risks.DomainRisk",
+        verbose_name=_("Dominio de Riesgo"),
         related_name="risks",
         on_delete=models.CASCADE,
     )
@@ -66,7 +65,23 @@ class Risk(AuditModel):
         default=3
     )
 
-    # controls =
+    # IMPACT_RISK_CHOICES = (
+    #     (1, _("Muy bajo")),
+    #     (2, _("Bajo")),
+    #     (3, _("Medio")),
+    #     (4, _("Alto")),
+    #     (5, _("Muy alto")),
+    # )
+
+    # impact = models.PositiveIntegerField(_("Impacto"), choices=IMPACT_RISK_CHOICES)
+
+    # probability = models.PositiveIntegerField(
+    #     _("Probabilidad"), choices=IMPACT_RISK_CHOICES
+    # )
+
+    # rating = models.PositiveIntegerField(
+    #     _("Rating"), blank=True, null=True, choices=IMPACT_RISK_CHOICES
+    # )
 
     def __str__(self):
         return self.name
@@ -74,13 +89,13 @@ class Risk(AuditModel):
     class Meta:
         verbose_name = _("Riesgo")
         verbose_name_plural = _("Riesgos")
-        ordering = ["risk_master", "ref", "name"]
+        ordering = ["domain_risk", "name"]
 
     def save(self, *args, **kwargs):
         if not self.ref:
-            max_ref = Risk.objects.all().count()
-            if max_ref > 0:
-                self.ref = max_ref + 1
-            else:
-                self.ref = 1
+            max_ref = Risk.objects.filter(
+                domain_risk__pk=self.domain_risk.pk).count()
+            max_ref = max_ref + 1
+            max_ref = str(max_ref).zfill(3)
+            self.ref = f"{self.domain_risk.ref}{max_ref}"
         super().save(*args, **kwargs)

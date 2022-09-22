@@ -23,8 +23,9 @@ class Evaluation(AuditModel):
     """
 
     ref = models.CharField(
-        verbose_name=_("REF"),
-        max_length=140
+        _("REF"),
+        max_length=140,
+        unique=True
     )
 
     company = models.ForeignKey(

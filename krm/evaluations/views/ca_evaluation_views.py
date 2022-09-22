@@ -635,6 +635,7 @@ class CaEvaluationCreateView(FormView):
             evaluation = Evaluation.objects.create(
                 ref=f'{form.cleaned_data["ref"]} - {company.name}',
                 company=company,
+                description=form.cleaned_data["description"],
                 date_begin=form.cleaned_data["date_begin"],
                 date_intermediate=form.cleaned_data["date_intermediate"],
                 date_end=form.cleaned_data["date_end"],

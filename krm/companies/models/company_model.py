@@ -50,6 +50,11 @@ class Company(AuditModel):
         verbose_name_plural = _("Sociedades")
         ordering = ["name"]
 
+    @property
+    def experts_domain_risk(self):
+        from krm.companies.models import CompanyDomainRiskExperts
+        return CompanyDomainRiskExperts.objects.filter(company=self)
+
     # @property
     # def employees_active(self):
     #     return self.employees.filter(is_active=True)

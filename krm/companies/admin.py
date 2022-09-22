@@ -10,6 +10,7 @@ from django import forms
 
 from krm.companies.models import (
     Company,
+    CompanyDomainRiskExperts
 )
 
 
@@ -18,3 +19,9 @@ class CompanyAdmin(admin.ModelAdmin):
     model = Company
     list_display = ('name', 'vat', 'address',
                     'state', 'cp', 'country', 'email')
+
+
+@admin.register(CompanyDomainRiskExperts)
+class CompanyDomainRiskExpertsAdmin(admin.ModelAdmin):
+    model = CompanyDomainRiskExperts
+    list_display = ('company', 'domain_risk', 'expert')

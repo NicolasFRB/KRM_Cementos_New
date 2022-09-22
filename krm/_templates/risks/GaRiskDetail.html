@@ -141,13 +141,74 @@
       </div>
 
       <div class="col col-12">
-        <fieldset>
-          <legend class="mb-8">{% trans 'Descripción' %}</legend>
-          <div class="fs-6 fw-semibold">{% trans 'Descripción del Riesgo' %}</div>
-          <div>{{ risk.description|safe }}</div>
-        </fieldset>
+        <legend class="mb-8">{% trans 'Descripción' %}</legend>
+        <div class="fs-6 fw-semibold">{% trans 'Descripción del Riesgo' %}</div>
+        <div>{{ risk.description|safe }}</div>
       </div>
     </div>
+
+
+    {% if KRM_ACTIVATE %}
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Actividad afectada' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ risk.krm_activity_affected|safe }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ risk.krm_main_events|safe }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Personal especialmente expuesto al Riesgo' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ risk.krm_exposed_staff|safe }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Principales elementos del Riesgo' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ risk.krm_main_elements|safe }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+    {% endif %}
 
   </div>
   <!--end::Card body-->
