@@ -127,7 +127,7 @@ class GaDomainRiskCreateView(CreateView):
 class GaDomainRiskUpdateView(UpdateView):
     form_class = DomainRiskCreateForm
     model = DomainRisk
-    template_name = 'domain_risks/GaDomainRiskCreate.html'
+    template_name = 'domain_risks/GaDomainRiskUpdate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

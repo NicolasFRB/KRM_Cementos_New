@@ -37,9 +37,3 @@ class RiskCreateForm(ModelForm):
         self.fields["probability_inherent"].widget.attrs["class"] = "form-select"
         self.fields["impact_residual"].widget.attrs["class"] = "form-select"
         self.fields["probability_residual"].widget.attrs["class"] = "form-select"
-
-    def clean_ref(self):
-        ref = self.cleaned_data.get("ref").upper()
-        if Risk.objects.filter(ref=ref).count() > 0:
-            raise forms.ValidationError(_('Ya existe un riesgo con esa REF'))
-        return ref

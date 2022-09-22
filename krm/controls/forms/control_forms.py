@@ -36,12 +36,6 @@ class ControlCreateForm(ModelForm):
         self.fields["assert_accurancy"].widget.attrs["class"] = "form-select"
         self.fields["assert_froud"].widget.attrs["class"] = "form-select"
 
-    def clean_ref(self):
-        ref = self.cleaned_data.get("ref").upper()
-        if Control.objects.filter(ref=ref).count() > 0:
-            raise forms.ValidationError(_('Ya existe un control con esa REF'))
-        return ref
-
 
 class ControlImportForm(ModelForm):
     controls_file = forms.FileField(

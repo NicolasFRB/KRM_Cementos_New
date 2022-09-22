@@ -144,7 +144,7 @@ class GaControlCreateView(CreateView):
 class GaControlUpdateView(UpdateView):
     form_class = ControlCreateForm
     model = Control
-    template_name = 'controls/GaControlCreate.html'
+    template_name = 'controls/GaControlUpdate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

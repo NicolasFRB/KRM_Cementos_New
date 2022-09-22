@@ -17,10 +17,3 @@ class DomainRiskCreateForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["description"].widget.attrs["id"] = "domain_risk_description"
-
-    def clean_ref(self):
-        ref = self.cleaned_data.get("ref").upper()
-        if DomainRisk.objects.filter(ref=ref).count() > 0:
-            raise forms.ValidationError(
-                _('Ya existe un dominio de riesgo con esa REF'))
-        return ref
