@@ -31,7 +31,7 @@ urlpatterns = [
         name='ga_risk_update'
     ),
     path(
-        'create/<domain_risk>/',
+        'create/<risk>/',
         GaRiskCreateView.as_view(),
         name='ga_risk_create'
     ),

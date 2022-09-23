@@ -29,9 +29,9 @@ class Risk(AuditModel):
         max_length=10000
     )
 
-    domain_risk = models.ForeignKey(
-        "risks.DomainRisk",
-        verbose_name=_("Dominio de Riesgo"),
+    risk_master = models.ForeignKey(
+        "risks.RiskMaster",
+        verbose_name=_("Riesgo Maestro"),
         related_name="risks",
         on_delete=models.CASCADE,
     )
@@ -102,7 +102,7 @@ class Risk(AuditModel):
     class Meta:
         verbose_name = _("Riesgo")
         verbose_name_plural = _("Riesgos")
-        ordering = ["domain_risk", "name"]
+        ordering = ["risk_master", "name"]
 
     def save(self, *args, **kwargs):
         self.ref = self.ref.upper()

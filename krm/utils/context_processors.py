@@ -10,6 +10,10 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('domain_risks:ga_domain_risk_list'),
         reverse_lazy('domain_risks:ga_domain_risk_create'),
     ]
+    risks_masters_urls = [
+        reverse_lazy('risks_masters:ga_risk_master_list'),
+        reverse_lazy('risks_masters:ga_risk_master_create'),
+    ]
     risks_urls = [
         reverse_lazy('risks:ga_risk_list'),
         reverse_lazy('risks:ga_risk_create'),
@@ -70,6 +74,20 @@ def get_menu_urls(request, pk=None):
             ),
             reverse_lazy(
                 'risks:ga_risk_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+        risks_masters_urls = risks_masters_urls + [
+            reverse_lazy(
+                'risks_masters:ga_risk_master_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'risks_masters:ga_risk_master_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'risks_masters:ga_risk_master_delete',
                 kwargs={'pk': pk}
             )
         ]
@@ -177,6 +195,7 @@ def get_menu_urls(request, pk=None):
         KRM_ACTIVATE = False
 
     return {
+        'RISKS_MASTERS_URLS': risks_masters_urls,
         'RISKS_URLS': risks_urls,
         'DOMAIN_RISKS_URLS': domain_risks_urls,
         'CONTROLS_URLS': controls_urls,

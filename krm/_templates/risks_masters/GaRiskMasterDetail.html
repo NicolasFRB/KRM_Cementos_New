@@ -15,7 +15,7 @@
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Riesgo' %}: {{ risk.name }}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Riesgo' %}: {{ risk_master.name }}</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -35,7 +35,7 @@
             <!--begin::Col-->
             <div class="col-xl-7">
               <div class="fs-6">
-                <span>{{ risk.ref }}</span>
+                <span>{{ risk_master.ref }}</span>
               </div>
             </div>
             <!--end::Col-->
@@ -50,7 +50,7 @@
             <!--begin::Col-->
             <div class="col-xl-7">
               <div class="fs-6">
-                <span>{{ risk.name }}</span>
+                <span>{{ risk_master.name }}</span>
               </div>
             </div>
             <!--end::Col-->
@@ -65,7 +65,7 @@
             <!--begin::Col-->
             <div class="col-xl-7">
               <div class="fs-6">
-                <span><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk_master.pk %}">{{ risk.domain_risk.name }}</a></span>
+                <span><a href="{% url 'domain_risks:ga_domain_risk_detail' risk_master.domain_risk.pk %}">{{ risk_master.domain_risk.name }}</a></span>
               </div>
             </div>
             <!--end::Col-->
@@ -84,7 +84,7 @@
             <!--begin::Col-->
             <div class="col-xl-6">
               <div class="fs-6">
-                <span>{{ risk.get_impact_inherent_display }}</span>
+                <span>{{ risk_master.get_impact_inherent_display }}</span>
               </div>
             </div>
             <!--end::Col-->
@@ -98,7 +98,7 @@
             <!--begin::Col-->
             <div class="col-xl-6">
               <div class="fs-6">
-                <span>{{ risk.get_impact_residual_display }}</span>
+                <span>{{ risk_master.get_impact_residual_display }}</span>
               </div>
             </div>
             <!--end::Col-->
@@ -118,7 +118,7 @@
             <!--begin::Col-->
             <div class="col-xl-6">
               <div class="fs-6">
-                <span>{{ risk.get_probability_inherent_display }}</span>
+                <span>{{ risk_master.get_probability_inherent_display }}</span>
               </div>
             </div>
             <!--end::Col-->
@@ -132,7 +132,7 @@
             <!--begin::Col-->
             <div class="col-xl-6">
               <div class="fs-6">
-                <span>{{ risk.get_probability_residual_display }}</span>
+                <span>{{ risk_master.get_probability_residual_display }}</span>
               </div>
             </div>
             <!--end::Col-->
@@ -143,7 +143,7 @@
       <div class="col col-12">
         <legend class="mb-8">{% trans 'Descripción' %}</legend>
         <div class="fs-6 fw-semibold">{% trans 'Descripción del Riesgo' %}</div>
-        <div>{{ risk.description|safe }}</div>
+        <div>{{ risk_master.description|safe }}</div>
       </div>
     </div>
 
@@ -158,7 +158,7 @@
         <!--begin::Col-->
         <div class="col-xl-9">
           <div class="fs-6">
-            <span>{{ risk.krm_activity_affected|safe }}</span>
+            <span>{{ risk_master.krm_activity_affected|safe }}</span>
           </div>
         </div>
         <!--end::Col-->
@@ -173,7 +173,7 @@
         <!--begin::Col-->
         <div class="col-xl-9">
           <div class="fs-6">
-            <span>{{ risk.krm_main_events|safe }}</span>
+            <span>{{ risk_master.krm_main_events|safe }}</span>
           </div>
         </div>
         <!--end::Col-->
@@ -188,7 +188,7 @@
         <!--begin::Col-->
         <div class="col-xl-9">
           <div class="fs-6">
-            <span>{{ risk.krm_exposed_staff|safe }}</span>
+            <span>{{ risk_master.krm_exposed_staff|safe }}</span>
           </div>
         </div>
         <!--end::Col-->
@@ -203,7 +203,7 @@
         <!--begin::Col-->
         <div class="col-xl-9">
           <div class="fs-6">
-            <span>{{ risk.krm_main_elements|safe }}</span>
+            <span>{{ risk_master.krm_main_elements|safe }}</span>
           </div>
         </div>
         <!--end::Col-->
@@ -214,10 +214,10 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'risks:ga_risk_update' risk.pk %}" class="btn btn-sm btn-primary">
+    <a href="{% url 'risks_masters:ga_risk_master_update' risk_master.pk %}" class="btn btn-sm btn-primary">
       <i class="bi bi-pencil"></i>
       {% trans 'Editar' %}</a>
-    <a href="{% url 'risks:ga_risk_delete' risk.pk %}" class="btn btn-sm btn-danger ms-2">
+    <a href="{% url 'risks_masters:ga_risk_master_delete' risk_master.pk %}" class="btn btn-sm btn-danger ms-2">
       <i class="bi bi-trash"></i>
       {% trans 'Eliminar' %}</a>
       <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i
@@ -268,7 +268,7 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'risks:ga_risk_create' risk.pk %}" class="btn btn-sm btn-primary">
+    <a href="{% url 'risks:ga_risk_create' risk_master.pk %}" class="btn btn-sm btn-primary">
       <i class="bi bi-plus-lg"></i>
       {% trans 'Añadir' %}</a>
   </div>

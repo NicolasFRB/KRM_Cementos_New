@@ -40,7 +40,7 @@
 
         <!--begin:Menu item-->
         <div data-kt-menu-trigger="click"
-          class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS %}show{% endif %}">
+          class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in RISKS_MASTERS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS %}show{% endif %}">
 
           <!--begin:Menu link-->
           <span class="menu-link">
@@ -59,6 +59,18 @@
                   <span class="bullet bullet-dot"></span>
                 </span>
                 <span class="menu-title">{% trans 'Dominios de riesgo' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path in RISKS_MASTERS_URLS %}active{% endif %}" href="{% url 'risks_masters:ga_risk_master_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Riesgos Maestros' %}</span>
               </a>
               <!--end:Menu link-->
             </div>

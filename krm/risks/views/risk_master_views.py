@@ -25,16 +25,16 @@ from django.contrib.auth.decorators import login_required
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
-from krm.risks.forms import RiskCreateForm
+from krm.risks.forms import RiskMasterCreateForm
 
-from krm.risks.models import Risk, RiskMaster
+from krm.risks.models import RiskMaster, DomainRisk
 
 
 @method_decorator([login_required, ], name='dispatch')
-class GaRiskListView(ListView):
-    model = Risk
-    template_name = 'risks/GaRiskList.html'
-    context_object_name = 'risks'
+class GaRiskMasterListView(ListView):
+    model = RiskMaster
+    template_name = 'risks_masters/GaRiskMasterList.html'
+    context_object_name = 'risks_masters'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,15 +42,15 @@ class GaRiskListView(ListView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
-                'risks:ga_risk_list')},
+            {'title': _('Riesgos Maestros'), 'url': reverse(
+                'risks_masters:ga_risk_master_list')},
         ]
-        context['page_title'] = _('Riesgos')
+        context['page_title'] = _('Riesgos Maestros')
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
                 'title': _('Nuevo'),
-                'url': reverse('risks:ga_risk_create'),
+                'url': reverse('risks_masters:ga_risk_master_create'),
                 'primary': True,
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
@@ -60,26 +60,26 @@ class GaRiskListView(ListView):
 
 
 @method_decorator([login_required, ], name='dispatch')
-class GaRiskDetailView(DetailView):
-    model = Risk
-    template_name = 'risks/GaRiskDetail.html'
-    context_object_name = 'risk'
+class GaRiskMasterDetailView(DetailView):
+    model = RiskMaster
+    template_name = 'risks_masters/GaRiskMasterDetail.html'
+    context_object_name = 'risk_master'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
-                'risks:ga_risk_list')},
+            {'title': _('Riesgos Maestros'), 'url': reverse(
+                'risks_masters:ga_risk_master_list')},
             {'title': self.object.name}
         ]
-        context['page_title'] = f"{_('Riesgo')} : {self.object.name}"
+        context['page_title'] = f"{_('Riesgo Maestro')} : {self.object.name}"
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
                 'title': _('Editar'),
-                'url': reverse('risks:ga_risk_update', kwargs={'pk': self.object.pk}),
+                'url': reverse('risks_masters:ga_risk_master_update', kwargs={'pk': self.object.pk}),
                 'primary': True,
                 'icon': '<i class="bi bi-pencil"></i>'
             },
@@ -89,18 +89,18 @@ class GaRiskDetailView(DetailView):
 
 
 @method_decorator([login_required, ], name='dispatch')
-class GaRiskCreateView(CreateView):
-    form_class = RiskCreateForm
-    model = Risk
-    template_name = 'risks/GaRiskCreate.html'
+class GaRiskMasterCreateView(CreateView):
+    form_class = RiskMasterCreateForm
+    model = RiskMaster
+    template_name = 'risks_masters/GaRiskMasterCreate.html'
 
     def get_initial(self):
         if 'domain_risk' in self.kwargs:
-            risk_master = get_object_or_404(
-                RiskMaster, pk=self.kwargs.get('risk_master')
+            domain_risk = get_object_or_404(
+                DomainRisk, pk=self.kwargs.get('domain_risk')
             )
             return {
-                'risk_master': risk_master
+                'domain_risk': domain_risk
             }
         else:
             return {}
@@ -111,12 +111,12 @@ class GaRiskCreateView(CreateView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
-                'risks:ga_risk_list')},
+            {'title': _('Riesgos Maestros'), 'url': reverse(
+                'risks_masters:ga_risk_master_list')},
             {'title': _('Nuevo'), 'url': reverse(
-                'risks:ga_risk_create')},
+                'risks_masters:ga_risk_master_create')},
         ]
-        context['page_title'] = _('Nuevo Riesgo')
+        context['page_title'] = _('Nuevo Riesgo Maestro')
         context['breadcrums'] = breadcrums
 
         return context
@@ -126,18 +126,18 @@ class GaRiskCreateView(CreateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Riesgo creado correctamente')
+            _('Riesgo maestro creado correctamente')
         )
         return reverse_lazy(
-            'risks:ga_risk_list'
+            'risks_masters:ga_risk_master_list'
         )
 
 
 @method_decorator([login_required, ], name='dispatch')
-class GaRiskUpdateView(UpdateView):
-    form_class = RiskCreateForm
-    model = Risk
-    template_name = 'risks/GaRiskCreate.html'
+class GaRiskMasterUpdateView(UpdateView):
+    form_class = RiskMasterCreateForm
+    model = RiskMaster
+    template_name = 'risks_masters/GaRiskMasterCreate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -145,11 +145,11 @@ class GaRiskUpdateView(UpdateView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
-                'risks:ga_risk_list')},
+            {'title': _('Riesgos Maestros'), 'url': reverse(
+                'risks_masters:ga_risk_master_list')},
             {'title': _('Editar')},
         ]
-        context['page_title'] = _('Editar Riesgo')
+        context['page_title'] = _('Editar Riesgo Maestro')
         context['breadcrums'] = breadcrums
 
         return context
@@ -159,16 +159,16 @@ class GaRiskUpdateView(UpdateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Riesgo actualizado correctamente')
+            _('Riesgo Maestro actualizado correctamente')
         )
         return reverse_lazy(
-            'risks:ga_risk_list'
+            'risks_masters:ga_risk_master_list'
         )
 
 
 @method_decorator([login_required, ], name='dispatch')
-class GaRiskDeleteView(DeleteView):
-    model = Risk
+class GaRiskMasterDeleteView(DeleteView):
+    model = RiskMaster
     template_name = "_includes/_base_confirm_delete.html"
 
     def get_context_data(self, **kwargs):
@@ -177,12 +177,12 @@ class GaRiskDeleteView(DeleteView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
-                'risks:ga_risk_list')},
+            {'title': _('Riesgos Maestros'), 'url': reverse(
+                'risks_masters:ga_risk_master_list')},
             {'title': _('Eliminar')},
         ]
         context['page_title'] = _(
-            "Eliminar Riesgo: %s") % str(self.object.name)
+            "Eliminar Riesgo Maestro: %s") % str(self.object.name)
         context['breadcrums'] = breadcrums
 
         return context
@@ -190,11 +190,11 @@ class GaRiskDeleteView(DeleteView):
     def get_success_url(self):
         messages.add_message(
             self.request, messages.SUCCESS, _(
-                "Riesgo eliminado correctamente")
+                "Riesgo Maestro eliminado correctamente")
         )
-        return reverse_lazy("risks:ga_risk_list")
+        return reverse_lazy("risks_masters:ga_risk_list")
 
     def get_confirm_text_message(self):
         return _(
-            '<span class="kt-font-bold">¿Seguro que desea eliminar el Riesgo: </span> {0} {1}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
+            '<span class="kt-font-bold">¿Seguro que desea eliminar el Riesgo Maestro: </span> {0} {1}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
         ).format(str(self.object.ref), self.object.name)

@@ -67,7 +67,7 @@
                 {{ form.name|as_crispy_field }}
               </div>
               <div class="mb-4">
-                {{ form.risk_master|as_crispy_field }}
+                {{ form.domain_risk|as_crispy_field }}
               </div>
             </fieldset>
           </div>
@@ -126,7 +126,7 @@
     
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
-        <a href="{% url 'risks:ga_risk_list' %}"
+        <a href="{% url 'risks:ga_risk_detail' object.pk %}"
           class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
       </div>
     </form>

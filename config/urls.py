@@ -72,6 +72,10 @@ urlpatterns += i18n_patterns(
          include(('krm.risks.urls.risk_urls', 'risks'),
                  namespace='risks')
          ),
+    path('risks-masters/',
+         include(('krm.risks.urls.risk_master_urls', 'risks_masters'),
+                 namespace='risks_masters')
+         ),
     path('controls/',
          include(('krm.controls.urls.control_urls', 'controls'),
                  namespace='controls')

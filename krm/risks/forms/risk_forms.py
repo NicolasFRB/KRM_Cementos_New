@@ -12,7 +12,7 @@ class RiskCreateForm(ModelForm):
             'ref',
             'name',
             'description',
-            'domain_risk',
+            'risk_master',
             'impact_inherent',
             'probability_inherent',
             'impact_residual',
@@ -31,8 +31,8 @@ class RiskCreateForm(ModelForm):
         self.fields["krm_exposed_staff"].widget.attrs["id"] = "krm_exposed_staff"
         self.fields["krm_main_elements"].widget.attrs["id"] = "krm_main_elements"
 
-        self.fields["domain_risk"].widget.attrs["class"] = "form-select"
-        self.fields["domain_risk"].widget.attrs["data-control"] = "select2"
+        self.fields["risk_master"].widget.attrs["class"] = "form-select"
+        self.fields["risk_master"].widget.attrs["data-control"] = "select2"
         self.fields["impact_inherent"].widget.attrs["class"] = "form-select"
         self.fields["probability_inherent"].widget.attrs["class"] = "form-select"
         self.fields["impact_residual"].widget.attrs["class"] = "form-select"
