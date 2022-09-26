@@ -1,7 +1,11 @@
 from django import forms
 from django.forms import ModelForm
+from django.forms.widgets import CheckboxSelectMultiple
+from django.utils.translation import gettext as _
+from django.contrib.postgres.forms import SimpleArrayField
 
 from krm.companies.models import Company
+from krm.risks.models import RiskCompany
 
 
 class CompanyCreateForm(ModelForm):
@@ -12,3 +16,16 @@ class CompanyCreateForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["country"].widget.attrs["class"] = "form-select"
+
+
+# class CompanyKrmRiskSelectForm(ModelForm):
+#     risk_company = forms.ModelMultipleChoiceField(
+#         label=_('Dominios de Riesgo a evaluar'),
+#         queryset=RiskCompany.objects.all(),
+#         widget=CheckboxSelectMultiple(),
+#     )
+
+
+class CompanyKrmRiskSelectForm(forms.Form):
+    risk_pk = SimpleArrayField(forms.CharField(
+        max_length=1000),  label=_('Riesgos-Compañías'))

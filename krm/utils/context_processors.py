@@ -25,6 +25,7 @@ def get_menu_urls(request, pk=None):
     companies_urls = [
         reverse_lazy('companies:ga_company_list'),
         reverse_lazy('companies:ga_company_create'),
+        reverse_lazy('companies:ca_company_list')
     ]
     users_urls = [
         reverse_lazy('users:ga_user_list'),

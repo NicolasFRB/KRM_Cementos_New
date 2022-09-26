@@ -1,7 +1,12 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import DomainRisk, Risk, RiskMaster
+from .models import (
+    DomainRisk,
+    Risk,
+    RiskMaster,
+    RiskCompany
+)
 
 
 @admin.register(DomainRisk)
@@ -20,3 +25,9 @@ class RiskMasterAdmin(admin.ModelAdmin):
 class RiskAdmin(admin.ModelAdmin):
     model = Risk
     list_display = ('ref', 'name', 'risk_master')
+
+
+@admin.register(RiskCompany)
+class RiskCompanyAdmin(admin.ModelAdmin):
+    model = RiskCompany
+    list_display = ('risk', 'company', 'active')

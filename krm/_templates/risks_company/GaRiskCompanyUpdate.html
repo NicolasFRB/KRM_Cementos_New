@@ -1,0 +1,106 @@
+{% extends 'layout/default.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+<script>
+  $(document).ready(function () {
+    let textAreas = [
+      '#risk_description',
+      '#krm_activity_affected',
+      '#krm_main_events',
+      '#krm_exposed_staff',
+      '#krm_main_elements'
+    ]
+    textAreas.forEach(createCkEditor);
+
+    function createCkEditor(item) {
+      ClassicEditor
+        .create(
+          document.querySelector(item),
+          {
+            language: {
+              ui: 'es',
+              content: 'es'
+            }
+          }
+        )
+        .then(editor => {
+          // const wordCountPlugin = editor.plugins.get('WordCount');
+          // const wordCountWrapper = document.getElementById('word-count');
+          // wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+        })
+        .catch(error => {
+        });
+    }
+  });
+</script>
+{% endblock js_footer %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            {% include '_includes/FormErrors.html' %}
+            <div class="row mb-4">
+              <div class="col col-12 mb-4">
+                <span class="fs-6 fw-semibold">{% trans 'Compañía' %}: </span> <span>{{ object.company.name }}</span>
+              </div>
+              <div class="col col-12 mb-4">
+                <span class="fs-6 fw-semibold">{% trans 'Dominio de Riesgo' %}: </span> <span>{{ object.risk.risk_master.domain_risk }}</span>
+              </div>
+              <div class="col col-12 mb-4">
+                <span class="fs-6 fw-semibold">{% trans 'Riesgo Maestro' %}: </span> <span>{{ object.risk.risk_master }}</span>
+              </div>
+              <div class="col col-12 mb-4">
+                <span class="fs-6 fw-semibold">{% trans 'REF. Riego' %}: </span> <span>{{ object.risk.ref }}</span>
+              </div>
+              <div class="col col-12 col-xl-5 mb-4">
+                {{ form.name|as_crispy_field }}
+              </div>
+              <div class="col col-12 mb-4">
+                {{ form.description|as_crispy_field }}
+              </div>
+              <div class="col col-12 mb-4">
+                {{ form.krm_activity_affected|as_crispy_field }}
+              </div>
+              <div class="col col-12 mb-4">
+                {{ form.krm_main_events|as_crispy_field }}
+              </div>
+              <div class="col col-12 mb-4">
+                {{ form.krm_exposed_staff|as_crispy_field }}
+              </div>
+              <div class="col col-12 mb-4">
+                {{ form.krm_main_elements|as_crispy_field }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::Body-->
+    
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+        <a href="{% url 'companies:ga_company_detail' object.company.pk %}" class="btn btn-sm btn-secondary ms-2"><i
+            class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+{% endblock content %}

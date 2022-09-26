@@ -35,13 +35,17 @@ from krm.risks.models import (
     RiskMaster
 )
 
-from krm.users.decorators import is_global_admin
+from krm.users.decorators import (
+    is_global_admin,
+    is_company_admin,
+    user_can_edit_company
+)
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
-class GaCompanyListView(ListView):
+@method_decorator([is_company_admin, ], name='dispatch')
+class CaCompanyListView(ListView):
     model = Company
-    template_name = 'companies/GaCompanyList.html'
+    template_name = 'companies/CaCompanyList.html'
     context_object_name = 'companies'
 
     def get_context_data(self, **kwargs):
@@ -50,27 +54,22 @@ class GaCompanyListView(ListView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Compañías'), 'url': reverse(
-                'companies:ga_company_list')},
+            {'title': _('Compañías que administra'), 'url': reverse(
+                'companies:ca_company_list')},
         ]
-        context['page_title'] = _('Companías')
+        context['page_title'] = _('Companías que administra')
         context['breadcrums'] = breadcrums
-        context['actions'] = [
-            {
-                'title': _('Nuevo'),
-                'url': reverse('companies:ga_company_create'),
-                'primary': True,
-                'icon': '<i class="bi bi-plus-lg"></i>'
-            },
-        ]
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
+    def get_queryset(self):
+        return self.request.user.companies_admin.all()
 
-@method_decorator([is_global_admin, ], name='dispatch')
-class GaCompanyDetailView(DetailView):
+
+@method_decorator([user_can_edit_company, ], name='dispatch')
+class CaCompanyDetailView(DetailView):
     model = Company
-    template_name = 'companies/GaCompanyDetail.html'
+    template_name = 'companies/CaCompanyDetail.html'
     context_object_name = 'company'
 
     def get_context_data(self, **kwargs):
@@ -79,28 +78,20 @@ class GaCompanyDetailView(DetailView):
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Compañías'), 'url': reverse(
-                'companies:ga_company_list')},
+                'companies:ca_company_list')},
             {'title': self.object.vat}
         ]
         context['page_title'] = f"{_('Compañía')} : {self.object.name}"
         context['breadcrums'] = breadcrums
-        context['actions'] = [
-            {
-                'title': _('Editar'),
-                'url': reverse('companies:ga_company_update', kwargs={'pk': self.object.pk}),
-                'primary': True,
-                'icon': '<i class="bi bi-pencil"></i>'
-            },
-        ]
 
         return context
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
-class GaCompanyCreateView(CreateView):
+@method_decorator([user_can_edit_company, ], name='dispatch')
+class CaCompanyUpdateView(UpdateView):
     form_class = CompanyCreateForm
     model = Company
-    template_name = 'companies/GaCompanyCreate.html'
+    template_name = 'companies/CaCompanyCreate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,41 +100,7 @@ class GaCompanyCreateView(CreateView):
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Compañías'), 'url': reverse(
-                'companies:ga_company_list')},
-            {'title': _('Nueva Compañía'), 'url': reverse(
-                'companies:ga_company_create')},
-        ]
-        context['page_title'] = _('Nueva Compañía')
-        context['breadcrums'] = breadcrums
-
-        return context
-
-    def get_success_url(self):
-
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            _('Compañía creada correctamente')
-        )
-        return reverse_lazy(
-            'companies:ga_company_list'
-        )
-
-
-@method_decorator([is_global_admin, ], name='dispatch')
-class GaCompanyUpdateView(UpdateView):
-    form_class = CompanyCreateForm
-    model = Company
-    template_name = 'companies/GaCompanyCreate.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context = KTLayout.init(context)
-
-        breadcrums = [
-            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Compañías'), 'url': reverse(
-                'companies:ga_company_list')},
+                'companies:ca_company_list')},
             {'title': _('Editar')},
         ]
         context['page_title'] = _('Editar Compañía')
@@ -159,52 +116,19 @@ class GaCompanyUpdateView(UpdateView):
             _('Compañía actualizada correctamente')
         )
         return reverse_lazy(
-            'companies:ga_company_list'
+            'companies:ca_company_list'
         )
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
-class GaCompanyDeleteView(DeleteView):
-    model = Company
-    template_name = "_includes/_base_confirm_delete.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context = KTLayout.init(context)
-
-        breadcrums = [
-            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Compañías'), 'url': reverse(
-                'companies:ga_company_list')},
-            {'title': _('Eliminar')},
-        ]
-        context['page_title'] = _("Eliminar Compañía")
-        context['breadcrums'] = breadcrums
-
-        return context
-
-    def get_success_url(self):
-        messages.add_message(
-            self.request, messages.SUCCESS, _(
-                "Compañía eliminada correctamente")
-        )
-        return reverse_lazy("companies:ga_company_list")
-
-    def get_confirm_text_message(self):
-        return _(
-            '<span class="kt-font-bold">¿Seguro que desea eliminar la Companía y todas sus evaluaciónes?: </span> {0}? <span class="kt-font-bold">Se borrarán todos los datos asociados la misma.</span>'
-        ).format(str(self.object))
-
-
-@method_decorator([is_global_admin, ], name='dispatch')
-class GaCompanyRiskKrmSelectView(FormView):
+@method_decorator([is_company_admin, ], name='dispatch')
+class CaCompanyRiskKrmSelectView(FormView):
     form_class = CompanyKrmRiskSelectForm
-    template_name = 'companies/GaCompanyRiskKrmSelect.html'
+    template_name = 'companies/CaCompanyRiskKrmSelect.html'
 
     def dispatch(self, request, *args, **kwargs):
         self.company = get_object_or_404(
             Company, pk=self.kwargs.get("pk"))
-        return super(GaCompanyRiskKrmSelectView, self).dispatch(
+        return super(CaCompanyRiskKrmSelectView, self).dispatch(
             request, request, *args, **kwargs
         )
 
@@ -215,7 +139,7 @@ class GaCompanyRiskKrmSelectView(FormView):
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Compañías'), 'url': reverse(
-                'companies:ga_company_list')},
+                'companies:ca_company_list')},
             {'title': self.company.name, 'url': reverse(
                 'companies:ga_company_detail', kwargs={'pk': self.company.pk})},
             {'title': _('Seleccionar riesgos que le aplican')},
@@ -260,7 +184,7 @@ class GaCompanyRiskKrmSelectView(FormView):
 
         return HttpResponseRedirect(
             reverse_lazy(
-                'companies:ga_company_detail',
+                'companies:ca_company_detail',
                 kwargs={'pk': self.company.pk}
             )
         )

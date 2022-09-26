@@ -229,6 +229,18 @@
         </div>
 
         <!--begin:Menu item-->
+        <div class="menu-item">
+          <!--begin:Menu link-->
+          <a class="menu-link {% if request.path in COMPANIES_URLS %}active{% endif %}"
+            href="{% url 'companies:ca_company_list' %}">
+            <span class="menu-icon">{% getSvgIcon 'duotune/ecommerce/ecm004.svg' 'svg-icon svg-icon-2' %}</span>
+            <span class="menu-title">{% trans 'Compañías' %}</span>
+          </a>
+          <!--end:Menu link-->
+        </div>
+        <!--end:Menu item-->
+
+        <!--begin:Menu item-->
         <div data-kt-menu-trigger="click"
           class="menu-item menu-accordion {% if request.path in CA_EVALUATIONS_URLS %}show{% endif %}">
           <!--begin:Menu link-->

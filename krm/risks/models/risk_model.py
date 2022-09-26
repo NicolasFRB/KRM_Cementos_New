@@ -107,3 +107,23 @@ class Risk(AuditModel):
     def save(self, *args, **kwargs):
         self.ref = self.ref.upper()
         super().save(*args, **kwargs)
+
+        from krm.companies.models import Company
+        from krm.companies.models import CompanyDomainRiskExperts
+        from krm.risks.models import RiskCompany
+
+        for company in Company.objects.all():
+            if RiskCompany.objects.filter(
+                company=company,
+                risk=self
+            ).count() == 0:
+                RiskCompany.objects.create(
+                    company=company,
+                    risk=self,
+                    name=self.name,
+                    description=self.description,
+                    krm_activity_affected=self.krm_activity_affected,
+                    krm_main_events=self.krm_main_events,
+                    krm_exposed_staff=self.krm_exposed_staff,
+                    krm_main_elements=self.krm_main_elements
+                )

@@ -48,18 +48,6 @@
     </div>
   </div>
   <!--end::Card body-->
-  <!--begin::Card footer-->
-  <div class="card-footer py-6">
-    <a href="{% url 'companies:ga_company_update' company.pk %}" class="btn btn-sm btn-primary">
-      <i class="bi bi-pencil"></i>
-      {% trans 'Editar' %}</a>
-    <a href="{% url 'companies:ga_company_delete' company.pk %}" class="btn btn-sm btn-danger ms-2">
-      <i class="bi bi-trash"></i>
-      {% trans 'Eliminar' %}</a>
-      <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i
-            class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
-  </div>
-  <!--end::Card footer-->
 </div>
 
 <div class="card mb-8">
@@ -72,7 +60,6 @@
         <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
           <thead>
             <tr class="fw-semibold fs-6">
-              <th class="text-center">{% trans 'Acción' %}</th>
               <th>{% trans 'Email' %}</th>
               <th>{% trans 'Nombre' %}</th>
               <th>{% trans 'Apellidos' %}</th>
@@ -82,8 +69,6 @@
           <tbody>
             {% for user in company.employees.all %}
             <tr>
-              <td class="text-center"><a href="{% url 'users:ga_user_detail' user.pk %}"><i
-                    class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
               <td>{{ user.email|default_if_none:"" }}</td>
               <td>{{ user.first_name|default_if_none:"" }}</td>
               <td>{{ user.last_name|default_if_none:"" }}</td>
@@ -117,7 +102,7 @@
                 {% for ced in company.experts_domain_risk %}
                   <tr>
                     <td class="text-center">
-                      <a href="{% url 'companies:ga_company_assign_expert_update' ced.pk %}"><i class="bi bi-pencil-fill fs-1x text-primary"></i></a>
+                      <a href="{% url 'companies:ca_company_assign_expert_update' ced.pk %}"><i class="bi bi-pencil-fill fs-1x text-primary"></i></a>
                     </td>
                     <td>{{ ced.domain_risk }}</td>
                     <td>{{ ced.expert|default_if_none:"Sin asignar" }}</td>
@@ -152,7 +137,7 @@
                   {% for risk_company in company.krm_risks_active.all %}
                   <tr>
                     <td class="text-center">
-                      <a href="{% url 'risks_company:ga_risk_company_update' risk_company.pk %}"><i
+                      <a href="{% url 'risks_company:ca_risk_company_update' risk_company.pk %}"><i
                           class="bi bi-pencil-fill fs-1x text-primary"></i></a>
                     </td>
                     <td>{{ risk_company.risk.ref }}</td>
@@ -170,7 +155,7 @@
       </div>
       <!--begin::Card footer-->
       <div class="card-footer py-6">
-        <a href="{% url 'companies:ga_company_risk_krm_select' company.pk %}" class="btn btn-sm btn-primary">
+        <a href="{% url 'companies:ca_company_risk_krm_select' company.pk %}" class="btn btn-sm btn-primary">
           <i class="bi bi-pencil"></i>
           {% trans 'Editar lista de riesgos que le aplican' %}</a>
       </div>

@@ -55,6 +55,9 @@ class Company(AuditModel):
         from krm.companies.models import CompanyDomainRiskExperts
         return CompanyDomainRiskExperts.objects.filter(company=self)
 
+    @property
+    def krm_risks_active(self):
+        return self.krm_risks.filter(active=True)
     # @property
     # def employees_active(self):
     #     return self.employees.filter(is_active=True)

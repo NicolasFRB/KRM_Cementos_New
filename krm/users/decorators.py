@@ -10,6 +10,14 @@ from django.http import Http404
 from krm.users.models import User
 from krm.evaluations.models import Evaluation
 from krm.evaluations.models import ControlTest
+from krm.companies.models import (
+    Company,
+    CompanyDomainRiskExperts
+)
+from krm.risks.models import (
+    RiskMaster,
+    RiskCompany
+)
 
 
 class is_global_admin(object):
@@ -97,6 +105,38 @@ def user_can_view_evaluation(function):
 
         if (
             evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_edit_domain_risk_expert(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            expert = CompanyDomainRiskExperts.objects.get(pk=kwargs["pk"])
+        except CompanyDomainRiskExperts.DoesNotExist:
+            raise Http404
+
+        if (
+            expert.company in request.user.companies_admin.all() or request.user.is_superuser
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_edit_company(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            company = Company.objects.get(pk=kwargs["pk"])
+        except Company.DoesNotExist:
+            raise Http404
+
+        if (
+            company in request.user.companies_admin.all() or request.user.is_superuser
         ):
             return function(request, *args, **kwargs)
         raise PermissionDenied
