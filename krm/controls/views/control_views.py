@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-from xlrd import open_workbook
 import re
 
 # Create your views here.

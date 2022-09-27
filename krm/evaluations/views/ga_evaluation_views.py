@@ -5,8 +5,7 @@ import re
 
 # Create your views here.
 from django.shortcuts import render
-import xlwt
-from xlrd import open_workbook
+
 from django.views.generic import (
     FormView,
     TemplateView,
@@ -160,7 +159,7 @@ class GaEvaluationDetailView(FormView):
                 filename
             )
 
-            wb = xlwt.Workbook(encoding="utf-8")
+            # wb = xlwt.Workbook(encoding="utf-8")
             ws = wb.add_sheet("Controls")
 
             # Sheet header, first row

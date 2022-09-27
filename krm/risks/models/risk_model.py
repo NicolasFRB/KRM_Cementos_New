@@ -72,28 +72,32 @@ class Risk(AuditModel):
         _("Actividad afectada"),
         config_name='awesome_ckeditor',
         max_length=10000,
-        blank=True
+        blank=True,
+        null=True
     )
 
     krm_main_events = RichTextField(
         _("Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios"),
         config_name='awesome_ckeditor',
         max_length=10000,
-        blank=True
+        blank=True,
+        null=True
     )
 
     krm_exposed_staff = RichTextField(
         _("Personal especialmente expuesto al Riesgo"),
         config_name='awesome_ckeditor',
         max_length=10000,
-        blank=True
+        blank=True,
+        null=True
     )
 
     krm_main_elements = RichTextField(
         _("Principales elementos del Riesgo"),
         config_name='awesome_ckeditor',
         max_length=10000,
-        blank=True
+        blank=True,
+        null=True
     )
 
     def __str__(self):
@@ -109,7 +113,6 @@ class Risk(AuditModel):
         super().save(*args, **kwargs)
 
         from krm.companies.models import Company
-        from krm.companies.models import CompanyDomainRiskExperts
         from krm.risks.models import RiskCompany
 
         for company in Company.objects.all():

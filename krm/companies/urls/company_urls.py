@@ -7,6 +7,7 @@ from krm.companies.views import (
     GaCompanyDeleteView,
     GaCompanyDetailView,
     GaCompanyUpdateView,
+    GaCompanyImportView,
 
     GaCompanyDomainRiskExpertsUpdateView,
     GaCompanyRiskKrmSelectView,
@@ -24,6 +25,11 @@ urlpatterns = [
         '',
         GaCompanyListView.as_view(),
         name='ga_company_list'
+    ),
+    path(
+        'import/',
+        GaCompanyImportView.as_view(),
+        name='ga_company_import'
     ),
     path(
         'detail/<pk>/',

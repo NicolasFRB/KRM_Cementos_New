@@ -47,9 +47,11 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'companies:ga_company_create' %}" class="btn btn-sm btn-primary">
+    <a href="{% url 'companies:ga_company_create' %}" class="btn btn-sm btn-primary me-2">
       <i class="bi bi-plus-lg"></i>
       {% trans 'Nuevo' %}</a>
+    <a href="{% url 'companies:ga_company_import' %}" class="btn btn-sm btn-secondary">
+      {% trans 'Importar' %}</a>
   </div>
   <!--end::Card footer-->
 </div>
