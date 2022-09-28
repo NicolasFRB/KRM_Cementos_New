@@ -26,7 +26,9 @@ class Risk(AuditModel):
     description = RichTextField(
         _("Descripción"),
         config_name='awesome_ckeditor',
-        max_length=10000
+        max_length=10000,
+        blank=True,
+        null=True
     )
 
     risk_master = models.ForeignKey(

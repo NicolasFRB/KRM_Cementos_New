@@ -25,8 +25,8 @@
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th class="text-center">{% trans 'REF' %}</th>
-          <th width="50%">{% trans 'Nombre' %}</th>
+          <th>{% trans 'REF' %}</th>
+          <th>{% trans 'Nombre' %}</th>
           <th>{% trans 'Dominio de Riesgo' %}</th>
           <th class="text-center">{% trans 'Nº de Riesgos' %}</th>
         </tr>
@@ -35,7 +35,7 @@
           {% for risk in risks_masters %}
           <tr>
             <td class="text-center"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center">{{ risk.ref }}</td>
+            <td>{{ risk.ref }}</td>
             <td>{{ risk.name|striptags|safe|truncatechars:200 }}</td>
             <td>{{ risk.domain_risk }}</td>
             <td class="text-center"><span class="badge badge-info">{{ risk.risks.count }}</span></td>

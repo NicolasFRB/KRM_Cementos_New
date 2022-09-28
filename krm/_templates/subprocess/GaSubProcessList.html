@@ -25,8 +25,9 @@
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th class="text-center">{% trans 'REF' %}</th>
+          <th>{% trans 'REF' %}</th>
           <th>{% trans 'Nombre' %}</th>
+          <th>{% trans 'Proceso' %}</th>
           <th  width="60%">{% trans 'Description' %}</th>
           <th class="text-center">{% trans 'Nº de Controles' %}</th>
         </tr>
@@ -35,8 +36,9 @@
           {% for subprocess in subprocess %}
           <tr>
             <td class="text-center"><a href="{% url 'subprocess:ga_sub_process_detail' subprocess.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center">{{ subprocess.ref }}</td>
+            <td>{{ subprocess.ref }}</td>
             <td>{{ subprocess.name }}</td>
+            <td>{{ subprocess.process }}</td>
             <td>{{ subprocess.description|striptags|safe|truncatechars:200 }}</td>
             <td class="text-center"><span class="badge badge-info">{{ subprocess.controls.count }}</span></td>
           </tr>
