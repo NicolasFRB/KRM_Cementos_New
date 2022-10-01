@@ -14,7 +14,9 @@ class RiskSerializer(serializers.ModelSerializer):
             'ref',
             'name',
             'description',
-            'domain_risk',
+            'risk_master',
+            'risk_master_name',
+            # 'risk_master__domain_risk'
             'impact_inherent',
             'probability_inherent',
             'impact_residual',

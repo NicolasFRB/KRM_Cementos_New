@@ -17,6 +17,11 @@ from krm.evaluations.views import (
     CaEvaluationAssignImport
 )
 
+from krm.evaluations_krm.views import (
+    GaEvaluationKrmInherentCreateView,
+    GaEvaluationKrmListView,
+)
+
 urlpatterns = [
     path(
         'detail/<pk>/',
@@ -47,6 +52,19 @@ urlpatterns = [
         "assign-control-import/<pk>/",
         EvaluationAssignImport.as_view(),
         name="ga_evaluation_import_assign_control",
+    ),
+
+
+    path(
+        'krm/',
+        GaEvaluationKrmListView.as_view(),
+        name='ga_evaluation_krm_list'
+    ),
+
+    path(
+        'krm/create/',
+        GaEvaluationKrmInherentCreateView.as_view(),
+        name='ga_evaluation_krm_inherent_create'
     ),
 
 

@@ -110,6 +110,10 @@ class Risk(AuditModel):
         verbose_name_plural = _("Riesgos")
         ordering = ["risk_master", "name"]
 
+    @property
+    def risk_master_name(self):
+        return self.risk_master.name
+
     def save(self, *args, **kwargs):
         self.ref = self.ref.upper()
         super().save(*args, **kwargs)

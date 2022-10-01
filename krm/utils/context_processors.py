@@ -43,6 +43,10 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('evaluations:ga_evaluation_list'),
         reverse_lazy('evaluations:ga_evaluation_create'),
     ]
+    evaluations_krm_urls = [
+        reverse_lazy('evaluations_krm:ga_evaluation_krm_list'),
+        reverse_lazy('evaluations_krm:ga_evaluation_krm_inherent_create'),
+    ]
     ca_evaluations_urls = [
         reverse_lazy('evaluations:ca_evaluation_list'),
         reverse_lazy('evaluations:ca_evaluation_create'),
@@ -205,6 +209,7 @@ def get_menu_urls(request, pk=None):
         'PROCESS_URLS': process_urls,
         'SUBPROCESS_URLS': sub_process_urls,
         'EVALUATIONS_URLS': evaluations_urls,
+        'EVALUATIONS_KRM_URLS': evaluations_krm_urls,
         'CA_EVALUATIONS_URLS': ca_evaluations_urls,
         'KRM_ACTIVATE': KRM_ACTIVATE
     }

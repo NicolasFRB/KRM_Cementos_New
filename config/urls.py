@@ -23,6 +23,8 @@ from krm.process.api import (
     SubProcessViewSet,
 )
 
+from krm.risks.api.views import RiskCompanyApiView
+
 from krm.companies.api import (
     CompanyViewSet,
 )
@@ -40,6 +42,8 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/riskscompany/',
+         RiskCompanyApiView.as_view())
 ]
 
 urlpatterns += i18n_patterns(
@@ -104,7 +108,10 @@ urlpatterns += i18n_patterns(
          include(('krm.evaluations.urls.control_test_urls', 'control_tests'),
                  namespace='control_tests')
          ),
-
+    path('evaluations/krm/',
+         include(('krm.evaluations_krm.urls.evaluation_krm_urls', 'evaluations_krm'),
+                 namespace='evaluations_krm')
+         ),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

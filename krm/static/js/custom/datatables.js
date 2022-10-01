@@ -13,16 +13,16 @@ var langEs = {
   url: '',
   infoThousands: ',',
   loadingRecords: 'Cargando...',
-	oPaginate: {
-	  First: 'Primero',
-	  Last: 'Último',
-	  Next: 'Siguiente',
-	  Previous: 'Anterior'
-	},
-	oAria: {
-	  SortAscending: ': Activar para ordenar la columna de manera ascendente',
-	  SortDescending: ': Activar para ordenar la columna de manera descendente'
-	}
+  oPaginate: {
+    First: 'Primero',
+    Last: 'Último',
+    Next: 'Siguiente',
+    Previous: 'Anterior'
+  },
+  oAria: {
+    SortAscending: ': Activar para ordenar la columna de manera ascendente',
+    SortDescending: ': Activar para ordenar la columna de manera descendente'
+  }
 };
 
 var langEn = {
@@ -37,32 +37,32 @@ var langEn = {
   processing: 'Processing...',
   search: 'Search:',
   zeroRecords: 'No matching records found',
-	oPaginate: {
-	  First: 'First',
-	  Last: 'Last',
-	  Next: 'Next',
-	  Previous: 'Previous'
-	},
-	oAria: {
-	  SortAscending: ': activate to sort column ascending',
-	  SortDescending: ': activate to sort column descending'
-	}
+  oPaginate: {
+    First: 'First',
+    Last: 'Last',
+    Next: 'Next',
+    Previous: 'Previous'
+  },
+  oAria: {
+    SortAscending: ': activate to sort column ascending',
+    SortDescending: ': activate to sort column descending'
+  }
 };
 
 var CustomDatatables = {
-	init: function() {
-		let table = $('.customDatatable');
-		let langSelected = langEs;
-		let url = window.location.pathname;
-		if (url.indexOf('/en/') != -1) {
-			langSelected = langEn;
-		}
+  init: function () {
+    let table = $('.customDatatable');
+    let langSelected = langEs;
+    let url = window.location.pathname;
+    if (url.indexOf('/en/') != -1) {
+      langSelected = langEn;
+    }
 
-		// begin first table
-		table.DataTable({
-			responsive: false,
-			lengthMenu: [ 5, 10, 25, 50 ],
-			pageLength: 10,
+    // begin first table
+    table.DataTable({
+      responsive: false,
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 10,
       language: langSelected,
       "dom":
         "<'row'" +
@@ -75,9 +75,13 @@ var CustomDatatables = {
         "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
         ">"
     });
-	}
+  },
+
+  destroy: function () {
+    $('.customDatatable').DataTable().destroy();
+  }
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
   CustomDatatables.init();
 });

@@ -1,5 +1,9 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
 <!DOCTYPE html>
-<html lang="en" {% printHtmlAttributes 'html' %}>
+
+<html lang="{{ LANGUAGE_CODE }}" {% printHtmlAttributes 'html' %}>
     <!--begin::Head-->
     <head>
         <title>{% block title %}{% endblock title %}KRM Tool</title>

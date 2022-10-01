@@ -156,8 +156,8 @@ class Control(AuditModel):
     def domain_risks(self):
         domain_risks = []
         for risk in self.risks.all():
-            if risk.domain_risk.pk not in domain_risks:
-                domain_risks.append(risk.domain_risk.pk)
+            if risk.risk_master.domain_risk.pk not in domain_risks:
+                domain_risks.append(risk.risk_master.domain_risk.pk)
         return domain_risks
 
     def processes(self):

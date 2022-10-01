@@ -8,6 +8,9 @@
 {% url 'evaluations:ca_evaluation_list' as ca_evaluation_list %}
 {% url 'evaluations:ca_evaluation_create' as ca_evaluation_create %}
 {% url 'configuration:ga_import' as import %}
+{% url 'evaluations_krm:ga_evaluation_krm_list' as evaluation_krm_list %}
+{% url 'evaluations_krm:ga_evaluation_krm_create' as evaluation_krm_create %}
+
 
 <!--begin::sidebar menu-->
 <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
@@ -174,7 +177,7 @@
           <!--begin:Menu link-->
           <span class="menu-link">
             <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
-            <span class="menu-title">{% trans 'Evaluaciones' %}</span>
+            <span class="menu-title">{% trans 'Evaluaciones KRC' %}</span>
             <span class="menu-arrow"></span>
           </span>
           <!--end:Menu link-->
@@ -188,7 +191,7 @@
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">{% trans 'Evaluaciones' %}</span>
+                <span class="menu-title">{% trans 'Evaluaciones KRC' %}</span>
               </a>
               <!--end:Menu link-->
             </div>
@@ -200,7 +203,50 @@
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">{% trans 'Crear evaluación' %}</span>
+                <span class="menu-title">{% trans 'Crear evaluación KRC' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+          </div>
+          <!--end:Menu sub-->
+        </div>
+        <!--end:Menu item-->
+
+        <!--begin:Menu item-->
+        <div data-kt-menu-trigger="click"
+          class="menu-item menu-accordion {% if request.path in EVALUATIONS_KRM_URLS %}show{% endif %}">
+          <!--begin:Menu link-->
+          <span class="menu-link">
+            <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
+            <span class="menu-title">{% trans 'Evaluaciones KRM' %}</span>
+            <span class="menu-arrow"></span>
+          </span>
+          <!--end:Menu link-->
+          <!--begin:Menu sub-->
+          <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path == evaluation_krm_list %}active{% endif %}"
+                href="{% url 'evaluations_krm:ga_evaluation_krm_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Evaluaciones KRM' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path == evaluation_krm_create %}active{% endif %}"
+                href="{% url 'evaluations_krm:ga_evaluation_krm_inherent_create' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Crear evaluación KRM' %}</span>
               </a>
               <!--end:Menu link-->
             </div>

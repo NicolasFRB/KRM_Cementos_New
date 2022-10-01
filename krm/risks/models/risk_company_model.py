@@ -84,3 +84,27 @@ class RiskCompany(AuditModel):
         verbose_name = _("Riesgo-Compañía")
         verbose_name_plural = _("Riesgos-Compañías")
         ordering = ["risk", "company"]
+
+    @property
+    def risk_ref(self):
+        return self.risk.ref
+
+    @property
+    def expert_assign(self):
+        from krm.companies.models import CompanyDomainRiskExperts
+        expert = CompanyDomainRiskExperts.objects.get(
+            company=self.company,
+            domain_risk=self.risk.risk_master.domain_risk
+        )
+        if expert.expert:
+            return expert.expert.email
+        return False
+
+    @property
+    def expert_pk(self):
+        from krm.companies.models import CompanyDomainRiskExperts
+        expert = CompanyDomainRiskExperts.objects.get(
+            company=self.company,
+            domain_risk=self.risk.risk_master.domain_risk
+        )
+        return expert.pk
