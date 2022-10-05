@@ -29,6 +29,8 @@ from krm.companies.api import (
     CompanyViewSet,
 )
 
+from krm.evaluations_krm.api import RiskTestInherentExpertApiView
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'controls', ControlViewSet)
@@ -43,7 +45,10 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('api/riskscompany/',
-         RiskCompanyApiView.as_view())
+         RiskCompanyApiView.as_view()),
+    path('api/risktestinherentexpert/',
+         RiskTestInherentExpertApiView.as_view()
+         )
 ]
 
 urlpatterns += i18n_patterns(

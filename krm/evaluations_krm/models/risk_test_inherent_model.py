@@ -20,7 +20,7 @@ class RiskTestInherent(AuditModel):
     evaluation = models.ForeignKey(
         "evaluations_krm.EvaluationKrmInherent",
         verbose_name=_("Evaluación de riesgo inherente"),
-        related_name="evaluation",
+        related_name="risk_test_inherents",
         on_delete=models.CASCADE,
     )
 
@@ -38,7 +38,6 @@ class RiskTestInherent(AuditModel):
     )
 
     RISK_CHOICES = (
-        (0, _('No aplica')),
         (1, _('Bajo')),
         (2, _('Medio')),
         (3, _('Alto')),
@@ -47,27 +46,40 @@ class RiskTestInherent(AuditModel):
     )
 
     impact_level_expert = models.PositiveSmallIntegerField(
-        _('Impacto'),
+        _('Nivel de Impacto indicado por el Experto del Dominio de Riesgo'),
         choices=RISK_CHOICES,
         default=5
     )
 
     probability_level_expert = models.PositiveSmallIntegerField(
-        _('Probabilidad'),
+        _('Nivel de Probabilidad indicado por el Experto del Dominio de Riesgo'),
         choices=RISK_CHOICES,
         default=5
     )
 
     impact_level_administrator = models.PositiveSmallIntegerField(
-        _('Impacto'),
+        _('Nivel de Impacto indicado por el Administrador del Dominio de Riesgo'),
         choices=RISK_CHOICES,
         default=5
     )
 
-    probabilityimpact_level_administrator = models.PositiveSmallIntegerField(
-        _('Probabilidad'),
+    probability_level_administrator = models.PositiveSmallIntegerField(
+        _('Nivel de Probabilidad indicado por el Administrador del Dominio de Riesgo'),
         choices=RISK_CHOICES,
         default=5
+    )
+
+    STATUS_CHOICES = (
+        (0, _('Sin iniciar')),
+        (1, _('Esperando al Experto de Dominio de Riesgo')),
+        (2, _('Esperando al Administrador')),
+        (3, _('Finalizado')),
+    )
+
+    status = models.PositiveSmallIntegerField(
+        _('Estado'),
+        choices=STATUS_CHOICES,
+        default=0
     )
 
     def __str__(self):
@@ -76,3 +88,46 @@ class RiskTestInherent(AuditModel):
     class Meta:
         verbose_name = _("Test de Riesgo Inherente")
         verbose_name_plural = _("Tests de Riesgo Inherente")
+
+    def send_notification_expert(self):
+        from krm.evaluations_krm.tasks import (
+            risk_test_send_notification_expert,
+        )
+        risk_test_send_notification_expert.delay(self.pk)
+
+    def sent_email_notification_expert(self):
+        # Esto notificará al control owner de que tiene controles por rellenar
+        context = {
+            "site_url": settings.SITE_URL,
+            "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
+            "user_email": self.expert.email,
+            "evaluation_ref": self.evaluation.ref,
+            "evaluation_date_begin": self.evaluation.date_begin,
+            "evaluation_date_end": self.evaluation.date_end,
+        }
+        body_html = render_to_string(
+            "emails/risk_test_inherent/risk_test_email_expert.html", context
+        )
+        context = {
+            "content": body_html,
+            "preheader": _("Test de Riesgos pendientes de valorar"),
+        }
+        body_html = render_to_string("emails/base-inline.html", context)
+        from_email = settings.EMAIL_FROM
+        if settings.EMAIL_BCC:
+            bcc = settings.EMAIL_BCC
+        else:
+            bcc = ""
+
+        subject, from_email, to = (
+            _("KRM Tool - Test de Riesgos pendientes de valorar"),
+            from_email,
+            self.expert.email,
+        )
+        msg = EmailMultiAlternatives(
+            subject, body_html, from_email, [to], [bcc])
+        msg.content_subtype = "html"
+
+        self.expert.add_action(
+            _("Envío de email de Test de Riesgos pendientes de valorar"))
+        msg.send(fail_silently=False)

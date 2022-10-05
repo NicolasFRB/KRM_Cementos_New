@@ -40,7 +40,7 @@ from krm.companies.models import Company
 from krm.controls.models import Control
 
 from krm.evaluations.forms import (
-    EvaluationKrmCreateForm,
+    EvaluationInherentCreateForm,
 )
 
 from krm.users.models import User
@@ -51,9 +51,9 @@ from krm.utils.utils import clean_html
 
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
-class GaEvaluationKrmListView(ListView):
+class GaEvaluationInherentListView(ListView):
     model = EvaluationKrmInherent
-    template_name = 'evaluations/GaEvaluationKrmList.html'
+    template_name = 'evaluations/GaEvaluationInherentList.html'
     context_object_name = 'evaluations'
 
     def get_context_data(self, **kwargs):
@@ -80,10 +80,10 @@ class GaEvaluationKrmListView(ListView):
 
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
-class GaEvaluationKrmInherentCreateView(FormView):
-    form_class = EvaluationKrmCreateForm
+class GaEvaluationInherentCreateView(FormView):
+    form_class = EvaluationInherentCreateForm
     model = EvaluationKrmInherent
-    template_name = 'evaluations/GaEvaluationKrmInherentCreate.html'
+    template_name = 'evaluations/GaEvaluationInherentCreate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,7 +94,7 @@ class GaEvaluationKrmInherentCreateView(FormView):
             {'title': _('Evaluaciones KRM'), 'url': reverse(
                 'evaluations:ga_evaluation_list')},
             {'title': _('Nuevo'), 'url': reverse(
-                'evaluations:ga_evaluation_krm_inherent_create')},
+                'evaluations:ga_evaluation_inherent_create')},
         ]
         context['page_title'] = _('Nueva Evaluación de Riesgo Inherente [KRM]')
         context['breadcrums'] = breadcrums

@@ -29,6 +29,7 @@
           <th>{% trans 'Nombre' %}</th>
           <th>{% trans 'Apellidos' %}</th>
           <th>{% trans 'Compañía/as' %}</th>
+          <th>{% trans 'Compañía/as que administra' %}</th>
           <th>{% trans 'Último inicio de sesión' %}</th>
         </tr>
       </thead>
@@ -43,7 +44,12 @@
                   <a href="{% url 'companies:ga_company_detail' company.pk %}">{{ company.name }}</a>{% if not forloop.last %}<br>{% endif %}
                 {% endfor %}
             </td>
-              <td>{{ user.last_login|default_if_none:"No ha iniciado sesión todavía" }}</td>
+            <td>
+              {% for company in user.companies_admin.all %}
+                <a href="{% url 'companies:ga_company_detail' company.pk %}">{{ company.name }}</a>{% if not forloop.last %}<br>{% endif %}
+              {% endfor %}
+            </td>
+            <td>{{ user.last_login|default_if_none:"No ha iniciado sesión todavía" }}</td>
           </tr>
           {% endfor %}
       </tbody>

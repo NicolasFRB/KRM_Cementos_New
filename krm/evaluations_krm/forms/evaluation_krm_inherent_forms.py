@@ -3,6 +3,7 @@ from django.contrib.postgres.forms import SimpleArrayField
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
+from django.forms import ModelForm, HiddenInput
 
 from django.core.validators import FileExtensionValidator
 
@@ -10,7 +11,7 @@ from krm.evaluations_krm.models import EvaluationKrmInherent
 from django.core.validators import FileExtensionValidator
 
 
-class EvaluationKrmCreateForm(ModelForm):
+class EvaluationInherentCreateForm(ModelForm):
 
     risk_companies = forms.CharField(
         max_length=1000,
@@ -39,3 +40,12 @@ class EvaluationKrmCreateForm(ModelForm):
         self.fields["date_end"].widget.attrs["class"] = "datepicker"
 
         self.fields["certification_year"].widget.attrs["class"] = "form-select"
+
+
+class EvaluationInherenetCompleteForm(forms.Form):
+
+    ref = forms.IntegerField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['ref'].widget = HiddenInput()

@@ -10,7 +10,7 @@ from krm.evaluations.models import Evaluation
 from django.core.validators import FileExtensionValidator
 
 
-class EvaluationKrmCreateForm(ModelForm):
+class EvaluationInherentCreateForm(ModelForm):
 
     risk_companies = SimpleArrayField(forms.CharField(
         max_length=1000),  label=_('Riesgos Compañía'))

@@ -64,7 +64,6 @@ class EvaluationKrmInherent(AuditModel):
     )
 
     PROCESS_STATUS_CHOICES = (
-        ("SI", _("Sin iniciar")),
         ("EP", _("En proceso")),
         ("FI", _("Finalizado")),
     )
@@ -73,7 +72,7 @@ class EvaluationKrmInherent(AuditModel):
         _("Estado"),
         max_length=2,
         choices=PROCESS_STATUS_CHOICES,
-        default="SI",
+        default="EP",
     )
 
     def __str__(self):

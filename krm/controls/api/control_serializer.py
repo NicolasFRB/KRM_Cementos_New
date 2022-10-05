@@ -4,6 +4,9 @@ from krm.controls.models import Control
 from rest_framework import routers, serializers, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 
 class ControlSerializer(serializers.ModelSerializer):
     risks = serializers.PrimaryKeyRelatedField(
@@ -34,6 +37,7 @@ class ControlSerializer(serializers.ModelSerializer):
             'sub_processes',
             'domain_risks',
             'processes',
+            'companies'
         ]
         read_only_fields = [f.name for f in Control._meta.get_fields()]
 
@@ -41,5 +45,5 @@ class ControlSerializer(serializers.ModelSerializer):
 class ControlViewSet(viewsets.ModelViewSet):
     queryset = Control.objects.all()
     serializer_class = ControlSerializer
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['ref', 'risks']
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]

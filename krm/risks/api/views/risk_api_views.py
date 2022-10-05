@@ -3,6 +3,9 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 from krm.companies.models import Company
 from krm.risks.models import (
     Risk,
@@ -14,12 +17,12 @@ from krm.risks.api import RiskSerializer
 from krm.risks.models import RiskCompany
 
 
-# @permission_classes((permissions.AllowAny,))
 class RiskCompanyApiView(APIView):
-    """ Función que recibe un listado de compañías y un listado de riesgos y devuelve el listado de riesgos compañáis que le aplican a cada una """
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    """ Función que recibe un listado de compañías y un listado de riesgos y devuelve el listado de riesgos compañías que le aplican a cada una """
 
     def get(self, request):
-
         company_pks = request.GET['company_pks'].split(',')
         risk_pks = request.GET['risk_pks'].split(',')
 

@@ -10,7 +10,8 @@ const configService = {
   apiGetDomainRisks: `${baseUrlApi}domain-risks/`,
   apiGetControls: `${baseUrlApi}controls/`,
   apiGetCompanies: `${baseUrlApi}companies?user=${user}`,
-  apiGetRiskCompany: `${baseUrlApi}riskscompany/`
+  apiGetRiskCompany: `${baseUrlApi}riskscompany/`,
+  apiSendRiskTestInherent: `${baseUrlApi}risktestinherentexpert/`,
 };
 
 export default configService;

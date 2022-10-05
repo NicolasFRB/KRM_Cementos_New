@@ -28,18 +28,18 @@
           <th>{% trans 'REF' %}</th>
           <th width="40%">{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Inicio' %}</th>
-          <th class="text-center">{% trans 'Controles' %}</th>
+          <th class="text-center">{% trans 'Tests de Riesgo Inherente' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for evaluation in evaluations %}
           <tr>
-            <td class="text-center"><a href="{% url 'evaluations:ga_evaluation_detail' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center"><a href="{% url 'evaluations_krm:ga_evaluation_krm_inherent_detail' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
             <td>{{ evaluation.ref }}</td>
             <td>{{ evaluation.description|default_if_none:""|striptags|safe|truncatechars:200 }}</td>
             <td>{{ evaluation.date_begin }}</td>
-            <td class="text-center"><span class="badge badge-info">{{ evaluation.control_tests.count }}</span></td>
+            <td class="text-center"><span class="badge badge-info">{{ evaluation.risk_test_inherents.count }}</span></td>
             <td class="text-center">{{ evaluation.get_status_display }}</td>
           </tr>
           {% endfor %}
@@ -49,7 +49,7 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'evaluations:ga_evaluation_create' %}" class="btn btn-sm btn-primary">
+    <a href="{% url 'evaluations_krm:ga_evaluation_inherent_create' %}" class="btn btn-sm btn-primary">
       <i class="bi bi-plus-lg"></i>
       {% trans 'Nuevo' %}</a>
   </div>

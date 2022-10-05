@@ -166,3 +166,11 @@ class Control(AuditModel):
             if sub_process.process.pk not in processes:
                 processes.append(sub_process.process.pk)
         return processes
+
+    def companies(self):
+        from krm.risks.models import RiskCompany
+        companies = RiskCompany.objects.filter(
+            risk__in=(self.risks.all())).values_list('company_id', flat=True)
+        companies = set(companies)
+        companies = list(companies)
+        return companies

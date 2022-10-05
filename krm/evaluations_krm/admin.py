@@ -25,6 +25,6 @@ class RiskTestInherentAdmin(admin.ModelAdmin):
         'impact_level_expert',
         'probability_level_expert',
         'impact_level_administrator',
-        'probabilityimpact_level_administrator'
+        'probability_level_administrator'
     )
     list_filter = ('evaluation__company', 'evaluation')
