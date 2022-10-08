@@ -25,20 +25,32 @@
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th class="text-center">{% trans 'REF' %}</th>
-          <th>{% trans 'Dominio de Riesgo' %}</th>
-          <th width="50%">{% trans 'Objetivo' %}</th>
+          <th class="text-center" width="15%">{% trans 'REF' %}</th>
+          <th width="30%">{% trans 'Nombre' %}</th>
+          <th width="5%">{% trans 'Descripción' %}</th>
+          <th width="5%">{% trans 'Actividad afectada' %}</th>
+          <th width="5%">{% trans 'Principales eventos' %}</th>
+          <th width="5%">{% trans 'Principales elementos' %}</th>
+          <th width="5%">{% trans 'Personal expuesto' %}</th>
+          <th>{% trans 'Dominio de Riesgo' %}</th>          
+          <th>{% trans 'Riesgo Maestro (N1)' %}</th>          
           <th class="text-center">{% trans 'Nº de Controles' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for risk in risks %}
           <tr>
-            <td class="text-center"><a href="{% url 'risks:ga_risk_detail' risk.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center">{{ risk.ref }}</td>
-            <td>{{ risk.domain_risk }}</td>
-            <td>{{ risk.name|striptags|safe|truncatechars:200 }}</td>
-            <td class="text-center"><span class="badge badge-info">{{ risk.controls.count }}</span></td>
+            <td class="text-center align-middle"><a href="{% url 'risks:ga_risk_detail' risk.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ risk.ref }}</td>
+            <td class="align-middle">{{ risk.name|striptags|safe|truncatechars:200 }}</td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_activity_affected }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_events }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_elements }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_exposed_staff }}"></i></td>
+            <td class="align-middle"><span><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.risk_master.domain_risk.pk %}">{{ risk.risk_master.domain_risk.name }}</a></span></td>
+            <td class="align-middle"><span><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk_master.pk %}">{{ risk.risk_master.name }}</a></span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ risk.controls.count }}</span></td>
           </tr>
           {% endfor %}
       </tbody>

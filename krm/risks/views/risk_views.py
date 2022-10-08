@@ -45,7 +45,7 @@ class GaRiskListView(ListView):
             {'title': _('Riesgos'), 'url': reverse(
                 'risks:ga_risk_list')},
         ]
-        context['page_title'] = _('Riesgos')
+        context['page_title'] = _('Riesgos (N2)')
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
@@ -55,6 +55,7 @@ class GaRiskListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+        
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
@@ -70,11 +71,11 @@ class GaRiskDetailView(DetailView):
         context = KTLayout.init(context)
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
+            {'title': _('Riesgos (N2)'), 'url': reverse(
                 'risks:ga_risk_list')},
             {'title': self.object.name}
         ]
-        context['page_title'] = f"{_('Riesgo')} : {self.object.name}"
+        context['page_title'] = f"{_('Riesgo (N2)')} : {self.object.name}"
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
@@ -113,7 +114,7 @@ class GaRiskCreateView(CreateView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Riesgos'), 'url': reverse(
                 'risks:ga_risk_list')},
-            {'title': _('Nuevo'), 'url': reverse(
+            {'title': _('Nuevo (N2)'), 'url': reverse(
                 'risks:ga_risk_create')},
         ]
         context['page_title'] = _('Nuevo Riesgo')
@@ -149,7 +150,7 @@ class GaRiskUpdateView(UpdateView):
                 'risks:ga_risk_list')},
             {'title': _('Editar')},
         ]
-        context['page_title'] = _('Editar Riesgo')
+        context['page_title'] = _('Editar Riesgo (N2)')
         context['breadcrums'] = breadcrums
 
         return context
@@ -162,7 +163,8 @@ class GaRiskUpdateView(UpdateView):
             _('Riesgo actualizado correctamente')
         )
         return reverse_lazy(
-            'risks:ga_risk_list'
+            'risks:ga_risk_detail',
+            kwargs={"pk": self.object.pk},
         )
 
 
@@ -177,7 +179,7 @@ class GaRiskDeleteView(DeleteView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos'), 'url': reverse(
+            {'title': _('Riesgos (N2)'), 'url': reverse(
                 'risks:ga_risk_list')},
             {'title': _('Eliminar')},
         ]
@@ -190,11 +192,11 @@ class GaRiskDeleteView(DeleteView):
     def get_success_url(self):
         messages.add_message(
             self.request, messages.SUCCESS, _(
-                "Riesgo eliminado correctamente")
+                "Riesgo (N2) eliminado correctamente")
         )
         return reverse_lazy("risks:ga_risk_list")
 
     def get_confirm_text_message(self):
         return _(
-            '<span class="kt-font-bold">¿Seguro que desea eliminar el Riesgo: </span> {0} {1}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
+            '<span class="kt-font-bold">¿Seguro que desea eliminar el Riesgo (N2): </span> {0} {1}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
         ).format(str(self.object.ref), self.object.name)

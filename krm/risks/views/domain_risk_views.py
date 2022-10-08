@@ -85,7 +85,7 @@ class GaDomainRiskDetailView(DetailView):
                 'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
-
+        
         return context
 
 
@@ -152,7 +152,8 @@ class GaDomainRiskUpdateView(UpdateView):
             _('Dominio de Riesgo actualizado correctamente')
         )
         return reverse_lazy(
-            'domain_risks:ga_domain_risk_list'
+            'domain_risks:ga_domain_risk_detail',
+            kwargs={"pk": self.object.pk},
         )
 
 
