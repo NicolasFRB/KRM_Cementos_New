@@ -65,7 +65,7 @@
             <!--begin::Col-->
             <div class="col-xl-7">
               <div class="fs-6">
-                <span><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.risk_master.domain_risk.pk %}">{{ risk.risk_master.domain_risk.name }}</a></span>
+              <a href="{% url 'domain_risks:ga_domain_risk_detail' risk.risk_master.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.domain_risk.name }}">{{ risk.risk_master.domain_risk.ref }}</span></a>
               </div>
             </div>
             <!--end::Col-->
@@ -80,7 +80,7 @@
             <!--begin::Col-->
             <div class="col-xl-7">
               <div class="fs-6">
-                <span><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk_master.pk %}">{{ risk.risk_master.name }}</a></span>
+              <a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.name }}">{{ risk.risk_master.ref }}</span></a>
               </div>
             </div>
             <!--end::Col-->
@@ -215,20 +215,44 @@
     {% if risk.controls.all %}
     <table id="domain_risk_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
-        <tr class="fw-semibold fs-6">
+      <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
-          <th width="75%">{% trans 'Objetivo' %}</th>
+          <th class="text-center">{% trans 'Objetivo' %}</th>
+          <th class="text-center">{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Frecuencia' %}</th>
+          <th class="text-center">{% trans 'Tipo' %}</th>
+          <th class="text-center">{% trans 'Automático' %}</th>
+          <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
+          <th class="text-center">{% trans 'Subprocesos' %}</th>
         </tr>
       </thead>
       <tbody>
         {% for control in risk.controls.all %}
         <tr>
-            <td class="text-center"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i
-                  class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center">{{ control.ref }}</td>
-            <td>{{ control }}</td>
-        </tr>
+            <td class="text-center align-middle"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ control.ref }}</td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.name }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description }}"></i></td>
+            <td class="text-center align-middle">{{ control.control_frequency }}</td>
+            <td class="text-center align-middle">{{ control.control_type }}</td>
+            <td class="text-center align-middle">{{ control.automation }}</td>
+            <td class="text-center align-middle">
+              {% for r1 in control.risks.all %}
+                <div style="margin: 5px;">
+                  <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
+                </div>
+              {% endfor %}
+            </td>
+            <td class="text-center align-middle">
+              {% for s1 in control.sub_processes.all %}
+                <div style="margin: 5px;">
+                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ s1.name }}">{{ s1.ref }}</span></a>
+                </div>
+              {% endfor %}
+            </td>
+            
+          </tr>
         {% endfor %}
       </tbody>
     </table>

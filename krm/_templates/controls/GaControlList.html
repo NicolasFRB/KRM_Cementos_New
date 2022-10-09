@@ -17,6 +17,20 @@
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
     <!--end::Card header-->
+    <div style="position:absolute; right: 25px; top: 10px;">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+          <label class="form-check-label" for="flexRadioDefault1">
+          Riesgos (N1) / Procesos
+          </label>
+      </div>
+      <div class="form-check" style="margin-top: 10px;">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+          <label class="form-check-label" for="flexRadioDefault2">
+            Riesgos (N2) / Subprocesos
+          </label>
+      </div>
+    </div>
   </div>
   <!--end::Card header-->
   <!--begin::Card body-->
@@ -26,15 +40,40 @@
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
-          <th width="60%">{% trans 'Objetivo' %}</th>
+          <th class="text-center">{% trans 'Objetivo' %}</th>
+          <th class="text-center">{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Frecuencia' %}</th>
+          <th class="text-center">{% trans 'Tipo' %}</th>
+          <th class="text-center">{% trans 'Automático' %}</th>
+          <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
+          <th class="text-center">{% trans 'Subprocesos' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for control in controls %}
           <tr>
-            <td class="text-center"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center">{{ control.ref }}</td>
-            <td>{{ control }}</td>
+            <td class="text-center align-middle"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ control.ref }}</td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.name }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description }}"></i></td>
+            <td class="text-center align-middle">{{ control.control_frequency }}</td>
+            <td class="text-center align-middle">{{ control.control_type }}</td>
+            <td class="text-center align-middle">{{ control.automation }}</td>
+            <td class="text-center align-middle">
+              {% for r1 in control.risks.all %}
+                <div style="margin: 5px;">
+                  <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
+                </div>
+              {% endfor %}
+            </td>
+            <td class="text-center align-middle">
+              {% for s1 in control.sub_processes.all %}
+                <div style="margin: 5px;">
+                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ s1.name }}">{{ s1.ref }}</span></a>
+                </div>
+              {% endfor %}
+            </td>
+            
           </tr>
           {% endfor %}
       </tbody>

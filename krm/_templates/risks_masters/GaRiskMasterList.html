@@ -52,7 +52,7 @@
             <td class="text-center align-middle">
               {% for r1 in risk.risks.all %}
                 <div style="margin: 5px;">
-                <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary">{{ r1.ref }}</span></a>
+                <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
                 </div>
               {% endfor %}
             </td>
