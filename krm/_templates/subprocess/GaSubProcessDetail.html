@@ -24,7 +24,7 @@
     <div class="row mb-8">
       <!--begin::Col-->
       <div class="col-xl-3">
-        <div class="fs-6 fw-semibold">{% trans 'REF' %}</div>
+        <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'REF' %}</span></div>
       </div>
       <!--end::Col-->
       <!--begin::Col-->
@@ -39,7 +39,7 @@
     <div class="row mb-8">
       <!--begin::Col-->
       <div class="col-xl-3">
-        <div class="fs-6 fw-semibold">{% trans 'Nombre' %}</div>
+        <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
       </div>
       <!--end::Col-->
       <!--begin::Col-->
@@ -54,13 +54,13 @@
     <div class="row mb-8">
       <!--begin::Col-->
       <div class="col-xl-3">
-        <div class="fs-6 fw-semibold">{% trans 'Proceso' %}</div>
+        <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Proceso' %}</span></div>
       </div>
       <!--end::Col-->
       <!--begin::Col-->
       <div class="col-xl-9">
         <div class="fs-6">
-          <span><a href="{% url 'process:ga_process_detail' subprocess.process.pk %}">{{ subprocess.process.name }}</a></span>
+        <a href="{% url 'process:ga_process_detail' subprocess.process.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ subprocess.process.name }}">{{ subprocess.process.ref }}</span></a>
         </div>
       </div>
       <!--end::Col-->
@@ -69,7 +69,7 @@
     <div class="row mb-8">
       <!--begin::Col-->
       <div class="col-xl-3">
-        <div class="fs-6 fw-semibold">{% trans 'Descripción' %}</div>
+        <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
       </div>
       <!--end::Col-->
       <!--begin::Col-->
@@ -100,7 +100,7 @@
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Riesgos asociados' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Controles asociados' %}</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -108,28 +108,52 @@
   <div class="card-body">
     {% if subprocess.controls.all %}
       <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
-        <thead>
-          <tr class="fw-semibold fs-6">
-            <th class="text-center">{% trans 'Acción' %}</th>
-            <th class="text-center">{% trans 'REF' %}</th>
-            <th width="60%">{% trans 'Objetivo' %}</th>
-          </tr>
-        </thead>
-        <tbody>
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center">{% trans 'Acción' %}</th>
+          <th class="text-center">{% trans 'REF' %}</th>
+          <th class="text-center">{% trans 'Objetivo' %}</th>
+          <th class="text-center">{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Frecuencia' %}</th>
+          <th class="text-center">{% trans 'Tipo' %}</th>
+          <th class="text-center">{% trans 'Automático' %}</th>
+          <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
+          <th class="text-center">{% trans 'Subprocesos' %}</th>
+        </tr>
+      </thead>
+      <tbody>
           {% for control in subprocess.controls.all %}
           <tr>
-            <td class="text-center"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i
-                  class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center">{{ control.ref }}</td>
-            <td>{{ control }}</td>
+            <td class="text-center align-middle"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ control.ref }}</td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.name }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description }}"></i></td>
+            <td class="text-center align-middle">{{ control.control_frequency }}</td>
+            <td class="text-center align-middle">{{ control.control_type }}</td>
+            <td class="text-center align-middle">{{ control.automation }}</td>
+            <td class="text-center align-middle">
+              {% for r1 in control.risks.all %}
+                <div style="margin: 5px;">
+                  <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
+                </div>
+              {% endfor %}
+            </td>
+            <td class="text-center align-middle">
+              {% for s1 in control.sub_processes.all %}
+                <div style="margin: 5px;">
+                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ s1.name }}">{{ s1.ref }}</span></a>
+                </div>
+              {% endfor %}
+            </td>
+            
           </tr>
           {% endfor %}
-        </tbody>
+      </tbody>
       </table>
     {% else %}
     <div class="row mt-2 mb-2">
       <div class="col-sm">
-        <div class="alert alert-primary">{% trans 'No existen riesgos asociados a este sub proceso' %}.</div>
+        <div class="alert alert-primary">{% trans 'No existen controles asociados a este sub proceso' %}.</div>
       </div>
     </div>
     {% endif %}
