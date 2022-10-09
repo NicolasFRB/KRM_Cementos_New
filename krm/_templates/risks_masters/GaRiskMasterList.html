@@ -47,7 +47,7 @@
             <td class="text-center align-middle">{{ risk.ref }}</td>
             <td class="align-middle">{{ risk.name|striptags|safe|truncatechars:200 }}</td>
             <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description }}"></i></td>
-            <td class="align-middle"><span><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.domain_risk.pk %}">{{ risk.domain_risk.name }}</a></span></td>
+            <td class="text-center align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.domain_risk.name }}">{{ risk.domain_risk.ref }}</a></span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ risk.risks.count }}</span></td>
             <td class="text-center align-middle">
               {% for r1 in risk.risks.all %}
