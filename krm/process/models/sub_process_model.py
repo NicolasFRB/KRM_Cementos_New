@@ -48,19 +48,3 @@ class SubProcess(AuditModel):
     def save(self, *args, **kwargs):
         self.ref = self.ref.upper()
         super().save(*args, **kwargs)
-
-    # @property
-    # def get_controls(self):
-    #     from krc.process.models import Control
-    #     from django.db.models import Subquery
-
-    #     return Control.objects.filter(risk__in=self.risks.all())
-
-    # @property
-    # def get_regulatory_frameworks(self):
-    #     rfs = []
-    #     for control in self.get_controls.all():
-    #         for rf in control.regulatory_frameworks.all():
-    #             rfs.append(rf)
-    #     rfs = set(rfs)
-    #     return rfs

@@ -288,14 +288,11 @@ class GaCompanyImportView(FormView):
                 'companies:ga_company_list')},
             {'title': _('Importar Compañías')},
         ]
-        context['page_title'] = _('Impoartar Companías')
+        context['page_title'] = _('Importar Companías')
         context['breadcrums'] = breadcrums
         return context
 
     def form_valid(self, form):
-        # input_excel = self.request.FILES['companies_file']
-        # book = load_workbook(file_contents=input_excel.read())
-        # hoja = book.sheet_by_index(0)
         companies_to_create = []
 
         input_excel = self.request.FILES['companies_file'].read()
@@ -333,6 +330,8 @@ class GaCompanyImportView(FormView):
                     company['country'] = None
                 company['email'] = str(
                     row[8].value).lower().replace(' ', '')
+                company['type_company'] = str(row[9].value)
+                company['companies_in_scope'] = str(row[10].value)
 
                 # Tenemos que comprobar que el email esté bien formado
                 if company['email'] != '':
@@ -412,7 +411,9 @@ class GaCompanyImportView(FormView):
                 cp=c['cp'],
                 email=c['email'],
                 state=c['state'],
-                country=c['country']
+                country=c['country'],
+                type_company=c['type_company'],
+                companies_in_scope=c['companies_in_scope'],
             )
 
         messages.add_message(

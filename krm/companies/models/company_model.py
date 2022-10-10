@@ -37,16 +37,47 @@ class Company(AuditModel):
     )
 
     address = models.CharField(
-        _("Dirección"), max_length=140, null=True, blank=True)
+        _("Dirección"),
+        max_length=140,
+        null=True,
+        blank=True
+    )
 
     state = models.CharField(
-        _("Población"), max_length=140, null=True, blank=True)
+        _("Población"),
+        max_length=140,
+        null=True,
+        blank=True
+    )
 
-    cp = models.PositiveIntegerField(_("Código Postal"), null=True, blank=True)
+    cp = models.PositiveIntegerField(_("Código Postal"),
+                                     null=True,
+                                     blank=True
+                                     )
 
-    country = CountryField(_("País"), null=True, blank=True)
+    country = CountryField(_("País"),
+                           null=True,
+                           blank=True
+                           )
 
-    email = models.EmailField(_("Email"), blank=True, null=True)
+    email = models.EmailField(_("Email"),
+                              blank=True,
+                              null=True
+                              )
+
+    type_company = models.CharField(
+        _("Tipo"),
+        max_length=200,
+        null=True,
+        blank=True
+    )
+
+    companies_in_scope = models.CharField(
+        "Companies in scope",
+        max_length=1000,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return self.name
@@ -94,69 +125,3 @@ class Company(AuditModel):
                     company=self,
                     risk=risk
                 )
-
-    # @property
-    # def employees_active(self):
-    #     return self.employees.filter(is_active=True)
-
-    # def get_control_tests(self):
-    #     from krc.process_test.models import ControlTest
-
-    #     return ControlTest.objects.filter(process_test__in=self.process_tests.all())
-
-    # def get_process_tests_status_aggregate(self):
-    #     from krc.process_test.models import ProcessTest
-    #     from krc.utils import COLORS
-
-    #     process = (
-    #         self.process_tests.all()
-    #         .values("status")
-    #         .annotate(num_proces_tests=Count("id"))
-    #     )
-    #     gd_process = []
-    #     for c in process:
-    #         e = {}
-    #         e["label"] = COLORS[c["status"]]["label"]
-    #         e["color"] = COLORS[c["status"]]["color"]
-    #         e["data"] = c["num_proces_tests"]
-    #         gd_process.append(e)
-
-    #     return gd_process
-
-    # def get_control_tests_status_aggregate(self):
-    #     from krc.process_test.models import ControlTest
-    #     from krc.utils import COLORS
-
-    #     controls = (
-    #         ControlTest.objects.filter(process_test__in=self.process_tests.all())
-    #         .values("status")
-    #         .annotate(num_controls=Count("id"))
-    #     )
-    #     gd_controls = []
-    #     for c in controls:
-    #         e = {}
-    #         e["label"] = COLORS[c["status"]]["label"]
-    #         e["color"] = COLORS[c["status"]]["color"]
-    #         e["data"] = c["num_controls"]
-    #         gd_controls.append(e)
-
-    #     return gd_controls
-
-    # def get_control_tests_result_aggregate(self):
-    #     from krc.process_test.models import ControlTest
-    #     from krc.utils import COLORS
-
-    #     controls = (
-    #         ControlTest.objects.filter(process_test__in=self.process_tests.all())
-    #         .values("result")
-    #         .annotate(num_controls=Count("id"))
-    #     )
-    #     gd_controls = []
-    #     for c in controls:
-    #         e = {}
-    #         e["label"] = COLORS[c["result"]]["label"]
-    #         e["color"] = COLORS[c["result"]]["color"]
-    #         e["data"] = c["num_controls"]
-    #         gd_controls.append(e)
-
-    #     return gd_controls

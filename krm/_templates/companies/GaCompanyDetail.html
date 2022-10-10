@@ -48,6 +48,12 @@
       <div class="mb-4 col-md-4 col-12">
           <span class="fs-6 fw-semibold">{% trans 'País' %}: </span> <span>{{ company.country.name }}</span>
       </div>
+      <div class="mb-4 col-md-6 col-12">
+        <span class="fs-6 fw-semibold">{% trans 'Tipo' %}: </span> <span>{{ company.type_company|default_if_none:"" }}</span>
+      </div>
+      <div class="mb-4 col-md-6 col-12">
+        <span class="fs-6 fw-semibold">{% trans 'Companies in scope' %}: </span> <span>{{ company.companies_in_scope|default_if_none:"" }}</span>
+      </div>
     </div>
   </div>
   <!--end::Card body-->
