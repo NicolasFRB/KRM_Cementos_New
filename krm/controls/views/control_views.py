@@ -61,7 +61,7 @@ class GaControlListView(ListView):
                 'primary': True,
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
-        ]
+        ]        
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
@@ -169,7 +169,8 @@ class GaControlUpdateView(UpdateView):
             _('Control actualizado correctamente')
         )
         return reverse_lazy(
-            'controls:ga_control_list'
+            'controls:ga_control_detail',
+            kwargs={"pk": self.object.pk},
         )
 
 

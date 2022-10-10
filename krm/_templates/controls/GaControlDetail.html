@@ -21,98 +21,294 @@
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
-      <div class="row">
-        <div class="col col-12 mb-4">
-          <span class="fs-6 fw-semibold">{% trans 'Referencia' %}: </span> <span>{{ control.ref }}</span>
-        </div>
-        <div class="col col-12 mb-4">
-          <span class="fs-6 fw-semibold">{% trans 'Riesgos' %}: </span> 
+    <div class="row">
+      <div class="col col-md-4">
+        <fieldset>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.ref }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo de control' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_control_type_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Frecuencia' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_control_frequency_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Key control' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.key_control|yesno:_("Si, No") }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+        </fieldset>
+      </div>
+      <div class="col col-md-8">
+        <fieldset>
+          <div class="row mb-8 justify-content-start"  style="margin-bottom:.5rem !important;">
+            <!--begin::Col-->
+            <div class="col-xl-3">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Riesgos (N2)' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->            
             {% if control.risks.count %}
               {% for risk in control.risks.all %}
-                <span><a href="{% url 'risks:ga_risk_detail' risk.pk %}">{{ risk.name }}</a></span>{% if not forloop.last %}, {% endif %}
+                {% if not forloop.first and forloop.counter0|divisibleby:3 %}
+                  </div>
+                  <div class="row mb-8 justify-content-start" style="margin-bottom:.5rem !important;">
+                    <div class="col-xl-3">
+                      <div class="fs-6 fw-semibold"></div>
+                    </div>
+                  {% endif %}
+                    <div class="col-xl-3">
+                      <div class="fs-6 fw-semibold"><a href="{% url 'risks:ga_risk_detail' risk.pk %}"><span class="badge badge-primary text-wrap" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.name }}">{{ risk.ref }}</span></a></div>
+                    </div>
               {% endfor %}
+                
             {% else %}
-              <p>{% trans 'Sin riesgos asociados' %}</p>
-            {% endif %}
-        </div>
-        <div class="col col-12 mb-4">
-          <span class="fs-6 fw-semibold">{% trans 'Subprocesos' %}: </span>
-          {% if control.sub_processes.count %}
-            {% for subprocess in control.sub_processes.all %}
-              <span><a href="{% url 'risks:ga_risk_detail' subprocess.pk %}">{{ subprocess.name }}</a></span>
-              {% if not forloop.last %}, {% endif %}
-            {% endfor %}
-          {% else %}
-            <span>{% trans 'Sin subprocesos asociados' %}</span>
-          {% endif %}
-        </div>
-        <div class="col col-12 mb-4">
-          <span class="fs-6 fw-semibold">{% trans '¿Es Key Control?' %}</span> <span>{{ control.key_control|yesno:_("Si, No") }}</span>
-        </div>
-      </div>
-      <div class="separator my-10"></div>
-      <div class="row">
-        <div class="col col-12 col-md-4">
-          <div class="fs-6 fw-semibold">{% trans 'Objetivo' %}</div>
-          <div>{{ control.name|safe }}</div>
-        </div>
-        <div class="col col-12 col-md-4">
-          <div class="fs-6 fw-semibold">{% trans 'Descripción' %}</div>
-          <div>{{ control.description|safe }}</div>
-        </div>
-        <div class="col col-12 col-md-4">
-          <div class="fs-6 fw-semibold">{% trans 'Procedimiento de testeo' %}</div>
-          <div>{{ control.testing_procedure|safe }}</div>
-        </div>
-      </div>
-      <div class="separator my-10"></div>
-      <div class="row">
-        <div class="col col-12 col-md-4">
-          <legend>{% trans 'Atributos' %}</legend>
-          <div class="mb-4"><span class="fs-6 fw-semibold">{% trans 'Tipo de control' %}: </span> <span>{{ control.get_control_type_display }}</span></div>
-          <div class="mb-4"><span class="fs-6 fw-semibold">{% trans 'Automatización del control' %}: </span> <span>{{ control.get_automation_display }}</span></div>
-          <div class="mb-4"><span class="fs-6 fw-semibold">{% trans 'Sistemas' %}: </span> <span>{{ control.systems }}</span></div>
-          <div class="mb-4"><span class="fs-6 fw-semibold">{% trans 'Frecuencia del control' %}: </span> <span>{{ control.get_control_frequency_display }}</span></div>
-        </div>
-        <div class="col col-12 col-md-8">
-          <legend class="lh-1">{% trans 'Assertions' %}</legend>
-          <div class="row">
-            <div class="col col-12 col-md-6">
-              <div class="mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Existency' %}: </span> <span>{{ control.get_assert_existence_display }}</span>
+              <div class="col-xl-6">
+                <div class="fs-6 fw-semibold"><span class="badge badge-danger text-wrap">{% trans 'Sin riesgos asociados' %}</span></div>
               </div>
-    
-              <div class="mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Existency' %}: </span> <span>{{ control.get_assert_existence_display }}</span>
-              </div>
-    
-              <div class="mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Completness' %}: </span> <span>{{ control.get_assert_completeness_display }}</span>
-              </div>
-    
-              <div class="mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Valuation' %}: </span> <span>{{ control.get_assert_valuation_display }}</span>
-              </div>
-            </div>
-            <div class="col col-12 col-md-6">
-              <div class="mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Obligation right' %}: </span> <span>{{ control.get_assert_rights_display }}</span>
-              </div>
-    
-              <div class="mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Presentation' %}: </span> <span>{{ control.get_assert_disclosure_display }}</span>
-              </div>
-    
-              <div class="mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Accurancy' %}: </span> <span>{{ control.get_assert_accurancy_display }}</span>
-              </div>
-    
-              <div class="mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Fraud' %}: </span> <span>{{ control.get_assert_froud_display }}</span>
-              </div>
-            </div>
+            {% endif %} 
           </div>
-        </div>
+          <div class="row mb-8 justify-content-start"  style="margin-bottom:.5rem !important;">
+            <!--begin::Col-->
+            <div class="col-xl-3">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Subprocesos' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->            
+            {% if control.sub_processes.count %}
+              {% for subprocess in control.sub_processes.all %}
+                {% if not forloop.first and forloop.counter0|divisibleby:3 %}
+                  </div>
+                  <div class="row mb-8 justify-content-start" style="margin-bottom:.5rem !important;">
+                    <div class="col-xl-3">
+                      <div class="fs-6 fw-semibold"></div>
+                    </div>
+                  {% endif %}
+                    <div class="col-xl-3">
+                    <div class="fs-6 fw-semibold"><a href="{% url 'subprocess:ga_sub_process_detail' subprocess.pk %}"><span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ subprocess.name }}">{{ subprocess.ref }}</span></a></div>
+                    </div>
+              {% endfor %}
+                
+            {% else %}
+              <div class="col-xl-6">
+                <div class="fs-6 fw-semibold"><span class="badge badge-danger text-wrap">{% trans 'Sin subprocesos asociados' %}</span></div>
+              </div>
+            {% endif %} 
+          </div>   
+        </fieldset>
+      </div>
+      
+    </div>
+
+    <div class="row mb-8">
+      <div class="col col-md-4">
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Objetivo' %}</span></div>
+          <div>{{ control.name|safe }}</div>
+      </div>
+      <div class="col col-md-8">
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
+          <div>{{ control.description|safe }}</div>
+      </div>
+    </div>
+    <div class="row mb-8">
+      <div class="col col-md-4">
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Automatización' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_automation_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sistemas' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.systems }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+      </div>
+      <div class="col col-md-8">
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Procedimiento de testeo' %}</span></div>
+          <div>{{ control.testing_procedure|safe }}</div>
+      </div>
+    </div>
+    <div class="row mb-8">
+      <div class="col col-md-4">
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'GAP' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_is_gap_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Existencia' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_existence_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Completitud' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_completeness_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+      </div>
+      
+      <div class="col col-md-4">
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Presentación' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_disclosure_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Valoración' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_valuation_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Obligación' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_rights_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+      </div>
+
+      <div class="col col-md-4">
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Precisión' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_accurancy_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fraude' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_froud_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
       </div>
     </div>
   </div>

@@ -37,7 +37,6 @@
           </a>
           <!--end:Menu link-->
         </div>
-
         <!--begin:Menu item-->
         <div data-kt-menu-trigger="click"
           class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in RISKS_MASTERS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS %}show{% endif %}">
@@ -50,43 +49,48 @@
           </span>
           <!--end:Menu link-->
           <!--begin:Menu sub-->
-          <div class="menu-sub menu-sub-accordion">
-            <!--begin:Menu item-->
-            <div class="menu-item">
-              <!--begin:Menu link-->
-              <a class="menu-link {% if request.path in DOMAIN_RISKS_URLS %}active{% endif %}" href="{% url 'domain_risks:ga_domain_risk_list' %}">
-                <span class="menu-bullet">
-                  <span class="bullet bullet-dot"></span>
-                </span>
-                <span class="menu-title">{% trans 'Dominios de riesgo' %}</span>
-              </a>
-              <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item">
-              <!--begin:Menu link-->
-              <a class="menu-link {% if request.path in RISKS_MASTERS_URLS %}active{% endif %}" href="{% url 'risks_masters:ga_risk_master_list' %}">
-                <span class="menu-bullet">
-                  <span class="bullet bullet-dot"></span>
-                </span>
-                <span class="menu-title">{% trans 'Riesgos Maestros' %}</span>
-              </a>
-              <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item">
-              <!--begin:Menu link-->
-              <a class="menu-link {% if request.path in RISKS_URLS %}active{% endif %}" href="{% url 'risks:ga_risk_list' %}">
-                <span class="menu-bullet">
-                  <span class="bullet bullet-dot"></span>
-                </span>
-                <span class="menu-title">{% trans 'Riesgos' %}</span>
-              </a>
-              <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
+          
+          <div class="menu-sub menu-sub-accordion">            
+            <li>
+              <div class="menu-item">
+                <!--begin:Menu link-->
+                <a class="menu-link {% if request.path in DOMAIN_RISKS_URLS %}active{% endif %}" href="{% url 'domain_risks:ga_domain_risk_list' %}">
+                  <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                  </span>
+                  <span class="menu-title">{% trans 'Dominios de riesgo' %}</span>
+                </a>
+                <!--end:Menu link-->
+              </div>
+            </li>
+              <ul>
+                <li>
+                  <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {% if request.path in RISKS_MASTERS_URLS %}active{% endif %}" href="{% url 'risks_masters:ga_risk_master_list' %}">
+                      <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                      </span>
+                      <span class="menu-title">{% trans 'Riesgos Maestros (N1)' %}</span>
+                    </a>
+                    <!--end:Menu link-->
+                  </div>
+                </li>
+                <ul>
+                  <li>
+                    <div class="menu-item">
+                      <!--begin:Menu link-->
+                      <a class="menu-link {% if request.path in RISKS_URLS %}active{% endif %}" href="{% url 'risks:ga_risk_list' %}">
+                        <span class="menu-bullet">
+                          <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">{% trans 'Riesgos (N2)' %}</span>
+                      </a>
+                      <!--end:Menu link-->
+                    </div>
+                  </li>
+                </ul>
+              </ul>
             <!--begin:Menu item-->
             <div class="menu-item">
               <!--begin:Menu link-->
@@ -100,31 +104,7 @@
             </div>
             <!--end:Menu item-->
             <!--begin:Menu item-->
-            <div class="menu-item">
-              <!--begin:Menu link-->
-              <a class="menu-link {% if request.path in COMPANIES_URLS %}active{% endif %}" href="{% url 'companies:ga_company_list' %}">
-                <span class="menu-bullet">
-                  <span class="bullet bullet-dot"></span>
-                </span>
-                <span class="menu-title">{% trans 'Compañías' %}</span>
-              </a>
-              <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
-            <div class="menu-item">
-              <!--begin:Menu link-->
-              <a class="menu-link {% if request.path in USERS_URLS %}active{% endif %}"
-                href="{% url 'users:ga_user_list' %}">
-                <span class="menu-bullet">
-                  <span class="bullet bullet-dot"></span>
-                </span>
-                <span class="menu-title">{% trans 'Usuarios' %}</span>
-              </a>
-              <!--end:Menu link-->
-            </div>
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
+            <li>
             <div class="menu-item">
               <!--begin:Menu link-->
               <a class="menu-link {% if request.path in PROCESS_URLS %}active{% endif %}" href="{% url 'process:ga_process_list' %}">
@@ -136,19 +116,56 @@
               <!--end:Menu link-->
             </div>
             <!--end:Menu item-->
+            </li>
+              <ul>
+                <li>
+                  <!--begin:Menu item-->
+                  <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {% if request.path in SUBPROCESS_URLS %}active{% endif %}"
+                      href="{% url 'subprocess:ga_sub_process_list' %}">
+                      <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                      </span>
+                      <span class="menu-title">{% trans 'Sub Procesos' %}</span>
+                    </a>
+                    <!--end:Menu link-->
+                  </div>
+                  <!--end:Menu item-->
+                  </li>
+              </ul>
             <!--begin:Menu item-->
-            <div class="menu-item">
-              <!--begin:Menu link-->
-              <a class="menu-link {% if request.path in SUBPROCESS_URLS %}active{% endif %}"
-                href="{% url 'subprocess:ga_sub_process_list' %}">
-                <span class="menu-bullet">
-                  <span class="bullet bullet-dot"></span>
-                </span>
-                <span class="menu-title">{% trans 'Sub Procesos' %}</span>
-              </a>
-              <!--end:Menu link-->
-            </div>
+            <li>
+              <div class="menu-item">
+                <!--begin:Menu link-->
+                <a class="menu-link {% if request.path in COMPANIES_URLS %}active{% endif %}" href="{% url 'companies:ga_company_list' %}">
+                  <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                  </span>
+                  <span class="menu-title">{% trans 'Compañías' %}</span>
+                </a>
+                <!--end:Menu link-->
+              </div>
+            </li>
+              <ul>
+                <li>
+                  <!--end:Menu item-->
+                  <!--begin:Menu item-->
+                  <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {% if request.path in USERS_URLS %}active{% endif %}"
+                      href="{% url 'users:ga_user_list' %}">
+                      <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                      </span>
+                      <span class="menu-title">{% trans 'Usuarios' %}</span>
+                    </a>
+                    <!--end:Menu link-->
+                  </div>
+                </li>
+              </ul>            
             <!--end:Menu item-->
+            
           </div>
           <!--end:Menu sub-->
         </div>

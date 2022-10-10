@@ -42,10 +42,10 @@ class GaRiskMasterListView(ListView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos Maestros'), 'url': reverse(
+            {'title': _('Riesgos Maestros (N1)'), 'url': reverse(
                 'risks_masters:ga_risk_master_list')},
         ]
-        context['page_title'] = _('Riesgos Maestros')
+        context['page_title'] = _('Riesgos Maestros (N1)')
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
@@ -70,11 +70,11 @@ class GaRiskMasterDetailView(DetailView):
         context = KTLayout.init(context)
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos Maestros'), 'url': reverse(
+            {'title': _('Riesgos Maestro (N1)'), 'url': reverse(
                 'risks_masters:ga_risk_master_list')},
             {'title': self.object.name}
         ]
-        context['page_title'] = f"{_('Riesgo Maestro')} : {self.object.name}"
+        context['page_title'] = f"{_('Riesgo Maestro (N1)')}: {self.object.name}"
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
@@ -111,7 +111,7 @@ class GaRiskMasterCreateView(CreateView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos Maestros'), 'url': reverse(
+            {'title': _('Riesgos Maestros (N1)'), 'url': reverse(
                 'risks_masters:ga_risk_master_list')},
             {'title': _('Nuevo'), 'url': reverse(
                 'risks_masters:ga_risk_master_create')},
@@ -145,11 +145,11 @@ class GaRiskMasterUpdateView(UpdateView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos Maestros'), 'url': reverse(
+            {'title': _('Riesgos Maestros (N1)'), 'url': reverse(
                 'risks_masters:ga_risk_master_list')},
             {'title': _('Editar')},
         ]
-        context['page_title'] = _('Editar Riesgo Maestro')
+        context['page_title'] = _('Editar Riesgo Maestro (N1)')
         context['breadcrums'] = breadcrums
 
         return context
@@ -159,10 +159,11 @@ class GaRiskMasterUpdateView(UpdateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Riesgo Maestro actualizado correctamente')
+            _('Riesgo Maestro (N1) actualizado correctamente')
         )
         return reverse_lazy(
-            'risks_masters:ga_risk_master_list'
+            'risks_masters:ga_risk_master_detail',
+            kwargs={"pk": self.object.pk},
         )
 
 
@@ -177,12 +178,12 @@ class GaRiskMasterDeleteView(DeleteView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Riesgos Maestros'), 'url': reverse(
+            {'title': _('Riesgos Maestros (N1)'), 'url': reverse(
                 'risks_masters:ga_risk_master_list')},
             {'title': _('Eliminar')},
         ]
         context['page_title'] = _(
-            "Eliminar Riesgo Maestro: %s") % str(self.object.name)
+            "Eliminar Riesgo Maestro (N1): %s") % str(self.object.name)
         context['breadcrums'] = breadcrums
 
         return context

@@ -28,17 +28,19 @@
           <th class="text-center">{% trans 'REF' %}</th>
           <th>{% trans 'Nombre' %}</th>
           <th>{% trans 'Descripción' %}</th>
-          <th class="text-center">{% trans 'Nº de Riesgos' %}</th>
+          <th class="text-center">{% trans 'Nº de Riesgos Maestros (N1)' %}</th>
+          <th class="text-center">{% trans 'Nº de Riesgos (N2)' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for domain_risk in domain_risks %}
           <tr>
-            <td class="text-center"><a href="{% url 'domain_risks:ga_domain_risk_detail' domain_risk.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center">{{ domain_risk.ref }}</td>
-            <td>{{ domain_risk.name }}</td>
-            <td>{{ domain_risk.description|striptags|safe }}</td>
-            <td class="text-center"><span class="badge badge-info">{{ domain_risk.risks.count }}</span></td>
+            <td class="text-center align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' domain_risk.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ domain_risk.ref }}</td>
+            <td class="align-middle">{{ domain_risk.name }}</td>
+            <td class="align-middle">{{ domain_risk.description|striptags|safe }}</td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.risks.count }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.risk_n2_entities|length }}</span></td>
           </tr>
           {% endfor %}
       </tbody>
