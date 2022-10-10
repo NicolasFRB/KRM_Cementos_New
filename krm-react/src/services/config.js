@@ -1,5 +1,5 @@
-let base = "https://app.krmtool.com/";
-// let base = "http://localhost:8000/";
+// let base = "https://app.krmtool.com/";
+let base = "http://localhost:8000/";
 const baseUrlApi = `${base}api/`;
 
 const user = window.$('#pk').data('pk');
