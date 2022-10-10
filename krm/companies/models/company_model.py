@@ -19,6 +19,12 @@ class Company(AuditModel):
     Modelo que usaremos para representar una compañía
     """
 
+    ref = models.CharField(
+        verbose_name=_("Ref"),
+        max_length=50,
+        unique=True
+    )
+
     name = models.CharField(verbose_name=_("Nombre"), max_length=200)
 
     vat = models.CharField(
@@ -46,9 +52,9 @@ class Company(AuditModel):
         return self.name
 
     class Meta:
-        verbose_name = _("Sociedad")
-        verbose_name_plural = _("Sociedades")
-        ordering = ["name"]
+        verbose_name = _("Compañía")
+        verbose_name_plural = _("Compañía")
+        ordering = ["ref", "name"]
 
     @property
     def experts_domain_risk(self):
@@ -56,8 +62,39 @@ class Company(AuditModel):
         return CompanyDomainRiskExperts.objects.filter(company=self)
 
     @property
+    def evaluators_domain_risk(self):
+        from krm.companies.models import CompanyDomainRiskEvaluator
+        return CompanyDomainRiskEvaluator.objects.filter(company=self)
+
+    @property
     def krm_risks_active(self):
         return self.krm_risks.filter(active=True)
+
+    def save(self, *args, **kwargs):
+        self.ref = self.ref.upper()
+        super().save(*args, **kwargs)
+
+        from krm.companies.models import CompanyDomainRiskExperts, CompanyDomainRiskEvaluator
+        from krm.risks.models import DomainRisk, Risk, RiskCompany
+
+        for domain_risk in DomainRisk.objects.all():
+            if CompanyDomainRiskExperts.objects.filter(company=self, domain_risk=domain_risk).count() == 0:
+                CompanyDomainRiskExperts.objects.create(
+                    company=self,
+                    domain_risk=domain_risk
+                )
+            if CompanyDomainRiskEvaluator.objects.filter(company=self, domain_risk=domain_risk).count() == 0:
+                CompanyDomainRiskEvaluator.objects.create(
+                    company=self,
+                    domain_risk=domain_risk
+                )
+        for risk in Risk.objects.all():
+            if RiskCompany.objects.filter(company=self, risk=risk).count() == 0:
+                RiskCompany.objects.create(
+                    company=self,
+                    risk=risk
+                )
+
     # @property
     # def employees_active(self):
     #     return self.employees.filter(is_active=True)

@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-from xlrd import open_workbook
 import re
 
 # Django
@@ -61,7 +60,8 @@ class BusinessGroupDetailAge(DetailView):
             raise Http404
 
     def get_context_data(self, **kwargs):
-        context = super(BusinessGroupDetailAge, self).get_context_data(**kwargs)
+        context = super(BusinessGroupDetailAge,
+                        self).get_context_data(**kwargs)
         if 'tab' in self.kwargs:
             context['active'] = self.kwargs.get('tab')
         else:
@@ -162,7 +162,8 @@ class BusinessGroupCompanyCreateAge(CreateView):
         }
 
     def get_context_data(self, **kwargs):
-        context = super(BusinessGroupCompanyCreateAge, self).get_context_data(**kwargs)
+        context = super(BusinessGroupCompanyCreateAge,
+                        self).get_context_data(**kwargs)
         context['business_group'] = self.business_group
         context['title_template'] = _('Nueva Compañía')
         return context
@@ -185,7 +186,8 @@ class BusinessGroupCompanyDetailAge(DetailView):
     template_name = 'business_group/age/BusinessGroupCompanyDetail.html'
 
     def get_context_data(self, **kwargs):
-        context = super(BusinessGroupCompanyDetailAge, self).get_context_data(**kwargs)
+        context = super(BusinessGroupCompanyDetailAge,
+                        self).get_context_data(**kwargs)
         if 'tab' in self.kwargs:
             context['active'] = self.kwargs.get('tab')
         else:
@@ -205,7 +207,8 @@ class BusinessGroupCompanyUpdateAge(UpdateView):
     template_name = 'business_group/age/BusinessGroupCompanyUpdate.html'
 
     def get_context_data(self, **kwargs):
-        context = super(BusinessGroupCompanyUpdateAge, self).get_context_data(**kwargs)
+        context = super(BusinessGroupCompanyUpdateAge,
+                        self).get_context_data(**kwargs)
         # context['business_group'] = self.object.business_group
         context['title_template'] = _('Editar Compañía')
         return context
@@ -307,7 +310,8 @@ class BusinessGroupCompanyImportAge(FormView):
                         cell_value = None
                     company['cp'] = cell_value
                     company['country'] = str(hoja.cell(row, 5).value).upper()
-                    company['email'] = str(hoja.cell(row, 7).value).lower().replace(' ', '')
+                    company['email'] = str(
+                        hoja.cell(row, 7).value).lower().replace(' ', '')
 
                     # Tenemos que comprobar que el email esté bien formado
                     if company['email'] != '':
@@ -319,7 +323,8 @@ class BusinessGroupCompanyImportAge(FormView):
                                 self.request,
                                 messages.ERROR,
                                 (
-                                    _(u'En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(row+1)
+                                    _(u'En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(
+                                        row+1)
                                 )
                             )
                             return super(
@@ -333,7 +338,8 @@ class BusinessGroupCompanyImportAge(FormView):
                             self.request,
                             messages.ERROR,
                             (
-                                _(u'El VAT introducido en la fila %s ya está registrado por otra compañía') % str(row+1)
+                                _(u'El VAT introducido en la fila %s ya está registrado por otra compañía') % str(
+                                    row+1)
                             )
                         )
                         return super(
@@ -347,7 +353,8 @@ class BusinessGroupCompanyImportAge(FormView):
                         self.request,
                         messages.ERROR,
                         (
-                            _(u'En la fila %s falta algún campo obligatorio. Se ha abortado la importación') % str(row+1)
+                            _(u'En la fila %s falta algún campo obligatorio. Se ha abortado la importación') % str(
+                                row+1)
                         )
                     )
                     return super(

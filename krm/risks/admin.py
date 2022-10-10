@@ -30,4 +30,4 @@ class RiskAdmin(admin.ModelAdmin):
 @admin.register(RiskCompany)
 class RiskCompanyAdmin(admin.ModelAdmin):
     model = RiskCompany
-    list_display = ('risk', 'company', 'active')
+    list_display = ('risk', 'company', 'active', 'expert_assign')

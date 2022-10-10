@@ -1,6 +1,8 @@
-from re import template
-from django.shortcuts import render
 from django.db.models import Count
+from openpyxl import load_workbook
+from io import BytesIO
+
+import re
 
 # Create your views here.
 from django.shortcuts import render
@@ -27,7 +29,12 @@ from django.utils.decorators import method_decorator
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
-from krm.companies.forms import CompanyCreateForm, CompanyKrmRiskSelectForm
+from krm.companies.forms import (
+    CompanyCreateForm,
+    CompanyKrmRiskSelectForm,
+    CompanyImportForm
+)
+
 from krm.companies.models import Company
 from krm.risks.models import (
     RiskCompany,
@@ -264,3 +271,157 @@ class GaCompanyRiskKrmSelectView(FormView):
                 kwargs={'pk': self.company.pk}
             )
         )
+
+
+@method_decorator([is_global_admin, ], name='dispatch')
+class GaCompanyImportView(FormView):
+    template_name = 'companies/GaCompanyImport.html'
+    form_class = CompanyImportForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Compañías'), 'url': reverse(
+                'companies:ga_company_list')},
+            {'title': _('Importar Compañías')},
+        ]
+        context['page_title'] = _('Impoartar Companías')
+        context['breadcrums'] = breadcrums
+        return context
+
+    def form_valid(self, form):
+        # input_excel = self.request.FILES['companies_file']
+        # book = load_workbook(file_contents=input_excel.read())
+        # hoja = book.sheet_by_index(0)
+        companies_to_create = []
+
+        input_excel = self.request.FILES['companies_file'].read()
+        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
+        sheet = wb.active
+
+        nrow = 0
+        rows = sheet.rows
+        for row in rows:
+            if nrow < 2:
+                nrow += 1
+                continue
+
+            company = {}
+            # Comprobamos que hay contenido en todas las celdas obligatorias
+            if row[0].value is None:
+                break
+
+            if row[0].value is not None or row[1].value is not None:
+                company['ref'] = str(row[0].value).title()
+                company['name'] = str(row[1].value).title()
+                company['vat'] = str(row[2].value).title()
+                company['address'] = str(row[3].value)
+                company['state'] = str(row[4].value).upper()
+                cell = row[5]
+                cell_value = cell.value
+                try:
+                    cell_value = int(cell_value)
+                except:
+                    cell_value = None
+                company['cp'] = cell_value
+                if row[7].value is not None:
+                    company['country'] = str(row[6].value).upper()
+                else:
+                    company['country'] = None
+                company['email'] = str(
+                    row[8].value).lower().replace(' ', '')
+
+                # Tenemos que comprobar que el email esté bien formado
+                if company['email'] != '':
+                    if not re.match(
+                        '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
+                        company['email'].lower()
+                    ):
+                        messages.add_message(
+                            self.request,
+                            messages.ERROR,
+                            (
+                                _('En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(
+                                    nrow+1)
+                            )
+                        )
+                        return super(
+                            GaCompanyImportView,
+                            self
+                        ).form_invalid(form)
+                        break
+
+                if Company.objects.filter(ref=company['ref']).count() > 0:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('La REF introducida en la fila %s ya está registrado por otra compañía') % str(
+                                nrow+1)
+                        )
+                    )
+                    return super(
+                        GaCompanyImportView,
+                        self
+                    ).form_invalid(form)
+                    break
+
+                if Company.objects.filter(vat=company['vat']).count() > 0:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('El VAT introducido en la fila %s ya está registrado por otra compañía') % str(
+                                nrow+1)
+                        )
+                    )
+                    return super(
+                        GaCompanyImportView,
+                        self
+                    ).form_invalid(form)
+                    break
+
+            else:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la fila %s falta algún campo obligatorio. Se ha abortado la importación') % str(
+                            nrow+1)
+                    )
+                )
+                return super(
+                    GaCompanyImportView,
+                    self
+                ).form_invalid(form)
+                break
+
+            nrow += 1
+
+            companies_to_create.append(company)
+
+        for c in companies_to_create:
+            Company.objects.create(
+                ref=c['ref'],
+                name=c['name'],
+                vat=c['vat'],
+                address=c['address'],
+                cp=c['cp'],
+                email=c['email'],
+                state=c['state'],
+                country=c['country']
+            )
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS, (
+                _('Se han importado %s compañías') % str(len(companies_to_create)))
+        )
+
+        return super(GaCompanyImportView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('companies:ga_company_list')

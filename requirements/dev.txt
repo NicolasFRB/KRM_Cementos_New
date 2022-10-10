@@ -3,6 +3,7 @@
 django_debug_toolbar==3.5.0
 ipdb==0.13.9
 
+
 #Testing
 # mypy==0.910
 # pytest==6.2.4

@@ -1,3 +1,4 @@
+from django.utils.translation import gettext as _
 from django import forms
 from django.forms import ModelForm
 
@@ -11,3 +12,9 @@ class ConfigurationUpdateForm(ModelForm):
             'app_name',
             'main_email',
         ]
+
+
+class ImportForm(forms.Form):
+    data_file = forms.FileField(
+        label=_('Archivo de excel a importar')
+    )

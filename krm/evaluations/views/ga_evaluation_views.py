@@ -5,8 +5,7 @@ import re
 
 # Create your views here.
 from django.shortcuts import render
-import xlwt
-from xlrd import open_workbook
+
 from django.views.generic import (
     FormView,
     TemplateView,
@@ -160,7 +159,7 @@ class GaEvaluationDetailView(FormView):
                 filename
             )
 
-            wb = xlwt.Workbook(encoding="utf-8")
+            # wb = xlwt.Workbook(encoding="utf-8")
             ws = wb.add_sheet("Controls")
 
             # Sheet header, first row
@@ -644,13 +643,14 @@ class GaEvaluationCreateView(FormView):
 
             # Para cada evaluación hay que crear los test controls de los controles que se han pasado
             for control in controls:
-                control_test = ControlTest.objects.create(
-                    evaluation=evaluation,
-                    control=control,
-                    date_begin=form.cleaned_data["date_begin"]
-                )
+                if company.pk in control.companies:
+                    control_test = ControlTest.objects.create(
+                        evaluation=evaluation,
+                        control=control,
+                        date_begin=form.cleaned_data["date_begin"]
+                    )
 
-                controls_created += 1
+                    controls_created += 1
 
             evaluations_created += 1
 

@@ -18,14 +18,12 @@ class CompanyCreateForm(ModelForm):
         self.fields["country"].widget.attrs["class"] = "form-select"
 
 
-# class CompanyKrmRiskSelectForm(ModelForm):
-#     risk_company = forms.ModelMultipleChoiceField(
-#         label=_('Dominios de Riesgo a evaluar'),
-#         queryset=RiskCompany.objects.all(),
-#         widget=CheckboxSelectMultiple(),
-#     )
-
-
 class CompanyKrmRiskSelectForm(forms.Form):
     risk_pk = SimpleArrayField(forms.CharField(
         max_length=1000),  label=_('Riesgos-Compañías'))
+
+
+class CompanyImportForm(forms.Form):
+    companies_file = forms.FileField(
+        label=_('Archivo de excel a importar')
+    )

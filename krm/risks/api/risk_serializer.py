@@ -4,6 +4,9 @@ from krm.risks.models import Risk
 from rest_framework import routers, serializers, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 
 class RiskSerializer(serializers.ModelSerializer):
 
@@ -14,7 +17,9 @@ class RiskSerializer(serializers.ModelSerializer):
             'ref',
             'name',
             'description',
-            'domain_risk',
+            'risk_master',
+            'risk_master_name',
+            # 'risk_master__domain_risk'
             'impact_inherent',
             'probability_inherent',
             'impact_residual',
@@ -26,5 +31,5 @@ class RiskSerializer(serializers.ModelSerializer):
 class RiskViewSet(viewsets.ModelViewSet):
     queryset = Risk.objects.all()
     serializer_class = RiskSerializer
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['ref', ]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]

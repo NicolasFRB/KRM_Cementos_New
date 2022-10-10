@@ -1,0 +1,178 @@
+import configService from "../../services/config.js";
+import React from "react";
+import { useState } from "react";
+
+let $ = window.$;
+
+function RuRiskTestInherent({ pk, initialImpact, initialProbability }) {
+  const [impact, setImpact] = useState(initialImpact);
+  const [probability, setProbability] = useState(initialProbability);
+
+  const updateProbability = (newProbability) => {
+    $('#buttonSend').attr('data-kt-indicator', 'on');
+    fetch(`${configService.apiSendRiskTestInherent}?pk=${pk}&probability=${newProbability}`)
+      .then((res) => res.json())
+      .then(
+        (res) => {
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+        },
+        (error) => {
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+        }
+      );
+    setProbability(newProbability);
+  };
+
+  const updateImpact = (newImpact) => {
+    $('#buttonSend').attr('data-kt-indicator', 'on');
+    fetch(`${configService.apiSendRiskTestInherent}?pk=${pk}&impact=${newImpact}`)
+      .then((res) => res.json())
+      .then(
+        (res) => {
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+        },
+        (error) => {
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+        }
+      );
+    setImpact(newImpact);
+  };
+
+  return (
+    <div className="valoration">
+      <div className="row">
+        <div className="col col-12">
+          <h4 className="mb-7">Indique su valoración</h4>
+        </div>
+        <input type="hidden" name={`probability-${pk}`} value={probability} />
+        <input type="hidden" name={`impact-${pk}`} value={impact} />
+        <div className="col col-12 col-xl-5 mb-5 mb-xl-0">
+          <h5 className="mb-7">Probabilidad</h5>
+          <div className="row">
+
+            <div className="col">
+              <div className="form-check form-check-custom form-check-solid mb-4">
+                <input
+                  name={`p-${pk}`}
+                  className="form-check-input"
+                  type="radio"
+                  id={`p-pk-1-${pk}`}
+                  checked={probability === 1}
+                  onChange={() => updateProbability(1)}
+                />
+                <label className="form-check-label" htmlFor={`p-pk-1-${pk}`}>Bajo</label>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-check form-check-custom form-check-solid mb-4">
+                <input
+                  name={`p-${pk}`}
+                  className="form-check-input"
+                  type="radio"
+                  id={`p-pk-2-${pk}`}
+                  checked={probability === 2}
+                  onChange={() => updateProbability(2)}
+                />
+                <label className="form-check-label" htmlFor={`p-pk-2-${pk}`}>Medio</label>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-check form-check-custom form-check-solid mb-4">
+                <input
+                  name={`p-${pk}`}
+                  className="form-check-input"
+                  type="radio"
+                  id={`p-pk-3-${pk}`}
+                  checked={probability === 3}
+                  onChange={() => updateProbability(3)}
+                />
+                <label className="form-check-label" htmlFor={`p-pk-3-${pk}`}>Alto</label>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-check form-check-custom form-check-solid mb-4">
+                <input
+                  name={`p-${pk}`}
+                  className="form-check-input"
+                  type="radio"
+                  id={`p-pk-4-${pk}`}
+                  checked={probability === 4}
+                  onChange={() => updateProbability(4)}
+                />
+                <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>Crítico</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div className="col col-12 col-xl-5 offset-xl-1">
+          <h5 className="mb-7">Impacto</h5>
+          <div className="row">
+
+            <div className="col">
+              <div className="form-check form-check-custom form-check-solid mb-4">
+                <input
+                  name={`ì-${pk}`}
+                  className="form-check-input"
+                  type="radio"
+                  id={`i-pk-1-${pk}`}
+                  checked={impact === 1}
+                  onChange={() => updateImpact(1)}
+                />
+                <label className="form-check-label" htmlFor={`i-pk-1-${pk}`}>Bajo</label>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-check form-check-custom form-check-solid mb-4">
+                <input
+                  name={`ì-${pk}`}
+                  className="form-check-input"
+                  type="radio"
+                  id={`i-pk-2-${pk}`}
+                  checked={impact === 2}
+                  onChange={() => updateImpact(2)}
+                />
+                <label className="form-check-label" htmlFor={`i-pk-2-${pk}`}>Medio</label>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-check form-check-custom form-check-solid mb-4">
+                <input
+                  name={`ì-${pk}`}
+                  className="form-check-input"
+                  type="radio"
+                  id={`i-pk-3-${pk}`}
+                  checked={impact === 3}
+                  onChange={() => updateImpact(3)}
+                />
+                <label className="form-check-label" htmlFor={`i-pk-3-${pk}`}>Alto</label>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-check form-check-custom form-check-solid mb-4">
+                <input
+                  name={`ì-${pk}`}
+                  className="form-check-input"
+                  type="radio"
+                  id={`i-pk-4-${pk}`}
+                  checked={impact === 4}
+                  onChange={() => updateImpact(4)}
+                />
+                <label className="form-check-label" htmlFor={`i-pk-4-${pk}`}>Crítico</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default RuRiskTestInherent;

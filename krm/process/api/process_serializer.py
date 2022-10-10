@@ -4,6 +4,9 @@ from krm.process.models import Process
 from rest_framework import routers, serializers, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 
 class ProcessSerializer(serializers.ModelSerializer):
     sub_processes = serializers.PrimaryKeyRelatedField(
@@ -26,5 +29,5 @@ class ProcessSerializer(serializers.ModelSerializer):
 class ProcessViewSet(viewsets.ModelViewSet):
     queryset = Process.objects.all()
     serializer_class = ProcessSerializer
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['ref', ]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]

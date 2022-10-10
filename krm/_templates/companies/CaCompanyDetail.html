@@ -22,18 +22,21 @@
   <!--begin::Card body-->
   <div class="card-body">
     <div class="row mb-4">
+      <div class="col col-md-2">
+        <span class="fs-6 fw-semibold">{% trans 'REF' %}: </span> <span>{{ company.ref }}</span>
+      </div>
       <div class="col col-md-4">
         <span class="fs-6 fw-semibold">{% trans 'Nombre' %}: </span> <span>{{ company.name }}</span>
       </div>
-      <div class="col col-md-4">
+      <div class="col col-md-3">
         <span class="fs-6 fw-semibold">{% trans 'VAT' %}: </span> <span>{{ company.vat|default_if_none:"" }}</span>
       </div>
-      <div class="col col-md-4">
+      <div class="col col-md-3">
         <span class="fs-6 fw-semibold">{% trans 'Email' %}: </span> <span>{{ company.email|default_if_none:"" }}</span>
       </div>
     </div>
     <div class="row">
-      <div class="mb-4 col-12">
+      <div class="mb-4 col-12 col-md-4">
           <span class="fs-6 fw-semibold">{% trans 'Dirección' %}: </span> <span>{{ company.address|default_if_none:"" }}</span>
       </div>
       <div class="mb-4 col-md-4 col-12">

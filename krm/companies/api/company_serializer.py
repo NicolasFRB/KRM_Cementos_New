@@ -5,6 +5,10 @@ from rest_framework import serializers, viewsets
 from rest_framework.response import Response
 
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
@@ -21,15 +25,14 @@ class CompanySerializer(serializers.ModelSerializer):
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        if 'user' in request.query_params:
-            user = User.objects.get(pk=request.query_params['user'])
-            if user.is_superuser:
-                queryset = Company.objects.all()
-            else:
-                queryset = user.companies_admin.all()
-        else:
+        if request.user.is_superuser:
             queryset = Company.objects.all()
+        else:
+            queryset = request.user.companies_admin.all()
+
         serializer = CompanySerializer(queryset, many=True)
         return Response(serializer.data)

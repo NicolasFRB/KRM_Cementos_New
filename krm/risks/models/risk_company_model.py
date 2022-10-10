@@ -35,7 +35,9 @@ class RiskCompany(AuditModel):
     description = RichTextField(
         _("Descripción"),
         config_name='awesome_ckeditor',
-        max_length=10000
+        max_length=10000,
+        blank=True,
+        null=True
     )
 
     active = models.BooleanField(
@@ -47,28 +49,32 @@ class RiskCompany(AuditModel):
         _("Actividad afectada"),
         config_name='awesome_ckeditor',
         max_length=10000,
-        blank=True
+        blank=True,
+        null=True
     )
 
     krm_main_events = RichTextField(
         _("Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios"),
         config_name='awesome_ckeditor',
         max_length=10000,
-        blank=True
+        blank=True,
+        null=True
     )
 
     krm_exposed_staff = RichTextField(
         _("Personal especialmente expuesto al Riesgo"),
         config_name='awesome_ckeditor',
         max_length=10000,
-        blank=True
+        blank=True,
+        null=True
     )
 
     krm_main_elements = RichTextField(
         _("Principales elementos del Riesgo"),
         config_name='awesome_ckeditor',
         max_length=10000,
-        blank=True
+        blank=True,
+        null=True
     )
 
     def __str__(self):
@@ -78,3 +84,27 @@ class RiskCompany(AuditModel):
         verbose_name = _("Riesgo-Compañía")
         verbose_name_plural = _("Riesgos-Compañías")
         ordering = ["risk", "company"]
+
+    @property
+    def risk_ref(self):
+        return self.risk.ref
+
+    @property
+    def expert_assign(self):
+        from krm.companies.models import CompanyDomainRiskExperts
+        expert = CompanyDomainRiskExperts.objects.get(
+            company=self.company,
+            domain_risk=self.risk.risk_master.domain_risk
+        )
+        if expert.expert:
+            return expert.expert.email
+        return False
+
+    @property
+    def expert_pk(self):
+        from krm.companies.models import CompanyDomainRiskExperts
+        expert = CompanyDomainRiskExperts.objects.get(
+            company=self.company,
+            domain_risk=self.risk.risk_master.domain_risk
+        )
+        return expert.pk

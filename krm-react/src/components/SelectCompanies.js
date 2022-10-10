@@ -2,10 +2,9 @@ import configService from "../services/config.js";
 import React from "react";
 import { useState, useEffect } from "react";
 
-function SelectCompanies({ selectedCompanies, setSelectedCompanies }) {
+function SelectCompanies({ selectedCompanies, setSelectedCompanies, companies, setCompanies }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [companies, setCompanies] = useState([]);
 
   const handleOnChange = (pk) => {
     if (selectedCompanies.includes(pk)) {
@@ -28,7 +27,7 @@ function SelectCompanies({ selectedCompanies, setSelectedCompanies }) {
           setError(error);
         }
       );
-  }, []);
+  }, [setCompanies]);
 
   if (error) {
     return <div>Error: {error.message}</div>;

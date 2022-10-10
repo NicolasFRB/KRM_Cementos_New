@@ -49,7 +49,6 @@ urlpatterns = [
         name="ga_evaluation_import_assign_control",
     ),
 
-
     path(
         'ca/detail/<pk>/',
         CaEvaluationDetailView.as_view(),

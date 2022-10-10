@@ -43,9 +43,17 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('evaluations:ga_evaluation_list'),
         reverse_lazy('evaluations:ga_evaluation_create'),
     ]
+    evaluations_krm_urls = [
+        reverse_lazy('evaluations_krm:ga_evaluation_krm_list'),
+        reverse_lazy('evaluations_krm:ga_evaluation_inherent_create'),
+    ]
     ca_evaluations_urls = [
         reverse_lazy('evaluations:ca_evaluation_list'),
         reverse_lazy('evaluations:ca_evaluation_create'),
+    ]
+    ca_evaluations_inherent_urls = [
+        reverse_lazy('evaluations_krm:ca_evaluation_inherent_list'),
+        reverse_lazy('evaluations_krm:ca_evaluation_inherent_create'),
     ]
     if pk is not None:
         domain_risks_urls = domain_risks_urls + [
@@ -190,6 +198,22 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             )
         ]
+
+        evaluations_urls_ = evaluations_urls + [
+            reverse_lazy(
+                'evaluations:ga_evaluation_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'evaluations:ga_evaluation_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'evaluations:ga_evaluation_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+
     if settings.KRM_ACTIVATE:
         KRM_ACTIVATE = True
     else:
@@ -205,6 +229,8 @@ def get_menu_urls(request, pk=None):
         'PROCESS_URLS': process_urls,
         'SUBPROCESS_URLS': sub_process_urls,
         'EVALUATIONS_URLS': evaluations_urls,
+        'EVALUATIONS_KRM_URLS': evaluations_krm_urls,
+        'CA_EVALUATIONS_INHERENT_URLS': ca_evaluations_inherent_urls,
         'CA_EVALUATIONS_URLS': ca_evaluations_urls,
         'KRM_ACTIVATE': KRM_ACTIVATE
     }

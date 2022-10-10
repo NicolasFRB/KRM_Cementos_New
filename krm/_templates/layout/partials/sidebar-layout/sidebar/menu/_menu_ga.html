@@ -7,6 +7,12 @@
 {% url 'evaluations:ga_evaluation_create' as evaluation_create %}
 {% url 'evaluations:ca_evaluation_list' as ca_evaluation_list %}
 {% url 'evaluations:ca_evaluation_create' as ca_evaluation_create %}
+{% url 'configuration:ga_import' as import %}
+{% url 'evaluations_krm:ga_evaluation_krm_list' as ga_evaluation_inherent_list %}
+{% url 'evaluations_krm:ga_evaluation_inherent_create' as ga_evaluation_inherent_create %}
+{% url 'evaluations_krm:ca_evaluation_inherent_create' as ca_evaluation_inherent_create %}
+{% url 'evaluations_krm:ca_evaluation_inherent_list' as ca_evaluation_inherent_list %}
+
 
 <!--begin::sidebar menu-->
 <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
@@ -39,7 +45,7 @@
         </div>
         <!--begin:Menu item-->
         <div data-kt-menu-trigger="click"
-          class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in RISKS_MASTERS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS %}show{% endif %}">
+          class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in RISKS_MASTERS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS or request.path == import %}show{% endif %}">
 
           <!--begin:Menu link-->
           <span class="menu-link">
@@ -166,6 +172,19 @@
               </ul>            
             <!--end:Menu item-->
             
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path ==  import %}active{% endif %}"
+                href="{% url 'configuration:ga_import' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Importador' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
           </div>
           <!--end:Menu sub-->
         </div>
@@ -177,7 +196,7 @@
           <!--begin:Menu link-->
           <span class="menu-link">
             <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
-            <span class="menu-title">{% trans 'Evaluaciones' %}</span>
+            <span class="menu-title">{% trans 'Evaluaciones KRC' %}</span>
             <span class="menu-arrow"></span>
           </span>
           <!--end:Menu link-->
@@ -191,7 +210,7 @@
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">{% trans 'Evaluaciones' %}</span>
+                <span class="menu-title">{% trans 'Evaluaciones KRC' %}</span>
               </a>
               <!--end:Menu link-->
             </div>
@@ -203,7 +222,7 @@
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">{% trans 'Crear evaluación' %}</span>
+                <span class="menu-title">{% trans 'Crear evaluación KRC' %}</span>
               </a>
               <!--end:Menu link-->
             </div>
@@ -212,6 +231,80 @@
           <!--end:Menu sub-->
         </div>
         <!--end:Menu item-->
+
+        {% if request.user.is_company_admin %}
+          <div class="menu-item">
+            <!--begin:Menu link-->
+            <a class="menu-link" href="{% url 'control_tests:ca_control_test_administrator_list' %}">
+              <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
+              <span class="menu-title">{% trans 'Administrar Controles' %}
+                {% if request.user.controls_test_administrator_pending.count > 0 %}
+                &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_administrator_pending.count }}</span>
+                {% endif %}
+              </span>
+            </a>
+            <!--end:Menu link-->
+          </div>
+        {% endif %}
+
+        <!--begin:Menu item-->
+        <div data-kt-menu-trigger="click"
+          class="menu-item menu-accordion {% if request.path in EVALUATIONS_KRM_URLS %}show{% endif %}">
+          <!--begin:Menu link-->
+          <span class="menu-link">
+            <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
+            <span class="menu-title">{% trans 'Evaluaciones KRM' %}</span>
+            <span class="menu-arrow"></span>
+          </span>
+          <!--end:Menu link-->
+          <!--begin:Menu sub-->
+          <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+
+              <a class="menu-link {% if request.path == ga_evaluation_inherent_list %}active{% endif %}"
+                href="{% url 'evaluations_krm:ga_evaluation_krm_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Evaluaciones RI' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path == ga_evaluation_inherent_create %}active{% endif %}"
+                href="{% url 'evaluations_krm:ga_evaluation_inherent_create' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Crear evaluación RI' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+          </div>
+          <!--end:Menu sub-->
+        </div>
+        <!--end:Menu item-->
+
+        {% if request.user.is_company_admin %}
+          <div class="menu-item">
+            <!--begin:Menu link-->
+            <a class="menu-link" href="{% url 'control_tests:ca_control_test_administrator_list' %}">
+              <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
+              <span class="menu-title">{% trans 'Administrar riesgos' %}
+                {% if request.user.controls_test_administrator_pending.count > 0 %}
+                &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_administrator_pending.count }}</span>
+                {% endif %}
+              </span>
+            </a>
+            <!--end:Menu link-->
+          </div>
+        {% endif %}
 
         <div class="menu-item">
           <!--begin:Menu link-->
@@ -263,7 +356,7 @@
           <!--begin:Menu link-->
           <span class="menu-link">
             <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
-            <span class="menu-title">{% trans 'Evaluaciones' %}</span>
+            <span class="menu-title">{% trans 'Evaluaciones KRC' %}</span>
             <span class="menu-arrow"></span>
           </span>
           <!--end:Menu link-->
@@ -277,11 +370,13 @@
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">{% trans 'Evaluaciones' %}</span>
+                <span class="menu-title">{% trans 'Evaluaciones KRC' %}</span>
               </a>
               <!--end:Menu link-->
             </div>
             <!--end:Menu item-->
+
+
             <!--begin:Menu item-->
             <div class="menu-item">
               <!--begin:Menu link-->
@@ -300,30 +395,62 @@
         </div>
         <!--end:Menu item-->
 
-      <div class="menu-item">
-        <!--begin:Menu link-->
-        <a class="menu-link" href="{% url 'control_tests:ca_control_test_administrator_list' %}">
-          <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
-          <span class="menu-title">{% trans 'Administrar Controles' %}
-            {% if request.user.controls_test_administrator_pending.count > 0 %}
-            &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_administrator_pending.count }}</span>
-            {% endif %}
-          </span>
-        </a>
-        <!--end:Menu link-->
-      </div>
-      {% endif %}
-
-
         <!--begin:Menu item-->
-        <div class="menu-item">
-          <!--begin:Menu content-->
-          <div class="menu-content">
-            <span class="menu-heading fw-semibold text-uppercase fs-7">{% trans 'REGULAR USER' %}</span>
+        <div data-kt-menu-trigger="click"
+          class="menu-item menu-accordion {% if request.path in CA_EVALUATIONS_INHERENT_URLS %}show{% endif %}">
+          <!--begin:Menu link-->
+          <span class="menu-link">
+            <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
+            <span class="menu-title">{% trans 'Evaluaciones KRM' %}</span>
+            <span class="menu-arrow"></span>
+          </span>
+          <!--end:Menu link-->
+          <!--begin:Menu sub-->
+          <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path == ca_evaluation_list %}active{% endif %}"
+                href="{% url 'evaluations_krm:ca_evaluation_inherent_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Evaluaciones RI' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+        
+        
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path == ca_evaluation_inherent_create %}active{% endif %}"
+                href="{% url 'evaluations_krm:ca_evaluation_inherent_create' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Crear evaluación RI' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
           </div>
-          <!--end:Menu content-->
+          <!--end:Menu sub-->
         </div>
         <!--end:Menu item-->
+
+      {% endif %}
+
+      <!--begin:Menu item-->
+      <div class="menu-item">
+        <!--begin:Menu content-->
+        <div class="menu-content">
+          <span class="menu-heading fw-semibold text-uppercase fs-7">{% trans 'KRC R.U. ' %}</span>
+        </div>
+        <!--end:Menu content-->
+      </div>
+      <!--end:Menu item-->
       {% if not request.user.is_superuser and  not request.user.is_company_admin %}
         <div class="menu-item">
           <!--begin:Menu link-->
@@ -354,7 +481,29 @@
           <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
           <span class="menu-title">{% trans 'Supervisar Controles' %}
             {% if request.user.controls_test_supervisor_pending.count > 0 %}
-                &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_supervisor_pending.count }}</span>
+            &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_supervisor_pending.count }}</span>
+            {% endif %}
+          </span>
+        </a>
+        <!--end:Menu link-->
+      </div>
+
+      <!--begin:Menu item-->
+      <div class="menu-item">
+        <!--begin:Menu content-->
+        <div class="menu-content">
+          <span class="menu-heading fw-semibold text-uppercase fs-7">{% trans 'KRM R.U.' %}</span>
+        </div>
+        <!--end:Menu content-->
+      </div>
+
+      <div class="menu-item">
+        <!--begin:Menu link-->
+        <a class="menu-link" href="{% url 'evaluations_krm:ru_evaluation_risk_inherent_list' %}">
+          <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
+          <span class="menu-title">{% trans 'Completar Riesgos' %}
+            {% if request.user.risk_test_inherent_expert_pending.count > 0 %}
+            &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.risk_test_inherent_expert_pending.count }}</span>
             {% endif %}
           </span>
         </a>

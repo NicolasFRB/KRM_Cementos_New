@@ -12,8 +12,14 @@ from krm.evaluations.models import Evaluation
 from krm.evaluations.models import ControlTest
 from krm.companies.models import (
     Company,
-    CompanyDomainRiskExperts
+    CompanyDomainRiskExperts,
+    CompanyDomainRiskEvaluator
 )
+from krm.evaluations_krm.models import (
+    RiskTestInherent,
+    EvaluationKrmInherent
+)
+
 from krm.risks.models import (
     RiskMaster,
     RiskCompany
@@ -128,6 +134,22 @@ def user_can_edit_domain_risk_expert(function):
     return wrap
 
 
+def user_can_edit_domain_risk_evaluator(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            expert = CompanyDomainRiskEvaluator.objects.get(pk=kwargs["pk"])
+        except CompanyDomainRiskEvaluator.DoesNotExist:
+            raise Http404
+
+        if (
+            expert.company in request.user.companies_admin.all() or request.user.is_superuser
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
 def user_can_edit_company(function):
     def wrap(request, *args, **kwargs):
         try:
@@ -137,6 +159,40 @@ def user_can_edit_company(function):
 
         if (
             company in request.user.companies_admin.all() or request.user.is_superuser
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_view_risk_test_inherent(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            rt = RiskTestInherent.objects.get(pk=kwargs["pk"])
+        except RiskTestInherent.DoesNotExist:
+            raise Http404
+
+        if (
+            request.user.is_superuser
+            or request.user == rt.expert
+            or rt.evaluation.company in request.user.companies_admin.all()
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_view_evaluation_inherent(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            evaluation = EvaluationKrmInherent.objects.get(pk=kwargs["pk"])
+        except EvaluationKrmInherent.DoesNotExist:
+            raise Http404
+
+        if (
+            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
         ):
             return function(request, *args, **kwargs)
         raise PermissionDenied

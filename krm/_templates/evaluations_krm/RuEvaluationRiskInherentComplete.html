@@ -1,0 +1,185 @@
+{% extends layout %}
+
+{% load i18n %}
+{% trans "Sin asignar" as without_set %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+<script defer src="http://localhost:3000/static/js/bundle.js"></script>
+<!-- <script defer src="{% static 'main.b8e512f4.js' %}"></script> -->
+
+
+<script>
+  $(document).ready(function () {
+    $('#sendEvaluation').on('submit', function(e){
+      $('#buttonSend').attr('data-kt-indicator', 'on');
+      $('.card').removeClass('danger');
+      $("input[name^='probability-']").each(function(index){
+        if ($(this).val() == 5){
+          let parent = $(this).closest('div.card');
+          $(parent).addClass('danger');
+          $('html, body').animate({
+            scrollTop: $(parent).offset().top - 100
+          }, 1000);
+          e.preventDefault();
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+          return false;
+        }
+      });
+      $("input[name^='impact-']").each(function (index) {
+        if ($(this).val() == 5) {
+          let parent = $(this).closest('div.card');
+          $(parent).addClass('danger');
+          $('html, body').animate({
+            scrollTop: $(parent).offset().top - 100
+          }, 1000);
+          e.preventDefault();
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+          return false;
+        }
+      });
+      return true;
+    })
+  });
+</script>
+
+{% endblock js_footer %}
+
+{% block pageCss %}
+<style>
+
+  .form-check-input:hover,
+  .form-check-label:hover{
+    cursor:pointer;
+  }
+
+  .form-check-custom .form-check-label{
+    margin-left: 0;
+    padding-left: 10px;
+  }
+
+  .card.danger {
+    border: 2px solid var(--kt-danger);
+  }
+</style>
+{% endblock pageCss %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    <div class="row">
+      <div class="col col-md-4">
+        <p><span class="fs-6 fw-semibold">{% trans 'Estado' %}: </span>{{ evaluation.get_status_display }}</p>
+        <p><span class="fs-6 fw-semibold">{% trans 'REF' %}: </span>{{ evaluation.ref }}</p>
+      </div>
+      <div class="col col-md-4">
+        <p><span class="fs-6 fw-semibold">{% trans 'Compañía' %}: </span>{{ evaluation.company }}</p>
+        <p><span class="fs-6 fw-semibold">{% trans 'Año de certificación' %}: </span>{{ evaluation.certification_year }}</p>
+        <p><span class="fs-6 fw-semibold">{% trans 'Periodo de certificación' %}: </span>{{ evaluation.certification_period }}</p>
+      </div>
+      <div class="col col-md-4">
+        <p><span class="fs-6 fw-semibold">{% trans 'Fecha de inicio' %}: </span>{{ evaluation.date_begin }}</p>
+        <p><span class="fs-6 fw-semibold">{% trans 'Fecha final' %}: </span>{{ evaluation.date_end }}</p>
+      </div>
+    </div>
+  </div>
+  <!--end::Card body-->
+</div>
+
+{% if risks_test_inherent %}
+    {% for rt in risks_test_inherent %}
+
+      <div class="card  mb-5">
+        <!--begin::Card header-->
+        <div class="card-header">
+          <!--begin::Card header-->
+          <div class="card-title fs-3 fw-bold">{{ rt.risk }}</div>
+          <!--end::Card header-->
+        </div>
+        <div class="card-body">
+            <div class="row">
+              <div class="col col-12 col-xl-6">
+                <p><span class="fs-6 fw-semibold">{% trans 'Riesgo' %}:</span> {{ rt.risk.name }}</p>
+              </div>
+              <div class="col col-12 col-xl-6">
+                <p><span class="fs-6 fw-semibold">{% trans 'Descripción' %}:</span> <br>{{ rt.risk.description|safe }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-12 col-xl-6">
+                <p><span class="fs-6 fw-semibold">{% trans 'Actividad afectada' %}:</span> <br>{{ rt.risk.krm_activity_affected|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios' %}:</span> <br>{{ rt.risk.krm_main_events|safe }}</p>
+              </div>
+              <div class="col col-12 col-xl-6">
+                <p><span class="fs-6 fw-semibold">{% trans 'Personal especialmente expuesto al Riesgo' %}:</span> <br>{{ rt.risk.krm_exposed_staff|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Principales elementos del Riesgo' %}:</span> <br>{{ rt.risk.krm_main_elements|safe }}</p>
+              </div>
+            </div>
+        </div>
+        <!--begin::Card footer-->
+        <div class="card-footer py-6">
+          <div class="risk_test_inherent" data-risktestpk="{{ rt.pk }}" data-impact="{{ rt.impact_level_expert}}" data-probability="{{ rt.probability_level_expert }}"></div>
+        </div>
+        <!--end::Card footer-->
+      </div>
+    {% endfor %}
+
+    <div class="card">
+      <!--begin::Card header-->
+      <div class="card-header">
+        <!--begin::Card header-->
+        <div class="card-title fs-3 fw-bold">{% trans 'Finalizar evaluación' %}</div>
+        <!--end::Card header-->
+      </div>
+      <div class="card-body">
+        <div class="row mt-2 mb-2">
+          <div class="col-12">
+            <form action="" novalidate id="sendEvaluation" method="post">
+              {% csrf_token %}
+              {{ form.ref|as_crispy_field }}
+              <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
+                <span class="indicator-label">Finalizar y enviar evaluación para su validación</span>
+                <span class="indicator-progress">
+                  Actualizando...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% else %}
+  <div class="card">
+    <!--begin::Card header-->
+    <div class="card-header">
+      <!--begin::Card header-->
+      <div class="card-title fs-3 fw-bold">{{ rt }}</div>
+      <!--end::Card header-->
+    </div>
+    <div class="card-body">
+      <div class="row mt-2 mb-2">
+        <div class="col-12">
+          <div class="alert alert-primary">{% trans 'No existen tests de riesgo inherente pendientes para esta Evaluación' %}.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<!--end::Container-->
+{% endblock content %}

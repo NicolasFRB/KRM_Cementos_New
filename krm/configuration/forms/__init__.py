@@ -1,1 +1,1 @@
-from .configforms import *
+from .configuration_forms import *

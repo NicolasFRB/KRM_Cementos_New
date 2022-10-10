@@ -30,10 +30,13 @@
             <fieldset>
               <legend>{% trans 'Datos de la Compañía' %}</legend>
               <div class="row">
+                <div class="mb-4 col-md-2 col-12">
+                  {{ form.ref|as_crispy_field }}
+                </div>
                 <div class="mb-4 col-md-4 col-12">
                   {{ form.name|as_crispy_field }}
                 </div>
-                <div class="mb-4 col-md-4 col-12">
+                <div class="mb-4 col-md-2 col-12">
                   {{ form.vat|as_crispy_field }}
                 </div>
                 <div class="mb-4 col-md-4 col-12">
