@@ -23,10 +23,13 @@ from krm.metronic.libs.theme import KTTheme
 from krm.configuration.forms import ConfigurationUpdateForm, ImportForm
 from krm.configuration.models import Configuration
 
+from krm.companies.models import Company
+
 from krm.risks.models import (
     Risk,
     RiskMaster,
     DomainRisk,
+    RiskCompany
 )
 
 from krm.controls.models import (
@@ -126,6 +129,8 @@ class GaImportView(FormView):
                 continue
 
             domain_risk = {}
+            if row[0].value is None:
+                break
             # Los dominios de riesgo hay que validarlos y ver que existen y que no hay nada raro
             domain_risk['ref'] = row[0].value.strip().upper()
             domain_risk['name'] = row[1].value
@@ -157,7 +162,7 @@ class GaImportView(FormView):
                 return super(GaImportView, self).form_invalid(form)
 
         # Riesgos Maestros
-        risk_master_sheet = wb['Risk Master']
+        risk_master_sheet = wb['Risk Master N1']
         risk_master_to_create = []
         nrow = 0
         rows = risk_master_sheet.rows
@@ -168,6 +173,8 @@ class GaImportView(FormView):
 
             risk_master = {}
             # Los dominios de riesgo hay que validarlos y ver que existen y que no hay nada raro
+            if row[0].value is None:
+                break
             risk_master['domain_risk_ref'] = row[0].value.strip().replace(
                 ' ', '').upper()
             risk_master['ref'] = row[1].value.strip().replace(' ', '').upper()
@@ -221,7 +228,7 @@ class GaImportView(FormView):
                 return super(GaImportView, self).form_invalid(form)
 
         # Riesgos
-        risk_sheet = wb['Risk']
+        risk_sheet = wb['Risk N2']
         risk_to_create = []
         nrow = 0
         rows = risk_sheet.rows
@@ -445,8 +452,52 @@ class GaImportView(FormView):
                     )
                     return super(GaImportView, self).form_invalid(form)
 
-        # Vamos a crear cosas
+        # Riesgos Compañías
+        risk_sheet = wb['RiskCompany']
+        risk_company_to_create = []
+        nrow = 0
+        rows = risk_sheet.rows
 
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
+
+            risk_company = {}
+
+            if row[0].value is None:
+                break
+            risk_company['risk_ref'] = row[0].value.strip().replace(
+                ' ', '').upper()
+            risk_company['company_ref'] = row[1].value.strip().replace(
+                ' ', '').upper()
+
+            risk_company_to_create.append(risk_company)
+
+        for r in risk_company_to_create:
+            if Risk.objects.filter(ref=r['risk_ref']).count() == 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgo compañía hay una REF de riesgo que no existe: %s')
+                        % (r['risk_ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            if Company.objects.filter(ref=r['company_ref']).count() == 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgo compañía hay una REF a una compañía que no existe: %s')
+                        % (r['company_ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+        # Vamos a crear cosas
         dr_created = 0
         for dr in domain_risk_to_create:
             DomainRisk.objects.create(
@@ -556,6 +607,30 @@ class GaImportView(FormView):
                         "{0} Controles importados"
                     ).format(
                         c_created,
+                    )
+                ),
+            )
+
+        # RiskCompany
+        risk_company_created = 0
+        for rc in risk_company_to_create:
+            rc_object = RiskCompany.objects.get(
+                company__ref=rc['company_ref'],
+                risk__ref=rc['risk_ref']
+            )
+            rc_object.active = True
+            rc_object.save()
+            risk_company_created += 1
+
+        if risk_company_created > 0:
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                (
+                    _(
+                        "{0} Riesgos Compañía creados"
+                    ).format(
+                        risk_company_created,
                     )
                 ),
             )
