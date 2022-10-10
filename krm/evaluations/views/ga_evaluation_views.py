@@ -643,13 +643,14 @@ class GaEvaluationCreateView(FormView):
 
             # Para cada evaluación hay que crear los test controls de los controles que se han pasado
             for control in controls:
-                control_test = ControlTest.objects.create(
-                    evaluation=evaluation,
-                    control=control,
-                    date_begin=form.cleaned_data["date_begin"]
-                )
+                if company.pk in control.companies:
+                    control_test = ControlTest.objects.create(
+                        evaluation=evaluation,
+                        control=control,
+                        date_begin=form.cleaned_data["date_begin"]
+                    )
 
-                controls_created += 1
+                    controls_created += 1
 
             evaluations_created += 1
 

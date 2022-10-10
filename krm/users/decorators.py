@@ -12,7 +12,8 @@ from krm.evaluations.models import Evaluation
 from krm.evaluations.models import ControlTest
 from krm.companies.models import (
     Company,
-    CompanyDomainRiskExperts
+    CompanyDomainRiskExperts,
+    CompanyDomainRiskEvaluator
 )
 from krm.evaluations_krm.models import (
     RiskTestInherent,
@@ -122,6 +123,22 @@ def user_can_edit_domain_risk_expert(function):
         try:
             expert = CompanyDomainRiskExperts.objects.get(pk=kwargs["pk"])
         except CompanyDomainRiskExperts.DoesNotExist:
+            raise Http404
+
+        if (
+            expert.company in request.user.companies_admin.all() or request.user.is_superuser
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_edit_domain_risk_evaluator(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            expert = CompanyDomainRiskEvaluator.objects.get(pk=kwargs["pk"])
+        except CompanyDomainRiskEvaluator.DoesNotExist:
             raise Http404
 
         if (

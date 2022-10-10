@@ -315,23 +315,24 @@ class GaCompanyImportView(FormView):
                 break
 
             if row[0].value is not None or row[1].value is not None:
-                company['name'] = str(row[0].value).title()
-                company['vat'] = str(row[1].value).title()
-                company['address'] = str(row[2].value)
-                company['state'] = str(row[3].value).upper()
-                cell = row[4]
+                company['ref'] = str(row[0].value).title()
+                company['name'] = str(row[1].value).title()
+                company['vat'] = str(row[2].value).title()
+                company['address'] = str(row[3].value)
+                company['state'] = str(row[4].value).upper()
+                cell = row[5]
                 cell_value = cell.value
                 try:
                     cell_value = int(cell_value)
                 except:
                     cell_value = None
                 company['cp'] = cell_value
-                if row[6].value is not None:
-                    company['country'] = str(row[5].value).upper()
+                if row[7].value is not None:
+                    company['country'] = str(row[6].value).upper()
                 else:
                     company['country'] = None
                 company['email'] = str(
-                    row[7].value).lower().replace(' ', '')
+                    row[8].value).lower().replace(' ', '')
 
                 # Tenemos que comprobar que el email esté bien formado
                 if company['email'] != '':
@@ -352,6 +353,21 @@ class GaCompanyImportView(FormView):
                             self
                         ).form_invalid(form)
                         break
+
+                if Company.objects.filter(ref=company['ref']).count() > 0:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('La REF introducida en la fila %s ya está registrado por otra compañía') % str(
+                                nrow+1)
+                        )
+                    )
+                    return super(
+                        GaCompanyImportView,
+                        self
+                    ).form_invalid(form)
+                    break
 
                 if Company.objects.filter(vat=company['vat']).count() > 0:
                     messages.add_message(
@@ -389,6 +405,7 @@ class GaCompanyImportView(FormView):
 
         for c in companies_to_create:
             Company.objects.create(
+                ref=c['ref'],
                 name=c['name'],
                 vat=c['vat'],
                 address=c['address'],
