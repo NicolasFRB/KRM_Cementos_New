@@ -36,17 +36,20 @@
       <tbody>
           {% for user in users %}
           <tr>
-            <td class="text-center"><a href="{% url 'users:ga_user_detail' user.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td>{{ user.email|default_if_none:"" }}</td>
-            <td>{{ user.first_name|default_if_none:"" }}</td>
-            <td>{{ user.last_name|default_if_none:"" }}</td>
-            <td>{% for company in user.companies.all %}
-                  <a href="{% url 'companies:ga_company_detail' company.pk %}">{{ company.name }}</a>{% if not forloop.last %}<br>{% endif %}
+            <td class="text-center align-middle"><a href="{% url 'users:ga_user_detail' user.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="align-middle">{{ user.email|default_if_none:"" }}</td>
+            <td class="align-middle">{{ user.first_name|default_if_none:"" }}</td>
+            <td class="align-middle">{{ user.last_name|default_if_none:"" }}</td>
+            <td class="align-middle">
+                {% for company in user.companies.all %}
+                  <a href="{% url 'companies:ga_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>
+                  {% if not forloop.last %}<br>{% endif %}
                 {% endfor %}
             </td>
             <td>
               {% for company in user.companies_admin.all %}
-                <a href="{% url 'companies:ga_company_detail' company.pk %}">{{ company.name }}</a>{% if not forloop.last %}<br>{% endif %}
+                <a href="{% url 'companies:ga_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>
+                  {% if not forloop.last %}<br>{% endif %}
               {% endfor %}
             </td>
             <td>{{ user.last_login|default_if_none:"No ha iniciado sesión todavía" }}</td>
