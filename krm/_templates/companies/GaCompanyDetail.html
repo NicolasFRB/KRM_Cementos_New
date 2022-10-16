@@ -61,8 +61,10 @@
             <!--begin::Col-->
             <div class="col-xl-7">
               <div class="fs-6">
+                {% if company.country %}
                 <img class="w-20px h-20px rounded-circle me-3" src="{{company.country.flag}}">
                 <span>{{ company.country.name }}</span>
+                {% endif %}
               </div>
             </div>
             <!--end::Col-->
@@ -252,7 +254,7 @@
                     <td class="text-center">
                       <a href="{% url 'companies:ga_company_assign_expert_update' ced.pk %}"><i class="bi bi-pencil-fill fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Asignar"></i></a>
                     </td>
-                    <td><a href="{% url 'domain_risks:ga_domain_risk_detail' ced.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.domain_risk.name }}">{{ ced.domain_risk.ref }}</span></a></td>
+                    <td><a href="{% url 'domain_risks:ga_domain_risk_detail' ced.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.domain_risk.name|striptags }}">{{ ced.domain_risk.ref }}</span></a></td>
                     <td>{{ ced.domain_risk.name }}</td>
                     <td>
                       {% if not ced.expert %}
@@ -314,7 +316,6 @@
       </div>
     </div>
 
-  {% endif %}
     <div class="card mb-8">
       <div class="card-header">
         <div class="card-title fs-3 fw-bold">{% trans 'Riesgos que aplican' %}</div>
@@ -355,7 +356,7 @@
                       <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_elements }}"></i></td>
                       <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_exposed_staff }}"></i></td>
                       <td class="align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.risk.risk_master.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.domain_risk.name }}">{{ risk.risk.risk_master.domain_risk.ref }}</span></a></td>
-                      <td class="align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.name }}">{{ risk.risk_master.ref }}</span></a></td>
+                      <td class="align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.name }}">{{ risk.risk.risk_master.ref }}</span></a></td>
                       <td class="text-center align-middle"><span class="badge badge-info">{{ risk.risk.controls.count }}</span></td>
                     </tr>
                     {% endfor %}
@@ -403,8 +404,8 @@
                     <tr>
                       <td class="text-center align-middle"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
                       <td class="text-center align-middle">{{ control.ref }}</td>
-                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.name }}"></i></td>
-                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description }}"></i></td>
+                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.name|striptags }}"></i></td>
+                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description|striptags }}"></i></td>
                       <td class="text-center align-middle">{{ control.control_frequency }}</td>
                       <td class="text-center align-middle">{{ control.control_type }}</td>
                       <td class="text-center align-middle">{{ control.automation }}</td>

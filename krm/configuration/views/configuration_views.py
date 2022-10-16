@@ -469,6 +469,12 @@ class GaImportView(FormView):
                 ' ', '').upper()
             risk_company['company_ref'] = row[1].value.strip().replace(
                 ' ', '').upper()
+            risk_company['name'] = row[2].value
+            risk_company['description'] = row[3].value
+            risk_company['krm_activity_affected'] = row[4].value
+            risk_company['krm_main_events'] = row[5].value
+            risk_company['krm_exposed_staff'] = row[6].value
+            risk_company['krm_main_elements'] = row[7].value
 
             risk_company_to_create.append(risk_company)
 
@@ -480,6 +486,51 @@ class GaImportView(FormView):
                     (
                         _('En la hoja de riesgo compañía hay una REF de riesgo que no existe: %s')
                         % (r['risk_ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            if Company.objects.filter(ref=r['company_ref']).count() == 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgo compañía hay una REF a una compañía que no existe: %s')
+                        % (r['company_ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+        # Control-Compañías
+        control_company_sheet = wb['ControlCompany']
+        control_company_to_create = []
+        nrow = 0
+        rows = control_company_sheet.rows
+
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
+
+            control_company = {}
+
+            if row[0].value is None or row[1].value is None:
+                break
+            control_company['control_ref'] = row[0].value.strip().replace(
+                ' ', '').upper()
+            control_company['company_ref'] = row[1].value.strip().replace(
+                ' ', '').upper()
+
+            control_company_to_create.append(control_company)
+
+        for r in control_company_to_create:
+            if Control.objects.filter(ref=r['control_ref']).count() == 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgo compañía hay una REF de un control que no existe: %s')
+                        % (r['control_ref'])
                     ),
                 )
                 return super(GaImportView, self).form_invalid(form)
@@ -612,11 +663,26 @@ class GaImportView(FormView):
         # RiskCompany
         risk_company_created = 0
         for rc in risk_company_to_create:
+
             rc_object = RiskCompany.objects.get(
                 company__ref=rc['company_ref'],
                 risk__ref=rc['risk_ref']
             )
             rc_object.active = True
+
+            if rc['name'] != '':
+                rc_object.name = rc['name']
+            if rc['description'] != '':
+                rc_object.description = rc['description']
+            if rc['krm_activity_affected'] != '':
+                rc_object.krm_activity_affected = rc['krm_activity_affected']
+            if rc['krm_main_events'] != '':
+                rc_object.krm_main_events = rc['krm_main_events']
+            if rc['krm_exposed_staff'] != '':
+                rc_object.krm_exposed_staff = rc['krm_exposed_staff']
+            if rc['krm_main_elements'] != '':
+                rc_object.krm_main_elements = rc['krm_main_elements']
+
             rc_object.save()
             risk_company_created += 1
 
@@ -629,6 +695,28 @@ class GaImportView(FormView):
                         "{0} Riesgos Compañía creados"
                     ).format(
                         risk_company_created,
+                    )
+                ),
+            )
+
+        # ControlCompany
+        control_company_created = 0
+        for cc in control_company_to_create:
+            company = Company.objects.get(ref=cc['company_ref'])
+            control = Control.objects.get(ref=cc['control_ref'])
+
+            company.controls.add(control)
+            control_company_created += 1
+
+        if control_company_created > 0:
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                (
+                    _(
+                        "{0} Controles asociados a compañías creados"
+                    ).format(
+                        control_company_created,
                     )
                 ),
             )
