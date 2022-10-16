@@ -11,6 +11,7 @@
   <div class="card-header">
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <div class="card-text">En esta página es posible asignar un evaluador de Riesgo Inherente para el Dominio de Riesgo <span class="badge badge-primary text-wrap">{{ object.domain_risk }}</span> en la compañía <span class="badge badge-primary text-wrap">{{ object.company.name }}</span>.</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -19,18 +20,49 @@
       {% csrf_token %}
       <div class="card-body">
         <div class="row">
-          <div class="col-12">
+          <div class="col col-md-12">
             {% include '_includes/FormErrors.html' %}
-            <div class="row mb-4">
-              <div class="col col-12 mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Compañía' %}: </span> <span>{{ object.company.name }}</span>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
               </div>
-              <div class="col col-12 mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Dominio de Riesgo' %}: </span> <span>{{ object.domain_risk }}</span>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  <span>{{ object.company.name }}</span>
+                </div>
               </div>
-              <div class="col col-12 col-xl-5 mb-4">
-                {{ form.expert|as_crispy_field }}
+              <!--end::Col-->
+            </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominio de Riesgo' %}</span></div>
               </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  <span>{{ object.domain_risk }}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Evaluadores' %}</span></div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-8">
+                <div class="col col-12 col-xl-12 mb-4">
+                  {{ form.expert|as_crispy_field }}
+                </div>
+              </div>
+              <!--end::Col-->
             </div>
           </div>
         </div>

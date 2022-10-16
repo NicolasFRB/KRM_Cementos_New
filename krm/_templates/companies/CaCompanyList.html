@@ -21,26 +21,58 @@
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
-    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+  <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th>{% trans 'REF' %}</th>
-          <th>{% trans 'VAT' %}</th>
-          <th>{% trans 'Nombre' %}</th>
-          <th>{% trans 'País' %}</th>
-          <th>{% trans 'Email' %}</th>
+          <th class="text-center">{% trans 'REF' %}</th>
+          <th class="text-center">{% trans 'Nombre' %}</th>
+          <th class="text-center">{% trans 'País' %}</th>
+          <th class="text-center">{% trans 'Tipo' %}</th>
+          <th class="text-center">{% trans 'Sociedades en alcance' %}</th>
+          <th class="text-center">{% trans 'Número de usuarios' %}</th>
+          <th class="text-center">{% trans 'Expertos de Dominio de Riesgo (RI)' %}</th>
+          <th class="text-center">{% trans 'Evaluadores de Riesgo (RR)' %}</th>
+          <th class="text-center">{% trans 'Número de Riesgos (N2)' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for company in companies %}
           <tr>
-            <td class="text-center"><a href="{% url 'companies:ca_company_detail' company.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td>{{ company.ref }}</td>
-            <td>{{ company.vat }}</td>
-            <td>{{ company.name }}</td>
-            <td>{{ company.country.name }}</td>
-            <td>{{ company.email|default_if_none:"" }}</td>
+            <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ company.ref }}</td>
+            <td class="align-middle">{{ company.name }}</td>
+            <td class="text-center align-middle">{{ company.country.name }}</td>
+            <td class="text-center align-middle">{{ company.type_company }}</td>
+            <td class="align-middle">
+              {% for c in company.companies_in_scope_as_list %}
+                <span class="badge badge-info">{{ c }}</span><br>
+              {% endfor %}   
+            </td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span></td>
+            <td class="text-center align-middle">
+              {% for ced in company.experts_domain_risk %}
+                {% if not ced.expert %}
+                  <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
+                  <br>
+                {% else %}
+                  <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.expert }}">{{ ced.domain_risk.ref }}</span></a>
+                  <br>
+                {% endif %}   
+              {% endfor %}   
+            </td>
+            <td class="text-center align-middle">
+              {% for ced in company.evaluators_domain_risk.all %}
+                {% if not ced.evaluator.count %}
+                  <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
+                  <br>
+                {% else %}
+                  <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% for evaluator in ced.evaluator.all %}{{ evaluator.email }}{% if not forloop.last %}&#013;{% endif %}{% endfor %}">{{ ced.domain_risk.ref }}</span></a>
+                  <br>
+                {% endif %}   
+              {% endfor %}   
+            </td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ company.krm_risks_active.count }}</span></td>
           </tr>
           {% endfor %}
       </tbody>

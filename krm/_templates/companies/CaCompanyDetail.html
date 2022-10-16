@@ -21,42 +21,159 @@
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
-    <div class="row mb-4">
-      <div class="col col-md-2">
-        <span class="fs-6 fw-semibold">{% trans 'REF' %}: </span> <span>{{ company.ref }}</span>
-      </div>
-      <div class="col col-md-4">
-        <span class="fs-6 fw-semibold">{% trans 'Nombre' %}: </span> <span>{{ company.name }}</span>
-      </div>
-      <div class="col col-md-3">
-        <span class="fs-6 fw-semibold">{% trans 'VAT' %}: </span> <span>{{ company.vat|default_if_none:"" }}</span>
-      </div>
-      <div class="col col-md-3">
-        <span class="fs-6 fw-semibold">{% trans 'Email' %}: </span> <span>{{ company.email|default_if_none:"" }}</span>
-      </div>
-    </div>
     <div class="row">
-      <div class="mb-4 col-12 col-md-4">
-          <span class="fs-6 fw-semibold">{% trans 'Dirección' %}: </span> <span>{{ company.address|default_if_none:"" }}</span>
+      <div class="col col-md-6">
+        <fieldset>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.ref }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.name }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'País' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.country.name }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+              <span class="badge badge-info">{{ company.type_company|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcance societario' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                {% for c in company.companies_in_scope_as_list %}
+                  <div><span class="badge badge-info">{{ c }}</span></div>
+                {% endfor %}
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+        </fieldset>
       </div>
-      <div class="mb-4 col-md-4 col-12">
-          <span class="fs-6 fw-semibold">{% trans 'Población' %}: </span> <span>{{ company.state|default_if_none:"" }}</span>
+      <div class="col col-md-6">
+        <fieldset>
+        <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'CIF' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.vat|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Email' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.email|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dirección' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.address|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Población' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.state|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Código postal' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.cp|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>   
+        </fieldset>
       </div>
-      <div class="mb-4 col-md-4 col-12">
-          <span class="fs-6 fw-semibold">{% trans 'Código Postal' %}: </span> <span>{{ company.cp|default_if_none:"" }}</span>
-      </div>
-      <div class="mb-4 col-md-4 col-12">
-          <span class="fs-6 fw-semibold">{% trans 'País' %}: </span> <span>{{ company.country.name }}</span>
-      </div>
-      <div class="mb-4 col-md-6 col-12">
-        <span class="fs-6 fw-semibold">{% trans 'Tipo' %}: </span> <span>{{ company.type_company|default_if_none:"" }}</span>
-      </div>
-      <div class="mb-4 col-md-6 col-12">
-        <span class="fs-6 fw-semibold">{% trans 'Companies in scope' %}: </span> <span>{{
-          company.companies_in_scope|default_if_none:"" }}</span>
-      </div>
+      
     </div>
-  </div>
   <!--end::Card body-->
 </div>
 

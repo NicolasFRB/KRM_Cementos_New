@@ -14,7 +14,7 @@
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Riesgos KRM que aplican a la compañía' %}: {{ company.name }}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Riesgos (N2) que aplican a la compañía' %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -33,14 +33,16 @@
                 {% for key, domain_risk in dms.items %}
                     <thead>
                       <tr>
-                        <th colspan="3"><h5>{% trans 'Dominio de Riesgo' %}: {{ domain_risk.name }}</h5></th>
+                        <th colspan="5"><h5>{{ domain_risk.name }}</h5></th>
                       </tr>
                     </thead>
                     <tbody>
                       {% for rc in domain_risk.risks %}
                         <tr>
-                          <td width="20px"><input type="checkbox" name="risk_pk" class="checkboxinput form-check-input" id="risk_{{ rc.pk }}" {% if rc.active %}checked="checked" {% endif %} value="{{ rc.pk }}"></td>
-                          <td>{{ rc.risk.ref }}</td>
+                          <td width="20px" class="align-middle"><input type="checkbox" name="risk_pk" class="checkboxinput form-check-input" id="risk_{{ rc.pk }}" {% if rc.active %}checked="checked" {% endif %} value="{{ rc.pk }}"></td>
+                          <td width="15%" class="align-middle"><a href="{% url 'risks:ga_risk_detail' rc.risk.pk %}"><span class="badge badge-primary text-wrap" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.risk.name }}">{{ rc.risk.ref }}</span></a></td>
+                          <td width="25%" class="align-middle">{{ rc.risk.name }}</td>
+                          <td class="align-middle">{{ rc.risk.description }}</td>
                           <td><label for="risk_{{ rc.pk }}" class="form-check-label">{{ rc.name }}</label>
                           </td>
                         </tr>

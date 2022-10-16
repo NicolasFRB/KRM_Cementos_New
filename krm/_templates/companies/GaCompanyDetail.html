@@ -21,41 +21,160 @@
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
-    <div class="row mb-4">
-      <div class="col col-md-2">
-        <span class="fs-6 fw-semibold">{% trans 'REF' %}: </span> <span>{{ company.ref }}</span>
-      </div>
-      <div class="col col-md-4">
-        <span class="fs-6 fw-semibold">{% trans 'Nombre' %}: </span> <span>{{ company.name }}</span>
-      </div>
-      <div class="col col-md-3">
-        <span class="fs-6 fw-semibold">{% trans 'VAT' %}: </span> <span>{{ company.vat|default_if_none:"" }}</span>
-      </div>
-      <div class="col col-md-3">
-        <span class="fs-6 fw-semibold">{% trans 'Email' %}: </span> <span>{{ company.email|default_if_none:"" }}</span>
-      </div>
-    </div>
     <div class="row">
-      <div class="mb-4 col-12 col-md-4">
-          <span class="fs-6 fw-semibold">{% trans 'Dirección' %}: </span> <span>{{ company.address|default_if_none:"" }}</span>
+      <div class="col col-md-6">
+        <fieldset>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.ref }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.name }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'País' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <img class="w-20px h-20px rounded-circle me-3" src="{{company.country.flag}}">
+                <span>{{ company.country.name }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+              <span class="badge badge-info">{{ company.type_company|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcance societario' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                {% for c in company.companies_in_scope_as_list %}
+                  <div><span class="badge badge-info">{{ c }}</span></div>
+                {% endfor %}
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+        </fieldset>
       </div>
-      <div class="mb-4 col-md-4 col-12">
-          <span class="fs-6 fw-semibold">{% trans 'Población' %}: </span> <span>{{ company.state|default_if_none:"" }}</span>
+      <div class="col col-md-6">
+        <fieldset>
+        <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'CIF' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.vat|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Email' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.email|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dirección' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.address|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Población' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.state|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Código postal' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ company.cp|default_if_none:"" }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>   
+        </fieldset>
       </div>
-      <div class="mb-4 col-md-4 col-12">
-          <span class="fs-6 fw-semibold">{% trans 'Código Postal' %}: </span> <span>{{ company.cp|default_if_none:"" }}</span>
-      </div>
-      <div class="mb-4 col-md-4 col-12">
-          <span class="fs-6 fw-semibold">{% trans 'País' %}: </span> <span>{{ company.country.name }}</span>
-      </div>
-      <div class="mb-4 col-md-6 col-12">
-        <span class="fs-6 fw-semibold">{% trans 'Tipo' %}: </span> <span>{{ company.type_company|default_if_none:"" }}</span>
-      </div>
-      <div class="mb-4 col-md-6 col-12">
-        <span class="fs-6 fw-semibold">{% trans 'Companies in scope' %}: </span> <span>{{ company.companies_in_scope|default_if_none:"" }}</span>
-      </div>
+      
     </div>
-  </div>
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
@@ -113,7 +232,7 @@
 {% if KRM_ACTIVATE %}
     <div class="card mb-8">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Expertos de Dominios de riesgo' %}</div>
+        <div class="card-title fs-3 fw-bold">{% trans 'Expertos de Dominios de Riesgo (RI)' %}</div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -122,18 +241,26 @@
               <thead>
                 <tr class="fw-semibold fs-6">
                   <th class="text-center">{% trans 'Acción' %}</th>
+                  <th>{% trans 'REF' %}</th>
                   <th>{% trans 'Dominio de Riesgo' %}</th>
-                  <th>{% trans 'Experto asignado' %}</th>
+                  <th>{% trans 'Experto asignado (RI)' %}</th>
                 </tr>
               </thead>
               <tbody>
                 {% for ced in company.experts_domain_risk %}
                   <tr>
                     <td class="text-center">
-                      <a href="{% url 'companies:ga_company_assign_expert_update' ced.pk %}"><i class="bi bi-pencil-fill fs-1x text-primary"></i></a>
+                      <a href="{% url 'companies:ga_company_assign_expert_update' ced.pk %}"><i class="bi bi-pencil-fill fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Asignar"></i></a>
                     </td>
-                    <td>{{ ced.domain_risk }}</td>
-                    <td>{{ ced.expert|default_if_none:"Sin asignar" }}</td>
+                    <td><a href="{% url 'domain_risks:ga_domain_risk_detail' ced.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.domain_risk.name }}">{{ ced.domain_risk.ref }}</span></a></td>
+                    <td>{{ ced.domain_risk.name }}</td>
+                    <td>
+                      {% if not ced.expert %}
+                        <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">Sin asignar</span></a>
+                      {% else %}
+                      <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.expert }}">{{ ced.expert }}</span></a>
+                      {% endif %}
+                    </td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -145,7 +272,7 @@
 
     <div class="card mb-8">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Evaluadores de Dominios de riesgo' %}</div>
+        <div class="card-title fs-3 fw-bold">{% trans 'Evaluadores de Dominios de Riesgo (RR)' %}</div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -154,25 +281,28 @@
               <thead>
                 <tr class="fw-semibold fs-6">
                   <th class="text-center">{% trans 'Acción' %}</th>
+                  <th>{% trans 'REF' %}</th>
                   <th>{% trans 'Dominio de Riesgo' %}</th>
-                  <th>{% trans 'Evaluadores' %}</th>
+                  <th>{% trans 'Evaluadores de Riesgo (RR)' %}</th>
                 </tr>
               </thead>
               <tbody>
                 {% for ced in company.evaluators_domain_risk.all %}
                 <tr>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                       <a href="{% url 'companies:ga_company_assign_evaluator_update' ced.pk %}"><i
-                          class="bi bi-pencil-fill fs-1x text-primary"></i></a>
+                          class="bi bi-pencil-fill fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Asignar"></i></a>
                   </td>
-                  <td>{{ ced.domain_risk }}</td>
-                  <td>
-                    {% if ced.evaluator.count %}
-                        {% for evaluator in ced.evaluator.all %}
-                          {{ evaluator.email }}{% if not forloop.last %}<br>{% endif %}
-                        {% endfor %}
+                  <td class="text-center align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' ced.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.domain_risk.name }}">{{ ced.domain_risk.ref }}</span></a></td>
+                  <td class="align-middle">{{ ced.domain_risk.name }}</td>
+                  <td class="align-middle">
+                    {% if not ced.evaluator.count %}
+                      <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">Sin asignar</span></a>
                     {% else %}
-                      {% trans 'Sin evaluadores' %}
+                      {% for evaluator in ced.evaluator.all %}
+                        <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluator.name }}">{{ evaluator.email }}</span></a>
+                        {% if not forloop.last %}<br>{% endif %}
+                      {% endfor %}
                     {% endif %}
                   </td>
                 </tr>
@@ -184,7 +314,7 @@
       </div>
     </div>
 
-
+  {% endif %}
     <div class="card mb-8">
       <div class="card-header">
         <div class="card-title fs-3 fw-bold">{% trans 'Riesgos que aplican' %}</div>
@@ -196,23 +326,37 @@
               <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
                 <thead>
                   <tr class="fw-semibold fs-6">
-                    <th>{% trans 'REF' %}</th>
-                    <th>{% trans 'Nombre' %}</th>
-                    <th>{% trans 'Riesgo Maestro' %}</th>
+                    <th class="text-center">{% trans 'Acción' %}</th>
+                    <th class="text-center" width="15%">{% trans 'REF' %}</th>
+                    <th width="30%">{% trans 'Nombre' %}</th>
+                    <th width="5%">{% trans 'Descripción' %}</th>
+                    <th width="5%">{% trans 'Actividad afectada' %}</th>
+                    <th width="5%">{% trans 'Principales eventos' %}</th>
+                    <th width="5%">{% trans 'Principales elementos' %}</th>
+                    <th width="5%">{% trans 'Personal expuesto' %}</th>
+                    <th>{% trans 'Dominio de Riesgo' %}</th>          
+                    <th>{% trans 'Riesgo Maestro (N1)' %}</th>          
                   </tr>
                 </thead>
                 <tbody>
                   {% for risk_company in company.krm_risks_active.all %}
                   <tr>
-                    <td>{{ risk_company.risk.ref }}</td>
-                    <td>{{ risk_company.name }}</td>
-                    <td>{{ risk_company.risk.risk_master }}</td>
+                    <td class="text-center align-middle"><a href="{% url 'risks:ga_risk_detail' risk_company.risk.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></td>
+                    <td class="text-center align-middle">{{ risk_company.risk.ref }}</td>
+                    <td class="align-middle">{{ risk_company.risk.name|striptags|safe|truncatechars:200 }}</td>
+                    <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.description }}"></i></td>
+                    <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.krm_activity_affected }}"></i></td>
+                    <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.krm_main_events }}"></i></td>
+                    <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.krm_main_elements }}"></i></td>
+                    <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.krm_exposed_staff }}"></i></td>
+                    <td class="align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk_company.risk.risk_master.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.risk_master.domain_risk.name }}">{{ risk_company.risk.risk_master.domain_risk.ref }}</span></a></td>
+                    <td class="align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk_company.risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.risk_master.name }}">{{ risk_company.risk.risk_master.ref }}</span></a></td>
                   </tr>
                   {% endfor %}
                 </tbody>
               </table>
             {% else %}
-              <div class="alert alert-primary">{% trans 'No existen riesgos que apliquen sobre esta compañía' %}.</div>
+              <div class="alert alert-primary">{% trans 'No existen Riesgos (N2) que apliquen sobre esta compañía' %}.</div>
             {% endif %}
           </div>
         </div>
@@ -225,6 +369,6 @@
       </div>
       <!--end::Card footer-->
     </div>
-{% endif %}
+
 <!--end::Container-->
 {% endblock content %}
