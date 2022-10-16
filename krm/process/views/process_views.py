@@ -29,6 +29,7 @@ from krm.process.models import Process
 
 from krm.users.decorators import is_global_admin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
@@ -36,7 +37,8 @@ class GaProcessListView(ListView):
     model = Process
     template_name = 'process/GaProcessList.html'
     context_object_name = 'processes'
-
+    queryset = Process.objects.all().prefetch_related('sub_processes__controls').all().annotate(n_sub_processes=Count('sub_processes', distinct=True), n_controls=Count('sub_processes__controls', distinct=True))
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
@@ -65,6 +67,7 @@ class GaProcessDetailView(DetailView):
     model = Process
     template_name = 'process/GaProcessDetail.html'
     context_object_name = 'process'
+    # queryset = Process.objects.all().prefetch_related('sub_processes__controls').all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

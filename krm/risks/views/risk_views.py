@@ -35,6 +35,7 @@ class GaRiskListView(ListView):
     model = Risk
     template_name = 'risks/GaRiskList.html'
     context_object_name = 'risks'
+    queryset = Risk.objects.all().prefetch_related('controls')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

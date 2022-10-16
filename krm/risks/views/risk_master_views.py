@@ -28,13 +28,14 @@ from krm.metronic.libs.theme import KTTheme
 from krm.risks.forms import RiskMasterCreateForm
 
 from krm.risks.models import RiskMaster, DomainRisk
-
+from django.db.models import Count
 
 @method_decorator([login_required, ], name='dispatch')
 class GaRiskMasterListView(ListView):
     model = RiskMaster
     template_name = 'risks_masters/GaRiskMasterList.html'
     context_object_name = 'risks_masters'
+    queryset = RiskMaster.objects.all().prefetch_related('risks')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

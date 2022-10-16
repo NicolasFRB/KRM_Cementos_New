@@ -29,13 +29,14 @@ from krm.metronic.libs.theme import KTTheme
 from krm.risks.forms import DomainRiskCreateForm
 
 from krm.risks.models import DomainRisk
-
+from django.db.models import Count
 
 @method_decorator([login_required, is_global_admin], name='dispatch')
 class GaDomainRiskListView(ListView):
     model = DomainRisk
     template_name = 'domain_risks/GaDomainRiskList.html'
     context_object_name = 'domain_risks'
+    queryset = DomainRisk.objects.all().prefetch_related('risks__risks').all().annotate(n_risks_master=Count('risks', distinct=True), n_risks=Count('risks__risks', distinct=True))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

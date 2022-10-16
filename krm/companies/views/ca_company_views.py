@@ -116,7 +116,8 @@ class CaCompanyUpdateView(UpdateView):
             _('Compañía actualizada correctamente')
         )
         return reverse_lazy(
-            'companies:ca_company_list'
+            'companies:ca_company_detail',
+            kwargs={"pk": self.object.pk},
         )
 
 

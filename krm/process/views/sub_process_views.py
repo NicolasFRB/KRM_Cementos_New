@@ -28,6 +28,7 @@ from krm.metronic.libs.theme import KTTheme
 from krm.process.forms import SubProcessCreateForm
 
 from krm.process.models import SubProcess, Process
+from django.db.models import Count
 
 
 @method_decorator([login_required, ], name='dispatch')
@@ -35,6 +36,7 @@ class GaSubProcessListView(ListView):
     model = SubProcess
     template_name = 'subprocess/GaSubProcessList.html'
     context_object_name = 'subprocess'
+    queryset = SubProcess.objects.all().prefetch_related('controls').all().annotate(n_controls=Count('controls', distinct=True))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -64,6 +66,7 @@ class GaSubProcessDetailView(DetailView):
     model = SubProcess
     template_name = 'subprocess/GaSubProcessDetail.html'
     context_object_name = 'subprocess'
+    # queryset = SubProcess.objects.all().prefetch_related('controls').all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
