@@ -131,14 +131,14 @@
             <td class="text-center align-middle">{{ control.control_frequency }}</td>
             <td class="text-center align-middle">{{ control.control_type }}</td>
             <td class="text-center align-middle">{{ control.automation }}</td>
-            <td class="text-center align-middle">
+            <td class="align-middle">
               {% for r1 in control.risks.all %}
                 <div style="margin: 5px;">
                   <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
                 </div>
               {% endfor %}
             </td>
-            <td class="text-center align-middle">
+            <td class="align-middle">
               {% for s1 in control.sub_processes.all %}
                 <div style="margin: 5px;">
                   <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ s1.name }}">{{ s1.ref }}</span></a>

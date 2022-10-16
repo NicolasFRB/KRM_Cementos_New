@@ -114,7 +114,7 @@
               <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description }}"></i></td>
               <td class="align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.domain_risk.name }}">{{ risk.domain_risk.ref }}</span></a></td>
               <td class="text-center align-middle"><span class="badge badge-info">{{ risk.risks.count }}</span></td>
-              <td class="text-center align-middle">
+              <td class="align-middle">
                 {% for r1 in risk.risks.all %}
                   <div style="margin: 5px;">
                   <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
