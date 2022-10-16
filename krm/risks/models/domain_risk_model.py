@@ -47,11 +47,3 @@ class DomainRisk(AuditModel):
                         company=company,
                         domain_risk=domain_risk
                     )
-
-    def risk_n2_entities(self):
-        risks = []
-        for r_n1 in self.risks.all():
-            for r_n2 in r_n1.risks.all():
-                risks.append(r_n2)
-
-        return risks
