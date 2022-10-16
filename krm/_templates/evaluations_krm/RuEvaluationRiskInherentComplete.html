@@ -131,7 +131,11 @@
         </div>
         <!--begin::Card footer-->
         <div class="card-footer py-6">
-          <div class="risk_test_inherent" data-risktestpk="{{ rt.pk }}" data-impact="{{ rt.impact_level_expert}}" data-probability="{{ rt.probability_level_expert }}"></div>
+          <div class="risk_test_inherent" data-risktestpk="{{ rt.pk }}"
+          data-impact-continuity="{{ rt.impact_continuity_level_expert}}" 
+          data-impact-economic="{{ rt.impact_economic_level_expert}}" 
+          data-impact-branding="{{ rt.impact_branding_level_expert}}" 
+          data-probability="{{ rt.probability_level_expert }}"></div>
         </div>
         <!--end::Card footer-->
       </div>

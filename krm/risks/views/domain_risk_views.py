@@ -86,7 +86,7 @@ class GaDomainRiskDetailView(DetailView):
                 'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
-        
+
         return context
 
 

@@ -51,10 +51,10 @@ class GaCompanyListView(ListView):
     template_name = 'companies/GaCompanyList.html'
     context_object_name = 'companies'
     queryset = Company.objects.all()\
-                # .prefetch_related('experts_domain_risk').all()\
-                # .prefetch_related('companydomainriskevaluator').all()\
-                # .prefetch_related('krm_risks_active').all()\
-                # .annotate(n_risks=Count('krm_risks', distinct=True))
+        # .prefetch_related('experts_domain_risk').all()\
+    # .prefetch_related('companydomainriskevaluator').all()\
+    # .prefetch_related('krm_risks_active').all()\
+    # .annotate(n_risks=Count('krm_risks', distinct=True))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -137,8 +137,10 @@ class GaCompanyCreateView(CreateView):
             messages.SUCCESS,
             _('Compañía creada correctamente')
         )
+
         return reverse_lazy(
-            'companies:ga_company_list'
+            'companies:ga_company_detail',
+            kwargs={'pk': self.object.pk}
         )
 
 
@@ -172,7 +174,7 @@ class GaCompanyUpdateView(UpdateView):
         )
         return reverse_lazy(
             'companies:ga_company_detail',
-            kwargs={"pk": self.object.pk},
+            kwargs={'pk': self.object.pk}
         )
 
 
@@ -231,9 +233,11 @@ class GaCompanyRiskKrmSelectView(FormView):
                 'companies:ga_company_list')},
             {'title': self.company.name, 'url': reverse(
                 'companies:ga_company_detail', kwargs={'pk': self.company.pk})},
-            {'title': _('Selección de Riesgos (N2) que aplican a %s' % self.company.name)},
+            {'title': _(
+                'Selección de Riesgos (N2) que aplican a %s' % self.company.name)},
         ]
-        context['page_title'] = _('Selección de Riesgos (N2) que aplican a %s' % self.company.name)
+        context['page_title'] = _(
+            'Selección de Riesgos (N2) que aplican a %s' % self.company.name)
         context['breadcrums'] = breadcrums
 
         context['risks_companies'] = RiskCompany.objects.filter(

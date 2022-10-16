@@ -15,10 +15,18 @@ let adminRisksTestInherent = document.getElementsByClassName("admin_risk_test_in
 for (let i = 0; i < risksTestInherent.length; i++) {
   let riskTestInherent = ReactDOM.createRoot(risksTestInherent.item(i));
   let pk = parseInt(risksTestInherent.item(i).getAttribute('data-risktestpk'));
-  let impact = parseInt(risksTestInherent.item(i).getAttribute('data-impact'));
+  let impactContinuity = parseInt(risksTestInherent.item(i).getAttribute('data-impact-continuity'));
+  let impactBranding = parseInt(risksTestInherent.item(i).getAttribute('data-impact-branding'));
+  let impactEconomic = parseInt(risksTestInherent.item(i).getAttribute('data-impact-economic'));
   let probability = parseInt(risksTestInherent.item(i).getAttribute('data-probability'));
   riskTestInherent.render(
-    <RuRiskTestInherent pk={pk} initialImpact={impact} initialProbability={probability} />
+    <RuRiskTestInherent
+      pk={pk}
+      initialImpactBranding={impactBranding}
+      initialImpactContinuity={impactContinuity}
+      initialImpactEconomic={impactEconomic}
+      initialProbability={probability}
+    />
   )
 }
 

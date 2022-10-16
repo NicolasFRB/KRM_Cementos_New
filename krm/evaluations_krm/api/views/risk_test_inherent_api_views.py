@@ -32,10 +32,20 @@ class RiskTestInherentExpertApiView(APIView):
             if probability != 0:
                 risk_test.probability_level_expert = probability
 
-        if 'impact' in request.GET:
-            impact = int(request.GET['impact'])
+        if 'impactEconomic' in request.GET:
+            impact = int(request.GET['impactEconomic'])
             if impact != 0:
-                risk_test.impact_level_expert = impact
+                risk_test.impact_economic_level_expert = impact
+
+        if 'impactContinuity' in request.GET:
+            impact = int(request.GET['impactContinuity'])
+            if impact != 0:
+                risk_test.impact_continuity_level_expert = impact
+
+        if 'impactBranding' in request.GET:
+            impact = int(request.GET['impactBranding'])
+            if impact != 0:
+                risk_test.impact_branding_level_expert = impact
 
         if 'adminProbability' in request.GET:
             probability = int(request.GET['adminProbability'])

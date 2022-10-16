@@ -16,7 +16,6 @@ class CompanySerializer(serializers.ModelSerializer):
             'pk',
             'name',
             'vat',
-            'country',
             'email',
         ]
         read_only_fields = [f.name for f in Company._meta.get_fields()]
