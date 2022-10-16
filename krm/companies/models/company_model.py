@@ -101,6 +101,11 @@ class Company(AuditModel):
     def krm_risks_active(self):
         return self.krm_risks.filter(active=True)
 
+    @property
+    def companies_in_scope_as_list(self):
+        if self.companies_in_scope: return self.companies_in_scope.split(';')
+        else: return ''
+
     def save(self, *args, **kwargs):
         self.ref = self.ref.upper()
         super().save(*args, **kwargs)
@@ -125,3 +130,4 @@ class Company(AuditModel):
                     company=self,
                     risk=risk
                 )
+    
