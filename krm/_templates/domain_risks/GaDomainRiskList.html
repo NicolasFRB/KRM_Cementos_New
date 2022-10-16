@@ -39,8 +39,8 @@
             <td class="text-center align-middle">{{ domain_risk.ref }}</td>
             <td class="align-middle">{{ domain_risk.name }}</td>
             <td class="align-middle">{{ domain_risk.description|striptags|safe }}</td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.risks.count }}</span></td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.risk_n2_entities|length }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.n_risks_master }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.n_risks }}</span></td>
           </tr>
           {% endfor %}
       </tbody>
