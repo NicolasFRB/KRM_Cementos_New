@@ -26,7 +26,7 @@
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
-          <th class="text-center">{% trans 'Nombre' %}</th>
+          <th>{% trans 'Nombre' %}</th>
           <th class="text-center">{% trans 'País' %}</th>
           <th class="text-center">{% trans 'Tipo' %}</th>
           <th class="text-center">{% trans 'Sociedades en alcance' %}</th>
@@ -45,9 +45,11 @@
             <td class="text-center align-middle">{{ company.ref }}</td>
             <td class="align-middle">{{ company.name }}</td>
             <td class="text-center align-middle">
-              <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{company.country.name}}">
-                <img class="w-20px h-20px rounded-circle me-3" src="{{company.country.flag}}">
-              </span>
+              {% if company.country %}
+                <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{company.country.name}}">
+                  <img class="w-20px h-20px rounded-circle me-3" src="{{company.country.flag}}">
+                </span>
+              {% endif %}
             </td>
             <td class="text-center align-middle">{{ company.type_company }}</td>
             <td class="align-middle">
