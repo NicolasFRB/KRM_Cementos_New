@@ -132,8 +132,10 @@ class GaCompanyCreateView(CreateView):
             messages.SUCCESS,
             _('Compañía creada correctamente')
         )
+
         return reverse_lazy(
-            'companies:ga_company_list'
+            'companies:ga_company_detail',
+            kwargs={'pk': self.object.pk}
         )
 
 
@@ -166,7 +168,8 @@ class GaCompanyUpdateView(UpdateView):
             _('Compañía actualizada correctamente')
         )
         return reverse_lazy(
-            'companies:ga_company_list'
+            'companies:ga_company_detail',
+            kwargs={'pk': self.object.pk}
         )
 
 

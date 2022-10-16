@@ -4,6 +4,9 @@ from django.forms.widgets import CheckboxSelectMultiple
 from django.utils.translation import gettext as _
 from django.contrib.postgres.forms import SimpleArrayField
 
+from django.forms.widgets import CheckboxSelectMultiple
+
+
 from krm.companies.models import Company
 from krm.risks.models import RiskCompany
 
@@ -12,6 +15,10 @@ class CompanyCreateForm(ModelForm):
     class Meta:
         model = Company
         fields = '__all__'
+
+        widgets = {
+            'controls': CheckboxSelectMultiple(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

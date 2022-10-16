@@ -137,6 +137,7 @@
               <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
                 <thead>
                   <tr class="fw-semibold fs-6">
+                    <th>{% trans 'Acción' %}</th>
                     <th>{% trans 'REF' %}</th>
                     <th>{% trans 'Nombre' %}</th>
                     <th>{% trans 'Riesgo Maestro' %}</th>
@@ -145,6 +146,10 @@
                 <tbody>
                   {% for risk_company in company.krm_risks_active.all %}
                   <tr>
+                    <td class="text-center">
+                      <a href="{% url 'risks_company:ca_risk_company_update' risk_company.pk %}"><i
+                          class="bi bi-pencil-fill fs-1x text-primary"></i></a>
+                    </td>
                     <td>{{ risk_company.risk.ref }}</td>
                     <td>{{ risk_company.name }}</td>
                     <td>{{ risk_company.risk.risk_master }}</td>

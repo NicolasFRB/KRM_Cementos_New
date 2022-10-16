@@ -41,6 +41,8 @@ class GaControlListView(ListView):
     model = Control
     template_name = 'controls/GaControlList.html'
     context_object_name = 'controls'
+    queryset = Control.objects.prefetch_related(
+        'risks').prefetch_related('sub_processes').all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,7 +62,7 @@ class GaControlListView(ListView):
                 'primary': True,
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
-        ]        
+        ]
         context['js_template'] = ['js/custom/datatables.js']
         return context
 

@@ -29,11 +29,21 @@
           <div class="col-12 mb-4">
             <div class="row">
               <div class="mb-4 col-12">
-                <table class="table table-striped table-row-bordered gy-5 gs-7">
                 {% for key, domain_risk in dms.items %}
+                <table class="table table-striped table-row-bordered gy-5 gs-7 mb-10">
                     <thead>
                       <tr>
                         <th colspan="3"><h5>{% trans 'Dominio de Riesgo' %}: {{ domain_risk.name }}</h5></th>
+                      </tr>
+                      <tr>
+                        <th>&nbsp;</th>
+                        <th>{% trans 'REF' %}</th>
+                        <th>{% trans 'Nombre' %}</th>
+                        <th>{% trans 'Descripción' %}</th>
+                        <th>{% trans 'Actividad afectada' %}</th>
+                        <th class="text-center">{% trans 'Describa los principales eventos en los que el riesgo se materializa' %}</th>
+                        <th class="text-center">{% trans 'Personal especialmente expuesto al Riesgo' %}</th>
+                        <th  class="text-center">{% trans 'Principales elementos del Riesgo' %}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -43,11 +53,16 @@
                           <td>{{ rc.risk.ref }}</td>
                           <td><label for="risk_{{ rc.pk }}" class="form-check-label">{{ rc.name }}</label>
                           </td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.description|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_activity_affected|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_events|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_exposed_staff|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_elements|striptags }}"></i></td>
                         </tr>
                       {% endfor %}
                     </tbody>
-                    {% endfor %}
                   </table>
+                  {% endfor %}
               </div>
             </div>
           </div>

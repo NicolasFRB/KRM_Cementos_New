@@ -96,8 +96,6 @@ class RuEvaluationRiskInherentComplete(DetailView, FormView):
         ).update(
             status=2
         )
-        import ipdb
-        ipdb.set_trace()
         return super().form_valid(form)
 
     def get_success_url(self):

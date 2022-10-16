@@ -20,6 +20,9 @@ class CompanyAdmin(admin.ModelAdmin):
     model = Company
     list_display = ('ref', 'name', 'vat', 'address',
                     'state', 'cp', 'country', 'email')
+    filter_horizontal = (
+        'controls',
+    )
 
 
 @admin.register(CompanyDomainRiskExperts)

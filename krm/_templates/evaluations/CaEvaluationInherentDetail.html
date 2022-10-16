@@ -90,13 +90,17 @@
         <tbody>
           {% for rt in evaluation.risk_test_inherents.all %}
           <tr>
-            <td>{{ rt.risk.name }}</td>
+            <td>{{ rt.risk.name }} {{ rt.status }}</td>
             <td>{{ rt.expert.full_name }} - {{ rt.expert.email }}</td>
             {% if rt.status == 1 %}
                 <td>{% trans 'Sin establecer' %}</td>
                 <td>{% trans 'Sin establecer' %}</td>
+                <td>{% trans 'Sin establecer' %}</td>
+                <td>{% trans 'Sin establecer' %}</td>
             {% else %}
-                <td>{{ rt.get_impact_level_expert_display }}</td>
+                <td>{{ rt.get_impact_continuity_level_expert_display }}</td>
+                <td>{{ rt.get_impact_branding_level_expert_display }}</td>
+                <td>{{ rt.get_impact_economic_level_expert_display }}</td>
                 <td>{{ rt.get_probability_level_expert_display }}</td>
             {% endif %}
             <td>{{ rt.get_impact_level_administrator_display }}</td>

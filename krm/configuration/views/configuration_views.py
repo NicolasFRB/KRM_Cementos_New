@@ -440,8 +440,6 @@ class GaImportView(FormView):
 
                 if SubProcess.objects.filter(ref=subprocess_ref).count() == 0:
                     print(subprocess_ref)
-                    import ipdb
-                    ipdb.set_trace()
                     messages.add_message(
                         self.request,
                         messages.ERROR,

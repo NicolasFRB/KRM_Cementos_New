@@ -45,6 +45,30 @@ class RiskTestInherent(AuditModel):
         (5, _('Sin establecer')),
     )
 
+    impact_economic_level_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto Económico indicado por el Experto del Dominio de Riesgo'),
+        choices=RISK_CHOICES,
+        default=5
+    )
+
+    impact_continuity_level_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto en Continuidad indicado por el Experto del Dominio de Riesgo'),
+        choices=RISK_CHOICES,
+        default=5
+    )
+
+    impact_branding_level_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto en Imagen indicado por el Experto del Dominio de Riesgo'),
+        choices=RISK_CHOICES,
+        default=5
+    )
+
+    impact_level_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto indicado por el Experto del Dominio de Riesgo'),
+        choices=RISK_CHOICES,
+        default=5
+    )
+
     impact_level_expert = models.PositiveSmallIntegerField(
         _('Nivel de Impacto indicado por el Experto del Dominio de Riesgo'),
         choices=RISK_CHOICES,
@@ -88,6 +112,13 @@ class RiskTestInherent(AuditModel):
     class Meta:
         verbose_name = _("Test de Riesgo Inherente")
         verbose_name_plural = _("Tests de Riesgo Inherente")
+
+    def save(self, *args, **kwargs):
+        self.impact_level_expert = max(self.impact_branding_level_expert,
+                                       self.impact_continuity_level_expert,
+                                       self.impact_economic_level_expert
+                                       )
+        super().save(*args, **kwargs)
 
     def send_notification_expert(self):
         from krm.evaluations_krm.tasks import (

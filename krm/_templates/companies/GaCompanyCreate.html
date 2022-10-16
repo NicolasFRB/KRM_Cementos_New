@@ -7,6 +7,19 @@
 
 {% endblock js_footer %}
 
+{% block pageCss %}
+<style>
+  #div_id_controls>label {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: var(--kt-text-dark);
+  }
+  #div_id_controls .form-check{
+    margin-bottom: 30px;
+  }
+</style>
+{% endblock pageCss %}
+
 {% block content %}
 
 <!--begin::Container-->
@@ -63,6 +76,12 @@
                 <div class="mb-4 col-md-4 col-12">
                   {{ form.country|as_crispy_field }}
                 </div>
+              </div>
+              <div class="separator my-10"></div>
+              <div class="row">
+                  <div class="col col-12 mb-4">
+                    {{ form.controls|as_crispy_field }}
+                  </div>
               </div>
             </fieldset>
           </div>

@@ -2,6 +2,7 @@
 import os
 import hashlib
 import random
+from tabnanny import verbose
 
 # Django
 from django.db import models
@@ -78,6 +79,21 @@ class Company(AuditModel):
         null=True,
         blank=True
     )
+
+    controls = models.ManyToManyField(
+        'controls.Control',
+        verbose_name=_('Controles asociados'),
+        blank=True,
+        related_name='companies'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Company")
+        verbose_name_plural = _("Companies")
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
