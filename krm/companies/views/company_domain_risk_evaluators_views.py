@@ -52,7 +52,7 @@ class GaCompanyDomainRiskEvaluatorUpdateView(UpdateView):
                 'companies:ga_company_detail', kwargs={'pk': self.object.company.pk})},
             {'title': _('Asignar evaluadores')},
         ]
-        context['page_title'] = _('Asignar Evaluadores para Dominio de Riesgo')
+        context['page_title'] = _('Asignar Evaluadores de Riesgo Residual (RR)')
         context['breadcrums'] = breadcrums
 
         return context

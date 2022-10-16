@@ -48,7 +48,7 @@ class GaCompanyDomainRiskExpertsUpdateView(UpdateView):
                 'companies:ga_company_detail', kwargs={'pk': self.object.company.pk})},
             {'title': _('Asignar experto')},
         ]
-        context['page_title'] = _('Asignar Experto para Dominio de Riesgo')
+        context['page_title'] = _('Asignar Experto de Riesgo Inherente (RI)')
         context['breadcrums'] = breadcrums
 
         return context
