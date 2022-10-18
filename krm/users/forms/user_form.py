@@ -35,6 +35,7 @@ class UserCreateForm(forms.ModelForm):
         fields = (
             'first_name',
             'last_name',
+            'position',
             'email',
             'send_email_init_password',
             'is_superuser',
@@ -103,6 +104,7 @@ class UserUpdateForm(forms.ModelForm):
         fields = (
             'first_name',
             'last_name',
+            'position',
             'companies',
             'companies_admin',
             'is_superuser'
