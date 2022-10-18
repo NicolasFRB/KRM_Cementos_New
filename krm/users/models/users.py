@@ -60,6 +60,13 @@ class User(AbstractUser):
         verbose_name=_("Clave de recuperación de contraseña"),
     )
 
+    position = models.CharField(
+        blank=True,
+        null=True,
+        max_length=140,
+        verbose_name=_("Cargo que ocupa"),
+    )
+
     @property
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
