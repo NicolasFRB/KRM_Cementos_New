@@ -80,6 +80,20 @@
             </div>
             <!--end::Col-->
           </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'ELC' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.is_elc|yesno:_("Si, No") }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
         </fieldset>
       </div>
       <div class="col col-md-8">

@@ -356,6 +356,7 @@ class GaImportView(FormView):
             control['assert_disclosure'] = row[16].value
             control['assert_accurancy'] = row[17].value
             control['assert_froud'] = row[18].value
+            control['is_elc'] = row[19].value
 
             if control['automation'] == '':
                 messages.add_message(
@@ -613,8 +614,11 @@ class GaImportView(FormView):
         c_created = 0
         for r in control_to_create:
             key_control = False
+            is_elc = False
             if r['key_control'] == 'X':
                 key_control = True
+            if r['is_elc'] == 'X':
+                is_elc = True
             new_control = Control.objects.create(
                 ref=r['ref'],
                 name=r['name'],
@@ -633,6 +637,7 @@ class GaImportView(FormView):
                 assert_disclosure=r['assert_disclosure'],
                 assert_accurancy=r['assert_accurancy'],
                 assert_froud=r['assert_froud'],
+                is_elc = is_elc,
             )
 
             if Risk.objects.filter(
