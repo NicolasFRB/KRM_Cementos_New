@@ -43,9 +43,10 @@
 <!--begin::Container-->
 <div class="card">
   <!--begin::Card header-->
-  <div class="card-header">
+  <div class="card-header" style="display:block;">
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <div class="card-subtitle mb-2 text-muted">En esta página es posible editar el contenido del Riesgo (N2) <span class="badge badge-primary text-wrap">{{ object.risk.ref }}</span></div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -54,21 +55,77 @@
       {% csrf_token %}
       <div class="card-body">
         <div class="row">
+          <div class="col col-md-8">
+            <fieldset>
+              <!-- <legend class="mb-8">{% trans 'Datos del Riesgo' %}</legend> -->
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <span class="badge badge-success text-wrap">{{ object.company.name }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+      
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominio de Riesgo' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                  <a href="{% url 'domain_risks:ga_domain_risk_detail' object.risk.risk_master.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ object.risk.risk_master.domain_risk.name }}">{{ object.risk.risk_master.domain_risk.ref }}</span></a>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Riesgo Maestro (N1)' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                  <a href="{% url 'risks_masters:ga_risk_master_detail' object.risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ object.risk.risk_master.name }}">{{ object.risk.risk_master.ref }}</span></a>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'REF' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ object.risk.name }}">{{ object.risk.ref }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+            </fieldset>
+        </div>
+       </div>
+        {% include '_includes/FormErrors.html' %}
+        <div class="row">
           <div class="col-12">
-            {% include '_includes/FormErrors.html' %}
+            
             <div class="row mb-4">
-              <div class="col col-12 mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Compañía' %}: </span> <span>{{ object.company.name }}</span>
-              </div>
-              <div class="col col-12 mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Dominio de Riesgo' %}: </span> <span>{{ object.risk.risk_master.domain_risk }}</span>
-              </div>
-              <div class="col col-12 mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'Riesgo Maestro' %}: </span> <span>{{ object.risk.risk_master }}</span>
-              </div>
-              <div class="col col-12 mb-4">
-                <span class="fs-6 fw-semibold">{% trans 'REF. Riego' %}: </span> <span>{{ object.risk.ref }}</span>
-              </div>
+              
               <div class="col col-12 col-xl-5 mb-4">
                 {{ form.name|as_crispy_field }}
               </div>

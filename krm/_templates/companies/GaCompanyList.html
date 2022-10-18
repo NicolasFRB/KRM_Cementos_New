@@ -36,6 +36,7 @@
             <th class="text-center">{% trans 'Evaluadores de Riesgo (RR)' %}</th>
           {% endif %}
           <th class="text-center">{% trans 'Número de Riesgos (N2)' %}</th>
+          <th class="text-center">{% trans 'Número de Controles' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -82,7 +83,8 @@
                 {% endfor %}   
               </td>
             {% endif %}
-            <td class="text-center align-middle"><span class="badge badge-info">{{ company.n_risks }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ company.krm_risks_active.count }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ company.controls.count }}</span></td>
           </tr>
           {% endfor %}
       </tbody>

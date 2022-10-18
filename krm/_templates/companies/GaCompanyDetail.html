@@ -15,7 +15,7 @@
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Datos de la Compañía' %}: {{ company.vat }}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Datos de la compañía'  %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -194,7 +194,7 @@
 
 <div class="card mb-8">
   <div class="card-header">
-    <div class="card-title fs-3 fw-bold">{% trans 'Usuarios de la compañía' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Usuarios de la compañía'  %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
   </div>
   <div class="card-body">
     <div class="row">
@@ -234,7 +234,7 @@
 {% if KRM_ACTIVATE %}
     <div class="card mb-8">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Expertos de Dominios de Riesgo (RI)' %}</div>
+        <div class="card-title fs-3 fw-bold">{% trans 'Expertos de Dominios de Riesgo (RI) en la compañía' %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -274,7 +274,7 @@
 
     <div class="card mb-8">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Evaluadores de Dominios de Riesgo (RR)' %}</div>
+        <div class="card-title fs-3 fw-bold">{% trans 'Evaluadores de Dominios de Riesgo (RR) en la compañía'  %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -318,7 +318,7 @@
 
     <div class="card mb-8">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Riesgos que aplican' %}</div>
+        <div class="card-title fs-3 fw-bold">{% trans 'Riesgos que aplican en la compañía'  %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -344,19 +344,19 @@
                 <tbody>
                     {% for risk in company.krm_risks_active.all %}
                     <tr>
-                      <td class="text-center">
+                      <td class="text-center align-middle">
                         <a href="{% url 'risks_company:ga_risk_company_update' risk.pk %}"><i
                             class="bi bi-pencil-fill fs-1x text-primary"></i></a>
                       </td>
                       <td class="text-center align-middle">{{ risk.risk.ref }}</td>
-                      <td class="align-middle">{{ risk.name|striptags|safe|truncatechars:200 }}</td>
-                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description }}"></i></td>
-                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_activity_affected }}"></i></td>
-                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_events }}"></i></td>
-                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_elements }}"></i></td>
-                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_exposed_staff }}"></i></td>
-                      <td class="align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.risk.risk_master.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.domain_risk.name }}">{{ risk.risk.risk_master.domain_risk.ref }}</span></a></td>
-                      <td class="align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.name }}">{{ risk.risk.risk_master.ref }}</span></a></td>
+                      <td class="align-middle">{{ risk.risk.name|striptags|safe|truncatechars:200 }}</td>
+                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.description|striptags }}"></i></td>
+                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.krm_activity_affected|striptags }}"></i></td>
+                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.krm_main_events|striptags }}"></i></td>
+                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.krm_main_elements|striptags }}"></i></td>
+                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.krm_exposed_staff|striptags }}"></i></td>
+                      <td class="align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.risk.risk_master.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.risk_master.domain_risk.name }}">{{ risk.risk.risk_master.domain_risk.ref }}</span></a></td>
+                      <td class="align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.risk_master.name }}">{{ risk.risk.risk_master.ref }}</span></a></td>
                       <td class="text-center align-middle"><span class="badge badge-info">{{ risk.risk.controls.count }}</span></td>
                     </tr>
                     {% endfor %}
@@ -372,14 +372,14 @@
       <div class="card-footer py-6">
         <a href="{% url 'companies:ga_company_risk_krm_select' company.pk %}" class="btn btn-sm btn-primary">
           <i class="bi bi-pencil"></i>
-          {% trans 'Editar lista de riesgos que le aplican' %}</a>
+          {% trans 'Editar lista de riesgos que aplican' %}</a>
       </div>
       <!--end::Card footer-->
     </div>
 
     <div class="card mb-8">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Controles que aplican' %}</div>
+        <div class="card-title fs-3 fw-bold">{% trans 'Controles que aplican en la compañía'  %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -409,14 +409,14 @@
                       <td class="text-center align-middle">{{ control.control_frequency }}</td>
                       <td class="text-center align-middle">{{ control.control_type }}</td>
                       <td class="text-center align-middle">{{ control.automation }}</td>
-                      <td class="text-center align-middle">
+                      <td class="align-middle">
                         {% for r1 in control.risks.all %}
                           <div style="margin: 5px;">
                             <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
                           </div>
                         {% endfor %}
                       </td>
-                      <td class="text-center align-middle">
+                      <td class="align-middle">
                         {% for s1 in control.sub_processes.all %}
                           <div style="margin: 5px;">
                             <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ s1.name }}">{{ s1.ref }}</span></a>
@@ -429,7 +429,7 @@
                 </tbody>
               </table>
             {% else %}
-              <div class="alert alert-primary">{% trans 'No existen riesgos que apliquen sobre esta compañía' %}.</div>
+              <div class="alert alert-primary">{% trans 'No existen controles que apliquen sobre esta compañía' %}.</div>
             {% endif %}
           </div>
         </div>
@@ -438,7 +438,7 @@
       <div class="card-footer py-6">
         <a href="{% url 'companies:ga_company_update' company.pk %}" class="btn btn-sm btn-primary">
           <i class="bi bi-pencil"></i>
-          {% trans 'Editar lista de controles que le aplican' %}</a>
+          {% trans 'Editar lista de controles aplican' %}</a>
       </div>
       <!--end::Card footer-->
     </div>

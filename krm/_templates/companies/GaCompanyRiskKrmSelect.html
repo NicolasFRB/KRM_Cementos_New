@@ -33,33 +33,37 @@
                 <table class="table table-striped table-row-bordered gy-5 gs-7 mb-10">
                     <thead>
                       <tr>
-                        <th colspan="5"><h5>{{ domain_risk.name }}</h5></th>
+                        <th colspan="5"><h5>Dominio de Riesgo - <span class="badge badge-primary text-wrap">{{ domain_risk.name }}</span></h5></th>
                       </tr>
                       <tr>
                         <th>&nbsp;</th>
-                        <th>{% trans 'REF' %}</th>
-                        <th>{% trans 'Nombre' %}</th>
-                        <th>{% trans 'Descripción' %}</th>
-                        <th>{% trans 'Actividad afectada' %}</th>
-                        <th class="text-center">{% trans 'Describa los principales eventos en los que el riesgo se materializa' %}</th>
-                        <th class="text-center">{% trans 'Personal especialmente expuesto al Riesgo' %}</th>
-                        <th  class="text-center">{% trans 'Principales elementos del Riesgo' %}</th>
+                        <th>&nbsp;</th>
+                        <th class="text-center" width="15%">{% trans 'REF' %}</th>
+                        <th width="30%">{% trans 'Nombre' %}</th>
+                        <th width="5%">{% trans 'Descripción' %}</th>
+                        <th width="5%">{% trans 'Actividad afectada' %}</th>
+                        <th width="5%">{% trans 'Principales eventos' %}</th>
+                        <th width="5%">{% trans 'Principales elementos' %}</th>
+                        <th width="5%">{% trans 'Personal expuesto' %}</th>
+               
+                        <th>{% trans 'Riesgo Maestro (N1)' %}</th>          
+                        <th class="text-center">{% trans 'Nº de Controles' %}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {% for rc in domain_risk.risks %}
                         <tr>
-                          <td width="20px" class="align-middle"><input type="checkbox" name="risk_pk" class="checkboxinput form-check-input" id="risk_{{ rc.pk }}" {% if rc.active %}checked="checked" {% endif %} value="{{ rc.pk }}"></td>
-                          <td width="15%" class="align-middle"><a href="{% url 'risks:ga_risk_detail' rc.risk.pk %}"><span class="badge badge-primary text-wrap" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.risk.name }}">{{ rc.risk.ref }}</span></a></td>
-                          <td width="25%" class="align-middle">{{ rc.risk.name }}</td>
-                          <td class="align-middle">{{ rc.risk.description }}</td>
-                          <td><label for="risk_{{ rc.pk }}" class="form-check-label">{{ rc.name }}</label>
-                          </td>
+                          <td width="20px" class="align-middle"><input type="checkbox" name="risk_pk" class="checkboxinput form-check-input" id="risk_{{ rc.pk }}" {% if rc.active %}checked="checked" {% endif %} value="{{rc.pk }}"></td>
+                          <td class="text-center align-middle"><a href="{% url 'risks:ga_risk_detail' rc.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+                          <td class="text-center align-middle">{{ rc.risk.ref }}</td>
+                          <td class="align-middle">{{ rc.risk.name|striptags|safe|truncatechars:200 }}</td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.description|striptags }}"></i></td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_activity_affected|striptags }}"></i></td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_events|striptags }}"></i></td>
-                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_exposed_staff|striptags }}"></i></td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_elements|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_exposed_staff|striptags }}"></i></td>
+                          <td class="align-middle">{{ rc.risk.risk_master.ref }}</td>
+                          <td class="text-center align-middle"><span class="badge badge-info">{{ rc.risk.controls.count }}</span></td>
                         </tr>
                       {% endfor %}
                     </tbody>
