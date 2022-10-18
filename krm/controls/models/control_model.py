@@ -138,6 +138,10 @@ class Control(AuditModel):
         _("Fraud"), max_length=1, choices=ASSERTION_CHOICES, default="-"
     )
 
+    is_elc = models.BooleanField(
+        default=False, verbose_name=_("¿Es un control ELC?")
+    )
+
     def __str__(self):
         clean_name = strip_tags(self.name)
         if len(clean_name) > 100:
@@ -174,3 +178,12 @@ class Control(AuditModel):
         companies = set(companies)
         companies = list(companies)
         return companies
+
+    @property
+    def domain_risks_objects(self):
+        domain_risks = []
+        for risk in self.risks.all():
+            if risk.risk_master.domain_risk not in domain_risks:
+                domain_risks.append(risk.risk_master.domain_risk)
+        
+        return domain_risks
