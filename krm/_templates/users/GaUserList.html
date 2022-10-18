@@ -46,7 +46,7 @@
                   {% if not forloop.last %}<br>{% endif %}
                 {% endfor %}
             </td>
-            <td>
+            <td class="align-middle">
               {% for company in user.companies_admin.all %}
                 <a href="{% url 'companies:ga_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>
                   {% if not forloop.last %}<br>{% endif %}

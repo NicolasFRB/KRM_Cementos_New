@@ -26,10 +26,13 @@
           <div class="col-12">
             {% include '_includes/FormErrors.html' %}
           </div>
-          <div class="col-12 col-md-4 mb-4">
+          <div class="col-12 col-md-6 mb-4">
             <fieldset>
               <legend>{% trans 'Datos del usuario' %}</legend>
               <div class="row">
+                <div class="mb-4">
+                  <span class="badge badge-secondary text-wrap">{% trans 'Email' %} </span> <span class="badge badge-success text-wrap">{{ object.email|default_if_none:"" }}</span>
+                </div>
                 <div class="mb-4 col-12">
                   {{ form.first_name|as_crispy_field }}
                 </div>
@@ -43,10 +46,10 @@
             </fieldset>
           </div>
 
-          <div class="col-12 col-md-4 mb-4">
-            <legend>{% trans 'Usuario y Contraseña' %}</legend>
+          <div class="col-12 col-md-6 mb-4">
+            <legend>&nbsp</legend>
             <div class="mb-4">
-              <span class="fs-6 fw-semibold">{% trans 'Email' %}: </span> <span>{{ object.email|default_if_none:"" }}</span>
+              <span>&nbsp</span>
             </div>
             <div class="mb-4">
               {{ form.password1|as_crispy_field }}
