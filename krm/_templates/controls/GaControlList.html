@@ -40,7 +40,6 @@
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
-          <th class="text-center">{% trans 'Objetivo' %}</th>
           <th class="text-center">{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Frecuencia' %}</th>
           <th class="text-center">{% trans 'Tipo' %}</th>
@@ -54,7 +53,6 @@
           <tr>
             <td class="text-center align-middle"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ control.ref }}</td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.name }}"></i></td>
             <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description }}"></i></td>
             <td class="text-center align-middle">{{ control.control_frequency }}</td>
             <td class="text-center align-middle">{{ control.control_type }}</td>
