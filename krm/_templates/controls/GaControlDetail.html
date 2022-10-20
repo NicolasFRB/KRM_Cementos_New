@@ -101,6 +101,33 @@
           <div class="row mb-8 justify-content-start"  style="margin-bottom:.5rem !important;">
             <!--begin::Col-->
             <div class="col-xl-3">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo)' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->            
+            {% if control.risks.count %}
+              {% for domain_risk in control.domain_risks_objects %}
+                {% if not forloop.first and forloop.counter0|divisibleby:3 %}
+                  </div>
+                  <div class="row mb-8 justify-content-start" style="margin-bottom:.5rem !important;">
+                    <div class="col-xl-3">
+                      <div class="fs-6 fw-semibold"></div>
+                    </div>
+                  {% endif %}
+                    <div class="col-xl-3">
+                      <div class="fs-6 fw-semibold"><a href="{% url 'domain_risks:ga_domain_risk_detail' domain_risk.pk %}"><span class="badge badge-primary text-wrap" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ domain_risk.name }}">{{ domain_risk.ref }}</span></a></div>
+                    </div>
+              {% endfor %}
+                
+            {% else %}
+              <div class="col-xl-6">
+                <div class="fs-6 fw-semibold"><span class="badge badge-danger text-wrap">{% trans 'Sin riesgos asociados' %}</span></div>
+              </div>
+            {% endif %} 
+          </div>
+          <div class="row mb-8 justify-content-start"  style="margin-bottom:.5rem !important;">
+            <!--begin::Col-->
+            <div class="col-xl-3">
               <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Riesgos (N2)' %}</span></div>
             </div>
             <!--end::Col-->
