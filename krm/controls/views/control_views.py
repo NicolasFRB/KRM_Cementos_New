@@ -42,7 +42,7 @@ class GaControlListView(ListView):
     template_name = 'controls/GaControlList.html'
     context_object_name = 'controls'
     queryset = Control.objects.all().prefetch_related(
-        'sub_processes').prefetch_related('risks')
+        'sub_processes').prefetch_related('risks__risk_master__domain_risk')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
