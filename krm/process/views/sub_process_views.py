@@ -87,7 +87,7 @@ class GaSubProcessDetailView(DetailView):
                 'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
 

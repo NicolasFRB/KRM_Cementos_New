@@ -105,7 +105,7 @@ class GaCompanyDetailView(DetailView):
                 'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
 
@@ -128,7 +128,7 @@ class GaCompanyCreateView(CreateView):
         ]
         context['page_title'] = _('Nueva Compañía')
         context['breadcrums'] = breadcrums
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def get_success_url(self):
@@ -163,7 +163,7 @@ class GaCompanyUpdateView(UpdateView):
         ]
         context['page_title'] = _('Editar Compañía')
         context['breadcrums'] = breadcrums
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def get_success_url(self):
@@ -261,7 +261,7 @@ class GaCompanyRiskKrmSelectView(FormView):
                 dm[dm_pk]['risks'].append(risk_company)
     
         context['dms'] = dm
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def post(self, request, *args, **kwargs):
