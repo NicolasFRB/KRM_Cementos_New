@@ -49,6 +49,18 @@
           .tooltip-inner {
             text-align: left;
           }
+          #box-container{
+            display: none;
+            flex-direction: column;
+            flex-wrap: wrap;
+            padding: 5px;
+            height: 100%;
+            resize: vertical;
+            gap: 5px;
+          }
+          #box-child{
+            display: grid;
+          }
         </style>
         {% endblock css %}
 
@@ -110,6 +122,14 @@
               return false;
             });
           });
+        
+          function toggle_item(clicked) {
+            var boxCont = clicked.closest('div').parentNode.childNodes[3];
+            if (boxCont.style.display == 'flex')
+              boxCont.style.display = 'none';
+            else
+              boxCont.style.display = 'flex';
+          }
         </script>
 
     <div id="pk" data-pk="{{ request.user.pk }}" style="display: none;"></div>
