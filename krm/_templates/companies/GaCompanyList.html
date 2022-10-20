@@ -31,12 +31,12 @@
           <th class="text-center">{% trans 'Tipo' %}</th>
           <th class="text-center">{% trans 'Sociedades en alcance' %}</th>
           <th class="text-center">{% trans 'Número de usuarios' %}</th>
+          <th class="text-center">{% trans 'Número de Riesgos (N2)' %}</th>
+          <th class="text-center">{% trans 'Número de Controles' %}</th>
           {% if KRM_ACTIVATE %}
             <th class="text-center">{% trans 'Expertos de Dominio de Riesgo (RI)' %}</th>
             <th class="text-center">{% trans 'Evaluadores de Riesgo (RR)' %}</th>
           {% endif %}
-          <th class="text-center">{% trans 'Número de Riesgos (N2)' %}</th>
-          <th class="text-center">{% trans 'Número de Controles' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -59,11 +59,13 @@
               {% endfor %}   
             </td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ company.krm_risks_active.count }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ company.controls.count }}</span></td>
             {% if KRM_ACTIVATE %}
               <td class="align-middle">
                 {% for ced in company.experts_domain_risk %}
                   {% if not ced.expert %}
-                    <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
+                    <a href="{% url 'companies:ga_company_assign_expert_update' ced.pk %}"><span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
                     <br>
                   {% else %}
                     <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.expert }}">{{ ced.domain_risk.ref }}</span></a>
@@ -74,7 +76,7 @@
               <td class="align-middle">
                 {% for ced in company.evaluators_domain_risk.all %}
                   {% if not ced.evaluator.count %}
-                    <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
+                    <a href="{% url 'companies:ga_company_assign_evaluator_update' ced.pk %}"><span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
                     <br>
                   {% else %}
                     <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% for evaluator in ced.evaluator.all %}{{ evaluator.email }}{% if not forloop.last %}&#013;{% endif %}{% endfor %}">{{ ced.domain_risk.ref }}</span></a>
@@ -83,8 +85,6 @@
                 {% endfor %}   
               </td>
             {% endif %}
-            <td class="text-center align-middle"><span class="badge badge-info">{{ company.krm_risks_active.count }}</span></td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ company.controls.count }}</span></td>
           </tr>
           {% endfor %}
       </tbody>
