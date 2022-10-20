@@ -23,7 +23,7 @@
   <div class="card-body">
 
     <div class="row">
-      <div class="col col-md-4">
+      <div class="col col-md-6">
         <fieldset>
           <!-- <legend class="mb-8">{% trans 'Datos del Riesgo' %}</legend> -->
           <div class="row mb-8">
@@ -72,73 +72,6 @@
           </div>
         </fieldset>
       </div>
-      <div class="col col-md-4">
-        <fieldset>
-          <legend class="mb-8">{% trans 'Impacto' %}</legend>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-6">
-              <div class="fs-6 fw-semibold">{% trans 'Impacto inherente' %}</div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-6">
-              <div class="fs-6">
-                <span>{{ risk_master.get_impact_inherent_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-6">
-              <div class="fs-6 fw-semibold">{% trans 'Impacto residual' %}</div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-6">
-              <div class="fs-6">
-                <span>{{ risk_master.get_impact_residual_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-        </fieldset>
-      </div>
-
-      <div class="col col-md-4">
-        <fieldset>
-          <legend class="mb-8">{% trans 'Probabilidad' %}</legend>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-6">
-              <div class="fs-6 fw-semibold">{% trans 'Probabilidad inherente' %}</div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-6">
-              <div class="fs-6">
-                <span>{{ risk_master.get_probability_inherent_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-6">
-              <div class="fs-6 fw-semibold">{% trans 'Probabilidad residual' %}</div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-6">
-              <div class="fs-6">
-                <span>{{ risk_master.get_probability_residual_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-        </fieldset>
-      </div>  
     </div>
 
     {% if KRM_ACTIVATE %}
@@ -199,11 +132,11 @@
             <td class="text-center align-middle"><a href="{% url 'risks:ga_risk_detail' risk.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ risk.ref }}</td>
             <td class="align-middle">{{ risk.name|striptags|safe|truncatechars:200 }}</td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description }}"></i></td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_activity_affected }}"></i></td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_events }}"></i></td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_elements }}"></i></td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_exposed_staff }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description|striptags }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_activity_affected|striptags }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_events|striptags }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_elements|striptags }}"></i></td>
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_exposed_staff|striptags }}"></i></td>
             <td class="align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk_master.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.domain_risk.name }}">{{ risk.risk_master.domain_risk.ref }}</span></a></td>
             <td class="align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.name }}">{{ risk.risk_master.ref }}</span></a></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ risk.controls.count }}</span></td>
