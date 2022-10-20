@@ -47,3 +47,14 @@ class DomainRisk(AuditModel):
                         company=company,
                         domain_risk=domain_risk
                     )
+
+    @property
+    def control_objects(self):
+        controls = []
+        for r1 in self.risks.all():
+            for r2 in r1.risks.all():
+                for c in r2.controls.all():
+                    if c not in controls:
+                        controls.append(c)
+        
+        return controls
