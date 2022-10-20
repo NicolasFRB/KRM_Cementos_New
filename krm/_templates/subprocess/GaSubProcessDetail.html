@@ -113,6 +113,7 @@
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
           <th class="text-center">{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Evidencia' %}</th>
           <th class="text-center">{% trans 'Frecuencia' %}</th>
           <th class="text-center">{% trans 'Tipo' %}</th>
           <th class="text-center">{% trans 'Automático' %}</th>
@@ -135,6 +136,9 @@
                   <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description|striptags }}" style="margin-right:5px;"></i>
                 </div>
               </div>
+            </td>
+            <td class="text-center align-middle">
+              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
             </td>
             <td class="text-center align-middle">{{ control.control_frequency }}</td>
             <td class="text-center align-middle">{{ control.control_type }}</td>
