@@ -28,8 +28,9 @@
           <th class="text-center">{% trans 'REF' %}</th>
           <th>{% trans 'Nombre' %}</th>
           <th>{% trans 'Descripción' %}</th>
-          <th class="text-center">{% trans 'Nº de Riesgos Maestros (N1)' %}</th>
-          <th class="text-center">{% trans 'Nº de Riesgos (N2)' %}</th>
+          <th class="text-center">{% trans 'Riesgos Maestros (N1)' %}</th>
+          <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
+          <th class="text-center">{% trans 'Controles' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -41,6 +42,7 @@
             <td class="align-middle">{{ domain_risk.description|striptags|safe }}</td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.n_risks_master }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.n_risks }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ domain_risk.control_objects|length }}</span></td>
           </tr>
           {% endfor %}
       </tbody>
