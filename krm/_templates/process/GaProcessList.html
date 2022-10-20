@@ -28,7 +28,6 @@
           <th class="text-center">{% trans 'REF' %}</th>
           <th class="text-center" width="20%">{% trans 'Nombre' %}</th>
           <th  width="30%">{% trans 'Description' %}</th>
-          <th class="text-center">{% trans 'Nº de Subprocesos' %}</th>
           <th class="text-center">{% trans 'Subprocesos' %}</th>
           <th class="text-center">{% trans 'Nº de Controles' %}</th>
         </tr>
@@ -40,14 +39,18 @@
             <td class="text-center align-middle">{{ process.ref }}</td>
             <td class="align-middle">{{ process.name }}</td>
             <td class="align-middle">{{ process.description|striptags|safe|truncatechars:200 }}</td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ process.n_sub_processes }}</span></td>
             <td class="align-middle">
-              {% for subprocess in process.sub_processes.all %}
-                <div style="margin: 5px;">
-                <a href="{% url 'subprocess:ga_sub_process_detail' subprocess.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ subprocess.name }}">{{ subprocess.ref }}</span></a>
+              <div id = 'box' class="text-center">
+                <div style="cursor: pointer" onclick="toggle_item(this)">
+                    <span class="badge badge-info" style="">{{ process.n_sub_processes }}</span>
                 </div>
-              {% endfor %}
-            </td>
+                <div id = "box-container">
+                {% for s1 in process.sub_processes.all %}                                              
+                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>                                                                       
+                {% endfor %}
+                </div>                                             
+              </div>                                             
+            </td>   
             <td class="text-center align-middle"><span class="badge badge-info">{{ process.n_controls }}</span></td>
           </tr>
           {% endfor %}
