@@ -288,6 +288,78 @@
       </div>
       <!--end::Card footer-->
     </div>
+
+    <div class="card mb-8">
+      <div class="card-header">
+        <div class="card-title fs-3 fw-bold">{% trans 'Controles que aplican' %}</div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="mb-4 col-12">
+            {% if company.controls.count %}
+            <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+              <thead>
+                <tr class="fw-semibold fs-6">
+                  <th class="text-center">{% trans 'Acción' %}</th>
+                  <th class="text-center">{% trans 'Objetivo' %}</th>
+                  <th class="text-center">{% trans 'Descripción' %}</th>
+                  <th class="text-center">{% trans 'Frecuencia' %}</th>
+                  <th class="text-center">{% trans 'Tipo' %}</th>
+                  <th class="text-center">{% trans 'Automático' %}</th>
+                  <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
+                  <th class="text-center">{% trans 'Subprocesos' %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for control in company.controls.all %}
+                <tr>
+                  <td class="text-center align-middle">{{ control.ref }}</td>
+                  <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary"
+                      data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                      title="{{ control.name|striptags }}"></i></td>
+                  <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary"
+                      data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                      title="{{ control.description|striptags }}"></i></td>
+                  <td class="text-center align-middle">{{ control.control_frequency }}</td>
+                  <td class="text-center align-middle">{{ control.control_type }}</td>
+                  <td class="text-center align-middle">{{ control.automation }}</td>
+                  <td class="text-center align-middle">
+                    {% for r1 in control.risks.all %}
+                    <div style="margin: 5px;">
+                     <span class="badge badge-primary"
+                          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                          title="{{ r1.name }}">{{ r1.ref }}</span>
+                    </div>
+                    {% endfor %}
+                  </td>
+                  <td class="text-center align-middle">
+                    {% for s1 in control.sub_processes.all %}
+                    <div style="margin: 5px;">
+                      <span class="badge badge-primary"
+                          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                          title="{{ s1.name }}">{{ s1.ref }}</span>
+                    </div>
+                    {% endfor %}
+                  </td>
+    
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <div class="alert alert-primary">{% trans 'No existen riesgos que apliquen sobre esta compañía' %}.</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <!--begin::Card footer-->
+      <div class="card-footer py-6">
+        <a href="{% url 'companies:ga_company_risk_krm_select' company.pk %}" class="btn btn-sm btn-primary">
+          <i class="bi bi-pencil"></i>
+          {% trans 'Editar lista de controles que le aplican' %}</a>
+      </div>
+      <!--end::Card footer-->
+    </div>
 {% endif %}
 <!--end::Container-->
 {% endblock content %}

@@ -42,8 +42,11 @@
 
 </script>
 
-<script defer src="http://localhost:3000/static/js/bundle.js"></script>
-<!-- <script defer src="{% static 'main.b8e512f4.js' %}"></script> -->
+{% if DEV %}
+  <script defer src="http://localhost:3000/static/js/bundle.js"></script>
+{% else %}
+  <script defer src="{% static 'main.react.js' %}"></script>
+{% endif %}
 
 {% endblock js_footer %}
 
@@ -120,7 +123,6 @@
             </div>
             <div class="separator my-10"></div>
 
-            </form>
             <div id="create-evaluation-krc"></div>
           </div>
           <!--end::Content-->
@@ -128,12 +130,12 @@
       </div>
     </div>
     <!--end::Body-->
-  
-    <div class="card-footer py-6">
-      <!-- <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button> -->
-      <a href="{% url 'evaluations:ga_evaluation_list' %}"
-        class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
-    </div>
+  </form>
+
+  <div class="card-footer py-6">
+    <a href="{% url 'evaluations:ga_evaluation_list' %}"
+      class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+  </div>
 
 </div>
 

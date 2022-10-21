@@ -43,6 +43,31 @@
         {% endfor %}
         <!--end::Global Stylesheets-->
         <style>
+
+          form .form-group label {
+            color: red;
+            --bs-badge-padding-x: 0.5rem;
+            --bs-badge-padding-y: 0.325rem;
+            --bs-badge-font-size: 0.85rem;
+            --bs-badge-font-weight: 600;
+            --bs-badge-color: #ffffff;
+            --bs-badge-border-radius: 0.425rem;
+            --bs-badge-color: var(--kt-badge-color);
+            display: inline-flex;
+            align-items: center;
+            padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+            font-size: var(--bs-badge-font-size);
+            font-weight: var(--bs-badge-font-weight);
+            line-height: 1;
+            color: var(--bs-badge-color);
+            text-align: center;
+            vertical-align: baseline;
+            border-radius: var(--bs-badge-border-radius, 0);
+            white-space: normal !important;
+            color: var(--kt-secondary-inverse);
+            background-color: var(--kt-secondary);
+            margin-bottom: 10px;
+          }
           .django-ckeditor-widget {
             width: 100%;
           }

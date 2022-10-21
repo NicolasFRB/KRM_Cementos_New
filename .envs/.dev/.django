@@ -1,5 +1,5 @@
 KRM_DJANGO_DEBUG=True
-KRM_DJANGO_DEV=True
+KRM_DJANGO_DEV=False
 KRM_DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 KRM_DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
 # KRM_SITE_URL='http://app.krmtool.com'
