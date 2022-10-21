@@ -29,7 +29,6 @@
           <th>{% trans 'Nombre' %}</th>
           <th class="text-center">{% trans 'País' %}</th>
           <th class="text-center">{% trans 'Tipo' %}</th>
-          <th class="text-center">{% trans 'Sociedades en alcance' %}</th>
           <th class="text-center">{% trans 'Número de usuarios' %}</th>
           <th class="text-center">{% trans 'Número de Riesgos (N2)' %}</th>
           <th class="text-center">{% trans 'Número de Controles' %}</th>
@@ -52,12 +51,7 @@
                 </span>
               {% endif %}
             </td>
-            <td class="text-center align-middle">{{ company.type_company }}</td>
-            <td class="align-middle">
-              {% for c in company.companies_in_scope_as_list %}
-                <span class="badge badge-info">{{ c }}</span><br>
-              {% endfor %}   
-            </td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ company.type_company }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.krm_risks_active.count }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.controls.count }}</span></td>
