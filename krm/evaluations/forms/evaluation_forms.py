@@ -12,10 +12,10 @@ from django.core.validators import FileExtensionValidator
 
 class EvaluationCreateForm(ModelForm):
 
-    companies = SimpleArrayField(forms.CharField(
-        max_length=200), label=_('Compañías'))
-    controls = SimpleArrayField(forms.CharField(
-        max_length=1000),  label=_('Controles'))
+    controls_companies_to_evaluate = forms.CharField(
+        max_length=10000,
+        label=_('Controles a evaluar')
+    )
 
     class Meta:
         model = Evaluation

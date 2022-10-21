@@ -12,6 +12,8 @@ const configService = {
   apiGetCompanies: `${baseUrlApi}companies?user=${user}`,
   apiGetRiskCompany: `${baseUrlApi}riskscompany/`,
   apiSendRiskTestInherent: `${baseUrlApi}risktestinherentexpert/`,
+  apiGetControlCompany: `${baseUrlApi}controlscompany/`,
+
 };
 
 export default configService;

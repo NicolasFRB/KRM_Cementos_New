@@ -6,8 +6,11 @@
 
 {% block js_footer %}
 
-<script defer src="http://localhost:3000/static/js/bundle.js"></script>
-<!-- <script defer src="{% static 'main.9aaa63d8.js' %}"></script> -->
+{% if DEV %}
+  <script defer src="http://localhost:3000/static/js/bundle.js"></script>
+{% else %}
+  <script defer src="{% static 'main.react.js' %}"></script>
+{% endif %}
 
 
 <script>
