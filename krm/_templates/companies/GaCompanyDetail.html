@@ -207,6 +207,7 @@
               <th>{% trans 'Email' %}</th>
               <th>{% trans 'Nombre' %}</th>
               <th>{% trans 'Apellidos' %}</th>
+              <th>{% trans 'Cargo' %}</th>
               <th>{% trans 'Último inicio de sesión' %}</th>
             </tr>
           </thead>
@@ -218,6 +219,7 @@
               <td>{{ user.email|default_if_none:"" }}</td>
               <td>{{ user.first_name|default_if_none:"" }}</td>
               <td>{{ user.last_name|default_if_none:"" }}</td>
+              <td>{{ user.position|default_if_none:"" }}</td>
               <td>{{ user.last_login|default_if_none:"No ha iniciado sesión todavía" }}</td>
             </tr>
             {% endfor %}
