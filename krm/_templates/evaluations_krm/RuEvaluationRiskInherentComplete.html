@@ -277,24 +277,24 @@
             <div class="col-xl-12">            
               <div class="row mb-8">
                 <div class="col col-xl-6">
-                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Actividad afectada' %}</span></div>
-                    <div>{{ rt.risk.krm_activity_affected|safe }}</div>
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span></div>
+                    <div>{{ rt.risk.krm_main_elements|safe }}</div>
                 </div>
                 <div class="col col-xl-6">
-                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Personal expuesto' %}</span></div>
-                    <div>{{ rt.risk.krm_exposed_staff|safe }}</div>
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales eventos' %}</span></div>
+                    <div>{{ rt.risk.krm_main_events|safe }}</div>
                 </div>
               </div>
             </div>
             <div class="col-xl-12">
               <div class="row mb-8">
                 <div class="col col-xl-6">
-                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales eventos' %}</span></div>
-                    <div>{{ rt.risk.krm_main_events|safe }}</div>
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Actividad afectada' %}</span></div>
+                    <div>{{ rt.risk.krm_activity_affected|safe }}</div>
                 </div>
                 <div class="col col-xl-6">
-                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span></div>
-                    <div>{{ rt.risk.krm_main_elements|safe }}</div>
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Personal expuesto' %}</span></div>
+                    <div>{{ rt.risk.krm_exposed_staff|safe }}</div>
                 </div>
               </div>
             </div>
