@@ -608,7 +608,7 @@ class GaEvaluationCreateView(FormView):
         ]
         context['page_title'] = _('Nueva Evaluación')
         context['breadcrums'] = breadcrums
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def get_success_url(self):

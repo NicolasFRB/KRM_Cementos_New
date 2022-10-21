@@ -13,9 +13,20 @@
 <!--begin::Container-->
 <div class="card">
   <!--begin::Card header-->
-  <div class="card-header">
+  <div class="card-header" style="display: flex;">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <div class="d-flex justify-content-between align-items-center" style="width:100%;">
+      <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+      <div style="width:40%; color:grey;">
+        <div>
+        {% trans 'Progreso' %}
+        </div>
+        <div class="progress">
+          <div class="progress-bar bg-success" role="progressbar" style="width: {{ eri_count_by_state.perc.FI }}%; color: white;" aria-valuenow="{{ eri_count_by_state.perc.FI }}" aria-valuemin="0" aria-valuemax="100">{{ eri_count_by_state.perc.FI }}% ({{ eri_count_by_state.val.FI }})</div>
+          <div class="progress-bar bg-danger" role="progressbar" style="width: {{ eri_count_by_state.perc.EP }}%; color: white;" aria-valuenow="{{ eri_count_by_state.perc.EP }}" aria-valuemin="0" aria-valuemax="100">{{ eri_count_by_state.perc.EP }}% ({{ eri_count_by_state.val.EP }})</div>
+        </div>
+      </div>
+    </div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -27,19 +38,31 @@
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
           <th>{% trans 'REF' %}</th>
-          <th width="40%">{% trans 'Descripción' %}</th>
+          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Periodo de evaluación' %}</th>
           <th class="text-center">{% trans 'Inicio' %}</th>
           <th class="text-center">{% trans 'Final' %}</th>
+          <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for evaluation in evaluations_risk_inherent %}
           <tr>
-            <td class="text-center"><a href="{% url 'evaluations_krm:ru_evaluation_risk_inherent_complete' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td>{{ evaluation.ref }}</td>
-            <td>{{ evaluation.description|default_if_none:""|striptags|safe|truncatechars:200 }}</td>
-            <td class="text-center">{{ evaluation.date_begin }}</td>
-            <td class="text-center">{{ evaluation.date_end }}</td>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_risk_inherent_complete' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">{{ evaluation.description|default_if_none:""|striptags|safe|truncatechars:200 }}</td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle">{{ evaluation.date_begin }}</td>
+            <td class="text-center align-middle">{{ evaluation.date_end }}</td>
+            <td class="text-center align-middle">{{ evaluation.company }}</td>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}              
+            </td>
           </tr>
           {% endfor %}
       </tbody>

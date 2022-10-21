@@ -175,7 +175,7 @@ function CreateEvaluationKrc(props) {
                   <div className="table-responsive">
                     {selectedControls.length > 0 && (
                       <>
-                        <table className="table table-striped gy-7 gs-7">
+                        <table className="table table-striped table-row-bordered gy-7 gs-7 customDatatable">
                           <thead>
                             <tr className="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
                               <th><span><i onClick={selectAllControl} className="bi bi-shield-check"></i></span> <span className="mb-2"><i onClick={deSelectAllControl} className="bi bi-shield"></i></span></th>

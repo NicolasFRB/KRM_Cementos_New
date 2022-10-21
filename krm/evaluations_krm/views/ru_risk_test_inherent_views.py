@@ -59,8 +59,24 @@ class RuEvaluationRiskInherentList(TemplateView):
             risk_test_inherents__status=1
         ).filter(risk_test_inherents__status=1).distinct()
 
-        context['evaluations_risk_inherent'] = evaluations_risk_inherent
+        eri_count_by_state = {
+            'FI': 0,
+            'EP': 0,
+            }
+        for ev in evaluations_risk_inherent:             
+            eri_count_by_state[ev.status] += 1
 
+        eri_count_by_state_perc = {
+            'FI': int(100*eri_count_by_state['FI']/(eri_count_by_state['EP']+eri_count_by_state['FI'])),
+            'EP': int(100*eri_count_by_state['EP']/(eri_count_by_state['EP']+eri_count_by_state['FI'])),
+        }
+            
+        context['eri_count_by_state'] = {
+            'perc': eri_count_by_state_perc,
+            'val': eri_count_by_state,
+            }
+        context['evaluations_risk_inherent'] = evaluations_risk_inherent
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
 
@@ -85,7 +101,7 @@ class RuEvaluationRiskInherentComplete(DetailView, FormView):
         context['risks_test_inherent'] = self.object.risk_test_inherents.filter(
             expert=self.request.user
         )
-
+        
         return context
 
     def form_valid(self, form):
