@@ -1,9 +1,8 @@
+import json
+import uuid
+
 from django.shortcuts import render
 from django.conf import settings
-
-import re
-
-# Create your views here.
 from django.shortcuts import render
 
 from django.views.generic import (
@@ -621,29 +620,35 @@ class GaEvaluationCreateView(FormView):
         controls_created = 0
         evaluations_created = 0
 
-        companies = Company.objects.filter(
-            pk__in=(form.cleaned_data["companies"]))
-        controls = Control.objects.filter(
-            pk__in=(form.cleaned_data["controls"]))
+        controls_companies = json.loads(
+            form.cleaned_data["controls_companies_to_evaluate"])
 
-        for company in companies:
-            evaluation = Evaluation.objects.create(
-                ref=f'{form.cleaned_data["ref"]} - {company.name}',
-                company=company,
-                description=form.cleaned_data["description"],
-                date_begin=form.cleaned_data["date_begin"],
-                date_intermediate=form.cleaned_data["date_intermediate"],
-                date_end=form.cleaned_data["date_end"],
-                certification_year=form.cleaned_data["certification_year"],
-                certification_period=form.cleaned_data["certification_period"],
-                allow_self_autosupervision=form.cleaned_data[
-                    "allow_self_autosupervision"
-                ],
-            )
+        for cc in controls_companies:
+            if len(cc['cs']) > 0:
+                company = Company.objects.get(pk=cc['c'])
+                if Evaluation.objects.filter(
+                    ref=f'{form.cleaned_data["ref"]} - {company.name}'
+                ).count() > 0:
+                    ref = f'{form.cleaned_data["ref"]} - {company.name} - {uuid.uuid4().hex}'
+                else:
+                    ref = f'{form.cleaned_data["ref"]} - {company.name}'
 
-            # Para cada evaluación hay que crear los test controls de los controles que se han pasado
-            for control in controls:
-                if company.pk in control.companies:
+                evaluation = Evaluation.objects.create(
+                    ref=ref,
+                    company=company,
+                    description=form.cleaned_data["description"],
+                    date_begin=form.cleaned_data["date_begin"],
+                    date_intermediate=form.cleaned_data["date_intermediate"],
+                    date_end=form.cleaned_data["date_end"],
+                    certification_year=form.cleaned_data["certification_year"],
+                    certification_period=form.cleaned_data["certification_period"],
+                    allow_self_autosupervision=form.cleaned_data[
+                        "allow_self_autosupervision"
+                    ],
+                )
+
+                for control in cc['cs']:
+                    control = Control.objects.get(pk=control)
                     control_test = ControlTest.objects.create(
                         evaluation=evaluation,
                         control=control,
@@ -652,7 +657,7 @@ class GaEvaluationCreateView(FormView):
 
                     controls_created += 1
 
-            evaluations_created += 1
+                evaluations_created += 1
 
         messages.add_message(
             self.request,

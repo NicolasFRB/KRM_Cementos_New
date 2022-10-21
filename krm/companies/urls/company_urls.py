@@ -1,5 +1,6 @@
 from django.urls import include, path, re_path
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import cache_page
 
 from krm.companies.views import (
     GaCompanyListView,
@@ -25,7 +26,7 @@ from krm.companies.views import (
 urlpatterns = [
     path(
         '',
-        GaCompanyListView.as_view(),
+        cache_page(60*60)(GaCompanyListView.as_view()),
         name='ga_company_list'
     ),
     path(

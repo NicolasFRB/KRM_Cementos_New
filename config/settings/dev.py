@@ -7,7 +7,7 @@ import os
 
 # Base
 DEBUG = env.bool('KRM_DJANGO_DEBUG')
-DEV = env.bool('KRM_DJANGO_DEV')
+
 
 # Security
 SECRET_KEY = env.str('KRM_DJANGO_SECRET_KEY')

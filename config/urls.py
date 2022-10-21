@@ -24,6 +24,7 @@ from krm.process.api import (
 )
 
 from krm.risks.api.views import RiskCompanyApiView
+from krm.controls.api.views import ControlCompanyApiView
 
 from krm.companies.api import (
     CompanyViewSet,
@@ -48,7 +49,9 @@ urlpatterns = [
          RiskCompanyApiView.as_view()),
     path('api/risktestinherentexpert/',
          RiskTestInherentExpertApiView.as_view()
-         )
+         ),
+    path('api/controlscompany/',
+         ControlCompanyApiView.as_view()),
 ]
 
 urlpatterns += i18n_patterns(

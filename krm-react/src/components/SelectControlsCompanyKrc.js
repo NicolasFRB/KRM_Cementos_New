@@ -1,0 +1,144 @@
+import configService from "../services/config.js";
+import React from "react";
+import { useState, useEffect } from "react";
+
+function SelectControlsCompanyKrc(
+  {
+    selectedDomainRisks,
+    selectedProcesses,
+    selectedCompanies,
+    selectedRisks,
+    controlsToEvaluate,
+    setControlsToEvaluate,
+  }) {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [controlsCompany, setControlsCompany] = useState([]);
+
+  const selectControlCompanyToEvaluate = (companyPk, controlPk) => {
+    let newControlsCompanyToEvaluate = controlsToEvaluate;
+
+    newControlsCompanyToEvaluate = newControlsCompanyToEvaluate.map((controlCompany) => {
+      if (controlCompany.c === companyPk) {
+        if (controlCompany.cs.includes(controlPk)) {
+          controlCompany.cs = controlCompany.cs.filter(function (value, index, arr) {
+            return value !== controlPk;
+          });
+        } else {
+          controlCompany.cs.push(controlPk);
+        }
+      }
+      return controlCompany;
+    });
+
+    setControlsToEvaluate(newControlsCompanyToEvaluate);
+  };
+
+  const updateControls = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    setIsLoading(true);
+    if (selectedCompanies.length > 0) {
+      const params = {
+        company_pks: selectedCompanies,
+        risk_pks: selectedRisks,
+        process_pks: selectedProcesses,
+        domain_risk_pks: selectedDomainRisks
+      };
+
+      var url = new URL(configService.apiGetControlCompany);
+      for (let k in params) {
+        url.searchParams.append(k, params[k]);
+      }
+
+      fetch(url)
+        .then((res) => res.json())
+        .then(
+          (res) => {
+            let newControlsCompanyToEvaluate = res.map((item) => {
+              return (
+                {
+                  c: item.c.pk,
+                  cs: []
+                }
+              )
+            });
+            setControlsToEvaluate(newControlsCompanyToEvaluate);
+            setControlsCompany(res);
+            setIsLoading(false);
+          },
+          (error) => {
+            setIsLoading(false);
+            setError(error);
+          }
+        );
+    } else {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    window.CustomDatatables.destroy();
+    window.CustomDatatables.init();
+  }, [controlsCompany]);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  } else {
+    return (
+      <div>
+        {selectedCompanies.length > 0 && (
+          <div className="mt-5 mb-5">
+            <button onClick={updateControls} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap mb-7" data-kt-indicator={isLoading ? 'on' : 'off'}>
+              <span className="indicator-label">Calcular los controles de riesgo que se lanzarán</span>
+              <span className="indicator-progress">
+                Calculando...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
+              </span>
+            </button>
+            {!isLoading && controlsCompany.map((company, index) => {
+              return <div key={index} className="mt-5 mb-5">
+                <h4>Evaluación para: {company.c.name}</h4>
+                <h5>Controles que podrán ser lanzados</h5>
+                {company.cs.length > 0 && (
+                  <table className="table table-striped customDatatable">
+                    <thead>
+                      <tr>
+                        <th className="fw-semibold">&nbsp;</th>
+                        <th className="fw-semibold">REF</th>
+                        <th className="fw-semibold">DESCRIPCIÓN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {company.cs.map((control, index) => {
+                        return <tr key={control.pk}>
+                          <td className="text-center">
+                            <input id={'com' + company.c.pk + 'co' + control.pk} onChange={() => selectControlCompanyToEvaluate(company.c.pk, control.pk)} className="form-check-input" name="controls" type="checkbox" value={control.pk} checked={control.checked} />
+                          </td>
+                          <td><label htmlFor={'com' + company.c.pk + 'co' + control.pk}>{control.ref}</label></td>
+                          <td><span dangerouslySetInnerHTML={{ __html: control.name }}></span></td>
+                        </tr>
+                      })}
+                    </tbody>
+                  </table>
+                )}
+                {company.cs.length === 0 && (
+                  <div key={index} className="alert alert-primary mt-5">Nada que evaluar para la compañía {company.c.name}</div>
+                )}
+                {index < controlsCompany.length - 1 && (
+                  <div className="separator my-10"></div>
+                )}
+              </div>
+            })}
+          </div>
+        )}
+        {selectedCompanies.length === 0 && (
+          <div className="alert alert-primary">Seleccione al menos una compañía</div>
+        )}
+      </div>
+    );
+  }
+}
+
+export default SelectControlsCompanyKrc;
