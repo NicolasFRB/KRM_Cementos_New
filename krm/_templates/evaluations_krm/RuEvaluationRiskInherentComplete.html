@@ -6,7 +6,7 @@
 
 {% block js_footer %}
 
-{% if DEV %}
+{% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
   <script defer src="{% static 'main.react.js' %}"></script>

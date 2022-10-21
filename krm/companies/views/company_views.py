@@ -51,11 +51,10 @@ class GaCompanyListView(ListView):
     template_name = 'companies/GaCompanyList.html'
     context_object_name = 'companies'
     queryset = Company.objects.all()
-        # .prefetch_related('krm_risks').all()\
-        # .annotate(n_risks=Count('krm_risks', distinct=True))
+    # .prefetch_related('krm_risks').all()\
+    # .annotate(n_risks=Count('krm_risks', distinct=True))
     # .prefetch_related('companydomainriskevaluator').all()\
     # .prefetch_related('krm_risks_active').all()\
-    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -259,7 +258,7 @@ class GaCompanyRiskKrmSelectView(FormView):
                 dm[dm_pk]['name'] = risk_company.risk.risk_master.domain_risk.name
                 dm[dm_pk]['risks'] = []
                 dm[dm_pk]['risks'].append(risk_company)
-    
+
         context['dms'] = dm
         context['js_template'] = ['js/custom/datatables.js']
         return context

@@ -234,4 +234,5 @@ def get_menu_urls(request, pk=None):
         'CA_EVALUATIONS_URLS': ca_evaluations_urls,
         'KRM_ACTIVATE': KRM_ACTIVATE,
         'DEV': settings.DEV,
+        'DEVJS': settings.DEVJS,
     }
