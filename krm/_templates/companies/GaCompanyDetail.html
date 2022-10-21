@@ -442,13 +442,13 @@
                           <div style="cursor: pointer" onclick="toggle_item(this)">
                               <span class="badge badge-info" style="">{{ control.risks.count }}</span>
                           </div>
-                          <!-- <div id = "box-container">
+                          <div id = "box-container">
                             {% for r1 in control.risks.all %}                                              
                               <a href="{% url 'risks:ga_risk_detail' r1.pk %}">
                               <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ r1.name }}" id = "box-child">{{ r1.ref }}
                               </a>                                               
                             {% endfor %}
-                          </div>                                              -->
+                          </div>                                             
                         </div>                                             
                       </td>
                       <td class="align-middle">
@@ -456,11 +456,11 @@
                           <div style="cursor: pointer" onclick="toggle_item(this)">
                               <span class="badge badge-info" style="">{{ control.sub_processes.count }}</span>
                           </div>
-                          <!-- <div id = "box-container">
+                          <div id = "box-container">
                           {% for s1 in control.sub_processes.all %}                                              
                             <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>                                                                       
                           {% endfor %}
-                          </div>                                              -->
+                          </div>                                             
                         </div>                                             
                       </td>        
                     </tr>
