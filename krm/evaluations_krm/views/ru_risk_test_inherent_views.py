@@ -38,6 +38,7 @@ from krm.evaluations_krm.forms import (
 )
 
 
+
 @method_decorator((login_required, ), name="dispatch")
 class RuEvaluationRiskInherentList(TemplateView):
     template_name = 'evaluations_krm/RuEvaluationKrmInherentList.html'
@@ -49,33 +50,31 @@ class RuEvaluationRiskInherentList(TemplateView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Riesgo Inherente asignadas')}
+            {'title': _('Evaluaciones de Riesgo Inherente')}
         ]
-        context['page_title'] = _('Evaluaciones de Riesgo Inherente asignadas')
+        context['page_title'] = _('Evaluaciones de Riesgo Inherente')
         context['breadcrums'] = breadcrums
 
-        evaluations_risk_inherent = EvaluationKrmInherent.objects.filter(
-            risk_test_inherents__expert=self.request.user,
-            risk_test_inherents__status=1
-        ).filter(risk_test_inherents__status=1).distinct()
+        ev_pending = self.request.user.evaluation_krm_inherent_pending()
+        ev_delivered = self.request.user.evaluation_krm_inherent_delivered()
+        ev_finished = self.request.user.evaluation_krm_inherent_finished()
 
-        eri_count_by_state = {
-            'FI': 0,
-            'EP': 0,
-            }
-        for ev in evaluations_risk_inherent:             
-            eri_count_by_state[ev.status] += 1
-
+        for ev in ev_pending:
+            ev.nrisk_test_inherents_pending_user = ev.nrisk_test_inherents_pending_user(self.request.user)
+        for ev in ev_delivered:
+            ev.nrisk_test_inherents_delivered_user = ev.nrisk_test_inherents_delivered_user(self.request.user)
+        for ev in ev_finished:
+            ev.nrisk_test_inherents_finished_user = ev.nrisk_test_inherents_finished_user(self.request.user)
+        
         eri_count_by_state_perc = {
-            'FI': int(100*eri_count_by_state['FI']/(eri_count_by_state['EP']+eri_count_by_state['FI'])),
-            'EP': int(100*eri_count_by_state['EP']/(eri_count_by_state['EP']+eri_count_by_state['FI'])),
-        }
-            
-        context['eri_count_by_state'] = {
-            'perc': eri_count_by_state_perc,
-            'val': eri_count_by_state,
-            }
-        context['evaluations_risk_inherent'] = evaluations_risk_inherent
+            'FI': int(100*ev_delivered.count()/(ev_delivered.count() + ev_pending.count())),
+            'EP': int(100*ev_pending.count()/(ev_delivered.count() + ev_pending.count())),
+        }                
+        
+        context['eri_count_by_state_perc'] = eri_count_by_state_perc
+        context['evaluations_risk_inherent_pending'] = ev_pending
+        context['evaluations_risk_inherent_delivered'] = ev_delivered
+        context['evaluations_risk_inherent_finished'] = ev_finished
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
