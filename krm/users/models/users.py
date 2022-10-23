@@ -93,8 +93,28 @@ class User(AbstractUser):
         from krm.evaluations.models import ControlTest
         return ControlTest.objects.filter(status="FI", evaluation__company__in=self.companies_admin.all())
 
-    def risk_test_inherent_expert_pending(self):
-        return self.risk_test_inherents.filter(status=1)
+    def evaluation_krm_inherent_pending(self):
+        from krm.evaluations_krm.models import EvaluationKrmInherent    
+        return EvaluationKrmInherent.objects.filter(
+            risk_test_inherents__status = 1,
+            risk_test_inherents__expert = self,
+            ).distinct()
+
+    def evaluation_krm_inherent_delivered(self):
+        from krm.evaluations_krm.models import EvaluationKrmInherent      
+        return EvaluationKrmInherent.objects.filter(
+            risk_test_inherents__status = 2,
+            risk_test_inherents__expert = self,
+            ).distinct()
+
+
+    def evaluation_krm_inherent_finished(self):
+        from krm.evaluations_krm.models import EvaluationKrmInherent      
+        return EvaluationKrmInherent.objects.filter(
+            risk_test_inherents__status = 3,
+            risk_test_inherents__expert = self,
+            ).distinct()
+
 
     def save(self, *args, **kwargs):
         self.username = self.email
