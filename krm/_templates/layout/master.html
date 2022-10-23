@@ -153,13 +153,14 @@
           //   boxCont.fadeToggle();
           // })
           function toggle_item(clicked) {
-            
-            var boxCont = clicked.closest('div').parentNode.childNodes[3];
-            if (boxCont.style.display == 'flex')
-              boxCont.style.display = 'none';
-            else
-              boxCont.style.display = 'flex';
-          }
+            $(clicked).siblings().fadeToggle();
+            // var boxCont = clicked.closest('div').parentNode.childNodes[3];
+            // if (boxCont.style.display == 'flex')
+            //   boxCont.style.display = 'none';
+            // else
+            //   boxCont.style.display = 'flex';
+          }   
+ 
         </script>
 
     <div id="pk" data-pk="{{ request.user.pk }}" style="display: none;"></div>
