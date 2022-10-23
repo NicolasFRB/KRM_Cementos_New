@@ -85,6 +85,7 @@
           }
           #box-child{
             display: grid;
+            margin: 3px;
           }
         </style>
         {% endblock css %}
@@ -149,7 +150,7 @@
           });
 
           function toggle_item(clicked) {
-            $(clicked).siblings().fadeToggle();
+            $(clicked).siblings().fadeToggle().css('margin-bottom:5px;');
           }   
  
         </script>
