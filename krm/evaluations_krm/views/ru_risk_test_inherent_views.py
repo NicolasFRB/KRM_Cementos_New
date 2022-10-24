@@ -49,18 +49,35 @@ class RuEvaluationRiskInherentList(TemplateView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Riesgo Inherente asignadas')}
+            {'title': _('Evaluaciones de Riesgo Inherente')}
         ]
-        context['page_title'] = _('Evaluaciones de Riesgo Inherente asignadas')
+        context['page_title'] = _('Evaluaciones de Riesgo Inherente')
         context['breadcrums'] = breadcrums
 
-        evaluations_risk_inherent = EvaluationKrmInherent.objects.filter(
-            risk_test_inherents__expert=self.request.user,
-            risk_test_inherents__status=1
-        ).filter(risk_test_inherents__status=1).distinct()
+        ev_pending = self.request.user.evaluation_krm_inherent_pending()
+        ev_delivered = self.request.user.evaluation_krm_inherent_delivered()
+        ev_finished = self.request.user.evaluation_krm_inherent_finished()
 
-        context['evaluations_risk_inherent'] = evaluations_risk_inherent
+        for ev in ev_pending:
+            ev.nrisk_test_inherents_pending_user = ev.nrisk_test_inherents_pending_user(
+                self.request.user)
+        for ev in ev_delivered:
+            ev.nrisk_test_inherents_delivered_user = ev.nrisk_test_inherents_delivered_user(
+                self.request.user)
+        for ev in ev_finished:
+            ev.nrisk_test_inherents_finished_user = ev.nrisk_test_inherents_finished_user(
+                self.request.user)
 
+        eri_count_by_state_perc = {
+            'FI': int(100*ev_delivered.count()/(ev_delivered.count() + ev_pending.count())),
+            'EP': int(100*ev_pending.count()/(ev_delivered.count() + ev_pending.count())),
+        }
+
+        context['eri_count_by_state_perc'] = eri_count_by_state_perc
+        context['evaluations_risk_inherent_pending'] = ev_pending
+        context['evaluations_risk_inherent_delivered'] = ev_delivered
+        context['evaluations_risk_inherent_finished'] = ev_finished
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
 
@@ -100,6 +117,7 @@ class RuEvaluationRiskInherentComplete(DetailView, FormView):
         )
 
         context['risks_test_inherent'] = risk_tests
+
         return context
 
     def form_valid(self, form):
@@ -122,34 +140,3 @@ class RuEvaluationRiskInherentComplete(DetailView, FormView):
         return reverse_lazy(
             "evaluations_krm:ru_evaluation_risk_inherent_list"
         )
-
-# @method_decorator(login_required, name="dispatch")
-# class RuControlTestOwnerList(TemplateView):
-#     template_name = "control_tests/ru/RuControlTestOwnerList.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context = KTLayout.init(context)
-#         breadcrums = [
-#             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-#             {'title': _('Control Test para supervisar'), 'url': reverse(
-#                 'control_tests:ru_control_test_supervisor_list')}
-#         ]
-#         context['page_title'] = _('Control Tests asignados como Control Owner')
-#         context['breadcrums'] = breadcrums
-
-#         context["control_test_pending"] = self.request.user.controls_test_owner.filter(
-#             status="WO"
-#         )
-#         context["control_test_revision"] = self.request.user.controls_test_owner.filter(
-#             status="WS"
-#         )
-#         context["control_test_administrator"] = self.request.user.controls_test_owner.filter(
-#             status="WA"
-#         )
-#         context["control_test_finished"] = self.request.user.controls_test_owner.filter(
-#             status="FI"
-#         )
-#         context['js_template'] = ['js/custom/datatables.js']
-
-#         return context

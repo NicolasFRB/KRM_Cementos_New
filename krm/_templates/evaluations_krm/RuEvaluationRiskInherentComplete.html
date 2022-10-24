@@ -108,18 +108,131 @@
   <!--begin::Card body-->
   <div class="card-body">
     <div class="row">
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Estado' %}: </span>{{ evaluation.get_status_display }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'REF' %}: </span>{{ evaluation.ref }}</p>
+      <div class="col col-md-6">
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.ref }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.company }} ({{ evaluation.type_company }})</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sociedades en alcance' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              {% for c in evaluation.company.companies_in_scope_as_list %}
+                <span class="badge badge-info">{{ c }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Estado' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6" style="display:flex;">
+              {% if evaluation.status == "EP" %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                <div>{{ evaluation.get_status_display }}</div>
+              {% else %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                <div>{{ evaluation.get_status_display }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Compañía' %}: </span>{{ evaluation.company }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Año de certificación' %}: </span>{{ evaluation.certification_year }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Periodo de certificación' %}: </span>{{ evaluation.certification_period }}</p>
+      <div class="col col-md-3">
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6">
+              <span>{{ evaluation.certification_year }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de certificación' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6">
+              <span>{{ evaluation.certification_period }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Fecha de inicio' %}: </span>{{ evaluation.date_begin }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Fecha final' %}: </span>{{ evaluation.date_end }}</p>
+      <div class="col col-md-3">
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.date_begin }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de fin' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.date_end }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
     </div>
   </div>
@@ -133,28 +246,83 @@
         <!--begin::Card header-->
         <div class="card-header">
           <!--begin::Card header-->
-          <div class="card-title fs-3 fw-bold">{{ rt.risk }}</div>
+          <div class="card-title fs-3 fw-bold"><span class="badge badge-primary">{{ rt.risk.risk.ref }}</span>&nbsp{{ rt.risk.risk.name }}</div>
           <!--end::Card header-->
         </div>
         <div class="card-body">
-            <div class="row">
-              <div class="col col-12 col-xl-6">
-                <p><span class="fs-6 fw-semibold">{% trans 'Riesgo' %}:</span> {{ rt.risk.name }}</p>
-              </div>
-              <div class="col col-12 col-xl-6">
-                <p><span class="fs-6 fw-semibold">{% trans 'Descripción' %}:</span> <br>{{ rt.risk.description|safe }}</p>
+          <div class="row">
+            <div class="col-xl-6">
+              <fieldset>
+                <!-- <legend class="mb-8">{% trans 'Datos del Riesgo' %}</legend> -->
+                <div class="row mb-8">
+                  <!--begin::Col-->
+                  <div class="col-xl-4">
+                    <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominio de Riesgo' %}</span></div>
+                  </div>
+                  <!--end::Col-->
+                  <!--begin::Col-->
+                  <div class="col-xl-8">
+                    <div class="fs-6">
+                      <div>
+                        <span class="badge badge-primary text-wrap">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
+                      </div>
+                      <div>
+                        {{ rt.risk.risk.risk_master.domain_risk.name }}
+                      </div>
+                    </div>
+                  </div>
+                  <!--end::Col-->
+                </div>
+              </fieldset>
+            </div>
+            <div class="col-xl-6">
+              <fieldset>  
+                <div class="row mb-8">
+                  <!--begin::Col-->
+                  <div class="col-xl-4">
+                    <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Riesgo Maestro' %}</span></div>
+                  </div>
+                  <!--end::Col-->
+                  <!--begin::Col-->
+                  <div class="col-xl-8">
+                    <div class="fs-6">
+                      <div>
+                        <span class="badge badge-primary text-wrap">{{ rt.risk.risk.risk_master.ref }}</span>
+                      </div>
+                      <div>
+                        {{ rt.risk.risk.risk_master.name }}
+                      </div>
+                    </div>
+                  </div>
+                  <!--end::Col-->
+                </div>
+              </fieldset>
+            </div>
+            <div class="col-xl-12">            
+              <div class="row mb-8">
+                <div class="col col-xl-6">
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span></div>
+                    <div>{{ rt.risk.krm_main_elements|safe }}</div>
+                </div>
+                <div class="col col-xl-6">
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales eventos' %}</span></div>
+                    <div>{{ rt.risk.krm_main_events|safe }}</div>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col col-12 col-xl-6">
-                <p><span class="fs-6 fw-semibold">{% trans 'Actividad afectada' %}:</span> <br>{{ rt.risk.krm_activity_affected|safe }}</p>
-                <p><span class="fs-6 fw-semibold">{% trans 'Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios' %}:</span> <br>{{ rt.risk.krm_main_events|safe }}</p>
-              </div>
-              <div class="col col-12 col-xl-6">
-                <p><span class="fs-6 fw-semibold">{% trans 'Personal especialmente expuesto al Riesgo' %}:</span> <br>{{ rt.risk.krm_exposed_staff|safe }}</p>
-                <p><span class="fs-6 fw-semibold">{% trans 'Principales elementos del Riesgo' %}:</span> <br>{{ rt.risk.krm_main_elements|safe }}</p>
+            <div class="col-xl-12">
+              <div class="row mb-8">
+                <div class="col col-xl-6">
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Actividad afectada' %}</span></div>
+                    <div>{{ rt.risk.krm_activity_affected|safe }}</div>
+                </div>
+                <div class="col col-xl-6">
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Personal expuesto' %}</span></div>
+                    <div>{{ rt.risk.krm_exposed_staff|safe }}</div>
+                </div>
               </div>
             </div>
+          </div>
         </div>
         <!--begin::Card footer-->
         <div class="card-footer py-6">

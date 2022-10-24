@@ -28,6 +28,7 @@
           <th>{% trans 'Email' %}</th>
           <th>{% trans 'Nombre' %}</th>
           <th>{% trans 'Apellidos' %}</th>
+          <th>{% trans 'Cargo' %}</th>
           <th>{% trans 'Compañía/as' %}</th>
           <th>{% trans 'Compañía/as que administra' %}</th>
           <th>{% trans 'Último inicio de sesión' %}</th>
@@ -40,6 +41,7 @@
             <td class="align-middle">{{ user.email|default_if_none:"" }}</td>
             <td class="align-middle">{{ user.first_name|default_if_none:"" }}</td>
             <td class="align-middle">{{ user.last_name|default_if_none:"" }}</td>
+            <td class="align-middle">{{ user.position|default_if_none:"" }}</td>
             <td class="align-middle">
                 {% for company in user.companies.all %}
                   <a href="{% url 'companies:ga_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>

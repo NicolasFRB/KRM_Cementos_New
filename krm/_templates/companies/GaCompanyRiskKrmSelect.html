@@ -41,9 +41,9 @@
                         <th class="text-center" width="15%">{% trans 'REF' %}</th>
                         <th width="30%">{% trans 'Nombre' %}</th>
                         <th width="5%">{% trans 'Descripción' %}</th>
-                        <th width="5%">{% trans 'Actividad afectada' %}</th>
-                        <th width="5%">{% trans 'Principales eventos' %}</th>
                         <th width="5%">{% trans 'Principales elementos' %}</th>
+                        <th width="5%">{% trans 'Principales eventos' %}</th>
+                        <th width="5%">{% trans 'Actividad afectada' %}</th>                                                
                         <th width="5%">{% trans 'Personal expuesto' %}</th>
                
                         <th>{% trans 'Riesgo Maestro (N1)' %}</th>          
@@ -58,9 +58,9 @@
                           <td class="text-center align-middle">{{ rc.risk.ref }}</td>
                           <td class="align-middle">{{ rc.risk.name|striptags|safe|truncatechars:200 }}</td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.description|striptags }}"></i></td>
-                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_activity_affected|striptags }}"></i></td>
-                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_events|striptags }}"></i></td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_elements|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_events|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_activity_affected|striptags }}"></i></td>                          
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_exposed_staff|striptags }}"></i></td>
                           <td class="align-middle">{{ rc.risk.risk_master.ref }}</td>
                           <td class="text-center align-middle"><span class="badge badge-info">{{ rc.risk.controls.count }}</span></td>

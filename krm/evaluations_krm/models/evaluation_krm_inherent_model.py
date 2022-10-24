@@ -81,3 +81,21 @@ class EvaluationKrmInherent(AuditModel):
     class Meta:
         verbose_name = _("Evaluación Inherente KRM")
         verbose_name_plural = _("Evaluaciones Inherentes KRM")
+
+    def nrisk_test_inherents_pending_user(self, user):
+        return self.risk_test_inherents.filter(
+                status = 1,
+                expert = user,
+            ).distinct().count()
+
+    def nrisk_test_inherents_delivered_user(self, user):
+        return self.risk_test_inherents.filter(
+                status = 2,
+                expert = user,
+            ).distinct().count()
+
+    def nrisk_test_inherents_finished_user(self, user):
+        return self.risk_test_inherents.filter(
+                status = 3,
+                expert = user,
+            ).distinct().count()
