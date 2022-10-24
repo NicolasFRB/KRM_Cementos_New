@@ -230,7 +230,7 @@ function CreateEvaluationKrmInherent(props) {
                                   )}
                                   {!risk.expert_assign && (
                                     <>
-                                      <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Pulse para asignar un evaluador y vuelva a calcular los riesgos a lanzar">Sin asignar</span></a>
+                                      <span className="badge badge-danger">Sin asignar</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-primary">Asignar</span></a>
                                     </>
                                   )}
                                 </td>

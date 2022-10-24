@@ -79,64 +79,19 @@ function CreateEvaluationKrc(props) {
             <SelectCompanies selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} companies={companies} setCompanies={setCompanies} />
           </div>
           <div className="separator my-10"></div>
-          <div className="col-12">
-            <h3 className="mb-5">Paso 4: Selección de controles a evaluar</h3>
-            <div>
-              {isControlsLoaded && (
-                <>
-                  <div className="table-responsive">
-                    {selectedControls.length > 0 && (
-                      <>
-                        <table className="table table-striped table-row-bordered gy-7 gs-7 customDatatable">
-                          <thead>
-                            <tr className="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
-                              <th><span><i onClick={selectAllControl} className="bi bi-shield-check"></i></span> <span className="mb-2"><i onClick={deSelectAllControl} className="bi bi-shield"></i></span></th>
-                              <th>REF</th>
-                              <th>Descripción</th>
-                              <th>Compañías que aplica</th>
-                            </tr>
-                          </thead>
-                          <tfoot>
-                            <tr>
-                              <td colSpan="3">Se han seleccionado <strong>{controlsToEvaluate.length}</strong> controles</td>
-                            </tr>
-                          </tfoot>
-                          <tbody>
-                            {selectedControls.map((control, index) => {
-                              return <tr key={index}>
-                                <td>
-                                  <label className="form-check form-check-inline form-check-solid me-5">
-                                    <input onChange={() => selectControl(control.pk)} checked={control.checked} className="form-check-input" type="checkbox" value={control.pk} />
-                                  </label>
-                                </td>
-                                <td>{control.ref}</td>
-                                <td>
-                                  <span dangerouslySetInnerHTML={{ __html: control.name }}></span>
-                                </td>
-                                <td>
-                                  {control.companies.map((company, index) => {
-                                    let companyControl = companies.find(c => {
-                                      return c.pk === company
-                                    })
-                                    return <span style={{ display: "block" }} key={index}>{companyControl.name}</span>
-                                  }
-                                  )}
-                                </td>
-                              </tr>
-                            })}
-                          </tbody>
-                        </table>
-                        <input type="hidden" name="controls" value={controlsToEvaluate} />
-                      </>
-                    )
-                    }
-                    {selectedControls.length === 0 && (
-                      <div className="alert alert-primary">No hay controles que cumplan con los criterios</div>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+        </div>
+        <div className="col-12">
+          <h3 className="mb-5">Paso 3: Filtros</h3>
+        </div>
+        {selectedCompanies.length === 0 && (
+          <>
+            <div className="alert alert-primary">Seleccione al menos una compañía</div>
+          </>
+        )
+        }
+        <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
+          <div className="col col-12 col-md-4">
+            <SelectDomainRisk selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
           </div>
           <div className="col col-12 col-md-4">
             <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
