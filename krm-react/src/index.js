@@ -37,8 +37,9 @@ for (let i = 0; i < adminRisksTestInherent.length; i++) {
   let pk = parseInt(adminRisksTestInherent.item(i).getAttribute('data-risktestpk'));
   let impact = parseInt(adminRisksTestInherent.item(i).getAttribute('data-impact'));
   let probability = parseInt(adminRisksTestInherent.item(i).getAttribute('data-probability'));
+  let description = adminRisksTestInherent.item(i).getAttribute('data-description');
   riskTestInherent.render(
-    <CaRiskTestInherent pk={pk} initialImpact={impact} initialProbability={probability} />
+    <CaRiskTestInherent pk={pk} initialImpact={impact} initialProbability={probability} initialDescriptionAdmin={description} />
   )
 }
 

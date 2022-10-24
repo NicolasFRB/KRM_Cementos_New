@@ -69,12 +69,6 @@ class RiskTestInherent(AuditModel):
         default=5
     )
 
-    impact_level_expert = models.PositiveSmallIntegerField(
-        _('Nivel de Impacto indicado por el Experto del Dominio de Riesgo'),
-        choices=RISK_CHOICES,
-        default=5
-    )
-
     probability_level_expert = models.PositiveSmallIntegerField(
         _('Nivel de Probabilidad indicado por el Experto del Dominio de Riesgo'),
         choices=RISK_CHOICES,
@@ -108,7 +102,18 @@ class RiskTestInherent(AuditModel):
 
     description = models.TextField(
         verbose_name=_(
-            "Descripción de la evaluación del test de riesgo inherente"),
+            "Descripción de la evaluación por el Experto del Dominio de Riesgo asociado"),
+        help_text=_(
+            "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
+        ),
+        max_length=10000,
+        null=True,
+        blank=True,
+    )
+
+    description_admin = models.TextField(
+        verbose_name=_(
+            "Descripción de la evaluación por el Administrador de la Compañía Evaluada"),
         help_text=_(
             "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
         ),

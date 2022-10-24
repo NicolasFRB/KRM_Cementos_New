@@ -87,7 +87,7 @@ class GaEvaluationInherentListView(ListView):
 class GaEvaluationInherentCreateView(FormView):
     form_class = EvaluationInherentCreateForm
     model = EvaluationKrmInherent
-    template_name = 'evaluations/GaEvaluationInherentCreate.html'
+    template_name = 'evaluations_krm/GaEvaluationInherentCreate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -183,7 +183,7 @@ class GaEvaluationInherentCreateView(FormView):
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaEvaluationInherentDetailView(FormView):
-    template_name = 'evaluations/GaEvaluationInherentDetail.html'
+    template_name = 'evaluations_krm/GaEvaluationInherentDetail.html'
     form_class = EvaluationActionForm
 
     def dispatch(self, request, *args, **kwargs):

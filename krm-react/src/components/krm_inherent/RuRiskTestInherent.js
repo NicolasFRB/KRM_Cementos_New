@@ -356,7 +356,7 @@ function RuRiskTestInherent({ pk, initialImpactEconomic, initialImpactContinuity
         <div className="row">
           <div className="form-group">
             <label htmlFor={`id-description--${pk}`} className=""><h5>Descripción de la valoración del experto de Dominio de Riesgo (*)</h5></label>
-            <textarea required cols="40" rows="10" name={`description-${pk}`} id={`id-description--${pk}`} className="form-control" onBlur={(e) => updateDescription(e.currentTarget.value)} value={description} onChange={(e) => setDescription(e.currentTarget.value)}></textarea>
+            <textarea required cols="40" rows="3" name={`description-${pk}`} id={`id-description--${pk}`} className="form-control" onBlur={(e) => updateDescription(e.currentTarget.value)} value={description} onChange={(e) => setDescription(e.currentTarget.value)}></textarea>
           </div>
         </div>
       </div>

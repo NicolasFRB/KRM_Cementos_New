@@ -59,7 +59,7 @@ from krm.evaluations_krm.forms import (
 @method_decorator([login_required, is_company_admin, ], name='dispatch')
 class CaEvaluationInherentListView(ListView):
     model = EvaluationKrmInherent
-    template_name = 'evaluations/CaEvaluationInherentList.html'
+    template_name = 'evaluations_krm/CaEvaluationInherentList.html'
     context_object_name = 'evaluations'
 
     def get_context_data(self, **kwargs):
@@ -95,7 +95,7 @@ class CaEvaluationInherentListView(ListView):
 class CaEvaluationInherentCreateView(FormView):
     form_class = EvaluationInherentCreateForm
     model = EvaluationKrmInherent
-    template_name = 'evaluations/CaEvaluationInherentCreate.html'
+    template_name = 'evaluations_krm/CaEvaluationInherentCreate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -191,7 +191,7 @@ class CaEvaluationInherentCreateView(FormView):
 
 @method_decorator([login_required, is_company_admin, user_can_view_evaluation_inherent], name='dispatch')
 class CaEvaluationInherentDetailView(FormView):
-    template_name = 'evaluations/CaEvaluationInherentDetail.html'
+    template_name = 'evaluations_krm/CaEvaluationInherentDetail.html'
     form_class = EvaluationActionForm
 
     def dispatch(self, request, *args, **kwargs):

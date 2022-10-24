@@ -27,39 +27,46 @@ class RiskTestInherentExpertApiView(APIView):
             pk=risk_test_pk
         )
 
-        if 'probability' in request.GET:
-            probability = int(request.GET['probability'])
-            if probability != 0:
-                risk_test.probability_level_expert = probability
+        if risk_test.status == 1:
+            if 'probability' in request.GET:
+                probability = int(request.GET['probability'])
+                if probability != 0:
+                    risk_test.probability_level_expert = probability
 
-        if 'impactEconomic' in request.GET:
-            impact = int(request.GET['impactEconomic'])
-            if impact != 0:
-                risk_test.impact_economic_level_expert = impact
+            if 'impactEconomic' in request.GET:
+                impact = int(request.GET['impactEconomic'])
+                if impact != 0:
+                    risk_test.impact_economic_level_expert = impact
 
-        if 'impactContinuity' in request.GET:
-            impact = int(request.GET['impactContinuity'])
-            if impact != 0:
-                risk_test.impact_continuity_level_expert = impact
+            if 'impactContinuity' in request.GET:
+                impact = int(request.GET['impactContinuity'])
+                if impact != 0:
+                    risk_test.impact_continuity_level_expert = impact
 
-        if 'impactBranding' in request.GET:
-            impact = int(request.GET['impactBranding'])
-            if impact != 0:
-                risk_test.impact_branding_level_expert = impact
+            if 'impactBranding' in request.GET:
+                impact = int(request.GET['impactBranding'])
+                if impact != 0:
+                    risk_test.impact_branding_level_expert = impact
 
-        if 'adminProbability' in request.GET:
-            probability = int(request.GET['adminProbability'])
-            if probability != 0:
-                risk_test.probability_level_administrator = probability
+            if 'description' in request.GET:
+                description = request.GET['description']
+                risk_test.description = description
 
-        if 'adminImpact' in request.GET:
-            impact = int(request.GET['adminImpact'])
-            if impact != 0:
-                risk_test.impact_level_administrator = impact
+        if risk_test.status == 2:
 
-        if 'description' in request.GET:
-            description = request.GET['description']
-            risk_test.description = description
+            if 'adminProbability' in request.GET:
+                probability = int(request.GET['adminProbability'])
+                if probability != 0:
+                    risk_test.probability_level_administrator = probability
+
+            if 'adminImpact' in request.GET:
+                impact = int(request.GET['adminImpact'])
+                if impact != 0:
+                    risk_test.impact_level_administrator = impact
+
+            if 'descriptionAdmin' in request.GET:
+                description_admin = request.GET['descriptionAdmin']
+                risk_test.description_admin = description_admin
 
         risk_test.save()
 

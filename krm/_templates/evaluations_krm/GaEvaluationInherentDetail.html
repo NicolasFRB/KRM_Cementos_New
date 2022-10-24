@@ -41,12 +41,6 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <!-- <a href="{% url 'evaluations:ga_evaluation_update' evaluation.pk %}" class="btn btn-sm btn-primary">
-      <i class="bi bi-pencil"></i>
-      {% trans 'Editar' %}</a>
-    <a href="{% url 'evaluations:ga_evaluation_delete' evaluation.pk %}" class="btn btn-sm btn-danger ms-2">
-      <i class="bi bi-trash"></i>
-      {% trans 'Eliminar' %}</a> -->
     {% if evaluation.status == 'SI' %}
       {% if evaluation.is_completed_assing %}
         <form method="post" class="kt-form kt-form--label-right" novalidate>
@@ -104,12 +98,12 @@
           <tr>
             <th>{% trans 'RIESGO' %}</th>
             <th>{% trans 'EXPERTO' %}</th>
-            <th>{% trans 'EX. IMP. CONTINUIDAD' %}</th>
-            <th>{% trans 'EX. IMP. IMAGEN' %}</th>
-            <th>{% trans 'EX. IMP. ECONÓMICO' %}</th>
+            <th>{% trans 'EX. IMPACTO' %}</th>
             <th>{% trans 'EX. PROBABILIDAD' %}</th>
+            <th>{% trans 'EX. DESC' %}</th>
             <th>{% trans 'ADM. IMPACTO' %}</th>
             <th>{% trans 'ADM. PROBABILIDAD' %}</th>
+            <th>{% trans 'ADM. DESC' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -121,15 +115,14 @@
                 <td>{% trans 'Sin establecer' %}</td>
                 <td>{% trans 'Sin establecer' %}</td>
                 <td>{% trans 'Sin establecer' %}</td>
-                <td>{% trans 'Sin establecer' %}</td>
             {% else %}
-                <td>{{ rt.get_impact_continuity_level_expert_display }}</td>
-                <td>{{ rt.get_impact_branding_level_expert_display }}</td>
-                <td>{{ rt.get_impact_economic_level_expert_display }}</td>
+                <td>{{ rt.get_impact_level_expert_display }}</td>
                 <td>{{ rt.get_probability_level_expert_display }}</td>
+                <td><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i></td>
             {% endif %}
             <td>{{ rt.get_impact_level_administrator_display }}</td>
             <td>{{ rt.get_probability_level_administrator_display }}</td>
+                <td><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.description_admin }}"></i></td>
           </tr>
           {% endfor %}
         </tbody>

@@ -83,8 +83,10 @@
             <th>{% trans 'EXPERTO' %}</th>
             <th>{% trans 'EX. IMPACTO' %}</th>
             <th>{% trans 'EX. PROBABILIDAD' %}</th>
+            <th>{% trans 'EX. DESC' %}</th>
             <th>{% trans 'ADM. IMPACTO' %}</th>
             <th>{% trans 'ADM. PROBABILIDAD' %}</th>
+            <th>{% trans 'ADM. DESC' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -96,15 +98,14 @@
                 <td>{% trans 'Sin establecer' %}</td>
                 <td>{% trans 'Sin establecer' %}</td>
                 <td>{% trans 'Sin establecer' %}</td>
-                <td>{% trans 'Sin establecer' %}</td>
             {% else %}
-                <td>{{ rt.get_impact_continuity_level_expert_display }}</td>
-                <td>{{ rt.get_impact_branding_level_expert_display }}</td>
-                <td>{{ rt.get_impact_economic_level_expert_display }}</td>
+                <td>{{ rt.get_impact_level_expert_display }}</td>
                 <td>{{ rt.get_probability_level_expert_display }}</td>
+                <td><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i></td>
             {% endif %}
             <td>{{ rt.get_impact_level_administrator_display }}</td>
             <td>{{ rt.get_probability_level_administrator_display }}</td>
+                <td><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.description_admin }}"></i></td>
           </tr>
           {% endfor %}
         </tbody>
