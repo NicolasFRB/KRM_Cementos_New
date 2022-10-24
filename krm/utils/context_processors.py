@@ -44,8 +44,9 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('evaluations:ga_evaluation_create'),
     ]
     evaluations_krm_urls = [
-        reverse_lazy('evaluations_krm:ga_evaluation_krm_list'),
+        reverse_lazy('evaluations_krm:ga_evaluation_inherent_list'),
         reverse_lazy('evaluations_krm:ga_evaluation_inherent_create'),
+        reverse_lazy('evaluations_krm:ga_evaluation_residual_create'),
     ]
     ca_evaluations_urls = [
         reverse_lazy('evaluations:ca_evaluation_list'),
@@ -199,19 +200,15 @@ def get_menu_urls(request, pk=None):
             )
         ]
 
-        evaluations_urls_ = evaluations_urls + [
+        evaluations_krm_urls = evaluations_krm_urls + [
             reverse_lazy(
-                'evaluations:ga_evaluation_detail',
+                'evaluations_krm:ga_evaluation_krm_inherent_detail',
                 kwargs={'pk': pk}
             ),
             reverse_lazy(
-                'evaluations:ga_evaluation_update',
+                'evaluations_krm:ga_evaluation_krm_residual_detail',
                 kwargs={'pk': pk}
             ),
-            reverse_lazy(
-                'evaluations:ga_evaluation_delete',
-                kwargs={'pk': pk}
-            )
         ]
 
     if settings.KRM_ACTIVATE:

@@ -4,11 +4,12 @@ import { useState } from "react";
 
 let $ = window.$;
 
-function RuRiskTestInherent({ pk, initialImpactEconomic, initialImpactContinuity, initialImpactBranding, initialProbability }) {
+function RuRiskTestInherent({ pk, initialImpactEconomic, initialImpactContinuity, initialImpactBranding, initialProbability, initialDescription }) {
   const [impactEconomic, setImpactEconomic] = useState(initialImpactEconomic);
   const [impactContinuity, setImpactContinuity] = useState(initialImpactContinuity);
   const [impactBranding, setImpactBranding] = useState(initialImpactBranding);
   const [probability, setProbability] = useState(initialProbability);
+  const [description, setDescription] = useState(initialDescription);
 
   const updateProbability = (newProbability) => {
     $('#buttonSend').attr('data-kt-indicator', 'on');
@@ -68,6 +69,21 @@ function RuRiskTestInherent({ pk, initialImpactEconomic, initialImpactContinuity
         }
       );
     setImpactBranding(newImpactBranding);
+  };
+
+  const updateDescription = (newDescription) => {
+    $('#buttonSend').attr('data-kt-indicator', 'on');
+    fetch(`${configService.apiSendRiskTestInherent}?pk=${pk}&description=${newDescription}`)
+      .then((res) => res.json())
+      .then(
+        (res) => {
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+        },
+        (error) => {
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+        }
+      );
+    setDescription(newDescription);
   };
 
   return (
@@ -209,7 +225,7 @@ function RuRiskTestInherent({ pk, initialImpactEconomic, initialImpactContinuity
           </div>
         </div>
 
-        <div className="row">
+        <div className="row mb-10">
           <div className="col col-12 col-xl-5">
             <h5 className="mb-7">Impacto Económico</h5>
             <div className="row">
@@ -336,8 +352,15 @@ function RuRiskTestInherent({ pk, initialImpactEconomic, initialImpactContinuity
             </div>
           </div>
         </div>
+
+        <div className="row">
+          <div className="form-group">
+            <label htmlFor={`id-description--${pk}`} className=""><h5>Descripción de la valoración del experto de Dominio de Riesgo (*)</h5></label>
+            <textarea required cols="40" rows="10" name={`description-${pk}`} id={`id-description--${pk}`} className="form-control" onBlur={(e) => updateDescription(e.currentTarget.value)} value={description} onChange={(e) => setDescription(e.currentTarget.value)}></textarea>
+          </div>
+        </div>
       </div>
-    </div>
+    </div >
   );
 }
 

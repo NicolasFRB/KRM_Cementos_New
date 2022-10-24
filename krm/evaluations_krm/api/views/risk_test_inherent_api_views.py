@@ -57,6 +57,10 @@ class RiskTestInherentExpertApiView(APIView):
             if impact != 0:
                 risk_test.impact_level_administrator = impact
 
+        if 'description' in request.GET:
+            description = request.GET['description']
+            risk_test.description = description
+
         risk_test.save()
 
         data = {

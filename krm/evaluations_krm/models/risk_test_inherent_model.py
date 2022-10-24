@@ -106,6 +106,17 @@ class RiskTestInherent(AuditModel):
         default=0
     )
 
+    description = models.TextField(
+        verbose_name=_(
+            "Descripción de la evaluación del test de riesgo inherente"),
+        help_text=_(
+            "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
+        ),
+        max_length=10000,
+        null=True,
+        blank=True,
+    )
+
     def __str__(self):
         return f'{self.evaluation.ref} - {self.risk.risk.name}'
 

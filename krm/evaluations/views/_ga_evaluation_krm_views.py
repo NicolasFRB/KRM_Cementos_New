@@ -53,7 +53,7 @@ from krm.utils.utils import clean_html
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaEvaluationInherentListView(ListView):
     model = EvaluationKrmInherent
-    template_name = 'evaluations/GaEvaluationInherentList.html'
+    template_name = 'evaluations_krm/GaEvaluationInherentList.html'
     context_object_name = 'evaluations'
 
     def get_context_data(self, **kwargs):
@@ -63,7 +63,7 @@ class GaEvaluationInherentListView(ListView):
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones KRM'), 'url': reverse(
-                'evaluations:ga_evaluation_krm_list')},
+                'evaluations:ga_evaluation_inherent_list')},
         ]
         context['page_title'] = _('Evaluaciones KRM')
         context['breadcrums'] = breadcrums

@@ -8,10 +8,11 @@
 {% url 'evaluations:ca_evaluation_list' as ca_evaluation_list %}
 {% url 'evaluations:ca_evaluation_create' as ca_evaluation_create %}
 {% url 'configuration:ga_import' as import %}
-{% url 'evaluations_krm:ga_evaluation_krm_list' as ga_evaluation_inherent_list %}
+{% url 'evaluations_krm:ga_evaluation_inherent_list' as ga_evaluation_inherent_list %}
 {% url 'evaluations_krm:ga_evaluation_inherent_create' as ga_evaluation_inherent_create %}
 {% url 'evaluations_krm:ca_evaluation_inherent_create' as ca_evaluation_inherent_create %}
 {% url 'evaluations_krm:ca_evaluation_inherent_list' as ca_evaluation_inherent_list %}
+{% url 'evaluations_krm:ga_evaluation_residual_create' as ga_evaluation_residual_create %}
 
 
 <!--begin::sidebar menu-->
@@ -264,7 +265,7 @@
               <!--begin:Menu link-->
 
               <a class="menu-link {% if request.path == ga_evaluation_inherent_list %}active{% endif %}"
-                href="{% url 'evaluations_krm:ga_evaluation_krm_list' %}">
+                href="{% url 'evaluations_krm:ga_evaluation_inherent_list' %}">
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
@@ -286,6 +287,36 @@
               <!--end:Menu link-->
             </div>
             <!--end:Menu item-->
+
+            <div class="menu-item">
+              <!--begin:Menu link-->
+            
+              <a class="menu-link {% if request.path == ga_evaluation_residual_list %}active{% endif %}"
+                href="{% url 'evaluations_krm:ga_evaluation_residual_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Evaluaciones RR' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path == ga_evaluation_residual_create %}active{% endif %}"
+                href="{% url 'evaluations_krm:ga_evaluation_residual_create' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Crear evaluación RR' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+
+          
           </div>
           <!--end:Menu sub-->
         </div>

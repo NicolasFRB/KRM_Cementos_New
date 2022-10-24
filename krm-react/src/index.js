@@ -19,6 +19,7 @@ for (let i = 0; i < risksTestInherent.length; i++) {
   let impactBranding = parseInt(risksTestInherent.item(i).getAttribute('data-impact-branding'));
   let impactEconomic = parseInt(risksTestInherent.item(i).getAttribute('data-impact-economic'));
   let probability = parseInt(risksTestInherent.item(i).getAttribute('data-probability'));
+  let description = risksTestInherent.item(i).getAttribute('data-description');
   riskTestInherent.render(
     <RuRiskTestInherent
       pk={pk}
@@ -26,6 +27,7 @@ for (let i = 0; i < risksTestInherent.length; i++) {
       initialImpactContinuity={impactContinuity}
       initialImpactEconomic={impactEconomic}
       initialProbability={probability}
+      initialDescription={description}
     />
   )
 }

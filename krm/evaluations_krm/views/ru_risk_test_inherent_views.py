@@ -71,6 +71,18 @@ class RuEvaluationRiskInherentComplete(DetailView, FormView):
     context_object_name = 'evaluation'
     form_class = EvaluationInherenetCompleteForm
 
+    def dispatch(self, request, *args, **kwargs):
+        if self.get_object().risk_test_inherents.filter(
+            expert=request.user,
+            status=1
+        ).count() == 0:
+            return HttpResponseRedirect(reverse_lazy(
+                "evaluations_krm:ru_evaluation_risk_inherent_list"
+            ))
+
+        return super(RuEvaluationRiskInherentComplete, self).dispatch(
+            request, request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
@@ -82,10 +94,12 @@ class RuEvaluationRiskInherentComplete(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Riesgos Inherentes')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        context['risks_test_inherent'] = self.object.risk_test_inherents.filter(
-            expert=self.request.user
+        risk_tests = self.object.risk_test_inherents.filter(
+            expert=self.request.user,
+            status=1
         )
 
+        context['risks_test_inherent'] = risk_tests
         return context
 
     def form_valid(self, form):

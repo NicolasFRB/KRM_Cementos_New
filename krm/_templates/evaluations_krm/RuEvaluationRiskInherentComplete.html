@@ -16,32 +16,56 @@
 <script>
   $(document).ready(function () {
     $('#sendEvaluation').on('submit', function(e){
+      let errorFound = false;
       $('#buttonSend').attr('data-kt-indicator', 'on');
       $('.card').removeClass('danger');
-      $("input[name^='probability-']").each(function(index){
-        if ($(this).val() == 5){
-          let parent = $(this).closest('div.card');
-          $(parent).addClass('danger');
-          $('html, body').animate({
-            scrollTop: $(parent).offset().top - 100
-          }, 1000);
-          e.preventDefault();
-          $('#buttonSend').attr('data-kt-indicator', 'off');
-          return false;
-        }
-      });
-      $("input[name^='impact-']").each(function (index) {
-        if ($(this).val() == 5) {
-          let parent = $(this).closest('div.card');
-          $(parent).addClass('danger');
-          $('html, body').animate({
-            scrollTop: $(parent).offset().top - 100
-          }, 1000);
-          e.preventDefault();
-          $('#buttonSend').attr('data-kt-indicator', 'off');
-          return false;
-        }
-      });
+
+      if(!errorFound){
+        $("input[name^='probability-']").each(function(index){
+          if ($(this).val() == 5){
+            let parent = $(this).closest('div.card');
+            $(parent).addClass('danger');
+            $('html, body').animate({
+              scrollTop: $(parent).offset().top - 100
+            }, 1000);
+            e.preventDefault();
+            $('#buttonSend').attr('data-kt-indicator', 'off');
+            errorFound=true;
+            e.preventDefault();
+            return false;
+          }
+        });
+      }
+      if (!errorFound){
+        $("input[name^='impact-']").each(function (index) {
+          if ($(this).val() == 5) {
+            let parent = $(this).closest('div.card');
+            $(parent).addClass('danger');
+            $('html, body').animate({
+              scrollTop: $(parent).offset().top - 100
+            }, 1000);
+            $('#buttonSend').attr('data-kt-indicator', 'off');
+            errorFound=true;
+            e.preventDefault();
+            return false;
+          }
+        });
+      }
+      if (!errorFound) {
+        $("textarea[name^='description-']").each(function (index) {
+          if ($(this).val() == '') {
+            let parent = $(this).closest('div.card');
+            $(parent).addClass('danger');
+            $('html, body').animate({
+              scrollTop: $(parent).offset().top - 100
+            }, 1000);
+            $('#buttonSend').attr('data-kt-indicator', 'off');
+            errorFound = true;
+            e.preventDefault();
+            return false;
+          }
+        });
+      }
       return true;
     })
   });
@@ -138,7 +162,8 @@
           data-impact-continuity="{{ rt.impact_continuity_level_expert}}" 
           data-impact-economic="{{ rt.impact_economic_level_expert}}" 
           data-impact-branding="{{ rt.impact_branding_level_expert}}" 
-          data-probability="{{ rt.probability_level_expert }}"></div>
+          data-probability="{{ rt.probability_level_expert }}"
+          data-description="{{ rt.description|default_if_none:'' }}" ></div>
         </div>
         <!--end::Card footer-->
       </div>
