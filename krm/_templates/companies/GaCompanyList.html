@@ -56,7 +56,7 @@
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.krm_risks_active.count }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.controls.count }}</span></td>
             {% if KRM_ACTIVATE %}
-              <td class="align-middle">
+              <td class="text-center align-middle">
                 {% for ced in company.experts_domain_risk %}
                   {% if not ced.expert %}
                     <a href="{% url 'companies:ga_company_assign_expert_update' ced.pk %}"><span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
@@ -67,7 +67,7 @@
                   {% endif %}   
                 {% endfor %}   
               </td>
-              <td class="align-middle">
+              <td class="text-center align-middle">
                 {% for ced in company.evaluators_domain_risk.all %}
                   {% if not ced.evaluator.count %}
                     <a href="{% url 'companies:ga_company_assign_evaluator_update' ced.pk %}"><span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
