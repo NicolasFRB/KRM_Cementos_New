@@ -45,6 +45,7 @@
           <th class="text-center">{% trans 'Frecuencia' %}</th>
           <th class="text-center">{% trans 'Tipo' %}</th>
           <th class="text-center">{% trans 'Automático' %}</th>
+          <th class="text-center">{% trans 'Key Control' %}</th>
           <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
           <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
           <th class="text-center">{% trans 'Subprocesos' %}</th>
@@ -71,6 +72,7 @@
             <td class="text-center align-middle">{{ control.control_frequency }}</td>
             <td class="text-center align-middle">{{ control.control_type }}</td>
             <td class="text-center align-middle">{{ control.automation }}</td>
+            <td class="text-center align-middle">{{ control.key_control|yesno:"KEY,NON-KEY" }}</td>
             <td class="text-center align-middle" >
               <div id = 'box' class="text-center">
                 <div style="cursor: pointer" onclick="toggle_item(this)">
