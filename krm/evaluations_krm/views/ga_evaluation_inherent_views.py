@@ -79,6 +79,9 @@ class GaEvaluationInherentListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+        
+        context['evaluations_pending'] = EvaluationKrmInherent.objects.filter(status = "EP")
+        context['evaluations_finished'] = EvaluationKrmInherent.objects.filter(status = "FI")
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
