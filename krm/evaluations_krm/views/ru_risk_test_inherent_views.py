@@ -73,6 +73,12 @@ class RuEvaluationRiskInherentList(TemplateView):
             'EP': int(100*ev_pending.count()/(ev_delivered.count() + ev_pending.count())),
         }
 
+        if ev_delivered or ev_pending:
+            eri_count_by_state_perc['FI'] = int(
+                100*ev_delivered.count()/(ev_delivered.count() + ev_pending.count()))
+            eri_count_by_state_perc['EP'] = int(
+                100*ev_pending.count()/(ev_delivered.count() + ev_pending.count()))
+
         context['eri_count_by_state_perc'] = eri_count_by_state_perc
         context['evaluations_risk_inherent_pending'] = ev_pending
         context['evaluations_risk_inherent_delivered'] = ev_delivered

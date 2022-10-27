@@ -87,6 +87,12 @@
             display: grid;
             margin: 3px;
           }
+
+          .card {
+            margin-top: 10px;
+            margin-bottom: 10px;
+          }
+           
         </style>
         {% endblock css %}
 
@@ -151,8 +157,7 @@
 
           function toggle_item(clicked) {
             $(clicked).siblings().fadeToggle().css('margin-bottom:5px;');
-          }   
- 
+          }
         </script>
 
     <div id="pk" data-pk="{{ request.user.pk }}" style="display: none;"></div>

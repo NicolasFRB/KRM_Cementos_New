@@ -36,7 +36,7 @@ class Control(AuditModel):
     )
 
     testing_procedure = RichTextField(
-        _("Procedimiento de testeo"),
+        _("Evidencia"),
         config_name='awesome_ckeditor',
         max_length=10000,
         null=True,
