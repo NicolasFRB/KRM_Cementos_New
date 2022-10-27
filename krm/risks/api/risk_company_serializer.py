@@ -22,10 +22,10 @@ class RiskCompanySerializer(serializers.ModelSerializer):
             'active',
             'expert_assign',
             'expert_pk',
-            'krm_activity_affected',
-            'krm_main_events',
-            'krm_exposed_staff',
-            'krm_main_elements',
+            # 'krm_activity_affected',
+            # 'krm_main_events',
+            # 'krm_exposed_staff',
+            # 'krm_main_elements',
         ]
         read_only_fields = [f.name for f in Risk._meta.get_fields()]
 

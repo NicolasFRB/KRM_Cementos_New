@@ -11,6 +11,7 @@ const configService = {
   apiGetControls: `${baseUrlApi}controls/`,
   apiGetCompanies: `${baseUrlApi}companies?user=${user}`,
   apiGetRiskCompany: `${baseUrlApi}riskscompany/`,
+  apiGetRiskCompanyResidual: `${baseUrlApi}riskscompanyresidual/`,
   apiSendRiskTestInherent: `${baseUrlApi}risktestinherentexpert/`,
   apiGetControlCompany: `${baseUrlApi}controlscompany/`,
 

@@ -15,12 +15,24 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
     }
   };
 
+  const selectAll = () => {
+    setSelectedRisks(risks.map(risk => {
+      return risk.pk;
+    }));
+  };
+
+  const unSelectAll = () => {
+    setSelectedRisks([]);
+  };
+
   useEffect(() => {
     fetch(`${configService.apiGetRisks}`)
       .then((res) => res.json())
       .then(
         (res) => {
-          setRisks(res.results);
+          setRisks(res.results.map(risk => {
+            return { ...risk, checked: false }
+          }));
           setIsLoaded(true);
         },
         (error) => {
@@ -47,7 +59,10 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
             <table className="table table-striped customDatatable">
               <thead>
                 <tr>
-                  <th className="fw-semibold"></th>
+                  <th className="text-center">
+                    <span onClick={() => selectAll()} className="me-5"><i className="bi bi-clipboard-check"></i></span>
+                    <span onClick={() => unSelectAll()}><i className="bi bi-clipboard"></i></span>
+                  </th>
                   <th className="fw-semibold">REF</th>
                   <th className="fw-semibold">NOMBRE</th>
                   <th className="fw-semibold">RIESGO MAESTRO</th>
@@ -57,7 +72,7 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
                 {risks.map((risk, index) => {
                   return <tr key={risk.pk}>
                     <td className="text-center">
-                      <label className="form-check form-check-inline form-check-solid"><input id={'ri' + risk.pk} onChange={() => handleOnChange(risk.pk)} className="form-check-input" name="risks" type="checkbox" value={risk.pk} /></label>
+                      <label className="form-check form-check-inline form-check-solid"><input id={'ri' + risk.pk} onChange={() => handleOnChange(risk.pk)} className="form-check-input" name="risks" type="checkbox" value={risk.pk} checked={selectedRisks.includes(risk.pk)} /></label>
                     </td>
                     <td><label htmlFor={'ri' + risk.pk}>{risk.ref}</label></td>
                     <td><span className="fw-semibold">{risk.name}</span></td>

@@ -60,7 +60,7 @@ var CustomDatatables = {
 
     // begin first table
     table.DataTable({
-      responsive: false,
+      responsive: true,
       lengthMenu: [5, 10, 25, 50],
       pageLength: 10,
       language: langSelected,

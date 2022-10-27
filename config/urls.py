@@ -23,7 +23,11 @@ from krm.process.api import (
     SubProcessViewSet,
 )
 
-from krm.risks.api.views import RiskCompanyApiView
+from krm.risks.api.views import (
+    RiskCompanyApiView,
+    RiskCompanyResidualApiView
+)
+
 from krm.controls.api.views import ControlCompanyApiView
 
 from krm.companies.api import (
@@ -47,6 +51,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/riskscompany/',
          RiskCompanyApiView.as_view()),
+    path('api/riskscompanyresidual/',
+         RiskCompanyResidualApiView.as_view()),
     path('api/risktestinherentexpert/',
          RiskTestInherentExpertApiView.as_view()
          ),

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import configService from "../services/config.js";
 
 import SelectCompanies from "./SelectCompanies.js";
-import SelectRisk from "./SelectRiskInherentKrm.js";
+import SelectRisk from "./SelectRiskResidualKrm.js";
 import EvaluationKrmInherentCreateSteps from "./EvaluationKrmInherentCreateSteps.js";
 
 let $ = window.$;
@@ -32,18 +32,6 @@ function CreateEvaluationKrmInherent(props) {
     newFormData.completed = newFormData.ref !== '' && newFormData.date_begin !== '' && newFormData.date_intermediate !== '' && newFormData.date_end !== '';
     setFormData(newFormData);
   }
-
-  // useEffect(() => {
-  //   let riskSelect = [];
-  //   riskCompanies.forEach(c => {
-  //     c.risks.forEach(risk => {
-  //       if (risk.checked) {
-  //         riskSelect.push(risk.pk);
-  //       }
-  //     });
-  //   });
-  //   setRiskCompaniesToEvaluate(riskSelect)
-  // }, [riskCompanies]);
 
   useEffect(() => {
     $('#e_ref, #e_date_begin, #e_date_intermediate, #e_date_end, #e_description').on('change', readFormData);
@@ -116,7 +104,7 @@ function CreateEvaluationKrmInherent(props) {
     };
 
 
-    var url = new URL(configService.apiGetRiskCompany);
+    var url = new URL(configService.apiGetRiskCompanyResidual);
     for (let k in params) {
       url.searchParams.append(k, params[k]);
     }
@@ -206,7 +194,8 @@ function CreateEvaluationKrmInherent(props) {
                               <th className="fw-semibold">&nbsp;</th>
                               <th className="fw-semibold">REF</th>
                               <th className="fw-semibold">NOMBRE</th>
-                              <th className="fw-semibold">EXPERTO ASIGNADO</th>
+                              <th className="fw-semibold">EVALUADO POR R. INHERENTE</th>
+                              <th className="fw-semibold">EVALUADOR ASIGNADO</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -222,15 +211,18 @@ function CreateEvaluationKrmInherent(props) {
                                 </td>
                                 <td><label htmlFor={'ri' + risk.pk}>{risk.risk_ref}</label></td>
                                 <td><span className="fw-semibold ps-2 fs-6">{risk.name}</span></td>
+                                <td>{risk.evaluated}</td>
                                 <td>
-                                  {risk.expert_assign && (
-                                    <span className="fw-semibold ps-2 fs-6">
-                                      {risk.expert_assign}
-                                    </span>
-                                  )}
-                                  {!risk.expert_assign && (
+                                  {risk.domain_risk_evaluator.map((evaluator, index) => {
+                                    return (
+                                      <>
+                                        <span className="badge badge-primary" key={index}>{evaluator}</span>
+                                      </>
+                                    )
+                                  })}
+                                  {risk.domain_risk_evaluator.length == 0 && (
                                     <>
-                                      <span className="badge badge-danger">Sin asignar</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-primary">Asignar</span></a>
+                                      <span className="badge badge-danger">Sin asignar</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-evaluator/${risk.company_domain_risk_evaluator}/`}><span className="badge badge-primary">Asignar</span></a>
                                     </>
                                   )}
                                 </td>

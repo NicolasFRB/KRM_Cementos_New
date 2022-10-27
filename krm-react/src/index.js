@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import CreateEvaluationKrc from "./components/CreateEvaluationKrc";
 import CreateEvaluationKrmInherent from './components/CreateEvaluationKrmInherent';
+import CreateEvaluationKrmResidual from './components/CreateEvaluationKrmResidual';
 import RuRiskTestInherent from './components/krm_inherent/RuRiskTestInherent';
 import CaRiskTestInherent from './components/krm_inherent/CaRiskTestInherent';
 
 
 let krcEvaluationElement = document.getElementById("create-evaluation-krc");
-let krmEvaluationElement = document.getElementById("create-evaluation-krm-inherent");
+let krmEvaluationInherentElement = document.getElementById("create-evaluation-krm-inherent");
+let krmEvaluationResidualElement = document.getElementById("create-evaluation-krm-residual");
 let risksTestInherent = document.getElementsByClassName("risk_test_inherent");
 let adminRisksTestInherent = document.getElementsByClassName("admin_risk_test_inherent");
 
@@ -50,12 +52,19 @@ if (krcEvaluationElement) {
   );
 }
 
-if (krmEvaluationElement) {
-  const KrmEvaluation = ReactDOM.createRoot(krmEvaluationElement);
-  KrmEvaluation.render(
+if (krmEvaluationInherentElement) {
+  const krmEvaluationInherent = ReactDOM.createRoot(krmEvaluationInherentElement);
+  krmEvaluationInherent.render(
     <CreateEvaluationKrmInherent />
   );
 }
 
+if (krmEvaluationResidualElement) {
+  console.log('entra');
+  const KrmEvaluationResidual = ReactDOM.createRoot(krmEvaluationResidualElement);
+  KrmEvaluationResidual.render(
+    <CreateEvaluationKrmResidual />
+  );
+}
 
 window.LANG = document.getElementsByTagName('html')[0].attributes[0].value;

@@ -46,6 +46,7 @@ def get_menu_urls(request, pk=None):
     evaluations_krm_urls = [
         reverse_lazy('evaluations_krm:ga_evaluation_inherent_list'),
         reverse_lazy('evaluations_krm:ga_evaluation_inherent_create'),
+        reverse_lazy('evaluations_krm:ga_evaluation_residual_list'),
         reverse_lazy('evaluations_krm:ga_evaluation_residual_create'),
     ]
     ca_evaluations_urls = [
