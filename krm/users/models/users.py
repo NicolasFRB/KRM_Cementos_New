@@ -115,6 +115,8 @@ class User(AbstractUser):
             risk_test_inherents__expert = self,
             ).distinct()
 
+    def risk_test_inherent_expert_pending(self):
+        return self.risk_test_inherents.filter(status=1)
 
     def save(self, *args, **kwargs):
         self.username = self.email
