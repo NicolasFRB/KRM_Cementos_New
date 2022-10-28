@@ -41,9 +41,8 @@
           <th class="text-center">{% trans 'Acción' %}</th>
           <th>{% trans 'REF' %}</th>
           <th>{% trans 'Descripción' %}</th>
-          <th class="text-center">{% trans 'Periodo de evaluación' %}</th>
-          <th class="text-center">{% trans 'Inicio' %}</th>
-          <th class="text-center">{% trans 'Final' %}</th>
+          <th class="text-center">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Nº Riesgos' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
@@ -65,9 +64,9 @@
               </div>
             </td>
             <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
-            <td class="text-center align-middle">{{ evaluation.date_begin|date:'d/m/Y' }}</td>
-            <td class="text-center align-middle">{{ evaluation.date_end|date:'d/m/Y' }}</td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.company }}</span></td>
+            <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
+            <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                      title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.nrisk_test_inherents_pending_user }}</span></td>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
@@ -112,9 +111,8 @@
           <th class="text-center">{% trans 'Acción' %}</th>
           <th>{% trans 'REF' %}</th>
           <th>{% trans 'Descripción' %}</th>
-          <th class="text-center">{% trans 'Periodo de evaluación' %}</th>
-          <th class="text-center">{% trans 'Inicio' %}</th>
-          <th class="text-center">{% trans 'Final' %}</th>
+          <th class="text-center">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Nº Riesgos' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
@@ -136,9 +134,9 @@
               </div>
             </td>
             <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
-            <td class="text-center align-middle">{{ evaluation.date_begin|date:'d/m/Y' }}</td>
-            <td class="text-center align-middle">{{ evaluation.date_end|date:'d/m/Y' }}</td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.company }}</span></td>
+            <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
+            <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                      title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.nrisk_test_inherents_delivered_user }}</span></td>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
@@ -183,9 +181,8 @@
           <th class="text-center">{% trans 'Acción' %}</th>
           <th>{% trans 'REF' %}</th>
           <th>{% trans 'Descripción' %}</th>
-          <th class="text-center">{% trans 'Periodo de evaluación' %}</th>
-          <th class="text-center">{% trans 'Inicio' %}</th>
-          <th class="text-center">{% trans 'Final' %}</th>
+          <th class="text-center">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Nº Riesgos' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
@@ -207,9 +204,9 @@
               </div>
             </td>
             <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
-            <td class="text-center align-middle">{{ evaluation.date_begin|date:'d/m/Y' }}</td>
-            <td class="text-center align-middle">{{ evaluation.date_end|date:'d/m/Y' }}</td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.company }}</span></td>
+            <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
+            <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                      title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.nrisk_test_inherents_finished_user }}</span></td>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
