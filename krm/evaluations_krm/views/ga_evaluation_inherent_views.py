@@ -116,6 +116,7 @@ class GaEvaluationInherentCreateView(FormView):
             {'title': _('Nuevo'), 'url': reverse(
                 'evaluations_krm:ga_evaluation_inherent_create')},
         ]
+
         context['page_title'] = _('Nueva Evaluación de Riesgo Inherente [KRM]')
         context['breadcrums'] = breadcrums
         context['js_template'] = ['js/custom/datatables.js']
@@ -228,6 +229,11 @@ class GaEvaluationInherentDetailView(FormView):
         #         'icon': '<i class="bi bi-pencil"></i>'
         #     },
         # ]
+
+        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(1)
+        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2)
+        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(3)
+        
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
