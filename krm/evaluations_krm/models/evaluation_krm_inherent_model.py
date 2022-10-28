@@ -82,20 +82,16 @@ class EvaluationKrmInherent(AuditModel):
         verbose_name = _("Evaluación Inherente KRM")
         verbose_name_plural = _("Evaluaciones Inherentes KRM")
 
-    def nrisk_test_inherents_pending_user(self, user):
-        return self.risk_test_inherents.filter(
-                status = 1,
-                expert = user,
-            ).distinct().count()
+    # RETURN number of risks by state in evaluation
+    # OPTIONAL ARG: Filter by user
+    def nrisk_test_inherents_by_state(self, status, user = None):
 
-    def nrisk_test_inherents_delivered_user(self, user):
-        return self.risk_test_inherents.filter(
-                status = 2,
-                expert = user,
-            ).distinct().count()
-
-    def nrisk_test_inherents_finished_user(self, user):
-        return self.risk_test_inherents.filter(
-                status = 3,
-                expert = user,
-            ).distinct().count()
+        if user:
+            return self.risk_test_inherents.filter(
+                    status = status,
+                    expert = user,
+                ).distinct().count()
+        else:
+            return self.risk_test_inherents.filter(
+                    status = status,
+                ).distinct().count()
