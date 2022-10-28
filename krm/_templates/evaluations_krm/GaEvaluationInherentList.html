@@ -39,6 +39,9 @@ canvas#race{position:relative; z-index:100;}
           type: 'gradient',
         },
       options: {
+        animation : {
+          duration: 5000,
+        },
         responsive: true,
         plugins: {
           legend: {
@@ -128,7 +131,11 @@ canvas#race{position:relative; z-index:100;}
           {% endfor %}
       </tbody>
     </table>
-    
+    <div style="float: right;display: flex; margin-right: 15px !important;">
+      <span class="badge" style="margin: 5px; color: #eb4034">{% trans 'Pendientes' %}</span>
+      <span class="badge" style="margin: 5px; color: #ebc634">{% trans 'Evaluados' %}</span>
+      <span class="badge" style="margin: 5px; color: #5de36f">{% trans 'Finalizados' %}</span>      
+    </div>
     {% else %}
     <div class="row mt-2 mb-2">
       <div class="col-sm">
@@ -213,7 +220,11 @@ canvas#race{position:relative; z-index:100;}
           {% endfor %}
       </tbody>
     </table>
-    
+    <div style="float: right;display: flex; margin-right: 15px !important;">
+      <span class="badge" style="margin: 5px; color: #eb4034">{% trans 'Pendientes' %}</span>
+      <span class="badge" style="margin: 5px; color: #ebc634">{% trans 'Evaluados' %}</span>
+      <span class="badge" style="margin: 5px; color: #5de36f">{% trans 'Finalizados' %}</span>      
+    </div>
     {% else %}
     <div class="row mt-2 mb-2">
       <div class="col-sm">
