@@ -17,7 +17,22 @@ width:50px !important;
 height:50px !important;
 
 }
+
 canvas#race{position:relative; z-index:100;}
+
+.badge.badge-success.n1 {
+  margin: 5px;
+  background-color: #ed9f7b !important;
+} 
+.badge.badge-success.n2 {
+  margin: 5px;
+  background-color: #e6d68e !important;
+} 
+.badge.badge-success.n3 {
+  margin: 5px;
+  background-color: #a6ed9d !important;
+} 
+
 </style>
 <script>
   function load_chart(id, n_pending, n_delivered, n_finished) {
@@ -28,7 +43,7 @@ canvas#race{position:relative; z-index:100;}
         {
           label: 'Dataset 1',
           data: [n_pending, n_delivered, n_finished],
-          backgroundColor: ["#eb4034", "#ebc634","#5de36f"],
+          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
         }
       ]
     };
@@ -132,9 +147,9 @@ canvas#race{position:relative; z-index:100;}
       </tbody>
     </table>
     <div style="float: right;display: flex; margin-right: 15px !important;">
-      <span class="badge" style="margin: 5px; color: #eb4034">{% trans 'Pendientes' %}</span>
-      <span class="badge" style="margin: 5px; color: #ebc634">{% trans 'Evaluados' %}</span>
-      <span class="badge" style="margin: 5px; color: #5de36f">{% trans 'Finalizados' %}</span>      
+      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
+      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
     </div>
     {% else %}
     <div class="row mt-2 mb-2">
@@ -221,9 +236,9 @@ canvas#race{position:relative; z-index:100;}
       </tbody>
     </table>
     <div style="float: right;display: flex; margin-right: 15px !important;">
-      <span class="badge" style="margin: 5px; color: #eb4034">{% trans 'Pendientes' %}</span>
-      <span class="badge" style="margin: 5px; color: #ebc634">{% trans 'Evaluados' %}</span>
-      <span class="badge" style="margin: 5px; color: #5de36f">{% trans 'Finalizados' %}</span>      
+      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
+      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
     </div>
     {% else %}
     <div class="row mt-2 mb-2">
