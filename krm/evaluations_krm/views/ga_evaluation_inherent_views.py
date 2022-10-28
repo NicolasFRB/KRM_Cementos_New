@@ -79,9 +79,22 @@ class GaEvaluationInherentListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+
+        ev_pending = EvaluationKrmInherent.objects.filter(status = "EP")
+        ev_finished = EvaluationKrmInherent.objects.filter(status = "FI")
+
+        for ev in ev_pending:
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(3)
         
-        context['evaluations_pending'] = EvaluationKrmInherent.objects.filter(status = "EP")
-        context['evaluations_finished'] = EvaluationKrmInherent.objects.filter(status = "FI")
+        for ev in ev_finished:
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(3)
+        
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
         context['js_template'] = ['js/custom/datatables.js']
         return context
 

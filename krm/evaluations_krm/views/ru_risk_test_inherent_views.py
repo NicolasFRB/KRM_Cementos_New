@@ -59,15 +59,12 @@ class RuEvaluationRiskInherentList(TemplateView):
         ev_finished = self.request.user.evaluation_krm_inherent_finished()
 
         for ev in ev_pending:
-            ev.nrisk_test_inherents_pending_user = ev.nrisk_test_inherents_pending_user(
-                self.request.user)
+            ev.nrisk_test_inherents_pending_user = ev.nrisk_test_inherents_by_state(1, self.request.user)
         for ev in ev_delivered:
-            ev.nrisk_test_inherents_delivered_user = ev.nrisk_test_inherents_delivered_user(
-                self.request.user)
+            ev.nrisk_test_inherents_delivered_user = ev.nrisk_test_inherents_by_state(2, self.request.user)
         for ev in ev_finished:
-            ev.nrisk_test_inherents_finished_user = ev.nrisk_test_inherents_finished_user(
-                self.request.user)
-
+            ev.nrisk_test_inherents_finished_user = ev.nrisk_test_inherents_by_state(3, self.request.user)
+        
         eri_count_by_state_perc = {
             'FI': int(100*ev_delivered.count()/(ev_delivered.count() + ev_pending.count())),
             'EP': int(100*ev_pending.count()/(ev_delivered.count() + ev_pending.count())),
