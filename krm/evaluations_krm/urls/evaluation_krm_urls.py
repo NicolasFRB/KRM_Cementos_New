@@ -14,6 +14,7 @@ from krm.evaluations_krm.views import (
 
     RuEvaluationRiskInherentList,
     RuEvaluationRiskInherentComplete,
+    RuEvaluationRiskInherentDetail,
 
     GaEvaluationResidualListView,
     GaEvaluationResidualCreateView,
@@ -72,7 +73,11 @@ urlpatterns = [
         name='ru_evaluation_risk_inherent_complete'
     ),
 
-
+    path(
+        'ru/inherent/detail/<pk>/',
+        RuEvaluationRiskInherentDetail.as_view(),
+        name='ru_evaluation_krm_inherent_detail'
+    ),
 
     path(
         'residual/',
