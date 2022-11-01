@@ -93,30 +93,57 @@ class User(AbstractUser):
         from krm.evaluations.models import ControlTest
         return ControlTest.objects.filter(status="FI", evaluation__company__in=self.companies_admin.all())
 
+    # Risk Test Inherent
+
     def evaluation_krm_inherent_pending(self):
-        from krm.evaluations_krm.models import EvaluationKrmInherent    
+        from krm.evaluations_krm.models import EvaluationKrmInherent
         return EvaluationKrmInherent.objects.filter(
-            risk_test_inherents__status = 1,
-            risk_test_inherents__expert = self,
-            ).distinct()
+            risk_test_inherents__status=1,
+            risk_test_inherents__expert=self,
+        ).distinct()
 
     def evaluation_krm_inherent_delivered(self):
-        from krm.evaluations_krm.models import EvaluationKrmInherent      
+        from krm.evaluations_krm.models import EvaluationKrmInherent
         return EvaluationKrmInherent.objects.filter(
-            risk_test_inherents__status = 2,
-            risk_test_inherents__expert = self,
-            ).distinct()
-
+            risk_test_inherents__status=2,
+            risk_test_inherents__expert=self,
+        ).distinct()
 
     def evaluation_krm_inherent_finished(self):
-        from krm.evaluations_krm.models import EvaluationKrmInherent      
+        from krm.evaluations_krm.models import EvaluationKrmInherent
         return EvaluationKrmInherent.objects.filter(
-            risk_test_inherents__status = 3,
-            risk_test_inherents__expert = self,
-            ).distinct()
+            risk_test_inherents__status=3,
+            risk_test_inherents__expert=self,
+        ).distinct()
 
     def risk_test_inherent_expert_pending(self):
         return self.risk_test_inherents.filter(status=1)
+
+    # Risk Test Residual
+
+    def evaluation_krm_residual_pending(self):
+        from krm.evaluations_krm.models import EvaluationKrmResidual
+        return EvaluationKrmResidual.objects.filter(
+            risk_test_residuals__status=1,
+            risk_test_residuals__evaluator=self,
+        ).distinct()
+
+    def evaluation_krm_residual_delivered(self):
+        from krm.evaluations_krm.models import EvaluationKrmResidual
+        return EvaluationKrmResidual.objects.filter(
+            risk_test_residuals__status=2,
+            risk_test_residuals__evaluator=self,
+        ).distinct()
+
+    def evaluation_krm_residual_finished(self):
+        from krm.evaluations_krm.models import EvaluationKrmResidual
+        return EvaluationKrmResidual.objects.filter(
+            risk_test_residuals__status=3,
+            risk_test_residuals__evaluator=self,
+        ).distinct()
+
+    def risk_test_residual_evaluator_pending(self):
+        return self.risk_test_residuals.filter(status=1)
 
     def save(self, *args, **kwargs):
         self.username = self.email
@@ -142,11 +169,16 @@ class User(AbstractUser):
             "auth:type_your_password", kwargs={"remember_key": self.remember_key}
         )
 
-        context = {"remember_url": remember_url}
+        context = {
+            "remember_url": remember_url,
+        }
         body_html = render_to_string(
             "emails/users/welcome_email.html", context)
-        context = {"content": body_html,
-                   "preheader": _("Establecer contraseña")}
+        context = {
+            "content": body_html,
+            "preheader": _("Establecer contraseña"),
+            "BRAND": settings.BRAND
+        }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
         if settings.EMAIL_BCC:
@@ -172,10 +204,16 @@ class User(AbstractUser):
             "auth:type_your_password", kwargs={"remember_key": self.remember_key}
         )
 
-        context = {"remember_url": remember_url}
+        context = {
+            "remember_url": remember_url
+        }
         body_html = render_to_string(
             "emails/users/remember_password.html", context)
-        context = {"content": body_html, "preheader": _("Recordar contraseña")}
+        context = {
+            "content": body_html,
+            "preheader": _("Recordar contraseña"),
+            "BRAND": settings.BRAND
+        }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
         if settings.EMAIL_BCC:

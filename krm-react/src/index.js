@@ -5,13 +5,15 @@ import CreateEvaluationKrmInherent from './components/CreateEvaluationKrmInheren
 import CreateEvaluationKrmResidual from './components/CreateEvaluationKrmResidual';
 import RuRiskTestInherent from './components/krm_inherent/RuRiskTestInherent';
 import CaRiskTestInherent from './components/krm_inherent/CaRiskTestInherent';
+import RuRiskTestResidual from './components/krm_inherent/RuRiskTestResidual';
 
 
 let krcEvaluationElement = document.getElementById("create-evaluation-krc");
 let krmEvaluationInherentElement = document.getElementById("create-evaluation-krm-inherent");
-let krmEvaluationResidualElement = document.getElementById("create-evaluation-krm-residual");
+let krmEvaluationResiduallement = document.getElementById("create-evaluation-krm-residual");
 let risksTestInherent = document.getElementsByClassName("risk_test_inherent");
 let adminRisksTestInherent = document.getElementsByClassName("admin_risk_test_inherent");
+let risksTestResidual = document.getElementsByClassName("risk_test_residual");
 
 
 for (let i = 0; i < risksTestInherent.length; i++) {
@@ -59,12 +61,25 @@ if (krmEvaluationInherentElement) {
   );
 }
 
-if (krmEvaluationResidualElement) {
-  console.log('entra');
-  const KrmEvaluationResidual = ReactDOM.createRoot(krmEvaluationResidualElement);
+if (krmEvaluationResiduallement) {
+  const KrmEvaluationResidual = ReactDOM.createRoot(krmEvaluationResiduallement);
   KrmEvaluationResidual.render(
     <CreateEvaluationKrmResidual />
   );
+}
+
+for (let i = 0; i < risksTestResidual.length; i++) {
+  let riskTestResidual = ReactDOM.createRoot(risksTestResidual.item(i));
+  let pk = parseInt(risksTestResidual.item(i).getAttribute('data-risktestpk'));
+  let probability = parseInt(risksTestResidual.item(i).getAttribute('data-probability'));
+  let description = risksTestResidual.item(i).getAttribute('data-description');
+  riskTestResidual.render(
+    <RuRiskTestResidual
+      pk={pk}
+      initialProbability={probability}
+      initialDescription={description}
+    />
+  )
 }
 
 window.LANG = document.getElementsByTagName('html')[0].attributes[0].value;

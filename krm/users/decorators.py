@@ -17,7 +17,9 @@ from krm.companies.models import (
 )
 from krm.evaluations_krm.models import (
     RiskTestInherent,
-    EvaluationKrmInherent
+    EvaluationKrmInherent,
+    RiskTestResidual,
+    EvaluationKrmResidual
 )
 
 from krm.risks.models import (
@@ -189,6 +191,40 @@ def user_can_view_evaluation_inherent(function):
         try:
             evaluation = EvaluationKrmInherent.objects.get(pk=kwargs["pk"])
         except EvaluationKrmInherent.DoesNotExist:
+            raise Http404
+
+        if (
+            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_view_risk_test_residual(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            rt = RiskTestResidual.objects.get(pk=kwargs["pk"])
+        except RiskTestResidual.DoesNotExist:
+            raise Http404
+
+        if (
+            request.user.is_superuser
+            or request.user == rt.evaluator
+            or rt.evaluation.company in request.user.companies_admin.all()
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_view_evaluation_residual(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            evaluation = EvaluationKrmResidual.objects.get(pk=kwargs["pk"])
+        except EvaluationKrmResidual.DoesNotExist:
             raise Http404
 
         if (

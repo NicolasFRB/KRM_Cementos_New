@@ -575,9 +575,22 @@
         <!--begin:Menu link-->
         <a class="menu-link" href="{% url 'evaluations_krm:ru_evaluation_risk_inherent_list' %}">
           <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
-          <span class="menu-title">{% trans 'Completar Riesgos' %}
+          <span class="menu-title">{% trans 'Completar Riesgos RI' %}
             {% if request.user.risk_test_inherent_expert_pending.count > 0 %}
             &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.risk_test_inherent_expert_pending.count }}</span>
+            {% endif %}
+          </span>
+        </a>
+        <!--end:Menu link-->
+      </div>
+
+      <div class="menu-item">
+        <!--begin:Menu link-->
+        <a class="menu-link" href="{% url 'evaluations_krm:ru_evaluation_risk_residual_list' %}">
+          <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
+          <span class="menu-title">{% trans 'Completar Riesgos RR' %}
+            {% if request.user.risk_test_residual_evaluator_pending.count > 0 %}
+            &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.risk_test_residual_evaluator_pending.count }}</span>
             {% endif %}
           </span>
         </a>

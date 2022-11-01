@@ -18,6 +18,14 @@ from krm.evaluations_krm.views import (
     GaEvaluationResidualListView,
     GaEvaluationResidualCreateView,
     GaEvaluationResidualDetailView,
+
+    CaEvaluationResidualCreateView,
+    CaEvaluationResidualListView,
+    CaEvaluationResidualDetailView,
+    CaEvaluationResidualAdminComplete,
+
+    RuEvaluationRiskResidualList,
+    RuEvaluationRiskResidualComplete,
 )
 
 urlpatterns = [
@@ -88,5 +96,41 @@ urlpatterns = [
         'residual/detail/<pk>/',
         GaEvaluationResidualDetailView.as_view(),
         name='ga_evaluation_krm_residual_detail'
+    ),
+
+
+
+    path(
+        'ca/residual/',
+        CaEvaluationResidualListView.as_view(),
+        name='ca_evaluation_residual_list'
+    ),
+
+    path(
+        'ca/residual/create/',
+        CaEvaluationResidualCreateView.as_view(),
+        name='ca_evaluation_residual_create'
+    ),
+    path(
+        'ca/residual/detail/<pk>/',
+        CaEvaluationResidualDetailView.as_view(),
+        name='ca_evaluation_residual_detail'
+    ),
+    path(
+        'ca/residual/complete/<pk>/',
+        CaEvaluationResidualAdminComplete.as_view(),
+        name='ca_evaluation_residual_complete'
+    ),
+
+    path(
+        'ru/residual/',
+        RuEvaluationRiskResidualList.as_view(),
+        name='ru_evaluation_risk_residual_list'
+    ),
+
+    path(
+        'ru/residual/complete/<pk>/',
+        RuEvaluationRiskResidualComplete.as_view(),
+        name='ru_evaluation_risk_residual_complete'
     ),
 ]

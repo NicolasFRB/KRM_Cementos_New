@@ -233,4 +233,5 @@ def get_menu_urls(request, pk=None):
         'KRM_ACTIVATE': KRM_ACTIVATE,
         'DEV': settings.DEV,
         'DEVJS': settings.DEVJS,
+        'BRAND': settings.BRAND
     }

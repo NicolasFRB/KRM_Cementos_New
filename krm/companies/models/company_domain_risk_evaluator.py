@@ -15,7 +15,8 @@ class CompanyDomainRiskEvaluator(AuditModel):
 
     company = models.ForeignKey(
         'companies.Company',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='domain_risk_evaluators'
     )
 
     domain_risk = models.ForeignKey(

@@ -1,0 +1,236 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header" style="display: flex;">
+    <!--begin::Card header-->
+      <div class="d-flex justify-content-between align-items-center" style="width:100%;">
+        <div class="card-title fs-3 fw-bold">{{ page_title }} {% trans 'pendientes' %}</div>
+        {% if evaluations_risk_residual_pending.count or evaluations_risk_residual_delivered.count %}
+          <div style="width:40%; color:grey;">
+            <div>
+            {% trans 'Progreso' %}
+            </div>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{ eri_count_by_state_perc.FI }}%; color: white;" aria-valuenow="{{ evaluations_risk_residual_delivered.count }}" aria-valuemin="0" aria-valuemax="100">{{ eri_count_by_state_perc.FI }}% ({{ evaluations_risk_residual_delivered.count }})</div>
+              <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{ eri_count_by_state_perc.EP }}%; color: white;" aria-valuenow="{{ evaluations_risk_residual_pending.count }}" aria-valuemin="0" aria-valuemax="100">{{ eri_count_by_state_perc.EP }}% ({{ evaluations_risk_residual_pending.count }})</div>
+            </div>
+          </div>
+        {% endif %}
+      </div>  
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluations_risk_residual_pending.count %}
+    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center">{% trans 'Acción' %}</th>
+          <th>{% trans 'REF' %}</th>
+          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Periodo de evaluación' %}</th>
+          <th class="text-center">{% trans 'Inicio' %}</th>
+          <th class="text-center">{% trans 'Final' %}</th>
+          <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Estado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for evaluation in evaluations_risk_residual_pending %}
+          <tr>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_risk_residual_complete' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle">{{ evaluation.date_begin|date:'d/m/Y' }}</td>
+            <td class="text-center align-middle">{{ evaluation.date_end|date:'d/m/Y' }}</td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.company }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.nrisk_test_residuals_pending_user }}</span></td>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}              
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen evaluaciones de riesgo residual pendientes' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header" style="display: flex;">
+    <!--begin::Card header-->
+    <div class="d-flex justify-content-between align-items-center" style="width:100%;">
+      <div class="card-title fs-3 fw-bold">{{ page_title }} {% trans 'entregadas' %}</div>
+    </div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluations_risk_residual_delivered.count %}
+    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center">{% trans 'Acción' %}</th>
+          <th>{% trans 'REF' %}</th>
+          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Periodo de evaluación' %}</th>
+          <th class="text-center">{% trans 'Inicio' %}</th>
+          <th class="text-center">{% trans 'Final' %}</th>
+          <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Estado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for evaluation in evaluations_risk_residual_delivered %}
+          <tr>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_risk_residual_complete' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle">{{ evaluation.date_begin|date:'d/m/Y' }}</td>
+            <td class="text-center align-middle">{{ evaluation.date_end|date:'d/m/Y' }}</td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.company }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.nrisk_test_residuals_delivered_user }}</span></td>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}              
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen evaluaciones de riesgo residual entregadas' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header" style="display: flex;">
+    <!--begin::Card header-->
+    <div class="d-flex justify-content-between align-items-center" style="width:100%;">
+      <div class="card-title fs-3 fw-bold">{{ page_title }} {% trans 'finalizadas' %}</div>
+    </div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluations_risk_residual_finished.count %}
+    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center">{% trans 'Acción' %}</th>
+          <th>{% trans 'REF' %}</th>
+          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Periodo de evaluación' %}</th>
+          <th class="text-center">{% trans 'Inicio' %}</th>
+          <th class="text-center">{% trans 'Final' %}</th>
+          <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Estado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for evaluation in evaluations_risk_residual_finished %}
+          <tr>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_risk_residual_complete' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle">{{ evaluation.date_begin|date:'d/m/Y' }}</td>
+            <td class="text-center align-middle">{{ evaluation.date_end|date:'d/m/Y' }}</td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.company }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ evaluation.nrisk_test_residuals_finished_user }}</span></td>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}              
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen evaluaciones de riesgo residual finalizadas' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+{% endblock content %}

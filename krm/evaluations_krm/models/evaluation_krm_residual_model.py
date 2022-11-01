@@ -80,4 +80,22 @@ class EvaluationKrmResidual(AuditModel):
 
     class Meta:
         verbose_name = _("Evaluación Residual KRM")
-        verbose_name_plural = _("Evaluaciones Residuales KRM")
+        verbose_name_plural = _("Evaluaciones Residuals KRM")
+
+    def nrisk_test_residuals_pending_user(self, user):
+        return self.risk_test_residuals.filter(
+            status=1,
+            evaluator=user,
+        ).distinct().count()
+
+    def nrisk_test_residuals_delivered_user(self, user):
+        return self.risk_test_residuals.filter(
+            status=2,
+            evaluator=user,
+        ).distinct().count()
+
+    def nrisk_test_residuals_finished_user(self, user):
+        return self.risk_test_residuals.filter(
+            status=3,
+            evaluator=user,
+        ).distinct().count()

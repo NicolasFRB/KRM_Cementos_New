@@ -194,7 +194,7 @@ function CreateEvaluationKrmInherent(props) {
                               <th className="fw-semibold">&nbsp;</th>
                               <th className="fw-semibold">REF</th>
                               <th className="fw-semibold">NOMBRE</th>
-                              <th className="fw-semibold">EVALUADO POR R. INHERENTE</th>
+                              <th className="fw-semibold">¿EVALUADO?</th>
                               <th className="fw-semibold">EVALUADOR ASIGNADO</th>
                             </tr>
                           </thead>
@@ -202,25 +202,34 @@ function CreateEvaluationKrmInherent(props) {
                             {company.risks.map((risk, index) => {
                               return <tr key={risk.pk}>
                                 <td className="text-center">
-                                  {!risk.expert_assign && (
+                                  {(!risk.evaluated || risk.domain_risk_evaluator.length === 0) && (
                                     <span className="badge badge-square badge-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="No es posible lanzar este test sin tener asignado previamente un experto para ese dominio de riesgo"></span>
                                   )}
-                                  {risk.expert_assign && (
+                                  {risk.evaluated && risk.domain_risk_evaluator.length > 0 && (
                                     <input id={'ri' + risk.pk} onChange={() => selectRiskCompanyToEvaluate(risk.pk)} className="form-check-input" name="risks" type="checkbox" value={risk.pk} checked={risk.checked} />
                                   )}
                                 </td>
                                 <td><label htmlFor={'ri' + risk.pk}>{risk.risk_ref}</label></td>
                                 <td><span className="fw-semibold ps-2 fs-6">{risk.name}</span></td>
-                                <td>{risk.evaluated}</td>
+                                <td className="text-center">
+                                  {risk.evaluated && (
+                                    <span className="badge badge-primary">Sí</span>
+                                  )}
+                                  {!risk.evaluated && (
+                                    <span className="badge badge-danger">No</span>
+                                  )}
+                                </td>
                                 <td>
                                   {risk.domain_risk_evaluator.map((evaluator, index) => {
                                     return (
                                       <>
-                                        <span className="badge badge-primary" key={index}>{evaluator}</span>
+                                        <div className="mb-1" key={index}>
+                                          <span className="badge badge-primary" >{evaluator}</span>
+                                        </div>
                                       </>
                                     )
                                   })}
-                                  {risk.domain_risk_evaluator.length == 0 && (
+                                  {risk.domain_risk_evaluator.length === 0 && (
                                     <>
                                       <span className="badge badge-danger">Sin asignar</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-evaluator/${risk.company_domain_risk_evaluator}/`}><span className="badge badge-primary">Asignar</span></a>
                                     </>

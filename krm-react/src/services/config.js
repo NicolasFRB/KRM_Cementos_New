@@ -13,6 +13,7 @@ const configService = {
   apiGetRiskCompany: `${baseUrlApi}riskscompany/`,
   apiGetRiskCompanyResidual: `${baseUrlApi}riskscompanyresidual/`,
   apiSendRiskTestInherent: `${baseUrlApi}risktestinherentexpert/`,
+  apiSendRiskTestResidual: `${baseUrlApi}risktestresidualevaluator/`,
   apiGetControlCompany: `${baseUrlApi}controlscompany/`,
 
 };
