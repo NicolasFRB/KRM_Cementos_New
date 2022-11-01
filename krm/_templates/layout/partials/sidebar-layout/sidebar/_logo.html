@@ -4,16 +4,14 @@
 	<!--begin::Logo image-->
 	<a href="/">
 		{% getHtmlAttribute 'body' 'data-kt-app-layout' as bodyAttribute %}
-	  <!-- {% if bodyAttribute == 'dark-sidebar' %}
-			<img alt="Logo" src="{% static 'media/logos/default-dark.svg' %}" class="h-25px app-sidebar-logo-default" />
-		{% elif bodyAttribute == 'light-sidebar' %}
-			<img alt="Logo" src="{% static 'media/logos/default.svg' %}" class="theme-light-show h-25px app-sidebar-logo-default" />
-			<img alt="Logo" src="{% static 'media/logos/default-dark.svg' %}" class="theme-dark-show h-25px app-sidebar-logo-default" />
-		{% endif %} -->
-
-		<!-- <img alt="Logo" src="{% static 'media/logos/default-small.svg' %}" class="h-20px app-sidebar-logo-minimize" /> -->
-    <img src="{% static 'media/logos/krm-logo.svg' %}" class="h-20px app-sidebar-logo-minimize" alt="KRM Tool - Logo" />
-    <img src="{% static 'media/logos/krm-logo.svg' %}" class="h-80px app-sidebar-logo-default" alt="KRM Tool - Logo" />
+    {% if BRAND == 'globalvia' %}
+      <img src="{% static 'media/logos/krm-logo-globalvia-mini.svg' %}" class="h-30px app-sidebar-logo-minimize" alt="KRM Tool - Logo" />
+      <img src="{% static 'media/logos/krm-logo-globalvia.svg' %}" class="h-50px app-sidebar-logo-default" alt="KRM Tool - Logo" />
+    {% else %}
+      <img alt="Logo" src="{% static 'media/logos/krm-logo-mini.svg' %}" class="h-30px app-sidebar-logo-minimize" />
+      <img src="{% static 'media/logos/krm-logo.svg' %}" class="h-80px app-sidebar-logo-default"
+        alt="KRM Tool - Logo" />
+    {% endif %}
 	</a>
 	<!--end::Logo image-->
 	<!--begin::Sidebar toggle-->

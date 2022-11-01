@@ -9,7 +9,11 @@
 {% block content %}
 <div class="text-center mb-12">
   <a href="/" class="login-logo">
-    <img style="max-width: 180px;" src="{% static 'media/logos/krm-logo.svg' %}" alt="KRM Tool - Logo" />
+    {% if BRAND == 'globalvia' %}
+      <img style="max-width: 180px;" src="{% static 'media/logos/krm-logo-globalvia.svg' %}" alt="KRM Tool - Logo" />
+    {% else %}
+      <img style="max-width: 180px;" src="{% static 'media/logos/krm-logo.svg' %}" alt="KRM Tool - Logo" />
+    {% endif %}
   </a>
 </div>
 
