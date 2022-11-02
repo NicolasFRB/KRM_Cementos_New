@@ -122,6 +122,13 @@ class RiskTestInherent(AuditModel):
         blank=True,
     )
 
+    @property
+    def severity_level_expert(self):
+        if self.status < 2:
+            return 0
+        else:
+            return self.impact_level_expert * self.probability_level_expert
+
     def __str__(self):
         return f'{self.evaluation.ref} - {self.risk.risk.name}'
 

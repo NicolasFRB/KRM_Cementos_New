@@ -72,6 +72,10 @@ class User(AbstractUser):
         return f'{self.first_name} {self.last_name}'
 
     @property
+    def username_no_domain(self):
+        return '%s' % self.email.split('@')[0]
+
+    @property
     def is_company_admin(self):
         return self.companies_admin.count() > 0
 

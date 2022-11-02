@@ -28,6 +28,8 @@ from django.http import HttpResponse
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.forms.models import model_to_dict
+
 from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload
 from krm.evaluations.models import ControlTest
 
@@ -84,6 +86,27 @@ class GaEvaluationInherentListView(ListView):
             status="EP")
         context['evaluations_finished'] = EvaluationKrmInherent.objects.filter(
             status="FI")
+        ev_pending = EvaluationKrmInherent.objects.filter(status="EP")
+        ev_finished = EvaluationKrmInherent.objects.filter(status="FI")
+
+        for ev in ev_pending:
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
+                1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(
+                2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(
+                3)
+
+        for ev in ev_finished:
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
+                1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(
+                2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(
+                3)
+
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
@@ -105,6 +128,7 @@ class GaEvaluationInherentCreateView(FormView):
             {'title': _('Nuevo'), 'url': reverse(
                 'evaluations_krm:ga_evaluation_inherent_create')},
         ]
+
         context['page_title'] = _('Nueva Evaluación de Riesgo Inherente [KRM]')
         context['breadcrums'] = breadcrums
         context['js_template'] = ['js/custom/datatables.js']
@@ -218,6 +242,51 @@ class GaEvaluationInherentDetailView(FormView):
         #         'icon': '<i class="bi bi-pencil"></i>'
         #     },
         # ]
+
+        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(
+            1)
+        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(
+            2)
+        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(
+            3)
+
+        # Serializar Evaluation no incluye sus hijos :(
+        # Busco los hijos
+        context['rit'] = RiskTestInherent.objects.filter(
+            evaluation=self.evaluation)
+
+        # Paso a dict para json
+        context['rit_dict'] = [model_to_dict(m) for m in context['rit']]
+
+        # MODEL_TO_DICT not getting properties :(
+        # Get .severity_level_expert
+        # TBI for cuadratico :/
+        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
+        for i, r1 in enumerate(context['rit']):
+            context['rit_dict'][i]['risk_ref'] = r1.risk.risk.ref
+            context['rit_dict'][i]['risk_name'] = r1.risk.risk.name
+            for r2 in context['rit_dict']:
+                if r1.id == r2['id']:
+                    r2['severity_level_expert'] = r1.severity_level_expert
+
+        # Sort by severity for a nice plot
+        context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (
+            x['severity_level_expert'], x['risk_ref']), reverse=True)
+
+        # Errores de encoding caracteres portugueses y españoles
+        for i, m in enumerate(context['rit_dict']):
+            for k in m:
+                if type(context['rit_dict'][i][k]) == str:
+                    context['rit_dict'][i][k] = context['rit_dict'][i][k].encode(
+                        'utf-8').decode('utf-8')
+
+        # JSON DUMP
+        context['rit_json'] = json.dumps(
+            context['rit_dict'],
+            default=str,
+            ensure_ascii=True,
+        )
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
