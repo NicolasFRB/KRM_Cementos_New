@@ -50,7 +50,7 @@
           <input type="hidden" name="action" value="i">
           <button class="btn btn-sm btn-primary me-2"><i class="bi bi-clipboard-check"></i>
           {% trans 'Lanzar controles' %}</button>
-          <a href="{% url 'evaluations_krm:ga_evaluation_residual_list' %}" class="btn btn-sm btn-secondary"><i
+          <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary"><i
               class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
         </form>
       {% endif %}
@@ -61,7 +61,7 @@
           <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
           <input type="hidden" name="action" value="f">
           <button class="btn btn-sm btn-primary me-2">{% trans 'Finalizar evaluación' %}</button>
-        <a href="{% url 'evaluations_krm:ga_evaluation_residual_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+        <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary mr-2"><i
             class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
       </form>
     {% elif evaluation.status == 'FI' %}
@@ -71,11 +71,11 @@
         <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
         <input type="hidden" name="action" value="d">
         <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
-        <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+        <a href="{% url 'evaluations:ca_evaluation_list' %}" class="btn btn-sm btn-secondary mr-2"><i
             class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
       </form>
     {% else %}
-    <a href="{% url 'evaluations_krm:ga_evaluation_residual_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+    <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary mr-2"><i
         class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
     {% endif %}
   </div>
@@ -139,7 +139,12 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'evaluations_krm:ga_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
+    {% if evaluation.status == 'EP' %}
+    <a href="{% url 'evaluations_krm:ca_evaluation_residual_complete' evaluation.pk %}"
+      class="btn btn-sm btn-primary me-2">
+      {% trans 'Validar Riesgos valorados por los Evaluadores' %}</a>
+    {% endif %}
+    <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
       <i class="bi bi-arrow-bar-left"></i>
       {% trans 'Volver' %}</a>
   </div>

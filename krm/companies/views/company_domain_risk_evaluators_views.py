@@ -3,6 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 from django.views.generic import (
     FormView,
@@ -34,11 +36,18 @@ from krm.users.decorators import (
 )
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, ], name='dispatch')
 class GaCompanyDomainRiskEvaluatorUpdateView(UpdateView):
     form_class = CompanyDomainRiskEvaluatorsForm
     model = CompanyDomainRiskEvaluator
     template_name = 'companies/GaCompanyDomainRiskEvaluatorUpdate.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_company_admin:
+            return HttpResponseRedirect(reverse('companies:ca_company_assign_evaluator_update', kwargs={'pk': kwargs['pk']}))
+        if request.user.is_superuser:
+            return super().dispatch(request, *args, **kwargs)
+        raise PermissionDenied
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,7 +61,8 @@ class GaCompanyDomainRiskEvaluatorUpdateView(UpdateView):
                 'companies:ga_company_detail', kwargs={'pk': self.object.company.pk})},
             {'title': _('Asignar evaluadores')},
         ]
-        context['page_title'] = _('Asignar Evaluadores de Riesgo Residual (RR)')
+        context['page_title'] = _(
+            'Asignar Evaluadores de Riesgo Residual (RR)')
         context['breadcrums'] = breadcrums
 
         return context

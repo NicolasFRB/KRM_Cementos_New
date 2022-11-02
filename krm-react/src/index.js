@@ -6,6 +6,7 @@ import CreateEvaluationKrmResidual from './components/CreateEvaluationKrmResidua
 import RuRiskTestInherent from './components/krm_inherent/RuRiskTestInherent';
 import CaRiskTestInherent from './components/krm_inherent/CaRiskTestInherent';
 import RuRiskTestResidual from './components/krm_inherent/RuRiskTestResidual';
+import CaRiskTestResidual from './components/krm_inherent/CaRiskTestResidual';
 
 
 let krcEvaluationElement = document.getElementById("create-evaluation-krc");
@@ -14,6 +15,7 @@ let krmEvaluationResiduallement = document.getElementById("create-evaluation-krm
 let risksTestInherent = document.getElementsByClassName("risk_test_inherent");
 let adminRisksTestInherent = document.getElementsByClassName("admin_risk_test_inherent");
 let risksTestResidual = document.getElementsByClassName("risk_test_residual");
+let adminRisksTestResidual = document.getElementsByClassName("admin_risk_test_residual");
 
 
 for (let i = 0; i < risksTestInherent.length; i++) {
@@ -79,6 +81,16 @@ for (let i = 0; i < risksTestResidual.length; i++) {
       initialProbability={probability}
       initialDescription={description}
     />
+  )
+}
+
+for (let i = 0; i < adminRisksTestResidual.length; i++) {
+  let riskTestResidual = ReactDOM.createRoot(adminRisksTestResidual.item(i));
+  let pk = parseInt(adminRisksTestResidual.item(i).getAttribute('data-risktestpk'));
+  let probability = parseInt(adminRisksTestResidual.item(i).getAttribute('data-admin-probability'));
+  let description = adminRisksTestResidual.item(i).getAttribute('data-admin-description');
+  riskTestResidual.render(
+    <CaRiskTestResidual pk={pk} initialProbability={probability} initialDescriptionAdmin={description} />
   )
 }
 

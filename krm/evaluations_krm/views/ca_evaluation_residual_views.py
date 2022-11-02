@@ -41,6 +41,11 @@ from krm.evaluations_krm.forms import (
     EvaluationResidualCreateForm,
 )
 
+from krm.evaluations_krm.models import (
+    EvaluationKrmResidual,
+    RiskTestResidual
+)
+
 from krm.risks.models import RiskCompany
 
 from krm.evaluations_krm.models import RiskTestInherent
@@ -291,7 +296,7 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
 
     def form_valid(self, form):
         evaluation = self.get_object()
-        RiskTestInherent.objects.filter(
+        RiskTestResidual.objects.filter(
             evaluation=evaluation
         ).update(
             status=3

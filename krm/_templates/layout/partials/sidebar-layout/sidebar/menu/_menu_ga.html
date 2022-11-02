@@ -14,7 +14,8 @@
 {% url 'evaluations_krm:ca_evaluation_inherent_list' as ca_evaluation_inherent_list %}
 {% url 'evaluations_krm:ga_evaluation_residual_create' as ga_evaluation_residual_create %}
 {% url 'evaluations_krm:ga_evaluation_residual_list' as ga_evaluation_residual_list %}
-
+{% url 'evaluations_krm:ca_evaluation_residual_create' as ca_evaluation_residual_create %}
+{% url 'evaluations_krm:ca_evaluation_residual_list' as ca_evaluation_residual_list %}
 
 <!--begin::sidebar menu-->
 <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
@@ -471,7 +472,7 @@
 
         <!--begin:Menu item-->
         <div data-kt-menu-trigger="click"
-          class="menu-item menu-accordion {% if request.path in CA_EVALUATIONS_INHERENT_URLS %}show{% endif %}">
+          class="menu-item menu-accordion {% if request.path in CA_EVALUATIONS_KRM_URLS %}show{% endif %}">
           <!--begin:Menu link-->
           <span class="menu-link">
             <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
@@ -495,7 +496,6 @@
             </div>
             <!--end:Menu item-->
         
-        
             <!--begin:Menu item-->
             <div class="menu-item">
               <!--begin:Menu link-->
@@ -505,6 +505,35 @@
                   <span class="bullet bullet-dot"></span>
                 </span>
                 <span class="menu-title">{% trans 'Crear evaluación RI' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path == ca_evaluation_residual_list %}active{% endif %}"
+                href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Evaluaciones RR' %}</span>
+              </a>
+              <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+            
+            
+            <!--begin:Menu item-->
+            <div class="menu-item">
+              <!--begin:Menu link-->
+              <a class="menu-link {% if request.path == ca_evaluation_residual_create %}active{% endif %}"
+                href="{% url 'evaluations_krm:ca_evaluation_residual_create' %}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">{% trans 'Crear evaluación RR' %}</span>
               </a>
               <!--end:Menu link-->
             </div>

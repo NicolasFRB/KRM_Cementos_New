@@ -37,16 +37,16 @@ class RiskTestResidualEvaluatorApiView(APIView):
                 description = request.GET['description']
                 risk_test.description_evaluator = description
 
-        if risk_test.status == 2:
+        # if risk_test.status == 2:
 
-            if 'adminProbability' in request.GET:
-                probability = int(request.GET['adminProbability'])
-                if probability != 0:
-                    risk_test.probability_level_administrator = probability
+        if 'adminProbability' in request.GET:
+            probability = int(request.GET['adminProbability'])
+            if probability != 0:
+                risk_test.probability_level_residual_administrator = probability
 
-            if 'descriptionAdmin' in request.GET:
-                description_admin = request.GET['descriptionAdmin']
-                risk_test.description_administrator = description_admin
+        if 'descriptionAdmin' in request.GET:
+            description_admin = request.GET['descriptionAdmin']
+            risk_test.description_administrator = description_admin
 
         risk_test.save()
 

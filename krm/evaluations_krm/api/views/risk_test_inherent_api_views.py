@@ -52,21 +52,21 @@ class RiskTestInherentExpertApiView(APIView):
                 description = request.GET['description']
                 risk_test.description = description
 
-        if risk_test.status == 2:
+        # if risk_test.status == 2:
 
-            if 'adminProbability' in request.GET:
-                probability = int(request.GET['adminProbability'])
-                if probability != 0:
-                    risk_test.probability_level_administrator = probability
+        if 'adminProbability' in request.GET:
+            probability = int(request.GET['adminProbability'])
+            if probability != 0:
+                risk_test.probability_level_administrator = probability
 
-            if 'adminImpact' in request.GET:
-                impact = int(request.GET['adminImpact'])
-                if impact != 0:
-                    risk_test.impact_level_administrator = impact
+        if 'adminImpact' in request.GET:
+            impact = int(request.GET['adminImpact'])
+            if impact != 0:
+                risk_test.impact_level_administrator = impact
 
-            if 'descriptionAdmin' in request.GET:
-                description_admin = request.GET['descriptionAdmin']
-                risk_test.description_admin = description_admin
+        if 'descriptionAdmin' in request.GET:
+            description_admin = request.GET['descriptionAdmin']
+            risk_test.description_admin = description_admin
 
         risk_test.save()
 

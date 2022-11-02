@@ -37,22 +37,6 @@
       }
 
       if (!errorFound) {
-        $("input[name^='impact-']").each(function (index) {
-          if ($(this).val() == 5) {
-            let parent = $(this).closest('div.card');
-            $(parent).addClass('danger');
-            $('html, body').animate({
-              scrollTop: $(parent).offset().top - 100
-            }, 1000);
-            errorFound = true;
-            e.preventDefault();
-            $('#buttonSend').attr('data-kt-indicator', 'off');
-            return false;
-          }
-        });
-      }
-
-      if (!errorFound) {
         $("textarea[name^='descriptionAdmin-']").each(function (index) {
           if ($(this).val() == '') {
             let parent = $(this).closest('div.card');
@@ -128,8 +112,8 @@
   <!--end::Card body-->
 </div>
 
-{% if risks_test_inherent %}
-    {% for rt in risks_test_inherent %}
+{% if risks_test_residual %}
+    {% for rt in risks_test_residual %}
       <div class="card mb-5">
         <!--begin::Card header-->
         <div class="card-header">
@@ -159,160 +143,61 @@
         </div>
         <!--begin::Card footer-->
         <div class="card-footer py-6">
-          <div class="valoration-expert">
+          <div class="valoration-evaluator">
             <div class="row mb-10">
               <div class="col col-12">
-                <h4 class="mb-7">Valoración dada por el Experto de Dominio de Riesgo asociado</h4>
+                <h4 class="mb-7">Valoración dada por el Evaluador de Dominio de Riesgo asociado</h4>
               </div>
               <div class="row">
                 <div class="col col-12 col-xl-5 mb-5 mb-xl-0">
                   <div class="mb-5">
-                    <h5 class="mb-7">Impacto de continuidad</h5>
+                    <h5 class="mb-7">Nivel de Probabilidad residual indicado por el Evaluador del Dominio de Riesgo</h5>
                     <div class="row">
                       <div class="col">
                         <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_continuity_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
+                          <input {% if rt.probability_level_residual_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input"
                             type="radio" disabled>
                           <label class="form-check-label">{% trans 'Bajo' %}</label>
                         </div>
                       </div>
                       <div class="col">
                         <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_continuity_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
+                          <input {% if rt.probability_level_residual_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input"
                             type="radio" disabled>
                           <label class="form-check-label">{% trans 'Medio' %}</label>
                         </div>
                       </div>
                       <div class="col">
                         <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_continuity_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
+                          <input {% if rt.probability_level_residual_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input"
                             type="radio" disabled>
                           <label class="form-check-label">{% trans 'Alto' %}</label>
                         </div>
                       </div>
                       <div class="col">
                         <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_continuity_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
+                          <input {% if rt.probability_level_residual_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input"
                             type="radio" disabled>
                           <label class="form-check-label">{% trans 'Crítico' %}</label>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mb-5">
-                    <h5 class="mb-7">Impacto económico</h5>
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_economic_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Bajo' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_economic_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Medio' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_economic_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Alto' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_economic_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Crítico' %}</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="mb-5">
-                    <h5 class="mb-7">Impacto en imagen</h5>
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_branding_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Bajo' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_branding_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Medio' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_branding_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Alto' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_branding_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Crítico' %}</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col col-12 col-xl-8 mb-5 offset-xl-1">
-                  <h5 class="mb-7">Probabilidad</h5>
-                  <div class="row">
-                    <div class="col">
-                      <div class="form-check form-check-custom form-check-solid mb-4">
-                        <input {% if rt.probability_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                          disabled>
-                        <label class="form-check-label">{% trans 'Bajo' %}</label>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="form-check form-check-custom form-check-solid mb-4">
-                        <input {% if rt.probability_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                          disabled>
-                        <label class="form-check-label">{% trans 'Medio' %}</label>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="form-check form-check-custom form-check-solid mb-4">
-                        <input {% if rt.probability_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                          disabled>
-                        <label class="form-check-label">{% trans 'Alto' %}</label>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="form-check form-check-custom form-check-solid mb-4">
-                        <input {% if rt.probability_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                          disabled>
-                        <label class="form-check-label">{% trans 'Crítico' %}</label>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <h5>Descripción de la valoración por el Experto de Dominio de Riesgo asociado</h5>
-                <p>{{ rt.description|default_if_none:'Sin completar' }}</p>
+                <h5>{% trans 'Descripción de la evaluación por el Evaluador del Dominio de Riesgo asociado' %}</h5>
+                <p>{{ rt.description_evaluator|default_if_none:'Sin completar' }}</p>
               </div>
             </div>
           </div>
         </div>
 
         <div class="card-footer py-6">
-          <div class="admin_risk_test_inherent" data-risktestpk="{{ rt.pk }}" data-impact="{{ rt.impact_level_administrator}}" data-probability="{{ rt.probability_level_administrator }}" data-description="{{ rt.description_admin }}"></div>
+          <div class="admin_risk_test_residual"
+            data-risktestpk="{{ rt.pk }}"
+            data-probability="{{ rt.probability_level_administrator }}"
+            data-description="{{ rt.description_evaluator|striptags }}"></div>
         </div>
         <!--end::Card footer-->
       </div>
@@ -354,7 +239,7 @@
     <div class="card-body">
       <div class="row mt-2 mb-2">
         <div class="col-12">
-          <div class="alert alert-primary">{% trans 'No existen tests de riesgo inherente pendientes para esta Evaluación' %}.
+          <div class="alert alert-primary">{% trans 'No existen tests de riesgo residual pendientes para esta Evaluación' %}.
           </div>
         </div>
       </div>

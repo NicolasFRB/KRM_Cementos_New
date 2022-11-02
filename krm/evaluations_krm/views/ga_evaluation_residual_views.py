@@ -200,57 +200,49 @@ class GaEvaluationResidualDetailView(FormView):
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones KRM'), 'url': reverse(
-                'evaluations_krm:ga_evaluation_inherent_list')},
+                'evaluations_krm:ga_evaluation_residual_list')},
             {'title': self.evaluation.ref}
         ]
         context['page_title'] = f"{_('Evaluación KRM Residual')} : {self.evaluation.ref}"
         context['breadcrums'] = breadcrums
-        # context['actions'] = [
-        #     {
-        #         'title': _('Editar'),
-        #         'url': reverse('evaluations:ga_evaluation_update', kwargs={'pk': self.evaluation.pk}),
-        #         'primary': True,
-        #         'icon': '<i class="bi bi-pencil"></i>'
-        #     },
-        # ]
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
 
-    # def form_valid(self, form):
-    #     action = form.cleaned_data["action"]
-    #     evaluation = self.evaluation
+    def form_valid(self, form):
+        action = form.cleaned_data["action"]
+        evaluation = self.evaluation
 
-    #     # if action == "i":
-    #     #     evaluation.status = "EP"
-    #     #     evaluation.save()
-    #     #     users_notificated = []
-    #     #     for ct in evaluation.control_tests.all():
-    #     #         ct.status = "WO"
-    #     #         ct.save()
-    #     #         if ct.control_test_owner not in users_notificated:
-    #     #             users_notificated.append(ct.control_test_owner)
-    #     #             ct.send_notification()
+        # if action == "i":
+        #     evaluation.status = "EP"
+        #     evaluation.save()
+        #     users_notificated = []
+        #     for ct in evaluation.control_tests.all():
+        #         ct.status = "WO"
+        #         ct.save()
+        #         if ct.control_test_owner not in users_notificated:
+        #             users_notificated.append(ct.control_test_owner)
+        #             ct.send_notification()
 
-    #     #     messages.add_message(
-    #     #         self.request,
-    #     #         messages.SUCCESS,
-    #     #         _("Evaluación iniciada correctamente"),
-    #     #     )
-    #     # elif action == 'f':
-    #     #     evaluation.status = "FI"
-    #     #     evaluation.save()
-    #     #     evaluation.control_tests.update(
-    #     #         status='FI'
-    #     #     )
+        #     messages.add_message(
+        #         self.request,
+        #         messages.SUCCESS,
+        #         _("Evaluación iniciada correctamente"),
+        #     )
+        # elif action == 'f':
+        #     evaluation.status = "FI"
+        #     evaluation.save()
+        #     evaluation.control_tests.update(
+        #         status='FI'
+        #     )
 
-    #     #     messages.add_message(
-    #     #         self.request,
-    #     #         messages.SUCCESS,
-    #     #         _("Evaluación finalizada correctamente"),
-    #     #     )
+        #     messages.add_message(
+        #         self.request,
+        #         messages.SUCCESS,
+        #         _("Evaluación finalizada correctamente"),
+        #     )
 
-    #     return super().form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy(

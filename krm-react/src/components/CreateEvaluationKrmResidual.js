@@ -194,7 +194,7 @@ function CreateEvaluationKrmInherent(props) {
                               <th className="fw-semibold">&nbsp;</th>
                               <th className="fw-semibold">REF</th>
                               <th className="fw-semibold">NOMBRE</th>
-                              <th className="fw-semibold">¿EVALUADO?</th>
+                              <th className="fw-semibold text-center">¿EVALUADO?</th>
                               <th className="fw-semibold">EVALUADOR ASIGNADO</th>
                             </tr>
                           </thead>
