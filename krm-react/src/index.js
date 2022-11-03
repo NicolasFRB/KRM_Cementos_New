@@ -87,8 +87,8 @@ for (let i = 0; i < risksTestResidual.length; i++) {
 for (let i = 0; i < adminRisksTestResidual.length; i++) {
   let riskTestResidual = ReactDOM.createRoot(adminRisksTestResidual.item(i));
   let pk = parseInt(adminRisksTestResidual.item(i).getAttribute('data-risktestpk'));
-  let probability = parseInt(adminRisksTestResidual.item(i).getAttribute('data-admin-probability'));
-  let description = adminRisksTestResidual.item(i).getAttribute('data-admin-description');
+  let probability = parseInt(adminRisksTestResidual.item(i).getAttribute('data-probability'));
+  let description = adminRisksTestResidual.item(i).getAttribute('data-description');
   riskTestResidual.render(
     <CaRiskTestResidual pk={pk} initialProbability={probability} initialDescriptionAdmin={description} />
   )

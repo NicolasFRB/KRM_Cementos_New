@@ -10,7 +10,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
 
   const updateProbability = (newProbability) => {
     $('#buttonSend').attr('data-kt-indicator', 'on');
-    fetch(`${configService.apiSendRiskTestResidual}?pk=${pk}&adminProbability=${newProbability}`)
+    fetch(`${configService.apiSendRiskCompanyResidualAdmin}?pk=${pk}&adminProbability=${newProbability}`)
       .then((res) => res.json())
       .then(
         (res) => {
@@ -25,7 +25,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
 
   const updateDescriptionAdmin = (newDescriptionAdmin) => {
     $('#buttonSend').attr('data-kt-indicator', 'on');
-    fetch(`${configService.apiSendRiskTestResidual}?pk=${pk}&descriptionAdmin=${newDescriptionAdmin}`)
+    fetch(`${configService.apiSendRiskCompanyResidualAdmin}?pk=${pk}&descriptionAdmin=${newDescriptionAdmin}`)
       .then((res) => res.json())
       .then(
         (res) => {
@@ -43,12 +43,12 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
     <div className="valoration">
       <div className="row">
         <div className="col col-12">
-          <h4 className="mb-7">Indique su nivel de Probabilidad Residual como Administrador de la compañía evaluada</h4>
+          <h4 className="mb-7">Nivel de Control Administrador de la compañía evaluada</h4>
         </div>
         <input type="hidden" name={`probability-${pk}`} value={probability} />
         <div className="row mb-5">
-          <div className="col col-12 col-xl-5 mb-5 mb-xl-0">
-            <h5 className="mb-7">Probabilidad</h5>
+          <div className="col col-12 col-xl-8 mb-5 mb-xl-0">
+            <h5 className="mb-7">Nivel de Control</h5>
             <div className="row">
 
               <div className="col">
@@ -61,7 +61,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 1}
                     onChange={() => updateProbability(1)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-1-${pk}`}>Bajo</label>
+                  <label className="form-check-label" htmlFor={`p-pk-1-${pk}`}>1 Optimizado</label>
                 </div>
               </div>
 
@@ -75,7 +75,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 2}
                     onChange={() => updateProbability(2)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-2-${pk}`}>Medio</label>
+                  <label className="form-check-label" htmlFor={`p-pk-2-${pk}`}>2 Aceptable</label>
                 </div>
               </div>
 
@@ -89,7 +89,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 3}
                     onChange={() => updateProbability(3)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-3-${pk}`}>Alto</label>
+                  <label className="form-check-label" htmlFor={`p-pk-3-${pk}`}>3 Inadecuado</label>
                 </div>
               </div>
 
@@ -103,7 +103,21 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 4}
                     onChange={() => updateProbability(4)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>Crítico</label>
+                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>4 No controlado</label>
+                </div>
+              </div>
+
+              <div className="col">
+                <div className="form-check form-check-custom form-check-solid mb-4">
+                  <input
+                    name={`p-${pk}`}
+                    className="form-check-input"
+                    type="radio"
+                    id={`p-pk-5-${pk}`}
+                    checked={probability === 5}
+                    onChange={() => updateProbability(4)}
+                  />
+                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>5 N/A</label>
                 </div>
               </div>
 

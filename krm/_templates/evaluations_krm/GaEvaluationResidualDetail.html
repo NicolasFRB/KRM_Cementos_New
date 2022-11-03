@@ -82,7 +82,7 @@
   <!--end::Card footer-->
 </div>
 
-<div class="card">
+<div class="card mb-8">
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
@@ -140,6 +140,68 @@
   <!--begin::Card footer-->
   <div class="card-footer py-6">
     <a href="{% url 'evaluations_krm:ga_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
+      <i class="bi bi-arrow-bar-left"></i>
+      {% trans 'Volver' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Valoración agregada de Riesgo Residual' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluation.risk_company_residuals.all %}
+    <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr>
+          <th>{% trans 'RIESGO' %}</th>
+          <th class="text-center">{% trans 'PROBABILIDAD AGREGADA' %}</th>
+          <th>{% trans 'ADM. PROBABILIDAD' %}</th>
+          <th>{% trans 'ADM. DESC' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rt in evaluation.risk_company_residuals.all %}
+        <tr>
+          <td>{{ rt.risk_company.name }}</td>
+          <td class="text-center"><span class="badge badge-info">{{ rt.probability_level_residual_evaluator_aggregate }}</span></td>
+          <td>{{ rt.get_probability_level_residual_administrator_display }}</td>
+          <td>
+            {% if rt.description_evaluator %}
+              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{{ rt.description_evaluator }}"></i>
+            {% else %}
+              {% trans 'Sin establecer' %}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen tests de riesgo residual para esta Evaluación' %}.
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    {% if evaluation.status == 'EP' %}
+    <a href="{% url 'evaluations_krm:ca_evaluation_residual_complete' evaluation.pk %}"
+      class="btn btn-sm btn-primary me-2">
+      {% trans 'Validar Riesgos valorados por los Evaluadores' %}</a>
+    {% endif %}
+    <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
       <i class="bi bi-arrow-bar-left"></i>
       {% trans 'Volver' %}</a>
   </div>

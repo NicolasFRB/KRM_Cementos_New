@@ -290,7 +290,7 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Riesgos Residuals')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        context['risks_test_residual'] = self.object.risk_test_residuals.filter()
+        context['risks_company_residuals'] = self.object.risk_company_residuals.all()
 
         return context
 

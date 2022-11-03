@@ -99,3 +99,17 @@ class EvaluationKrmResidual(AuditModel):
             status=3,
             evaluator=user,
         ).distinct().count()
+
+    def create_risk_company_residual(self):
+        from krm.evaluations_krm.models import RiskCompanyResidual
+
+        # Para cada test de riesgo residual comprobamos si ya existe el RiskCompanyResidual
+        for rt in self.risk_test_residuals.all():
+            if RiskCompanyResidual.objects.filter(
+                evaluation=self,
+                risk_company=rt.risk
+            ).count() == 0:
+                RiskCompanyResidual.objects.create(
+                    evaluation=self,
+                    risk_company=rt.risk
+                )

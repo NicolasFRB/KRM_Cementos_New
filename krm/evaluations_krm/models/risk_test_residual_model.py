@@ -38,17 +38,18 @@ class RiskTestResidual(AuditModel):
     )
 
     RISK_CHOICES = (
-        (1, _('Bajo')),
-        (2, _('Medio')),
-        (3, _('Alto')),
-        (4, _('Crítico')),
-        (5, _('Sin establecer')),
+        (0, _('Sin establecer')),
+        (1, _('Optimizado')),
+        (2, _('Aceptable')),
+        (3, _('Inadecuado')),
+        (4, _('No controlado')),
+        (5, _('N/A')),
     )
 
     probability_level_residual_evaluator = models.PositiveSmallIntegerField(
         _('Nivel de Probabilidad residual indicado por el Evaluador del Dominio de Riesgo'),
         choices=RISK_CHOICES,
-        default=5
+        default=0
     )
 
     description_evaluator = models.TextField(
@@ -62,22 +63,22 @@ class RiskTestResidual(AuditModel):
         blank=True,
     )
 
-    probability_level_residual_administrator = models.PositiveSmallIntegerField(
-        _('Nivel de Probabilidad residual indicado por el Admnistrador de la compañía'),
-        choices=RISK_CHOICES,
-        default=5
-    )
+    # probability_level_residual_administrator = models.PositiveSmallIntegerField(
+    #     _('Nivel de Probabilidad residual indicado por el Admnistrador de la compañía'),
+    #     choices=RISK_CHOICES,
+    #     default=5
+    # )
 
-    description_administrator = models.TextField(
-        verbose_name=_(
-            "Descripción de la evaluación por el Administrador de la compañía"),
-        help_text=_(
-            "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
-        ),
-        max_length=10000,
-        null=True,
-        blank=True,
-    )
+    # description_administrator = models.TextField(
+    #     verbose_name=_(
+    #         "Descripción de la evaluación por el Administrador de la compañía"),
+    #     help_text=_(
+    #         "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
+    #     ),
+    #     max_length=10000,
+    #     null=True,
+    #     blank=True,
+    # )
 
     STATUS_CHOICES = (
         (0, _('Sin iniciar')),
@@ -98,6 +99,10 @@ class RiskTestResidual(AuditModel):
     class Meta:
         verbose_name = _("Test de Riesgo Residual")
         verbose_name_plural = _("Tests de Riesgo Residual")
+
+    # def save(self, *args, **kwargs):
+    #     self.ref = self.ref.upper()
+    #     super().save(*args, **kwargs)
 
     def send_notification_evaluator(self):
         from krm.evaluations_krm.tasks import (
@@ -141,3 +146,55 @@ class RiskTestResidual(AuditModel):
         self.evaluator.add_action(
             _("Envío de email de Test de Riesgos pendientes de valorar"))
         msg.send(fail_silently=False)
+
+    @property
+    def get_latest_impact_inherent(self):
+        # Evaluaciones en las que se ha evaluado ese riesgo compañía
+        if self.risk.risk_test_inherent.filter(
+            status=3,
+            evaluation__status='FI'
+        ).count() > 0:
+            last_evaluate_risk_inherent = self.risk.risk_test_inherent.filter(
+                status=3,
+                evaluation__status='FI'
+            ).order_by('evaluation__date_begin').first()
+            return last_evaluate_risk_inherent.impact_level_administrator
+
+        return None
+
+    @property
+    def get_latest_probability_inherent(self):
+        # Evaluaciones en las que se ha evaluado ese riesgo compañía
+        if self.risk.risk_test_inherent.filter(
+            status=3,
+            evaluation__status='FI'
+        ).count() > 0:
+            last_evaluate_risk_inherent = self.risk.risk_test_inherent.filter(
+                status=3,
+                evaluation__status='FI'
+            ).order_by('evaluation__date_begin').first()
+            return last_evaluate_risk_inherent.probability_level_administrator
+
+        return None
+
+    def get_controls_attempt_to_mitigate(self):
+        from krm.controls.models import Control
+        # Controles que aplican a esa compañía, los cuales están asociados al riesgo de este test de riesgo residual
+        controls = Control.objects.filter(
+            risks__id__exacts=self.risk.risk.pk,
+            pk__in=[control.pk for control in self.evaluation.company.controls.all()]
+        )
+        return controls
+
+    def get_test_controls_attempt_to_mitigate(self):
+        from krm.evaluations.models import ControlTest
+
+        # Miramos si hay test de control lanzados para los controles asociados a ese riesgo compañía
+        control_tests = ControlTest.objects.filter(
+            evaluation__company=self.evaluation.company,
+            control__pk__in=[
+                c.pk for c in self.get_controls_attempt_to_mitigate],
+            status='FI'
+        )
+
+        return control_tests

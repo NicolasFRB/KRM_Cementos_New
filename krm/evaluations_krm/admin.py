@@ -6,7 +6,8 @@ from krm.evaluations_krm.models import (
     EvaluationKrmInherent,
     RiskTestInherent,
     EvaluationKrmResidual,
-    RiskTestResidual
+    RiskTestResidual,
+    RiskCompanyResidual
 )
 
 
@@ -45,5 +46,17 @@ class RiskTestResidualAdmin(admin.ModelAdmin):
     list_display = (
         'evaluation',
         'risk',
+    )
+    list_filter = ('evaluation__company', 'evaluation')
+
+
+@admin.register(RiskCompanyResidual)
+class RiskCompanyResidualAdmin(admin.ModelAdmin):
+    model = RiskCompanyResidual
+    list_display = (
+        'evaluation',
+        'risk_company',
+        'probability_level_residual_administrator',
+        'probability_level_residual_evaluator_aggregate'
     )
     list_filter = ('evaluation__company', 'evaluation')

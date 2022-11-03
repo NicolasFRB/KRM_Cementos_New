@@ -50,7 +50,7 @@ class RiskCompanyApiView(APIView):
 class RiskCompanyResidualApiView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    """ Función que recibe un listado de compañías y un listado de riesgos y devuelve el listado de riesgos compañías que le aplican a cada una y comprobando si se han lanzado test de control para alguna evaluación de su compañía"""
+    """ Función que recibe un listado de compañías y un listado de riesgos y devuelve el listado de riesgos compañías que le aplican a cada una y comprobando si se han lanzado test de riesgo inherente para alguna evaluación de su compañía"""
 
     def get(self, request):
         company_pks = request.GET['company_pks'].split(',')
@@ -65,18 +65,19 @@ class RiskCompanyResidualApiView(APIView):
             data_item['risks'] = []
 
             # Riesgos para los cuales se ha realizado un test de riesgo inherente de esa compañía
-            risks_evaluated = RiskTestInherent.objects.filter(
+            risks_evaluated = [rt.risk for rt in RiskTestInherent.objects.filter(
                 evaluation__in=EvaluationKrmInherent.objects.filter(company=c),
                 status=3
-            )
+            )]
 
             for krm_risk in c.krm_risks.filter(risk__pk__in=(risk_pks), active=True).order_by('risk__ref'):
                 # Ahora comprobamos si para este riesgo-compañía se han lanzado test de riesgo inherente
                 risk = RiskCompanySerializer(krm_risk).data
                 risk['evaluated'] = False
                 risk['domain_risk_evaluator'] = []
-                # if krm_risk in risks_evaluated:
-                risk['evaluated'] = True
+
+                if krm_risk in risks_evaluated:
+                    risk['evaluated'] = True
                 company_domain_risk_evaluator = CompanyDomainRiskEvaluator.objects.get(
                     company=c,
                     domain_risk=krm_risk.risk.risk_master.domain_risk)

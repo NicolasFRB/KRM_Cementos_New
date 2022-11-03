@@ -7,7 +7,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
-from krm.evaluations_krm.models import RiskTestResidual
+from krm.evaluations_krm.models import RiskTestResidual, RiskCompanyResidual
 
 
 class RiskTestResidualEvaluatorApiView(APIView):
@@ -49,6 +49,41 @@ class RiskTestResidualEvaluatorApiView(APIView):
             risk_test.description_administrator = description_admin
 
         risk_test.save()
+
+        data = {
+            'status': 'ok'
+        }
+
+        return Response(data)
+
+
+class RiskCompanyResidualAdminApiView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    """ Función que recibe un trío:
+    - pk risk_test_inherent
+    - valor de probabilidad
+    - valor de impacto
+    """
+
+    def get(self, request):
+        risk_test_pk = int(request.GET['pk'])
+
+        risk_company_residual = get_object_or_404(
+            RiskCompanyResidual,
+            pk=risk_test_pk
+        )
+
+        if 'adminProbability' in request.GET:
+            probability = int(request.GET['adminProbability'])
+            if probability != 0:
+                risk_company_residual.probability_level_residual_administrator = probability
+
+        if 'descriptionAdmin' in request.GET:
+            description_admin = request.GET['descriptionAdmin']
+            risk_company_residual.description_administrator = description_admin
+
+        risk_company_residual.save()
 
         data = {
             'status': 'ok'

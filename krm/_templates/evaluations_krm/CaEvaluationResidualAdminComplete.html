@@ -22,7 +22,7 @@
 
       if (!errorFound) {
         $("input[name^='probability-']").each(function(index){
-          if ($(this).val() == 5){
+          if ($(this).val() == 0){
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -112,32 +112,32 @@
   <!--end::Card body-->
 </div>
 
-{% if risks_test_residual %}
-    {% for rt in risks_test_residual %}
+{% if risks_company_residuals %}
+    {% for rt in risks_company_residuals %}
       <div class="card mb-5">
         <!--begin::Card header-->
         <div class="card-header">
           <!--begin::Card header-->
-          <div class="card-title fs-3 fw-bold">{{ rt.risk }}</div>
+          <div class="card-title fs-3 fw-bold">{{ rt.risk_company.name }}</div>
           <!--end::Card header-->
         </div>
         <div class="card-body">
             <div class="row">
               <div class="col col-12 col-xl-6">
-                <p><span class="fs-6 fw-semibold">{% trans 'Riesgo' %}:</span> {{ rt.risk.name }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Riesgo' %}:</span> {{ rt.risk_company.name }}</p>
               </div>
               <div class="col col-12 col-xl-6">
-                <p><span class="fs-6 fw-semibold">{% trans 'Descripción' %}:</span> <br>{{ rt.risk.description|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Descripción' %}:</span> <br>{{ rt.risk_company.description|safe }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col col-12 col-xl-6">
-                <p><span class="fs-6 fw-semibold">{% trans 'Actividad afectada' %}:</span> <br>{{ rt.risk.krm_activity_affected|safe }}</p>
-                <p><span class="fs-6 fw-semibold">{% trans 'Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios' %}:</span> <br>{{ rt.risk.krm_main_events|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Actividad afectada' %}:</span> <br>{{ rt.risk_company.krm_activity_affected|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios' %}:</span> <br>{{ rt.risk_company.krm_main_events|safe }}</p>
               </div>
               <div class="col col-12 col-xl-6">
-                <p><span class="fs-6 fw-semibold">{% trans 'Personal especialmente expuesto al Riesgo' %}:</span> <br>{{ rt.risk.krm_exposed_staff|safe }}</p>
-                <p><span class="fs-6 fw-semibold">{% trans 'Principales elementos del Riesgo' %}:</span> <br>{{ rt.risk.krm_main_elements|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Personal especialmente expuesto al Riesgo' %}:</span> <br>{{ rt.risk_company.krm_exposed_staff|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Principales elementos del Riesgo' %}:</span> <br>{{ rt.risk_company.krm_main_elements|safe }}</p>
               </div>
             </div>
         </div>
@@ -146,48 +146,26 @@
           <div class="valoration-evaluator">
             <div class="row mb-10">
               <div class="col col-12">
-                <h4 class="mb-7">Valoración dada por el Evaluador de Dominio de Riesgo asociado</h4>
+                <h4 class="mb-7">Valoraciónes dadas por los Evaluadores de Riesgo Residual</h4>
               </div>
               <div class="row">
-                <div class="col col-12 col-xl-5 mb-5 mb-xl-0">
+                <div class="col col-12 col-xl-8 mb-5 mb-xl-0">
                   <div class="mb-5">
-                    <h5 class="mb-7">Nivel de Probabilidad residual indicado por el Evaluador del Dominio de Riesgo</h5>
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.probability_level_residual_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Bajo' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.probability_level_residual_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Medio' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.probability_level_residual_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Alto' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.probability_level_residual_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Crítico' %}</label>
-                        </div>
-                      </div>
-                    </div>
+                    <p>{% trans 'Nivel de Probabilidad residual indicado por los Evaluadores de Riesgo Residual' %}: <span class="badge badge-info">{{ rt.probability_level_residual_evaluator_aggregate }}</span></p>
+                    <p>{% trans 'Valor final:' %} <span class="badge badge-info">{{ rt.probability_level_residual_evaluator_aggregate_rounded }}</span></p>
+                    <p></p>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <h5>{% trans 'Descripción de la evaluación por el Evaluador del Dominio de Riesgo asociado' %}</h5>
-                <p>{{ rt.description_evaluator|default_if_none:'Sin completar' }}</p>
+              <div class="row mt-4">
+                <div class="col">
+                  <h5 class="mb-4">{% trans 'Descripciones de la evaluación por los Evaluadores del Dominio de Riesgo asociado' %}</h5>
+                  <ul>
+                    {% for rt in rt.risk_test_residuals %}
+                      <li>{{ rt.description_evaluator }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -196,8 +174,8 @@
         <div class="card-footer py-6">
           <div class="admin_risk_test_residual"
             data-risktestpk="{{ rt.pk }}"
-            data-probability="{{ rt.probability_level_administrator }}"
-            data-description="{{ rt.description_evaluator|striptags }}"></div>
+            data-probability="{{ rt.probability_level_residual_administrator }}"
+            data-description="{{ rt.description_administrator|default_if_none:'' }}"></div>
         </div>
         <!--end::Card footer-->
       </div>

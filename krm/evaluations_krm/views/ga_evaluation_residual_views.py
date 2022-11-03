@@ -167,6 +167,9 @@ class GaEvaluationResidualCreateView(FormView):
                         rt.send_notification_evaluator()
                         users_notificated.append(rt.evaluator)
 
+                # Ahora para cada Evaluación vamos a crear los RiskCompanyResidual
+                e.create_risk_company_residual()
+
         messages.add_message(
             self.request,
             messages.SUCCESS,
