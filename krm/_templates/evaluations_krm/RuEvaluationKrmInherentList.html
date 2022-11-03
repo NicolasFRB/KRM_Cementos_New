@@ -38,14 +38,14 @@
     <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
         <tr class="fw-semibold fs-6">
-          <th class="text-center">{% trans 'Acción' %}</th>
-          <th>{% trans 'REF' %}</th>
-          <th>{% trans 'Descripción' %}</th>
-          <th class="text-center">{% trans 'Periodo evaluado' %}</th>
-          <th class="text-center">{% trans 'Fechas evaluación' %}</th>
-          <th class="text-center">{% trans 'Compañía' %}</th>
-          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
-          <th class="text-center">{% trans 'Estado' %}</th>
+        <th class="text-center align-middle">{% trans 'Acción' %}</th>
+          <th class="align-middle">{% trans 'REF' %}</th>
+          <th class="align-middle">{% trans 'Descripción' %}</th>
+          <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
+          <th class="text-center align-middle">{% trans 'Compañía' %}</th>
+          <th class="text-center align-middle">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center align-middle">{% trans 'Estado' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -108,21 +108,21 @@
     <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
         <tr class="fw-semibold fs-6">
-          <th class="text-center">{% trans 'Acción' %}</th>
-          <th>{% trans 'REF' %}</th>
-          <th>{% trans 'Descripción' %}</th>
-          <th class="text-center">{% trans 'Periodo evaluado' %}</th>
-          <th class="text-center">{% trans 'Fechas evaluación' %}</th>
-          <th class="text-center">{% trans 'Compañía' %}</th>
-          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
-          <th class="text-center">{% trans 'Estado' %}</th>
+          <th class="text-center align-middle">{% trans 'Acción' %}</th>
+          <th class="align-middle">{% trans 'REF' %}</th>
+          <th class="align-middle">{% trans 'Descripción' %}</th>
+          <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
+          <th class="text-center align-middle">{% trans 'Compañía' %}</th>
+          <th class="text-center align-middle">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center align-middle">{% trans 'Estado' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for evaluation in evaluations_risk_inherent_delivered %}
           <tr>
             <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_krm_inherent_detail' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">
                 <div style="width:90%">
@@ -179,7 +179,7 @@
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th>{% trans 'REF' %}</th>
+          <th class="text-center">{% trans 'REF' %}</th>
           <th>{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
