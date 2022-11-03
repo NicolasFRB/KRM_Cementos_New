@@ -82,10 +82,6 @@ class GaEvaluationInherentListView(ListView):
             },
         ]
 
-        context['evaluations_pending'] = EvaluationKrmInherent.objects.filter(
-            status="EP")
-        context['evaluations_finished'] = EvaluationKrmInherent.objects.filter(
-            status="FI")
         ev_pending = EvaluationKrmInherent.objects.filter(status="EP")
         ev_finished = EvaluationKrmInherent.objects.filter(status="FI")
 
