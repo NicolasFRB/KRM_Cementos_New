@@ -14,7 +14,8 @@
   canvas{  
     width:50px !important;
     height:50px !important;
-    margin-right: 0 auto;
+    padding: 0;
+    margin: auto;
   }
 
 canvas#race{position:relative; z-index:100;}
@@ -108,7 +109,7 @@ canvas#race{position:relative; z-index:100;}
           {% for evaluation in evaluations_pending %}
           <tr>
             <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ga_evaluation_krm_inherent_detail' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">
                 <div style="width:90%">
@@ -197,7 +198,7 @@ canvas#race{position:relative; z-index:100;}
           {% for evaluation in evaluations_finished %}
           <tr>
             <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ga_evaluation_krm_inherent_detail' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">
                 <div style="width:90%">

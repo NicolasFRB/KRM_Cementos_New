@@ -30,8 +30,8 @@
             <fieldset>
               <legend>{% trans 'Datos del usuario' %}</legend>
               <div class="row">
-                <div class="mb-4">
-                  <span class="badge badge-secondary text-wrap">{% trans 'Email' %} </span> <span class="badge badge-success text-wrap">{{ object.email|default_if_none:"" }}</span>
+              <div class="mb-4 col-12">
+                  {{ form.email|as_crispy_field }}
                 </div>
                 <div class="mb-4 col-12">
                   {{ form.first_name|as_crispy_field }}

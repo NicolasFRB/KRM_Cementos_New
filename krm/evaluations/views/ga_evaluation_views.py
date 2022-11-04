@@ -77,6 +77,37 @@ class GaEvaluationListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+
+        ev_pending = Evaluation.objects.filter(status__in=["SI", "EP"])
+        ev_finished = Evaluation.objects.filter(status="FI")
+
+        for ev in ev_pending:
+            ev.ncontrols_test_by_state_si = ev.ncontrols_test_by_state(
+                "SI")
+            ev.ncontrols_test_by_state_wo = ev.ncontrols_test_by_state(
+                "WO")
+            ev.ncontrols_test_by_state_ws = ev.ncontrols_test_by_state(
+                "WS")
+            ev.ncontrols_test_by_state_wa = ev.ncontrols_test_by_state(
+                "WA")
+            ev.ncontrols_test_by_state_fi = ev.ncontrols_test_by_state(
+                "FI")
+
+        for ev in ev_finished:
+            ev.ncontrols_test_by_state_si = ev.ncontrols_test_by_state(
+                "SI")
+            ev.ncontrols_test_by_state_wo = ev.ncontrols_test_by_state(
+                "WO")
+            ev.ncontrols_test_by_state_ws = ev.ncontrols_test_by_state(
+                "WS")
+            ev.ncontrols_test_by_state_wa = ev.ncontrols_test_by_state(
+                "WA")
+            ev.ncontrols_test_by_state_fi = ev.ncontrols_test_by_state(
+                "FI")
+        
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
+
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
