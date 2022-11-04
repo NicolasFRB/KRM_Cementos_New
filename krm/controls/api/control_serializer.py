@@ -37,7 +37,9 @@ class ControlSerializer(serializers.ModelSerializer):
             'sub_processes',
             'domain_risks',
             'processes',
-            'companies'
+            'companies',
+            'key_control',
+            'is_elc'
         ]
         read_only_fields = [f.name for f in Control._meta.get_fields()]
 

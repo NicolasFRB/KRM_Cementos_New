@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 import SelectCompanies from "./SelectCompanies.js";
 import SelectProcess from "./SelectProcess.js";
-// import SelectRisk from "./SelectRisk.js";
+import SelectRisk from "./SelectRisk.js";
 import SelectDomainRisk from "./SelectDomainRisk.js";
 import SelectControlsCompanyKrc from "./SelectControlsCompanyKrc.js";
 import EvaluationCreateSteps from "./EvaluationCreateSteps.js";
@@ -16,11 +16,9 @@ function CreateEvaluationKrc(props) {
   // const [selectedControls, setSelectedControls] = useState([]);
   const [selectedDomainRisks, setSelectedDomainRisks] = useState([]);
   const [selectedProcesses, setSelectedProcesses] = useState([]);
-  // const [selectedRisks, setSelectedRisks] = useState([]);
+  const [selectedRisks, setSelectedRisks] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const [keyControl, setKeyControl] = useState(false);
-  const [elc, setElc] = useState(false);
 
   const [formData, setFormData] = useState({ 'completed': false });
 
@@ -99,18 +97,7 @@ function CreateEvaluationKrc(props) {
             <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
           </div>
           <div className="col col-12 col-md-4">
-            {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}
-            <h5 className="mb-6">Tipos de Riesgo</h5>
-            <p>
-              <label className="form-check form-check-inline form-check-solid me-5">
-                <input className="form-check-input" name="keycontrol" type="checkbox" checked={keyControl} onChange={() => setKeyControl(!keyControl)} /><span className="fw-semibold ps-2 fs-6">Sólo Key Control</span>
-              </label>
-            </p>
-            <p>
-              <label className="form-check form-check-inline form-check-solid me-5">
-                <input className="form-check-input" name="elc" type="checkbox" checked={elc} onChange={() => setElc(!elc)} /><span className="fw-semibold ps-2 fs-6">Añadir controles ELC</span>
-              </label>
-            </p>
+            <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} />
           </div>
         </div>
         <div className="separator my-10"></div>
@@ -119,12 +106,10 @@ function CreateEvaluationKrc(props) {
           <SelectControlsCompanyKrc
             selectedDomainRisks={selectedDomainRisks}
             selectedProcesses={selectedProcesses}
-            // selectedRisks={selectedRisks}
+            selectedRisks={selectedRisks}
             selectedCompanies={selectedCompanies}
             controlsToEvaluate={controlsToEvaluate}
             setControlsToEvaluate={setControlsToEvaluate}
-            elc={elc}
-            keyControl={keyControl}
           />
         </div>
 
@@ -156,6 +141,8 @@ function CreateEvaluationKrc(props) {
                       Lanzando...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                     </span>
                   </button>
+
+
 
                   {/* <button onClick={sendForm} className="btn btn-primary px-6 align-self-center text-nowrap">Crear Evaluaciones</button> */}
                   <input type="hidden" name="controls_companies_to_evaluate" value={JSON.stringify(controlsToEvaluate)} />

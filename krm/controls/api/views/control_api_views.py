@@ -34,19 +34,27 @@ class ControlCompanyApiView(APIView):
         company_pks = []
         domain_risk_pks = []
         process_pks = []
-        risk_pks = []
+        # risk_pks = []
+        key_control = False
+        elc = False
 
         if 'company_pks' in request.GET:
-            company_pks = request.GET['company_pks'].split(',')
+            if request.GET['company_pks']:
+                company_pks = request.GET['company_pks'].split(',')
         if 'domain_risk_pks' in request.GET:
             if request.GET['domain_risk_pks']:
                 domain_risk_pks = request.GET['domain_risk_pks'].split(',')
         if 'process_pks' in request.GET:
             if request.GET['process_pks']:
                 process_pks = request.GET['process_pks'].split(',')
-        if 'risk_pks' in request.GET:
-            if request.GET['risk_pks']:
-                risk_pks = request.GET['risk_pks'].split(',')
+        # if 'risk_pks' in request.GET:
+        #     risk_pks = request.GET['risk_pks'].split(',')
+        if 'key_control' in request.GET:
+            if request.GET['key_control'] == 'true':
+                key_control = True
+        if 'elc' in request.GET:
+            if request.GET['elc'] == 'true':
+                elc = True
 
         data = []
 
@@ -63,9 +71,9 @@ class ControlCompanyApiView(APIView):
                     risks__risk_master__domain_risk__pk__in=(domain_risk_pks)
                 )
 
-            if risk_pks:
-                control_list = control_list.filter(risks__pk__in=(risk_pks)
-                                                   )
+            # if risk_pks:
+            #     control_list = control_list.filter(risks__pk__in=(risk_pks)
+            #                                        )
 
             if process_pks:
                 sub_processes = SubProcess.objects.filter(
@@ -74,6 +82,16 @@ class ControlCompanyApiView(APIView):
                 control_list = control_list.filter(
                     sub_processes__in=sub_processes
                 )
+
+            if key_control:
+                control_list = control_list.filter(
+                    key_control=True
+                )
+
+            if elc:
+                # Si está marcado hay que añadirle todos los controles ELC que tenga la compañía cumpla o no los filtros anteriories
+                control_list_elc = c.controls.filter(is_elc=True)
+                control_list = control_list | control_list_elc
 
             control_list = control_list.distinct()
 

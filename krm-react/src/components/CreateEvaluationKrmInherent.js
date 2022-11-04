@@ -33,17 +33,53 @@ function CreateEvaluationKrmInherent(props) {
     setFormData(newFormData);
   }
 
-  // useEffect(() => {
-  //   let riskSelect = [];
-  //   riskCompanies.forEach(c => {
-  //     c.risks.forEach(risk => {
-  //       if (risk.checked) {
-  //         riskSelect.push(risk.pk);
-  //       }
-  //     });
-  //   });
-  //   setRiskCompaniesToEvaluate(riskSelect)
-  // }, [riskCompanies]);
+  const selectAll = (companyPk) => {
+    let newRiskCompaniesToEvaluate = [];
+    const newRiskCompanies = riskCompanies.map(rc => {
+      if (rc.company.pk === companyPk) {
+        rc.risks = rc.risks.map((risk) => {
+          risk.checked = true;
+          return risk;
+        })
+      }
+      return rc;
+    });
+    setRiskCompanies(newRiskCompanies);
+
+    // Quitamos esa compañía de los evaluados y luego la metemos con todo 
+    newRiskCompaniesToEvaluate = riskCompaniesToEvaluate.filter((rcte) => rcte.company_pk !== companyPk);
+
+    newRiskCompanies.forEach(function (rc, i) {
+      if (rc.company.pk === companyPk) {
+        let risksChecked = rc.risks.filter((risk) => risk.expert_assign);
+        if (risksChecked.length > 0) {
+          newRiskCompaniesToEvaluate.push(
+            {
+              company_pk: companyPk,
+              risks: risksChecked.map((risk) => risk.pk)
+            }
+          )
+        }
+      }
+    });
+
+    setRiskCompaniesToEvaluate(newRiskCompaniesToEvaluate);
+  };
+
+  const unSelectAll = (companyPk) => {
+
+    const newRiskCompanies = riskCompanies.map(rc => {
+      if (rc.company.pk === companyPk) {
+        rc.risks = rc.risks.map((risk) => {
+          risk.checked = false;
+          return risk;
+        })
+      }
+      return rc;
+    });
+    setRiskCompanies(newRiskCompanies);
+    setRiskCompaniesToEvaluate(riskCompaniesToEvaluate.filter((rcte) => rcte.company_pk !== companyPk));
+  };
 
   useEffect(() => {
     $('#e_ref, #e_date_begin, #e_date_intermediate, #e_date_end, #e_description').on('change', readFormData);
@@ -203,7 +239,10 @@ function CreateEvaluationKrmInherent(props) {
                         <table className="table table-striped customDatatable">
                           <thead>
                             <tr>
-                              <th className="fw-semibold">&nbsp;</th>
+                              <th className="text-center">
+                                <span onClick={() => selectAll(company.company.pk)} className="me-5"><i className="bi bi-clipboard-check"></i></span>
+                                <span onClick={() => unSelectAll(company.company.pk)}><i className="bi bi-clipboard"></i></span>
+                              </th>
                               <th className="fw-semibold">REF</th>
                               <th className="fw-semibold">NOMBRE</th>
                               <th className="fw-semibold">EXPERTO ASIGNADO</th>
@@ -211,7 +250,7 @@ function CreateEvaluationKrmInherent(props) {
                           </thead>
                           <tbody>
                             {company.risks.map((risk, index) => {
-                              return <tr key={risk.pk}>
+                              return <tr key={index}>
                                 <td className="text-center">
                                   {!risk.expert_assign && (
                                     <span className="badge badge-square badge-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="No es posible lanzar este test sin tener asignado previamente un experto para ese dominio de riesgo"></span>

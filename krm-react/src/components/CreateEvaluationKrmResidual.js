@@ -43,6 +43,54 @@ function CreateEvaluationKrmInherent(props) {
     window.CustomDatatables.init();
   }, [riskCompaniesLoading]);
 
+  const selectAll = (companyPk) => {
+    let newRiskCompaniesToEvaluate = [];
+    const newRiskCompanies = riskCompanies.map(rc => {
+      if (rc.company.pk === companyPk) {
+        rc.risks = rc.risks.map((risk) => {
+          risk.checked = true;
+          return risk;
+        })
+      }
+      return rc;
+    });
+    setRiskCompanies(newRiskCompanies);
+
+    // Quitamos esa compañía de los evaluados y luego la metemos con todo 
+    newRiskCompaniesToEvaluate = riskCompaniesToEvaluate.filter((rcte) => rcte.company_pk !== companyPk);
+
+    newRiskCompanies.forEach(function (rc, i) {
+      if (rc.company.pk === companyPk) {
+        let risksChecked = rc.risks.filter((risk) => risk.domain_risk_evaluator.length > 0 && risk.evaluated);
+        if (risksChecked.length > 0) {
+          newRiskCompaniesToEvaluate.push(
+            {
+              company_pk: companyPk,
+              risks: risksChecked.map((risk) => risk.pk)
+            }
+          )
+        }
+      }
+    });
+
+    setRiskCompaniesToEvaluate(newRiskCompaniesToEvaluate);
+  };
+
+  const unSelectAll = (companyPk) => {
+
+    const newRiskCompanies = riskCompanies.map(rc => {
+      if (rc.company.pk === companyPk) {
+        rc.risks = rc.risks.map((risk) => {
+          risk.checked = false;
+          return risk;
+        })
+      }
+      return rc;
+    });
+    setRiskCompanies(newRiskCompanies);
+    setRiskCompaniesToEvaluate(riskCompaniesToEvaluate.filter((rcte) => rcte.company_pk !== companyPk));
+  };
+
   const selectRiskCompanyToEvaluate = (pk) => {
     const newRiskCompanies = riskCompanies.map(c => {
       const newRiskCompany = c.risks.map(r => {
@@ -185,13 +233,16 @@ function CreateEvaluationKrmInherent(props) {
                 <div className="mt-5 mb-5">
                   {riskCompanies.map((company, index) => {
                     if (company.risks.length > 0) {
-                      return <div key={index}>
+                      return <div key={company.company.pk}>
                         <h4>Evaluación: {formData.ref} - {company.company.name}</h4>
                         <h5>Tests de Riesgo Inherente que se lanzarán</h5>
                         <table className="table table-striped customDatatable">
                           <thead>
                             <tr>
-                              <th className="fw-semibold">&nbsp;</th>
+                              <th className="text-center">
+                                <span onClick={() => selectAll(company.company.pk)} className="me-5"><i className="bi bi-clipboard-check"></i></span>
+                                <span onClick={() => unSelectAll(company.company.pk)}><i className="bi bi-clipboard"></i></span>
+                              </th>
                               <th className="fw-semibold">REF</th>
                               <th className="fw-semibold">NOMBRE</th>
                               <th className="fw-semibold text-center">¿EVALUADO?</th>
@@ -222,11 +273,9 @@ function CreateEvaluationKrmInherent(props) {
                                 <td>
                                   {risk.domain_risk_evaluator.map((evaluator, index) => {
                                     return (
-                                      <>
-                                        <div className="mb-1" key={index}>
-                                          <span className="badge badge-primary" >{evaluator}</span>
-                                        </div>
-                                      </>
+                                      <div className="mb-1" key={index}>
+                                        <span className="badge badge-primary" >{evaluator}</span>
+                                      </div>
                                     )
                                   })}
                                   {risk.domain_risk_evaluator.length === 0 && (

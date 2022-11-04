@@ -7,7 +7,9 @@ function SelectControlsCompanyKrc(
     selectedDomainRisks,
     selectedProcesses,
     selectedCompanies,
-    selectedRisks,
+    // selectedRisks,
+    keyControl,
+    elc,
     controlsToEvaluate,
     setControlsToEvaluate,
   }) {
@@ -43,7 +45,9 @@ function SelectControlsCompanyKrc(
     if (selectedCompanies.length > 0) {
       const params = {
         company_pks: selectedCompanies,
-        risk_pks: selectedRisks,
+        risk_pks: [],
+        elc: elc,
+        key_control: keyControl,
         process_pks: selectedProcesses,
         domain_risk_pks: selectedDomainRisks
       };
@@ -79,6 +83,49 @@ function SelectControlsCompanyKrc(
     }
   }
 
+  const selectAll = (companyPk) => {
+    let newControlsToEvaluate = controlsToEvaluate.map((controlToEvaluate) => {
+      if (controlToEvaluate.c === companyPk) {
+        for (let i = 0; i < controlsCompany.length; i++) {
+          if (controlsCompany[i].c.pk === companyPk) {
+            controlToEvaluate.cs = controlsCompany[i].cs.map((cc) => {
+              return cc.pk;
+            })
+          }
+        }
+        return controlToEvaluate;
+      } else {
+        return controlToEvaluate
+      }
+    })
+    setControlsToEvaluate(newControlsToEvaluate);
+  };
+
+  const unSelectAll = (companyPk) => {
+    let newControlsToEvaluate = controlsToEvaluate.map((controlToEvaluate) => {
+      if (controlToEvaluate.c === companyPk) {
+        controlToEvaluate.cs = [];
+        return controlToEvaluate;
+      } else {
+        return controlToEvaluate
+      }
+    })
+    setControlsToEvaluate(newControlsToEvaluate);
+  };
+
+  const checkControlInCompanyControlToEvaluate = (companyPk, controlPk) => {
+    console.log(companyPk);
+    console.log(controlPk);
+    for (let i = 0; i < controlsToEvaluate.length; i++) {
+      if (controlsToEvaluate[i].c === companyPk) {
+        if (controlsToEvaluate[i].cs.includes(controlPk)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
   useEffect(() => {
     window.CustomDatatables.destroy();
     window.CustomDatatables.init();
@@ -105,19 +152,40 @@ function SelectControlsCompanyKrc(
                   <table className="table table-striped customDatatable">
                     <thead>
                       <tr>
-                        <th className="fw-semibold">&nbsp;</th>
+                        <th className="text-center">
+                          <span onClick={() => selectAll(company.c.pk)} className="me-5"><i className="bi bi-clipboard-check"></i></span>
+                          <span onClick={() => unSelectAll(company.c.pk)}><i className="bi bi-clipboard"></i></span>
+                        </th>
                         <th className="fw-semibold">REF</th>
                         <th className="fw-semibold">DESCRIPCIÓN</th>
+                        <th className="fw-semibold text-center">KEY CONTROL</th>
+                        <th className="fw-semibold text-center">¿ELC?</th>
                       </tr>
                     </thead>
                     <tbody>
                       {company.cs.map((control, index) => {
                         return <tr key={control.pk}>
                           <td className="text-center">
-                            <input id={'com' + company.c.pk + 'co' + control.pk} onChange={() => selectControlCompanyToEvaluate(company.c.pk, control.pk)} className="form-check-input" name="controls" type="checkbox" value={control.pk} checked={control.checked} />
+                            <input id={'com' + company.c.pk + 'co' + control.pk} onChange={() => selectControlCompanyToEvaluate(company.c.pk, control.pk)} className="form-check-input" name="controls" type="checkbox" value={control.pk} checked={checkControlInCompanyControlToEvaluate(company.c.pk, control.pk)} />
                           </td>
                           <td><label htmlFor={'com' + company.c.pk + 'co' + control.pk}>{control.ref}</label></td>
                           <td><span dangerouslySetInnerHTML={{ __html: control.name }}></span></td>
+                          <td className="text-center">
+                            {control.key_control && (
+                              <span className="badge badge-primary">Sí</span>
+                            )}
+                            {!control.key_control && (
+                              <span className="badge badge-danger">No</span>
+                            )}
+                          </td>
+                          <td className="text-center">
+                            {control.is_elc && (
+                              <span className="badge badge-primary">Sí</span>
+                            )}
+                            {!control.is_elc && (
+                              <span className="badge badge-danger">No</span>
+                            )}
+                          </td>
                         </tr>
                       })}
                     </tbody>
