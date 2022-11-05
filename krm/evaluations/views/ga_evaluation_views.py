@@ -142,6 +142,17 @@ class GaEvaluationDetailView(FormView):
                 'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
+
+        context['evaluation'].ncontrols_test_by_state_si = context['evaluation'].ncontrols_test_by_state("SI")
+        context['evaluation'].ncontrols_test_by_state_wo = context['evaluation'].ncontrols_test_by_state("WO")
+        context['evaluation'].ncontrols_test_by_state_ws = context['evaluation'].ncontrols_test_by_state("WS")
+        context['evaluation'].ncontrols_test_by_state_wa = context['evaluation'].ncontrols_test_by_state("WA")
+        context['evaluation'].ncontrols_test_by_state_fi = context['evaluation'].ncontrols_test_by_state("FI")
+        
+        context['evaluation'].ncontrols_test_by_result_se = context['evaluation'].ncontrols_test_by_result("SE")
+        context['evaluation'].ncontrols_test_by_result_ef = context['evaluation'].ncontrols_test_by_result("EF")
+        context['evaluation'].ncontrols_test_by_result_ne = context['evaluation'].ncontrols_test_by_result("NE")
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
