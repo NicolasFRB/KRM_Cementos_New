@@ -10,7 +10,221 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+<style>
+  canvas{
+    width:100px !important;
+    height:100px !important;
+    padding: 0;
+    margin: auto;
+  }
+
+ .badge.badge-success.n1 {
+  margin: 5px;
+  background-color: #d4d0c7 !important;
+} 
+.badge.badge-success.n2 {
+  margin: 5px;
+  background-color: #ed9f7b !important;
+} 
+.badge.badge-success.n3 {
+  margin: 5px;
+  background-color: #e6d68e !important;
+} 
+.badge.badge-success.n4 {
+  margin: 5px;
+  background-color: #7dedf5 !important;
+} 
+.badge.badge-success.n5 {
+  margin: 5px;
+  background-color: #a6ed9d !important;
+} 
+
+</style>
+<script>
+  
+  function load_bar(id, rit) {
+    r_impacto = [];
+    r_prob = [];
+    rit.forEach(function(r) {
+
+      var r_i = {x: '', y: '', name: ''}
+      var r_p = {x: '', y: '', name: ''}
+      
+      if (r.status < 2) {
+        r_i.x = r.risk_ref
+        r_i.y = 0
+        r_i.name = r.risk_name
+
+        r_p.x = r.risk_ref
+        r_p.y = 0
+        r_p.name = r.risk_name
+
+      } else {
+        r_i.x = r.risk_ref
+        r_i.y = r.impact_level_expert
+        r_i.name = r.risk_name
+
+        r_p.x = r.risk_ref
+        r_p.y = r.probability_level_expert
+        r_p.name = r.risk_name
+      }
+      r_prob.push(r_i)
+      r_impacto.push(r_p)
+    });
+
+    var options = {
+          series: [
+        {
+          name: 'Impacto',
+          data: r_impacto
+        },
+        {
+          name: 'Probabilidad',
+          data: r_prob
+        }
+      ],
+          chart: {
+            height: 250,
+            type: 'bar',
+            stacked: true,
+            toolbar: {
+              show:false,
+            }
+          },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            dataLabels: {
+              position: 'center', // top, center, bottom
+            },
+          }
+        },
+        
+        dataLabels: {
+          enabled: true,
+          formatter: function (val) {
+            return val;
+          },
+          style: {
+            fontSize: '10px',
+            colors: ["#304758"]
+          }
+        },
+        tooltip:{
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+            markerColor = w.globals.markers.colors[seriesIndex];
+            return '<div style="margin:10px;">' + 
+            '<br>' +
+            '<div style="font-size: 11px;">'+
+              '<b>'+data.x+'</b>'+
+            '</div>'+
+            '<div style="font-size: 11px;">'+
+              data.name+
+            '</div>'+
+            '<br>' +
+              '<div class="apexcharts-legend-series">' +
+                '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
+                '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
+              '</div>'
+            +'</div>';
+          },
+        },
+        xaxis: {
+          position: 'bottom',
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          },
+          crosshairs: {
+            enabled:false,
+          },
+          tooltip: {
+            enabled: false,
+          }
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+            formatter: function (val) {
+              return val;
+            }
+          }
+        
+        },
+      };
+
+        var chart = new ApexCharts(document.querySelector("#"+id), options);
+        chart.render();
+  }
+
+  function load_chart(id, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined") {
+    
+    var arglen = arguments.length;
+    let data;
+
+    if (arglen == 6) {
+      data = {
+        labels: ['Not started', 'Waiting Control Owner', 'Waiting Control Supervisor', 'Waiting Administrator', 'Finalized'],
+        datasets: [
+          {
+            label: 'Dataset 1',
+            data: [arg1, arg2, arg3, arg4, arg5],
+            backgroundColor: ["#d4d0c7","#ed9f7b", "#e6d68e","#7dedf5", "#a6ed9d"],
+          }
+        ]
+      };
+
+    } else {
+      data = {
+        labels: ['Not started', 'Effective', 'Not effective'],
+        datasets: [
+          {
+            label: 'Dataset 1',
+            data: [arg1, arg2, arg3],
+            backgroundColor: ["#d4d0c7","#a6ed9d","#ed9f7b"],
+          }
+        ]
+      };
+    }
+    
+    const config = {
+      type: 'pie',
+      data: data,
+      fill: {
+          type: 'gradient',
+        },
+      options: {
+        animation : {
+          duration: 5000,
+        },
+        responsive: true,
+        plugins: {
+          legend: {
+            display:false,
+          },
+          title: {
+            display: false,
+          },
+          
+        },
+        },
+    };
+    const myChart = new Chart(document.querySelector('#'+id), config);
+  }
+
+</script>
 <!--begin::Container-->
 <div class="card mb-8">
   <!--begin::Card header-->
@@ -22,21 +236,192 @@
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
-    <div class="row">
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Estado' %}: </span>{{ evaluation.get_status_display }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'REF' %}: </span>{{ evaluation.ref }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Auto supervisión' %}: </span>{{ evaluation.allow_self_autosupervision|yesno:_("Si,No") }}</p>
+  <div class="row">
+      <div class="col col-md-6">
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.ref }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.company.ref }} - {{ evaluation.company.name }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+            <span class="badge badge-info">{{ evaluation.company.type_company }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sociedades en alcance' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              {% for c in evaluation.company.companies_in_scope_as_list %}
+                <span class="badge badge-info text-wrap" style="text-align:left;">{{ c }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Estado' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6" style="display:flex;">
+              {% if evaluation.status == "EP" %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                <div>{{ evaluation.get_status_display }}</div>
+              {% else %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                <div>{{ evaluation.get_status_display }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Compañía' %}: </span>{{ evaluation.company }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Año de certificación' %}: </span>{{ evaluation.certification_year }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Periodo de certificación' %}: </span>{{ evaluation.certification_period }}</p>
+      <div class="col col-md-3">
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6">
+              <span>{{ evaluation.certification_year }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de certificación' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6">
+              <span>{{ evaluation.certification_period }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.date_begin }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha límite Control Owners' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.date_intermediate }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de fin' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.date_end }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Fecha de inicio' %}: </span>{{ evaluation.date_begin }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Fecha límite para control owner' %}: </span>{{ evaluation.date_intermediate }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Fecha final' %}: </span>{{ evaluation.date_end }}</p>
+      <div class="col col-md-3">
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main','{{evaluation.ncontrols_test_by_state_si}}','{{evaluation.ncontrols_test_by_state_wo}}','{{evaluation.ncontrols_test_by_state_ws}}','{{evaluation.ncontrols_test_by_state_wa}}','{{evaluation.ncontrols_test_by_state_fi}}');
+        </script>
+        <div class="row mb-8">
+          <div style="float: right;display: flex; flex-direction: row;flex-wrap: wrap;justify-content: flex-end;margin-top: -15px !important; place-content:center;">
+            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
+            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Owner' %}">WO</span>
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Supervisor' %}">WS</span>      
+            <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Administrator' %}">WA</span>      
+            <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalized' %}">FI</span>      
+          </div>
+        </div>
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main2"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main2','{{evaluation.ncontrols_test_by_result_se}}','{{evaluation.ncontrols_test_by_result_ef}}','{{evaluation.ncontrols_test_by_result_ne}}');
+        </script>
+        <div class="row mb-8">
+          <div style="float: right;display: flex; flex-direction: row;flex-wrap: wrap;justify-content: flex-end;margin-top: -15px !important; place-content:center;">
+            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
+            <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Effective' %}">EF</span>
+            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Not effective' %}">NE</span>      
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -116,39 +501,72 @@
       <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
         <thead>
           <tr>
-            <th width="70px">{% trans 'REF' %}</th>
-            <th>{% trans 'CONTROL' %}</th>
-            <th>{% trans 'OWNER' %}</th>
-            <th>{% trans 'SUPERVISOR' %}</th>
-            <th width="30%">{% trans 'STATUS' %}</th>
-            <th width="100px">{% trans 'RESULTADO' %}</th>
+            <th></th>
+            <th class="text-center align-middle">{% trans 'REF' %}</th>
+            <th class="text-center align-middle">{% trans 'Descripción' %}</th>
+            <th class="text-center align-middle">{% trans 'Evidencia' %}</th>
+            <th class="text-center align-middle">{% trans 'Control Owner' %}</th>
+            <th class="text-center align-middle">{% trans 'Control Supervisor' %}</th>
+            <th class="text-center align-middle">{% trans 'Efectividad' %}</th>
           </tr>
         </thead>
         <tbody>
           {% for ct in evaluation.control_tests.all %}
           <tr>
-            {% if evaluation.status == 'SI' %}
-              <td><a href="{% url 'control_tests:control_test_assign' ct.pk %}">#{{ ct.identifier }}</a></td>
-            {% else %}
-              <td><a href="{% url 'control_tests:control_test_detail' ct.pk %}">#{{ ct.identifier }}</a></td>
-            {% endif %}
-            <td><a target="_blank" href="{% url 'controls:ga_control_detail' ct.control.pk %}">{{ct.control.ref}}</a></td>
-            <td>
+            <td class="text-center align-middle">
+              {% if ct.status == "SI" %}
+                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">NS</span>
+              {% elif ct.status == "WO" %}
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">WO</span>
+              {% elif ct.status == "WS" %}
+                <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">WS</span>      
+              {% elif ct.status == "WA" %}
+                <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">WA</span>      
+              {% elif ct.status == "FI" %}
+                <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">FI</span>
+              {% endif %}
+            </td>
+            <td class="text-center align-middle">
+              <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
+                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans Detalle %}">{{ ct.identifier }}</span>
+              </a>
+            </td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ ct.control.description|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ct.control.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">
+              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ct.control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
+            </td>            
+            <td class="text-center align-middle">
               {% if ct.control_test_owner %}
                 {{ ct.control_test_owner }}
               {% else %}
                 <a href="{% url 'control_tests:control_test_assign' ct.pk %}">{% trans 'Asignar' %}</a>
               {% endif %}
             </td>
-            <td>
+            <td class="text-center align-middle">
               {% if ct.control_test_supervisor %}
                 {{ ct.control_test_supervisor }}
               {% else %}
                 <a href="{% url 'control_tests:control_test_assign' ct.pk %}">{% trans 'Asignar' %}</a>
               {% endif %}
             </td>
-            <td>{{ ct.get_status_display }}</td>
-            <td>{{ ct.get_result_display }}</td>
+            <td class="text-center align-middle">
+              {% if ct.result == "SE" %}
+                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NS</span>
+              {% elif ct.result == "EF" %}
+                <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EF</span>
+              {% elif ct.result == "NE" %}
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NE</span>
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>
