@@ -117,7 +117,7 @@ class RuEvaluationRiskInherentComplete(DetailView, FormView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones de Riesgo Inherente')}
         ]
-        context['page_title'] = f"{_('Evaluación de Riesgos Inherentes')} : {self.object.ref}"
+        context['page_title'] = f"{_('Evaluación de Riesgo Inherente')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
         risk_tests = self.object.risk_test_inherents.filter(
