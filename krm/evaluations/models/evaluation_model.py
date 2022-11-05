@@ -103,7 +103,7 @@ class Evaluation(AuditModel):
                 return False
         return True
 
-    # RETURN number of risks by state in evaluation
+    # RETURN number of ctrls by state in evaluation
     # OPTIONAL ARG: Filter by user
     def ncontrols_test_by_state(self, status, user = None, rol = None):
 
@@ -123,6 +123,28 @@ class Evaluation(AuditModel):
         else:
             return self.control_tests.filter(
                     status = status,
+                ).distinct().count()
+
+    # RETURN number of ctrl by result in evaluation
+    # OPTIONAL ARG: Filter by user
+    def ncontrols_test_by_result(self, result, user = None, rol = None):
+
+        if user and rol:
+            if rol == 'control_test_owner':
+                return self.control_tests.filter(
+                        result = result,
+                        control_test_owner = user,
+                    ).distinct().count()
+            
+            elif rol == 'control_test_supervisor':
+                return self.control_tests.filter(
+                        result = result,
+                        control_test_supervisor = user,
+                    ).distinct().count()
+                    
+        else:
+            return self.control_tests.filter(
+                    result = result,
                 ).distinct().count()
                 
     # def generate_control_tests(self, only_key_control=False):
