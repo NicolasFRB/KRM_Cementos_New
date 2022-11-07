@@ -64,7 +64,7 @@ class RiskCompanyResidualApiView(APIView):
             data_item['company'] = company.data
             data_item['risks'] = []
 
-            # Riesgos para los cuales se ha realizado un test de riesgo inherente de esa compañía
+            # Riesgos compañía para los cuales se ha realizado un test de riesgo inherente de esa compañía
             risks_evaluated = [rt.risk for rt in RiskTestInherent.objects.filter(
                 evaluation__in=EvaluationKrmInherent.objects.filter(company=c),
                 status=3
@@ -74,10 +74,19 @@ class RiskCompanyResidualApiView(APIView):
                 # Ahora comprobamos si para este riesgo-compañía se han lanzado test de riesgo inherente
                 risk = RiskCompanySerializer(krm_risk).data
                 risk['evaluated'] = False
+                risk['latest_inherent_impact_level_admin'] = 0
+                risk['latest_inherent_probability_level_admin'] = 0
                 risk['domain_risk_evaluator'] = []
 
                 if krm_risk in risks_evaluated:
                     risk['evaluated'] = True
+                    last_evaluate_risk_inherent = krm_risk.risk_test.filter(
+                        status=3,
+                        evaluation__status='FI'
+                    ).order_by('evaluation__date_begin').first()
+                    risk['severity_level_expert_qualitative'] = last_evaluate_risk_inherent.severity_level_expert_qualitative
+                    risk['severity_level_admin_qualitative'] = last_evaluate_risk_inherent.severity_level_admin_qualitative
+
                 company_domain_risk_evaluator = CompanyDomainRiskEvaluator.objects.get(
                     company=c,
                     domain_risk=krm_risk.risk.risk_master.domain_risk)

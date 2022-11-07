@@ -246,6 +246,8 @@ function CreateEvaluationKrmInherent(props) {
                               <th className="fw-semibold">REF</th>
                               <th className="fw-semibold">NOMBRE</th>
                               <th className="fw-semibold text-center">¿EVALUADO?</th>
+                              <th className="fw-semibold text-center">SEV. EXPERTO</th>
+                              <th className="fw-semibold text-center">SEV. ADMIN</th>
                               <th className="fw-semibold">EVALUADOR ASIGNADO</th>
                             </tr>
                           </thead>
@@ -269,6 +271,12 @@ function CreateEvaluationKrmInherent(props) {
                                   {!risk.evaluated && (
                                     <span className="badge badge-danger">No</span>
                                   )}
+                                </td>
+                                <td className="text-center">
+                                  <span className="badge badge-secondary">{risk.severity_level_expert_qualitative}</span>
+                                </td>
+                                <td className="text-center">
+                                  <span className="badge badge-secondary">{risk.severity_level_admin_qualitative}</span>
                                 </td>
                                 <td>
                                   {risk.domain_risk_evaluator.map((evaluator, index) => {

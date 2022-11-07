@@ -122,12 +122,23 @@ class RiskTestInherent(AuditModel):
         blank=True,
     )
 
+    severity_level_expert = models.IntegerField(
+        _('Nivel de severidad del experto'),
+        default=0
+    )
+
+    severity_level_admin = models.IntegerField(
+        _('Nivel de severidad del administrador'),
+        default=0
+    )
+
     @property
-    def severity_level_expert(self):
-        if self.status < 2:
-            return 0
-        else:
-            return self.impact_level_expert * self.probability_level_expert
+    def severity_level_expert_qualitative(self):
+        return self.severity_level_expert
+
+    @property
+    def severity_level_admin_qualitative(self):
+        return self.severity_level_admin
 
     def __str__(self):
         return f'{self.evaluation.ref} - {self.risk.risk.name}'
@@ -141,6 +152,14 @@ class RiskTestInherent(AuditModel):
                                        self.impact_continuity_level_expert,
                                        self.impact_economic_level_expert
                                        )
+        # Severity level expert
+        if self.status >= 2:
+            self.severity_level_expert = self.impact_level_expert * self.probability_level_expert
+
+        if self.status >= 2:
+            self.severity_level_admin = self.impact_level_administrator * \
+                self.probability_level_administrator
+
         super().save(*args, **kwargs)
 
     def send_notification_expert(self):

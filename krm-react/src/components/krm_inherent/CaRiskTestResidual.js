@@ -115,7 +115,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     type="radio"
                     id={`p-pk-5-${pk}`}
                     checked={probability === 5}
-                    onChange={() => updateProbability(4)}
+                    onChange={() => updateProbability(5)}
                   />
                   <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>5 N/A</label>
                 </div>
