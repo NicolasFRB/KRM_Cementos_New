@@ -35,12 +35,13 @@ from krm.evaluations.forms import (
     ControlTestAnswerOwnerCreateForm,
 )
 
-from krm.evaluations.models import Evaluation
+from krm.evaluations.models import Evaluation, ControlTestAnswer
 from krm.companies.models import Company
 from krm.controls.models import Control
 from krm.users.models import User
 
-from krm.evaluations.forms import ControlTestUpdateForm
+from krm.evaluations.forms import ControlTestUpdateForm, ControlTestGaForm
+
 
 
 from krm.users.decorators import (
@@ -92,35 +93,88 @@ class ControlTestAssign(UpdateView):
 
 
 @method_decorator((login_required, user_can_view_control_test), name="dispatch")
-class ControlTestDetail(DetailView):
-    model = ControlTest
-    context_object_name = 'control_test'
-    template_name = "control_tests/ga/ControlTestDetail.html"
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     if self.get_object().evaluation.company in request.user.companies_admin.all():
-    #         return HttpResponseRedirect(reverse_lazy(
-    #             "control_tests:ca_control_test_detail",
-    #             kwargs={'pk': self.get_object().pk}
-    #         ))
-    #     return super().dispatch(request, *args, **kwargs)
+class ControlTestDetail(FormView):
+    template_name = "control_tests/ga/GaControlTestDetail.html"
+    form_class = ControlTestGaForm
+    
+    def dispatch(self, request, *args, **kwargs):
+        control_test = get_object_or_404(ControlTest, pk=self.kwargs.get("pk"))
+        self.control_test = control_test
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        from datetime import date
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
+
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluación'), 'url': reverse(
-                'evaluations:ga_evaluation_detail', kwargs={'pk': self.object.evaluation.pk})},
-            {'title': self.object.identifier}
+            {'title': _('Control Test')}
         ]
-        context['page_title'] = f"{_('Control Test')} : {self.object.identifier}"
+        context['page_title'] = f"{_('Control Test')} : {self.control_test.identifier}"
         context['breadcrums'] = breadcrums
-
-        if self.object.evaluation.company in self.request.user.companies_admin.all():
-            context['is_company_admin'] = True
+        context['control_test'] = self.control_test
+        context['control'] = self.control_test.control
+        context['control_test_risks_company'] = self.control_test.get_control_test_risks_company()
+        context['control_test_subprocess'] = self.control_test.get_control_test_subprocess()
 
         return context
+
+    def form_valid(self, form):
+        if form.cleaned_data["control_status"] == self.control_test.status:
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                _('Debe establecer un nuevo estado del control para finalizar la revisión del control test')
+            )
+            return super(
+                ControlTestDetail,
+                self
+            ).form_invalid(form)
+
+        if form.cleaned_data["control_status"] == 'RE':
+            self.control_test.status = 'WO'
+            self.control_test.result = 'SE'
+            self.control_test.answers.all().delete()
+        else:
+            self.control_test.status = form.cleaned_data["control_status"]
+            self.control_test.result = form.cleaned_data["control_result"]
+
+        # Apuntamos en el diario del usuario la acción
+        self.request.user.add_action(
+            "Control Test Compl.: %s" % str(self.control_test.identifier)
+        )
+
+        # Ahora para mandar las notificaciones comprobamos a quien corresponde
+        self.control_test.save()
+        self.control_test.send_notification()
+
+        description = form.cleaned_data["description"]
+        if description:
+            ControlTestAnswer.objects.create(
+                control_test=self.control_test,
+                description=description,
+                user=self.request.user,
+            )
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Control administrado correctamente")
+        )
+
+        return reverse_lazy(
+            "control_tests:ca_control_test_administrator_list"
+        )
+
+    def get_initial(self):
+        return {
+            'control_status': self.control_test.status,
+            'control_result': self.control_test.result
+        }
 
 
 @method_decorator((login_required, user_can_view_control_test), name="dispatch")

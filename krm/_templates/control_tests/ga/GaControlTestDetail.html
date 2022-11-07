@@ -53,20 +53,14 @@
   </div>
 {% endif %}
 
-<!--begin::Container-->
-<div class="card mb-8">
-  <!--begin::Card body-->
-  <div class="card-body">
-    {% include '_includes/control_test/_control_test_info_head.html' with control_test=control_test %}
-  </div>
-  <!--end::Card body-->
-</div>
-<!--end::Container-->
+
+{% include '_includes/control_test/_control_test_info_head.html' with control_test=control_test %}
+
 
 <div class="card mb-8">
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'RESPUESTAS' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Respuestas de la evaluación del control' %}</div>
     <!--end::Card header-->
   </div>
   <div class="card-body">

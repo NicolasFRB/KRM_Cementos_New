@@ -99,6 +99,15 @@ class ControlTest(AuditModel):
         return str(self.control.ref).zfill(4)
         # return str(self.process_test.identifier) + '-' + str(self.control.ref).zfill(4)
 
+    def get_control_test_risks_company(self):
+        risks_company = self.evaluation.company.krm_risks.filter(active = True)
+        risks_control = self.control.risks.all()
+        return risks_company.filter(risk__in = risks_control)
+
+    def get_control_test_subprocess(self):
+        return self.control.sub_processes.all()
+
+
     def send_notification(self):
         from krm.evaluations.tasks import (
             control_test_send_notification_control_owner,
