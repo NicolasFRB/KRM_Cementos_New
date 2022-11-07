@@ -491,7 +491,7 @@
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Test de Control de la Evaluación' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Controles de la Evaluación' %}</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -502,6 +502,7 @@
         <thead>
           <tr>
             <th></th>
+            <th>Status</th>
             <th class="text-center align-middle">{% trans 'REF' %}</th>
             <th class="text-center align-middle">{% trans 'Descripción' %}</th>
             <th class="text-center align-middle">{% trans 'Evidencia' %}</th>
@@ -514,6 +515,16 @@
           {% for ct in evaluation.control_tests.all %}
           <tr>
             <td class="text-center align-middle">
+              <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
+                <i class="bi bi-eye-fill fs-1x text-primary"></i>
+              </a>
+            </td>
+            <td class="text-center align-middle">
+              <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
+                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans Detalle %}">{{ ct.identifier }}</span>
+              </a>
+            </td>
+            <td class="text-center align-middle">
               {% if ct.status == "SI" %}
                 <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">NS</span>
               {% elif ct.status == "WO" %}
@@ -525,11 +536,6 @@
               {% elif ct.status == "FI" %}
                 <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">FI</span>
               {% endif %}
-            </td>
-            <td class="text-center align-middle">
-              <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
-                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans Detalle %}">{{ ct.identifier }}</span>
-              </a>
             </td>
             <td class="align-middle">
               <div style="display:flex;">
