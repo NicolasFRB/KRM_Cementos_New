@@ -136,6 +136,9 @@ class CaControlTestDetail(FormView):
         context['page_title'] = f"{_('Control Test')} : {self.control_test.identifier}"
         context['breadcrums'] = breadcrums
         context['control_test'] = self.control_test
+        context['control'] = self.control_test.control
+        context['control_test_risks_company'] = self.control_test.get_control_test_risks_company()
+        context['control_test_subprocess'] = self.control_test.get_control_test_subprocess()
         return context
 
     def form_valid(self, form):
