@@ -520,11 +520,6 @@
               </a>
             </td>
             <td class="text-center align-middle">
-              <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
-                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans Detalle %}">{{ ct.identifier }}</span>
-              </a>
-            </td>
-            <td class="text-center align-middle">
               {% if ct.status == "SI" %}
                 <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">NS</span>
               {% elif ct.status == "WO" %}
@@ -536,6 +531,11 @@
               {% elif ct.status == "FI" %}
                 <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">FI</span>
               {% endif %}
+            </td>
+            <td class="text-center align-middle">
+              <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
+                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans Detalle %}">{{ ct.identifier }}</span>
+              </a>
             </td>
             <td class="align-middle">
               <div style="display:flex;">
