@@ -180,3 +180,53 @@ class ControlTestCaForm(ModelForm):
         if cleaned_data.get("status") == self.instance.status:
             raise forms.ValidationError(
                 _('Debe establecer un nuevo estado del control para finalizar la revisión del control test'))
+
+class ControlTestGaForm(ModelForm):
+
+    CONTROL_RESULT_CHOICES = (
+        ("", _("-")),
+        ("EF", _("Efectivo")),
+        ("NE", _("No efectivo")),
+    )
+    control_result = forms.ChoiceField(
+        required=True,
+        choices=CONTROL_RESULT_CHOICES,
+        label=_("Resultado del control")
+    )
+    CONTROL_STATUS_CHOICES = (
+        ("WO", _("Enviar de nuevo al Control Owner")),
+        ("WS", _("Enviar de neuvo al Control Supervisor")),
+        ("WA", _("Por revisar por el Control Administrator")),
+        ("FI", _("Finalizado")),
+        ("RE", _("Reiniciar respuestas y devolver al Control Owner"))
+
+    )
+    control_status = forms.ChoiceField(
+        required=True,
+        choices=CONTROL_STATUS_CHOICES,
+        label=_("Estado del control")
+    )
+    description = forms.CharField(
+        widget=forms.Textarea,
+        label=_("Descripción del seguimiento del control"),
+        max_length=10000,
+        required=False
+    )
+
+    class Meta:
+        model = ControlTest
+        fields = [
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["control_result"].widget.attrs["class"] = "form-select"
+        self.fields["control_status"].widget.attrs["class"] = "form-select"
+        self.fields["description"].widget.attrs["id"] = "cta_description"
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("status") == self.instance.status:
+            raise forms.ValidationError(
+                _('Debe establecer un nuevo estado del control para finalizar la revisión del control test'))
