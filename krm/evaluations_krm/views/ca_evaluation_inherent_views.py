@@ -241,6 +241,51 @@ class CaEvaluationInherentDetailView(FormView):
         #         'icon': '<i class="bi bi-pencil"></i>'
         #     },
         # ]
+        
+        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(
+            1)
+        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(
+            2)
+        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(
+            3)
+
+        # Serializar Evaluation no incluye sus hijos :(
+        # Busco los hijos
+        context['rit'] = RiskTestInherent.objects.filter(
+            evaluation=self.evaluation)
+
+        # Paso a dict para json
+        context['rit_dict'] = [model_to_dict(m) for m in context['rit']]
+
+        # MODEL_TO_DICT not getting properties :(
+        # Get .severity_level_expert
+        # TBI for cuadratico :/
+        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
+        for i, r1 in enumerate(context['rit']):
+            context['rit_dict'][i]['risk_ref'] = r1.risk.risk.ref
+            context['rit_dict'][i]['risk_name'] = r1.risk.risk.name
+            for r2 in context['rit_dict']:
+                if r1.id == r2['id']:
+                    r2['severity_level_expert'] = r1.severity_level_expert
+
+        # Sort by severity for a nice plot
+        context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (
+            x['severity_level_expert'], x['risk_ref']), reverse=True)
+
+        # Errores de encoding caracteres portugueses y españoles
+        for i, m in enumerate(context['rit_dict']):
+            for k in m:
+                if type(context['rit_dict'][i][k]) == str:
+                    context['rit_dict'][i][k] = context['rit_dict'][i][k].encode(
+                        'utf-8').decode('utf-8')
+
+        # JSON DUMP
+        context['rit_json'] = json.dumps(
+            context['rit_dict'],
+            default=str,
+            ensure_ascii=True,
+        )
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
