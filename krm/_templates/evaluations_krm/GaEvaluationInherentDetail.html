@@ -96,7 +96,7 @@
           },
         plotOptions: {
           bar: {
-            borderRadius: 10,
+            borderRadius: 5,
             dataLabels: {
               position: 'center', // top, center, bottom
             },
@@ -562,7 +562,7 @@
             <td class="text-center align-middle">
               <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i>
             </td>
-            <td class="text-center align-middle">{{ rt.severity_level_expert }}</td>
+            <td class="text-center align-middle">{{ rt.severity_level_expert_qualitative }}</td>
             <td class="align-middle">{{ rt.get_impact_level_expert_display }}</td>
             <td class="align-middle">{{ rt.get_probability_level_expert_display }}</td>
             <td class="text-center align-middle">{{ rt.severity_level_expert }}</td>
@@ -571,12 +571,12 @@
             <td class="text-center align-middle">
               <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_admin }}"></i>
             </td>
+            <td class="text-center align-middle">{{ rt.severity_level_admin_qualitative }}</td>
+            <td class="align-middle">{{ rt.get_impact_level_administrator_display }}</td>
+            <td class="align-middle">{{ rt.get_probability_level_administrator_display }}</td>
             <td class="text-center align-middle">{{ rt.severity_level_admin }}</td>
-            <td class="align-middle">{{ rt.get_impact_level_admin_display }}</td>
-            <td class="align-middle">{{ rt.get_probability_level_admin_display }}</td>
-            <td class="text-center align-middle">{{ rt.severity_level_admin }}</td>
-            <td class="text-center align-middle">{{ rt.impact_level_admin }}</td>
-            <td class="text-center align-middle">{{ rt.probability_level_admin }}</td>
+            <td class="text-center align-middle">{{ rt.impact_level_administrator }}</td>
+            <td class="text-center align-middle">{{ rt.probability_level_administrator }}</td>
           </tr>
           {% endfor %}
         </tbody>
