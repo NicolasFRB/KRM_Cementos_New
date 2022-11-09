@@ -367,7 +367,7 @@
         </div>
 
         <div class="card-footer py-6">
-          <div class="admin_risk_test_inherent" data-risktestpk="{{ rt.pk }}" data-impact="{{ rt.impact_level_administrator}}" data-probability="{{ rt.probability_level_administrator }}" data-description="{{ rt.description_admin }}"></div>
+          <div class="admin_risk_test_inherent" data-risktestpk="{{ rt.pk }}" data-impact="{{ rt.impact_level_administrator}}" data-probability="{{ rt.probability_level_administrator }}" data-description="{{ rt.description_admin|default_if_none:'' }}"></div>
         </div>
         <!--end::Card footer-->
       </div>
