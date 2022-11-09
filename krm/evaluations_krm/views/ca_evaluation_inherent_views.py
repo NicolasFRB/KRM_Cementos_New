@@ -81,14 +81,35 @@ class CaEvaluationInherentListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+        ev_pending = EvaluationKrmInherent.objects.filter(status="EP", company__in=self.request.user.companies_admin.all())
+        ev_finished = EvaluationKrmInherent.objects.filter(status="FI", company__in=self.request.user.companies_admin.all())
+
+        for ev in ev_pending:
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
+                1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(
+                2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(
+                3)
+
+        for ev in ev_finished:
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
+                1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(
+                2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(
+                3)
+
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
-    def get_queryset(self):
-        from krm.evaluations_krm.models import EvaluationKrmInherent
-        return EvaluationKrmInherent.objects.filter(
-            company__in=self.request.user.companies_admin.all()
-        )
+    # def get_queryset(self):
+    #     from krm.evaluations_krm.models import EvaluationKrmInherent
+    #     return EvaluationKrmInherent.objects.filter(
+    #         company__in=self.request.user.companies_admin.all()
+    #     )
 
 
 @method_decorator([login_required, is_company_admin, ], name='dispatch')
