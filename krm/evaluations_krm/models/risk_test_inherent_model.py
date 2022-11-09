@@ -134,11 +134,21 @@ class RiskTestInherent(AuditModel):
 
     @property
     def severity_level_expert_qualitative(self):
-        return self.severity_level_expert
-
+        sev = self.severity_level_expert
+        if sev == 0: return 0
+        if sev <= 2: return "No significativo"
+        if sev <= 5: return "Bajo"
+        if sev <= 11: return "Alto"
+        if sev <= 16: return "Crítico"
+         
     @property
     def severity_level_admin_qualitative(self):
-        return self.severity_level_admin
+        sev = self.severity_level_admin
+        if sev == 0: return 0
+        if sev <= 2: return "No significativo"
+        if sev <= 5: return "Bajo"
+        if sev <= 11: return "Alto"
+        if sev <= 16: return "Crítico"
 
     def __str__(self):
         return f'{self.evaluation.ref} - {self.risk.risk.name}'
