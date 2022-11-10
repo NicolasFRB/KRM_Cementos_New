@@ -40,9 +40,10 @@ function SelectCompanies({ selectedCompanies, setSelectedCompanies, companies, s
   }, [setCompanies]);
 
   useEffect(() => {
-    window.CustomDatatables.destroy();
-    window.CustomDatatables.init();
-  }, [selectedCompanies])
+    if (companies.length) {
+      window.CustomDatatables.initEvalCompanies();
+    }
+  }, [companies])
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -53,7 +54,7 @@ function SelectCompanies({ selectedCompanies, setSelectedCompanies, companies, s
       <div>
         {isLoaded && (
           <>
-            <table className="table table-striped customDatatable">
+            <table className="table table-striped customDatatable" id="evalcompanies">
               <thead>
                 <tr>
                   <th className="text-center">

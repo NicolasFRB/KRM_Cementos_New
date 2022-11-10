@@ -79,7 +79,89 @@ var CustomDatatables = {
 
   destroy: function () {
     $('.customDatatable').DataTable().destroy();
-  }
+  },
+
+  initEvalRR: function () {
+    let table = $('#riskrr');
+    let langSelected = langEs;
+    let url = window.location.pathname;
+    if (url.indexOf('/en/') != -1) {
+      langSelected = langEn;
+    }
+
+    // begin first table
+    table.DataTable({
+      responsive: true,
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 10,
+      language: langSelected,
+      "dom":
+        "<'row'" +
+        "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+        "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+        ">" +
+        "<'table-responsive'tr>" +
+        "<'row'" +
+        "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+        "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+        ">"
+    });
+  },
+
+  initEvalRI: function () {
+    let table = $('#riskri');
+    let langSelected = langEs;
+    let url = window.location.pathname;
+    if (url.indexOf('/en/') != -1) {
+      langSelected = langEn;
+    }
+
+    // begin first table
+    table.DataTable({
+      responsive: true,
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 10,
+      language: langSelected,
+      "dom":
+        "<'row'" +
+        "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+        "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+        ">" +
+        "<'table-responsive'tr>" +
+        "<'row'" +
+        "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+        "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+        ">"
+    });
+  },
+
+  initEvalCompanies: function () {
+    let table = $('#evalcompanies');
+    let langSelected = langEs;
+    let url = window.location.pathname;
+    if (url.indexOf('/en/') != -1) {
+      langSelected = langEn;
+    }
+
+    // begin first table
+    table.DataTable({
+      responsive: true,
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 10,
+      language: langSelected,
+      "dom":
+        "<'row'" +
+        "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+        "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+        ">" +
+        "<'table-responsive'tr>" +
+        "<'row'" +
+        "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+        "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+        ">"
+    });
+  },
+
 };
 
 $(document).ready(function () {

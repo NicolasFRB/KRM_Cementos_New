@@ -43,8 +43,9 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
   }, []);
 
   useEffect(() => {
-    window.CustomDatatables.destroy();
-    window.CustomDatatables.init();
+    if (risks.length) {
+      window.CustomDatatables.initEvalRI();
+    }
   }, [risks]);
 
   if (error) {
@@ -56,7 +57,7 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
       <div>
         {isLoaded && (
           <>
-            <table className="table table-striped customDatatable">
+            <table className="table table-striped customDatatable" id="riskri">
               <thead>
                 <tr>
                   <th className="text-center">
