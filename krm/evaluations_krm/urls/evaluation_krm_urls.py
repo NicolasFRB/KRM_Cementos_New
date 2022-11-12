@@ -27,6 +27,7 @@ from krm.evaluations_krm.views import (
 
     RuEvaluationRiskResidualList,
     RuEvaluationRiskResidualComplete,
+    RuEvaluationRiskResidualDetail,
 )
 
 urlpatterns = [
@@ -137,5 +138,11 @@ urlpatterns = [
         'ru/residual/complete/<pk>/',
         RuEvaluationRiskResidualComplete.as_view(),
         name='ru_evaluation_risk_residual_complete'
+    ),
+
+    path(
+        'ru/residual/detail/<pk>/',
+        RuEvaluationRiskResidualDetail.as_view(),
+        name='ru_evaluation_krm_residual_detail'
     ),
 ]
