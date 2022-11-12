@@ -113,3 +113,17 @@ class EvaluationKrmResidual(AuditModel):
                     evaluation=self,
                     risk_company=rt.risk
                 )
+
+    # RETURN number of risks by state in evaluation
+    # OPTIONAL ARG: Filter by user
+    def nrisk_test_residuals_by_state(self, status, user = None):
+
+        if user:
+            return self.risk_test_residuals.filter(
+                    status = status,
+                    evaluator = user,
+                ).distinct().count()
+        else:
+            return self.risk_test_residuals.filter(
+                    evaluator = status,
+                ).distinct().count()
