@@ -150,30 +150,75 @@ class RiskTestResidual(AuditModel):
     @property
     def get_latest_impact_inherent(self):
         # Evaluaciones en las que se ha evaluado ese riesgo compañía
-        if self.risk.risk_test_inherent.filter(
-            status=3,
-            evaluation__status='FI'
-        ).count() > 0:
-            last_evaluate_risk_inherent = self.risk.risk_test_inherent.filter(
-                status=3,
-                evaluation__status='FI'
-            ).order_by('evaluation__date_begin').first()
-            return last_evaluate_risk_inherent.impact_level_administrator
+        from krm.evaluations_krm.models import RiskTestInherent
+
+        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
+            risk = self.risk,
+            evaluation__status = 'FI',
+        )
+
+        if last_evaluate_risk_inherent.count() > 0:
+            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().impact_level_administrator
 
         return None
 
     @property
     def get_latest_probability_inherent(self):
         # Evaluaciones en las que se ha evaluado ese riesgo compañía
-        if self.risk.risk_test_inherent.filter(
-            status=3,
-            evaluation__status='FI'
-        ).count() > 0:
-            last_evaluate_risk_inherent = self.risk.risk_test_inherent.filter(
-                status=3,
-                evaluation__status='FI'
-            ).order_by('evaluation__date_begin').first()
-            return last_evaluate_risk_inherent.probability_level_administrator
+        from krm.evaluations_krm.models import RiskTestInherent
+
+        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
+            risk = self.risk,
+            evaluation__status = 'FI',
+        )
+
+        if last_evaluate_risk_inherent.count() > 0:
+            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().probability_level_administrator
+
+        return None
+
+    @property
+    def get_latest_justification_inherent(self):
+        # Evaluaciones en las que se ha evaluado ese riesgo compañía
+        from krm.evaluations_krm.models import RiskTestInherent
+
+        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
+            risk = self.risk,
+            evaluation__status = 'FI',
+        )
+
+        if last_evaluate_risk_inherent.count() > 0:
+            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().description_admin
+
+        return None
+
+    @property
+    def get_latest_severity_inherent(self):
+        # Evaluaciones en las que se ha evaluado ese riesgo compañía
+        from krm.evaluations_krm.models import RiskTestInherent
+
+        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
+            risk = self.risk,
+            evaluation__status = 'FI',
+        )
+
+        if last_evaluate_risk_inherent.count() > 0:
+            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().severity_level_admin
+
+        return None
+
+    @property
+    def get_latest_severity_inherent_qualitative(self):
+        # Evaluaciones en las que se ha evaluado ese riesgo compañía
+        from krm.evaluations_krm.models import RiskTestInherent
+
+        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
+            risk = self.risk,
+            evaluation__status = 'FI',
+        )
+
+        if last_evaluate_risk_inherent.count() > 0:
+            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().severity_level_admin_qualitative
 
         return None
 
@@ -181,7 +226,7 @@ class RiskTestResidual(AuditModel):
         from krm.controls.models import Control
         # Controles que aplican a esa compañía, los cuales están asociados al riesgo de este test de riesgo residual
         controls = Control.objects.filter(
-            risks__id__exacts=self.risk.risk.pk,
+            risks__id__exact=self.risk.risk.pk,
             pk__in=[control.pk for control in self.evaluation.company.controls.all()]
         )
         return controls
@@ -193,7 +238,7 @@ class RiskTestResidual(AuditModel):
         control_tests = ControlTest.objects.filter(
             evaluation__company=self.evaluation.company,
             control__pk__in=[
-                c.pk for c in self.get_controls_attempt_to_mitigate],
+                c.pk for c in self.get_controls_attempt_to_mitigate()],
             status='FI'
         )
 
