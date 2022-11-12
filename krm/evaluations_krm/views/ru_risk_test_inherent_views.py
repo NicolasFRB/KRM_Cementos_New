@@ -71,12 +71,9 @@ class RuEvaluationRiskInherentList(TemplateView):
         for ev in ev_finished:
             ev.nrisk_test_inherents_finished_user = ev.nrisk_test_inherents_by_state(3, self.request.user)
         
-        eri_count_by_state_perc = {
-            'FI': int(100*ev_delivered.count()/(ev_delivered.count() + ev_pending.count())),
-            'EP': int(100*ev_pending.count()/(ev_delivered.count() + ev_pending.count())),
-        }
-
-        if ev_delivered or ev_pending:
+        eri_count_by_state_perc = {'FI': 0, 'EP': 0}
+        
+        if ev_delivered.count() != 0 or ev_pending.count() != 0:
             eri_count_by_state_perc['FI'] = int(
                 100*ev_delivered.count()/(ev_delivered.count() + ev_pending.count()))
             eri_count_by_state_perc['EP'] = int(
