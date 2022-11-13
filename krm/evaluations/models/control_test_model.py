@@ -13,6 +13,7 @@ from django.core.mail import EmailMultiAlternatives
 
 # Utilities
 from krm.utils.models import AuditModel
+from krm.risks.models import DomainRisk
 
 
 class ControlTest(AuditModel):
@@ -103,6 +104,17 @@ class ControlTest(AuditModel):
         risks_company = self.evaluation.company.krm_risks.filter(active = True)
         risks_control = self.control.risks.all()
         return risks_company.filter(risk__in = risks_control)
+
+    def get_control_test_domain_risks(self):
+        r_company = self.get_control_test_risks_company()
+        domain_risks_pk = []
+        
+        for r in r_company:
+            dom_risk_pk = r.risk.risk_master.domain_risk.pk
+            if dom_risk_pk not in domain_risks_pk:
+                domain_risks_pk.append(dom_risk_pk)
+
+        return DomainRisk.objects.filter(id__in = domain_risks_pk)
 
     def get_control_test_subprocess(self):
         return self.control.sub_processes.all()
