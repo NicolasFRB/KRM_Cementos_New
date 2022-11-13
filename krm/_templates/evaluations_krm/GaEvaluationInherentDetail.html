@@ -15,8 +15,8 @@
 
 <style>
   canvas{
-    width:100px !important;
-    height:100px !important;
+    width:125px !important;
+    height:125px !important;
     padding: 0;
     margin: auto;
   }
@@ -57,19 +57,23 @@
         r_i.x = r.risk_ref
         r_i.y = 0
         r_i.name = r.risk_name
+        r_i.expert = r.expert
 
         r_p.x = r.risk_ref
         r_p.y = 0
         r_p.name = r.risk_name
+        r_p.expert = r.expert
 
       } else {
         r_i.x = r.risk_ref
         r_i.y = r.impact_level_expert
         r_i.name = r.risk_name
+        r_i.expert = r.expert
 
         r_p.x = r.risk_ref
         r_p.y = r.probability_level_expert
         r_p.name = r.risk_name
+        r_p.expert = r.expert
       }
       r_prob.push(r_i)
       r_impacto.push(r_p)
@@ -125,6 +129,9 @@
             '<div style="font-size: 11px;">'+
               data.name+
             '</div>'+
+            '<div style="font-size: 11px;">'+
+              'Evaluador: ' + data.expert+
+            '</div>'+
             '<br>' +
               '<div class="apexcharts-legend-series">' +
                 '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
@@ -169,7 +176,7 @@
         chart.render();
   }
 
-  function load_chart(id, n_pending, n_delivered, n_finished) {
+  function load_chart(id, n_pending, n_delivered, n_finished, title) {
     
     const data = {
       labels: ['Pending', 'Delivered', 'Finished'],
@@ -197,7 +204,12 @@
             display:false,
           },
           title: {
-            display: false,
+            display: true,
+            text: title,
+            font: {
+                size: 11,
+                family: 'Helvetica, Inter, sans-serif',
+            },
           },
           
         },
@@ -452,7 +464,15 @@
           </div>
         </div>
         <script>
-          load_chart('pie-main','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}');
+          load_chart('pie-main','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}', 'Riesgos evaluados');
+        </script>
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main-experts"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main-experts','{{evaluation.experts_pending.count}}','{{evaluation.experts_delivered.count}}','{{evaluation.experts_finished.count}}', 'Expertos');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
