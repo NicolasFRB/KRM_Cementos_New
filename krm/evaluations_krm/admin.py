@@ -46,6 +46,8 @@ class RiskTestResidualAdmin(admin.ModelAdmin):
     list_display = (
         'evaluation',
         'risk',
+        'evaluator',
+        'probability_level_residual_evaluator',
     )
     list_filter = ('evaluation__company', 'evaluation')
 
