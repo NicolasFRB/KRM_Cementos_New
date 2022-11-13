@@ -242,6 +242,9 @@ class GaEvaluationResidualDetailView(FormView):
         ]
         context['page_title'] = f"{_('Evaluación KRM Residual')} : {self.evaluation.ref}"
         context['breadcrums'] = breadcrums
+
+        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
+        
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
