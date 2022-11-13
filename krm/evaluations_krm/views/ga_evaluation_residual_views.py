@@ -75,7 +75,37 @@ class GaEvaluationResidualListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+
+        ev_pending = EvaluationKrmResidual.objects.filter(status="EP")
+        ev_finished = EvaluationKrmResidual.objects.filter(status="FI")
+
+        for ev in ev_pending:
+            ev.nrisk_test_residuals_pending = ev.nrisk_test_residuals_by_state(1)
+            ev.nrisk_test_residuals_delivered = ev.nrisk_test_residuals_by_state(2)
+            ev.nrisk_test_residuals_finished = ev.nrisk_test_residuals_by_state(3)
+
+            ev.evaluators_pending = ev.get_evaluators_by_rrt_state(1)
+            ev.evaluators_delivered = ev.get_evaluators_by_rrt_state(2)
+            ev.evaluators_finished = ev.get_evaluators_by_rrt_state(3)
+
+            ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + ev.evaluators_finished.count()
+
+        for ev in ev_finished:
+            ev.nrisk_test_residuals_pending = ev.nrisk_test_residuals_by_state(1)
+            ev.nrisk_test_residuals_delivered = ev.nrisk_test_residuals_by_state(2)
+            ev.nrisk_test_residuals_finished = ev.nrisk_test_residuals_by_state(3)
+
+            ev.evaluators_pending = ev.get_evaluators_by_rrt_state(1)
+            ev.evaluators_delivered = ev.get_evaluators_by_rrt_state(2)
+            ev.evaluators_finished = ev.get_evaluators_by_rrt_state(3)
+
+            ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + ev.evaluators_finished.count()
+        
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
+
         context['js_template'] = ['js/custom/datatables.js']
+
         return context
 
 
@@ -249,6 +279,6 @@ class GaEvaluationResidualDetailView(FormView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "evaluations_krm:ga_evaluation_krm_inherent_detail",
+            "evaluations_krm:ga_evaluation_krm_residual_detail",
             kwargs={"pk": self.evaluation.pk},
         )
