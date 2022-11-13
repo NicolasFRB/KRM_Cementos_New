@@ -256,6 +256,12 @@ class GaEvaluationInherentDetailView(FormView):
         context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(
             3)
 
+        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(1)
+        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(2)
+        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(3)
+
+        context['evaluation'].total_experts = context['evaluation'].experts_pending.count() + context['evaluation'].experts_delivered.count() + context['evaluation'].experts_finished.count()
+
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
         # Serializar Evaluation no incluye sus hijos :(
@@ -273,9 +279,11 @@ class GaEvaluationInherentDetailView(FormView):
         for i, r1 in enumerate(context['rit']):
             context['rit_dict'][i]['risk_ref'] = r1.risk.risk.ref
             context['rit_dict'][i]['risk_name'] = r1.risk.risk.name
+            context['rit_dict'][i]['expert'] = r1.expert.username_no_domain
             for r2 in context['rit_dict']:
                 if r1.id == r2['id']:
                     r2['severity_level_expert'] = r1.severity_level_expert
+                    
 
         # Sort by severity for a nice plot
         context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (
