@@ -8,6 +8,7 @@ from ckeditor.fields import RichTextField
 
 from krm.utils.models import AuditModel
 from krm.users.models import User
+from krm.risks.models import DomainRisk
 
 
 def year_choices():
@@ -129,6 +130,7 @@ class EvaluationKrmResidual(AuditModel):
                     status = status,
                 ).distinct().count()
 
+    # RETURN experts by state of risks in evaluation
     def get_evaluators_by_rrt_state(self, status):
         
         evaluators_id = set([rt.evaluator.pk for rt in self.risk_test_residuals.filter(
@@ -136,4 +138,14 @@ class EvaluationKrmResidual(AuditModel):
         
         return User.objects.filter(id__in = evaluators_id)
         
+    # RETURN domain_risks in evaluation
+    def get_domain_risk_in_evaluation(self):
 
+        domain_risks_pks = []
+        for rt in self.risk_test_residuals.all():
+            domain_pk = rt.risk.risk.risk_master.domain_risk.pk
+                
+            if domain_pk not in domain_risks_pks:
+                domain_risks_pks.append(domain_pk)
+        
+        return DomainRisk.objects.filter(id__in = domain_risks_pks)
