@@ -109,6 +109,7 @@ canvas#race{position:relative; z-index:100;}
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
           <th class="text-center">{% trans 'Nº Controles' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
@@ -132,6 +133,13 @@ canvas#race{position:relative; z-index:100;}
             <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
             <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                       title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
+            <td class="text-center align-middle">
+              {% for dom in evaluation.domain_risks %}
+              <a href="{% url 'domain_risks:ga_domain_risk_detail' dom.pk %}">
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+              </a>
+              {% endfor %}
+            </td>
             <td class="text-center align-middle">
               <div>
                 <span class="badge badge-info">{{ evaluation.control_tests.count }}</span>
@@ -204,7 +212,8 @@ canvas#race{position:relative; z-index:100;}
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
-          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+          <th class="text-center">{% trans 'Nº Controles' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -227,6 +236,13 @@ canvas#race{position:relative; z-index:100;}
             <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
             <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                       title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
+            <td class="text-center align-middle">
+              {% for dom in evaluation.domain_risks %}
+              <a href="{% url 'domain_risks:ga_domain_risk_detail' dom.pk %}">
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+              </a>
+              {% endfor %}
+            </td>
             <td class="text-center align-middle">
               <div>
                 <span class="badge badge-info">{{ evaluation.control_tests.count }}</span>
