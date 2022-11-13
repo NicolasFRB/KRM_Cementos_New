@@ -368,6 +368,24 @@
           </div>
           <!--end::Col-->
         </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              {% for dom in evaluation.domain_risks %}
+                <a href="{% url 'domain_risks:ga_domain_risk_detail' dom.pk %}">
+                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
       <div class="col col-md-3">
         <div class="row mb-8">
