@@ -90,6 +90,8 @@ class GaEvaluationResidualListView(ListView):
 
             ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + ev.evaluators_finished.count()
 
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
+
         for ev in ev_finished:
             ev.nrisk_test_residuals_pending = ev.nrisk_test_residuals_by_state(1)
             ev.nrisk_test_residuals_delivered = ev.nrisk_test_residuals_by_state(2)
@@ -100,6 +102,8 @@ class GaEvaluationResidualListView(ListView):
             ev.evaluators_finished = ev.get_evaluators_by_rrt_state(3)
 
             ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + ev.evaluators_finished.count()
+
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
         
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
