@@ -157,6 +157,8 @@ class GaEvaluationDetailView(FormView):
         context['evaluation'].ncontrols_test_by_result_ef = context['evaluation'].ncontrols_test_by_result("EF")
         context['evaluation'].ncontrols_test_by_result_ne = context['evaluation'].ncontrols_test_by_result("NE")
 
+        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
