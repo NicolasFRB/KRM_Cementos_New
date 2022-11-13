@@ -7,6 +7,8 @@ from django.utils.html import strip_tags
 from ckeditor.fields import RichTextField
 
 from krm.utils.models import AuditModel
+from krm.users.models import User
+from krm.risks.models import DomainRisk
 
 
 def year_choices():
@@ -95,3 +97,23 @@ class EvaluationKrmInherent(AuditModel):
             return self.risk_test_inherents.filter(
                     status = status,
                 ).distinct().count()
+
+    # RETURN experts by state of risks in evaluation
+    def get_experts_by_rit_state(self, status):
+        
+        experts_id = set([rt.expert.pk for rt in self.risk_test_inherents.filter(
+                    status = status)])
+        
+        return User.objects.filter(id__in = experts_id)
+
+    # RETURN domain_risks in evaluation
+    def get_domain_risk_in_evaluation(self):
+
+        domain_risks_pks = []
+        for rt in self.risk_test_inherents.all():
+            domain_pk = rt.risk.risk.risk_master.domain_risk.pk
+                
+            if domain_pk not in domain_risks_pks:
+                domain_risks_pks.append(domain_pk)
+        
+        return DomainRisk.objects.filter(id__in = domain_risks_pks)
