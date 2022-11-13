@@ -11,8 +11,9 @@
         <th class="text-center align-middle">{% trans 'REF' %}</th>
         <th class="text-center align-middle">{% trans 'Descripción' %}</th>
         <th class="text-center align-middle">{% trans 'Evidencia' %}</th>
-        <th class="text-center align-middle">{% trans 'Control Owner' %}</th>
-        <th class="text-center align-middle">{% trans 'Control Supervisor' %}</th>
+        <th class="text-center align-middle">{% trans 'Dominios de riesgo' %}</th>
+        <th class="text-center align-middle">{% trans 'Nº de riesgos' %}</th>
+        <th class="text-center align-middle">{% trans 'Control Owner/Supervisor' %}</th>
         <th class="text-center align-middle">{% trans 'Efectividad' %}</th>
       </tr>
     </thead>
@@ -54,19 +55,25 @@
         </td>
         <td class="text-center align-middle">
           <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ct.control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
+        </td>    
+        <td class="text-center align-middle">
+          {% for dom in ct.get_control_test_domain_risks.all %}
+            <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+          {% endfor %}
+        </td>
+        <td class="text-center align-middle">
+          <span class="badge badge-info">{{ ct.get_control_test_risks_company.count }}</span>
         </td>            
         <td class="text-center align-middle">
           {% if ct.control_test_owner %}
-            <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id = "box-child">{{ ct.control_test_owner.username_no_domain }}</span>
+              <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id = "box-child">CO: {{ ct.control_test_owner.username_no_domain }}</span>
           {% else %}
-            <span class="badge badge-success" id = "box-child">Sin asignar</span>
+            {% trans 'Sin asignar' %}
           {% endif %}
-        </td>
-        <td class="text-center align-middle">
           {% if ct.control_test_supervisor %}
-            <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ ct.control_test_supervisor.full_name }} ({{ ct.control_test_supervisor.position }})" id = "box-child">{{ ct.control_test_supervisor.username_no_domain }}</span>
+              <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ ct.control_test_supervisor.full_name }} ({{ ct.control_test_supervisor.position }})" id = "box-child">CS: {{ ct.control_test_supervisor.username_no_domain }}</span>
           {% else %}
-            <span class="badge badge-success" id = "box-child">Sin asignar</span>
+            {% trans 'Sin asignar' %}
           {% endif %}
         </td>
         <td class="text-center align-middle">
