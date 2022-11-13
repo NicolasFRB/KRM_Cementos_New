@@ -7,6 +7,7 @@ from django.utils.html import strip_tags
 from ckeditor.fields import RichTextField
 
 from krm.utils.models import AuditModel
+from krm.users.models import User
 
 
 def year_choices():
@@ -125,5 +126,14 @@ class EvaluationKrmResidual(AuditModel):
                 ).distinct().count()
         else:
             return self.risk_test_residuals.filter(
-                    evaluator = status,
+                    status = status,
                 ).distinct().count()
+
+    def get_evaluators_by_rrt_state(self, status):
+        
+        evaluators_id = set([rt.evaluator.pk for rt in self.risk_test_residuals.filter(
+                    status = status)])
+        
+        return User.objects.filter(id__in = evaluators_id)
+        
+
