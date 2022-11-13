@@ -86,20 +86,30 @@ class GaEvaluationInherentListView(ListView):
         ev_finished = EvaluationKrmInherent.objects.filter(status="FI")
 
         for ev in ev_pending:
-            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
-                1)
-            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(
-                2)
-            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(
-                3)
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(3)
+
+            ev.experts_pending = ev.get_experts_by_rit_state(1)
+            ev.experts_delivered = ev.get_experts_by_rit_state(2)
+            ev.experts_finished = ev.get_experts_by_rit_state(3)
+
+            ev.total_experts = ev.experts_pending.count() + ev.experts_delivered.count() + ev.experts_finished.count()
+
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
 
         for ev in ev_finished:
-            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
-                1)
-            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(
-                2)
-            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(
-                3)
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(3)
+
+            ev.experts_pending = ev.get_experts_by_rit_state(1)
+            ev.experts_delivered = ev.get_experts_by_rit_state(2)
+            ev.experts_finished = ev.get_experts_by_rit_state(3)
+
+            ev.total_experts = ev.experts_pending.count() + ev.experts_delivered.count() + ev.experts_finished.count()
+
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
 
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
