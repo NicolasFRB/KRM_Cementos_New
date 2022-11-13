@@ -15,8 +15,8 @@
 
 <style>
   canvas{
-    width:100px !important;
-    height:100px !important;
+    width:125px !important;
+    height:125px !important;
     padding: 0;
     margin: auto;
   }
@@ -169,12 +169,12 @@
         chart.render();
   }
 
-  function load_chart(id, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined") {
+  function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined") {
     
     var arglen = arguments.length;
     let data;
 
-    if (arglen == 6) {
+    if (arglen == 7) {
       data = {
         labels: ['Not started', 'Waiting Control Owner', 'Waiting Control Supervisor', 'Waiting Administrator', 'Finalized'],
         datasets: [
@@ -215,7 +215,12 @@
             display:false,
           },
           title: {
-            display: false,
+            display: true,
+            text: title,
+            font: {
+                size: 11,
+                family: 'Helvetica, Inter, sans-serif',
+            },
           },
           
         },
@@ -414,7 +419,7 @@
           </div>
         </div>
         <script>
-          load_chart('pie-main','{{evaluation.ncontrols_test_by_state_si}}','{{evaluation.ncontrols_test_by_state_wo}}','{{evaluation.ncontrols_test_by_state_ws}}','{{evaluation.ncontrols_test_by_state_wa}}','{{evaluation.ncontrols_test_by_state_fi}}');
+          load_chart('pie-main','Controles por estado', '{{evaluation.ncontrols_test_by_state_si}}','{{evaluation.ncontrols_test_by_state_wo}}','{{evaluation.ncontrols_test_by_state_ws}}','{{evaluation.ncontrols_test_by_state_wa}}','{{evaluation.ncontrols_test_by_state_fi}}');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex; flex-direction: row;flex-wrap: wrap;justify-content: flex-end;margin-top: -15px !important; place-content:center;">
@@ -431,7 +436,7 @@
           </div>
         </div>
         <script>
-          load_chart('pie-main2','{{evaluation.ncontrols_test_by_result_se}}','{{evaluation.ncontrols_test_by_result_ef}}','{{evaluation.ncontrols_test_by_result_ne}}');
+          load_chart('pie-main2','Controles por efectividad', '{{evaluation.ncontrols_test_by_result_se}}','{{evaluation.ncontrols_test_by_result_ef}}','{{evaluation.ncontrols_test_by_result_ne}}');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex; flex-direction: row;flex-wrap: wrap;justify-content: flex-end;margin-top: -15px !important; place-content:center;">
