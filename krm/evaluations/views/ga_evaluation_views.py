@@ -93,6 +93,8 @@ class GaEvaluationListView(ListView):
             ev.ncontrols_test_by_state_fi = ev.ncontrols_test_by_state(
                 "FI")
 
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
+
         for ev in ev_finished:
             ev.ncontrols_test_by_state_si = ev.ncontrols_test_by_state(
                 "SI")
@@ -104,6 +106,8 @@ class GaEvaluationListView(ListView):
                 "WA")
             ev.ncontrols_test_by_state_fi = ev.ncontrols_test_by_state(
                 "FI")
+
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
         
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
