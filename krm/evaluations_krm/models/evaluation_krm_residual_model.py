@@ -9,6 +9,7 @@ from ckeditor.fields import RichTextField
 from krm.utils.models import AuditModel
 from krm.users.models import User
 from krm.risks.models import DomainRisk
+from krm.controls.models import Control
 
 
 def year_choices():
@@ -149,3 +150,12 @@ class EvaluationKrmResidual(AuditModel):
                 domain_risks_pks.append(domain_pk)
         
         return DomainRisk.objects.filter(id__in = domain_risks_pks)
+
+    # RETURN ELC Controls - common for all risks in evaluation
+    def get_controls_elc(self):
+
+        controls = Control.objects.filter(
+            is_elc = True,
+            pk__in=[control.pk for control in self.company.controls.all()]
+        )
+        return controls
