@@ -116,7 +116,7 @@ class RuEvaluationRiskResidualComplete(DetailView, FormView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones de Riesgo Residual')}
         ]
-        context['page_title'] = f"{_('Evaluación de Riesgo Residuale')} : {self.object.ref}"
+        context['page_title'] = f"{_('Evaluación de Riesgo Residual')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
         risk_tests = self.object.risk_test_residuals.filter(
@@ -129,6 +129,8 @@ class RuEvaluationRiskResidualComplete(DetailView, FormView):
             r.test_controls_attempt_to_mitigate = r.get_test_controls_attempt_to_mitigate()
 
         context['risks_test_residual'] = sorted(risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
+
+        context['js_template'] = ['js/custom/datatables.js']
 
         return context
 
