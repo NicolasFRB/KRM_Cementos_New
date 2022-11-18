@@ -101,7 +101,9 @@ canvas#race{position:relative; z-index:100;}
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
           <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Nº Evaluadores' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -125,6 +127,13 @@ canvas#race{position:relative; z-index:100;}
             <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                       title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
             <td class="text-center align-middle">
+              {% for dom in evaluation.domain_risks %}
+              
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+              
+              {% endfor %}
+            </td>          
+            <td class="text-center align-middle">
               <div>
                 <span class="badge badge-info">{{ evaluation.risk_test_inherents.count }}</span>
               </div>
@@ -134,6 +143,17 @@ canvas#race{position:relative; z-index:100;}
             </td>
             <script>
               load_chart('pie-ep-{{ forloop.counter }}','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}');
+            </script>
+            <td class="text-center align-middle">
+              <div>
+                <span class="badge badge-info">{{ evaluation.total_experts }}</span>
+              </div>
+              <div>
+                <canvas id="pie-ep-evs-{{ forloop.counter }}"></canvas>
+              </div>              
+            </td>
+            <script>
+              load_chart('pie-ep-evs-{{ forloop.counter }}','{{evaluation.experts_pending.count}}','{{evaluation.experts_delivered.count}}','{{evaluation.experts_finished.count}}');
             </script>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
@@ -189,7 +209,9 @@ canvas#race{position:relative; z-index:100;}
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
           <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Nº Evaluadores' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -213,6 +235,13 @@ canvas#race{position:relative; z-index:100;}
             <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                       title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
             <td class="text-center align-middle">
+              {% for dom in evaluation.domain_risks %}
+              
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+              
+              {% endfor %}
+            </td>
+            <td class="text-center align-middle">
               <div>
                 <span class="badge badge-info">{{ evaluation.risk_test_inherents.count }}</span>
               </div>
@@ -222,6 +251,17 @@ canvas#race{position:relative; z-index:100;}
             </td>
             <script>
               load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}');
+            </script>
+            <td class="text-center align-middle">
+              <div>
+                <span class="badge badge-info">{{ evaluation.total_experts }}</span>
+              </div>
+              <div>
+                <canvas id="pie-fi-evs-{{ forloop.counter }}"></canvas>
+              </div>              
+            </td>
+            <script>
+              load_chart('pie-fi-evs-{{ forloop.counter }}','{{evaluation.experts_pending.count}}','{{evaluation.experts_delivered.count}}','{{evaluation.experts_finished.count}}');
             </script>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
