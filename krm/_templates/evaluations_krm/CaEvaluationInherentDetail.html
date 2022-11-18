@@ -464,6 +464,10 @@
     </div>
   </div>
   <!--end::Card body-->
+  <div class="card-footer py-6">
+    <a href="{% url 'evaluations_krm:ca_evaluation_inherent_complete' evaluation.pk %}" class="btn btn-sm btn-primary me-2">
+      {% trans 'Completar evaluación' %}</a>
+  </div>
 </div>
 
 <div class="card">
@@ -539,7 +543,7 @@
               {% endif %}
             </td>
             <td class="text-center align-middle"> 
-              <a href="{% url 'risks_company:ga_risk_company_update' rt.risk.pk %}">
+              <a href="{% url 'risks_company:ca_risk_company_update' rt.risk.pk %}">
                 <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
               </a>
             </td>
@@ -554,9 +558,9 @@
               </div>
             </td>
             <td class="text-center align-middle">
-              <a href="{% url 'domain_risks:ga_domain_risk_detail' rt.risk.risk.risk_master.domain_risk.pk %}">
+              
                 <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
-              </a>              
+              
                 <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.expert.full_name }} ({{ rt.expert.position }})" id = "box-child">{{ rt.expert.username_no_domain }}</span>
             </td>
             <td class="text-center align-middle">
@@ -593,7 +597,7 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'evaluations_krm:ga_evaluation_inherent_list' %}" class="btn btn-sm btn-secondary">
+    <a href="{% url 'evaluations_krm:ca_evaluation_inherent_list' %}" class="btn btn-sm btn-secondary">
       <i class="bi bi-arrow-bar-left"></i>
       {% trans 'Volver' %}</a>
   </div>
