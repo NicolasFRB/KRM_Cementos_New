@@ -110,18 +110,145 @@
   <!--begin::Card body-->
   <div class="card-body">
     <div class="row">
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Estado' %}: </span>{{ evaluation.get_status_display }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'REF' %}: </span>{{ evaluation.ref }}</p>
+      <div class="col col-md-6">
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.ref }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.company.ref }} - {{ evaluation.company.name }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+            <span class="badge badge-info">{{ evaluation.company.type_company }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sociedades en alcance' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              {% for c in evaluation.company.companies_in_scope_as_list %}
+                <span class="badge badge-info">{{ c }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Estado' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6" style="display:flex;">
+              {% if evaluation.status == "EP" %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                <div>{{ evaluation.get_status_display }}</div>
+              {% else %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                <div>{{ evaluation.get_status_display }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Compañía' %}: </span>{{ evaluation.company }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Año de certificación' %}: </span>{{ evaluation.certification_year }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Periodo de certificación' %}: </span>{{ evaluation.certification_period }}</p>
+      <div class="col col-md-3">
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6">
+              <span>{{ evaluation.certification_year }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de certificación' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-6">
+            <div class="fs-6">
+              <span>{{ evaluation.certification_period }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
-      <div class="col col-md-4">
-        <p><span class="fs-6 fw-semibold">{% trans 'Fecha de inicio' %}: </span>{{ evaluation.date_begin }}</p>
-        <p><span class="fs-6 fw-semibold">{% trans 'Fecha final' %}: </span>{{ evaluation.date_end }}</p>
+      <div class="col col-md-3">
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.date_begin }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de fin' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span>{{ evaluation.date_end }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
     </div>
   </div>
