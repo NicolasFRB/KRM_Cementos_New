@@ -22,6 +22,7 @@ from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
+from django.forms.models import model_to_dict
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
