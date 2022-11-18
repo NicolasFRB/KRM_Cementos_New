@@ -169,7 +169,7 @@
         chart.render();
   }
 
-  function load_chart(id, n_pending, n_delivered, n_finished) {
+  function load_chart(id, n_pending, n_delivered, n_finished, title) {
     
     const data = {
       labels: ['Pending', 'Delivered', 'Finished'],
@@ -197,7 +197,12 @@
             display:false,
           },
           title: {
-            display: false,
+            display: true,
+            text: title,
+            font: {
+                size: 11,
+                family: 'Helvetica, Inter, sans-serif',
+            },
           },
           
         },
@@ -368,6 +373,24 @@
           </div>
           <!--end::Col-->
         </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              {% for dom in evaluation.domain_risks %}
+                
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+                
+              {% endfor %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
       <div class="col col-md-3">
         <div class="row mb-8">
@@ -434,7 +457,15 @@
           </div>
         </div>
         <script>
-          load_chart('pie-main','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}');
+          load_chart('pie-main','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}', 'Riesgos evaluados');
+        </script>
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main-experts"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main-experts','{{evaluation.experts_pending.count}}','{{evaluation.experts_delivered.count}}','{{evaluation.experts_finished.count}}', 'Expertos');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
