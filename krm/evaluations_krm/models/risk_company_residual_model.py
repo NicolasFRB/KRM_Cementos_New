@@ -158,7 +158,8 @@ class RiskCompanyResidual(AuditModel):
         if probability_level_residual_evaluator_avg['probability_level_residual_evaluator__avg'] is None:
             return 0.0
 
-        return probability_level_residual_evaluator_avg['probability_level_residual_evaluator__avg']
+        # Round to 2 decimals
+        return round(probability_level_residual_evaluator_avg['probability_level_residual_evaluator__avg'], 2)
 
     @property
     def probability_level_residual_evaluator_aggregate_rounded(self):
