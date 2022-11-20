@@ -110,7 +110,8 @@ class GaEvaluationResidualListView(ListView):
         
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
-
+        print(ev_pending)
+        print(ev_finished)
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -355,7 +356,19 @@ class GaEvaluationResidualAdminComplete(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Riesgos Residuals')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        context['risks_company_residuals'] = self.object.risk_company_residuals.all()
+        # SIMPLIFICACION 
+        # uso risk_test (nomenclatura), no son risk_test, son risk_company
+        risk_tests = self.object.risk_company_residuals.all()
+
+        for r in risk_tests:
+            r.controls_attempt_to_mitigate = r.get_controls_attempt_to_mitigate()
+            r.test_controls_attempt_to_mitigate = r.get_test_controls_attempt_to_mitigate()
+
+        context['risks_test_residual'] = sorted(risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
+
+        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
+
+        context['js_template'] = ['js/custom/datatables.js']
 
         return context
 
