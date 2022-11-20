@@ -6,6 +6,7 @@ from krm.evaluations_krm.views import (
     GaEvaluationInherentCreateView,
     GaEvaluationInherentListView,
     GaEvaluationInherentDetailView,
+    GaEvaluationInherentAdminComplete,
 
     CaEvaluationInherentCreateView,
     CaEvaluationInherentListView,
@@ -46,6 +47,11 @@ urlpatterns = [
         'detail/<pk>/',
         GaEvaluationInherentDetailView.as_view(),
         name='ga_evaluation_krm_inherent_detail'
+    ),
+    path(
+        'inherent/complete/<pk>/',
+        GaEvaluationInherentAdminComplete.as_view(),
+        name='ga_evaluation_inherent_complete'
     ),
 
     path(
