@@ -44,6 +44,7 @@ from krm.companies.models import Company
 
 from krm.evaluations_krm.forms import (
     EvaluationInherentCreateForm,
+    EvaluationInherenetCompleteForm,
 )
 
 from krm.risks.models import RiskCompany
@@ -346,4 +347,49 @@ class GaEvaluationInherentDetailView(FormView):
         return reverse_lazy(
             "evaluations_krm:ga_evaluation_krm_inherent_detail",
             kwargs={"pk": self.evaluation.pk},
+        )
+
+
+@method_decorator([login_required, is_global_admin], name='dispatch')
+class GaEvaluationInherentAdminComplete(DetailView, FormView):
+    template_name = 'evaluations_krm/GaEvaluationInherentAdminComplete.html'
+    model = EvaluationKrmInherent
+    context_object_name = 'evaluation'
+    form_class = EvaluationInherenetCompleteForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Evaluaciones de Riesgo Inherente')}
+        ]
+        context['page_title'] = f"{_('Evaluación de Riesgo Inherente')} : {self.object.ref}"
+        context['breadcrums'] = breadcrums
+
+        context['risks_test_inherent'] = self.object.risk_test_inherents.filter()
+
+        return context
+
+    def form_valid(self, form):
+        evaluation = self.get_object()
+        RiskTestInherent.objects.filter(
+            evaluation=evaluation
+        ).update(
+            status=3
+        )
+        evaluation.status = 'FI'
+        evaluation.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Evaluación supervisada correctamente")
+        )
+
+        return reverse_lazy(
+            "evaluations_krm:ga_evaluation_inherent_list"
         )
