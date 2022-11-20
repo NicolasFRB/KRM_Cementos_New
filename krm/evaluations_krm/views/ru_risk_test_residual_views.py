@@ -130,6 +130,8 @@ class RuEvaluationRiskResidualComplete(DetailView, FormView):
 
         context['risks_test_residual'] = sorted(risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
 
+        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
