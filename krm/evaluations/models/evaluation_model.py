@@ -90,6 +90,14 @@ class Evaluation(AuditModel):
         default=False,
     )
 
+    admin_supervisor = models.ForeignKey(
+        'users.User',
+        verbose_name=_('Administrador que ha supervisado la evaluación'),
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.ref
 
@@ -106,47 +114,47 @@ class Evaluation(AuditModel):
 
     # RETURN number of ctrls by state in evaluation
     # OPTIONAL ARG: Filter by user
-    def ncontrols_test_by_state(self, status, user = None, rol = None):
+    def ncontrols_test_by_state(self, status, user=None, rol=None):
 
         if user and rol:
             if rol == 'control_test_owner':
                 return self.control_tests.filter(
-                        status = status,
-                        control_test_owner = user,
-                    ).distinct().count()
-            
+                    status=status,
+                    control_test_owner=user,
+                ).distinct().count()
+
             elif rol == 'control_test_supervisor':
                 return self.control_tests.filter(
-                        status = status,
-                        control_test_supervisor = user,
-                    ).distinct().count()
-                    
+                    status=status,
+                    control_test_supervisor=user,
+                ).distinct().count()
+
         else:
             return self.control_tests.filter(
-                    status = status,
-                ).distinct().count()
+                status=status,
+            ).distinct().count()
 
     # RETURN number of ctrl by result in evaluation
     # OPTIONAL ARG: Filter by user
-    def ncontrols_test_by_result(self, result, user = None, rol = None):
+    def ncontrols_test_by_result(self, result, user=None, rol=None):
 
         if user and rol:
             if rol == 'control_test_owner':
                 return self.control_tests.filter(
-                        result = result,
-                        control_test_owner = user,
-                    ).distinct().count()
-            
+                    result=result,
+                    control_test_owner=user,
+                ).distinct().count()
+
             elif rol == 'control_test_supervisor':
                 return self.control_tests.filter(
-                        result = result,
-                        control_test_supervisor = user,
-                    ).distinct().count()
-                    
+                    result=result,
+                    control_test_supervisor=user,
+                ).distinct().count()
+
         else:
             return self.control_tests.filter(
-                    result = result,
-                ).distinct().count()
+                result=result,
+            ).distinct().count()
 
     def get_domain_risk_in_evaluation(self):
 
@@ -159,10 +167,9 @@ class Evaluation(AuditModel):
                     if domain_pk not in domain_risks_pks:
                         domain_risks_pks.append(domain_pk)
                     already_checked.append(r.pk)
-        
-        
-        return DomainRisk.objects.filter(id__in = domain_risks_pks)
-                
+
+        return DomainRisk.objects.filter(id__in=domain_risks_pks)
+
     # def generate_control_tests(self, only_key_control=False):
     #     from krc.process.models import Control
     #     from krc.process_test.models import ControlTest

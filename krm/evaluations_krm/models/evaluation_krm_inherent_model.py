@@ -77,6 +77,14 @@ class EvaluationKrmInherent(AuditModel):
         default="EP",
     )
 
+    admin_supervisor = models.ForeignKey(
+        'users.User',
+        verbose_name=_('Administrador que ha supervisado la evaluación'),
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.ref
 
@@ -86,25 +94,25 @@ class EvaluationKrmInherent(AuditModel):
 
     # RETURN number of risks by state in evaluation
     # OPTIONAL ARG: Filter by user
-    def nrisk_test_inherents_by_state(self, status, user = None):
+    def nrisk_test_inherents_by_state(self, status, user=None):
 
         if user:
             return self.risk_test_inherents.filter(
-                    status = status,
-                    expert = user,
-                ).distinct().count()
+                status=status,
+                expert=user,
+            ).distinct().count()
         else:
             return self.risk_test_inherents.filter(
-                    status = status,
-                ).distinct().count()
+                status=status,
+            ).distinct().count()
 
     # RETURN experts by state of risks in evaluation
     def get_experts_by_rit_state(self, status):
-        
+
         experts_id = set([rt.expert.pk for rt in self.risk_test_inherents.filter(
-                    status = status)])
-        
-        return User.objects.filter(id__in = experts_id)
+            status=status)])
+
+        return User.objects.filter(id__in=experts_id)
 
     # RETURN domain_risks in evaluation
     def get_domain_risk_in_evaluation(self):
@@ -112,8 +120,8 @@ class EvaluationKrmInherent(AuditModel):
         domain_risks_pks = []
         for rt in self.risk_test_inherents.all():
             domain_pk = rt.risk.risk.risk_master.domain_risk.pk
-                
+
             if domain_pk not in domain_risks_pks:
                 domain_risks_pks.append(domain_pk)
-        
-        return DomainRisk.objects.filter(id__in = domain_risks_pks)
+
+        return DomainRisk.objects.filter(id__in=domain_risks_pks)

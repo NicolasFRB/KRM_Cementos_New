@@ -78,6 +78,14 @@ class EvaluationKrmResidual(AuditModel):
         default="EP",
     )
 
+    admin_supervisor = models.ForeignKey(
+        'users.User',
+        verbose_name=_('Administrador que ha supervisado la evaluación'),
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.ref
 
@@ -119,43 +127,43 @@ class EvaluationKrmResidual(AuditModel):
 
     # RETURN number of risks by state in evaluation
     # OPTIONAL ARG: Filter by user
-    def nrisk_test_residuals_by_state(self, status, user = None):
+    def nrisk_test_residuals_by_state(self, status, user=None):
 
         if user:
             return self.risk_test_residuals.filter(
-                    status = status,
-                    evaluator = user,
-                ).distinct().count()
+                status=status,
+                evaluator=user,
+            ).distinct().count()
         else:
             return self.risk_test_residuals.filter(
-                    status = status,
-                ).distinct().count()
+                status=status,
+            ).distinct().count()
 
     # RETURN experts by state of risks in evaluation
     def get_evaluators_by_rrt_state(self, status):
-        
+
         evaluators_id = set([rt.evaluator.pk for rt in self.risk_test_residuals.filter(
-                    status = status)])
-        
-        return User.objects.filter(id__in = evaluators_id)
-        
+            status=status)])
+
+        return User.objects.filter(id__in=evaluators_id)
+
     # RETURN domain_risks in evaluation
     def get_domain_risk_in_evaluation(self):
 
         domain_risks_pks = []
         for rt in self.risk_test_residuals.all():
             domain_pk = rt.risk.risk.risk_master.domain_risk.pk
-                
+
             if domain_pk not in domain_risks_pks:
                 domain_risks_pks.append(domain_pk)
-        
-        return DomainRisk.objects.filter(id__in = domain_risks_pks)
+
+        return DomainRisk.objects.filter(id__in=domain_risks_pks)
 
     # RETURN ELC Controls - common for all risks in evaluation
     def get_controls_elc(self):
 
         controls = Control.objects.filter(
-            is_elc = True,
+            is_elc=True,
             pk__in=[control.pk for control in self.company.controls.all()]
         )
         return controls

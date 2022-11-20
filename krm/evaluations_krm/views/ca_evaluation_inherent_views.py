@@ -82,8 +82,10 @@ class CaEvaluationInherentListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
-        ev_pending = EvaluationKrmInherent.objects.filter(status="EP", company__in=self.request.user.companies_admin.all())
-        ev_finished = EvaluationKrmInherent.objects.filter(status="FI", company__in=self.request.user.companies_admin.all())
+        ev_pending = EvaluationKrmInherent.objects.filter(
+            status="EP", company__in=self.request.user.companies_admin.all())
+        ev_finished = EvaluationKrmInherent.objects.filter(
+            status="FI", company__in=self.request.user.companies_admin.all())
 
         for ev in ev_pending:
             ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
@@ -97,7 +99,8 @@ class CaEvaluationInherentListView(ListView):
             ev.experts_delivered = ev.get_experts_by_rit_state(2)
             ev.experts_finished = ev.get_experts_by_rit_state(3)
 
-            ev.total_experts = ev.experts_pending.count() + ev.experts_delivered.count() + ev.experts_finished.count()
+            ev.total_experts = ev.experts_pending.count() + ev.experts_delivered.count() + \
+                ev.experts_finished.count()
 
             ev.domain_risks = ev.get_domain_risk_in_evaluation()
 
@@ -113,7 +116,8 @@ class CaEvaluationInherentListView(ListView):
             ev.experts_delivered = ev.get_experts_by_rit_state(2)
             ev.experts_finished = ev.get_experts_by_rit_state(3)
 
-            ev.total_experts = ev.experts_pending.count() + ev.experts_delivered.count() + ev.experts_finished.count()
+            ev.total_experts = ev.experts_pending.count() + ev.experts_delivered.count() + \
+                ev.experts_finished.count()
 
             ev.domain_risks = ev.get_domain_risk_in_evaluation()
 
@@ -258,7 +262,7 @@ class CaEvaluationInherentDetailView(FormView):
         #         'icon': '<i class="bi bi-pencil"></i>'
         #     },
         # ]
-        
+
         context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(
             1)
         context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(
@@ -266,11 +270,15 @@ class CaEvaluationInherentDetailView(FormView):
         context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(
             3)
 
-        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(1)
-        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(2)
-        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(3)
+        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(
+            1)
+        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(
+            2)
+        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(
+            3)
 
-        context['evaluation'].total_experts = context['evaluation'].experts_pending.count() + context['evaluation'].experts_delivered.count() + context['evaluation'].experts_finished.count()
+        context['evaluation'].total_experts = context['evaluation'].experts_pending.count(
+        ) + context['evaluation'].experts_delivered.count() + context['evaluation'].experts_finished.count()
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
@@ -381,12 +389,25 @@ class CaEvaluationInherentAdminComplete(DetailView, FormView):
 
     def form_valid(self, form):
         evaluation = self.get_object()
-        RiskTestInherent.objects.filter(
+        # RiskTestInherent.objects.filter(
+        #     evaluation=evaluation
+        # ).update(
+        #     status=3
+        # )
+        risk_inherents = RiskTestInherent.objects.filter(
             evaluation=evaluation
-        ).update(
-            status=3
         )
+        for ri in risk_inherents:
+            ri.status = 3
+            if ri.probability_level_administrator == 5:
+                ri.probability_level_administrator = ri.probability_level_expert
+            if ri.impact_level_administrator == 5:
+                ri.impact_level_administrator = ri.impact_level_expert
+            if ri.description_admin == '':
+                ri.description_admin = ri.description_expert
+            ri.save()
         evaluation.status = 'FI'
+        evaluation.admin_supervisor = self.request.user
         evaluation.save()
         return super().form_valid(form)
 

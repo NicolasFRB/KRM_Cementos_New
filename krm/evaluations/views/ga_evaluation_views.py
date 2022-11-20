@@ -108,7 +108,7 @@ class GaEvaluationListView(ListView):
                 "FI")
 
             ev.domain_risks = ev.get_domain_risk_in_evaluation()
-        
+
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
 
@@ -147,15 +147,23 @@ class GaEvaluationDetailView(FormView):
             },
         ]
 
-        context['evaluation'].ncontrols_test_by_state_si = context['evaluation'].ncontrols_test_by_state("SI")
-        context['evaluation'].ncontrols_test_by_state_wo = context['evaluation'].ncontrols_test_by_state("WO")
-        context['evaluation'].ncontrols_test_by_state_ws = context['evaluation'].ncontrols_test_by_state("WS")
-        context['evaluation'].ncontrols_test_by_state_wa = context['evaluation'].ncontrols_test_by_state("WA")
-        context['evaluation'].ncontrols_test_by_state_fi = context['evaluation'].ncontrols_test_by_state("FI")
-        
-        context['evaluation'].ncontrols_test_by_result_se = context['evaluation'].ncontrols_test_by_result("SE")
-        context['evaluation'].ncontrols_test_by_result_ef = context['evaluation'].ncontrols_test_by_result("EF")
-        context['evaluation'].ncontrols_test_by_result_ne = context['evaluation'].ncontrols_test_by_result("NE")
+        context['evaluation'].ncontrols_test_by_state_si = context['evaluation'].ncontrols_test_by_state(
+            "SI")
+        context['evaluation'].ncontrols_test_by_state_wo = context['evaluation'].ncontrols_test_by_state(
+            "WO")
+        context['evaluation'].ncontrols_test_by_state_ws = context['evaluation'].ncontrols_test_by_state(
+            "WS")
+        context['evaluation'].ncontrols_test_by_state_wa = context['evaluation'].ncontrols_test_by_state(
+            "WA")
+        context['evaluation'].ncontrols_test_by_state_fi = context['evaluation'].ncontrols_test_by_state(
+            "FI")
+
+        context['evaluation'].ncontrols_test_by_result_se = context['evaluation'].ncontrols_test_by_result(
+            "SE")
+        context['evaluation'].ncontrols_test_by_result_ef = context['evaluation'].ncontrols_test_by_result(
+            "EF")
+        context['evaluation'].ncontrols_test_by_result_ne = context['evaluation'].ncontrols_test_by_result(
+            "NE")
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
@@ -185,6 +193,7 @@ class GaEvaluationDetailView(FormView):
             )
         elif action == 'f':
             evaluation.status = "FI"
+            evaluation.admin_supervisor = self.request.user
             evaluation.save()
             evaluation.control_tests.update(
                 status='FI'
