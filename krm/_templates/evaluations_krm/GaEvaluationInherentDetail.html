@@ -401,14 +401,18 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Supervisor que ha validado' %}</span>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Supervisión administrador' %}</span>
             </div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-xl-7">
             <div class="fs-6">
-              {{ evaluation.admin_supervisor|default_if_none:"" }}
+              {% if evaluation.admin_supervisor %}
+                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ evaluation.admin_supervisor.full_name }} ({{ evaluation.admin_supervisor.position }})" id = "box-child">{{ evaluation.admin_supervisor.username_no_domain }}</span>
+              {% else %}
+                <span class="badge badge-primary">{% trans 'Sin completar' %}</span>
+              {% endif %}
             </div>
           </div>
           <!--end::Col-->

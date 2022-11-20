@@ -176,6 +176,7 @@ class RuEvaluationRiskInherentDetail(FormView):
         context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2, user=self.request.user)
         context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(3, user=self.request.user)
         
+        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
         # Serializar Evaluation no incluye sus hijos :(
         # Busco los hijos
         context['rit'] = RiskTestInherent.objects.filter(
