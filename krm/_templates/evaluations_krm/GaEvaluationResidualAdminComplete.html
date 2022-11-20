@@ -1,0 +1,229 @@
+{% extends layout %}
+
+{% load i18n %}
+{% trans "Sin asignar" as without_set %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+{% if DEVJS %}
+  <script defer src="http://localhost:3000/static/js/bundle.js"></script>
+{% else %}
+  <script defer src="{% static 'main.react.js' %}"></script>
+{% endif %}
+
+
+<script>
+  $(document).ready(function () {
+    $('#sendEvaluation').on('submit', function(e){
+      let errorFound = false;
+      $('#buttonSend').attr('data-kt-indicator', 'on');
+      $('.card').removeClass('danger');
+
+      if (!errorFound) {
+        $("input[name^='probability-']").each(function(index){
+          if ($(this).val() == 0){
+            let parent = $(this).closest('div.card');
+            $(parent).addClass('danger');
+            $('html, body').animate({
+              scrollTop: $(parent).offset().top - 100
+            }, 1000);
+            errorFound = true;
+            e.preventDefault();
+            $('#buttonSend').attr('data-kt-indicator', 'off');
+            return false;
+          }
+        });
+      }
+
+      if (!errorFound) {
+        $("textarea[name^='descriptionAdmin-']").each(function (index) {
+          if ($(this).val() == '') {
+            let parent = $(this).closest('div.card');
+            $(parent).addClass('danger');
+            $('html, body').animate({
+              scrollTop: $(parent).offset().top - 100
+            }, 1000);
+            $('#buttonSend').attr('data-kt-indicator', 'off');
+            errorFound = true;
+            e.preventDefault();
+            return false;
+          }
+        });
+      }
+
+      return true;
+    })
+  });
+</script>
+
+{% endblock js_footer %}
+
+{% block pageCss %}
+<style>
+
+  .form-check-input:hover,
+  .form-check-label:hover{
+    cursor:pointer;
+  }
+
+  .form-check-custom .form-check-label{
+    margin-left: 0;
+    padding-left: 10px;
+  }
+
+  .card.danger {
+    border: 2px solid var(--kt-danger);
+  }
+</style>
+{% endblock pageCss %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    <div class="row">
+      <div class="col col-md-4">
+        <p><span class="fs-6 fw-semibold">{% trans 'Estado' %}: </span>{{ evaluation.get_status_display }}</p>
+        <p><span class="fs-6 fw-semibold">{% trans 'REF' %}: </span>{{ evaluation.ref }}</p>
+      </div>
+      <div class="col col-md-4">
+        <p><span class="fs-6 fw-semibold">{% trans 'Compañía' %}: </span>{{ evaluation.company }}</p>
+        <p><span class="fs-6 fw-semibold">{% trans 'Año de certificación' %}: </span>{{ evaluation.certification_year }}</p>
+        <p><span class="fs-6 fw-semibold">{% trans 'Periodo de certificación' %}: </span>{{ evaluation.certification_period }}</p>
+      </div>
+      <div class="col col-md-4">
+        <p><span class="fs-6 fw-semibold">{% trans 'Fecha de inicio' %}: </span>{{ evaluation.date_begin }}</p>
+        <p><span class="fs-6 fw-semibold">{% trans 'Fecha final' %}: </span>{{ evaluation.date_end }}</p>
+      </div>
+    </div>
+  </div>
+  <!--end::Card body-->
+</div>
+
+{% if risks_company_residuals %}
+    {% for rt in risks_company_residuals %}
+      <div class="card mb-5">
+        <!--begin::Card header-->
+        <div class="card-header">
+          <!--begin::Card header-->
+          <div class="card-title fs-3 fw-bold">{{ rt.risk_company.name }}</div>
+          <!--end::Card header-->
+        </div>
+        <div class="card-body">
+            <div class="row">
+              <div class="col col-12 col-xl-6">
+                <p><span class="fs-6 fw-semibold">{% trans 'Riesgo' %}:</span> {{ rt.risk_company.name }}</p>
+              </div>
+              <div class="col col-12 col-xl-6">
+                <p><span class="fs-6 fw-semibold">{% trans 'Descripción' %}:</span> <br>{{ rt.risk_company.description|safe }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-12 col-xl-6">
+                <p><span class="fs-6 fw-semibold">{% trans 'Actividad afectada' %}:</span> <br>{{ rt.risk_company.krm_activity_affected|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Describa los principales eventos en los que el riesgo se materializa o se espera que se materialice. Comentarios' %}:</span> <br>{{ rt.risk_company.krm_main_events|safe }}</p>
+              </div>
+              <div class="col col-12 col-xl-6">
+                <p><span class="fs-6 fw-semibold">{% trans 'Personal especialmente expuesto al Riesgo' %}:</span> <br>{{ rt.risk_company.krm_exposed_staff|safe }}</p>
+                <p><span class="fs-6 fw-semibold">{% trans 'Principales elementos del Riesgo' %}:</span> <br>{{ rt.risk_company.krm_main_elements|safe }}</p>
+              </div>
+            </div>
+        </div>
+        <!--begin::Card footer-->
+        <div class="card-footer py-6">
+          <div class="valoration-evaluator">
+            <div class="row mb-10">
+              <div class="col col-12">
+                <h4 class="mb-7">Valoraciónes dadas por los Evaluadores de Riesgo Residual</h4>
+              </div>
+              <div class="row">
+                <div class="col col-12 col-xl-8 mb-5 mb-xl-0">
+                  <div class="mb-5">
+                    <p>{% trans 'Nivel de Probabilidad residual indicado por los Evaluadores de Riesgo Residual' %}: <span class="badge badge-info">{{ rt.probability_level_residual_evaluator_aggregate }}</span></p>
+                    <p>{% trans 'Valor final:' %} <span class="badge badge-info">{{ rt.probability_level_residual_evaluator_aggregate_rounded }}</span></p>
+                    <p></p>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col">
+                  <h5 class="mb-4">{% trans 'Descripciones de la evaluación por los Evaluadores del Dominio de Riesgo asociado' %}</h5>
+                  <ul>
+                    {% for rt in rt.risk_test_residuals %}
+                      <li>{{ rt.description_evaluator }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer py-6">
+          <div class="admin_risk_test_residual"
+            data-risktestpk="{{ rt.pk }}"
+            data-probability="{{ rt.probability_level_residual_administrator }}"
+            data-description="{{ rt.description_administrator|default_if_none:'' }}"></div>
+        </div>
+        <!--end::Card footer-->
+      </div>
+    {% endfor %}
+
+    <div class="card">
+      <!--begin::Card header-->
+      <div class="card-header">
+        <!--begin::Card header-->
+        <div class="card-title fs-3 fw-bold">{% trans 'Finalizar evaluación' %}</div>
+        <!--end::Card header-->
+      </div>
+      <div class="card-body">
+        <div class="row mt-2 mb-2">
+          <div class="col-12">
+            <form action="" novalidate id="sendEvaluation" method="post">
+              {% csrf_token %}
+              {{ form.ref|as_crispy_field }}
+              <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
+                <span class="indicator-label">Finalizar evaluación</span>
+                <span class="indicator-progress">
+                  Actualizando...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% else %}
+  <div class="card">
+    <!--begin::Card header-->
+    <div class="card-header">
+      <!--begin::Card header-->
+      <div class="card-title fs-3 fw-bold">{{ rt }}</div>
+      <!--end::Card header-->
+    </div>
+    <div class="card-body">
+      <div class="row mt-2 mb-2">
+        <div class="col-12">
+          <div class="alert alert-primary">{% trans 'No existen tests de riesgo residual pendientes para esta Evaluación' %}.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<!--end::Container-->
+{% endblock content %}
