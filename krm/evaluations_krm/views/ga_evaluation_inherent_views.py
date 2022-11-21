@@ -404,8 +404,6 @@ class GaEvaluationInherentAdminComplete(DetailView, FormView):
             ri.save()
         evaluation.status = 'FI'
         evaluation.admin_supervisor = self.request.user
-        import ipdb
-        ipdb.set_trace()
         evaluation.save()
         return super().form_valid(form)
 
