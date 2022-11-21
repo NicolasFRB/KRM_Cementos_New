@@ -235,21 +235,6 @@
         </div>
         <!--end:Menu item-->
 
-        {% if request.user.is_company_admin %}
-          <div class="menu-item">
-            <!--begin:Menu link-->
-            <a class="menu-link" href="{% url 'control_tests:ca_control_test_administrator_list' %}">
-              <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
-              <span class="menu-title">{% trans 'Administrar Controles' %}
-                {% if request.user.controls_test_administrator_pending.count > 0 %}
-                &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_administrator_pending.count }}</span>
-                {% endif %}
-              </span>
-            </a>
-            <!--end:Menu link-->
-          </div>
-        {% endif %}
-
         <!--begin:Menu item-->
         <div data-kt-menu-trigger="click"
           class="menu-item menu-accordion {% if request.path in EVALUATIONS_KRM_URLS %}show{% endif %}">
@@ -365,21 +350,6 @@
           <!--end:Menu sub-->
         </div>
         <!--end:Menu item-->
-
-        {% if request.user.is_company_admin %}
-          <div class="menu-item">
-            <!--begin:Menu link-->
-            <a class="menu-link" href="{% url 'control_tests:ca_control_test_administrator_list' %}">
-              <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
-              <span class="menu-title">{% trans 'Administrar riesgos' %}
-                {% if request.user.controls_test_administrator_pending.count > 0 %}
-                &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_administrator_pending.count }}</span>
-                {% endif %}
-              </span>
-            </a>
-            <!--end:Menu link-->
-          </div>
-        {% endif %}
 
         <div class="menu-item">
           <!--begin:Menu link-->
