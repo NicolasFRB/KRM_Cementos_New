@@ -43,7 +43,8 @@ from krm.evaluations_krm.forms import (
 
 from krm.evaluations_krm.models import (
     EvaluationKrmResidual,
-    RiskTestResidual
+    RiskTestResidual,
+    RiskCompanyResidual
 )
 
 from krm.risks.models import RiskCompany
@@ -89,36 +90,44 @@ class CaEvaluationResidualListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
-        
+
         ev_pending = EvaluationKrmResidual.objects.filter(status="EP")
         ev_finished = EvaluationKrmResidual.objects.filter(status="FI")
 
         for ev in ev_pending:
-            ev.nrisk_test_residuals_pending = ev.nrisk_test_residuals_by_state(1)
-            ev.nrisk_test_residuals_delivered = ev.nrisk_test_residuals_by_state(2)
-            ev.nrisk_test_residuals_finished = ev.nrisk_test_residuals_by_state(3)
+            ev.nrisk_test_residuals_pending = ev.nrisk_test_residuals_by_state(
+                1)
+            ev.nrisk_test_residuals_delivered = ev.nrisk_test_residuals_by_state(
+                2)
+            ev.nrisk_test_residuals_finished = ev.nrisk_test_residuals_by_state(
+                3)
 
             ev.evaluators_pending = ev.get_evaluators_by_rrt_state(1)
             ev.evaluators_delivered = ev.get_evaluators_by_rrt_state(2)
             ev.evaluators_finished = ev.get_evaluators_by_rrt_state(3)
 
-            ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + ev.evaluators_finished.count()
+            ev.total_evaluators = ev.evaluators_pending.count(
+            ) + ev.evaluators_delivered.count() + ev.evaluators_finished.count()
 
             ev.domain_risks = ev.get_domain_risk_in_evaluation()
 
         for ev in ev_finished:
-            ev.nrisk_test_residuals_pending = ev.nrisk_test_residuals_by_state(1)
-            ev.nrisk_test_residuals_delivered = ev.nrisk_test_residuals_by_state(2)
-            ev.nrisk_test_residuals_finished = ev.nrisk_test_residuals_by_state(3)
+            ev.nrisk_test_residuals_pending = ev.nrisk_test_residuals_by_state(
+                1)
+            ev.nrisk_test_residuals_delivered = ev.nrisk_test_residuals_by_state(
+                2)
+            ev.nrisk_test_residuals_finished = ev.nrisk_test_residuals_by_state(
+                3)
 
             ev.evaluators_pending = ev.get_evaluators_by_rrt_state(1)
             ev.evaluators_delivered = ev.get_evaluators_by_rrt_state(2)
             ev.evaluators_finished = ev.get_evaluators_by_rrt_state(3)
 
-            ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + ev.evaluators_finished.count()
+            ev.total_evaluators = ev.evaluators_pending.count(
+            ) + ev.evaluators_delivered.count() + ev.evaluators_finished.count()
 
             ev.domain_risks = ev.get_domain_risk_in_evaluation()
-        
+
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
 
@@ -323,7 +332,7 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Riesgos Residuals')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        # SIMPLIFICACION 
+        # SIMPLIFICACION
         # uso risk_test (nomenclatura), no son risk_test, son risk_company
         risk_tests = self.object.risk_company_residuals.all()
 
@@ -331,7 +340,8 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
             r.controls_attempt_to_mitigate = r.get_controls_attempt_to_mitigate()
             r.test_controls_attempt_to_mitigate = r.get_test_controls_attempt_to_mitigate()
 
-        context['risks_test_residual'] = sorted(risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
+        context['risks_test_residual'] = sorted(
+            risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
@@ -346,7 +356,30 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
         ).update(
             status=3
         )
+
+        # Ahora para los que no ha completado el administrador de la compañía, debemos completar con los valores agregados que han dado los evaluadores
+
+        for rr in RiskTestResidual.objects.filter(evaluation=evaluation):
+            rr.status = 3
+            # Ahora buscamos el Risk Company Residual
+            rcr = RiskCompanyResidual.objects.get(
+                evaluation=evaluation,
+                risk_company=rr.risk
+            )
+
+            if rcr.probability_level_residual_administrator == 0:
+                if rcr.probability_level_residual_evaluator_aggregate_rounded == 0:
+                    rcr.probability_level_residual_administrator = 1
+                else:
+                    rcr.probability_level_residual_administrator = rcr.probability_level_residual_evaluator_aggregate_rounded
+            if rcr.description_administrator == '':
+                rcr.description_administrator = _('--Sin completar--')
+
+            rcr.save()
+            rr.save()
+
         evaluation.status = 'FI'
+        evaluation.admin_supervisor = self.request.user
         evaluation.save()
         return super().form_valid(form)
 

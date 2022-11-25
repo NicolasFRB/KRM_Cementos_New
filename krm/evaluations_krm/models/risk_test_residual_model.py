@@ -63,23 +63,6 @@ class RiskTestResidual(AuditModel):
         blank=True,
     )
 
-    # probability_level_residual_administrator = models.PositiveSmallIntegerField(
-    #     _('Nivel de Probabilidad residual indicado por el Admnistrador de la compañía'),
-    #     choices=RISK_CHOICES,
-    #     default=5
-    # )
-
-    # description_administrator = models.TextField(
-    #     verbose_name=_(
-    #         "Descripción de la evaluación por el Administrador de la compañía"),
-    #     help_text=_(
-    #         "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
-    #     ),
-    #     max_length=10000,
-    #     null=True,
-    #     blank=True,
-    # )
-
     STATUS_CHOICES = (
         (0, _('Sin iniciar')),
         (1, _('Esperando al Evaluador de Dominio de Riesgo')),
@@ -153,8 +136,8 @@ class RiskTestResidual(AuditModel):
         from krm.evaluations_krm.models import RiskTestInherent
 
         last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk = self.risk,
-            evaluation__status = 'FI',
+            risk=self.risk,
+            evaluation__status='FI',
         )
 
         if last_evaluate_risk_inherent.count() > 0:
@@ -168,8 +151,8 @@ class RiskTestResidual(AuditModel):
         from krm.evaluations_krm.models import RiskTestInherent
 
         last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk = self.risk,
-            evaluation__status = 'FI',
+            risk=self.risk,
+            evaluation__status='FI',
         )
 
         if last_evaluate_risk_inherent.count() > 0:
@@ -183,8 +166,8 @@ class RiskTestResidual(AuditModel):
         from krm.evaluations_krm.models import RiskTestInherent
 
         last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk = self.risk,
-            evaluation__status = 'FI',
+            risk=self.risk,
+            evaluation__status='FI',
         )
 
         if last_evaluate_risk_inherent.count() > 0:
@@ -198,8 +181,8 @@ class RiskTestResidual(AuditModel):
         from krm.evaluations_krm.models import RiskTestInherent
 
         last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk = self.risk,
-            evaluation__status = 'FI',
+            risk=self.risk,
+            evaluation__status='FI',
         )
 
         if last_evaluate_risk_inherent.count() > 0:
@@ -213,8 +196,8 @@ class RiskTestResidual(AuditModel):
         from krm.evaluations_krm.models import RiskTestInherent
 
         last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk = self.risk,
-            evaluation__status = 'FI',
+            risk=self.risk,
+            evaluation__status='FI',
         )
 
         if last_evaluate_risk_inherent.count() > 0:
