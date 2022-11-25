@@ -70,7 +70,8 @@ LOCAL_APPS = [
     'process',
     'evaluations',
     'evaluations_krm',
-    "taskapp",
+    'taskapp',
+    'questionnaires',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

@@ -1,0 +1,132 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+
+<script>
+  $(document).ready(function () {
+    ClassicEditor
+      .create(
+        document.querySelector('#evaluation_description'),
+        {
+          language: {
+            ui: 'es',
+            content: 'es'
+          }
+        }
+      )
+      .then(editor => {
+        const wordCountPlugin = editor.plugins.get('WordCount');
+        const wordCountWrapper = document.getElementById('word-count');
+        wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+      })
+      .catch(error => {
+      });
+
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      $(".datepicker").flatpickr({
+        "locale": "es",
+        dateFormat: "d/m/Y",
+      });
+    {% else %}
+      $(".datepicker").flatpickr({
+            "locale": "en",
+            dateFormat: "Y-m-d",
+      });
+    {% endif %}
+  });
+
+</script>
+
+{% endblock js_footer %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+  <form method="post" class="kt-form kt-form--label-right" id="evaluation_create" novalidate>
+    {% csrf_token %}
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          {% include '_includes/FormErrors.html' %}
+        </div>
+        <div class="col-12">
+          <div class="mb-15">
+            <!--begin::Title-->
+            <h1 class="fs-2x text-dark mb-6">{% trans 'Editar evaluación' %}</h1>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="stepper stepper-pills stepper-column row align-items-start">
+          <!--begin::Aside-->
+          <div class="flex-row-fluid col col-12 col-xl-10">
+            <div class="row">
+              <div class="col-12">
+                <h3 class="mb-6">Datos de la evaluación</h3>
+              </div>
+              <div class="mb-4 col-12 col-md-7">
+                <div class="row">
+                  <div class="mb-10">
+                    {{ form.ref|as_crispy_field }}
+                  </div>
+                  <div class="mb-10">
+                    {{ form.allow_self_autosupervision|as_crispy_field }}
+                  </div>
+                  <div class="mb-4 col-12 col-md-6">
+                    {{ form.certification_year|as_crispy_field }}
+                  </div>
+                  <div class="mb-4 col-12 col-md-6">
+                    {{ form.certification_period|as_crispy_field }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 offset-md-1">
+                <div class="row">
+                  <div class="mb-4 col-12">
+                    {{ form.date_begin|as_crispy_field }}
+                  </div>
+                  <div class="mb-4 col-12">
+                    {{ form.date_intermediate|as_crispy_field }}
+                  </div>
+                  <div class="mb-4 col-12">
+                    {{ form.date_end|as_crispy_field }}
+                  </div>
+                </div>
+              </div>
+              <div class="mb-4 col-12">
+                {{ form.description|as_crispy_field }}
+                <div id="word-count"></div>
+              </div>
+            </div>
+          </div>
+          <!--end::Content-->
+        </div>
+      </div>
+    </div>
+    <!--end::Body-->
+  
+    <div class="card-footer py-6">
+      <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+      <a href="{% url 'evaluations:ga_evaluation_detail' evaluation.pk %}"
+        class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+    </div>
+  </form>
+</div>
+
+<!--end::Container-->
+
+{% endblock content %}

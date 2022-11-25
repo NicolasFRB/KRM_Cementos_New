@@ -150,6 +150,12 @@ class GaCompanyUpdateView(UpdateView):
     model = Company
     template_name = 'companies/GaCompanyCreate.html'
 
+    def get_form(self, *args, **kwargs):
+        form = super(GaCompanyUpdateView, self).get_form(*args, **kwargs)
+        if self.object:
+            form.fields['evaluators'].queryset = self.object.employees.all()
+        return form
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)

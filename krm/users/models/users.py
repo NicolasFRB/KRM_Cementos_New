@@ -149,6 +149,21 @@ class User(AbstractUser):
     def risk_test_residual_evaluator_pending(self):
         return self.risk_test_residuals.filter(status=1)
 
+    # Questionnaires
+    def evaluation_questionnaires_pending(self):
+        from krm.questionnaires.models import EvaluationQuestionnaire
+        return EvaluationQuestionnaire.objects.filter(
+            question_tests__status=1,
+            question_tests__evaluator=self,
+        ).distinct()
+
+    def question_test_pending(self):
+        from krm.questionnaires.models import QuestionTest
+        return QuestionTest.objects.filter(
+            status=1,
+            evaluator=self,
+        )
+
     def save(self, *args, **kwargs):
         self.username = self.email
         if not self.remember_key:

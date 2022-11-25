@@ -108,7 +108,8 @@ class UserUpdateForm(forms.ModelForm):
             'position',
             'companies',
             'companies_admin',
-            'is_superuser'
+            'is_superuser',
+            'is_active'
         )
 
     def __init__(self, *args, **kwargs):

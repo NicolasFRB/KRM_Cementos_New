@@ -40,6 +40,16 @@ from krm.evaluations_krm.api import (
     RiskCompanyResidualAdminApiView
 )
 
+from krm.questionnaires.api import (
+    QuestionnaireViewSet,
+    QuestionViewSet,
+    QuestionTestApiView
+)
+
+from krm.users.api import (
+    UserViewSet,
+)
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'controls', ControlViewSet)
@@ -48,6 +58,9 @@ router.register(r'process', ProcessViewSet)
 router.register(r'subprocesses', SubProcessViewSet)
 router.register(r'domain-risks', DomainRiskViewSet)
 router.register(r'companies', CompanyViewSet)
+router.register(r'questionnaires', QuestionnaireViewSet)
+router.register(r'questions', QuestionViewSet)
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
@@ -68,6 +81,8 @@ urlpatterns = [
          ),
     path('api/controlscompany/',
          ControlCompanyApiView.as_view()),
+    path('api/questiontest/',
+         QuestionTestApiView.as_view()),
 ]
 
 urlpatterns += i18n_patterns(
@@ -135,6 +150,18 @@ urlpatterns += i18n_patterns(
     path('evaluations/krm/',
          include(('krm.evaluations_krm.urls.evaluation_krm_urls', 'evaluations_krm'),
                  namespace='evaluations_krm')
+         ),
+    path('questionnaires/',
+         include(('krm.questionnaires.urls.questionnaire_urls', 'questionnaires'),
+                 namespace='questionnaires')
+         ),
+    path('questionnaires/questions/',
+         include(('krm.questionnaires.urls.question_urls', 'questions'),
+                 namespace='questions')
+         ),
+    path('questionnaires/evaluations/',
+         include(('krm.questionnaires.urls.evaluation_questionnaire_urls', 'evaluation_questionnaires'),
+                 namespace='evaluation_questionnaires')
          ),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

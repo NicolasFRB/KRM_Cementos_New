@@ -369,7 +369,7 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
 
             if rcr.probability_level_residual_administrator == 0:
                 if rcr.probability_level_residual_evaluator_aggregate_rounded == 0:
-                    rcr.probability_level_residual_administrator = 1
+                    rcr.probability_level_residual_administrator = 4
                 else:
                     rcr.probability_level_residual_administrator = rcr.probability_level_residual_evaluator_aggregate_rounded
             if rcr.description_administrator == '':

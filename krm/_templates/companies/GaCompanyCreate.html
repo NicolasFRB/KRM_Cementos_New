@@ -17,6 +17,15 @@
   #div_id_controls .form-check{
     margin-bottom: 30px;
   }
+
+  #div_id_evaluators>label {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: var(--kt-text-dark);
+  }
+  #div_id_evaluators .form-check{
+    margin-bottom: 30px;
+  }
 </style>
 {% endblock pageCss %}
 
@@ -83,6 +92,14 @@
                     {{ form.controls|as_crispy_field }}
                   </div>
               </div>
+              {% if object.pk %}
+                <div class="separator my-10"></div>
+                <div class="row">
+                  <div class="col col-12 mb-4">
+                    {{ form.evaluators|as_crispy_field }}
+                  </div>
+                </div>
+              {% endif %}
             </fieldset>
           </div>
         </div>

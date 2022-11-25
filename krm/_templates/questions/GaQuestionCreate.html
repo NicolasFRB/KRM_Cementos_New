@@ -1,0 +1,67 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <fieldset>
+              <div class="row mb-4">
+                <div class="col-12">
+                  {{ form.questionnaire|as_crispy_field }}
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-12">
+                  {{ form.ref|as_crispy_field }}
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-12">
+                  {{ form.order|as_crispy_field }}
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-12">
+                  {{ form.title|as_crispy_field }}
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <!--end::Body-->
+
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+        {% if object.questionnaire %}
+          <a href="{% url 'questionnaires:ga_questionnaire_detail' object.questionnaire.pk %}" class="btn btn-sm btn-secondary ms-2"><i
+              class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+        {% else %}
+        <a href="#"
+          class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+        {% endif %}
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+{% endblock content %}

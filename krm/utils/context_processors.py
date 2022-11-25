@@ -59,6 +59,11 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('evaluations_krm:ca_evaluation_residual_list'),
         reverse_lazy('evaluations_krm:ca_evaluation_residual_create'),
     ]
+
+    questionnaires_urls = [
+        reverse_lazy('questionnaires:ga_questionnaire_list'),
+        reverse_lazy('questionnaires:ga_questionnaire_create'),
+    ]
     if pk is not None:
         domain_risks_urls = domain_risks_urls + [
             reverse_lazy(
@@ -235,5 +240,6 @@ def get_menu_urls(request, pk=None):
         'KRM_ACTIVATE': KRM_ACTIVATE,
         'DEV': settings.DEV,
         'DEVJS': settings.DEVJS,
-        'BRAND': settings.BRAND
+        'BRAND': settings.BRAND,
+        'QUESTIONNAIRES_URLS': questionnaires_urls,
     }

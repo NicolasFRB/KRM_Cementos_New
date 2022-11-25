@@ -87,6 +87,13 @@ class Company(AuditModel):
         related_name='companies'
     )
 
+    evaluators = models.ManyToManyField(
+        'users.User',
+        verbose_name=_('Evaluadores de Cuestionarios'),
+        blank=True,
+        related_name='quuestionnaires_evaluators'
+    )
+
     def __str__(self):
         return self.name
 
@@ -119,8 +126,10 @@ class Company(AuditModel):
 
     @property
     def companies_in_scope_as_list(self):
-        if self.companies_in_scope: return self.companies_in_scope.split(';')
-        else: return ''
+        if self.companies_in_scope:
+            return self.companies_in_scope.split(';')
+        else:
+            return ''
 
     def save(self, *args, **kwargs):
         self.ref = self.ref.upper()
@@ -146,4 +155,3 @@ class Company(AuditModel):
                     company=self,
                     risk=risk
                 )
-    

@@ -82,6 +82,6 @@ class GaCompanyDomainRiskEvaluatorUpdateView(UpdateView):
     def get_form(self, form_class=None):
         from krm.users.models import User
         form_class = super().get_form(form_class=None)
-        form_class.fields["evaluator"].queryset = self.object.company.employees.all(
-        )
+        form_class.fields["evaluator"].queryset = self.object.company.employees.filter(
+            is_active=True)
         return form_class
