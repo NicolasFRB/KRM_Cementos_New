@@ -110,8 +110,7 @@ class GaEvaluationResidualListView(ListView):
         
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
-        print(ev_pending)
-        print(ev_finished)
+       
         context['js_template'] = ['js/custom/datatables.js']
 
         return context

@@ -193,7 +193,7 @@
     {% if evaluation.status == 'EP' %}
     <a href="{% url 'evaluations_krm:ca_evaluation_residual_complete' evaluation.pk %}"
       class="btn btn-sm btn-primary me-2">
-      {% trans 'Validar Riesgos valorados por los Evaluadores' %}</a>
+      {% trans 'Completar evaluación (Admin)' %}</a>
     {% endif %}
     <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
       <i class="bi bi-arrow-bar-left"></i>

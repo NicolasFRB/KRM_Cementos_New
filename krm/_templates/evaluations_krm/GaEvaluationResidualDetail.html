@@ -11,6 +11,168 @@
 
 {% include '_includes/Messages.html' %}
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<style>
+  canvas{
+    width:125px !important;
+    height:125px !important;
+    padding: 0;
+    margin: auto;
+  }
+
+  .badge.badge-success.n1 {
+  margin: 5px;
+  background-color: #ed9f7b !important;
+} 
+.badge.badge-success.n2 {
+  margin: 5px;
+  background-color: #e6d68e !important;
+} 
+.badge.badge-success.n3 {
+  margin: 5px;
+  background-color: #a6ed9d !important;
+} 
+
+#risk_eval_table tr > td:nth-child(n+9){
+  display:none
+}
+
+#risk_eval_table tr > th:nth-child(n+9){
+  display:none
+}
+
+</style>
+
+<script>
+
+  function load_chart(id, n_pending, n_delivered, n_finished, title) {
+    
+    const data = {
+      labels: ['Pending', 'Delivered', 'Finished'],
+      datasets: [
+        {
+          label: 'Dataset 1',
+          data: [n_pending, n_delivered, n_finished],
+          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
+        }
+      ]
+    };
+    const config = {
+      type: 'pie',
+      data: data,
+      fill: {
+          type: 'gradient',
+        },
+      options: {
+        animation : {
+          duration: 5000,
+        },
+        responsive: true,
+        plugins: {
+          legend: {
+            display:false,
+          },
+          title: {
+            display: true,
+            text: title,
+            font: {
+                size: 11,
+                family: 'Helvetica, Inter, sans-serif',
+            },
+          },
+          
+        },
+      },
+    };
+    const myChart = new Chart(document.querySelector('#'+id), config);
+  }
+
+  function load_heat(id, rrt) {
+    var series_key_idx = {};
+    var series = [];
+
+    rrt.forEach(function(r) {
+
+      evaluator = r.evaluator;
+      if (!(evaluator in series_key_idx)) {
+        series_key_idx[evaluator] = Object.keys(series_key_idx).length;
+        series.push({
+          "name": evaluator,
+          "data": [],
+        });
+      }
+      
+      series[series_key_idx[evaluator]]["data"].push({'x': r.risk_ref, 'y': r.probability_level_residual_evaluator});
+    })
+
+    
+    var options = {
+      series: series,
+      chart: {
+      height: 50+40*series.length,
+      type: 'heatmap',
+    },
+    plotOptions: {
+      heatmap: {
+        shadeIntensity: 0.5,
+        radius: 0,
+        useFillColorAsStroke: true,
+        colorScale: {
+          ranges: [
+            {
+              from: 1,
+              to: 1,
+              name: 'Optimizado',
+              color: '#a6ed9d'
+            },
+            {
+              from: 2,
+              to: 2,
+              name: 'Aceptable',
+              color: '#7dedf5'
+            },
+            {
+              from: 3,
+              to: 3,
+              name: 'Inadecuado',
+              color: '#e6d68e'
+            },
+            {
+              from: 4,
+              to: 4,
+              name: 'No controlado',
+              color: '#ed9f7b'
+            },
+            {
+              from: 5,
+              to: 5,
+              name: 'N/A',
+              color: '#d4d0c7'
+            }
+          ]
+        }
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      width: 1
+    },
+    title: {
+      display: false,
+    },
+    };
+
+    var chart = new ApexCharts(document.querySelector("#"+id), options);
+    chart.render();
+    
+  }
+
+</script>
+
 <!--begin::Container-->
 <div class="card mb-8">
   <!--begin::Card header-->
@@ -180,13 +342,21 @@
         </div>
       </div>
       <div class="col col-md-3">
-        <div class="row mb-8">
+      <div class="row mb-8">
           <div>
             <canvas id="pie-main"></canvas>
           </div>
         </div>
         <script>
-          load_chart('pie-main','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}');
+          load_chart('pie-main','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}', 'Riesgos evaluados');
+        </script>
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main-evaluators"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main-evaluators','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}', 'Evaluadores');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
@@ -196,23 +366,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      {% if evaluation.nrisk_test_inherents_delivered != 0 or evaluation.nrisk_test_inherents_finished != 0 %}
-        <div>
-          <div id="bar-main"></div>
-        </div>      
-        <script>
-            var rit = JSON.parse("{{ rit_json }}".replace(/&quot;/g,'"'));
-            load_bar("bar-main", rit);
-        </script>
-      {% else %}
-        <div class="row mt-2 mb-2">
-          <div class="col-sm">
-            <div class="alert alert-primary">{% trans 'Aún no se ha evaluado ningún riesgo' %}.</div>
-          </div>
-        </div>
-      {% endif %}
     </div>
   </div>
   <!--end::Card body-->
@@ -270,36 +423,67 @@
   <!--begin::Card body-->
   <div class="card-body">
     {% if evaluation.risk_test_residuals.all %}
+      <div class="row">
+        {% if evaluation.nrisk_test_inherents_delivered != 0 or evaluation.nrisk_test_inherents_finished != 0 %}
+          <div>
+            <div id="heat-main"></div>
+          </div>      
+          <script>
+              var rrt = JSON.parse("{{ rrt_json }}".replace(/&quot;/g,'"'));
+              load_heat("heat-main", rrt);
+          </script>
+        {% endif %}
+      </div>
       <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
         <thead>
           <tr>
-            <th>{% trans 'RIESGO' %}</th>
-            <th>{% trans 'EVALUADOR' %}</th>
-
-            <th>{% trans 'EV. PROBABILIDAD' %}</th>
-            <th>{% trans 'EV. DESC' %}</th>
-
-            <th>{% trans 'ADM. PROBABILIDAD' %}</th>
-            <th>{% trans 'ADM. DESC' %}</th>
-
-            <th>{% trans 'ESTADO' %}</th>
+            <th></th>
+            <th>{% trans 'Riesgo' %}</th>
+            <th>{% trans 'Descripción' %}</th>
+            <th>{% trans 'Dominio de riesgo / Evaluador' %}</th>
+            <th>{% trans 'Justif. (Evaluador)' %}</th>
+            <th>{% trans 'Nivel de control' %}</th>
+            <th>{% trans 'Sev. Inherente' %}</th>
           </tr>
         </thead>
         <tbody>
           {% for rt in evaluation.risk_test_residuals.all %}
           <tr>
-            <td>{{ rt.risk.name }}</td>
-            <td>{{ rt.evaluator.full_name }} - {{ rt.evaluator.email }}</td>
-            {% if rt.status == 1 %}
-                <td>{% trans 'Sin establecer' %}</td>
-                <td>{% trans 'Sin establecer' %}</td>
-            {% else %}
-                <td>{{ rt.get_probability_level_residual_evaluator_display }}</td>
-                <td><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_evaluator }}"></i></td>
-            {% endif %}
-            <td>{{ rt.get_probability_level_residual_administrator_display }}</td>
-            <td><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.description_administrator }}"></i></td>
-            <td>{{ rt.get_status_display }}</td>
+            <td class="text-center align-middle">
+              {% if rt.status == 1 %}
+                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">P</span>
+              {% elif rt.status == 2 %}
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}"">E</span>   
+              {% elif rt.status == 3 %}
+                <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
+              {% endif %}
+            </td>
+            <td class="text-center align-middle"> 
+              <a href="{% url 'risks_company:ga_risk_company_update' rt.risk.pk %}">
+                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
+              </a>
+            </td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ rt.risk.krm_main_elements|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.krm_main_elements }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">
+              <a href="{% url 'domain_risks:ga_domain_risk_detail' rt.risk.risk.risk_master.domain_risk.pk %}">
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
+              </a>              
+                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} ({{ rt.evaluator.position }})" id = "box-child">{{ rt.evaluator.username_no_domain }}</span>
+            </td>
+            <td class="text-center align-middle">
+              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_evaluator }}"></i>
+            </td>
+            <td class="text-center align-middle">{{ rt.probability_level_residual_evaluator }}</td>
+            <td class="text-center align-middle">{{ rt.get_latest_severity_inherent }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -339,6 +523,7 @@
         <tr>
           <th>{% trans 'RIESGO' %}</th>
           <th class="text-center">{% trans 'PROBABILIDAD AGREGADA' %}</th>
+          <th>{% trans 'Evaluaciones' %}</th>
           <th>{% trans 'ADM. PROBABILIDAD' %}</th>
           <th>{% trans 'ADM. DESC' %}</th>
         </tr>
@@ -349,6 +534,7 @@
           <td>{{ rt.risk_company.name }}</td>
           <td class="text-center"><span class="badge badge-info">{{ rt.probability_level_residual_evaluator_aggregate }}</span></td>
           <td>{{ rt.get_probability_level_residual_administrator_display }}</td>
+          <td class="text-center"><span class="badge badge-info">{{ rt.risk_test_residuals.count }}</span></td>
           <td>
             {% if rt.description_evaluator %}
               <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -374,11 +560,11 @@
   <!--begin::Card footer-->
   <div class="card-footer py-6">
     {% if evaluation.status == 'EP' %}
-    <a href="{% url 'evaluations_krm:ca_evaluation_residual_complete' evaluation.pk %}"
+    <a href="{% url 'evaluations_krm:ga_evaluation_residual_complete' evaluation.pk %}"
       class="btn btn-sm btn-primary me-2">
-      {% trans 'Validar Riesgos valorados por los Evaluadores' %}</a>
+      {% trans 'Completar evaluación (Admin)' %}</a>
     {% endif %}
-    <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
+    <a href="{% url 'evaluations_krm:ga_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
       <i class="bi bi-arrow-bar-left"></i>
       {% trans 'Volver' %}</a>
   </div>
