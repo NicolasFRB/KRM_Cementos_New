@@ -248,11 +248,11 @@ canvas#race{position:relative; z-index:100;}
                 <span class="badge badge-info">{{ evaluation.control_tests.count }}</span>
               </div>
               <div>
-                <canvas id="pie-ep-{{ forloop.counter }}"></canvas>
+                <canvas id="pie-fi-{{ forloop.counter }}"></canvas>
               </div>              
             </td>
             <script>
-              load_chart('pie-ep-{{ forloop.counter }}','{{evaluation.ncontrols_test_by_state_si}}','{{evaluation.ncontrols_test_by_state_wo}}','{{evaluation.ncontrols_test_by_state_ws}}','{{evaluation.ncontrols_test_by_state_wa}}','{{evaluation.ncontrols_test_by_state_fi}}');
+              load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.ncontrols_test_by_state_si}}','{{evaluation.ncontrols_test_by_state_wo}}','{{evaluation.ncontrols_test_by_state_ws}}','{{evaluation.ncontrols_test_by_state_wa}}','{{evaluation.ncontrols_test_by_state_fi}}');
             </script>
             <td class="text-center align-middle">
               {% if evaluation.status == "SI" %}
