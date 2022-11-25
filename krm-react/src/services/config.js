@@ -5,17 +5,21 @@ const baseUrlApi = `${base}api/`;
 const user = window.$('#pk').data('pk');
 
 const configService = {
-  apiGetProcesses: `${baseUrlApi}process/`,
-  apiGetRisks: `${baseUrlApi}risks/`,
-  apiGetDomainRisks: `${baseUrlApi}domain-risks/`,
-  apiGetControls: `${baseUrlApi}controls/`,
-  apiGetCompanies: `${baseUrlApi}companies?user=${user}`,
-  apiGetRiskCompany: `${baseUrlApi}riskscompany/`,
-  apiGetRiskCompanyResidual: `${baseUrlApi}riskscompanyresidual/`,
-  apiSendRiskTestInherent: `${baseUrlApi}risktestinherentexpert/`,
-  apiSendRiskTestResidual: `${baseUrlApi}risktestresidualevaluator/`,
-  apiSendRiskCompanyResidualAdmin: `${baseUrlApi}riskcompanyresidualadmin/`,
-  apiGetControlCompany: `${baseUrlApi}controlscompany/`,
+    apiGetProcesses: `${baseUrlApi}process/`,
+    apiGetRisks: `${baseUrlApi}risks/`,
+    apiGetDomainRisks: `${baseUrlApi}domain-risks/`,
+    apiGetControls: `${baseUrlApi}controls/`,
+    apiGetCompanies: `${baseUrlApi}companies?user=${user}`,
+    apiGetRiskCompany: `${baseUrlApi}riskscompany/`,
+    apiGetRiskCompanyResidual: `${baseUrlApi}riskscompanyresidual/`,
+    apiSendRiskTestInherent: `${baseUrlApi}risktestinherentexpert/`,
+    apiSendRiskTestResidual: `${baseUrlApi}risktestresidualevaluator/`,
+    apiSendRiskCompanyResidualAdmin: `${baseUrlApi}riskcompanyresidualadmin/`,
+    apiGetControlCompany: `${baseUrlApi}controlscompany/`,
+    apiGetQuestionnaires: `${baseUrlApi}questionnaires/`,
+    apiGetQuestions: `${baseUrlApi}questions/`,
+    apiGetUsers: `${baseUrlApi}users/`,
+    apiSendQuestionTest: `${baseUrlApi}questiontest/`,
 
 };
 

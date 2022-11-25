@@ -56,7 +56,7 @@ function CreateEvaluationKrmInherent(props) {
     });
     setRiskCompanies(newRiskCompanies);
 
-    // Quitamos esa compañía de los evaluados y luego la metemos con todo 
+    // Quitamos esa compañía de los evaluados y luego la metemos con todo
     newRiskCompaniesToEvaluate = riskCompaniesToEvaluate.filter((rcte) => rcte.company_pk !== companyPk);
 
     newRiskCompanies.forEach(function (rc, i) {
@@ -192,8 +192,7 @@ function CreateEvaluationKrmInherent(props) {
             <>
               <div className="alert alert-primary">Complete todos los datos obligatorios sobre la evaluación</div>
             </>
-          )
-          }
+          )}
           <div className={(formData.completed ? '' : 'd-none')}>
             <SelectCompanies selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} companies={companies} setCompanies={setCompanies} />
           </div>
