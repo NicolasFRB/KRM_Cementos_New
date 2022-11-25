@@ -605,14 +605,14 @@
                   <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id = "box-child">CO: {{ ct.control_test_owner.username_no_domain }}</span>
                 </a>
               {% else %}
-                <a href="{% url 'control_tests:control_test_assign' ct.pk %}">{% trans 'CO: Asignar' %}</a>
+                <a href="{% url 'control_tests:control_test_assign' ct.pk %}"><span>{% trans 'CO: Asignar' %}</span><br></a>
               {% endif %}
               {% if ct.control_test_supervisor %}
                 <a href="{% url 'control_tests:control_test_assign' ct.pk %}">
                   <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ ct.control_test_supervisor.full_name }} ({{ ct.control_test_supervisor.position }})" id = "box-child">CS: {{ ct.control_test_supervisor.username_no_domain }}</span>
                 </a>
               {% else %}
-                <a href="{% url 'control_tests:control_test_assign' ct.pk %}">{% trans 'CS: Asignar' %}</a>
+                <a href="{% url 'control_tests:control_test_assign' ct.pk %}"><span>{% trans 'CS: Asignar' %}</span><br></a>
               {% endif %}
             </td>
             <td class="text-center align-middle">
