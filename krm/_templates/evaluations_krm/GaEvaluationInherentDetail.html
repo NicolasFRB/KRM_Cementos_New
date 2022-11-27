@@ -44,6 +44,50 @@
 
 </style>
 <script>
+
+function color_severity_dynamic(val, id){
+    
+    var arrow_dot = $("#"+id);
+    
+    if (val == 0) {
+      arrow_dot.css('color',"#d9d3d2");
+      arrow_dot.attr('class','bi-x-circle-fill');
+    } else if (val <= 2) {
+      arrow_dot.css('color',"#7ee34f");
+      arrow_dot.attr('class','bi-arrow-down-circle-fill');
+    } else if (val <= 5) {      
+      arrow_dot.css('color',"#cdd44c");
+      arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
+    } else if (val <= 11) {
+      arrow_dot.css('color',"#c4aa43");
+      arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
+    } else if (val <= 16) {
+      arrow_dot.css('color',"#d14c24");
+      arrow_dot.attr('class','bi-arrow-up-circle-fill');
+    }
+  }
+
+  function color_severity(val, id){
+    
+    var arrow_dot = document.querySelector("#"+id)
+
+    if (val == 0) {
+      arrow_dot.style.color = "#d9d3d2";
+      arrow_dot.classList.toggle('bi-x-circle-fill');
+    } else if (val <= 2) {
+      arrow_dot.style.color = "#7ee34f";
+      arrow_dot.classList.toggle('bi-arrow-down-circle-fill');
+    } else if (val <= 5) {
+      arrow_dot.style.color = "#cdd44c";
+      arrow_dot.classList.toggle('bi-arrow-down-right-circle-fill');
+    } else if (val <= 11) {
+      arrow_dot.style.color = "#c4aa43";
+      arrow_dot.classList.toggle('bi-arrow-up-right-circle-fill');
+    } else if (val <= 16) {
+      arrow_dot.style.color = "#d14c24";
+      arrow_dot.classList.toggle('bi-arrow-up-circle-fill');
+    }
+  }
   
   function load_bar(id, rit) {
     r_impacto = [];
@@ -101,6 +145,8 @@
         plotOptions: {
           bar: {
             borderRadius: 5,
+            borderRadiusApplication: 'end',
+            borderRadiusWhenStacked: 'last',
             dataLabels: {
               position: 'center', // top, center, bottom
             },
@@ -219,72 +265,130 @@
   }
 
   function swap_columns(id, datatable_id) {
-    var dt = $('#'+datatable_id).DataTable();
     var flexRadio_cualitativo = $('#'+"flexRadio_cualitativo").is(':checked');
     var flexRadio_cuantitativo = $('#'+"flexRadio_cuantitativo").is(':checked');
     var flexRadio_admin = $('#'+"flexRadio_admin").is(':checked');
     var flexRadio_experto = $('#'+"flexRadio_experto").is(':checked');
+
+    var dt = $('#risk_eval_table').DataTable();
+
+    var j_exp = dt.$(".justif-expert");
+    var j_adm = dt.$(".justif-admin");
+
+    var s_exp_num = dt.$(".sev-expert-num");
+    var s_adm_num = dt.$(".sev-admin-num");
+    var s_exp_qual = dt.$(".sev-expert-qual");
+    var s_adm_qual = dt.$(".sev-admin-qual");
+
+    var i_exp_num = dt.$(".imp-expert-num");
+    var i_adm_num = dt.$(".imp-admin-num");
+    var i_exp_qual = dt.$(".imp-expert-qual");
+    var i_adm_qual = dt.$(".imp-admin-qual");
+
+    var p_exp_num = dt.$(".prob-expert-num");
+    var p_adm_num = dt.$(".prob-admin-num");
+    var p_exp_qual = dt.$(".prob-expert-qual");
+    var p_adm_qual = dt.$(".prob-admin-qual");
     
     if (flexRadio_cualitativo && flexRadio_experto) {
-      dt.column(4).visible(true);    
-      dt.column(5).visible(true);    
-      dt.column(6).visible(true);    
-      dt.column(7).visible(true);    
-      dt.column(8).visible(false);    
-      dt.column(9).visible(false);    
-      dt.column(10).visible(false);    
-      dt.column(11).visible(false);    
-      dt.column(12).visible(false);    
-      dt.column(13).visible(false);    
-      dt.column(14).visible(false);    
-      dt.column(15).visible(false);    
-      dt.column(16).visible(false);    
-      dt.column(17).visible(false);    
+
+      for(var i = 0; i < j_exp.length; i++) {
+        j_exp[i].style.display = "inline-block";
+        j_adm[i].style.display = "none";
+
+        s_exp_num[i].style.display = "none";
+        s_adm_num[i].style.display = "none";
+        s_exp_qual[i].style.display = "inline-block";
+        s_adm_qual[i].style.display = "none";
+
+        i_exp_num[i].style.display = "none";
+        i_adm_num[i].style.display = "none";
+        i_exp_qual[i].style.display = "inline-block";
+        i_adm_qual[i].style.display = "none";
+
+        p_exp_num[i].style.display = "none";
+        p_adm_num[i].style.display = "none";
+        p_exp_qual[i].style.display = "inline-block";
+        p_adm_qual[i].style.display = "none";
+
+        $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
+        color_severity_dynamic(parseFloat(s_exp_num[i].innerHTML), "sev-dot-" + i);
+      }
+          
     } else if (flexRadio_cuantitativo && flexRadio_experto) {
-      dt.column(4).visible(true);    
-      dt.column(5).visible(false);    
-      dt.column(6).visible(false);    
-      dt.column(7).visible(false);    
-      dt.column(8).visible(true);    
-      dt.column(9).visible(true);    
-      dt.column(10).visible(true);    
-      dt.column(11).visible(false);    
-      dt.column(12).visible(false);    
-      dt.column(13).visible(false);    
-      dt.column(14).visible(false);    
-      dt.column(15).visible(false);    
-      dt.column(16).visible(false);    
-      dt.column(17).visible(false);  
+
+      for(var i = 0; i < j_exp.length; i++) {
+        j_exp[i].style.display = "inline-block";
+        j_adm[i].style.display = "none";
+
+        s_exp_num[i].style.display = "inline-block";
+        s_adm_num[i].style.display = "none";
+        s_exp_qual[i].style.display = "none";
+        s_adm_qual[i].style.display = "none";
+
+        i_exp_num[i].style.display = "inline-block";
+        i_adm_num[i].style.display = "none";
+        i_exp_qual[i].style.display = "none";
+        i_adm_qual[i].style.display = "none";
+
+        p_exp_num[i].style.display = "inline-block";
+        p_adm_num[i].style.display = "none";
+        p_exp_qual[i].style.display = "none";
+        p_adm_qual[i].style.display = "none";
+
+        $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
+        color_severity_dynamic(parseFloat(s_exp_num[i].innerHTML), "sev-dot-" + i);
+      }
+       
     } else if (flexRadio_cualitativo && flexRadio_admin) {
-      dt.column(4).visible(false);    
-      dt.column(5).visible(false);    
-      dt.column(6).visible(false);    
-      dt.column(7).visible(false);    
-      dt.column(8).visible(false);    
-      dt.column(9).visible(false);    
-      dt.column(10).visible(false);    
-      dt.column(11).visible(true);    
-      dt.column(12).visible(true);    
-      dt.column(13).visible(true);    
-      dt.column(14).visible(true);    
-      dt.column(15).visible(false);    
-      dt.column(16).visible(false);    
-      dt.column(17).visible(false);
+
+      for(var i = 0; i < j_exp.length; i++) {
+        j_exp[i].style.display = "none";
+        j_adm[i].style.display = "inline-block";
+
+        s_exp_num[i].style.display = "none";
+        s_adm_num[i].style.display = "none";
+        s_exp_qual[i].style.display = "none";
+        s_adm_qual[i].style.display = "inline-block";
+
+        i_exp_num[i].style.display = "none";
+        i_adm_num[i].style.display = "none";
+        i_exp_qual[i].style.display = "none";
+        i_adm_qual[i].style.display = "inline-block";
+
+        p_exp_num[i].style.display = "none";
+        p_adm_num[i].style.display = "none";
+        p_exp_qual[i].style.display = "none";
+        p_adm_qual[i].style.display = "inline-block";
+
+        $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
+        color_severity_dynamic(parseFloat(s_adm_num[i].innerHTML), "sev-dot-" + i);
+      }
+      
     } else if (flexRadio_cuantitativo && flexRadio_admin) {
-      dt.column(4).visible(false);    
-      dt.column(5).visible(false);    
-      dt.column(6).visible(false);    
-      dt.column(7).visible(false);    
-      dt.column(8).visible(false);    
-      dt.column(9).visible(false);    
-      dt.column(10).visible(false);    
-      dt.column(11).visible(true);    
-      dt.column(12).visible(false);    
-      dt.column(13).visible(false);    
-      dt.column(14).visible(false);    
-      dt.column(15).visible(true);    
-      dt.column(16).visible(true);    
-      dt.column(17).visible(true);
+      
+      for(var i = 0; i < j_exp.length; i++) {
+        j_exp[i].style.display = "none";
+        j_adm[i].style.display = "inline-block";
+
+        s_exp_num[i].style.display = "none";
+        s_adm_num[i].style.display = "inline-block";
+        s_exp_qual[i].style.display = "none";
+        s_adm_qual[i].style.display = "none";
+
+        i_exp_num[i].style.display = "none";
+        i_adm_num[i].style.display = "inline-block";
+        i_exp_qual[i].style.display = "none";
+        i_adm_qual[i].style.display = "none";
+
+        p_exp_num[i].style.display = "none";
+        p_adm_num[i].style.display = "inline-block";
+        p_exp_qual[i].style.display = "none";
+        p_adm_qual[i].style.display = "none";
+
+        $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
+        color_severity_dynamic(parseFloat(s_adm_num[i].innerHTML), "sev-dot-" + i);
+      }
   }
 }
 </script>
@@ -409,7 +513,7 @@
           <div class="col-xl-7">
             <div class="fs-6">
               {% if evaluation.admin_supervisor %}
-                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ evaluation.admin_supervisor.full_name }} ({{ evaluation.admin_supervisor.position }})" id = "box-child">{{ evaluation.admin_supervisor.username_no_domain }}</span>
+                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ evaluation.admin_supervisor.full_name }} ({{ evaluation.admin_supervisor.position }})">{{ evaluation.admin_supervisor.username_no_domain }}</span>
               {% else %}
                 <span class="badge badge-primary">{% trans 'Sin completar' %}</span>
               {% endif %}
@@ -571,20 +675,10 @@
             <th>{% trans 'Riesgo' %}</th>
             <th>{% trans 'Descripción' %}</th>
             <th>{% trans 'Dominio de riesgo / Experto' %}</th> 
-            <th>{% trans 'Justif. (Experto)' %}</th> 
-            <th>{% trans 'Sev. (Experto)' %}</th> 
-            <th>{% trans 'Imp. (Experto)' %}</th>
-            <th>{% trans 'Prob. (Experto)' %}</th>
-            <th>{% trans 'Sev. (Experto)' %}</th>
-            <th>{% trans 'Imp. (Experto)' %}</th>
-            <th>{% trans 'Prob. (Experto)' %}</th>
-            <th>{% trans 'Justif. (Admin)' %}</th> 
-            <th>{% trans 'Sev. (Admin)' %}</th> 
-            <th>{% trans 'Imp. (Admin)' %}</th>
-            <th>{% trans 'Prob. (Admin)' %}</th>
-            <th>{% trans 'Sev. (Admin)' %}</th>
-            <th>{% trans 'Imp. (Admin)' %}</th>
-            <th>{% trans 'Prob. (Admin)' %}</th>                                  
+            <th class="justif-header">{% trans 'Justificación' %}</th> 
+            <th class="sev-header">{% trans 'Severidad' %}</th> 
+            <th class="imp-header">{% trans 'Impacto' %}</th>
+            <th class="prob-header">{% trans 'Probabilidad' %}</th>                                
           </tr>
         </thead>
         <tbody>
@@ -621,24 +715,33 @@
                 <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.expert.full_name }} ({{ rt.expert.position }})" id = "box-child">{{ rt.expert.username_no_domain }}</span>
             </td>
             <td class="text-center align-middle">
-              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i>
+              <span class="justif-expert"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i></span>
+              <span class="justif-admin" style="display:none;"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_admin }}"></i></span>
             </td>
-            <td class="text-center align-middle">{{ rt.severity_level_expert_qualitative }}</td>
-            <td class="align-middle">{{ rt.get_impact_level_expert_display }}</td>
-            <td class="align-middle">{{ rt.get_probability_level_expert_display }}</td>
-            <td class="text-center align-middle">{{ rt.severity_level_expert }}</td>
-            <td class="text-center align-middle">{{ rt.impact_level_expert }}</td>
-            <td class="text-center align-middle">{{ rt.probability_level_expert }}</td>
-            <td class="text-center align-middle">
-              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_admin }}"></i>
+            
+            <td class="text-center align-middle" data-order="{{ rt.severity_level_expert }}" id="sev-row-{{ forloop.counter0 }}">
+              <div style="display:flex; gap:10px;"> 
+                <span><i class="bi bi-arrow-right-circle-fill" id = "sev-dot-{{ forloop.counter0 }}"></i></span>
+                <span class="sev-expert-num" style="display:none;">{{ rt.severity_level_expert }}</span>
+                <span class="sev-admin-num" style="display:none;">{{ rt.severity_level_admin }}</span>
+                <span class="sev-expert-qual">{{ rt.severity_level_expert_qualitative }}</span>
+                <span class="sev-admin-qual" style="display:none;">{{ rt.severity_level_admin_qualitative }}</span>
+              </div>
             </td>
-            <td class="text-center align-middle">{{ rt.severity_level_admin_qualitative }}</td>
-            <td class="align-middle">{{ rt.get_impact_level_administrator_display }}</td>
-            <td class="align-middle">{{ rt.get_probability_level_administrator_display }}</td>
-            <td class="text-center align-middle">{{ rt.severity_level_admin }}</td>
-            <td class="text-center align-middle">{{ rt.impact_level_administrator }}</td>
-            <td class="text-center align-middle">{{ rt.probability_level_administrator }}</td>
+            <td class="text-center align-middle" data-order="{{ rt.impact_level_expert }}">
+              <span class="imp-expert-num" style="display:none;">{{ rt.impact_level_expert }}</span>
+              <span class="imp-admin-num" style="display:none;">{{ rt.impact_level_administrator }}</span>
+              <span class="imp-expert-qual">{{ rt.get_impact_level_expert_display }}</span>
+              <span class="imp-admin-qual" style="display:none;">{{ rt.get_impact_level_administrator_display }}</span>
+            </td>
+            <td class="text-center align-middle" data-order="{{ rt.probability_level_expert }}">      
+              <span class="prob-expert-num" style="display:none;">{{ rt.probability_level_expert }}</span>
+              <span class="prob-admin-num" style="display:none;">{{ rt.probability_level_administrator }}</span>
+              <span class="prob-expert-qual">{{ rt.get_probability_level_expert_display }}</span>
+              <span class="prob-admin-qual" style="display:none;">{{ rt.get_probability_level_administrator_display }}</span>
+            </td>
           </tr>
+          <script>color_severity("{{ rt.severity_level_expert }}", "sev-dot-{{ forloop.counter0 }}");</script>
           {% endfor %}
         </tbody>
       </table>
