@@ -135,7 +135,19 @@
           <!--begin::Col-->
           <div class="col-xl-7">
             <div class="fs-6">
-              <span>{{ evaluation.company.ref }} - {{ evaluation.company.name }}</span>
+              <div class="row mb-8">
+                {% if evaluation.company.country %}
+                <div class="col-xl-2">
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.company.country.name}}">
+                    <img class="w-20px h-20px rounded-circle me-3" src="{{evaluation.company.country.flag}}">
+                  </span>
+                </div>
+                {% endif %}
+                <div class="col-xl-10">
+                  <div><span>{{ evaluation.company.ref }}</span></div>
+                  <div><span>{{ evaluation.company.name }}</span></div>
+                </div>
+              </div>
             </div>
           </div>
           <!--end::Col-->
