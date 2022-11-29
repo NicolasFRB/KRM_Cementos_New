@@ -151,6 +151,7 @@ class RiskCompanyResidual(AuditModel):
             evaluation=self.evaluation,
             risk=self.risk_company,
             status__in=[2,3],
+            probability_level_residual_evaluator__in = [1,2,3,4],
         ).exclude(
             probability_level_residual_evaluator=5
         ).aggregate(Avg('probability_level_residual_evaluator'))
@@ -166,6 +167,93 @@ class RiskCompanyResidual(AuditModel):
         return round(self.probability_level_residual_evaluator_aggregate)
 
     @property
+    def probability_residual_evaluator_qualitative(self):
+        p = self.probability_level_residual_evaluator_aggregate_rounded
+        if p <= 1: return "No significativo"
+        if p <= 2: return "Bajo"
+        if p <= 3: return "Alto"
+        if p <= 4: return "Crítico"
+        return "Sin establecer"
+
+    @property
+    def probability_level_result_evaluator(self):
+        p = self.probability_level_residual_evaluator_aggregate_rounded
+        p_i = self.get_latest_probability_inherent
+
+        # Si no hay evaluaciones residuales (p==0)
+        # o no hay nivel de control (p==4)
+        # o todo está sin tocar (p==5)
+        # return inherente == residual
+        if p == 0 or p == 4 or p == 5:
+            return p_i
+
+        # Reglas de negocio
+        if p == 1: 
+            r = p_i - 3
+        elif p == 2:
+            r = p_i - 2
+        elif p == 3:
+            r = p_i - 1
+        
+        # Si residual fuera de escala (1,4): min escala (1) 
+        if r < 1:
+            r = 1
+
+        return r
+
+    @property
+    def probability_level_result_admin(self):
+        p = self.probability_level_residual_administrator
+        p_i = self.get_latest_probability_inherent
+
+        # Si no hay evaluaciones residuales (p==0)
+        # o no hay nivel de control (p==4)
+        # o todo está sin tocar (p==5)
+        # return inherente == residual
+        if p == 0 or p == 4 or p == 5:
+            return p_i
+
+        # Reglas de negocio
+        if p == 1: 
+            r = p_i - 3
+        elif p == 2:
+            r = p_i - 2
+        elif p == 3:
+            r = p_i - 1
+        
+        # Si residual fuera de escala (1,4): min escala (1) 
+        if r < 1:
+            r = 1
+
+        return r
+
+    @property
+    def severity_residual_evaluator(self):
+        return self.probability_level_result_evaluator * self.get_latest_impact_inherent
+
+    @property
+    def severity_residual_evaluator_qualitative(self):
+        sev = self.severity_residual_evaluator
+        if sev == 0: return 0
+        if sev <= 2: return "No significativo"
+        if sev <= 5: return "Bajo"
+        if sev <= 11: return "Alto"
+        if sev <= 16: return "Crítico"
+
+    @property
+    def severity_residual_admin(self):
+        return self.probability_level_result_admin * self.get_latest_impact_inherent
+
+    @property
+    def severity_residual_admin_qualitative(self):
+        sev = self.severity_residual_admin
+        if sev == 0: return 0
+        if sev <= 2: return "No significativo"
+        if sev <= 5: return "Bajo"
+        if sev <= 11: return "Alto"
+        if sev <= 16: return "Crítico"
+
+    @property
     def risk_test_residuals(self):
         """
           Función que devuelve todas las descripciones dadas por los evaluadores
@@ -175,7 +263,33 @@ class RiskCompanyResidual(AuditModel):
         return RiskTestResidual.objects.filter(
             evaluation=self.evaluation,
             risk=self.risk_company,
-            status=2
+            status__in = [2, 3],
+        )
+
+    @property
+    def risk_test_residuals_calculus(self):
+        """
+          Función que devuelve todas las descripciones dadas por los evaluadores
+        """
+        from krm.evaluations_krm.models import RiskTestResidual
+
+        return RiskTestResidual.objects.filter(
+            evaluation=self.evaluation,
+            risk=self.risk_company,
+            status__in = [2, 3],
+            probability_level_residual_evaluator__in = [1,2,3,4],
+        )
+
+    @property
+    def risk_test_residuals_all(self):
+        """
+          Función que devuelve todas las descripciones dadas por los evaluadores
+        """
+        from krm.evaluations_krm.models import RiskTestResidual
+
+        return RiskTestResidual.objects.filter(
+            evaluation=self.evaluation,
+            risk=self.risk_company,
         )
 
     def get_controls_attempt_to_mitigate(self):
