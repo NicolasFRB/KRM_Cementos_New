@@ -47,7 +47,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
         </div>
         <input type="hidden" name={`probability-${pk}`} value={probability} />
         <div className="row mb-5">
-          <div className="col col-12 col-xl-8 mb-5 mb-xl-0">
+          <div className="col col-12 mb-5 mb-xl-0">
             <h5 className="mb-7">Nivel de Control</h5>
             <div className="row">
 
@@ -61,7 +61,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 1}
                     onChange={() => updateProbability(1)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-1-${pk}`}>1 Optimizado</label>
+                  <label className="form-check-label" htmlFor={`p-pk-1-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="Los controles implantados para mitigar los Riesgos de Compliance inherentes son robustos y existen escasas recomendaciones de Auditoría Interna o no se ha manifestado ningún riesgo de Compliance">1 Optimizado</label>
                 </div>
               </div>
 
@@ -75,7 +75,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 2}
                     onChange={() => updateProbability(2)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-2-${pk}`}>2 Aceptable</label>
+                  <label className="form-check-label" htmlFor={`p-pk-2-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="Los controles implantados para mitigar los Riesgos de Compliance inherentes son apropiados y existe alguna recomendación de Auditoría Interna o se han manifestado escasos riesgos de Compliance">2 Aceptable</label>
                 </div>
               </div>
 
@@ -89,7 +89,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 3}
                     onChange={() => updateProbability(3)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-3-${pk}`}>3 Inadecuado</label>
+                  <label className="form-check-label" htmlFor={`p-pk-3-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="Los controles implantados para mitigar los Riesgos de Compliance inherentes son deficientes y existen varias recomendaciones de Auditoría Interna o se han manifestado numerosos riesgos de Compliance">3 Inadecuado</label>
                 </div>
               </div>
 
@@ -103,7 +103,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 4}
                     onChange={() => updateProbability(4)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>4 No controlado</label>
+                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="No existen controles">4 No controlado</label>
                 </div>
               </div>
 
@@ -117,7 +117,7 @@ function CaRiskTestResidual({ pk, initialProbability, initialDescriptionAdmin })
                     checked={probability === 5}
                     onChange={() => updateProbability(5)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>5 N/A</label>
+                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="Desconozco las implicaciones existentes sobre las medidas de control implementadas para mitigar este delito">5 N/A</label>
                 </div>
               </div>
 
