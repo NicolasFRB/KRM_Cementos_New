@@ -38,8 +38,8 @@ class RiskTestInherent(AuditModel):
     )
 
     RISK_CHOICES = (
-        (1, _('Bajo')),
-        (2, _('Medio')),
+        (1, _('No significativo')),
+        (2, _('Bajo')),
         (3, _('Alto')),
         (4, _('Crítico')),
         (5, _('Sin establecer')),
