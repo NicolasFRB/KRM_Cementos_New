@@ -14,7 +14,10 @@ from krm.questionnaires.models import EvaluationQuestionnaire
 
 
 class EvaluationQuestionnaireCreateForm(ModelForm):
-
+    ref = forms.CharField(
+        label=_("REF"),
+        max_length=140,
+    )
     questions_to_evaluate = forms.CharField(
         max_length=1000,
         label=_('Preguntas')
@@ -23,7 +26,7 @@ class EvaluationQuestionnaireCreateForm(ModelForm):
     class Meta:
         model = EvaluationQuestionnaire
         fields = [
-            'ref',
+            # 'ref',
             'questionnaire',
             'date_begin',
             'date_end',
@@ -49,10 +52,10 @@ class EvaluationQuestionnaireCreateForm(ModelForm):
         self.fields["questionnaire"].widget.attrs["data-control"] = "select2"
 
 
-class EvaluationQuestionnaireCompleteForm(forms.Form):
+class EvaluationQuestionnaireActionForm(forms.Form):
 
-    ref = forms.IntegerField(required=False)
+    action = forms.CharField(required=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['ref'].widget = HiddenInput()
+        self.fields['action'].widget = HiddenInput()

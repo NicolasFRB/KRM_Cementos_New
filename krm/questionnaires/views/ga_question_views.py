@@ -205,5 +205,5 @@ class GaQuestionDeleteView(DeleteView):
 
     def get_confirm_text_message(self):
         return _(
-            '<span class="kt-font-bold">¿Seguro que desea eliminar el cuestionario y todas sus evaluaciónes?: </span> {0}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
+            '<span class="kt-font-bold">¿Seguro que desea eliminar la pregunta y todas sus respuestas?: </span> {0}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
         ).format(str(self.object))

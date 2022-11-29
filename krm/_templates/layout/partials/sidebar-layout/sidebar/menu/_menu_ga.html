@@ -16,6 +16,8 @@
 {% url 'evaluations_krm:ga_evaluation_residual_list' as ga_evaluation_residual_list %}
 {% url 'evaluations_krm:ca_evaluation_residual_create' as ca_evaluation_residual_create %}
 {% url 'evaluations_krm:ca_evaluation_residual_list' as ca_evaluation_residual_list %}
+{% url 'evaluation_questionnaires:ga_evaluation_questionnaire_create' as ga_evaluation_questionnaire_create %}
+{% url 'evaluation_questionnaires:ga_evaluation_questionnaire_list' as ga_evaluation_questionnaire_list %}
 
 <!--begin::sidebar menu-->
 <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
@@ -329,7 +331,7 @@
 
             <!--begin:Menu item-->
             <div data-kt-menu-trigger="click"
-                class="menu-item menu-accordion {% if request.path in EVALUATIONS_KRM_URLS %}show{% endif %}">
+                class="menu-item menu-accordion {% if request.path in EVALUATIONS_QUESTIONNAIRES_URLS %}show{% endif %}">
                 <!--begin:Menu link-->
                 <span class="menu-link">
                     <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
@@ -343,12 +345,12 @@
                     <div class="menu-item">
                         <!--begin:Menu link-->
 
-                        <a class="menu-link {% if request.path == ga_dashboard %}active{% endif %}"
+                        <a class="menu-link {% if request.path == ga_evaluation_questionnaire_list %}active{% endif %}"
                             href="{% url 'evaluation_questionnaires:ga_evaluation_questionnaire_list' %}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
-                            <span class="menu-title">{% trans 'Evaluaciones de Cuestionarios' %}</span>
+                            <span class="menu-title">{% trans 'Evaluaciones' %}</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
@@ -356,12 +358,12 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link {% if request.path == ga_dashboard %}active{% endif %}"
+                        <a class="menu-link {% if request.path == ga_evaluation_questionnaire_create %}active{% endif %}"
                             href="{% url 'evaluation_questionnaires:ga_evaluation_questionnaire_create' %}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
-                            <span class="menu-title">{% trans 'Crear evaluación Cuestionarios' %}</span>
+                            <span class="menu-title">{% trans 'Crear evaluación' %}</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
@@ -578,7 +580,8 @@
                     <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
                     <span class="menu-title">{% trans 'Supervisar Controles' %}
                         {% if request.user.controls_test_supervisor_pending.count > 0 %}
-                        &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_supervisor_pending.count }}</span>
+                        &nbsp;&nbsp;<span class="badge badge-primary">{{
+                            request.user.controls_test_supervisor_pending.count }}</span>
                         {% endif %}
                     </span>
                 </a>

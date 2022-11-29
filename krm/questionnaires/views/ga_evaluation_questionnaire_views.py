@@ -1,12 +1,9 @@
-from django.shortcuts import render
-from django.conf import settings
 import json
 import uuid
+# import xlwt
+import xlsxwriter
 
-import re
-
-# Create your views here.
-from django.shortcuts import render
+from django.http import HttpResponse
 
 from django.views.generic import (
     FormView,
@@ -14,41 +11,20 @@ from django.views.generic import (
     ListView
 )
 from django.contrib import messages
-from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
 
-from django.shortcuts import get_object_or_404
-
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.forms.models import model_to_dict
 
 from krm.metronic.__init__ import KTLayout
-from krm.metronic.libs.theme import KTTheme
 
-from krm.evaluations_krm.models import (
-    EvaluationKrmResidual,
-    RiskTestResidual,
-    RiskCompanyResidual
-)
-from krm.companies.models import (
-    CompanyDomainRiskEvaluator,
-    Company
-)
-
-from krm.risks.models import RiskCompany
 from krm.questionnaires.models import EvaluationQuestionnaire
 
 from krm.questionnaires.forms import EvaluationQuestionnaireCreateForm
 
-from krm.evaluations_krm.forms import (
-    EvaluationResidualCreateForm,
-    EvaluationResidualCompleteForm,
-)
-
-from krm.evaluations.forms import (
-    EvaluationActionForm
+from krm.questionnaires.forms import (
+    EvaluationQuestionnaireActionForm,
 )
 
 from krm.users.decorators import is_global_admin, user_can_view_evaluation
@@ -96,7 +72,6 @@ class GaEvaluationQuestionnaireListView(ListView):
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaEvaluationQuestionnaireCreateView(FormView):
     form_class = EvaluationQuestionnaireCreateForm
-    model = EvaluationQuestionnaire
     template_name = 'evaluation_questionnaires/GaEvaluationQuestionnaireCreate.html'
 
     def get_context_data(self, **kwargs):
@@ -117,14 +92,13 @@ class GaEvaluationQuestionnaireCreateView(FormView):
         return context
 
     def get_success_url(self):
-
         return reverse_lazy(
             'evaluation_questionnaires:ga_evaluation_questionnaire_list'
         )
 
     def form_valid(self, form):
+
         from krm.questionnaires.models import (
-            Questionnaire,
             Question,
             QuestionTest
         )
@@ -167,111 +141,144 @@ class GaEvaluationQuestionnaireCreateView(FormView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _(f'Evaluacion creada correctamente con {question_test_created} Question Test pertenecientes')
+            _(f'Evaluacion {ref} creada correctamente con {question_test_created} preguntas')
         )
 
         return super().form_valid(form)
 
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
-class GaEvaluationQuestionnaireDetailView(DetailView):
+class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
     template_name = 'evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html'
     model = EvaluationQuestionnaire
+    context_object_name = 'evaluation'
+    form_class = EvaluationQuestionnaireActionForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
-        context['evaluation'] = self.evaluation
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones de Cuestionario'), 'url': reverse(
                 'evaluation_questionnaires:ga_evaluation_questionnaire_list')},
-            {'title': self.evaluation.ref}
+            {'title': self.object.ref}
         ]
-        context['page_title'] = f"{_('Evaluación de Cuestionario')} : {self.evaluation.ref}"
+        context['page_title'] = f"{_('Evaluación de Cuestionario')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
 
+    def form_valid(self, form):
+        action = form.cleaned_data["action"]
+        evaluation = self.get_object()
 
-# @method_decorator([login_required, is_global_admin], name='dispatch')
-# class GaEvaluationQuestionnaireAdminComplete(DetailView, FormView):
-#     template_name = 'evaluation_questionnaires/GaEvaluationQuestionnaireAdminComplete.html'
-#     model = EvaluationKrmResidual
-#     context_object_name = 'evaluation'
-#     form_class = EvaluationResidualCompleteForm
+        if action == 'finish':
+            evaluation.status = 'FI'
+            evaluation.question_tests.update(status=2)
+            evaluation.save()
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context = KTLayout.init(context)
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                _(f"Evaluación {evaluation.ref} finalizada correctamente"),
+            )
 
-#         breadcrums = [
-#             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-#             {'title': _('Evaluaciones de Riesgo Residual')}
-#         ]
-#         context['page_title'] = f"{_('Evaluación de Riesgos Residuals')} : {self.object.ref}"
-#         context['breadcrums'] = breadcrums
+        if action == 'download':
+            import io
 
-#         # SIMPLIFICACION
-#         # uso risk_test (nomenclatura), no son risk_test, son risk_company
-#         risk_tests = self.object.risk_company_residuals.all()
+            filename = f'questionnaire_evaluation_{evaluation.ref}.xlsx'
 
-#         for r in risk_tests:
-#             r.controls_attempt_to_mitigate = r.get_controls_attempt_to_mitigate()
-#             r.test_controls_attempt_to_mitigate = r.get_test_controls_attempt_to_mitigate()
+            # Create an in-memory output file for the new workbook.
+            output = io.BytesIO()
 
-#         context['risks_test_residual'] = sorted(
-#             risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
+            workbook = xlsxwriter.Workbook(output)
+            worksheet = workbook.add_worksheet()
 
-#         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
+            # Add a bold format to use to highlight cells.
+            bold = workbook.add_format({'bold': True})
+            text_wrap = workbook.add_format({'text_wrap': True})
 
-#         context['js_template'] = ['js/custom/datatables.js']
+            columns = [
+                "QUESTION",
+                "EVALUATOR",
+                "ANSWER",
+                "STATUS",
+                "DESCRIPTION",
+                "DATE",
+            ]
 
-#         return context
+            for index, col_name in enumerate(columns):
+                worksheet.write(0, index, col_name, bold)
 
-#     def form_valid(self, form):
-#         evaluation = self.get_object()
-#         RiskTestResidual.objects.filter(
-#             evaluation=evaluation
-#         ).update(
-#             status=3
-#         )
+            worksheet.set_column(0, 1, 70)  # Question
+            worksheet.set_column(1, 1, 25)  # Evaluator
+            worksheet.set_column(2, 1, 25)  # Answer
+            worksheet.set_column(3, 1, 25)  # Status
+            worksheet.set_column(4, 1, 25)  # Description
+            worksheet.set_column(5, 1, 25)  # Date
 
-#         # Ahora para los que no ha completado el administrador de la compañía, debemos completar con los valores agregados que han dado los evaluadores
+            row = 1
 
-#         for rr in RiskTestResidual.objects.filter(evaluation=evaluation):
-#             rr.status = 3
-#             # Ahora buscamos el Risk Company Residual
-#             rcr = RiskCompanyResidual.objects.get(
-#                 evaluation=evaluation,
-#                 risk_company=rr.risk
-#             )
+            for question in evaluation.question_tests.all():
+                worksheet.write(row, 0, question.question.title, text_wrap)
+                worksheet.write(row, 1, question.evaluator.username)
+                worksheet.write(row, 2, question.get_answer_display())
+                worksheet.write(row, 3, question.get_status_display())
+                worksheet.write(row, 4, question.description)
+                worksheet.write(
+                    row, 5, question.modified.strftime("%d/%m/%Y %H:%M:%S"))
+                row += 1
 
-#             if rcr.probability_level_residual_administrator == 0:
-#                 if rcr.probability_level_residual_evaluator_aggregate_rounded == 0:
-#                     rcr.probability_level_residual_administrator = 4
-#                 else:
-#                     rcr.probability_level_residual_administrator = rcr.probability_level_residual_evaluator_aggregate_rounded
-#             if rcr.description_administrator == '':
-#                 rcr.description_administrator = _('--Sin completar--')
+            # Close the workbook before sending the data.
+            workbook.close()
 
-#             rcr.save()
-#             rr.save()
+            # Rewind the buffer.
+            output.seek(0)
 
-#         evaluation.status = 'FI'
-#         evaluation.admin_supervisor = self.request.user
-#         evaluation.save()
-#         return super().form_valid(form)
+            # Set up the Http response.
+            response = HttpResponse(
+                output,
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
+            response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
-#     def get_success_url(self):
+            return response
 
-#         messages.add_message(
-#             self.request, messages.SUCCESS, _(
-#                 "Evaluación supervisada correctamente")
-#         )
+            # columns = [
+            #     "QUESTION",
+            #     "EVALUATOR",
+            #     "ANSWER",
+            #     "STATUS",
+            #     "DESCRIPTION",
+            #     "DATE",
+            # ]
 
-#         return reverse_lazy(
-#             "evaluations_krm:ga_evaluation_residual_list"
-#         )
+            # for col_num in range(len(columns)):
+            #     ws.write(row_num, col_num, columns[col_num], font_style)
+
+            # # Sheet body, remaining rows
+            # font_style = xlwt.XFStyle()
+
+            # for qt in evaluation.question_tests.all().order_by("question"):
+            #     row_num += 1
+            #     ws.write(row_num, 0, qt.title, font_style)
+            #     ws.write(row_num, 1, qt.evaluator.email, font_style)
+            #     ws.write(row_num, 2, qt.get_answer_display, font_style)
+            #     ws.write(row_num, 3, qt.get_status_display, font_style)
+            #     ws.write(row_num, 4, qt.description, font_style)
+            #     ws.write(row_num, 4, qt.modified, font_style)
+
+            # # Ocultamos la columna de los pk
+            # ws.col(0).hidden = 1
+
+            # wb.save(response)
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "evaluation_questionnaires:ga_evaluation_questionnaire_detail",
+            kwargs={'pk': self.get_object().pk}
+        )

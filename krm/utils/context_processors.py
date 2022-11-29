@@ -64,6 +64,14 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('questionnaires:ga_questionnaire_list'),
         reverse_lazy('questionnaires:ga_questionnaire_create'),
     ]
+
+    evaluation_questionnaires_urls = [
+        reverse_lazy(
+            'evaluation_questionnaires:ga_evaluation_questionnaire_create'),
+        reverse_lazy(
+            'evaluation_questionnaires:ga_evaluation_questionnaire_list'),
+    ]
+
     if pk is not None:
         domain_risks_urls = domain_risks_urls + [
             reverse_lazy(
@@ -219,6 +227,13 @@ def get_menu_urls(request, pk=None):
             ),
         ]
 
+        evaluation_questionnaires_urls = evaluation_questionnaires_urls + [
+            reverse_lazy(
+                'evaluation_questionnaires:ga_evaluation_questionnaire_detail',
+                kwargs={'pk': pk}
+            ),
+        ]
+
     if settings.KRM_ACTIVATE:
         KRM_ACTIVATE = True
     else:
@@ -242,4 +257,5 @@ def get_menu_urls(request, pk=None):
         'DEVJS': settings.DEVJS,
         'BRAND': settings.BRAND,
         'QUESTIONNAIRES_URLS': questionnaires_urls,
+        'EVALUATIONS_QUESTIONNAIRES_URLS': evaluation_questionnaires_urls,
     }
