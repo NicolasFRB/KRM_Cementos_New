@@ -138,8 +138,7 @@
               </div>
             </div>
           </td>
-          <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period
-            }})</td>
+          <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
           <td class="text-center align-middle">
             <div>{{ evaluation.date_begin|date:'d/m/Y' }}</div>
             <div>{{ evaluation.date_end|date:'d/m/Y' }}</div>
@@ -258,8 +257,7 @@
               </div>
             </div>
           </td>
-          <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period
-            }})</td>
+          <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
           <td class="text-center align-middle">
             <div>{{ evaluation.date_begin|date:'d/m/Y' }}</div>
             <div>{{ evaluation.date_end|date:'d/m/Y' }}</div>
@@ -281,11 +279,11 @@
             </div>
             <div>
               <canvas id="pie-ep-{{ forloop.counter }}"></canvas>
+              <script>
+                load_chart('pie-ep-{{ forloop.counter }}', '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
+              </script>
             </div>
           </td>
-          <script>
-            load_chart('pie-ep-{{ forloop.counter }}', '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
-          </script>
           <td class="text-center align-middle">
             {% if evaluation.status == "FI" %}
             <i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -296,6 +294,23 @@
             {% else %}
             <i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+            {% endif %}
+          </td>
+          <td>
+            <div>
+              <canvas id="pie-fi-{{ forloop.counter }}"></canvas>
+              <script>
+                load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.ncontrols_test_by_state_si}}','{{evaluation.ncontrols_test_by_state_wo}}','{{evaluation.ncontrols_test_by_state_ws}}','{{evaluation.ncontrols_test_by_state_wa}}','{{evaluation.ncontrols_test_by_state_fi}}');
+              </script>
+            </div>
+          </td>
+          <td class="text-center align-middle">
+            {% if evaluation.status == "SI" %}
+              <i class="bi bi-dot fs-3x text-secondary"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+            {% elif evaluation.status == "EP" %}
+              <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+            {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% endif %}
           </td>
         </tr>

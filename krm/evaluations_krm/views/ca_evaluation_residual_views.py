@@ -30,6 +30,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload
 from krm.evaluations.models import ControlTest
+from django.forms.models import model_to_dict
 
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
@@ -267,6 +268,60 @@ class CaEvaluationResidualDetailView(FormView):
         ]
         context['page_title'] = f"{_('Evaluación de Riesgo Residual KRM')} : {self.evaluation.ref}"
         context['breadcrums'] = breadcrums
+        
+        context['evaluation'].nrisk_test_residuals_pending = context['evaluation'].nrisk_test_residuals_by_state(
+            1)
+        context['evaluation'].nrisk_test_residuals_delivered = context['evaluation'].nrisk_test_residuals_by_state(
+            2)
+        context['evaluation'].nrisk_test_residuals_finished = context['evaluation'].nrisk_test_residuals_by_state(
+            3)
+
+        context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_rrt_state(
+            1)
+        context['evaluation'].evaluators_delivered = context['evaluation'].get_evaluators_by_rrt_state(
+            2)
+        context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_rrt_state(
+            3)
+
+        context['evaluation'].total_evaluators = context['evaluation'].evaluators_pending.count(
+        ) + context['evaluation'].evaluators_delivered.count() + context['evaluation'].evaluators_finished.count()
+
+        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
+
+        # Serializar Evaluation no incluye sus hijos :(
+        # Busco los hijos
+        context['rrt'] = RiskTestResidual.objects.filter(
+            evaluation=self.evaluation)
+
+        # Paso a dict para json
+        context['rrt_dict'] = [model_to_dict(m) for m in context['rrt']]
+
+        # MODEL_TO_DICT not getting properties :(
+        # Get .severity_level_expert
+        # TBI for cuadratico :/
+        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
+        for i, r1 in enumerate(context['rrt']):
+            context['rrt_dict'][i]['risk_ref'] = r1.risk.risk.ref
+            context['rrt_dict'][i]['risk_name'] = r1.risk.risk.name
+            context['rrt_dict'][i]['evaluator'] = r1.evaluator.username_no_domain
+
+        # Sort by severity for a nice plot
+        context['rrt_dict'] = sorted(
+            context['rrt_dict'], key=lambda x: (x['risk_ref']), reverse=False)
+
+        # Errores de encoding caracteres portugueses y españoles
+        for i, m in enumerate(context['rrt_dict']):
+            for k in m:
+                if type(context['rrt_dict'][i][k]) == str:
+                    context['rrt_dict'][i][k] = context['rrt_dict'][i][k].encode(
+                        'utf-8').decode('utf-8')
+
+        # JSON DUMP
+        context['rrt_json'] = json.dumps(
+            context['rrt_dict'],
+            default=str,
+            ensure_ascii=True,
+        )
 
         context['js_template'] = ['js/custom/datatables.js']
 

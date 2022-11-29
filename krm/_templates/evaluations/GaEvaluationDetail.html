@@ -271,7 +271,19 @@
           <!--begin::Col-->
           <div class="col-xl-7">
             <div class="fs-6">
-              <span>{{ evaluation.company.ref }} - {{ evaluation.company.name }}</span>
+              <div class="row mb-8">
+                {% if evaluation.company.country %}
+                <div class="col-xl-2">
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.company.country.name}}">
+                    <img class="w-20px h-20px rounded-circle me-3" src="{{evaluation.company.country.flag}}">
+                  </span>
+                </div>
+                {% endif %}
+                <div class="col-xl-10">
+                  <div><span>{{ evaluation.company.ref }}</span></div>
+                  <div><span>{{ evaluation.company.name }}</span></div>
+                </div>
+              </div>
             </div>
           </div>
           <!--end::Col-->
@@ -293,8 +305,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sociedades en alcance'
-                %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sociedades en alcance' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -335,8 +346,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo'
-                %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -355,8 +365,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Supervisor que ha
-                validado' %}</span>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Supervisor que ha validado' %}</span>
             </div>
           </div>
           <!--end::Col-->
@@ -373,8 +382,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-6">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación'
-                %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -388,8 +396,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-6">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de
-                certificación' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de certificación' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -403,8 +410,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio'
-                %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -418,8 +424,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha límite Control
-                Owners' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha límite Control Owners' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -433,8 +438,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de fin'
-                %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de fin' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -620,67 +624,49 @@
               <div style="width:90%">
                 {{ ct.control.description|striptags|truncatechars:100 }}
               </div>
-              <div style="width:10%">
-                <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-                  data-bs-custom-class="custom-tooltip" title="{{ ct.control.description|striptags }}"
-                  style="margin-right:5px;"></i>
-              </div>
-            </div>
-          </td>
-          <td class="text-center align-middle">
-            <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{{ ct.control.testing_procedure|striptags }}"
-              style="margin-right:5px;"></i>
-          </td>
-          <td class="text-center align-middle">
-            {% for dom in ct.get_control_test_domain_risks.all %}
-            <a href="{% url 'domain_risks:ga_domain_risk_detail' dom.pk %}">
-              <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-                data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
-            </a>
-            {% endfor %}
-          </td>
-          <td class="text-center align-middle">
-            <span class="badge badge-info">{{ ct.get_control_test_risks_company.count }}</span>
-          </td>
-          <td class="text-center align-middle">
-            {% if ct.control_test_owner %}
-            <a href="{% url 'control_tests:control_test_assign' ct.pk %}">
-              <span class="badge badge-success" data-bs-toggle="tooltip" data-bs-placement="top"
-                data-bs-custom-class="custom-tooltip" data-bs-delay-show="250"
-                title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id="box-child">CO:
-                {{ ct.control_test_owner.username_no_domain }}</span>
-            </a>
-            {% else %}
-            <a href="{% url 'control_tests:control_test_assign' ct.pk %}">{% trans 'CO: Asignar' %}</a>
-            {% endif %}
-            {% if ct.control_test_supervisor %}
-            <a href="{% url 'control_tests:control_test_assign' ct.pk %}">
-              <span class="badge badge-success" data-bs-toggle="tooltip" data-bs-placement="top"
-                data-bs-custom-class="custom-tooltip" data-bs-delay-show="250"
-                title="{{ ct.control_test_supervisor.full_name }} ({{ ct.control_test_supervisor.position }})"
-                id="box-child">CS: {{ ct.control_test_supervisor.username_no_domain }}</span>
-            </a>
-            {% else %}
-            <a href="{% url 'control_tests:control_test_assign' ct.pk %}">{% trans 'CS: Asignar' %}</a>
-            {% endif %}
-          </td>
-          <td class="text-center align-middle">
-            {% if ct.result == "SE" %}
-            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NS</span>
-            {% elif ct.result == "EF" %}
-            <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EF</span>
-            {% elif ct.result == "NE" %}
-            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NE</span>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+            </td>
+            <td class="text-center align-middle">
+              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ct.control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
+            </td>
+            <td class="text-center align-middle">
+              {% for dom in ct.get_control_test_domain_risks.all %}
+                <a href="{% url 'domain_risks:ga_domain_risk_detail' dom.pk %}">
+                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+                </a>
+              {% endfor %}
+            </td>
+            <td class="text-center align-middle">
+              <span class="badge badge-info">{{ ct.get_control_test_risks_company.count }}</span>
+            </td>
+            <td class="text-center align-middle">
+              {% if ct.control_test_owner %}
+                <a href="{% url 'control_tests:control_test_assign' ct.pk %}">
+                  <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id = "box-child">CO: {{ ct.control_test_owner.username_no_domain }}</span>
+                </a>
+              {% else %}
+                <a href="{% url 'control_tests:control_test_assign' ct.pk %}"><span>{% trans 'CO: Asignar' %}</span><br></a>
+              {% endif %}
+              {% if ct.control_test_supervisor %}
+                <a href="{% url 'control_tests:control_test_assign' ct.pk %}">
+                  <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ ct.control_test_supervisor.full_name }} ({{ ct.control_test_supervisor.position }})" id = "box-child">CS: {{ ct.control_test_supervisor.username_no_domain }}</span>
+                </a>
+              {% else %}
+                <a href="{% url 'control_tests:control_test_assign' ct.pk %}"><span>{% trans 'CS: Asignar' %}</span><br></a>
+              {% endif %}
+            </td>
+            <td class="text-center align-middle">
+              {% if ct.result == "SE" %}
+                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NS</span>
+              {% elif ct.result == "EF" %}
+                <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EF</span>
+              {% elif ct.result == "NE" %}
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NE</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     {% else %}
     <div class="row mt-2 mb-2">
       <div class="col-sm">

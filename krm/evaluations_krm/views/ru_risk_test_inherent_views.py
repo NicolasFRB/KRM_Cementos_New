@@ -194,8 +194,15 @@ class RuEvaluationRiskInherentDetail(FormView):
         for i,r1 in enumerate(context['rit']):
             context['rit_dict'][i]['risk_ref'] = r1.risk.risk.ref
             context['rit_dict'][i]['risk_name'] = r1.risk.risk.name
+            context['rit_dict'][i]['expert'] = r1.expert.username_no_domain
             for r2 in context['rit_dict']:
                 if r1.id == r2['id']: r2['severity_level_expert'] = r1.severity_level_expert
+
+        # QUITAR RESTO DE ATTRIBUTES (solo dan problemas con el encoding)
+        for i, r1 in enumerate(context['rit']):
+            for k in context['rit_dict'][i].copy():
+                if k not in ['risk_ref', 'risk_name', 'expert', 'impact_level_expert', 'probability_level_expert', 'severity_level_expert']:
+                    del context['rit_dict'][i][k]
 
         # Sort by severity for a nice plot
         context['rit_dict'] = sorted(context['rit_dict'], key= lambda x: (x['severity_level_expert'], x['risk_ref']), reverse = True)

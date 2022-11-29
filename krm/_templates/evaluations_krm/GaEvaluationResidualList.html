@@ -257,11 +257,11 @@ canvas#race{position:relative; z-index:100;}
                 <span class="badge badge-info">{{ evaluation.total_evaluators }}</span>
               </div>
               <div>
-                <canvas id="pie-ep-evs-{{ forloop.counter }}"></canvas>
+                <canvas id="pie-fi-evs-{{ forloop.counter }}"></canvas>
               </div>              
             </td>
             <script>
-              load_chart('pie-ep-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}');
+              load_chart('pie-fi-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}');
             </script>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
