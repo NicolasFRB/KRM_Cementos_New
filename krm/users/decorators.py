@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 from django.utils.decorators import method_decorator
 from functools import wraps
 from django.urls import reverse_lazy
