@@ -58,7 +58,8 @@ THIRD_PARTY_APPS = [
     'django_countries',
     'ckeditor',
     'django_filters',
-    'rest_framework'
+    'rest_framework',
+    'rosetta',
 ]
 
 LOCAL_APPS = [
