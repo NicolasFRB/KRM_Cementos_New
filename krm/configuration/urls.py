@@ -11,7 +11,8 @@ from django.utils.translation import gettext_lazy as _
 from .views import (
     ConfigurationUpdateView,
     ConfigurationDetailView,
-    GaImportView
+    GaImportView,
+    GaImportEvalView,
 )
 
 urlpatterns = [
@@ -21,4 +22,6 @@ urlpatterns = [
          ConfigurationUpdateView.as_view(), name="configuration_update"),
     path("import/",
          GaImportView.as_view(), name="ga_import"),
+    path("import_eval/",
+         GaImportEvalView.as_view(), name="ga_import_eval"),
 ]
