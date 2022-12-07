@@ -1,7 +1,9 @@
 import json
 import uuid
-# import xlwt
+import re
 import xlsxwriter
+from openpyxl import load_workbook
+from io import BytesIO
 
 from django.http import HttpResponse
 
@@ -29,8 +31,6 @@ from krm.questionnaires.forms import (
 
 from krm.users.decorators import is_global_admin, user_can_view_evaluation
 
-from krm.utils.utils import clean_html
-
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaEvaluationQuestionnaireListView(ListView):
@@ -44,8 +44,8 @@ class GaEvaluationQuestionnaireListView(ListView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Cuestionsrios'), 'url': reverse(
-                'evaluations_krm:ga_evaluation_inherent_list')},
+            {'title': _('Evaluaciones de Cuestionarios'), 'url': reverse(
+                'questionnaires:ga_questionnaire_list')},
         ]
         context['page_title'] = _('Evaluaciones de Cuestionarios')
         context['breadcrums'] = breadcrums
@@ -147,7 +147,7 @@ class GaEvaluationQuestionnaireCreateView(FormView):
         return super().form_valid(form)
 
 
-@method_decorator([login_required, is_global_admin, ], name='dispatch')
+@method_decorator([is_global_admin, ], name='dispatch')
 class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
     template_name = 'evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html'
     model = EvaluationQuestionnaire

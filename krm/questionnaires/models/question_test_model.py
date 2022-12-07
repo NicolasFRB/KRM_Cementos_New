@@ -34,7 +34,7 @@ class QuestionTest(AuditModel):
     title = models.CharField(
         verbose_name=_("Enunciado"),
         help_text=_('Enunciado copiado de la pregunta'),
-        max_length=200
+        max_length=5000
     )
 
     evaluator = models.ForeignKey(

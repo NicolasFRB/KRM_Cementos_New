@@ -19,11 +19,10 @@ class Questionnaire(AuditModel):
 
     ref = models.CharField(
         verbose_name=_("Ref"),
-        max_length=50,
-        unique=True
+        max_length=200
     )
 
-    name = models.CharField(verbose_name=_("Nombre"), max_length=200)
+    name = models.CharField(verbose_name=_("Nombre"), max_length=500)
 
     def __str__(self):
         return self.name

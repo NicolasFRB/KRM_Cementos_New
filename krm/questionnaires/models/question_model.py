@@ -19,8 +19,7 @@ class Question(AuditModel):
 
     ref = models.CharField(
         verbose_name=_("Ref"),
-        max_length=50,
-        unique=True
+        max_length=2000,
     )
 
     questionnaire = models.ForeignKey(
@@ -30,14 +29,42 @@ class Question(AuditModel):
         related_name='questions'
     )
 
+    delegation = models.CharField(
+        verbose_name=_("Delegación"),
+        max_length=200,
+        blank=True,
+        null=True
+    )
+
+    concession = models.CharField(
+        verbose_name=_("Concesión"),
+        max_length=200,
+        blank=True,
+        null=True
+    )
+
+    area = models.CharField(
+        verbose_name=_("Área"),
+        max_length=200,
+        blank=True,
+        null=True
+    )
+
     order = models.PositiveIntegerField(
         verbose_name=_("Número de pregunta dentro del cuestionario"),
         default=1
     )
 
-    title = models.CharField(
+    title = models.TextField(
         verbose_name=_("Enunciado"),
-        max_length=200
+        max_length=5000
+    )
+
+    user_to_assign = models.ManyToManyField(
+        'users.User',
+        verbose_name=_('Posibles respondedores'),
+        blank=True,
+        related_name='questions_to_assign'
     )
 
     def __str__(self):

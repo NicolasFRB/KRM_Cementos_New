@@ -12,6 +12,8 @@ from krm.questionnaires.models import Question
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    user_to_assign_emails = serializers.SerializerMethodField()
+
     class Meta:
         model = Question
         fields = [
@@ -20,7 +22,13 @@ class QuestionSerializer(serializers.ModelSerializer):
             'order',
             'title',
             'questionnaire',
+            'user_to_assign',
+            'user_to_assign_emails'
         ]
+        read_only_fields = [f.name for f in Question._meta.get_fields()]
+
+    def get_user_to_assign_emails(self, obj):
+        return [{'value': int(user.pk), 'label': user.email} for user in obj.user_to_assign.all()]
 
 
 class QuestionViewSet(viewsets.ModelViewSet):

@@ -8,6 +8,7 @@ from krm.questionnaires.views import (
     GaQuestionnaireDeleteView,
     GaQuestionnaireUpdateView,
     GaQuestionnaireCreateView,
+    GaQuestionnaireImport
 )
 
 
@@ -37,5 +38,9 @@ urlpatterns = [
         GaQuestionnaireCreateView.as_view(),
         name='ga_questionnaire_create'
     ),
-
+    path(
+        'import/',
+        GaQuestionnaireImport.as_view(),
+        name='ga_questionnaire_import'
+    ),
 ]

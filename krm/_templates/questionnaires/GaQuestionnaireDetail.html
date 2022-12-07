@@ -35,7 +35,7 @@
         </div>
         <!--end::Col-->
       </div>
-      
+
       <div class="row mb-8">
         <!--begin::Col-->
         <div class="col-xl-2">
@@ -84,6 +84,7 @@
           <th class="text-center" width="15%">{% trans 'REF' %}</th>
           <th>{% trans 'Nº de Pregunta' %}</th>
           <th>{% trans 'Enunciado' %}</th>
+          <th>{% trans 'Posibles respondedores' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -94,6 +95,11 @@
               <td class="text-center align-middle">{{ question.ref }}</td>
               <td class="align-middle">{{ question.order }}</td>
               <td class="align-middle">{{ question.title|striptags|safe|truncatechars:200 }}</td>
+              <td class="align-middle">
+                {% for user in question.user_to_assign.all %}
+                  <span class="badge badge-primary mb-2">{{ user.email }}</span>{% if not forloop.last %}<br>{% endif %}
+                {% endfor %}
+              </td>
             </tr>
         </tr>
         {% endfor %}

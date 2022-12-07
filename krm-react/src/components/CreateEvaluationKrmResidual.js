@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import configService from "../services/config.js";
 
@@ -21,6 +22,8 @@ function CreateEvaluationKrmInherent(props) {
   const [riskCompaniesToEvaluate, setRiskCompaniesToEvaluate] = useState([]);
 
   const [formData, setFormData] = useState({ 'completed': false });
+
+  const [t] = useTranslation("global");
 
   const readFormData = () => {
     let newFormData = {};
@@ -125,15 +128,15 @@ function CreateEvaluationKrmInherent(props) {
   const sendForm = (e) => {
     e.preventDefault();
     if (formData.completed === false) {
-      alert('Falta algún dato imprescindible en el formulario');
+      alert(t('krmResidual.form-incomplete'));
       return false;
     }
     if (selectedCompanies.length === 0) {
-      alert('No se ha seleccionado ninguna empresa');
+      alert(t('krmResidual.no-company-selected'));
       return false;
     }
     if (riskCompaniesToEvaluate.length === 0) {
-      alert('No se ha seleccionado ningún riesgo a evaluar');
+      alert(t('krmResidual.no-risks-to-evaluate'));
       return false;
     }
 
@@ -187,10 +190,10 @@ function CreateEvaluationKrmInherent(props) {
     <div className="App">
       <div className="row">
         <div className="col-12">
-          <h3 className="mb-6">Paso 2: Seleccione las compañías para evaluar</h3>
+          <h3 className="mb-6">{t('krmResidual.step-2')}</h3>
           {formData.completed === false && (
             <>
-              <div className="alert alert-primary">Complete todos los datos obligatorios sobre la evaluación</div>
+              <div className="alert alert-primary">{t('krmResidual.evaluation-data-incomplete')}</div>
             </>
           )}
           <div className={(formData.completed ? '' : 'd-none')}>
@@ -199,11 +202,11 @@ function CreateEvaluationKrmInherent(props) {
           <div className="separator my-10"></div>
         </div>
         <div className="col-12">
-          <h3 className="mb-5">Paso 3: Seleccione los Riesgos a evaluar</h3>
+          <h3 className="mb-5">{t('krmResidual.step-3')}</h3>
         </div>
         {selectedCompanies.length === 0 && (
           <>
-            <div className="alert alert-primary">Seleccione al menos una compañía</div>
+            <div className="alert alert-primary">{t('krmResidual.select-company')}</div>
           </>
         )
         }
@@ -214,15 +217,15 @@ function CreateEvaluationKrmInherent(props) {
         </div>
         <div className="separator my-10"></div>
         <div className="col-12" id="launch">
-          <h3 className="mb-5">Paso 4: Resumen del lanzamiento</h3>
+          <h3 className="mb-5">{t('krmResidual.step-4')}</h3>
           {selectedRisks.length > 0 && (
             <>
               <div className="mt-5 mb-15">
                 <p>
                   <button onClick={updateControls} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator={riskCompaniesLoading ? 'on' : 'off'}>
-                    <span className="indicator-label">Calcular los Tests de riesgo que se lanzarán</span>
+                    <span className="indicator-label">{t('krmResidual.calc-tests')}</span>
                     <span className="indicator-progress">
-                      Calculando...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
+                      {t('krmResidual.loading')}...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                     </span>
                   </button>
                 </p>
@@ -233,8 +236,8 @@ function CreateEvaluationKrmInherent(props) {
                   {riskCompanies.map((company, index) => {
                     if (company.risks.length > 0) {
                       return <div key={company.company.pk}>
-                        <h4>Evaluación: {formData.ref} - {company.company.name}</h4>
-                        <h5>Tests de Riesgo Inherente que se lanzarán</h5>
+                        <h4>{t('krmResidual.evaluation')}: {formData.ref} - {company.company.name}</h4>
+                        <h5>{t('krmResidual.tests-inherent-to-launch')}</h5>
                         <table className="table table-striped customDatatable">
                           <thead>
                             <tr>
@@ -243,11 +246,11 @@ function CreateEvaluationKrmInherent(props) {
                                 <span onClick={() => unSelectAll(company.company.pk)}><i className="bi bi-clipboard"></i></span>
                               </th>
                               <th className="fw-semibold">REF</th>
-                              <th className="fw-semibold">NOMBRE</th>
-                              <th className="fw-semibold text-center">¿EVALUADO?</th>
-                              <th className="fw-semibold text-center">SEV. EXPERTO</th>
-                              <th className="fw-semibold text-center">SEV. ADMIN</th>
-                              <th className="fw-semibold">EVALUADOR ASIGNADO</th>
+                              <th className="fw-semibold">{t('krmResidual.name')}</th>
+                              <th className="fw-semibold text-center">{t('krmResidual.evaluate')}</th>
+                              <th className="fw-semibold text-center">{t('krmResidual.expert-severity')}</th>
+                              <th className="fw-semibold text-center">{t('krmInherent.severity-admin')}</th>
+                              <th className="fw-semibold">{t('krmResidual.evaluator-assign')}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -287,7 +290,7 @@ function CreateEvaluationKrmInherent(props) {
                                   })}
                                   {risk.domain_risk_evaluator.length === 0 && (
                                     <>
-                                      <span className="badge badge-danger">Sin asignar</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-evaluator/${risk.company_domain_risk_evaluator}/`}><span className="badge badge-primary">Asignar</span></a>
+                                      <span className="badge badge-danger">{t('krmResidual.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-evaluator/${risk.company_domain_risk_evaluator}/`}><span className="badge badge-primary">{t('krmResidual.assign')}</span></a>
                                     </>
                                   )}
                                 </td>
@@ -306,7 +309,7 @@ function CreateEvaluationKrmInherent(props) {
             </>
           )}
           {selectedRisks.length === 0 && (
-            <div className="alert alert-primary">Selecciona al menos un riesgo para poder lanzar la evaluación</div>
+            <div className="alert alert-primary">{t('krmResidual.select-risk')}</div>
           )}
           {error && (
             <div className="alert alert-danger">{error}</div>
@@ -315,9 +318,9 @@ function CreateEvaluationKrmInherent(props) {
         {riskCompaniesToEvaluate.length > 0 && (
           <div className="col-12">
             <button onClick={sendForm} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
-              <span className="indicator-label">Lanzar evaluaciones</span>
+              <span className="indicator-label">{t('krmResidual.launch-evaluation')}</span>
               <span className="indicator-progress">
-                Lanzando...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
+                {t('krmResidual.launching')}...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
               </span>
             </button>
           </div>

@@ -1,11 +1,14 @@
 import configService from "../services/config.js";
 import React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function SelectRisk({ selectedRisks, setSelectedRisks }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [risks, setRisks] = useState([]);
+
+  const [t] = useTranslation("global");
 
   const handleOnChange = (pk) => {
     if (selectedRisks.includes(pk)) {
@@ -51,7 +54,7 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
-    return <div>Cargando riesgos...</div>;
+    return <div>{t('general.loading-risks')}...</div>;
   } else {
     return (
       <div>
@@ -65,8 +68,8 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
                     <span onClick={() => unSelectAll()}><i className="bi bi-clipboard"></i></span>
                   </th>
                   <th className="fw-semibold">REF</th>
-                  <th className="fw-semibold">NOMBRE</th>
-                  <th className="fw-semibold">RIESGO MAESTRO</th>
+                  <th className="fw-semibold">{t('general.name')}</th>
+                  <th className="fw-semibold">{t('general.risk-master')}</th>
                 </tr>
               </thead>
               <tbody>
