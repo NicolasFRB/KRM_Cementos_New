@@ -171,8 +171,8 @@ class GaQuestionUpdateView(UpdateView):
             _('Pregunta actualizada correctamente')
         )
         return reverse_lazy(
-            'questions:ga_question_detail',
-            kwargs={'pk': self.object.pk}
+            'questionnaires:ga_questionnaire_detail',
+            kwargs={'pk': self.object.questionnaire.pk}
         )
 
 

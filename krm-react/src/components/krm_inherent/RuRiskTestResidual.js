@@ -1,12 +1,15 @@
 import configService from "../../services/config.js";
 import React from "react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 let $ = window.$;
 
 function RuRiskTestResidual({ pk, initialProbability, initialDescription }) {
   const [probability, setProbability] = useState(initialProbability);
   const [description, setDescription] = useState(initialDescription);
+
+  const [t] = useTranslation("global");
 
   const updateProbability = (newProbability) => {
     $('#buttonSend').attr('data-kt-indicator', 'on');
@@ -42,13 +45,13 @@ function RuRiskTestResidual({ pk, initialProbability, initialDescription }) {
     <div className="valoration">
       <div className="row">
         <div className="col col-12">
-          <h4 className="mb-7">Indique su valoración como Evaluador del Dominio de Riesgo Residual</h4>
+          <h4 className="mb-7">{t('krmInherent.level-control-evaluator-risk')}</h4>
         </div>
         <input type="hidden" name={`probability-${pk}`} value={probability} />
 
         <div className="row mb-10">
           <div className="col col-12 mb-5 mb-xl-0">
-            <h5 className="mb-7">Nivel de Control</h5>
+            <h5 className="mb-7">{t('krmInherent.control-level')}</h5>
             <div className="row">
 
               <div className="col">
@@ -61,7 +64,7 @@ function RuRiskTestResidual({ pk, initialProbability, initialDescription }) {
                     checked={probability === 1}
                     onChange={() => updateProbability(1)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-1-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="Los controles implantados para mitigar los Riesgos de Compliance inherentes son robustos y existen escasas recomendaciones de Auditoría Interna o no se ha manifestado ningún riesgo de Compliance">1 Optimizado</label>
+                  <label className="form-check-label" htmlFor={`p-pk-1-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title={t('krmInherent.optimize-description')}>1 {t('krmInherent.optimize')}</label>
                 </div>
               </div>
 
@@ -75,7 +78,7 @@ function RuRiskTestResidual({ pk, initialProbability, initialDescription }) {
                     checked={probability === 2}
                     onChange={() => updateProbability(2)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-2-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="Los controles implantados para mitigar los Riesgos de Compliance inherentes son apropiados y existe alguna recomendación de Auditoría Interna o se han manifestado escasos riesgos de Compliance">2 Aceptable</label>
+                  <label className="form-check-label" htmlFor={`p-pk-2-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title={t('krmInherent.aceptable-description')}>2 {t('krmInherent.aceptable')}</label>
                 </div>
               </div>
 
@@ -89,7 +92,7 @@ function RuRiskTestResidual({ pk, initialProbability, initialDescription }) {
                     checked={probability === 3}
                     onChange={() => updateProbability(3)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-3-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="Los controles implantados para mitigar los Riesgos de Compliance inherentes son deficientes y existen varias recomendaciones de Auditoría Interna o se han manifestado numerosos riesgos de Compliance">3 Inadecuado</label>
+                  <label className="form-check-label" htmlFor={`p-pk-3-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title={t('krmInherent.unacceptable-description')}>3 {t('krmInherent.no-unacceptable')}</label>
                 </div>
               </div>
 
@@ -103,7 +106,7 @@ function RuRiskTestResidual({ pk, initialProbability, initialDescription }) {
                     checked={probability === 4}
                     onChange={() => updateProbability(4)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="No existen controles">4 No controlado</label>
+                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title={t('krmInherent.no-controls')}>4 {t('krmInherent.no-controlate')}</label>
                 </div>
               </div>
 
@@ -117,7 +120,7 @@ function RuRiskTestResidual({ pk, initialProbability, initialDescription }) {
                     checked={probability === 5}
                     onChange={() => updateProbability(5)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title="Desconozco las implicaciones existentes sobre las medidas de control implementadas para mitigar este delito">5 N/A</label>
+                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`} data-bs-toggle="tooltip" data-bs-placement="top" title={t('krmInherent.n-a-description')}>5 N/A</label>
                 </div>
               </div>
 
@@ -127,7 +130,7 @@ function RuRiskTestResidual({ pk, initialProbability, initialDescription }) {
 
         <div className="row">
           <div className="form-group">
-            <label htmlFor={`id-description--${pk}`} className=""><h5>Descripción de la valoración del evaluador de Dominio de Riesgo (*)</h5></label>
+            <label htmlFor={`id-description--${pk}`} className=""><h5>{t('krmInherent.value-evaluator-domain-ridk')} (*)</h5></label>
             <textarea required cols="40" rows="3" name={`description-${pk}`} id={`id-description--${pk}`} className="form-control" onBlur={(e) => updateDescription(e.currentTarget.value)} value={description} onChange={(e) => setDescription(e.currentTarget.value)}></textarea>
           </div>
         </div>

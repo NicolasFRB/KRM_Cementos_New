@@ -1,6 +1,7 @@
 import configService from "../../services/config.js";
 import React from "react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 let $ = window.$;
 
@@ -8,6 +9,8 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
   const [impact, setImpact] = useState(initialImpact);
   const [probability, setProbability] = useState(initialProbability);
   const [descriptionAdmin, setDescriptionAdmin] = useState(initialDescriptionAdmin);
+
+  const [t] = useTranslation("global");
 
   const updateProbability = (newProbability) => {
     $('#buttonSend').attr('data-kt-indicator', 'on');
@@ -59,13 +62,13 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
     <div className="valoration">
       <div className="row">
         <div className="col col-12">
-          <h4 className="mb-7">Indique su valoración como Administrador de la compañía evaluada</h4>
+          <h4 className="mb-7">{t('krmInherent.value-admin')}</h4>
         </div>
         <input type="hidden" name={`probability-${pk}`} value={probability} />
         <input type="hidden" name={`impact-${pk}`} value={impact} />
         <div className="row mb-5">
           <div className="col col-12 col-xl-5 mb-5 mb-xl-0">
-            <h5 className="mb-7">Probabilidad</h5>
+            <h5 className="mb-7">{t('krmInherent.probability')}</h5>
             <div className="row">
 
               <div className="col">
@@ -78,7 +81,7 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
                     checked={probability === 1}
                     onChange={() => updateProbability(1)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-1-${pk}`}>Bajo</label>
+                  <label className="form-check-label" htmlFor={`p-pk-1-${pk}`}>{t('krmInherent.low')}</label>
                 </div>
               </div>
 
@@ -92,7 +95,7 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
                     checked={probability === 2}
                     onChange={() => updateProbability(2)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-2-${pk}`}>Medio</label>
+                  <label className="form-check-label" htmlFor={`p-pk-2-${pk}`}>{t('krmInherent.medium')}</label>
                 </div>
               </div>
 
@@ -106,7 +109,7 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
                     checked={probability === 3}
                     onChange={() => updateProbability(3)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-3-${pk}`}>Alto</label>
+                  <label className="form-check-label" htmlFor={`p-pk-3-${pk}`}>{t('krmInherent.high')}</label>
                 </div>
               </div>
 
@@ -120,14 +123,14 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
                     checked={probability === 4}
                     onChange={() => updateProbability(4)}
                   />
-                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>Crítico</label>
+                  <label className="form-check-label" htmlFor={`p-pk-4-${pk}`}>{t('krmInherent.critic')}</label>
                 </div>
               </div>
 
             </div>
           </div>
           <div className="col col-12 col-xl-5 offset-xl-1">
-            <h5 className="mb-7">Impacto</h5>
+            <h5 className="mb-7">{t('krmInherent.impact')}</h5>
             <div className="row">
 
               <div className="col">
@@ -140,7 +143,7 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
                     checked={impact === 1}
                     onChange={() => updateImpact(1)}
                   />
-                  <label className="form-check-label" htmlFor={`i-pk-1-${pk}`}>Bajo</label>
+                  <label className="form-check-label" htmlFor={`i-pk-1-${pk}`}>{t('krmInherent.low')}</label>
                 </div>
               </div>
 
@@ -154,7 +157,7 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
                     checked={impact === 2}
                     onChange={() => updateImpact(2)}
                   />
-                  <label className="form-check-label" htmlFor={`i-pk-2-${pk}`}>Medio</label>
+                  <label className="form-check-label" htmlFor={`i-pk-2-${pk}`}>{t('krmInherent.medium')}</label>
                 </div>
               </div>
 
@@ -168,7 +171,7 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
                     checked={impact === 3}
                     onChange={() => updateImpact(3)}
                   />
-                  <label className="form-check-label" htmlFor={`i-pk-3-${pk}`}>Alto</label>
+                  <label className="form-check-label" htmlFor={`i-pk-3-${pk}`}>{t('krmInherent.high')}</label>
                 </div>
               </div>
 
@@ -182,7 +185,7 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
                     checked={impact === 4}
                     onChange={() => updateImpact(4)}
                   />
-                  <label className="form-check-label" htmlFor={`i-pk-4-${pk}`}>Crítico</label>
+                  <label className="form-check-label" htmlFor={`i-pk-4-${pk}`}>{t('krmInherent.critic')}</label>
                 </div>
               </div>
 
@@ -191,7 +194,7 @@ function CaRiskTestInherent({ pk, initialImpact, initialProbability, initialDesc
         </div>
         <div className="row">
           <div className="form-group">
-            <label htmlFor={`id-descriptionAdmin--${pk}`} className=""><h5>Descripción de la valoración del Administrador de la compañía evaluada (*)</h5></label>
+            <label htmlFor={`id-descriptionAdmin--${pk}`} className=""><h5>{t('krmInherent.value-admin-company')} (*)</h5></label>
             <textarea required cols="40" rows="3" name={`descriptionAdmin-${pk}`} id={`id-descriptionAdmin--${pk}`} className="form-control" onBlur={(e) => updateDescriptionAdmin(e.currentTarget.value)} value={descriptionAdmin} onChange={(e) => setDescriptionAdmin(e.currentTarget.value)}></textarea>
           </div>
         </div>

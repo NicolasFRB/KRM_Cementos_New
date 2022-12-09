@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import ReactDOM from "react-dom";
+import { useTranslation } from "react-i18next";
 
 function EvaluationCreateSteps(
   {
@@ -13,6 +14,8 @@ function EvaluationCreateSteps(
   useEffect(() => {
   }, []);
 
+  const [t] = useTranslation("global");
+
   return (
     ReactDOM.createPortal(
       <div className="stepper-nav">
@@ -23,7 +26,7 @@ function EvaluationCreateSteps(
               <span className="stepper-number">1</span>
             </div>
             <div className="stepper-label">
-              <h3 className="stepper-title">Datos</h3>
+              <h3 className="stepper-title">{t('step.data')}</h3>
             </div>
           </div>
           <div className="stepper-line h-40px"></div>
@@ -35,7 +38,7 @@ function EvaluationCreateSteps(
               <span className="stepper-number">2</span>
             </div>
             <div className="stepper-label">
-              <h3 className="stepper-title">Compañías</h3>
+              <h3 className="stepper-title">{t('step.companies')}</h3>
             </div>
           </div>
           <div className="stepper-line h-40px"></div>
@@ -47,7 +50,7 @@ function EvaluationCreateSteps(
               <span className="stepper-number">3</span>
             </div>
             <div className="stepper-label">
-              <h3 className="stepper-title">Filtros</h3>
+              <h3 className="stepper-title">{t('step.filters')}</h3>
             </div>
           </div>
           <div className="stepper-line h-40px"></div>
@@ -59,7 +62,7 @@ function EvaluationCreateSteps(
               <span className="stepper-number">4</span>
             </div>
             <div className="stepper-label">
-              <h3 className="stepper-title">Controles</h3>
+              <h3 className="stepper-title">{t('step.controls')}</h3>
             </div>
           </div>
           <div className="stepper-line h-40px"></div>
@@ -71,7 +74,7 @@ function EvaluationCreateSteps(
               <span className="stepper-number">5</span>
             </div>
             <div className="stepper-label">
-              <h3 className="stepper-title">Lanzamiento</h3>
+              <h3 className="stepper-title">{t('step.launch')}</h3>
             </div>
           </div>
         </div>

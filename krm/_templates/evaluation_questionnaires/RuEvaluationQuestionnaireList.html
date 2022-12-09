@@ -88,11 +88,10 @@
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
-    {% if evaluations_finished.count %}
+    {% if evaluations_delivered.count %}
     <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
         <tr class="fw-semibold fs-6">
-          <th class="text-center align-middle">{% trans 'Acción' %}</th>
           <th class="align-middle">{% trans 'REF' %}</th>
           <th class="align-middle">{% trans 'Descripción' %}</th>
           <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
@@ -103,7 +102,6 @@
       <tbody>
           {% for evaluation in evaluations_delivered %}
           <tr>
-            <td class="text-center align-middle"><a href=""><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
             <td class="align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">
@@ -117,8 +115,6 @@
             </td>
             <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
             <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
-            <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                      title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
                 <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
@@ -155,11 +151,10 @@
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
-    {% if evaluations_risk_inherent_finished.count %}
+    {% if evaluations_finished.count %}
     <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
         <tr class="fw-semibold fs-6">
-          <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
           <th>{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
@@ -168,9 +163,8 @@
         </tr>
       </thead>
       <tbody>
-          {% for evaluation in evaluations_risk_inherent_finished %}
+          {% for evaluation in evaluations_finished %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_krm_inherent_detail' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">

@@ -1,11 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
-
-// import configService from "../services/config.js";
+import { useTranslation } from "react-i18next";
 
 import SelectCompanies from "./SelectCompanies.js";
 import SelectProcess from "./SelectProcess.js";
-// import SelectRisk from "./SelectRisk.js";
 import SelectDomainRisk from "./SelectDomainRisk.js";
 import SelectControlsCompanyKrc from "./SelectControlsCompanyKrc.js";
 import EvaluationCreateSteps from "./EvaluationCreateSteps.js";
@@ -27,6 +25,8 @@ function CreateEvaluationKrc(props) {
   const [controlsToEvaluate, setControlsToEvaluate] = useState([]);
   const [nEvaluations, setNEvaluations] = useState(0);
 
+  const [t] = useTranslation("global");
+
   useEffect(() => {
     let nEvaluations = controlsToEvaluate.filter((controlCompany => controlCompany.cs.length > 0));
     setNEvaluations(nEvaluations.length);
@@ -46,15 +46,15 @@ function CreateEvaluationKrc(props) {
   const sendForm = (e) => {
     e.preventDefault();
     if (formData.completed === false) {
-      alert('Falta algún dato imprescindible en el formulario');
+      alert(t('krc.form-incomplete'));
       return false;
     }
     if (selectedCompanies.length === 0) {
-      alert('No se ha seleccionado ninguna empresa');
+      alert(t('krc.no-company'));
       return false;
     }
     if (controlsToEvaluate.length === 0) {
-      alert('No se ha seleccionado ningún control a evaluar');
+      alert(t('krc.no-controls'));
       return false;
     }
     $(e.currentTarget).attr('data-kt-indicator', 'on');
@@ -70,10 +70,10 @@ function CreateEvaluationKrc(props) {
     <div className="App">
       <div className="row">
         <div className="col-12">
-          <h3 className="mb-6">Paso 2: Seleccione las compañías para evaluar</h3>
+          <h3 className="mb-6">{t('krc.step-2-select-companies')}</h3>
           {formData.completed === false && (
             <>
-              <div className="alert alert-primary">Complete todos los datos obligatorios sobre la evaluación</div>
+              <div className="alert alert-primary">{t('krc.complete-evaluation-data')}</div>
             </>
           )
           }
@@ -83,11 +83,11 @@ function CreateEvaluationKrc(props) {
           <div className="separator my-10"></div>
         </div>
         <div className="col-12">
-          <h3 className="mb-5">Paso 3: Filtros</h3>
+          <h3 className="mb-5">{t('krc.step-3-filters')}</h3>
         </div>
         {selectedCompanies.length === 0 && (
           <>
-            <div className="alert alert-primary">Seleccione al menos una compañía</div>
+            <div className="alert alert-primary">{t('krc.select-companies')}</div>
           </>
         )
         }
@@ -100,22 +100,22 @@ function CreateEvaluationKrc(props) {
           </div>
           <div className="col col-12 col-md-4">
             {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}
-            <h5 className="mb-6">Tipos de Riesgo</h5>
+            <h5 className="mb-6">{t('krc.risk-types')}</h5>
             <p>
               <label className="form-check form-check-inline form-check-solid me-5">
-                <input className="form-check-input" name="keycontrol" type="checkbox" checked={keyControl} onChange={() => setKeyControl(!keyControl)} /><span className="fw-semibold ps-2 fs-6">Sólo Key Control</span>
+                <input className="form-check-input" name="keycontrol" type="checkbox" checked={keyControl} onChange={() => setKeyControl(!keyControl)} /><span className="fw-semibold ps-2 fs-6">{t('krc.only-key-controls')}</span>
               </label>
             </p>
             <p>
               <label className="form-check form-check-inline form-check-solid me-5">
-                <input className="form-check-input" name="elc" type="checkbox" checked={elc} onChange={() => setElc(!elc)} /><span className="fw-semibold ps-2 fs-6">Añadir controles ELC</span>
+                <input className="form-check-input" name="elc" type="checkbox" checked={elc} onChange={() => setElc(!elc)} /><span className="fw-semibold ps-2 fs-6">{t('krc.add-elc')}</span>
               </label>
             </p>
           </div>
         </div>
         <div className="separator my-10"></div>
         <div className="col-12">
-          <h3 className="mb-5">Paso 4: Selección de controles a evaluar</h3>
+          <h3 className="mb-5">{t('krc.step-4-select-controls')}</h3>
           <SelectControlsCompanyKrc
             selectedDomainRisks={selectedDomainRisks}
             selectedProcesses={selectedProcesses}
@@ -130,7 +130,7 @@ function CreateEvaluationKrc(props) {
 
         <div className="separator my-10"></div>
         <div className="col-12">
-          <h3 className="mb-5">Paso 5: Resumen del lanzamiento</h3>
+          <h3 className="mb-5">{t('krc.step-5-launch')}</h3>
           {nEvaluations > 0 && (
             <div className="mt-5 mb-5">
               <div className="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6">
@@ -143,17 +143,17 @@ function CreateEvaluationKrc(props) {
                 </span>
                 <div className="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
                   <div className="mb-3 mb-md-0 fw-semibold">
-                    <h4 className="text-gray-900 fw-bold">Elementos que serán creados</h4>
+                    <h4 className="text-gray-900 fw-bold">{t('krc.elements-to-create')}</h4>
                     <div className="fs-6 text-gray-700 pe-7">
                       <ul>
-                        <li>Se van a crear un total de {nEvaluations} evaluaciones</li>
+                        <li>{t('krc.launch-n-evaluations')}</li>
                       </ul>
                     </div>
                   </div>
                   <button onClick={sendForm} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
-                    <span className="indicator-label">Lanzar evaluaciones</span>
+                    <span className="indicator-label">{t('krm.lanzar-evaluaciones')}</span>
                     <span className="indicator-progress">
-                      Lanzando...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
+                      {t('krc.lanzando')}...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                     </span>
                   </button>
 
@@ -165,7 +165,7 @@ function CreateEvaluationKrc(props) {
             </div>
           )}
           {nEvaluations === 0 && (
-            <div className="alert alert-primary">Selecciona al menos un control para poder lanzar la evaluación</div>
+            <div className="alert alert-primary">{t('krc.select-control')}</div>
           )}
         </div>
       </div>

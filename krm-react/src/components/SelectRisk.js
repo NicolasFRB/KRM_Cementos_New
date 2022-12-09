@@ -1,6 +1,7 @@
 import configService from "../services/config.js";
 import React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function SelectRisk({ selectedRisks, setSelectedRisks }) {
   const [error, setError] = useState(null);
@@ -14,6 +15,8 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
       setSelectedRisks(selectedRisks.concat([pk]));
     }
   };
+
+  const [t] = useTranslation("global");
 
   useEffect(() => {
     fetch(`${configService.apiGetRisks}`)
@@ -33,13 +36,13 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
-    return <div>Cargando riesgos...</div>;
+    return <div>{t('general.loading-risks')}...</div>;
   } else {
     return (
       <div>
         {isLoaded && (
           <>
-            <h5 className="mb-6">Seleccione Riesgo</h5>
+            <h5 className="mb-6">{t('general.select-risk')}</h5>
             {risks.map((value, index) => {
               return <p key={value.pk}>
                 <label className="form-check form-check-inline form-check-solid me-5">

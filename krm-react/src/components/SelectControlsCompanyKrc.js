@@ -1,6 +1,7 @@
 import configService from "../services/config.js";
 import React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function SelectControlsCompanyKrc(
   {
@@ -17,6 +18,8 @@ function SelectControlsCompanyKrc(
   const [isLoading, setIsLoading] = useState(false);
 
   const [controlsCompany, setControlsCompany] = useState([]);
+
+  const [t] = useTranslation("global");
 
   const selectControlCompanyToEvaluate = (companyPk, controlPk) => {
     let newControlsCompanyToEvaluate = controlsToEvaluate;
@@ -139,15 +142,15 @@ function SelectControlsCompanyKrc(
         {selectedCompanies.length > 0 && (
           <div className="mt-5 mb-5">
             <button onClick={updateControls} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap mb-7" data-kt-indicator={isLoading ? 'on' : 'off'}>
-              <span className="indicator-label">Calcular los controles de riesgo que se lanzarán</span>
+              <span className="indicator-label">{t('selectcontrol.calc-controls')}</span>
               <span className="indicator-progress">
-                Calculando...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
+                {t('selectcontrol.loading')}...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
               </span>
             </button>
             {!isLoading && controlsCompany.map((company, index) => {
               return <div key={index} className="mt-5 mb-5">
-                <h4>Evaluación para: {company.c.name}</h4>
-                <h5>Controles que podrán ser lanzados</h5>
+                <h4>{t('selectcontrols.evaluations-for')} {company.c.name}</h4>
+                <h5>{t('selectcontrols.control-to-launch')}</h5>
                 {company.cs.length > 0 && (
                   <table className="table table-striped customDatatable">
                     <thead>
@@ -157,9 +160,9 @@ function SelectControlsCompanyKrc(
                           <span onClick={() => unSelectAll(company.c.pk)}><i className="bi bi-clipboard"></i></span>
                         </th>
                         <th className="fw-semibold">REF</th>
-                        <th className="fw-semibold">DESCRIPCIÓN</th>
+                        <th className="fw-semibold">{t('general.description')}</th>
                         <th className="fw-semibold text-center">KEY CONTROL</th>
-                        <th className="fw-semibold text-center">¿ELC?</th>
+                        <th className="fw-semibold text-center">ELC</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -172,18 +175,18 @@ function SelectControlsCompanyKrc(
                           <td><span dangerouslySetInnerHTML={{ __html: control.name }}></span></td>
                           <td className="text-center">
                             {control.key_control && (
-                              <span className="badge badge-primary">Sí</span>
+                              <span className="badge badge-primary">{t('general.yes')}</span>
                             )}
                             {!control.key_control && (
-                              <span className="badge badge-danger">No</span>
+                              <span className="badge badge-danger">{t('general.no')}</span>
                             )}
                           </td>
                           <td className="text-center">
                             {control.is_elc && (
-                              <span className="badge badge-primary">Sí</span>
+                              <span className="badge badge-primary">{t('general.yes')}</span>
                             )}
                             {!control.is_elc && (
-                              <span className="badge badge-danger">No</span>
+                              <span className="badge badge-danger">{t('general.no')}</span>
                             )}
                           </td>
                         </tr>
@@ -192,7 +195,7 @@ function SelectControlsCompanyKrc(
                   </table>
                 )}
                 {company.cs.length === 0 && (
-                  <div key={index} className="alert alert-primary mt-5">Nada que evaluar para la compañía {company.c.name}</div>
+                  <div key={index} className="alert alert-primary mt-5">{t('selectcontrol.nothing-to-evaluate')} {company.c.name}</div>
                 )}
                 {index < controlsCompany.length - 1 && (
                   <div className="separator my-10"></div>
@@ -202,7 +205,7 @@ function SelectControlsCompanyKrc(
           </div>
         )}
         {selectedCompanies.length === 0 && (
-          <div className="alert alert-primary">Seleccione al menos una compañía</div>
+          <div className="alert alert-primary">{t('selectcontrol.select-company')}</div>
         )}
       </div>
     );

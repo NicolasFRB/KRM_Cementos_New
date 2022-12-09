@@ -13,6 +13,7 @@ django-filter==22.1
 django-cors-headers==3.13.0
 pandas==1.5.1
 
+django-rosetta==0.9.8
 
 # # Celery
 # redis==4.3.4

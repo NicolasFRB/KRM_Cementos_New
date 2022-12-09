@@ -91,7 +91,7 @@ class Company(AuditModel):
         'users.User',
         verbose_name=_('Evaluadores de Cuestionarios'),
         blank=True,
-        related_name='quuestionnaires_evaluators'
+        related_name='questionnaires_evaluators'
     )
 
     def __str__(self):

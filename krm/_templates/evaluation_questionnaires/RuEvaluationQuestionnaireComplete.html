@@ -190,6 +190,11 @@
           <!--end::Card header-->
         </div>
         <div class="card-body">
+          <h4 class="mb-5">{% trans 'Parámetros de la pregunta' %}</h4>
+          <p class="mb-4"><strong>{% trans 'Delegación' %}</strong>: {{ q.question.delegation }}</p>
+          <p class="mb-4"><strong>{% trans 'Concesión' %}</strong>: {{ q.question.concession }}</p>
+          <p class="mb-6"><strong>{% trans 'Área' %}</strong>: {{ q.question.area }}</p>
+
           <div class="question_test" data-questiontestpk="{{ q.pk }}"
           data-answer="{{ q.answer}}"
           data-description="{{ q.description|default_if_none:'' }}" ></div>
