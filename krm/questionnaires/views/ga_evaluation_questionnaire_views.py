@@ -104,6 +104,9 @@ class GaEvaluationQuestionnaireCreateView(FormView):
         )
         from krm.users.models import User
 
+        users_notificated = []
+        question_test_to_notify = []
+
         question_test_created = 0
 
         questions_to_evaluate = json.loads(
@@ -137,6 +140,13 @@ class GaEvaluationQuestionnaireCreateView(FormView):
                 question_test.status = 1
                 question_test.save()
                 question_test_created += 1
+                if question_test.evaluator not in users_notificated:
+                    users_notificated.append(question_test.evaluator)
+                    question_test_to_notify.append(question_test)
+
+        from krm.questionnaires.tasks import question_test_send_notification
+        for qt in question_test_to_notify:
+            question_test_send_notification.delay(qt.pk)
 
         messages.add_message(
             self.request,

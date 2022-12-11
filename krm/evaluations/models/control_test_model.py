@@ -101,24 +101,23 @@ class ControlTest(AuditModel):
         # return str(self.process_test.identifier) + '-' + str(self.control.ref).zfill(4)
 
     def get_control_test_risks_company(self):
-        risks_company = self.evaluation.company.krm_risks.filter(active = True)
+        risks_company = self.evaluation.company.krm_risks.filter(active=True)
         risks_control = self.control.risks.all()
-        return risks_company.filter(risk__in = risks_control)
+        return risks_company.filter(risk__in=risks_control)
 
     def get_control_test_domain_risks(self):
         r_company = self.get_control_test_risks_company()
         domain_risks_pk = []
-        
+
         for r in r_company:
             dom_risk_pk = r.risk.risk_master.domain_risk.pk
             if dom_risk_pk not in domain_risks_pk:
                 domain_risks_pk.append(dom_risk_pk)
 
-        return DomainRisk.objects.filter(id__in = domain_risks_pk)
+        return DomainRisk.objects.filter(id__in=domain_risks_pk)
 
     def get_control_test_subprocess(self):
         return self.control.sub_processes.all()
-
 
     def send_notification(self):
         from krm.evaluations.tasks import (
@@ -137,6 +136,10 @@ class ControlTest(AuditModel):
             control_test_send_notification_control_supervisor(self.pk)
 
     def sent_notification_control_owner(self):
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
         # Esto notificará al control owner de que tiene controles por rellenar
         context = {
             "site_url": settings.SITE_URL,
@@ -170,9 +173,15 @@ class ControlTest(AuditModel):
         msg.content_subtype = "html"
 
         self.control_test_owner.add_action(_("Control Owner email"))
-        msg.send(fail_silently=False)
+
+        if configuration.enable_emails:
+            msg.send(fail_silently=False)
 
     def sent_notification_control_supervisor(self):
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
         # Esto notificará al control supervisor de que tiene controles por supervisar
         context = {
             "site_url": settings.SITE_URL,
@@ -207,4 +216,5 @@ class ControlTest(AuditModel):
         msg.content_subtype = "html"
 
         self.control_test_supervisor.add_action(_("Control Supervisor email"))
-        msg.send(fail_silently=False)
+        if configuration.enable_emails:
+            msg.send(fail_silently=False)

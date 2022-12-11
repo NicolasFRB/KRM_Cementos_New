@@ -182,6 +182,9 @@ class User(AbstractUser):
 
     def send_welcome_email(self):
         from django.conf import settings
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
 
         self.update_remember_key()
         remember_url = settings.SITE_URL + reverse(
@@ -215,9 +218,17 @@ class User(AbstractUser):
         msg.content_subtype = "html"
 
         self.add_action(_("Welcome email"))
-        return msg.send(fail_silently=False)
+
+        if configuration.enable_emails:
+            return msg.send(fail_silently=False)
+        else:
+            return True
 
     def send_email_remember_password(self):
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
         self.update_remember_key()
         remember_url = settings.SITE_URL + reverse(
             "auth:type_your_password", kwargs={"remember_key": self.remember_key}
@@ -250,4 +261,6 @@ class User(AbstractUser):
         msg.content_subtype = "html"
 
         self.add_action(_("Reset password email"))
-        msg.send(fail_silently=False)
+
+        if configuration.enable_emails:
+            msg.send(fail_silently=False)

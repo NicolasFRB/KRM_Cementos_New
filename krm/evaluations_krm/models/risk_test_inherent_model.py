@@ -135,20 +135,30 @@ class RiskTestInherent(AuditModel):
     @property
     def severity_level_expert_qualitative(self):
         sev = self.severity_level_expert
-        if sev == 0: return 0
-        if sev <= 2: return "No significativo"
-        if sev <= 5: return "Bajo"
-        if sev <= 11: return "Alto"
-        if sev <= 16: return "Crítico"
-         
+        if sev == 0:
+            return 0
+        if sev <= 2:
+            return "No significativo"
+        if sev <= 5:
+            return "Bajo"
+        if sev <= 11:
+            return "Alto"
+        if sev <= 16:
+            return "Crítico"
+
     @property
     def severity_level_admin_qualitative(self):
         sev = self.severity_level_admin
-        if sev == 0: return 0
-        if sev <= 2: return "No significativo"
-        if sev <= 5: return "Bajo"
-        if sev <= 11: return "Alto"
-        if sev <= 16: return "Crítico"
+        if sev == 0:
+            return 0
+        if sev <= 2:
+            return "No significativo"
+        if sev <= 5:
+            return "Bajo"
+        if sev <= 11:
+            return "Alto"
+        if sev <= 16:
+            return "Crítico"
 
     def __str__(self):
         return f'{self.evaluation.ref} - {self.risk.risk.name}'
@@ -179,7 +189,10 @@ class RiskTestInherent(AuditModel):
         risk_test_send_notification_expert.delay(self.pk)
 
     def sent_email_notification_expert(self):
-        # Esto notificará al control owner de que tiene controles por rellenar
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
         context = {
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
@@ -213,4 +226,6 @@ class RiskTestInherent(AuditModel):
 
         self.expert.add_action(
             _("Envío de email de Test de Riesgos pendientes de valorar"))
-        msg.send(fail_silently=False)
+
+        if configuration.enable_emails:
+            msg.send(fail_silently=False)

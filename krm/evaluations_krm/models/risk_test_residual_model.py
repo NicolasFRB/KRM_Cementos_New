@@ -94,6 +94,10 @@ class RiskTestResidual(AuditModel):
         risk_test_send_notification_evaluator.delay(self.pk)
 
     def send_email_notification_evaluator(self):
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
         # Esto notificará al control owner de que tiene controles por rellenar
         context = {
             "site_url": settings.SITE_URL,
@@ -128,7 +132,9 @@ class RiskTestResidual(AuditModel):
 
         self.evaluator.add_action(
             _("Envío de email de Test de Riesgos pendientes de valorar"))
-        msg.send(fail_silently=False)
+
+        if configuration.enable_emails:
+            return msg.send(fail_silently=False)
 
     @property
     def get_latest_impact_inherent(self):

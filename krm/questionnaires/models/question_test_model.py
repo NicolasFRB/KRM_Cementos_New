@@ -75,8 +75,51 @@ class QuestionTest(AuditModel):
     )
 
     def __str__(self):
-        return f'{self.evaluation.ref} - {self.title}'
+        return f'{self.evaluation.ref} - {self.question.title}'
 
     class Meta:
         verbose_name = _("Respuesta")
         verbose_name_plural = _("Respuestas")
+
+    def send_email_notification(self):
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
+        # Esto notificará al control owner de que tiene controles por rellenar
+        context = {
+            "site_url": settings.SITE_URL,
+            "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
+            "user_email": self.evaluator.email,
+            "evaluation_ref": self.evaluation.ref,
+            "evaluation_date_begin": self.evaluation.date_begin,
+            "evaluation_date_end": self.evaluation.date_end,
+        }
+        body_html = render_to_string(
+            "emails/questionnaires/questionnaires_to_complete.html", context
+        )
+        context = {
+            "content": body_html,
+            "preheader": _("Cuestionario pendiente de completar"),
+        }
+        body_html = render_to_string("emails/base-inline.html", context)
+        from_email = settings.EMAIL_FROM
+        if settings.EMAIL_BCC:
+            bcc = settings.EMAIL_BCC
+        else:
+            bcc = ""
+
+        subject, from_email, to = (
+            _("KRM Tool - Cuestionario pendiente de completar"),
+            from_email,
+            self.evaluator.email,
+        )
+        msg = EmailMultiAlternatives(
+            subject, body_html, from_email, [to], [bcc])
+        msg.content_subtype = "html"
+
+        self.evaluator.add_action(
+            _("Envío de email de Test de Pregunta"))
+
+        if configuration.enable_emails:
+            return msg.send(fail_silently=False)
