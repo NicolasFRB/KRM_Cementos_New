@@ -63,6 +63,11 @@ def get_menu_urls(request, pk=None):
     questionnaires_urls = [
         reverse_lazy('questionnaires:ga_questionnaire_list'),
         reverse_lazy('questionnaires:ga_questionnaire_create'),
+        reverse_lazy('questionnaires:ga_questionnaire_import'),
+    ]
+
+    questions_urls = [
+        reverse_lazy('questions:ga_question_list'),
     ]
 
     evaluation_questionnaires_urls = [
@@ -234,6 +239,48 @@ def get_menu_urls(request, pk=None):
             ),
         ]
 
+        questionnaires_urls = questionnaires_urls + [
+            reverse_lazy(
+                'questionnaires:ga_questionnaire_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'questionnaires:ga_questionnaire_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'questionnaires:ga_questionnaire_delete',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'scopes:ga_scope_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'scopes:ga_scope_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'scopes:ga_scope_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+
+        questions_urls = questions_urls + [
+            reverse_lazy(
+                'questions:ga_question_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'questions:ga_question_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'questions:ga_question_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+
     if settings.KRM_ACTIVATE:
         KRM_ACTIVATE = True
     else:
@@ -257,5 +304,6 @@ def get_menu_urls(request, pk=None):
         'DEVJS': settings.DEVJS,
         'BRAND': settings.BRAND,
         'QUESTIONNAIRES_URLS': questionnaires_urls,
+        'QUESTIONS_URLS': questions_urls,
         'EVALUATIONS_QUESTIONNAIRES_URLS': evaluation_questionnaires_urls,
     }

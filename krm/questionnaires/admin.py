@@ -13,6 +13,7 @@ from krm.questionnaires.models import (
     Question,
     QuestionTest,
     EvaluationQuestionnaire,
+    Scope
 )
 
 
@@ -22,16 +23,24 @@ class QuestionnaireAdmin(admin.ModelAdmin):
     list_display = ('ref', 'name',)
 
 
+@admin.register(Scope)
+class ScopeAdmin(admin.ModelAdmin):
+    model = Scope
+    list_display = ('ref', 'name', 'questionnaire', )
+
+
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     model = Question
-    list_display = ('ref', 'questionnaire', 'order', 'title',)
+    list_display = ('ref', 'title', )
+    list_filter = ('scopes__questionnaire', 'scopes')
 
 
 @admin.register(QuestionTest)
 class QuestionTestAdmin(admin.ModelAdmin):
     model = QuestionTest
-    list_display = ('pk', 'evaluation', 'evaluator', 'title', 'status')
+    list_display = ('pk', 'evaluation', 'evaluator',
+                    'question', 'status')
 
 
 @admin.register(EvaluationQuestionnaire)

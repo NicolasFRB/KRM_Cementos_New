@@ -3,33 +3,6 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block js_footer %}
-<script>
-  $(document).ready(function () {
-    ClassicEditor
-      .create(
-        document.querySelector('#domain_risk_description'),
-        {
-          language: {
-            // The UI will be English.
-            ui: 'es',
-
-            // But the content will be edited in Arabic.
-            content: 'es'
-          }
-        }
-      )
-      .then(editor => {
-        const wordCountPlugin = editor.plugins.get('WordCount');
-        const wordCountWrapper = document.getElementById('word-count');
-        wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-      })
-      .catch(error => {
-      });
-  });
-</script>
-{% endblock js_footer %}
-
 {% block content %}
 
 {% include '_includes/Messages.html' %}
@@ -50,13 +23,24 @@
         <div class="row">
           <div class="col-12 col-md-6">
             <fieldset>
-              <!-- <legend>{% trans 'Datos del Dominio de Riesgo' %}</legend> -->
               <div class="row mb-4">
-                <div class="col-12 col-md-4 mb-4">
+                <div class="col-12">
+                  {{ form.questionnaire|as_crispy_field }}
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-12">
                   {{ form.ref|as_crispy_field }}
                 </div>
-                <div class="col-12 col-md-8 mb-4">
+              </div>
+              <div class="row mb-4">
+                <div class="col-12">
                   {{ form.name|as_crispy_field }}
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-12">
+                  {{ form.user_to_assign|as_crispy_field }}
                 </div>
               </div>
             </fieldset>
@@ -67,8 +51,13 @@
 
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
-        <a href="{% url 'questionnaires:ga_questionnaire_detail' object.pk %}"
-          class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+        {% if object.questionnaire %}
+          <a href="{% url 'questionnaires:ga_questionnaire_detail' object.questionnaire.pk %}" class="btn btn-sm btn-secondary ms-2"><i
+              class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+        {% else %}
+        <a href="#"
+          class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+        {% endif %}
       </div>
     </form>
 

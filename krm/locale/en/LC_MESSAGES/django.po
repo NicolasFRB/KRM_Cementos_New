@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-07 17:41+0100\n"
-"PO-Revision-Date: 2022-12-07 17:48+0100\n"
-"Last-Translator: Bienvenido Sáez Muelas <bienvenidosaez@baetica.com>\n"
+"POT-Creation-Date: 2022-12-11 19:13+0100\n"
+"PO-Revision-Date: 2022-12-11 19:19+0100\n"
+"Last-Translator:   <bienvenidosaez@baetica.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "English"
 msgid "Spanish"
 msgstr "Spanish"
 
-#: config/urls.py:182 config/urls.py:183 config/urls.py:184
+#: config/urls.py:188 config/urls.py:189 config/urls.py:190
 msgid "KRM Tool"
 msgstr "KRM Tool"
 
@@ -88,7 +88,6 @@ msgstr "Risk Domain"
 #: krm/_templates/evaluations_krm/RuEvaluationRiskInherentComplete.html:115
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:100
 #: krm/_templates/questionnaires/GaQuestionnaireDetail.html:27
-#: krm/_templates/questions/GaQuestionDetail.html:27
 #: krm/_templates/risks/GaRiskDetail.html:32
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:32
 #: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:19
@@ -117,6 +116,7 @@ msgstr "Reference"
 #: krm/_templates/process/GaProcessDetail.html:100
 #: krm/_templates/process/GaProcessList.html:29
 #: krm/_templates/questionnaires/GaQuestionnaireDetail.html:42
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:86
 #: krm/_templates/questionnaires/GaQuestionnaireList.html:29
 #: krm/_templates/questions/GaQuestionDetail.html:42
 #: krm/_templates/questions/GaQuestionList.html:29
@@ -125,15 +125,16 @@ msgstr "Reference"
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:47
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:118
 #: krm/_templates/risks_masters/GaRiskMasterList.html:36
+#: krm/_templates/scopes/GaScopeDetail.html:42
 #: krm/_templates/subprocess/GaSubProcessDetail.html:42
 #: krm/_templates/subprocess/GaSubProcessList.html:29
 #: krm/_templates/users/GaUserDetail.html:46
 #: krm/_templates/users/GaUserDetail.html:156
 #: krm/_templates/users/GaUserDetail.html:211
 #: krm/_templates/users/GaUserList.html:29
-#: krm/companies/models/company_model.py:29
-#: krm/companies_bck/models/business_group.py:34
-#: krm/companies_bck/models/company.py:29
+#: krm/companies/models/company_model.py:23
+#: krm/companies_bck/models/business_group.py:29
+#: krm/companies_bck/models/company.py:24
 #: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:80
 #: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:34
 #: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:21
@@ -147,8 +148,8 @@ msgstr "Reference"
 #: krm/old_templates/rates/RateUpdate.html:48
 #: krm/old_templates/users/UserDetail.html:42
 #: krm/process/models/process_model.py:27
-#: krm/questionnaires/forms/questionnaire_form.py:28
-#: krm/questionnaires/models/questionnaire_model.py:25
+#: krm/questionnaires/models/questionnaire_model.py:20
+#: krm/questionnaires/models/scope_model.py:19
 #: krm/risks/models/domain_risk_model.py:20
 #: krm/risks/models/risk_company_model.py:31
 #: krm/risks/models/risk_master_model.py:22 krm/risks/models/risk_model.py:22
@@ -217,7 +218,6 @@ msgstr "Name"
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:442
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:523
 #: krm/_templates/process/GaProcessDetail.html:57
-#: krm/_templates/questionnaires/GaQuestionnaireUpdate.html:63
 #: krm/_templates/risks/GaRiskDetail.html:165
 #: krm/_templates/risks/GaRiskList.html:30
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:80
@@ -241,7 +241,7 @@ msgstr "Name"
 #: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_header_portlet.html:21
 #: krm/process/models/process_model.py:30
 #: krm/process/models/sub_process_model.py:26
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:47
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:40
 #: krm/risks/models/domain_risk_model.py:25
 #: krm/risks/models/risk_company_model.py:36
 #: krm/risks/models/risk_master_model.py:27 krm/risks/models/risk_model.py:27
@@ -259,9 +259,10 @@ msgstr "Description"
 #: krm/_templates/evaluations/GaEvaluationDetail.html:504
 #: krm/_templates/process/GaProcessDetail.html:74
 #: krm/_templates/questionnaires/GaQuestionnaireDetail.html:59
-#: krm/_templates/questions/GaQuestionDetail.html:59
+#: krm/_templates/questions/GaQuestionDetail.html:76
 #: krm/_templates/risks/GaRiskDetail.html:139
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:92
+#: krm/_templates/scopes/GaScopeDetail.html:59
 #: krm/_templates/subprocess/GaSubProcessDetail.html:89
 #: krm/_templates/users/GaUserDetail.html:134
 #: krm/companies/views/ca_company_views.py:104
@@ -292,8 +293,9 @@ msgstr "Description"
 #: krm/process/views/sub_process_views.py:153
 #: krm/questionnaires/views/ga_question_views.py:89
 #: krm/questionnaires/views/ga_question_views.py:159
-#: krm/questionnaires/views/ga_questionnaire_views.py:94
-#: krm/questionnaires/views/ga_questionnaire_views.py:153
+#: krm/questionnaires/views/ga_questionnaire_views.py:95
+#: krm/questionnaires/views/ga_questionnaire_views.py:154
+#: krm/questionnaires/views/ga_scope_views.py:121
 #: krm/risks/views/ca_risk_company_views.py:50
 #: krm/risks/views/domain_risk_views.py:83
 #: krm/risks/views/domain_risk_views.py:142
@@ -315,9 +317,10 @@ msgstr "Edit"
 #: krm/_templates/evaluations/GaEvaluationDetail.html:507
 #: krm/_templates/process/GaProcessDetail.html:77
 #: krm/_templates/questionnaires/GaQuestionnaireDetail.html:62
-#: krm/_templates/questions/GaQuestionDetail.html:62
+#: krm/_templates/questions/GaQuestionDetail.html:79
 #: krm/_templates/risks/GaRiskDetail.html:142
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:95
+#: krm/_templates/scopes/GaScopeDetail.html:62
 #: krm/_templates/subprocess/GaSubProcessDetail.html:92
 #: krm/_templates/users/GaUserDetail.html:137
 #: krm/companies/views/company_views.py:200
@@ -337,8 +340,9 @@ msgstr "Edit"
 #: krm/old_templates/users/UserDetail.html:53
 #: krm/process/views/process_views.py:175
 #: krm/process/views/sub_process_views.py:185
-#: krm/questionnaires/views/ga_question_views.py:192
-#: krm/questionnaires/views/ga_questionnaire_views.py:186
+#: krm/questionnaires/views/ga_question_views.py:191
+#: krm/questionnaires/views/ga_questionnaire_views.py:187
+#: krm/questionnaires/views/ga_scope_views.py:155
 #: krm/risks/views/domain_risk_views.py:175
 #: krm/risks/views/risk_master_views.py:184 krm/risks/views/risk_views.py:185
 #: krm/users/views/user_views.py:172
@@ -373,9 +377,10 @@ msgstr "Delete"
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:640
 #: krm/_templates/process/GaProcessDetail.html:79
 #: krm/_templates/questionnaires/GaQuestionnaireDetail.html:64
-#: krm/_templates/questions/GaQuestionDetail.html:64
+#: krm/_templates/questions/GaQuestionDetail.html:81
 #: krm/_templates/risks/GaRiskDetail.html:144
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:97
+#: krm/_templates/scopes/GaScopeDetail.html:64
 #: krm/_templates/subprocess/GaSubProcessDetail.html:94
 #: krm/_templates/users/GaUserDetail.html:138
 #: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:37
@@ -424,14 +429,15 @@ msgstr "Associated risks"
 #: krm/_templates/evaluations_krm/RuEvaluationKrmResidualList.html:181
 #: krm/_templates/process/GaProcessDetail.html:98
 #: krm/_templates/process/GaProcessList.html:27
-#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:83
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:84
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:137
 #: krm/_templates/questionnaires/GaQuestionnaireList.html:27
-#: krm/_templates/questions/GaQuestionDetail.html:83
 #: krm/_templates/questions/GaQuestionList.html:27
 #: krm/_templates/risks/GaRiskDetail.html:163
 #: krm/_templates/risks/GaRiskList.html:27
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:116
 #: krm/_templates/risks_masters/GaRiskMasterList.html:34
+#: krm/_templates/scopes/GaScopeDetail.html:83
 #: krm/_templates/subprocess/GaSubProcessDetail.html:113
 #: krm/_templates/subprocess/GaSubProcessList.html:27
 #: krm/_templates/users/GaUserDetail.html:154
@@ -492,15 +498,18 @@ msgstr "Action"
 #: krm/_templates/process/GaProcessDetail.html:27
 #: krm/_templates/process/GaProcessDetail.html:99
 #: krm/_templates/process/GaProcessList.html:28
-#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:84
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:85
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:138
 #: krm/_templates/questionnaires/GaQuestionnaireList.html:28
-#: krm/_templates/questions/GaQuestionDetail.html:84
+#: krm/_templates/questions/GaQuestionDetail.html:27
 #: krm/_templates/questions/GaQuestionList.html:28
 #: krm/_templates/risks/GaRiskDetail.html:164
 #: krm/_templates/risks/GaRiskList.html:28
 #: krm/_templates/risks_company/GaRiskCompanyUpdate.html:109
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:117
 #: krm/_templates/risks_masters/GaRiskMasterList.html:35
+#: krm/_templates/scopes/GaScopeDetail.html:27
+#: krm/_templates/scopes/GaScopeDetail.html:84
 #: krm/_templates/subprocess/GaSubProcessDetail.html:27
 #: krm/_templates/subprocess/GaSubProcessDetail.html:114
 #: krm/_templates/subprocess/GaSubProcessList.html:28
@@ -518,7 +527,6 @@ msgstr "Action"
 #: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:9
 #: krm/process/models/process_model.py:22
 #: krm/questionnaires/forms/evaluation_questionnaire_form.py:18
-#: krm/questionnaires/forms/questionnaire_form.py:23
 #: krm/questionnaires/models/evaluation_questionnaire_model.py:27
 #: krm/risks/models/risk_master_model.py:16 krm/risks/models/risk_model.py:16
 msgid "REF"
@@ -531,8 +539,7 @@ msgstr "There are no risks associated with this risk domain"
 #: krm/_templates/GaBaseDetail.html:129
 #: krm/_templates/domain_risks/GaDomainRiskDetail.html:156
 #: krm/_templates/process/GaProcessDetail.html:133
-#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:121
-#: krm/_templates/questions/GaQuestionDetail.html:115
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:118
 #: krm/_templates/risks/GaRiskDetail.html:239
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:161
 msgid "Añadir"
@@ -549,9 +556,9 @@ msgstr "VAT"
 #: krm/_templates/companies/GaCompanyList.html:30
 #: krm/_templates/users/GaUserDetail.html:157
 #: krm/_templates/users/GaUserDetail.html:212
-#: krm/companies/models/company_model.py:59
-#: krm/companies_bck/models/business_group.py:51
-#: krm/companies_bck/models/company.py:53
+#: krm/companies/models/company_model.py:53
+#: krm/companies_bck/models/business_group.py:48
+#: krm/companies_bck/models/company.py:50
 #: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:111
 msgid "País"
 msgstr "Country"
@@ -564,9 +571,9 @@ msgstr "Country"
 #: krm/_templates/companies/GaCompanyDetail.html:248
 #: krm/_templates/users/GaUserDetail.html:95
 #: krm/_templates/users/GaUserList.html:28
-#: krm/companies/models/company_model.py:64
-#: krm/companies_bck/models/business_group.py:54
-#: krm/companies_bck/models/company.py:55
+#: krm/companies/models/company_model.py:58
+#: krm/companies_bck/models/business_group.py:51
+#: krm/companies_bck/models/company.py:52
 #: krm/old_templates/users/UserDetail.html:43 krm/users/forms/login.py:12
 #: krm/users/forms/remember_password_form_password.py:10
 msgid "Email"
@@ -586,8 +593,8 @@ msgstr "Email"
 #: krm/_templates/evaluations_krm/GaEvaluationInherentList.html:187
 #: krm/_templates/evaluations_krm/GaEvaluationResidualList.html:187
 #: krm/_templates/process/GaProcessList.html:65
-#: krm/_templates/questionnaires/GaQuestionnaireList.html:50
-#: krm/_templates/questions/GaQuestionList.html:48
+#: krm/_templates/questionnaires/GaQuestionnaireList.html:56
+#: krm/_templates/questions/GaQuestionList.html:52
 #: krm/_templates/risks/GaRiskList.html:64
 #: krm/_templates/risks_masters/GaRiskMasterList.html:83
 #: krm/_templates/subprocess/GaSubProcessList.html:54
@@ -614,7 +621,7 @@ msgstr "Email"
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:54
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:85
 #: krm/questionnaires/views/ga_question_views.py:60
-#: krm/questionnaires/views/ga_questionnaire_views.py:65
+#: krm/questionnaires/views/ga_questionnaire_views.py:66
 #: krm/risks/views/domain_risk_views.py:54
 #: krm/risks/views/domain_risk_views.py:108
 #: krm/risks/views/risk_master_views.py:53
@@ -657,16 +664,20 @@ msgstr "New"
 #: krm/_templates/evaluations_krm/GaEvaluationResidualCreate.html:132
 #: krm/_templates/process/GaProcessCreate.html:73
 #: krm/_templates/questionnaires/GaQuestionnaireCreate.html:46
-#: krm/_templates/questionnaires/GaQuestionnaireImport.html:56
-#: krm/_templates/questionnaires/GaQuestionnaireUpdate.html:78
-#: krm/_templates/questions/GaQuestionCreate.html:61
-#: krm/_templates/questions/GaQuestionCreate.html:64
+#: krm/_templates/questionnaires/GaQuestionnaireImport.html:50
+#: krm/_templates/questionnaires/GaQuestionnaireUpdate.html:71
+#: krm/_templates/questions/GaQuestionCreate.html:45
+#: krm/_templates/questions/GaQuestionUpdate.html:42
 #: krm/_templates/risks/GaRiskCreate.html:130
 #: krm/_templates/risks/GaRiskUpdate.html:130
 #: krm/_templates/risks_company/CaRiskCompanyUpdate.html:99
 #: krm/_templates/risks_company/GaRiskCompanyUpdate.html:156
 #: krm/_templates/risks_masters/GaRiskMasterCreate.html:82
 #: krm/_templates/risks_masters/GaRiskMasterUpdate.html:110
+#: krm/_templates/scopes/GaScopeCreate.html:56
+#: krm/_templates/scopes/GaScopeCreate.html:59
+#: krm/_templates/scopes/GaScopeUpdate.html:51
+#: krm/_templates/scopes/GaScopeUpdate.html:54
 #: krm/_templates/subprocess/GaSubProcessCreate.html:76
 #: krm/_templates/users/GaUserCreate.html:80
 #: krm/_templates/users/GaUserUpdate.html:84
@@ -724,9 +735,9 @@ msgstr "Evaluation data"
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:114
 #: krm/_templates/risks_company/CaRiskCompanyUpdate.html:61
 #: krm/_templates/risks_company/GaRiskCompanyUpdate.html:64
-#: krm/companies/models/company_model.py:109
-#: krm/companies/models/company_model.py:110
-#: krm/companies_bck/models/company.py:61
+#: krm/companies/models/company_model.py:103
+#: krm/companies/models/company_model.py:104
+#: krm/companies_bck/models/company.py:58
 #: krm/risks/models/risk_company_model.py:18
 msgid "Compañía"
 msgstr "Company"
@@ -756,7 +767,7 @@ msgstr "Company"
 #: krm/_templates/subprocess/GaSubProcessDetail.html:118
 #: krm/_templates/users/GaUserDetail.html:158
 #: krm/_templates/users/GaUserDetail.html:213
-#: krm/companies/models/company_model.py:70
+#: krm/companies/models/company_model.py:64
 msgid "Tipo"
 msgstr "Type"
 
@@ -828,8 +839,8 @@ msgstr "Companies in scope"
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:75
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:98
 #: krm/evaluations_krm/models/risk_test_residual_model.py:74
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:81
-#: krm/questionnaires/models/question_test_model.py:67
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:74
+#: krm/questionnaires/models/question_test_model.py:61
 msgid "Estado"
 msgstr "State"
 
@@ -854,7 +865,7 @@ msgstr "State"
 #: krm/evaluations/models/evaluation_model.py:60
 #: krm/evaluations_krm/models/evaluation_krm_inherent_model.py:56
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:57
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:63
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:56
 msgid "Año de certificación"
 msgstr "Certification year"
 
@@ -879,7 +890,7 @@ msgstr "Certification year"
 #: krm/evaluations/models/evaluation_model.py:66
 #: krm/evaluations_krm/models/evaluation_krm_inherent_model.py:62
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:63
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:69
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:62
 msgid "Periodo de certificación"
 msgstr "Certification period"
 
@@ -1552,9 +1563,9 @@ msgstr "Corporate scope"
 
 #: krm/_templates/companies/CaCompanyDetail.html:106
 #: krm/_templates/companies/GaCompanyDetail.html:109
-#: krm/companies/models/company_model.py:32
-#: krm/companies_bck/models/business_group.py:37
-#: krm/companies_bck/models/company.py:39
+#: krm/companies/models/company_model.py:26
+#: krm/companies_bck/models/business_group.py:32
+#: krm/companies_bck/models/company.py:34
 #: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:90
 #: krm/old_templates/_layout/krc_includes/companies/age/_company_list_table.html:9
 #: krm/old_templates/_layout/krc_includes/companies/ga/_company_list_table.html:9
@@ -1563,18 +1574,18 @@ msgstr "CIF"
 
 #: krm/_templates/companies/CaCompanyDetail.html:134
 #: krm/_templates/companies/GaCompanyDetail.html:137
-#: krm/companies/models/company_model.py:41
-#: krm/companies_bck/models/business_group.py:45
-#: krm/companies_bck/models/company.py:47
+#: krm/companies/models/company_model.py:35
+#: krm/companies_bck/models/business_group.py:41
+#: krm/companies_bck/models/company.py:43
 #: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:121
 msgid "Dirección"
 msgstr "Address"
 
 #: krm/_templates/companies/CaCompanyDetail.html:148
 #: krm/_templates/companies/GaCompanyDetail.html:151
-#: krm/companies/models/company_model.py:48
-#: krm/companies_bck/models/business_group.py:47
-#: krm/companies_bck/models/company.py:49
+#: krm/companies/models/company_model.py:42
+#: krm/companies_bck/models/business_group.py:44
+#: krm/companies_bck/models/company.py:46
 #: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:131
 #, fuzzy
 msgid "Población"
@@ -1610,7 +1621,7 @@ msgid "Expertos de Dominios de riesgo"
 msgstr "Risk Domain Experts"
 
 #: krm/_templates/companies/CaCompanyDetail.html:225
-#: krm/companies/models/company_domain_risk_experts.py:28
+#: krm/companies/models/company_domain_risk_experts.py:23
 msgid "Experto asignado"
 msgstr "Assigned expert"
 
@@ -1754,14 +1765,17 @@ msgstr "KRM risks that apply to the company"
 #: krm/_templates/evaluations_krm/GaEvaluationResidualCreate.html:130
 #: krm/_templates/process/GaProcessCreate.html:71
 #: krm/_templates/questionnaires/GaQuestionnaireCreate.html:44
-#: krm/_templates/questionnaires/GaQuestionnaireUpdate.html:76
-#: krm/_templates/questions/GaQuestionCreate.html:58
+#: krm/_templates/questionnaires/GaQuestionnaireUpdate.html:69
+#: krm/_templates/questions/GaQuestionCreate.html:44
+#: krm/_templates/questions/GaQuestionUpdate.html:41
 #: krm/_templates/risks/GaRiskCreate.html:128
 #: krm/_templates/risks/GaRiskUpdate.html:128
 #: krm/_templates/risks_company/CaRiskCompanyUpdate.html:97
 #: krm/_templates/risks_company/GaRiskCompanyUpdate.html:154
 #: krm/_templates/risks_masters/GaRiskMasterCreate.html:80
 #: krm/_templates/risks_masters/GaRiskMasterUpdate.html:108
+#: krm/_templates/scopes/GaScopeCreate.html:53
+#: krm/_templates/scopes/GaScopeUpdate.html:48
 #: krm/_templates/subprocess/GaSubProcessCreate.html:74
 #: krm/_templates/users/GaUserCreate.html:78
 #: krm/_templates/users/GaUserUpdate.html:82
@@ -1842,7 +1856,7 @@ msgstr "Edit list of controls that apply"
 
 #: krm/_templates/companies/GaCompanyDomainRiskEvaluatorUpdate.html:56
 #: krm/_templates/companies/GaCompanyDomainRiskExpertsUpdate.html:56
-#: krm/companies/models/company_domain_risk_evaluator.py:29
+#: krm/companies/models/company_domain_risk_evaluator.py:24
 msgid "Evaluadores"
 msgstr "Evaluators"
 
@@ -1894,8 +1908,8 @@ msgstr ""
 #: krm/_templates/companies/GaCompanyList.html:94
 #: krm/_templates/configuration/GaImport.html:46
 #: krm/_templates/controls/GaControlImport.html:53
-#: krm/_templates/questionnaires/GaQuestionnaireImport.html:54
-#: krm/_templates/questionnaires/GaQuestionnaireList.html:51
+#: krm/_templates/questionnaires/GaQuestionnaireImport.html:48
+#: krm/_templates/questionnaires/GaQuestionnaireList.html:57
 msgid "Importar"
 msgstr "Import"
 
@@ -2191,12 +2205,13 @@ msgid "Tipo de concesión"
 msgstr "Concession type"
 
 #: krm/_templates/dashboards/ga/GaDashboard.html:264
-#: krm/companies/models/company_model.py:24
+#: krm/companies/models/company_model.py:18
 #: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:74
 #: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:74
 #: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_header_portlet.html:19
-#: krm/questionnaires/models/question_model.py:21
-#: krm/questionnaires/models/questionnaire_model.py:21
+#: krm/questionnaires/models/question_model.py:17
+#: krm/questionnaires/models/questionnaire_model.py:15
+#: krm/questionnaires/models/scope_model.py:15
 #: krm/risks/models/domain_risk_model.py:14
 #, fuzzy
 msgid "Ref"
@@ -2251,7 +2266,6 @@ msgid "Riesgos"
 msgstr "Risks"
 
 #: krm/_templates/domain_risks/GaDomainRiskUpdate.html:42
-#: krm/_templates/questionnaires/GaQuestionnaireUpdate.html:42
 #: krm/risks/views/domain_risk_views.py:144
 msgid "Editar Dominio de Riesgo"
 msgstr "Edit Risk Domain"
@@ -2428,16 +2442,14 @@ msgid "Descargar Evaluación"
 msgstr "Download Evaluation"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:159
-#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:73
-#: krm/_templates/questions/GaQuestionDetail.html:73
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:127
 msgid "Preguntas del Cuestionario"
 msgstr "Questionnaire Questions"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:169
-#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:86
-#: krm/_templates/questions/GaQuestionDetail.html:86
-#: krm/questionnaires/models/question_model.py:59
-#: krm/questionnaires/models/question_test_model.py:35
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:139
+#: krm/_templates/scopes/GaScopeDetail.html:86
+#: krm/questionnaires/models/question_model.py:29
 #, fuzzy
 msgid "Enunciado"
 msgstr "Statement"
@@ -2446,13 +2458,13 @@ msgstr "Statement"
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:523
 #: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:527
 #: krm/evaluations_krm/models/risk_test_residual_model.py:35
-#: krm/questionnaires/models/question_test_model.py:42
+#: krm/questionnaires/models/question_test_model.py:36
 msgid "Evaluador"
 msgstr "Evaluator"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:171
-#: krm/questionnaires/models/question_test_model.py:55
-#: krm/questionnaires/models/question_test_model.py:87
+#: krm/questionnaires/models/question_test_model.py:49
+#: krm/questionnaires/models/question_test_model.py:81
 msgid "Respuesta"
 msgstr "Answer"
 
@@ -2535,25 +2547,19 @@ msgstr "Certification period"
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:193
 msgid "Parámetros de la pregunta"
-msgstr ""
+msgstr "Question parameters"
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:194
-#: krm/questionnaires/models/question_model.py:33
-#, fuzzy
-msgid "Delegación"
-msgstr "Obligation"
-
-#: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:195
-#: krm/questionnaires/models/question_model.py:40
-#, fuzzy
-#| msgid "Tipo de concesión"
-msgid "Concesión"
-msgstr "Concession type"
-
-#: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:196
-#: krm/questionnaires/models/question_model.py:47
-msgid "Área"
-msgstr ""
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:74
+#: krm/_templates/questionnaires/GaQuestionnaireList.html:30
+#: krm/_templates/questions/GaQuestionDetail.html:57
+#: krm/_templates/questions/GaQuestionList.html:30
+#: krm/questionnaires/models/question_model.py:23
+#: krm/questionnaires/models/scope_model.py:39
+#: krm/questionnaires/views/ga_scope_views.py:58
+#: krm/questionnaires/views/ga_scope_views.py:81
+msgid "Alcances"
+msgstr "Scopes"
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:241
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:574
@@ -3179,8 +3185,8 @@ msgid "GLOBAL ADMIN"
 msgstr "GLOBAL ADMIN"
 
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:48
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:405
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:557
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:418
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:570
 #: krm/companies/views/ca_company_domain_risk_evaluators_views.py:48
 #: krm/companies/views/ca_company_domain_risk_experts_views.py:48
 #: krm/companies/views/ca_company_views.py:56
@@ -3271,13 +3277,17 @@ msgstr "GLOBAL ADMIN"
 #: krm/questionnaires/views/ga_question_views.py:80
 #: krm/questionnaires/views/ga_question_views.py:121
 #: krm/questionnaires/views/ga_question_views.py:156
-#: krm/questionnaires/views/ga_question_views.py:189
-#: krm/questionnaires/views/ga_questionnaire_views.py:57
-#: krm/questionnaires/views/ga_questionnaire_views.py:85
-#: krm/questionnaires/views/ga_questionnaire_views.py:115
-#: krm/questionnaires/views/ga_questionnaire_views.py:150
-#: krm/questionnaires/views/ga_questionnaire_views.py:183
-#: krm/questionnaires/views/ga_questionnaire_views.py:216
+#: krm/questionnaires/views/ga_question_views.py:188
+#: krm/questionnaires/views/ga_questionnaire_views.py:58
+#: krm/questionnaires/views/ga_questionnaire_views.py:86
+#: krm/questionnaires/views/ga_questionnaire_views.py:116
+#: krm/questionnaires/views/ga_questionnaire_views.py:151
+#: krm/questionnaires/views/ga_questionnaire_views.py:184
+#: krm/questionnaires/views/ga_questionnaire_views.py:217
+#: krm/questionnaires/views/ga_scope_views.py:55
+#: krm/questionnaires/views/ga_scope_views.py:78
+#: krm/questionnaires/views/ga_scope_views.py:114
+#: krm/questionnaires/views/ga_scope_views.py:150
 #: krm/questionnaires/views/ru_evaluation_questionnaire_views.py:72
 #: krm/questionnaires/views/ru_evaluation_questionnaire_views.py:126
 #: krm/risks/views/ca_risk_company_views.py:47
@@ -3332,7 +3342,7 @@ msgid "Sub Procesos"
 msgstr "Sub Processes"
 
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:163
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:416
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:429
 #: krm/companies/views/ca_company_domain_risk_evaluators_views.py:49
 #: krm/companies/views/ca_company_domain_risk_experts_views.py:49
 #: krm/companies/views/ca_company_views.py:80
@@ -3347,7 +3357,7 @@ msgstr "Sub Processes"
 #: krm/companies/views/company_views.py:198
 #: krm/companies/views/company_views.py:238
 #: krm/companies/views/company_views.py:303
-#: krm/companies_bck/models/company.py:62
+#: krm/companies_bck/models/company.py:59
 #: krm/old_templates/_layout/_partials/_menu.html:65
 #: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:76
 #: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:55
@@ -3376,38 +3386,56 @@ msgid "Usuarios"
 msgstr "Users"
 
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:193
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:338
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:630
-#: krm/questionnaires/models/questionnaire_model.py:32
-#: krm/questionnaires/views/ga_questionnaire_views.py:58
-#: krm/questionnaires/views/ga_questionnaire_views.py:61
-#: krm/questionnaires/views/ga_questionnaire_views.py:86
-#: krm/questionnaires/views/ga_questionnaire_views.py:116
-#: krm/questionnaires/views/ga_questionnaire_views.py:151
-#: krm/questionnaires/views/ga_questionnaire_views.py:184
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:351
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:643
+#: krm/questionnaires/models/questionnaire_model.py:27
+#: krm/questionnaires/views/ga_questionnaire_views.py:59
+#: krm/questionnaires/views/ga_questionnaire_views.py:62
+#: krm/questionnaires/views/ga_questionnaire_views.py:87
+#: krm/questionnaires/views/ga_questionnaire_views.py:117
+#: krm/questionnaires/views/ga_questionnaire_views.py:152
+#: krm/questionnaires/views/ga_questionnaire_views.py:185
+#: krm/questionnaires/views/ga_scope_views.py:56
+#: krm/questionnaires/views/ga_scope_views.py:79
+#: krm/questionnaires/views/ga_scope_views.py:115
+#: krm/questionnaires/views/ga_scope_views.py:151
 msgid "Cuestionarios"
 msgstr "Questionnaires"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:205
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:203
+#: krm/_templates/questionnaires/GaQuestionnaireList.html:31
+#: krm/old_templates/pages/Home.html:74 krm/old_templates/pages/__home.html:74
+#: krm/questionnaires/forms/evaluation_questionnaire_form.py:23
+#: krm/questionnaires/models/question_model.py:38
+#: krm/questionnaires/views/ga_question_views.py:53
+#: krm/questionnaires/views/ga_question_views.py:56
+#: krm/questionnaires/views/ga_question_views.py:81
+#: krm/questionnaires/views/ga_question_views.py:122
+#: krm/questionnaires/views/ga_question_views.py:157
+#: krm/questionnaires/views/ga_question_views.py:189
+msgid "Preguntas"
+msgstr "Questions"
+
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:218
 #: krm/configuration/views/configuration_views.py:111
 #: krm/configuration/views/configuration_views.py:113
 msgid "Importador"
 msgstr "Importer"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:221
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:235
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:428
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:442
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:234
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:248
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:441
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:455
 #: krm/evaluations/models/evaluation_model.py:106
 msgid "Evaluaciones KRC"
 msgstr "KRC Evaluations"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:248
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:261
 msgid "Crear evaluación KRC"
 msgstr "Create KRC evaluation"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:264
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:473
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:277
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:486
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:65
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:68
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:94
@@ -3419,27 +3447,27 @@ msgstr "Create KRC evaluation"
 msgid "Evaluaciones KRM"
 msgstr "KRM Evaluations"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:279
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:487
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:292
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:500
 msgid "Evaluaciones RI"
 msgstr "RI Evaluations"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:292
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:501
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:305
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:514
 msgid "Crear evaluación RI"
 msgstr "Create RI evaluation"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:306
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:515
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:319
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:528
 msgid "Evaluaciones RR"
 msgstr "RR Evaluations"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:320
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:530
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:333
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:543
 msgid "Crear evaluación RR"
 msgstr "Create RR evaluation"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:353
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:366
 #: krm/evaluations/views/ca_evaluation_views.py:71
 #: krm/evaluations/views/ca_evaluation_views.py:74
 #: krm/evaluations/views/ca_evaluation_views.py:107
@@ -3457,12 +3485,12 @@ msgstr "Create RR evaluation"
 msgid "Evaluaciones"
 msgstr "Evaluations"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:366
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:457
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:379
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:470
 msgid "Crear evaluación"
 msgstr "Create evaluation"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:381
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:394
 #: krm/configuration/models/configuration.py:23
 #: krm/configuration/models/configuration.py:24
 #: krm/configuration/views/configuration_views.py:54
@@ -3470,39 +3498,39 @@ msgstr "Create evaluation"
 msgid "Configuración"
 msgstr "Configuration"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:394
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:407
 msgid "COMPANY ADMIN"
 msgstr "COMPANY ADMIN"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:546
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:559
 msgid "KRC R.U. "
 msgstr "KRC R.U."
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:567
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:580
 msgid "Completar Controles"
 msgstr "Complete Controls"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:581
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:594
 msgid "Supervisar Controles"
 msgstr "Supervise Controls"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:595
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:608
 msgid "KRM R.U."
 msgstr "KRM R.U."
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:604
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:617
 msgid "Completar Riesgos RI"
 msgstr "Complete RI Risks"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:617
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:630
 msgid "Completar Riesgos RR"
 msgstr "Complete RR Risks"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:639
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:652
 msgid "Responder cuestionarios"
 msgstr "Answer questionnaires"
 
-#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:652
+#: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:665
 #: krm/old_templates/_layout/krc_layout/partials/_aside-menu-regular-user.html:43
 msgid "Cerrar Sesión"
 msgstr "Logout"
@@ -3542,19 +3570,20 @@ msgstr "Process"
 msgid "No existen sub procesos asociados a este Proceso"
 msgstr "There are no sub-processes associated with this process"
 
-#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:85
-#: krm/_templates/questions/GaQuestionDetail.html:85
-msgid "Nº de Pregunta"
-msgstr "Nº of Question"
-
 #: krm/_templates/questionnaires/GaQuestionnaireDetail.html:87
-#: krm/questionnaires/models/question_model.py:65
+#: krm/questionnaires/models/scope_model.py:30
 msgid "Posibles respondedores"
 msgstr ""
 
-#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:111
-#: krm/_templates/questions/GaQuestionDetail.html:105
-msgid "No existen presguntas para este cuestionario"
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:108
+#| msgid "No existen presguntas para este cuestionario"
+msgid "No existen alcances para este cuestionario"
+msgstr "There are no scopes for this questionnaire"
+
+#: krm/_templates/questionnaires/GaQuestionnaireDetail.html:155
+#, fuzzy
+#| msgid "No existen presguntas para este cuestionario"
+msgid "No existen preguntas para este cuestionario"
 msgstr "There are no questions for this questionnaire"
 
 #: krm/_templates/questionnaires/GaQuestionnaireImport.html:34
@@ -3563,19 +3592,6 @@ msgstr "There are no questions for this questionnaire"
 msgid "Descarga la plantilla de importación de cuestionarios"
 msgstr "Download import template"
 
-#: krm/_templates/questionnaires/GaQuestionnaireList.html:30
-#: krm/old_templates/pages/Home.html:74 krm/old_templates/pages/__home.html:74
-#: krm/questionnaires/forms/evaluation_questionnaire_form.py:23
-#: krm/questionnaires/models/question_model.py:75
-#: krm/questionnaires/views/ga_question_views.py:53
-#: krm/questionnaires/views/ga_question_views.py:56
-#: krm/questionnaires/views/ga_question_views.py:81
-#: krm/questionnaires/views/ga_question_views.py:122
-#: krm/questionnaires/views/ga_question_views.py:157
-#: krm/questionnaires/views/ga_question_views.py:190
-msgid "Preguntas"
-msgstr "Questions"
-
 #: krm/_templates/risks/GaRiskDetail.html:61
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:81
 msgid "Descripción del Riesgo"
@@ -3583,7 +3599,7 @@ msgstr "Risk Description"
 
 #: krm/_templates/risks/GaRiskDetail.html:153
 #: krm/_templates/subprocess/GaSubProcessDetail.html:103
-#: krm/companies/models/company_model.py:85
+#: krm/companies/models/company_model.py:79
 msgid "Controles asociados"
 msgstr "Associated controls"
 
@@ -3602,6 +3618,22 @@ msgstr "Associated risks (N2)"
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:150
 msgid "No existen riesgos asociados a este Riesgo Maestro (N1)"
 msgstr "There are no risks associated with this Master Risk (N1)."
+
+#: krm/_templates/scopes/GaScopeDetail.html:73
+#, fuzzy
+#| msgid "Preguntas del Cuestionario"
+msgid "Preguntas del Alcance"
+msgstr "Questionnaire Questions"
+
+#: krm/_templates/scopes/GaScopeDetail.html:85
+msgid "Nº de Pregunta"
+msgstr "Nº of Question"
+
+#: krm/_templates/scopes/GaScopeDetail.html:105
+#, fuzzy
+#| msgid "No existen preguntas para esta evaluación"
+msgid "No existen preguntas asignadas a este alcance"
+msgstr "There are no questions for this evaluation"
 
 #: krm/_templates/subprocess/GaSubProcessDetail.html:193
 msgid "No existen controles asociados a este sub proceso"
@@ -3751,62 +3783,62 @@ msgstr "Risks-Companies"
 #: krm/companies_bck/forms/company.py:28
 #: krm/configuration/forms/configuration_forms.py:19
 #: krm/controls/forms/control_forms.py:42
-#: krm/questionnaires/forms/questionnaire_form.py:33
+#: krm/questionnaires/forms/questionnaire_form.py:23
 msgid "Archivo de excel a importar"
 msgstr "Excel file to import"
 
-#: krm/companies/models/company_domain_risk_evaluator.py:37
+#: krm/companies/models/company_domain_risk_evaluator.py:32
 msgid "Evaluador de Dominio de Riesgo para Compañía"
 msgstr "Risk Domain Evaluator for Company"
 
-#: krm/companies/models/company_domain_risk_evaluator.py:39
+#: krm/companies/models/company_domain_risk_evaluator.py:34
 msgid "Evaluadores de Dominios de Riesgo para Compañías"
 msgstr "Risk Domain Evaluators for Company"
 
-#: krm/companies/models/company_domain_risk_experts.py:41
+#: krm/companies/models/company_domain_risk_experts.py:36
 msgid "Experto de Dominio de Riesgo para Compañía"
 msgstr "Risk Domain Expert for Company"
 
-#: krm/companies/models/company_domain_risk_experts.py:43
+#: krm/companies/models/company_domain_risk_experts.py:38
 msgid "Expertos de Dominios de Riesgo para Compañías"
 msgstr "Risk Domain Experts for Companies"
 
-#: krm/companies/models/company_model.py:37
-#: krm/companies_bck/models/business_group.py:42
-#: krm/companies_bck/models/company.py:44
+#: krm/companies/models/company_model.py:31
+#: krm/companies_bck/models/business_group.py:37
+#: krm/companies_bck/models/company.py:39
 msgid "Dicho Vat ya está en uso."
 msgstr "This Vat is already in use."
 
-#: krm/companies/models/company_model.py:54
-#: krm/companies_bck/models/business_group.py:49
-#: krm/companies_bck/models/company.py:51
+#: krm/companies/models/company_model.py:48
+#: krm/companies_bck/models/business_group.py:46
+#: krm/companies_bck/models/company.py:48
 #: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:140
 msgid "Código Postal"
 msgstr "Postal Code"
 
-#: krm/companies/models/company_model.py:92
+#: krm/companies/models/company_model.py:86
 msgid "Evaluadores de Cuestionarios"
 msgstr "Questionnaire Evaluators"
 
-#: krm/companies/models/company_model.py:101
+#: krm/companies/models/company_model.py:95
 #, fuzzy
 msgid "Company"
 msgstr "Company"
 
-#: krm/companies/models/company_model.py:102
+#: krm/companies/models/company_model.py:96
 #, fuzzy
 msgid "Companies"
 msgstr "Companies"
 
-#: krm/companies/models/company_questionnaire_evaluator.py:24
+#: krm/companies/models/company_questionnaire_evaluator.py:19
 msgid "Cumplimentador de Cuestionarios"
 msgstr "Questionnaire Filler"
 
-#: krm/companies/models/company_questionnaire_evaluator.py:32
+#: krm/companies/models/company_questionnaire_evaluator.py:27
 msgid "Evaluador de Cuestionario para Compañía"
 msgstr "Company Questionnaire Evaluator"
 
-#: krm/companies/models/company_questionnaire_evaluator.py:34
+#: krm/companies/models/company_questionnaire_evaluator.py:29
 msgid "Evaluadores de Cuestionarios para Compañías"
 msgstr "Company Questionnaire Evaluators"
 
@@ -3936,7 +3968,7 @@ msgstr "Import Companies"
 #: krm/companies/views/company_views.py:362
 #: krm/companies_bck/views/age/business_group.py:326
 #: krm/companies_bck/views/ga/business_group.py:361
-#: krm/questionnaires/views/ga_questionnaire_views.py:304
+#: krm/questionnaires/views/ga_questionnaire_views.py:355
 #, python-format
 msgid ""
 "En la fila %s el email introducido no es correcto. Se ha abortado la "
@@ -3959,7 +3991,7 @@ msgstr "The VAT entered in row %s is already registered by another company."
 #: krm/companies/views/company_views.py:407
 #: krm/companies_bck/views/age/business_group.py:356
 #: krm/companies_bck/views/ga/business_group.py:390
-#: krm/questionnaires/views/ga_questionnaire_views.py:259
+#: krm/questionnaires/views/ga_questionnaire_views.py:400
 #, python-format
 msgid ""
 "En la fila %s falta algún campo obligatorio. Se ha abortado la importación"
@@ -3971,19 +4003,19 @@ msgstr ""
 msgid "Se han importado %s compañías"
 msgstr "%s companies have been imported"
 
-#: krm/companies_bck/apps.py:13 krm/companies_bck/models/business_group.py:66
+#: krm/companies_bck/apps.py:13 krm/companies_bck/models/business_group.py:64
 msgid "Grupos empresariales"
 msgstr "Business groups"
 
-#: krm/companies_bck/models/business_group.py:58
+#: krm/companies_bck/models/business_group.py:56
 msgid "Dicho email ya está en uso por otro cliente."
 msgstr "This email is already in use by another customer."
 
-#: krm/companies_bck/models/business_group.py:65
+#: krm/companies_bck/models/business_group.py:63
 msgid "Grupo empresarial"
 msgstr "Business group"
 
-#: krm/companies_bck/models/company.py:33
+#: krm/companies_bck/models/company.py:28
 msgid "Grupo empresarial al que pertenece"
 msgstr "Business group to which it belongs"
 
@@ -4291,7 +4323,7 @@ msgid "Frecuencia del control"
 msgstr "Control frequency"
 
 #: krm/controls/models/control_model.py:104
-#: krm/questionnaires/models/question_test_model.py:51
+#: krm/questionnaires/models/question_test_model.py:45
 msgid "No aplica"
 msgstr "Not applicable"
 
@@ -4302,7 +4334,7 @@ msgstr "Yes"
 #: krm/controls/models/control_model.py:106
 #: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:35
 #: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:35
-#: krm/questionnaires/models/question_test_model.py:50
+#: krm/questionnaires/models/question_test_model.py:44
 msgid "No"
 msgstr "No"
 
@@ -4670,8 +4702,8 @@ msgstr "To be reviewed by the Control Administrator"
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:71
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:94
 #: krm/evaluations_krm/models/risk_test_residual_model.py:70
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:77
-#: krm/questionnaires/models/question_test_model.py:63
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:70
+#: krm/questionnaires/models/question_test_model.py:57
 msgid "Finalizado"
 msgstr "Completed"
 
@@ -4729,7 +4761,7 @@ msgstr "Company"
 #: krm/evaluations/models/evaluation_model.py:48
 #: krm/evaluations_krm/models/evaluation_krm_inherent_model.py:48
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:49
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:55
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:48
 msgid "Inicio de Evaluación"
 msgstr "Start of Evaluation"
 
@@ -4737,7 +4769,7 @@ msgstr "Start of Evaluation"
 #: krm/evaluations/models/evaluation_model.py:56
 #: krm/evaluations_krm/models/evaluation_krm_inherent_model.py:52
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:53
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:59
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:52
 msgid "Fin de la Evaluación"
 msgstr "End of Evaluation"
 
@@ -4746,7 +4778,7 @@ msgstr "End of Evaluation"
 #: krm/evaluations/models/evaluation_model.py:73
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:91
 #: krm/evaluations_krm/models/risk_test_residual_model.py:67
-#: krm/questionnaires/models/question_test_model.py:61
+#: krm/questionnaires/models/question_test_model.py:55
 msgid "Sin iniciar"
 msgstr "Not started"
 
@@ -4754,7 +4786,7 @@ msgstr "Not started"
 #: krm/evaluations/models/evaluation_model.py:74
 #: krm/evaluations_krm/models/evaluation_krm_inherent_model.py:69
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:70
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:76
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:69
 msgid "En proceso"
 msgstr "In process"
 
@@ -4777,7 +4809,7 @@ msgstr "Description of the execution or surveillance of the control"
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:107
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:118
 #: krm/evaluations_krm/models/risk_test_residual_model.py:59
-#: krm/questionnaires/models/question_test_model.py:76
+#: krm/questionnaires/models/question_test_model.py:70
 msgid ""
 "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo"
 " texto. Si el tamaño del texto es mayor a 8000 caracteres considere "
@@ -4867,7 +4899,7 @@ msgstr "Control test status"
 #: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:22
 #: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:22
 #: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:22
-#: krm/questionnaires/models/question_test_model.py:48
+#: krm/questionnaires/models/question_test_model.py:42
 msgid "Sin establecer"
 msgstr "Not established"
 
@@ -5675,7 +5707,7 @@ msgstr ""
 
 #: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:35
 #: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:35
-#: krm/questionnaires/models/question_test_model.py:49
+#: krm/questionnaires/models/question_test_model.py:43
 msgid "Si"
 msgstr "Yes"
 
@@ -6350,27 +6382,24 @@ msgstr ""
 "with it will be deleted.</span>"
 
 #: krm/questionnaires/models/evaluation_questionnaire_model.py:34
-#: krm/questionnaires/models/question_model.py:27
-#: krm/questionnaires/models/questionnaire_model.py:31
+#: krm/questionnaires/models/questionnaire_model.py:26
+#: krm/questionnaires/models/scope_model.py:23
+#: krm/questionnaires/views/ga_scope_views.py:117
 msgid "Cuestionario"
 msgstr "Questionnaire"
 
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:91
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:84
 #, fuzzy
 msgid "Evaluación de Cuestionario"
 msgstr "Questionnaire Evaluation"
 
-#: krm/questionnaires/models/evaluation_questionnaire_model.py:92
+#: krm/questionnaires/models/evaluation_questionnaire_model.py:85
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:162
 #: krm/questionnaires/views/ru_evaluation_questionnaire_views.py:127
 msgid "Evaluaciones de Cuestionario"
 msgstr "Questionnaire Evaluations"
 
-#: krm/questionnaires/models/question_model.py:54
-msgid "Número de pregunta dentro del cuestionario"
-msgstr "uestion number within the questionnaire"
-
-#: krm/questionnaires/models/question_model.py:74
+#: krm/questionnaires/models/question_model.py:37
 msgid "Pregunta"
 msgstr "Question"
 
@@ -6379,26 +6408,27 @@ msgstr "Question"
 msgid "Evaluación de cuestionario"
 msgstr "Questionnaire evaluation"
 
-#: krm/questionnaires/models/question_test_model.py:36
-msgid "Enunciado copiado de la pregunta"
-msgstr "Statement copied from question"
-
-#: krm/questionnaires/models/question_test_model.py:62
+#: krm/questionnaires/models/question_test_model.py:56
 msgid "Esperando respuesta del evaluador"
 msgstr "Awaiting response from the evaluator"
 
-#: krm/questionnaires/models/question_test_model.py:74
+#: krm/questionnaires/models/question_test_model.py:68
 msgid "Texto complementario a la respuesta"
 msgstr "Complementary text to the answer"
 
-#: krm/questionnaires/models/question_test_model.py:88
+#: krm/questionnaires/models/question_test_model.py:82
 msgid "Respuestas"
 msgstr "Answers"
+
+#: krm/questionnaires/models/scope_model.py:38
+#: krm/questionnaires/views/ga_scope_views.py:153
+msgid "Alcance"
+msgstr ""
 
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:47
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:50
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:83
-#: krm/questionnaires/views/ga_questionnaire_views.py:217
+#: krm/questionnaires/views/ga_questionnaire_views.py:218
 #: krm/questionnaires/views/ru_evaluation_questionnaire_views.py:76
 #, fuzzy
 msgid "Evaluaciones de Cuestionarios"
@@ -6433,19 +6463,19 @@ msgstr "Question successfully created"
 msgid "Editar Pregunta"
 msgstr "Edit Question"
 
-#: krm/questionnaires/views/ga_question_views.py:171
+#: krm/questionnaires/views/ga_question_views.py:170
 msgid "Pregunta actualizada correctamente"
 msgstr "Question updated correctly"
 
-#: krm/questionnaires/views/ga_question_views.py:194
+#: krm/questionnaires/views/ga_question_views.py:193
 msgid "Eliminar Pregunta"
 msgstr "Delete Question"
 
-#: krm/questionnaires/views/ga_question_views.py:202
+#: krm/questionnaires/views/ga_question_views.py:201
 msgid "Pregunta eliminada correctamente"
 msgstr "Question correctly eliminated"
 
-#: krm/questionnaires/views/ga_question_views.py:208
+#: krm/questionnaires/views/ga_question_views.py:207
 #, python-brace-format
 msgid ""
 "<span class=\"kt-font-bold\">¿Seguro que desea eliminar la pregunta y todas "
@@ -6456,37 +6486,38 @@ msgstr ""
 "and all its answers?: </span> {0}? <span class=\"kt-font-bold\">All data "
 "associated with it will be deleted.</span>"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:118
+#: krm/questionnaires/views/ga_questionnaire_views.py:119
 #, fuzzy
 msgid "Nuevo Cuestionario"
 msgstr "New Questionnaire"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:121
+#: krm/questionnaires/views/ga_questionnaire_views.py:122
 #, fuzzy
 msgid "Nuesvo Cuestionario"
 msgstr "New Questionnaire"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:130
+#: krm/questionnaires/views/ga_questionnaire_views.py:131
+#: krm/questionnaires/views/ga_scope_views.py:94
 msgid "Cuestionario creada correctamente"
 msgstr "Questionnaire created correctly"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:155
+#: krm/questionnaires/views/ga_questionnaire_views.py:156
 msgid "Editar Cuestionario"
 msgstr "Edit Questionnaire"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:165
+#: krm/questionnaires/views/ga_questionnaire_views.py:166
 msgid "Cuestionario actualizado correctamente"
 msgstr "Correctly updated questionnaire"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:188
+#: krm/questionnaires/views/ga_questionnaire_views.py:189
 msgid "Eliminar Cuestionario"
 msgstr "Delete Questionnaire"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:196
+#: krm/questionnaires/views/ga_questionnaire_views.py:197
 msgid "Cuestionario eliminado correctamente"
 msgstr "Questionnaire successfully deleted"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:202
+#: krm/questionnaires/views/ga_questionnaire_views.py:203
 #, python-brace-format
 msgid ""
 "<span class=\"kt-font-bold\">¿Seguro que desea eliminar el cuestionario y "
@@ -6497,13 +6528,57 @@ msgstr ""
 "questionnaire and all its evaluations?:</span> {0}? <span class=\"kt-font-"
 "bold\">All data associated with it will be deleted.</span>"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:220
+#: krm/questionnaires/views/ga_questionnaire_views.py:221
 #, fuzzy
 #| msgid "Editar Cuestionario"
 msgid "Importar Cuestionario"
 msgstr "Edit Questionnaire"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:318
+#: krm/questionnaires/views/ga_questionnaire_views.py:248
+#, fuzzy, python-format
+#| msgid ""
+#| "En la fila %s falta algún campo obligatorio. Se ha abortado la importación"
+msgid ""
+"En la hoja de Cuestionarios, en la fila %s falta algún campo obligatorio. Se"
+" ha abortado la importación"
+msgstr ""
+"Some required fields are missing in the %s row. The import was aborted"
+
+#: krm/questionnaires/views/ga_questionnaire_views.py:272
+#, fuzzy, python-format
+#| msgid ""
+#| "En la fila %s el email introducido no es correcto. Se ha abortado la "
+#| "importación"
+msgid ""
+"En la hoja de Cuestionarios, en la fila %s ya existe un cuestionario con esa"
+" referencia. Se ha abortado la importación"
+msgstr ""
+"In the row %s the entered email is not correct. The import was aborted"
+
+#: krm/questionnaires/views/ga_questionnaire_views.py:302
+#, python-format
+#| msgid ""
+#| "En la fila %s falta algún campo obligatorio. Se ha abortado la importación"
+msgid ""
+"En la hoja de alcances, en la fila %s falta algún campo obligatorio. Se ha "
+"abortado la importación"
+msgstr ""
+"In the scope sheet, some required fields are missing in the %s row. The "
+"import was aborted"
+
+#: krm/questionnaires/views/ga_questionnaire_views.py:327
+#, python-format
+#| msgid ""
+#| "En la fila %s el email introducido no es correcto. Se ha abortado la "
+#| "importación"
+msgid ""
+"En la hoja de alcances, en la fila %s no existe el cuestionario con esa "
+"referencia. Se ha abortado la importación"
+msgstr ""
+"In the scope sheet, the questionnaire with this reference does not exist in "
+"the %s row. The import was aborted"
+
+#: krm/questionnaires/views/ga_questionnaire_views.py:369
 #, fuzzy, python-format
 #| msgid ""
 #| "En la fila %s el email introducido no es correcto. Se ha abortado la "
@@ -6514,15 +6589,83 @@ msgid ""
 msgstr ""
 "In the row %s the entered email is not correct. The import was aborted"
 
-#: krm/questionnaires/views/ga_questionnaire_views.py:353
-#, fuzzy, python-brace-format
+#: krm/questionnaires/views/ga_questionnaire_views.py:427
+#, python-format
+#| msgid "No se han creado riesgos para este Sub Proceso"
+msgid "En la fila %s no se han establecido alcances para la pregunta"
+msgstr "In the row %s no scopes have been set for the question"
+
+#: krm/questionnaires/views/ga_questionnaire_views.py:446
+#, fuzzy, python-format
+#| msgid ""
+#| "En la fila %s el email introducido no es correcto. Se ha abortado la "
+#| "importación"
+msgid ""
+"En la fila %s el alcance %s no existe y no se va a crear en la importación"
+msgstr ""
+"In the row %s the entered email is not correct. The import was aborted"
+
+#: krm/questionnaires/views/ga_questionnaire_views.py:505
+#, python-brace-format
 #| msgid ""
 #| "Evaluacion {ref} creada correctamente con {question_test_created} preguntas"
 msgid ""
-"Cuestionario {questionnaire.name} importado correctamente con "
-"{questions_created} preguntas"
+"Cuestionario {questionnaire.name} importado correctamente con con "
+"{scopes_created} alcances y  {questions_created} preguntas"
 msgstr ""
-"Assessment {ref} successfully created with {question_test_created} questions"
+"Questionnaire {questionnaire.name} successfully imported with "
+"{scopes_created} scopes and {questions_created} questions"
+
+#: krm/questionnaires/views/ga_scope_views.py:82
+#: krm/questionnaires/views/ga_scope_views.py:85
+#, fuzzy
+msgid "Nuevo Alcance"
+msgstr "New control"
+
+#: krm/questionnaires/views/ga_scope_views.py:119
+#, fuzzy
+#| msgid "Editar evaluación"
+msgid "Editar alcance"
+msgstr "Edit evaluation"
+
+#: krm/questionnaires/views/ga_scope_views.py:123
+#, fuzzy
+#| msgid "Editar Proceso"
+msgid "Editar Alcance"
+msgstr "Edit Process"
+
+#: krm/questionnaires/views/ga_scope_views.py:132
+#, fuzzy
+#| msgid "Proceso actualizado correctamente"
+msgid "Alcance actualizado correctamente"
+msgstr "Process correctly updated"
+
+#: krm/questionnaires/views/ga_scope_views.py:157
+#, fuzzy
+#| msgid "Eliminar Proceso"
+msgid "Eliminar Alcance"
+msgstr "Delete Process"
+
+#: krm/questionnaires/views/ga_scope_views.py:165
+#, fuzzy
+#| msgid "Proceso eliminado correctamente"
+msgid "Alcance eliminado correctamente"
+msgstr "Process successfully eliminated"
+
+#: krm/questionnaires/views/ga_scope_views.py:171
+#, fuzzy, python-brace-format
+#| msgid ""
+#| "<span class=\"kt-font-bold\">¿Seguro que desea eliminar el Proceso y todas "
+#| "sus evaluaciónes?: </span> {0}? <span class=\"kt-font-bold\">Se borrarán "
+#| "todos los datos asociados al mismo.</span>"
+msgid ""
+"<span class=\"kt-font-bold\">¿Seguro que desea eliminar el alcance y todas "
+"las preguntas asociadas?: </span> {0}? <span class=\"kt-font-bold\">Se "
+"borrarán todos los datos asociados al mismo.</span>"
+msgstr ""
+"<span class=\"kt-font-bold\">Are you sure you want to delete the Process and"
+" all its evaluations? </span> {0}? <span class=\"kt-font-bold\">All data "
+"associated with it will be deleted.</span>"
 
 #: krm/questionnaires/views/ru_evaluation_questionnaire_views.py:73
 #, fuzzy
@@ -6849,3 +6992,17 @@ msgstr "There is no user with this email address"
 #: krm/users/views/users_login_views.py:179
 msgid "Password cambiado correctamente"
 msgstr "Password successfully changed"
+
+#, fuzzy
+#~ msgid "Delegación"
+#~ msgstr "Obligation"
+
+#, fuzzy
+#~ msgid "Concesión"
+#~ msgstr "Concession type"
+
+#~ msgid "Número de pregunta dentro del cuestionario"
+#~ msgstr "uestion number within the questionnaire"
+
+#~ msgid "Enunciado copiado de la pregunta"
+#~ msgstr "Statement copied from question"

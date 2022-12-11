@@ -75,179 +75,179 @@ class User(AbstractUser):
     def username_no_domain(self):
         return '%s' % self.email.split('@')[0]
 
-    # @property
-    # def is_company_admin(self):
-    #     return self.companies_admin.count() > 0
+    @property
+    def is_company_admin(self):
+        return self.companies_admin.count() > 0
 
-    # @property
-    # def is_admin(self):
-    #     return self.is_company_admin or self.is_superuser
+    @property
+    def is_admin(self):
+        return self.is_company_admin or self.is_superuser
 
-    # def controls_test_supervisor_pending(self):
-    #     return self.controls_test_supervisor.filter(status="WS")
+    def controls_test_supervisor_pending(self):
+        return self.controls_test_supervisor.filter(status="WS")
 
-    # def controls_test_owner_pending(self):
-    #     return self.controls_test_owner.filter(status="WO")
+    def controls_test_owner_pending(self):
+        return self.controls_test_owner.filter(status="WO")
 
-    # def controls_test_administrator_pending(self):
-    #     from krm.evaluations.models import ControlTest
-    #     return ControlTest.objects.filter(status="WA", evaluation__company__in=self.companies_admin.all())
+    def controls_test_administrator_pending(self):
+        from krm.evaluations.models import ControlTest
+        return ControlTest.objects.filter(status="WA", evaluation__company__in=self.companies_admin.all())
 
-    # def controls_test_administrator_finished(self):
-    #     from krm.evaluations.models import ControlTest
-    #     return ControlTest.objects.filter(status="FI", evaluation__company__in=self.companies_admin.all())
+    def controls_test_administrator_finished(self):
+        from krm.evaluations.models import ControlTest
+        return ControlTest.objects.filter(status="FI", evaluation__company__in=self.companies_admin.all())
 
-    # # Risk Test Inherent
+    # Risk Test Inherent
 
-    # def evaluation_krm_inherent_pending(self):
-    #     from krm.evaluations_krm.models import EvaluationKrmInherent
-    #     return EvaluationKrmInherent.objects.filter(
-    #         risk_test_inherents__status=1,
-    #         risk_test_inherents__expert=self,
-    #     ).distinct()
+    def evaluation_krm_inherent_pending(self):
+        from krm.evaluations_krm.models import EvaluationKrmInherent
+        return EvaluationKrmInherent.objects.filter(
+            risk_test_inherents__status=1,
+            risk_test_inherents__expert=self,
+        ).distinct()
 
-    # def evaluation_krm_inherent_delivered(self):
-    #     from krm.evaluations_krm.models import EvaluationKrmInherent
-    #     return EvaluationKrmInherent.objects.filter(
-    #         risk_test_inherents__status=2,
-    #         risk_test_inherents__expert=self,
-    #     ).distinct()
+    def evaluation_krm_inherent_delivered(self):
+        from krm.evaluations_krm.models import EvaluationKrmInherent
+        return EvaluationKrmInherent.objects.filter(
+            risk_test_inherents__status=2,
+            risk_test_inherents__expert=self,
+        ).distinct()
 
-    # def evaluation_krm_inherent_finished(self):
-    #     from krm.evaluations_krm.models import EvaluationKrmInherent
-    #     return EvaluationKrmInherent.objects.filter(
-    #         risk_test_inherents__status=3,
-    #         risk_test_inherents__expert=self,
-    #     ).distinct()
+    def evaluation_krm_inherent_finished(self):
+        from krm.evaluations_krm.models import EvaluationKrmInherent
+        return EvaluationKrmInherent.objects.filter(
+            risk_test_inherents__status=3,
+            risk_test_inherents__expert=self,
+        ).distinct()
 
-    # def risk_test_inherent_expert_pending(self):
-    #     return self.risk_test_inherents.filter(status=1)
+    def risk_test_inherent_expert_pending(self):
+        return self.risk_test_inherents.filter(status=1)
 
-    # # Risk Test Residual
+    # Risk Test Residual
 
-    # def evaluation_krm_residual_pending(self):
-    #     from krm.evaluations_krm.models import EvaluationKrmResidual
-    #     return EvaluationKrmResidual.objects.filter(
-    #         risk_test_residuals__status=1,
-    #         risk_test_residuals__evaluator=self,
-    #     ).distinct()
+    def evaluation_krm_residual_pending(self):
+        from krm.evaluations_krm.models import EvaluationKrmResidual
+        return EvaluationKrmResidual.objects.filter(
+            risk_test_residuals__status=1,
+            risk_test_residuals__evaluator=self,
+        ).distinct()
 
-    # def evaluation_krm_residual_delivered(self):
-    #     from krm.evaluations_krm.models import EvaluationKrmResidual
-    #     return EvaluationKrmResidual.objects.filter(
-    #         risk_test_residuals__status=2,
-    #         risk_test_residuals__evaluator=self,
-    #     ).distinct()
+    def evaluation_krm_residual_delivered(self):
+        from krm.evaluations_krm.models import EvaluationKrmResidual
+        return EvaluationKrmResidual.objects.filter(
+            risk_test_residuals__status=2,
+            risk_test_residuals__evaluator=self,
+        ).distinct()
 
-    # def evaluation_krm_residual_finished(self):
-    #     from krm.evaluations_krm.models import EvaluationKrmResidual
-    #     return EvaluationKrmResidual.objects.filter(
-    #         risk_test_residuals__status=3,
-    #         risk_test_residuals__evaluator=self,
-    #     ).distinct()
+    def evaluation_krm_residual_finished(self):
+        from krm.evaluations_krm.models import EvaluationKrmResidual
+        return EvaluationKrmResidual.objects.filter(
+            risk_test_residuals__status=3,
+            risk_test_residuals__evaluator=self,
+        ).distinct()
 
-    # def risk_test_residual_evaluator_pending(self):
-    #     return self.risk_test_residuals.filter(status=1)
+    def risk_test_residual_evaluator_pending(self):
+        return self.risk_test_residuals.filter(status=1)
 
-    # # Questionnaires
-    # def evaluation_questionnaires_pending(self):
-    #     from krm.questionnaires.models import EvaluationQuestionnaire
-    #     return EvaluationQuestionnaire.objects.filter(
-    #         question_tests__status=1,
-    #         question_tests__evaluator=self,
-    #     ).distinct()
+    # Questionnaires
+    def evaluation_questionnaires_pending(self):
+        from krm.questionnaires.models import EvaluationQuestionnaire
+        return EvaluationQuestionnaire.objects.filter(
+            question_tests__status=1,
+            question_tests__evaluator=self,
+        ).distinct()
 
-    # def question_test_pending(self):
-    #     from krm.questionnaires.models import QuestionTest
-    #     return QuestionTest.objects.filter(
-    #         status=1,
-    #         evaluator=self,
-    #     )
+    def question_test_pending(self):
+        from krm.questionnaires.models import QuestionTest
+        return QuestionTest.objects.filter(
+            status=1,
+            evaluator=self,
+        )
 
-    # def save(self, *args, **kwargs):
-    #     self.username = self.email
-    #     if not self.remember_key:
-    #         self.remember_key = md5_generate()
-    #     super(User, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.username = self.email
+        if not self.remember_key:
+            self.remember_key = md5_generate()
+        super(User, self).save(*args, **kwargs)
 
-    # def add_action(self, action_description):
-    #     from krm.users.models import ActionLogUser
-    #     ActionLogUser.objects.create(
-    #         user=self, action_description=action_description
-    #     )
+    def add_action(self, action_description):
+        from krm.users.models import ActionLogUser
+        ActionLogUser.objects.create(
+            user=self, action_description=action_description
+        )
 
-    # def update_remember_key(self):
-    #     self.remember_key = md5_generate()
-    #     self.save()
+    def update_remember_key(self):
+        self.remember_key = md5_generate()
+        self.save()
 
-    # def send_welcome_email(self):
-    #     from django.conf import settings
+    def send_welcome_email(self):
+        from django.conf import settings
 
-    #     self.update_remember_key()
-    #     remember_url = settings.SITE_URL + reverse(
-    #         "auth:type_your_password", kwargs={"remember_key": self.remember_key}
-    #     )
+        self.update_remember_key()
+        remember_url = settings.SITE_URL + reverse(
+            "auth:type_your_password", kwargs={"remember_key": self.remember_key}
+        )
 
-    #     context = {
-    #         "remember_url": remember_url,
-    #     }
-    #     body_html = render_to_string(
-    #         "emails/users/welcome_email.html", context)
-    #     context = {
-    #         "content": body_html,
-    #         "preheader": _("Establecer contraseña"),
-    #         "BRAND": settings.BRAND
-    #     }
-    #     body_html = render_to_string("emails/base-inline.html", context)
-    #     from_email = settings.EMAIL_FROM
-    #     if settings.EMAIL_BCC:
-    #         bcc = settings.EMAIL_BCC
-    #     else:
-    #         bcc = ""
+        context = {
+            "remember_url": remember_url,
+        }
+        body_html = render_to_string(
+            "emails/users/welcome_email.html", context)
+        context = {
+            "content": body_html,
+            "preheader": _("Establecer contraseña"),
+            "BRAND": settings.BRAND
+        }
+        body_html = render_to_string("emails/base-inline.html", context)
+        from_email = settings.EMAIL_FROM
+        if settings.EMAIL_BCC:
+            bcc = settings.EMAIL_BCC
+        else:
+            bcc = ""
 
-    #     subject, from_email, to = (
-    #         _("KRM Tool - Nueva cuenta de usuario"),
-    #         from_email,
-    #         self.email,
-    #     )
-    #     msg = EmailMultiAlternatives(
-    #         subject, body_html, from_email, [to], [bcc])
-    #     msg.content_subtype = "html"
+        subject, from_email, to = (
+            _("KRM Tool - Nueva cuenta de usuario"),
+            from_email,
+            self.email,
+        )
+        msg = EmailMultiAlternatives(
+            subject, body_html, from_email, [to], [bcc])
+        msg.content_subtype = "html"
 
-    #     self.add_action(_("Welcome email"))
-    #     return msg.send(fail_silently=False)
+        self.add_action(_("Welcome email"))
+        return msg.send(fail_silently=False)
 
-    # def send_email_remember_password(self):
-    #     self.update_remember_key()
-    #     remember_url = settings.SITE_URL + reverse(
-    #         "auth:type_your_password", kwargs={"remember_key": self.remember_key}
-    #     )
+    def send_email_remember_password(self):
+        self.update_remember_key()
+        remember_url = settings.SITE_URL + reverse(
+            "auth:type_your_password", kwargs={"remember_key": self.remember_key}
+        )
 
-    #     context = {
-    #         "remember_url": remember_url
-    #     }
-    #     body_html = render_to_string(
-    #         "emails/users/remember_password.html", context)
-    #     context = {
-    #         "content": body_html,
-    #         "preheader": _("Recordar contraseña"),
-    #         "BRAND": settings.BRAND
-    #     }
-    #     body_html = render_to_string("emails/base-inline.html", context)
-    #     from_email = settings.EMAIL_FROM
-    #     if settings.EMAIL_BCC:
-    #         bcc = settings.EMAIL_BCC
-    #     else:
-    #         bcc = ""
+        context = {
+            "remember_url": remember_url
+        }
+        body_html = render_to_string(
+            "emails/users/remember_password.html", context)
+        context = {
+            "content": body_html,
+            "preheader": _("Recordar contraseña"),
+            "BRAND": settings.BRAND
+        }
+        body_html = render_to_string("emails/base-inline.html", context)
+        from_email = settings.EMAIL_FROM
+        if settings.EMAIL_BCC:
+            bcc = settings.EMAIL_BCC
+        else:
+            bcc = ""
 
-    #     subject, from_email, to = (
-    #         _("KRM Tool - Cambio de contraseña"),
-    #         from_email,
-    #         self.email,
-    #     )
-    #     msg = EmailMultiAlternatives(
-    #         subject, body_html, from_email, [to], [bcc])
-    #     msg.content_subtype = "html"
+        subject, from_email, to = (
+            _("KRM Tool - Cambio de contraseña"),
+            from_email,
+            self.email,
+        )
+        msg = EmailMultiAlternatives(
+            subject, body_html, from_email, [to], [bcc])
+        msg.content_subtype = "html"
 
-    #     self.add_action(_("Reset password email"))
-    #     msg.send(fail_silently=False)
+        self.add_action(_("Reset password email"))
+        msg.send(fail_silently=False)

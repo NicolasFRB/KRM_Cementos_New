@@ -11,6 +11,7 @@ function CreateEvaluationKrmInherent(props) {
   const [formData, setFormData] = useState({ 'completed': false });
   const [questionnaire, setQuestionnaire] = useState({ value: 0, label: '-' });
   const [selectedQuestions, setSelectedQuestions] = useState([]);
+  const [scopes, setScopes] = useState([]);
 
   const readFormData = () => {
     let newFormData = {};
@@ -30,8 +31,8 @@ function CreateEvaluationKrmInherent(props) {
   }, []);
 
   // useEffect(() => {
-  //     window.CustomDatatables.destroy();
-  //     window.CustomDatatables.init();
+  //   window.CustomDatatables.destroy();
+  //   window.CustomDatatables.init();
   // }, []);
 
   const sendForm = (e) => {
@@ -54,14 +55,14 @@ function CreateEvaluationKrmInherent(props) {
             <div className="alert alert-primary">{t('q.complete-data')}</div>
           )}
           <div className={(formData.completed ? '' : 'd-none')}>
-            <SelectQuestionnaire questionnaire={questionnaire} setQuestionnaire={setQuestionnaire} />
+            <SelectQuestionnaire questionnaire={questionnaire} setQuestionnaire={setQuestionnaire} scopes={scopes} setScopes={setScopes} />
           </div>
           <div className="separator my-10"></div>
         </div>
         <div className="col-12">
           <h3 className="mb-5">{t('q.step-3')}</h3>
           {questionnaire.value !== 0 ? (
-            <SelectQuestions questionnaire={questionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} />
+            <SelectQuestions questionnaire={questionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} scopes={scopes} />
           ) : (
             <div className="alert alert-primary">{t('q.select-questionnaire')}</div>
           )}

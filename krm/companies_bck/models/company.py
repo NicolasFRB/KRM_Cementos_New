@@ -1,8 +1,3 @@
-"""Booking model."""
-import os
-import hashlib
-import random
-
 # Django
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -44,9 +39,11 @@ class Company(KrcModel):
         error_messages={"unique": _("Dicho Vat ya está en uso.")},
     )
 
-    address = models.CharField(_("Dirección"), max_length=140, null=True, blank=True)
+    address = models.CharField(
+        _("Dirección"), max_length=140, null=True, blank=True)
 
-    state = models.CharField(_("Población"), max_length=140, null=True, blank=True)
+    state = models.CharField(
+        _("Población"), max_length=140, null=True, blank=True)
 
     cp = models.PositiveIntegerField(_("Código Postal"), null=True, blank=True)
 
@@ -95,7 +92,8 @@ class Company(KrcModel):
         from krc.utils import COLORS
 
         controls = (
-            ControlTest.objects.filter(process_test__in=self.process_tests.all())
+            ControlTest.objects.filter(
+                process_test__in=self.process_tests.all())
             .values("status")
             .annotate(num_controls=Count("id"))
         )
@@ -114,7 +112,8 @@ class Company(KrcModel):
         from krc.utils import COLORS
 
         controls = (
-            ControlTest.objects.filter(process_test__in=self.process_tests.all())
+            ControlTest.objects.filter(
+                process_test__in=self.process_tests.all())
             .values("result")
             .annotate(num_controls=Count("id"))
         )

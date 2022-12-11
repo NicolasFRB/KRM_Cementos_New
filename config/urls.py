@@ -44,7 +44,8 @@ from krm.evaluations_krm.api import (
 from krm.questionnaires.api import (
     QuestionnaireViewSet,
     QuestionViewSet,
-    QuestionTestApiView
+    QuestionTestApiView,
+    ScopeViewSet,
 )
 
 from krm.users.api import (
@@ -61,6 +62,7 @@ router.register(r'domain-risks', DomainRiskViewSet)
 router.register(r'companies', CompanyViewSet)
 router.register(r'questionnaires', QuestionnaireViewSet)
 router.register(r'questions', QuestionViewSet)
+router.register(r'scopes', ScopeViewSet)
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
@@ -155,6 +157,10 @@ urlpatterns += i18n_patterns(
     path('questionnaires/',
          include(('krm.questionnaires.urls.questionnaire_urls', 'questionnaires'),
                  namespace='questionnaires')
+         ),
+    path('questionnaires/scopes/',
+         include(('krm.questionnaires.urls.scope_urls', 'scopes'),
+                 namespace='scopes')
          ),
     path('questionnaires/questions/',
          include(('krm.questionnaires.urls.question_urls', 'questions'),

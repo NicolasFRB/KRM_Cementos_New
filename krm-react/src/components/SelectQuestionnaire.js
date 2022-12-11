@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Select from 'react-select'
 import { useTranslation } from "react-i18next";
 
-function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestions, setSelectedQuestions }) {
+function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestions, setSelectedQuestions, scopes, setScopes }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -22,10 +22,11 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestion
           let newSelectOptions = res.results.map((questionnaire) => {
             return {
               value: questionnaire.pk,
-              label: questionnaire.name
+              label: questionnaire.name,
+              scopes: questionnaire.scopes_names,
             }
           });
-          newSelectOptions.unshift({ value: 0, label: '-' });
+          newSelectOptions.unshift({ value: 0, label: '-', scopes: [] });
           setSelectOptions(newSelectOptions);
           setIsLoaded(true);
         },
@@ -36,6 +37,10 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestion
       );
   }, []);
 
+  useEffect(() => {
+    setScopes(null)
+  }, [questionnaire, setScopes]);
+
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -44,9 +49,18 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestion
     return (
       <div>
         {isLoaded && selectOptions && (
-          <div className="col col-12 col-md-6" key={questionnaire}>
-            <Select options={selectOptions} defaultValue={selectOptions[0]} onChange={setQuestionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} />
-            <input type="hidden" name="questionnaire" value={questionnaire.value} />
+          <div className="row">
+            <div className="col col-12 col-sm-6">
+              <h5>Cuestionario</h5>
+              <Select options={selectOptions} defaultValue={selectOptions[0]} onChange={setQuestionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} />
+              <input type="hidden" name="questionnaire" value={questionnaire.value} />
+            </div>
+            {questionnaire.scopes && (
+              <div className="col col-12 col-sm-6">
+                <h5>Alcances</h5>
+                <Select options={questionnaire.scopes} key={questionnaire.value} isMulti onChange={(scopes) => setScopes(scopes)} />
+              </div>
+            )}
           </div>
         )}
       </div>

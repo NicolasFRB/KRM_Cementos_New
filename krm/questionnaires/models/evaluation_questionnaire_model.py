@@ -36,13 +36,6 @@ class EvaluationQuestionnaire(AuditModel):
         related_name='evaluations'
     )
 
-    # company = models.ForeignKey(
-    #     "companies.Company",
-    #     verbose_name=_("Empresa"),
-    #     on_delete=models.CASCADE,
-    #     related_name="evaluations_questionnaire"
-    # )
-
     description = RichTextField(
         _("Descripción"),
         config_name='awesome_ckeditor',

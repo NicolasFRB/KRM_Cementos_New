@@ -186,14 +186,14 @@
         <!--begin::Card header-->
         <div class="card-header">
           <!--begin::Card header-->
-          <div class="card-title fs-3 fw-bold">{{ q.question.ref }} - {{ q.title }}</div>
+          <div class="card-title fs-3 fw-bold">{{ q.question.ref }} - {{ q.question.title }}</div>
           <!--end::Card header-->
         </div>
         <div class="card-body">
           <h4 class="mb-5">{% trans 'Parámetros de la pregunta' %}</h4>
-          <p class="mb-4"><strong>{% trans 'Delegación' %}</strong>: {{ q.question.delegation }}</p>
-          <p class="mb-4"><strong>{% trans 'Concesión' %}</strong>: {{ q.question.concession }}</p>
-          <p class="mb-6"><strong>{% trans 'Área' %}</strong>: {{ q.question.area }}</p>
+          <p class="mb-4"><strong>{% trans 'Alcances' %}</strong>:{% for scope in q.question.scopes.all %}
+              <span class="badge badge-secondary text-wrap mb-3">{{ scope }}</span> {% if not forloop.last %} {% endif %}
+            {% endfor %}</p>
 
           <div class="question_test" data-questiontestpk="{{ q.pk }}"
           data-answer="{{ q.answer}}"

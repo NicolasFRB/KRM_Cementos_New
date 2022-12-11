@@ -51,7 +51,7 @@
             </div>
             <!--begin:Menu item-->
             <div data-kt-menu-trigger="click"
-                class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in RISKS_MASTERS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS or request.path == import %}show{% endif %}">
+                class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in RISKS_MASTERS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS or request.path in QUESTIONNAIRES_URLS or request.path in QUESTIONS_URLS or request.path == import %}show{% endif %}">
 
                 <!--begin:Menu link-->
                 <span class="menu-link">
@@ -192,6 +192,19 @@
                             </span>
                             <span class="menu-title">{% trans 'Cuestionarios' %}</span>
                         </a>
+                        <ul>
+                            <li>
+                                <div class="menu-item">
+                                    <a class="menu-link {% if request.path in QUESTIONS_URLS %}active{% endif %}"
+                                        href="{% url 'questions:ga_question_list' %}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">{% trans 'Preguntas' %}</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
 
                     <!--begin:Menu item-->

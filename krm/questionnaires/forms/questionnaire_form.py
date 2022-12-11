@@ -19,16 +19,6 @@ class QuestionnaireCreateForm(ModelForm):
 
 
 class QuestionnaireImportForm(forms.Form):
-    ref = forms.CharField(
-        label=_("REF"),
-        max_length=200,
-        required=True,
-    )
-    name = forms.CharField(
-        label=_("Nombre"),
-        max_length=500,
-        required=True,
-    )
     questionnaire_file = forms.FileField(
         label=_("Archivo de excel a importar"),
         required=True,

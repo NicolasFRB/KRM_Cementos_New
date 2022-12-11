@@ -10,7 +10,7 @@
         <meta charset="utf-8"/>
         <meta name="description" content=""/>
         <meta name="keywords" content=""/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>      
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="article" />
         <meta property="og:title" content="" />
@@ -30,7 +30,6 @@
             <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32-globalvia.png' %}">
             <link rel="icon" type="image/png" sizes="96x96" href="{% static 'favicon-96x96-globalvia.png' %}">
             <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16-globalvia.png' %}">
-            <link rel="manifest" href="{% static 'manifest.json' %}">
             <meta name="msapplication-TileColor" content="#ffffff">
             <meta name="msapplication-TileImage" content="{% static 'ms-icon-144x144-globalvia.png' %}">
             <meta name="theme-color" content="#ffffff">
@@ -48,7 +47,6 @@
             <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32-base.png' %}">
             <link rel="icon" type="image/png" sizes="96x96" href="{% static 'favicon-96x96-base.png' %}">
             <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16-base.png' %}">
-            <link rel="manifest" href="{% static 'manifest.json' %}">
             <meta name="msapplication-TileColor" content="#ffffff">
             <meta name="msapplication-TileImage" content="{% static 'ms-icon-144x144-base.png' %}">
             <meta name="theme-color" content="#ffffff">
@@ -139,7 +137,7 @@
             font-size:11px !important;
            }
            /* FAKEBOARD */
-           
+
         </style>
         {% endblock css %}
 
@@ -192,7 +190,7 @@
         {% block js_footer %}
 
         {% endblock js_footer %}
-        
+
         <script>
           jQuery(document).ready(function() {
             $('.backHistory').on('click', function(e){
@@ -206,7 +204,7 @@
             $(clicked).siblings().fadeToggle().css('margin-bottom:5px;');
           }
 
-          
+
 
           // FAKEBOARD
           // Format options
@@ -232,8 +230,8 @@
               templateSelection: optionFormat,
               templateResult: optionFormat
           });
-                    
- 
+
+
         </script>
 
     <div id="pk" data-pk="{{ request.user.pk }}" style="display: none;"></div>

@@ -80,9 +80,9 @@ class GaQuestionDetailView(DetailView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Preguntas'), 'url': reverse(
                 'questions:ga_question_list')},
-            {'title': self.object.name}
+            {'title': self.object.ref}
         ]
-        context['page_title'] = f"{_('Preguntas')} : {self.object.name}"
+        context['page_title'] = f"{_('Preguntas')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
@@ -146,7 +146,7 @@ class GaQuestionCreateView(CreateView):
 class GaQuestionUpdateView(UpdateView):
     form_class = QuestionCreateForm
     model = Question
-    template_name = 'questions/GaQuestionCreate.html'
+    template_name = 'questions/GaQuestionUpdate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -160,7 +160,6 @@ class GaQuestionUpdateView(UpdateView):
         ]
         context['page_title'] = _('Editar Pregunta')
         context['breadcrums'] = breadcrums
-        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def get_success_url(self):
@@ -171,8 +170,8 @@ class GaQuestionUpdateView(UpdateView):
             _('Pregunta actualizada correctamente')
         )
         return reverse_lazy(
-            'questionnaires:ga_questionnaire_detail',
-            kwargs={'pk': self.object.questionnaire.pk}
+            'questions:ga_question_detail',
+            kwargs={'pk': self.object.pk}
         )
 
 

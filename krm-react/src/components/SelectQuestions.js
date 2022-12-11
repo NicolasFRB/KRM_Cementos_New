@@ -8,13 +8,15 @@ function SelectQuestions(
   {
     questionnaire,
     selectedQuestions,
-    setSelectedQuestions
+    setSelectedQuestions,
+    scopes
   }) {
   const [error, setError] = useState(null);
   const [questionsIsLoaded, setQuestionsIsLoaded] = useState(false);
   const [usersIsLoaded, setUsersIsLoaded] = useState(false);
   const [selectOptions, setSelectOptions] = useState([]);
   const [questions, setQuestions] = useState([]);
+  const [filterQuestions, setFilterQuestions] = useState([]);
 
   const [t] = useTranslation("global");
 
@@ -64,6 +66,11 @@ function SelectQuestions(
     setSelectedQuestions([]);
   };
 
+  // useEffect(() => {
+  //   window.CustomDatatables.destroy();
+  //   window.CustomDatatables.init();
+  // }, [questionsIsLoaded]);
+
   useEffect(() => {
     fetch(configService.apiGetUsers)
       .then((res) => res.json())
@@ -85,10 +92,29 @@ function SelectQuestions(
       );
   }, []);
 
+  const checkQuestionInScopes = (question) => {
+    let found = true;
+    if (scopes) {
+      scopes.forEach((scope) => {
+        console.log(question.scopes_names.includes(scope.label) + "Check if " + question.scopes_names + " includes " + scope.label)
+        if (!question.scopes_names.includes(scope.label)) {
+          found = false;
+        }
+      });
+    }
+    return found;
+  }
+
+  useEffect(() => {
+    let newFilterQuestions = questions.filter((question) => checkQuestionInScopes(question));
+    console.log(newFilterQuestions.length + " questions filtered to " + questions.length + " questions")
+    setFilterQuestions(newFilterQuestions);
+  }, [questions, scopes]);
+
   useEffect(() => {
     setQuestionsIsLoaded(false);
     const params = {
-      questionnaire: questionnaire.value,
+      scopes__questionnaire: questionnaire.value,
     };
     var url = new URL(`${configService.apiGetQuestions}`);
     for (let k in params) {
@@ -99,10 +125,10 @@ function SelectQuestions(
       .then(
         (res) => {
           setQuestions(res.results.map((question) => {
-            let evaluators = question.user_to_assign_emails.map((question) => { return question.value });
+            let evaluators = question.potential_users_to_assign.map((question) => { return question.value });
             return {
               ...question,
-              evaluators: question.user_to_assign_emails,
+              evaluators: question.potential_users_to_assign,
             }
           }));
           setQuestionsIsLoaded(true);
@@ -143,7 +169,7 @@ function SelectQuestions(
                 </tr>
               </thead>
               <tbody>
-                {questions.map((question, index) => {
+                {filterQuestions.map((question, index) => {
                   return <tr key={question.pk}>
                     <td className="text-center" width="100px">
                       {question.evaluators.length === 0 ? (
@@ -156,12 +182,17 @@ function SelectQuestions(
                     <td>{question.title}</td>
                     <td width="40%">
                       {usersIsLoaded && (
-                        <Select options={selectOptions} isMulti onChange={(evaluators) => handleEvaluators(evaluators, question)} defaultValue={question.user_to_assign_emails} />
+                        <Select options={selectOptions} isMulti onChange={(evaluators) => handleEvaluators(evaluators, question)} defaultValue={question.potential_users_to_assign} />
                       )}
                     </td>
                   </tr>
                 })}
               </tbody>
+              <tfoot>
+                <tr>
+                  <th colSpan="4">{filterQuestions.length}</th>
+                </tr>
+              </tfoot>
             </table>
           </div>
         )}
