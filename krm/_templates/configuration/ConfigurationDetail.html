@@ -26,7 +26,7 @@
       <div class="row mb-8">
         <!--begin::Col-->
         <div class="col-xl-3">
-          <div class="fs-6 fw-semibold">Nombre de la aplicación</div>
+          <div class="fs-6 fw-semibold">{% trans 'Nombre de la aplicación' %}</div>
         </div>
         <!--end::Col-->
         <!--begin::Col-->
@@ -38,10 +38,10 @@
         <!--end::Col-->
       </div>
 
-      <div class="row mb-8">
+      {% comment %} <div class="row mb-8">
         <!--begin::Col-->
         <div class="col-xl-3">
-          <div class="fs-6 fw-semibold">Email para notificaciones</div>
+          <div class="fs-6 fw-semibold">{% trans 'Email para notificaciones' %}</div>
         </div>
         <!--end::Col-->
         <!--begin::Col-->
@@ -51,10 +51,25 @@
           </div>
         </div>
         <!--end::Col-->
+      </div> {% endcomment %}
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Envío de emails habilitado' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{% if object.enable_emails %}{% trans 'Sí' %}{%else %}{% trans 'No' %}{% endif %}</span>
+          </div>
+        </div>
+        <!--end::Col-->
       </div>
     </div>
     <!--end::Body-->
-      
+
     <div class="card-footer py-6">
       <a href="{% url 'configuration:configuration_update' %}" class="btn btn-sm btn-primary">{% trans 'Modificar' %}</a>
       <a href="#" class="btn btn-sm btn-light btn-active-light-primary ms-2 backHistory">{% trans 'Atrás' %}</a>
