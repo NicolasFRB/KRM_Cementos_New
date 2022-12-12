@@ -33,7 +33,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         for scope in obj.scopes.all():
             users = users + [{'value': int(user.pk), 'label': user.email}
                              for user in scope.user_to_assign.all()]
-        return users
+        return [dict(t) for t in {tuple(d.items()) for d in users}]
 
     def get_scopes_names(self, obj):
         return [scope.ref for scope in obj.scopes.all()]
