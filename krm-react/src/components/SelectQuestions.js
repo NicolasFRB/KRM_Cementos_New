@@ -188,11 +188,11 @@ function SelectQuestions(
                   </tr>
                 })}
               </tbody>
-              <tfoot>
+              {/* <tfoot>
                 <tr>
                   <th colSpan="4">{filterQuestions.length}</th>
                 </tr>
-              </tfoot>
+              </tfoot> */}
             </table>
           </div>
         )}

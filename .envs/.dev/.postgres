@@ -1,5 +1,38 @@
-KRM_POSTGRES_HOST = "baetica-postgres-01-do-user-995005-0.b.db.ondigitalocean.com"
-KRM_POSTGRES_PORT = "25060"
-KRM_POSTGRES_DB = "krmtool-dev-db"
-KRM_POSTGRES_USER = "krmtool-dev-user"
-KRM_POSTGRES_PASSWORD = "AVNS_wfCHm_eYJNcZjdUDUX2"
+# KRM_POSTGRES_HOST = "baetica-postgres-01-do-user-995005-0.b.db.ondigitalocean.com"
+# KRM_POSTGRES_PORT = "25060"
+# KRM_POSTGRES_DB = "krmtool-dev-db"
+# # KRM_POSTGRES_DB = "krmtool-local-db"
+# KRM_POSTGRES_USER = "krmtool-dev-user"
+# KRM_POSTGRES_PASSWORD = "AVNS_wfCHm_eYJNcZjdUDUX2"
+
+
+# KRM_POSTGRES_HOST = "baetica-postgres-01-do-user-995005-0.b.db.ondigitalocean.com"
+# KRM_POSTGRES_PORT = "25060"
+# KRM_POSTGRES_DB = "krctool-app-db-preprod"
+# KRM_POSTGRES_USER = "krmtool-dev-user"
+# KRM_POSTGRES_PASSWORD = "AVNS_wfCHm_eYJNcZjdUDUX2"
+
+
+# # Preproducción
+# DJANGO
+KRM_POSTGRES_HOST=postgres
+KRM_POSTGRES_PORT=5432
+KRM_POSTGRES_DB=krm
+KRM_POSTGRES_USER=sBLRWyyPsInwHftmHAWmYJURGWBGFpLs
+KRM_POSTGRES_PASSWORD=tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL
+
+# PostgreSQL
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=krm
+POSTGRES_USER=sBLRWyyPsInwHftmHAWmYJURGWBGFpLs
+POSTGRES_PASSWORD=tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL
+
+
+# export POSTGRES_HOST = "baetica-postgres-01-do-user-995005-0.b.db.ondigitalocean.com"
+# export POSTGRES_PORT = "25060"
+# export POSTGRES_DB = "krmtool-local-db"
+# export POSTGRES_USER = "krmtool-dev-user"
+# export POSTGRES_PASSWORD = "AVNS_wfCHm_eYJNcZjdUDUX2"
+
+# /Applications/"pgAdmin 4.app"/Contents/SharedSupport/pg_dump -U "krmtool-dev-user" -h "baetica-postgres-01-do-user-995005-0.b.db.ondigitalocean.com" -p "25060" -d "krmtool-local-db" | zip > ~/backup.sql.gz
