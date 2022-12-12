@@ -177,7 +177,7 @@
       <tbody>
         {% for qt in evaluation.question_tests.all %}
         <tr>
-          <td>{{ qt.title }}</td>
+          <td>{{ qt.question.title }}</td>
           <td>{{ qt.evaluator }}</td>
           <td>{{ qt.get_answer_display }}</td>
           <td class="text-center align-middle">{{ qt.get_status_display }}</td>
