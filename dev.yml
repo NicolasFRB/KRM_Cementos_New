@@ -10,6 +10,9 @@ services:
       context: .
       dockerfile: ./compose/dev/django/Dockerfile
     image: krm_dev_django
+    depends_on:
+      - postgres
+      - redis
     volumes:
       - .:/app
     env_file:
@@ -25,7 +28,6 @@ services:
     <<: *django
     image: krm_local_celeryworker
     depends_on:
-      - redis
       - django
     ports: []
     command: /start-celeryworker
@@ -34,13 +36,15 @@ services:
     <<: *django
     image: krm_local_celerybeat
     depends_on:
-      - redis
+      - django
     ports: []
     command: /start-celerybeat
 
   flower:
     <<: *django
     image: krm_local_flower
+    depends_on:
+      - redis
     ports:
       - "5555:5555"
     command: /start-flower

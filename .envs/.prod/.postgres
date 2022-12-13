@@ -1,5 +1,6 @@
-# KRM_POSTGRES_HOST = "baetica-postgres-01-do-user-995005-0.b.db.ondigitalocean.com"
-# KRM_POSTGRES_PORT = "25060"
-# KRM_POSTGRES_DB = "krmtool-dev-db"
-# KRM_POSTGRES_USER = "krmtool-dev-user"
-# KRM_POSTGRES_PASSWORD = "AVNS_wfCHm_eYJNcZjdUDUX2"
+# PostgreSQL
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=krm_production
+POSTGRES_USER=sBLRWyyPsInwHftmHAWmYJURGWBGFpLs
+POSTGRES_PASSWORD=tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL

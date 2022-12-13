@@ -1,5 +1,12 @@
-let base = "https://app.krmtool.com/";
-// let base = "http://localhost:8000/";
+let base = "";
+if (window.location.hostname.indexOf("localhost") > -1) {
+    base = "http://localhost:8000";
+} else if (window.location.hostname.indexOf("app.krmtool.com") > -1) {
+    base = "https://app.krmtool.com";
+} else {
+    base = "https://prod.krmtool.com";
+}
+
 const baseUrlApi = `${base}api/`;
 
 const user = window.$('#pk').data('pk');

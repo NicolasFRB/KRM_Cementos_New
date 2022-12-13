@@ -1,13 +1,15 @@
-DJANGO_DEBUG=False
-DJANGO_DEV=False
-DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+KRM_DJANGO_DEBUG=False
+KRM_DJANGO_DEV=False
+KRM_DJANGO_DEVJS=False
+# KRM_BRAND='base'
+KRM_BRAND='globalvia'
+KRM_DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+KRM_DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
+KRM_SITE_URL='http://prod.krmtool.com'
 
-DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
-
-DJANGO_SETTINGS_MODULE=config.settings.production
-DJANGO_ALLOWED_HOSTS=manuscritos.penguinrandomhousegrupoeditorial.com,www.manuscritos.penguinrandomhousegrupoeditorial.com
-
+KRM_ACTIVATE=True
 TZ=Europe/Madrid
-SITE_URL=http://manuscritos.penguinrandomhousegrupoeditorial.com
 
-REDIS_URL=redis://:V78jXv!qcm@redis:6379/0
+CELERY_BROKER_URL=redis://:V78jXv!qcm@redis:6379/0
+CELERY_FLOWER_USER=admin
+CELERY_FLOWER_PASSWORD=admin
