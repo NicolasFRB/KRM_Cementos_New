@@ -272,27 +272,27 @@ class GaImportView(FormView):
         context['breadcrums'] = breadcrums
         return context
 
-    def checkExcelRep(self, name, elem, elems_to_create, form, index):
+    def checkExcelRep(self, name, elem, elems_to_create, form, index, field_key):
         for e in elems_to_create:
-            if e['ref'] == elem['ref']:
+            if e[field_key] == elem[field_key]:
                 messages.add_message(
                     self.request,
                     messages.ERROR,
                     (
                         _('En la hoja de %s hay una REF repetida: %s en la fila %d')
-                        % (name, e['ref'], index)
+                        % (name, e[field_key], index)
                     ),
                 )
                 return super(GaImportView, self).form_invalid(form)
 
-    def checkDB(self, name, elem, DBreference, form):
-        if DBreference.objects.filter(ref=elem['ref']).count() > 0:
+    def checkDB(self, name, elem, DBreference, form, field_key):
+        if DBreference.objects.filter(ref=elem[field_key]).count() > 0:
             messages.add_message(
                 self.request,
                 messages.ERROR,
                 (
                     _('En la hoja de %s hay una REF que ya existe: %s')
-                    % (name, elem['ref'])
+                    % (name, elem[field_key])
                 ),
             )
             return super(GaImportView, self).form_invalid(form)
@@ -350,8 +350,8 @@ class GaImportView(FormView):
                 domain_risk['name'] = row[1].value
                 domain_risk['description'] = row[2].value
 
-                self.checkExcelRep("dominios de riesgo", domain_risk, domain_risk_to_create, form, i)
-                self.checkDB("dominios de riesgo", domain_risk, DomainRisk, form)
+                self.checkExcelRep("dominios de riesgo", domain_risk, domain_risk_to_create, form, i, "ref")
+                self.checkDB("dominios de riesgo", domain_risk, DomainRisk, form, "ref")
                 
                 domain_risk_to_create.append(domain_risk)
         
@@ -372,8 +372,8 @@ class GaImportView(FormView):
                 risk_master['name'] = row[2].value
                 risk_master['description'] = row[3].value
 
-                self.checkExcelRep("riesgos maestros", risk_master, risk_master_to_create, form, i)
-                self.checkDB("riesgos maestros", risk_master, RiskMaster, form)
+                self.checkExcelRep("riesgos maestros", risk_master, risk_master_to_create, form, i, "ref")
+                self.checkDB("riesgos maestros", risk_master, RiskMaster, form, "ref")
                 self.checkMaster("riesgos maestros", "dominios de riesgo", risk_master, domain_risk_to_create, DomainRisk, "domain_risk_ref", form)
                 
                 risk_master_to_create.append(risk_master)
@@ -415,8 +415,8 @@ class GaImportView(FormView):
                     )
                     return super(GaImportView, self).form_invalid(form)
 
-                self.checkExcelRep("riesgos", risk, risk_to_create, form, i)
-                self.checkDB("riesgos", risk, Risk, form)
+                self.checkExcelRep("riesgos", risk, risk_to_create, form, i, "ref")
+                self.checkDB("riesgos", risk, Risk, form, "ref")
                 self.checkMaster("riesgos", "riesgo maestro", risk, risk_master_to_create, RiskMaster, "risk_master_ref", form)
 
                 risk_to_create.append(risk)
@@ -496,14 +496,14 @@ class GaImportView(FormView):
                     )
                     return super(GaImportView, self).form_invalid(form)
 
-                self.checkExcelRep("controles", control, control_to_create, form, i)
+                self.checkExcelRep("controles", control, control_to_create, form, i, "ref")
 
                 control_to_create.append(control)
                 
 
                 print('Ctrls to create', len(control_to_create), control_to_create)
 
-                self.checkDB("controles", control, Control, form)
+                self.checkDB("controles", control, Control, form, "ref")
                 for risk_ref in control['risk_refs']:
                     risk_exist = False
                     if Risk.objects.filter(ref=risk_ref).count() > 0:
@@ -563,19 +563,11 @@ class GaImportView(FormView):
                 risk_company['krm_exposed_staff'] = row[6].value
                 risk_company['krm_main_elements'] = row[7].value
 
-                #self.checkExcelRep("riesgo compañía", risk_company, risk_company_to_create, self, form, i)
-                if Risk.objects.filter(ref=risk_company['risk_ref']).count() > 0:
-                    messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _('En la hoja de %s hay una REF que ya existe: %s')
-                            % ("riesgos compañía", risk_company['risk_ref'])
-                        ),
-                    )
-                    return super(GaImportView, self).form_invalid(form)
-                self.checkMaster("riesgos compañía", "riesgo", risk, risk_to_create, Risk, "risk_ref", form)
-                self.checkMaster("riesgos compañía", "compañía", risk, risk_to_create, Company, "company_ref", form)
+                
+                self.checkMaster("riesgos compañía", "riesgo", risk_company, risk_to_create, Risk, "risk_ref", form)
+                self.checkDB("riesgos compañía", risk_company, Risk, form, "risk_ref")
+                
+                # self.checkDB("riesgos compañía", risk_company, Company, form, "company_ref")
 
                 risk_company_to_create.append(risk_company)
     
@@ -594,8 +586,10 @@ class GaImportView(FormView):
                 control_company['control_ref'] = row[0].value.strip().replace(' ', '').upper()
                 control_company['company_ref'] = row[1].value.strip().replace(' ', '').upper()
 
-                self.checkDB("control compañía", control_company, Company, form)
-                self.checkMaster("control compañía", "compañía", control_company, control_company_to_create, Company, "company_ref", form)
+                # self.checkDB("control compañía", control_company, Company, form, "company_ref")
+
+                self.checkMaster("control compañía", "control", control_company, control_to_create, Control, "control_ref", form)
+                self.checkDB("control compañía", control_company, Control, form, "control_ref")
 
                 control_company_to_create.append(control_company)
 

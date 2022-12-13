@@ -219,6 +219,17 @@
                         </a>
                         <!--end:Menu link-->
                     </div>
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {% if request.path ==  '/es/config/import_eval/' %}active{% endif %}"
+                            href="{% url 'configuration:ga_import_eval' %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">{% trans 'Importador evaluaciones' %}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
                     <!--end:Menu item-->
                 </div>
                 <!--end:Menu sub-->
