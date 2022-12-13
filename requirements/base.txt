@@ -12,7 +12,6 @@ markdown==3.4.1
 django-filter==22.1
 django-cors-headers==3.13.0
 pandas==1.5.1
-openpyxl==3.0.10
 
 django-rosetta==0.9.8
 
