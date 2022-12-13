@@ -52,14 +52,14 @@ services:
     ports: []
     command: /start-celerybeat
 
-  flower:
-    <<: *django
-    image: krm_production_flower
-    depends_on:
-      - django
-    ports:
-      - "5555:5555"
-    command: /start-flower
+  # flower:
+  #   <<: *django
+  #   image: krm_production_flower
+  #   depends_on:
+  #     - django
+  #   ports:
+  #     - "5555:5555"
+  #   command: /start-flower
 
   redis:
     image: redis:alpine
