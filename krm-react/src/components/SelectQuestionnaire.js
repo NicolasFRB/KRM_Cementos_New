@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 import Select from 'react-select'
 import { useTranslation } from "react-i18next";
 
-function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestions, setSelectedQuestions, scopes, setScopes }) {
+function SelectQuestionnaire({ questionnaire, setQuestionnaire, setScopes, setScopesSelected }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // const [questionnaires, setQuestionnaires] = useState([]);
   const [selectOptions, setSelectOptions] = useState([]);
 
   const [t] = useTranslation("global");
@@ -38,7 +37,8 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestion
   }, []);
 
   useEffect(() => {
-    setScopes(null)
+    setScopes(questionnaire.scopes);
+    setScopesSelected([]);
   }, [questionnaire, setScopes]);
 
   if (error) {
@@ -49,19 +49,11 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestion
     return (
       <div>
         {isLoaded && selectOptions && (
-          <div className="row">
-            <div className="col col-12 col-sm-6">
-              <h5>Cuestionario</h5>
-              <Select options={selectOptions} defaultValue={selectOptions[0]} onChange={setQuestionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} />
-              <input type="hidden" name="questionnaire" value={questionnaire.value} />
-            </div>
-            {questionnaire.scopes && (
-              <div className="col col-12 col-sm-6">
-                <h5>Alcances</h5>
-                <Select options={questionnaire.scopes} key={questionnaire.value} isMulti onChange={(scopes) => setScopes(scopes)} />
-              </div>
-            )}
-          </div>
+          <>
+            <h5>Cuestionario</h5>
+            <Select options={selectOptions} defaultValue={selectOptions[0]} onChange={setQuestionnaire} />
+            <input type="hidden" name="questionnaire" value={questionnaire.value} />
+          </>
         )}
       </div>
     );

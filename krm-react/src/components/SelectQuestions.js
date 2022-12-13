@@ -9,13 +9,14 @@ function SelectQuestions(
     questionnaire,
     selectedQuestions,
     setSelectedQuestions,
-    scopes
+    scopesSelected,
+    questions,
+    setQuestions
   }) {
   const [error, setError] = useState(null);
   const [questionsIsLoaded, setQuestionsIsLoaded] = useState(false);
   const [usersIsLoaded, setUsersIsLoaded] = useState(false);
   const [selectOptions, setSelectOptions] = useState([]);
-  const [questions, setQuestions] = useState([]);
   const [filterQuestions, setFilterQuestions] = useState([]);
 
   const [t] = useTranslation("global");
@@ -71,6 +72,7 @@ function SelectQuestions(
   //   window.CustomDatatables.init();
   // }, [questionsIsLoaded]);
 
+  // Nos traemos a los usuarios
   useEffect(() => {
     fetch(configService.apiGetUsers)
       .then((res) => res.json())
@@ -93,23 +95,29 @@ function SelectQuestions(
   }, []);
 
   const checkQuestionInScopes = (question) => {
-    let found = true;
-    if (scopes) {
-      scopes.forEach((scope) => {
-        console.log(question.scopes_names.includes(scope.label) + "Check if " + question.scopes_names + " includes " + scope.label)
-        if (!question.scopes_names.includes(scope.label)) {
-          found = false;
-        }
-      });
+    if (scopesSelected.length === 0) {
+      return true;
     }
-    return found;
+    let encontrado = false;
+    scopesSelected.forEach((scope) => {
+      // console.log(question.ref + ": Check if " + question.scopes_names + " includes " + scope.label + ': ' + question.scopes_names.includes(scope.label));
+      if (question.scopes_names.includes(scope.label)) {
+        encontrado = true;
+      }
+    });
+    return encontrado;
   }
 
   useEffect(() => {
-    let newFilterQuestions = questions.filter((question) => checkQuestionInScopes(question));
-    console.log(newFilterQuestions.length + " questions filtered to " + questions.length + " questions")
-    setFilterQuestions(newFilterQuestions);
-  }, [questions, scopes]);
+    if (scopesSelected.length > 0) {
+      let newFilterQuestions = questions.filter(checkQuestionInScopes);
+      // console.log(newFilterQuestions.length + " questions filtered to " + questions.length + " questions")
+      setFilterQuestions(newFilterQuestions);
+    } else {
+      setFilterQuestions(questions);
+    }
+    // eslint-disable-next-line
+  }, [scopesSelected, questions]);
 
   useEffect(() => {
     setQuestionsIsLoaded(false);
@@ -125,12 +133,13 @@ function SelectQuestions(
       .then(
         (res) => {
           setQuestions(res.results.map((question) => {
-            let evaluators = question.potential_users_to_assign.map((question) => { return question.value });
+            // let evaluators = question.potential_users_to_assign.map((question) => { return question.value });
             return {
               ...question,
               evaluators: question.potential_users_to_assign,
             }
           }));
+          setFilterQuestions(questions);
           setQuestionsIsLoaded(true);
         },
         (error) => {
@@ -138,6 +147,7 @@ function SelectQuestions(
           setError(error);
         }
       );
+    // eslint-disable-next-line
   }, [questionnaire]);
 
   useEffect(() => {

@@ -3,15 +3,18 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import SelectQuestionnaire from "./SelectQuestionnaire.js";
+import SelectScopes from "./SelectScopes.js";
 import SelectQuestions from "./SelectQuestions.js";
 
 let $ = window.$;
 
-function CreateEvaluationKrmInherent(props) {
+function CreateEvaluationQuestionnaire(props) {
   const [formData, setFormData] = useState({ 'completed': false });
   const [questionnaire, setQuestionnaire] = useState({ value: 0, label: '-' });
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [scopes, setScopes] = useState([]);
+  const [scopesSelected, setScopesSelected] = useState([]);
+  const [questions, setQuestions] = useState([]);
 
   const readFormData = () => {
     let newFormData = {};
@@ -51,18 +54,27 @@ function CreateEvaluationKrmInherent(props) {
       <div className="row">
         <div className="col-12">
           <h3 className="mb-6">{t('q.step-2')}</h3>
-          {formData.completed === false && (
+          {formData.completed === true && (
             <div className="alert alert-primary">{t('q.complete-data')}</div>
           )}
-          <div className={(formData.completed ? '' : 'd-none')}>
-            <SelectQuestionnaire questionnaire={questionnaire} setQuestionnaire={setQuestionnaire} scopes={scopes} setScopes={setScopes} />
+          <div className={(!formData.completed ? '' : 'd-none')}>
+            <div className="row">
+              <div className="col col-12 col-sm-6">
+                <SelectQuestionnaire questionnaire={questionnaire} setQuestionnaire={setQuestionnaire} scopes={scopes} setScopes={setScopes} setScopesSelected={setScopesSelected} />
+              </div>
+              {questionnaire.value !== 0 && questions.length > 0 && (
+                <div className="col col-12 col-sm-6" key={questionnaire.value}>
+                  <SelectScopes scopes={scopes} setScopesSelected={setScopesSelected} />
+                </div>
+              )}
+            </div>
           </div>
           <div className="separator my-10"></div>
         </div>
         <div className="col-12">
           <h3 className="mb-5">{t('q.step-3')}</h3>
           {questionnaire.value !== 0 ? (
-            <SelectQuestions questionnaire={questionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} scopes={scopes} />
+            <SelectQuestions questionnaire={questionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} scopesSelected={scopesSelected} questions={questions} setQuestions={setQuestions} />
           ) : (
             <div className="alert alert-primary">{t('q.select-questionnaire')}</div>
           )}
@@ -98,4 +110,4 @@ function CreateEvaluationKrmInherent(props) {
   );
 }
 
-export default CreateEvaluationKrmInherent;
+export default CreateEvaluationQuestionnaire;
