@@ -19,7 +19,7 @@ class EvaluationQuestionnaireCreateForm(ModelForm):
         max_length=140,
     )
     questions_to_evaluate = forms.CharField(
-        max_length=1000,
+        max_length=100000,
         label=_('Preguntas')
     )
 

@@ -135,7 +135,6 @@ class GaEvaluationQuestionnaireCreateView(FormView):
                 question_test = QuestionTest()
                 question_test.evaluation = evaluation
                 question_test.question = q
-                question_test.title = q.title
                 question_test.evaluator = User.objects.get(pk=evaluator)
                 question_test.status = 1
                 question_test.save()
