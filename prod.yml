@@ -14,12 +14,12 @@ services:
     image: krm_production_django
     depends_on:
       - postgres
-      - redis
+      # - redis
     env_file:
       - ./.envs/.prod/.django
       - ./.envs/.prod/.postgres
       - ./.envs/.prod/.email
-      - ./.envs/.dev/.ubuntu
+      - ./.envs/.prod/.ubuntu
     volumes:
       - production_django_media:/krm-media
       - production_django_logs:/krm-logs
