@@ -54,10 +54,10 @@ function CreateEvaluationQuestionnaire(props) {
       <div className="row">
         <div className="col-12">
           <h3 className="mb-6">{t('q.step-2')}</h3>
-          {formData.completed === true && (
+          {formData.completed === false && (
             <div className="alert alert-primary">{t('q.complete-data')}</div>
           )}
-          <div className={(!formData.completed ? '' : 'd-none')}>
+          <div className={(formData.completed ? '' : 'd-none')}>
             <div className="row">
               <div className="col col-12 col-sm-6">
                 <SelectQuestionnaire questionnaire={questionnaire} setQuestionnaire={setQuestionnaire} scopes={scopes} setScopes={setScopes} setScopesSelected={setScopesSelected} />
