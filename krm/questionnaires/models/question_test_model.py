@@ -92,8 +92,12 @@ class QuestionTest(AuditModel):
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
             "user_email": self.evaluator.email,
             "evaluation_ref": self.evaluation.ref,
+            "evaluation_questionnaire_ref": self.questionnaire.ref,
+            "evaluation_questionnaire_name": self.questionnaire.name,
             "evaluation_date_begin": self.evaluation.date_begin,
             "evaluation_date_end": self.evaluation.date_end,
+            "certification_year": self.evaluation.certification_year,
+            "certification_period": self.evaluation.certification_period,
         }
         body_html = render_to_string(
             "emails/questionnaires/questionnaires_to_complete.html", context
@@ -110,7 +114,7 @@ class QuestionTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Cuestionario pendiente de completar"),
+            _("KRM Tool - Cuestionario de Compliance"),
             from_email,
             self.evaluator.email,
         )

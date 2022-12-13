@@ -4,12 +4,16 @@
   {% blocktrans with recovery_url=recovery_url %}
   Hola {{ user_email }},<br><br>
 
-  Dispone de controles pendientes de revisar dentro de la plataforma <strong>KRM Tool</strong> correspondientes a la Autoevaluación del Proceso de <strong>{{ evaluation_ref }}</strong> que tendrá lugar en el periodo desde el <strong>{{ evaluation_date_begin }}</strong> hasta el <strong>{{ evaluation_date_intermediate }}</strong>.<br><br>
+  Tienes {{ ncontrols_pending }} evaluaciones de controles pendientes de supervisar en la plataforma <strong>KRM Tool</strong>, correspondientes a <strong>{{ evaluation_ref }}</strong>. El periodo a evaluar es el comprendido entre el {{ certification_year }} - {{ certification_period }}. Por favor, completa la evaluación antes del {{ evaluation_date_end }}.
 
-  Acceda desde <a href="{{ site_url }}">esta url</a> con sus datos de acceso para poder revisarlos.<br><br>
+  Puedes acceder a la plataforma desde <a href="{{ site_url }}">esta url</a> con tus credenciales.<br><br>
 
-  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href="{{ recovery_url }}">esta url</a> indicando su correo electrónico.<br><br>
+  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href="{{ recovery_url }}">esta url</a> e indicando tu correo electrónico.<br><br>
 
-  Gracias.
+  Ante cualquier duda, puedes contactar con Compliance a través del siguiente correo: <a href="mailto:compliance@globalvia.com">compliance@globalvia.com</a>.
+
+  Muchas gracias por tu colaboración.
+
+  Compliance
   {% endblocktrans %}
 </p>
