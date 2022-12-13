@@ -8,15 +8,31 @@ from .base import env
 DEBUG = env.bool('KRM_DJANGO_DEBUG')
 DEV = env.bool('KRM_DJANGO_DEV')
 # Static  files
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_STORAGE = 'krm.storage.WhiteNoiseStaticFilesStorage'
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False
 
 MEDIA_ROOT = '/krm-media'
 MEDIA_URL = '/media/'
 
 # Security
 SECRET_KEY = env.str('KRM_DJANGO_SECRET_KEY')
+
+# Databases
+DATABASES['default'] = env.db('DATABASE_URL')  # NOQA
+DATABASES['default']['ATOMIC_REQUESTS'] = True  # NOQA
+DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # NOQA
+
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': env('REDIS_URL'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'IGNORE_EXCEPTIONS': True,
+        }
+    }
+}
 
 ALLOWED_HOSTS = [
     "*"
@@ -41,7 +57,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG  # NOQA
 # Gunicorn
 INSTALLED_APPS += ['gunicorn']  # noqa F405
 
-# WhiteNoise
+WhiteNoise
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
 
 # Email
@@ -146,3 +162,16 @@ LOGGING = {
         },
     },
 }
+
+# Celery
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERYD_TASK_TIME_LIMIT = 5 * 60
+CELERYD_TASK_SOFT_TIME_LIMIT = 60
+CELERY_TIMEZONE = 'Europe/Madrid'
+CELERY_TASK_DEFAULT_QUEUE = "krm"
+CELERY_TASK_DEFAULT_EXCHANGE = "krm"
+CELERY_TASK_DEFAULT_ROUTING_KEY = "krm"
