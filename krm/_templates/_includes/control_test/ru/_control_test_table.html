@@ -79,8 +79,7 @@
         {% if ct.control_test_owner %}
         <span class="badge badge-success" data-bs-toggle="tooltip" data-bs-placement="top"
           data-bs-custom-class="custom-tooltip" data-bs-delay-show="250"
-          title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id="box-child">CO: {{
-          ct.control_test_owner.username_no_domain }}</span>
+          title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id="box-child">CO: {{ ct.control_test_owner.username_no_domain }}</span>
         {% else %}
         {% trans 'Sin asignar' %}
         {% endif %}
