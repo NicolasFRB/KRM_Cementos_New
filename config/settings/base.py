@@ -10,6 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path("krm")
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 DEV = env.bool('KRM_DJANGO_DEV')
 DEVJS = env.bool('KRM_DJANGO_DEVJS')
 BRAND = env.str('KRM_BRAND')

@@ -12,6 +12,7 @@ function CreateEvaluationQuestionnaire(props) {
   const [formData, setFormData] = useState({ 'completed': false });
   const [questionnaire, setQuestionnaire] = useState({ value: 0, label: '-' });
   const [selectedQuestions, setSelectedQuestions] = useState([]);
+  const [nQuestionTests, setNQuestionTests] = useState(0);
   const [scopes, setScopes] = useState([]);
   const [scopesSelected, setScopesSelected] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -32,6 +33,14 @@ function CreateEvaluationQuestionnaire(props) {
     $('#e_ref, #e_date_begin, #e_date_intermediate, #e_date_end, #e_description').on('change', readFormData);
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    let nQuestionTests = 0;
+    selectedQuestions.forEach((question) => {
+      nQuestionTests += question.evaluators.length;
+    });
+    setNQuestionTests(nQuestionTests);
+  }, [selectedQuestions]);
 
   // useEffect(() => {
   //   window.CustomDatatables.destroy();
@@ -87,7 +96,7 @@ function CreateEvaluationQuestionnaire(props) {
             <div className="alert alert-primary">{t('q.select-question')}</div>
           ) : (
             <div className="col-12">
-              <p>{t('q.questions-to-launch', { 'nquestions': selectedQuestions.length })} </p>
+              <p>{t('q.questions-to-launch', { 'nquestions': nQuestionTests })} </p>
               <button onClick={sendForm} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
                 <span className="indicator-label">{t('q.launch')}</span>
                 <span className="indicator-progress">

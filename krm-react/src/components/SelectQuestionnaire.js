@@ -39,6 +39,7 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, setScopes, setSc
   useEffect(() => {
     setScopes(questionnaire.scopes);
     setScopesSelected([]);
+    // eslint-disable-next-line
   }, [questionnaire, setScopes]);
 
   if (error) {
