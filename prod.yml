@@ -24,6 +24,8 @@ services:
       - production_django_media:/krm-media
       - production_django_logs:/krm-logs
     command: /start
+    ports:
+      - "5000:5000"
 
   postgres:
     build:
@@ -36,21 +38,21 @@ services:
     env_file:
       - ./.envs/.prod/.postgres
 
-  celeryworker:
-    <<: *django
-    image: krm_production_celeryworker
-    depends_on:
-      - django
-    ports: []
-    command: /start-celeryworker
+#  celeryworker:
+#    <<: *django
+#    image: krm_production_celeryworker
+#    depends_on:
+#      - django
+#    ports: []
+#    command: /start-celeryworker
 
-  celerybeat:
-    <<: *django
-    image: krm_production_celerybeat
-    depends_on:
-      - django
-    ports: []
-    command: /start-celerybeat
+#  celerybeat:
+#    <<: *django
+#    image: krm_production_celerybeat
+#    depends_on:
+#      - django
+#    ports: []
+#    command: /start-celerybeat
 
   # flower:
   #   <<: *django
@@ -68,5 +70,5 @@ services:
       - ./compose/production/redis/redis.conf:/usr/local/etc/redis/redis.conf
     expose:
       - "6379"
-    ports:
-      - "6379:6379"
+ #   ports:
+ #     - "6379:6379"
