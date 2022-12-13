@@ -5,7 +5,7 @@ from .base import *  # NOQA
 from .base import env
 
 # Base
-DEBUG = env.bool('DJANGO_DEBUG')
+DEBUG = env.bool('KRM_DJANGO_DEBUG')
 DEV = env.bool('DJANGO_DEV')
 # Static  files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -14,8 +14,24 @@ MEDIA_ROOT = '/krm-media'
 MEDIA_URL = '/media/'
 
 # Security
-SECRET_KEY = env.str('DJANGO_SECRET_KEY')
-ALLOWED_HOSTS = ['*']
+SECRET_KEY = env.str('KRM_DJANGO_SECRET_KEY')
+
+ALLOWED_HOSTS = [
+    "*"
+]
+
+INTERNAL_IPS = (
+    "*"
+)
+
+CORS_ORIGIN_WHITELIST = [
+    "*",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://4924-81-38-122-210.eu.ngrok.io/'
+    '*',
+]
 
 # Templates
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG  # NOQA
@@ -40,7 +56,7 @@ INTERNAL_IPS = ('*',)
 
 
 # WSGI
-# WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi-production.application'
 
 LOGGING = {
     'version': 1,
