@@ -24,30 +24,30 @@ services:
       - "8000:8000"
     command: /start
 
-  celeryworker:
-    <<: *django
-    image: krm_local_celeryworker
-    depends_on:
-      - django
-    ports: []
-    command: /start-celeryworker
+  # celeryworker:
+  #   <<: *django
+  #   image: krm_local_celeryworker
+  #   depends_on:
+  #     - django
+  #   ports: []
+  #   command: /start-celeryworker
 
-  celerybeat:
-    <<: *django
-    image: krm_local_celerybeat
-    depends_on:
-      - django
-    ports: []
-    command: /start-celerybeat
+  # celerybeat:
+  #   <<: *django
+  #   image: krm_local_celerybeat
+  #   depends_on:
+  #     - django
+  #   ports: []
+  #   command: /start-celerybeat
 
-  flower:
-    <<: *django
-    image: krm_local_flower
-    depends_on:
-      - redis
-    ports:
-      - "5555:5555"
-    command: /start-flower
+  # flower:
+  #   <<: *django
+  #   image: krm_local_flower
+  #   depends_on:
+  #     - django
+  #   ports:
+  #     - "5555:5555"
+  #   command: /start-flower
 
   redis:
     image: 'redis:alpine'

@@ -13,3 +13,8 @@ TZ=Europe/Madrid
 CELERY_BROKER_URL=redis://:V78jXv!qcm@redis:6379/0
 CELERY_FLOWER_USER=admin
 CELERY_FLOWER_PASSWORD=admin
+
+REDIS_URL=redis://:V78jXv!qcm@redis:6379/0
+CELERY_BROKER_URL=redis://:V78jXv!qcm@redis:6379/0
+CELERY_RESULT_BACKEND=redis://:V78jXv!qcm@redis:6379/0
+CELERY_BACKEND_URL=redis://:V78jXv!qcm@redis:6379/0
