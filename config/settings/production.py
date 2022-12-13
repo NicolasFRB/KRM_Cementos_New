@@ -8,7 +8,9 @@ from .base import env
 DEBUG = env.bool('KRM_DJANGO_DEBUG')
 DEV = env.bool('KRM_DJANGO_DEV')
 # Static  files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'krm.storage.WhiteNoiseStaticFilesStorage'
+
 
 MEDIA_ROOT = '/krm-media'
 MEDIA_URL = '/media/'
