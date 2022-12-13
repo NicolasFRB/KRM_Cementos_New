@@ -272,333 +272,460 @@ class GaImportView(FormView):
         context['breadcrums'] = breadcrums
         return context
 
-    def checkExcelRep(self, name, elem, elems_to_create, form, index):
-        for e in elems_to_create:
-            if e['ref'] == elem['ref']:
+    def form_valid(self, form):
+        input_excel = self.request.FILES['data_file'].read()
+        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
+
+
+
+        # Dominios de Riesgo
+        domain_risk_sheet = wb['Domain Risk']
+        domain_risk_to_create = []
+        nrow = 0
+        rows = domain_risk_sheet.rows
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
+
+            domain_risk = {}
+            if row[0].value is None:
+                break
+            # Los dominios de riesgo hay que validarlos y ver que existen y que no hay nada raro
+            domain_risk['ref'] = row[0].value.strip().upper()
+            domain_risk['name'] = row[1].value
+            domain_risk['description'] = row[2].value
+            for r in domain_risk_to_create:
+                if r['ref'] == domain_risk['ref']:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('En la hoja de dominios de riesgo hay una REF repetida: %s en la fila %s')
+                            % (r['ref'], nrow)
+                        ),
+                    )
+                    return super(GaImportView, self).form_invalid(form)
+            domain_risk_to_create.append(domain_risk)
+
+        # Validate domain_risk_to_create
+        for dr in domain_risk_to_create:
+            if DomainRisk.objects.filter(ref=dr['ref']).count() > 0:
                 messages.add_message(
                     self.request,
                     messages.ERROR,
                     (
-                        _('En la hoja de %s hay una REF repetida: %s en la fila %d')
-                        % (name, e['ref'], index)
+                        _('En la hoja de dominios de riesgo hay una REF que ya existe: %s')
+                        % (dr['ref'])
                     ),
                 )
                 return super(GaImportView, self).form_invalid(form)
 
-    def checkDB(self, name, elem, DBreference, form):
-        if DBreference.objects.filter(ref=elem['ref']).count() > 0:
-            messages.add_message(
-                self.request,
-                messages.ERROR,
-                (
-                    _('En la hoja de %s hay una REF que ya existe: %s')
-                    % (name, elem['ref'])
-                ),
-            )
-            return super(GaImportView, self).form_invalid(form)
-
-    def checkMaster(self, name, master_name, elem, elems_to_create, master_DBreference, master, form):
-        exist = False
-        if master_DBreference.objects.filter(ref=elem[master]).count() > 0:
-            exist = True
-        else: 
-        # Si no existe buscamos si está en la hora de dominios de riesgo a crear
-            for dr in elems_to_create:
-                if elem[master] == dr['ref']:
-                    exist = True
-
-        if not exist:
-            messages.add_message(
-                self.request,
-                messages.ERROR,
-                (
-                    _('En la hoja de %s hay una REF de %s que no existe: %s')
-                    % (name, master_name, elem[master])
-                ),
-            )
-            return super(GaImportView, self).form_invalid(form)
-
-    def success(name, created, self):
-        if created > 0:
-            messages.add_message(
-                self.request,
-                messages.SUCCESS,
-                (
-                    _(
-                        "{0} %s importados"
-                    ).format(
-                        created,
-                    )
-                ),
-            )
-
-    def form_valid(self, form):
-        input_excel = self.request.FILES['data_file'].read()
-        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
-        
-        # Dominios de Riesgo
-        domain_risk_sheet = wb['Domain Risk']
-        domain_risk_to_create = []
-        rows = domain_risk_sheet.rows
-
-        for i, row in enumerate(rows):
-            if not i == 0:
-                domain_risk = {}
-                if row[0].value is None:
-                    break # necesita mostrar el error
-                domain_risk['ref'] = row[0].value.strip().upper()
-                domain_risk['name'] = row[1].value
-                domain_risk['description'] = row[2].value
-
-                self.checkExcelRep("dominios de riesgo", domain_risk, domain_risk_to_create, form, i)
-                self.checkDB("dominios de riesgo", domain_risk, DomainRisk, form)
-                
-                domain_risk_to_create.append(domain_risk)
-        
         # Riesgos Maestros
         risk_master_sheet = wb['Risk Master N1']
         risk_master_to_create = []
+        nrow = 0
         rows = risk_master_sheet.rows
-        
-        for i, row in enumerate(rows):
-            if not i == 0:
-                risk_master = {}
-                
-                if row[0].value is None:
-                    break # mostrar el error
-                
-                risk_master['domain_risk_ref'] = row[0].value.strip().replace(' ', '').upper()
-                risk_master['ref'] = row[1].value.strip().replace(' ', '').upper()
-                risk_master['name'] = row[2].value
-                risk_master['description'] = row[3].value
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
 
-                self.checkExcelRep("riesgos maestros", risk_master, risk_master_to_create, form, i)
-                self.checkDB("riesgos maestros", risk_master, RiskMaster, form)
-                self.checkMaster("riesgos maestros", "dominios de riesgo", risk_master, domain_risk_to_create, DomainRisk, "domain_risk_ref", form)
-                
-                risk_master_to_create.append(risk_master)
+            risk_master = {}
+            # Los dominios de riesgo hay que validarlos y ver que existen y que no hay nada raro
+            if row[0].value is None:
+                break
+            risk_master['domain_risk_ref'] = row[0].value.strip().replace(
+                ' ', '').upper()
+            risk_master['ref'] = row[1].value.strip().replace(' ', '').upper()
+            risk_master['name'] = row[2].value
+            risk_master['description'] = row[3].value
+
+            for rm in risk_master_to_create:
+                if rm['ref'] == risk_master['ref']:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('En la hoja de riesgos maestros hay una REF repetida: %s')
+                            % (rm['ref'])
+                        ),
+                    )
+                    return super(GaImportView, self).form_invalid(form)
+
+            risk_master_to_create.append(risk_master)
+
+        for rm in risk_master_to_create:
+            if RiskMaster.objects.filter(ref=rm['ref']).count() > 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgos maestros hay una REF que ya existe: %s')
+                        % (rm['ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            domain_risk_exist = False
+            if DomainRisk.objects.filter(ref=rm['domain_risk_ref']).count() > 0:
+                domain_risk_exist = True
+
+            # Si no existe buscamos si está en la hora de dominios de riesgo a crear
+            for dr in domain_risk_to_create:
+                if rm['domain_risk_ref'] == dr['ref']:
+                    domain_risk_exist = True
+
+            if not domain_risk_exist:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgo maestro hay una REF de dominio de riesgo que no existe: %s')
+                        % (rm['domain_risk_ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
 
         # Riesgos
         risk_sheet = wb['Risk N2']
         risk_to_create = []
+        nrow = 0
         rows = risk_sheet.rows
 
-        for i, row in enumerate(rows):
-            if not i == 0:
-                risk = {}
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
 
-                if row[0].value is None:
-                    break # mensaje de error
-                
-                risk['risk_master_ref'] = row[0].value.strip().replace(' ',
-                                                                    '').upper()
-                risk['ref'] = row[1].value.strip().replace(' ', '').upper()
-                risk['name'] = row[2].value
-                risk['description'] = row[3].value
-                risk['impact_inherent'] = row[4].value
-                risk['impact_residual'] = row[5].value
-                risk['probability_inherent'] = row[6].value
-                risk['probability_residual'] = row[7].value
-                risk['krm_activity_affected'] = row[8].value
-                risk['krm_main_events'] = row[9].value
-                risk['krm_exposed_staff'] = row[10].value
-                risk['krm_main_elements'] = row[11].value
-                
-                if risk['impact_inherent'] not in range(1, 6) or risk['impact_residual'] not in range(1, 6) or risk['probability_inherent'] not in range(1, 6) or risk['probability_residual'] not in range(1, 6):
+            risk = {}
+
+            if row[0].value is None:
+                break
+            risk['risk_master_ref'] = row[0].value.strip().replace(' ',
+                                                                   '').upper()
+            risk['ref'] = row[1].value.strip().replace(' ', '').upper()
+            risk['name'] = row[2].value
+            risk['description'] = row[3].value
+            risk['impact_inherent'] = row[4].value
+            risk['impact_residual'] = row[5].value
+            risk['probability_inherent'] = row[6].value
+            risk['probability_residual'] = row[7].value
+            risk['krm_activity_affected'] = row[8].value
+            risk['krm_main_events'] = row[9].value
+            risk['krm_exposed_staff'] = row[10].value
+            risk['krm_main_elements'] = row[11].value
+            if risk['impact_inherent'] not in range(1, 6) or risk['impact_residual'] not in range(1, 6) or risk['probability_inherent'] not in range(1, 6) or risk['probability_residual'] not in range(1, 6):
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('Impacto o probabilidad erróneos en la fila: %s')
+                        % (nrow)
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            for r in risk_to_create:
+                if r['ref'] == risk['ref']:
                     messages.add_message(
                         self.request,
                         messages.ERROR,
                         (
-                            _('Impacto o probabilidad erróneos en la fila: %s')
-                            % (i)
+                            _('En la hoja de riesgos hay una REF repetida: %s en la fila %s')
+                            % (r['ref'], nrow)
                         ),
                     )
                     return super(GaImportView, self).form_invalid(form)
 
-                self.checkExcelRep("riesgos", risk, risk_to_create, form, i)
-                self.checkDB("riesgos", risk, Risk, form)
-                self.checkMaster("riesgos", "riesgo maestro", risk, risk_master_to_create, RiskMaster, "risk_master_ref", form)
+            risk_to_create.append(risk)
 
-                risk_to_create.append(risk)
+        for r in risk_to_create:
+            if Risk.objects.filter(ref=r['ref']).count() > 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgos hay una REF que ya existe: %s')
+                        % (r['ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            risk_master_exist = False
+            if RiskMaster.objects.filter(ref=r['risk_master_ref']).count() > 0:
+                risk_master_exist = True
+
+            # Si no existe buscamos si está en la hora de dominios de riesgo a crear
+            for rm in risk_master_to_create:
+                if r['risk_master_ref'] == rm['ref']:
+                    risk_master_exist = True
+
+            if not risk_master_exist:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgos hay una REF de riesgo maestro que no existe: %s')
+                        % (r['risk_master_ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
 
         # Controles
         control_sheet = wb['Controls']
         control_to_create = []
+        nrow = 0
         rows = control_sheet.rows
         
-        for i, row in enumerate(rows):
-            if not i == 0:
-                control = {}
+        for row in rows:
+           
+            if nrow < 1:
+                nrow += 1
+                continue
+            
+            control = {}
 
-                # NONSENSE aqui: Puede ser ELC o no mitigar riesgos
-                # if row[0].value is None:
-                #     break 
+            # if row[0].value is None:
+            #     break
+            if row[0].value is not None:
+                control['risk_refs'] = row[0].value.replace(
+                    ' ', '').upper().split(',')
+            else:
+                control['risk_refs'] = []
 
-                if row[0].value is not None:
-                    control['risk_refs'] = row[0].value.replace(' ', '').upper().split(',')
+            if row[1].value is not None:
+                control['sub_process_refs'] = row[1].value.replace(
+                    ' ', '').upper().split(',')
+            else:
+                control['sub_process_refs'] = []
+            print(control)
+            control['ref'] = row[2].value.strip().upper()
+            control['name'] = row[3].value
+            control['description'] = row[4].value
+            control['testing_procedure'] = row[5].value
+            control['key_control'] = row[6].value
+            control['control_type'] = row[7].value
+            control['automation'] = row[8].value
+            control['systems'] = row[9].value
+            control['control_frequency'] = row[10].value
+            control['is_gap'] = row[11].value
+            control['assert_existence'] = row[12].value
+            control['assert_completeness'] = row[13].value
+            control['assert_valuation'] = row[14].value
+            control['assert_rights'] = row[15].value
+            control['assert_disclosure'] = row[16].value
+            control['assert_accurancy'] = row[17].value
+            control['assert_froud'] = row[18].value
+            control['is_elc'] = row[19].value
+
+            if control['automation'] == '':
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de controles no ha establecido valor para Control Automation en la fila %s')
+                        % (nrow+1)
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            if control['control_frequency'] not in ('BD', 'DI', '1W', '2W', '1M', '3T', '6M', '1Y'):
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de controles no ha establecido valor para Control Frequency en la fila %s')
+                        % (nrow+1)
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            if control['is_gap'] not in ('Y', 'N', '-') or control['assert_existence'] not in ('Y', 'N', '-') or control['assert_completeness'] not in ('Y', 'N', '-') or control['assert_valuation'] not in ('Y', 'N', '-') or control['assert_rights'] not in ('Y', 'N', '-') or control['assert_disclosure'] not in ('Y', 'N', '-') or control['assert_accurancy'] not in ('Y', 'N', '-') or control['assert_froud'] not in ('Y', 'N', '-'):
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de controles no ha establecido valor para alguna celda obligatoria en la fila %s')
+                        % (nrow+1)
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            for c in control_to_create:
+                if c['ref'] == control['ref']:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('En la hoja de controles hay una REF repetida: %s en la fila %s')
+                            % (c['ref'], nrow+1)
+                        ),
+                    )
+                    return super(GaImportView, self).form_invalid(form)
+            
+            nrow += 1
+            control_to_create.append(control)
+            print(control)
+        print('Ctrls to create', len(control_to_create), control_to_create)
+        for c in control_to_create:
+            if Control.objects.filter(ref=c['ref']).count() > 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de controles hay una REF de control que ya existe: %s')
+                        % (c['ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            for risk_ref in c['risk_refs']:
+                risk_exist = False
+                if Risk.objects.filter(ref=risk_ref).count() > 0:
+                    risk_exist = True
                 else:
-                    control['risk_refs'] = []
-
-                if row[1].value is not None:
-                    control['sub_process_refs'] = row[1].value.replace(' ', '').upper().split(',')
-                else:
-                    control['sub_process_refs'] = []
-                
-                control['ref'] = row[2].value.strip().upper()
-                control['name'] = row[3].value
-                control['description'] = row[4].value
-                control['testing_procedure'] = row[5].value
-                control['key_control'] = row[6].value
-                control['control_type'] = row[7].value
-                control['automation'] = row[8].value
-                control['systems'] = row[9].value
-                control['control_frequency'] = row[10].value
-                control['is_gap'] = row[11].value
-                control['assert_existence'] = row[12].value
-                control['assert_completeness'] = row[13].value
-                control['assert_valuation'] = row[14].value
-                control['assert_rights'] = row[15].value
-                control['assert_disclosure'] = row[16].value
-                control['assert_accurancy'] = row[17].value
-                control['assert_froud'] = row[18].value
-                control['is_elc'] = row[19].value
-
-                if control['automation'] == '':
+                    for risk in risk_to_create:
+                        if risk_ref == risk['ref']:
+                            risk_exist = True
+                if not risk_exist:
                     messages.add_message(
                         self.request,
                         messages.ERROR,
                         (
-                            _('En la hoja de controles no ha establecido valor para Control Automation en la fila %s')
-                            % (i)
+                            _('En la hoja de controles hay una REF a un riesgo que no existe: %s')
+                            % (risk_ref)
                         ),
                     )
                     return super(GaImportView, self).form_invalid(form)
 
-                if control['control_frequency'] not in ('BD', 'DI', '1W', '2W', '1M', '3T', '6M', '1Y'):
+            for subprocess_ref in c['sub_process_refs']:
+
+                if SubProcess.objects.filter(ref=subprocess_ref).count() == 0:
+                    print(subprocess_ref)
                     messages.add_message(
                         self.request,
                         messages.ERROR,
                         (
-                            _('En la hoja de controles no ha establecido valor para Control Frequency en la fila %s')
-                            % (i)
+                            _('En la hoja de controles hay una REF a un subproceso que no existe: %s')
+                            % (subprocess_ref)
                         ),
                     )
                     return super(GaImportView, self).form_invalid(form)
-
-                if control['is_gap'] not in ('Y', 'N', '-') or control['assert_existence'] not in ('Y', 'N', '-') or control['assert_completeness'] not in ('Y', 'N', '-') or control['assert_valuation'] not in ('Y', 'N', '-') or control['assert_rights'] not in ('Y', 'N', '-') or control['assert_disclosure'] not in ('Y', 'N', '-') or control['assert_accurancy'] not in ('Y', 'N', '-') or control['assert_froud'] not in ('Y', 'N', '-'):
-                    messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _('En la hoja de controles no ha establecido valor para alguna celda obligatoria en la fila %s')
-                            % (i)
-                        ),
-                    )
-                    return super(GaImportView, self).form_invalid(form)
-
-                self.checkExcelRep("controles", control, control_to_create, form, i)
-
-                control_to_create.append(control)
-                
-
-                print('Ctrls to create', len(control_to_create), control_to_create)
-
-                self.checkDB("controles", control, Control, form)
-                for risk_ref in control['risk_refs']:
-                    risk_exist = False
-                    if Risk.objects.filter(ref=risk_ref).count() > 0:
-                        risk_exist = True
-                    else:
-                        for risk in risk_to_create:
-                            if risk_ref == risk['ref']:
-                                risk_exist = True
-                    if not risk_exist:
-                        messages.add_message(
-                            self.request,
-                            messages.ERROR,
-                            (
-                                _('En la hoja de controles hay una REF a un riesgo que no existe: %s')
-                                % (risk_ref)
-                            ),
-                        )
-                        return super(GaImportView, self).form_invalid(form)
-                #self.checkDB("subproceso", domain_risk, DomainRisk, self, form)
-
-                #self.checkMaster("controles", "subproceso", control, risk_to_create, Risk, "risk_ref", self, form)
-
-                for subprocess_ref in control['sub_process_refs']:
-
-                    if SubProcess.objects.filter(ref=subprocess_ref).count() == 0:
-                        print(subprocess_ref)
-                        messages.add_message(
-                            self.request,
-                            messages.ERROR,
-                            (
-                                _('En la hoja de controles hay una REF a un subproceso que no existe: %s')
-                                % (subprocess_ref)
-                            ),
-                        )
-                        return super(GaImportView, self).form_invalid(form)
-
-            print('Ctrls to create', len(control_to_create), control_to_create)
-
+        print('Ctrls to create', len(control_to_create), control_to_create)
         # Riesgos Compañías
         risk_sheet = wb['RiskCompany']
         risk_company_to_create = []
+        nrow = 0
         rows = risk_sheet.rows
 
-        for i, row in enumerate(rows):
-            if not i == 0:
-                risk_company = {}
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
 
-                if row[0].value is None:
-                    break #mensaje de error
+            risk_company = {}
 
-                risk_company['risk_ref'] = row[0].value.strip().replace(' ', '').upper()
-                risk_company['company_ref'] = row[1].value.strip().replace(' ', '').upper()
-                risk_company['name'] = row[2].value
-                risk_company['description'] = row[3].value
-                risk_company['krm_activity_affected'] = row[4].value
-                risk_company['krm_main_events'] = row[5].value
-                risk_company['krm_exposed_staff'] = row[6].value
-                risk_company['krm_main_elements'] = row[7].value
+            if row[0].value is None:
+                break
+            risk_company['risk_ref'] = row[0].value.strip().replace(
+                ' ', '').upper()
+            risk_company['company_ref'] = row[1].value.strip().replace(
+                ' ', '').upper()
+            risk_company['name'] = row[2].value
+            risk_company['description'] = row[3].value
+            risk_company['krm_activity_affected'] = row[4].value
+            risk_company['krm_main_events'] = row[5].value
+            risk_company['krm_exposed_staff'] = row[6].value
+            risk_company['krm_main_elements'] = row[7].value
 
-                #self.checkExcelRep("riesgo compañía", risk_company, risk_company_to_create, self, form, i)
-                if Risk.objects.filter(ref=risk_company['risk_ref']).count() > 0:
-                    messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _('En la hoja de %s hay una REF que ya existe: %s')
-                            % ("riesgos compañía", risk_company['risk_ref'])
-                        ),
-                    )
-                    return super(GaImportView, self).form_invalid(form)
-                self.checkMaster("riesgos compañía", "riesgo", risk, risk_to_create, Risk, "risk_ref", form)
-                self.checkMaster("riesgos compañía", "compañía", risk, risk_to_create, Company, "company_ref", form)
+            risk_company_to_create.append(risk_company)
 
-                risk_company_to_create.append(risk_company)
-    
+        # r_n2 = [r2['ref'] for r2 in risk_to_create]
+        for r in risk_company_to_create:
+            # risk_company_error = False
+            # if r['risk_ref'] not in r_n2:
+            #     risk_company_error = 'En la hoja de riesgo compañía hay una REF de riesgo que no existe en la hoja Risk N2: %s' % r['risk_ref']
+                
+            # if risk_company_error:    
+            if Risk.objects.filter(ref=r['risk_ref']).count() == 0:
+                risk_company_error = 'En la hoja de riesgo compañía hay una REF de riesgo que no existe: %s' % r['risk_ref']
+                
+            # if risk_company_error: 
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _(risk_company_error)
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
+            if Company.objects.filter(ref=r['company_ref']).count() == 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgo compañía hay una REF a una compañía que no existe: %s')
+                        % (r['company_ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
+
         # Control-Compañías
         control_company_sheet = wb['ControlCompany']
         control_company_to_create = []
+        nrow = 0
         rows = control_company_sheet.rows
 
-        for i, row in enumerate(rows):
-            if not i == 0:
-                control_company = {}
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
 
-                if row[0].value is None or row[1].value is None:
-                    break #mensaje de error
+            control_company = {}
 
-                control_company['control_ref'] = row[0].value.strip().replace(' ', '').upper()
-                control_company['company_ref'] = row[1].value.strip().replace(' ', '').upper()
+            if row[0].value is None or row[1].value is None:
+                break
+            control_company['control_ref'] = row[0].value.strip().replace(
+                ' ', '').upper()
+            control_company['company_ref'] = row[1].value.strip().replace(
+                ' ', '').upper()
 
-                self.checkDB("control compañía", control_company, Company, form)
-                self.checkMaster("control compañía", "compañía", control_company, control_company_to_create, Company, "company_ref", form)
+            control_company_to_create.append(control_company)
 
-                control_company_to_create.append(control_company)
+        for r in control_company_to_create:
+            # ctrls_ref = [c['ref'] for c in control_to_create]
+            # ctrl_company_error = False
+            # if r['control_ref'] not in ctrls_ref:
+            #     ctrl_company_error = 'En la hoja de control compañía hay una REF de control que no existe en la hoja Controls: %s' % r['control_ref']
+            # print(ctrls_ref)
+            # print(r['control_ref'])
+            # print(r['control_ref'] in ctrls_ref)
+            # if ctrl_company_error:
+            # if Control.objects.filter(ref=r['control_ref']).count() == 0:
+            #     ctrl_company_error = 'En la hoja de control compañía hay una REF de un control que no existe: %s' % r['control_ref']
 
+            # # if ctrl_company_error:
+            #     messages.add_message(
+            #         self.request,
+            #         messages.ERROR,
+            #         (
+            #             _(ctrl_company_error)
+            #         ),
+            #     )
+            #     return super(GaImportView, self).form_invalid(form)
+
+            if Company.objects.filter(ref=r['company_ref']).count() == 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de riesgo compañía hay una REF a una compañía que no existe: %s')
+                        % (r['company_ref'])
+                    ),
+                )
+                return super(GaImportView, self).form_invalid(form)
         print("All checks went good, loading in DB")
         print("Domain", len(domain_risk_to_create))
         print("RMaster", len(risk_master_to_create))
