@@ -57,7 +57,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG  # NOQA
 # Gunicorn
 INSTALLED_APPS += ['gunicorn']  # noqa F405
 
-WhiteNoise
+# WhiteNoise
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
 
 # Email
