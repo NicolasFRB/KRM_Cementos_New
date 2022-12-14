@@ -7,8 +7,9 @@ import os
 
 # Base
 DEBUG = env.bool('KRM_DJANGO_DEBUG')
-
-
+# Static  files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False
 # Security
 SECRET_KEY = env.str('KRM_DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = [
@@ -45,15 +46,18 @@ if DEV:
         ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
 
 
+# WhiteNoise
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
+
 # Celery
-CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-CELERY_ACCEPT_CONTENT = ["json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 CELERYD_TASK_TIME_LIMIT = 5 * 60
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
-CELERY_TIMEZONE = "Europe/Madrid"
-CELERY_TASK_DEFAULT_QUEUE = "krc"
-CELERY_TASK_DEFAULT_EXCHANGE = "krc"
-CELERY_TASK_DEFAULT_ROUTING_KEY = "krc"
+CELERY_TIMEZONE = 'Europe/Madrid'
+CELERY_TASK_DEFAULT_QUEUE = "krm"
+CELERY_TASK_DEFAULT_EXCHANGE = "krm"
+CELERY_TASK_DEFAULT_ROUTING_KEY = "krm"
