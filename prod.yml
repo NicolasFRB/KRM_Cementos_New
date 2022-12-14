@@ -64,7 +64,7 @@ services:
   #   command: /start-flower
 
   redis_krm_prod:
-    image: redis:alpine
+    image: redis:6.2.4
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - ./compose/production/redis/redis.conf:/usr/local/etc/redis/redis.conf
