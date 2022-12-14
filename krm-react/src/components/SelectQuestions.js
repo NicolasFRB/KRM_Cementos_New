@@ -77,7 +77,7 @@ function SelectQuestions(
   };
 
   const selectAll = () => {
-    setSelectedQuestions(questions.filter(question => question.evaluators.length > 0));
+    setSelectedQuestions(filterQuestions.filter(question => question.evaluators.length > 0));
   };
 
   const unSelectAll = () => {
