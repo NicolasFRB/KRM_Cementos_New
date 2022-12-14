@@ -74,6 +74,13 @@ class QuestionTest(AuditModel):
         blank=True,
     )
 
+    scope = models.ForeignKey(
+        "questionnaires.Scope",
+        verbose_name=_("Alcance"),
+        related_name="question_tests",
+        on_delete=models.CASCADE
+    )
+
     def __str__(self):
         return f'{self.evaluation.ref} - {self.question.title}'
 

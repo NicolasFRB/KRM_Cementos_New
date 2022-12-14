@@ -22,7 +22,12 @@ class QuestionnaireSerializer(serializers.ModelSerializer):
         ]
 
     def get_scopes_names(self, obj):
-        return [{'value': int(scope.pk), 'label': scope.ref} for scope in obj.scopes.all()]
+        return [
+            {
+                'value': int(scope.pk),
+                'label': scope.ref,
+                'posible_users':  [{'value': int(user.pk), 'label': user.email} for user in scope.user_to_assign.all()]
+            } for scope in obj.scopes.all()]
 
 
 class QuestionnaireViewSet(viewsets.ModelViewSet):

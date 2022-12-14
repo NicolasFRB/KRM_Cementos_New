@@ -7,7 +7,7 @@ if (window.location.hostname.indexOf("localhost") > -1) {
     base = "https://prod.krmtool.com";
 }
 
-const baseUrlApi = `${base}api/`;
+const baseUrlApi = `${base}/api/`;
 
 const user = window.$('#pk').data('pk');
 

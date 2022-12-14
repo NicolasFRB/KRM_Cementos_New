@@ -40,7 +40,7 @@ class QuestionAdmin(admin.ModelAdmin):
 class QuestionTestAdmin(admin.ModelAdmin):
     model = QuestionTest
     list_display = ('pk', 'evaluation', 'evaluator',
-                    'question', 'status')
+                    'question', 'scope', 'status')
 
 
 @admin.register(EvaluationQuestionnaire)

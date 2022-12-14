@@ -7,9 +7,7 @@ import os
 
 # Base
 DEBUG = env.bool('KRM_DJANGO_DEBUG')
-# Static  files
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# WHITENOISE_MANIFEST_STRICT = False
+
 # Security
 SECRET_KEY = env.str('KRM_DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = [
@@ -46,9 +44,6 @@ if DEV:
         ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
 
 
-# WhiteNoise
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
-
 # Celery
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
@@ -61,3 +56,12 @@ CELERY_TIMEZONE = 'Europe/Madrid'
 CELERY_TASK_DEFAULT_QUEUE = "krm"
 CELERY_TASK_DEFAULT_EXCHANGE = "krm"
 CELERY_TASK_DEFAULT_ROUTING_KEY = "krm"
+
+
+# # WhiteNoise
+# MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
+
+# # Static  files
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WHITENOISE_MANIFEST_STRICT = False
+# INSTALLED_APPS += ['whitenoise.runserver_nostatic']  # noqa F405

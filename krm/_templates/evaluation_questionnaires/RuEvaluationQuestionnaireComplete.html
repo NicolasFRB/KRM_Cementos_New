@@ -22,7 +22,7 @@
 
       if(!errorFound){
         $("input[name^='answer-']").each(function(index){
-          if ($(this).val() == 0 || ($(this).val() == 2 && $(this).parent().find('textarea').val() == '')){
+          if ($(this).val() == 0 || ($(this).val() == 1 && $(this).parent().find('textarea').val() == '')){
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -191,9 +191,7 @@
         </div>
         <div class="card-body">
           <h4 class="mb-5">{% trans 'Parámetros de la pregunta' %}</h4>
-          <p class="mb-4"><strong>{% trans 'Alcances' %}</strong>:{% for scope in q.question.scopes.all %}
-              <span class="badge badge-secondary text-wrap mb-3">{{ scope }}</span> {% if not forloop.last %} {% endif %}
-            {% endfor %}</p>
+          <p class="mb-4"><strong>{% trans 'Alcance' %}</strong>: <span class="badge badge-secondary text-wrap mb-3">{{ q.scope.ref }} - {{ q.scope.name }}</span>
 
           <div class="question_test" data-questiontestpk="{{ q.pk }}"
           data-answer="{{ q.answer}}"

@@ -143,6 +143,6 @@
     "no": "No",
     "n-a": "Not applicable",
     "comments": "Additional comments",
-    "no-comments": "If you answer 'No' you will need to provide additional comments"
+    "no-comments": "If you answer 'Yes' you will need to provide additional comments"
   }
 }

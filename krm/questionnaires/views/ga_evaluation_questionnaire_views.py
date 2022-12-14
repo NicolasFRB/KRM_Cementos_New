@@ -100,8 +100,9 @@ class GaEvaluationQuestionnaireCreateView(FormView):
 
         from krm.questionnaires.models import (
             Question,
-            QuestionTest
+            QuestionTest,
         )
+        from krm.questionnaires.models import Scope
         from krm.users.models import User
 
         users_notificated = []
@@ -131,12 +132,16 @@ class GaEvaluationQuestionnaireCreateView(FormView):
         for question in questions_to_evaluate:
             q = Question.objects.get(
                 pk=question["pk"])
+            scope = Scope.objects.get(
+                pk=question["scope"]["scope_pk"]
+            )
             for evaluator in question["evaluators"]:
                 question_test = QuestionTest()
                 question_test.evaluation = evaluation
                 question_test.question = q
                 question_test.evaluator = User.objects.get(pk=evaluator)
                 question_test.status = 1
+                question_test.scope = scope
                 question_test.save()
                 question_test_created += 1
                 if question_test.evaluator not in users_notificated:

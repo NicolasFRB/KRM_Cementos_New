@@ -82,7 +82,6 @@
         <tr class="fw-semibold fs-6">
           <th class="text-center" width="5%">{% trans 'Acción' %}</th>
           <th class="text-center" width="15%">{% trans 'REF' %}</th>
-          <th>{% trans 'Nº de Pregunta' %}</th>
           <th>{% trans 'Enunciado' %}</th>
         </tr>
       </thead>
@@ -92,7 +91,6 @@
           <tr>
               <td class="text-center align-middle"><a href=""><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
               <td class="text-center align-middle">{{ question.ref }}</td>
-              <td class="text-center align-middle">{{ question.order }}</td>
               <td class="align-middle">{{ question.title|striptags|safe|truncatechars:200 }}</td>
             </tr>
         </tr>

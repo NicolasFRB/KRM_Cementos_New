@@ -14,6 +14,7 @@ from krm.questionnaires.models import Question
 class QuestionSerializer(serializers.ModelSerializer):
     potential_users_to_assign = serializers.SerializerMethodField()
     scopes_names = serializers.SerializerMethodField()
+    scopes = serializers.SerializerMethodField()
 
     class Meta:
         model = Question
@@ -25,6 +26,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             # 'user_to_assign',
             'potential_users_to_assign',
             'scopes_names',
+            'scopes',
         ]
         read_only_fields = [f.name for f in Question._meta.get_fields()]
 
@@ -37,6 +39,9 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     def get_scopes_names(self, obj):
         return [scope.ref for scope in obj.scopes.all()]
+
+    def get_scopes(self, obj):
+        return [{'scope_ref': scope.ref, 'scope_name': scope.name, 'scope_pk': scope.pk} for scope in obj.scopes.all()]
 
 
 class QuestionViewSet(viewsets.ModelViewSet):

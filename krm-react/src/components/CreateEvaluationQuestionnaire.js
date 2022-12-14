@@ -42,11 +42,6 @@ function CreateEvaluationQuestionnaire(props) {
     setNQuestionTests(nQuestionTests);
   }, [selectedQuestions]);
 
-  // useEffect(() => {
-  //   window.CustomDatatables.destroy();
-  //   window.CustomDatatables.init();
-  // }, []);
-
   const sendForm = (e) => {
     e.preventDefault();
     if (formData.completed === false) {
@@ -71,7 +66,7 @@ function CreateEvaluationQuestionnaire(props) {
               <div className="col col-12 col-sm-6">
                 <SelectQuestionnaire questionnaire={questionnaire} setQuestionnaire={setQuestionnaire} scopes={scopes} setScopes={setScopes} setScopesSelected={setScopesSelected} />
               </div>
-              {questionnaire.value !== 0 && questions.length > 0 && (
+              {questionnaire.value !== 0 && (
                 <div className="col col-12 col-sm-6" key={questionnaire.value}>
                   <SelectScopes scopes={scopes} setScopesSelected={setScopesSelected} />
                 </div>
@@ -82,8 +77,8 @@ function CreateEvaluationQuestionnaire(props) {
         </div>
         <div className="col-12">
           <h3 className="mb-5">{t('q.step-3')}</h3>
-          {questionnaire.value !== 0 ? (
-            <SelectQuestions questionnaire={questionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} scopesSelected={scopesSelected} questions={questions} setQuestions={setQuestions} />
+          {(questionnaire.value !== 0 && scopesSelected && scopesSelected.length > 0) ? (
+            <SelectQuestions questionnaire={questionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} scopesSelected={scopesSelected} questions={questions} setQuestions={setQuestions} scopes={scopes} />
           ) : (
             <div className="alert alert-primary">{t('q.select-questionnaire')}</div>
           )}
@@ -106,6 +101,7 @@ function CreateEvaluationQuestionnaire(props) {
               <input type="hidden" name="questions_to_evaluate" value={JSON.stringify(selectedQuestions.map((question) => {
                 return {
                   pk: question.pk,
+                  scope: question.scope,
                   evaluators: question.evaluators.map((evaluator) => {
                     return evaluator.value
                   })
