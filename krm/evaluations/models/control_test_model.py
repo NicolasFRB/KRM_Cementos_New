@@ -148,6 +148,9 @@ class ControlTest(AuditModel):
             "evaluation_ref": self.evaluation.ref,
             "evaluation_date_begin": self.evaluation.date_begin,
             "evaluation_date_intermediate": self.evaluation.date_intermediate,
+            "certification_year": self.evaluation.certification_year,
+            "certification_period": self.evaluation.certification_period,
+            "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WO", user = self.control_test_owner, rol = 'control_test_owner'),
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_owner.html", context
@@ -164,7 +167,7 @@ class ControlTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Controles pendientes de completar"),
+            _("KRM Tool - Evaluación de controles de Compliance"),
             from_email,
             self.control_test_owner.email,
         )
@@ -189,7 +192,10 @@ class ControlTest(AuditModel):
             "user_email": self.control_test_supervisor.email,
             "evaluation_ref": self.evaluation.ref,
             "evaluation_date_begin": self.evaluation.date_begin,
-            "evaluation_date_intermediate": self.evaluation.date_intermediate,
+            "evaluation_date_end": self.evaluation.date_end,
+            "certification_year": self.evaluation.certification_year,
+            "certification_period": self.evaluation.certification_period,
+            "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WS", user = self.control_test_supervisor, rol = 'control_test_supervisor'),
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_supervisor.html",
@@ -207,7 +213,7 @@ class ControlTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRC Tool - Controles pendientes de supervisar"),
+            _("KRM Tool - Evaluación de controles de Compliance"),
             from_email,
             self.control_test_supervisor.email,
         )
