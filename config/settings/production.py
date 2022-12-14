@@ -73,9 +73,6 @@ MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
 INTERNAL_IPS = ('*',)
 
 
-# WSGI
-WSGI_APPLICATION = 'config.wsgi-production.application'
-
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,
@@ -163,6 +160,9 @@ LOGGING = {
     },
 }
 
+# WSGI
+WSGI_APPLICATION = 'config.wsgi-production.application'
+
 # Celery
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
@@ -175,3 +175,6 @@ CELERY_TIMEZONE = 'Europe/Madrid'
 CELERY_TASK_DEFAULT_QUEUE = "krm"
 CELERY_TASK_DEFAULT_EXCHANGE = "krm"
 CELERY_TASK_DEFAULT_ROUTING_KEY = "krm"
+
+print(STATICFILES_STORAGE)
+print(MIDDLEWARE)
