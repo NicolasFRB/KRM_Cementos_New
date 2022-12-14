@@ -14,7 +14,7 @@ services:
     image: krm_production_django
     depends_on:
       - postgres
-      - redis
+      - redis_krm_prod
     env_file:
       - ./.envs/.prod/.django
       - ./.envs/.prod/.postgres
@@ -63,7 +63,7 @@ services:
   #     - "5555:5555"
   #   command: /start-flower
 
-  redis:
+  redis_krm_prod:
     image: redis:alpine
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
