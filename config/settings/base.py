@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path("krm")
 
-DEV = False
+DEV = env.bool('KRM_DJANGO_DEV')
 DEVJS = env.bool('KRM_DJANGO_DEVJS')
 BRAND = env.str('KRM_BRAND')
 
@@ -50,8 +50,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',
-
+    # 'whitenoise.runserver_nostatic',
 ]
 
 THIRD_PARTY_APPS = [
@@ -83,7 +82,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     "django.middleware.locale.LocaleMiddleware",
@@ -93,7 +92,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'config.urls'
 

@@ -8,8 +8,8 @@ import os
 # Base
 DEBUG = env.bool('KRM_DJANGO_DEBUG')
 # Static  files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WHITENOISE_MANIFEST_STRICT = False
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WHITENOISE_MANIFEST_STRICT = False
 # Security
 SECRET_KEY = env.str('KRM_DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = [
