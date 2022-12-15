@@ -139,10 +139,12 @@ class GaImportEvalView(FormView):
             ev_inherent['ref'] = row[0].value
             ev_inherent['company'] = row[1].value.strip().replace(' ', '').upper()
             ev_inherent['description'] = row[2].value
-            d, m , y = row[3].value.split('/')
-            ev_inherent['date_begin'] = datetime.datetime(int(y), int(m), int(d))
-            d, m , y = row[4].value.split('/')
-            ev_inherent['date_end'] = datetime.datetime(int(y), int(m), int(d))
+            # d, m , y = row[3].value.split('/')
+            # ev_inherent['date_begin'] = datetime.datetime(int(y), int(m), int(d))
+            ev_inherent['date_begin'] = row[3].value
+            # d, m , y = row[4].value.split('/')
+            # ev_inherent['date_end'] = datetime.datetime(int(y), int(m), int(d))
+            ev_inherent['date_end'] = row[4].value
             ev_inherent['certification_year'] = row[5].value
             ev_inherent['certification_period'] = row[6].value
             ev_inherent['status'] = row[7].value
@@ -157,10 +159,10 @@ class GaImportEvalView(FormView):
                 ref=dr['ref'],
                 company=Company.objects.get(ref = dr['company']),
                 description=dr['description'],
-                date_begin=dr['description'],
-                date_end=dr['description'],
-                certification_year=int(dr['description']),
-                certification_period=dr['description'],
+                date_begin=dr['date_begin'],
+                date_end=dr['date_end'],
+                certification_year=int(dr['certification_year']),
+                certification_period=dr['certification_period'],
                 status="FI",
                 admin_supervisor=User.objects.get(email = dr['admin_supervisor'])
                 # dr['status']
