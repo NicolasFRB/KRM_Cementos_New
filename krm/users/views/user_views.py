@@ -1,4 +1,8 @@
 import requests
+from openpyxl import load_workbook
+from io import BytesIO
+
+from krm.configuration.forms import ImportForm
 
 # Django
 from django.urls import reverse_lazy, reverse
@@ -14,6 +18,7 @@ from django.views.generic import (
     DetailView,
     UpdateView,
     DeleteView,
+    FormView,
 )
 
 from krm.metronic.__init__ import KTLayout
@@ -189,3 +194,34 @@ class GaUserDeleteView(DeleteView):
         return reverse_lazy(
             'users:ga_user_list'
         )
+
+
+@method_decorator([login_required, ], name='dispatch')
+class GaUserImportView(FormView):
+    template_name = 'users/GaUserImport.html'
+    form_class = ImportForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Importador de Usuarios')},
+        ]
+        context['page_title'] = _('Importador de Usuarios')
+        context['breadcrums'] = breadcrums
+        return context
+
+    def form_valid(self, form):
+        input_excel = self.request.FILES['data_file'].read()
+        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
+
+        #Evaluaciones inherentes
+        # evaluation_krm_inherent_sheet = wb['EvaluationKrmInherent']
+        print("Hello hello")
+        return super(GaUserImportView, self).form_valid(form)
+
+    def get_success_url(self):
+
+        return reverse_lazy("users:ga_import_users")
