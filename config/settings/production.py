@@ -59,6 +59,7 @@ INSTALLED_APPS += ['gunicorn']  # noqa F405
 
 # WhiteNoise
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
+INSTALLED_APPS += ['whitenoise.runserver_nostatic']  # noqa F405
 
 # Email
 # EMAIL_BACKEND = env.str('DJANGO_EMAIL_BACKEND')
