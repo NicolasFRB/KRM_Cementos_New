@@ -16,7 +16,7 @@ from krm.utils.models import AuditModel
 from krm.risks.models import DomainRisk
 
 from krm.configuration.models import Configuration
-app_name = Configuration.objects.get(pk=1).app_name
+
 
 class ControlTest(AuditModel):
     """ControlTest model.
@@ -152,7 +152,7 @@ class ControlTest(AuditModel):
             "evaluation_date_intermediate": self.evaluation.date_intermediate,
             "certification_year": self.evaluation.certification_year,
             "certification_period": self.evaluation.certification_period,
-            "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WO", user = self.control_test_owner, rol = 'control_test_owner'),
+            "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WO", user=self.control_test_owner, rol='control_test_owner'),
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_owner.html", context
@@ -160,6 +160,7 @@ class ControlTest(AuditModel):
         context = {
             "content": body_html,
             "preheader": _("Controles pendientes de completar"),
+            "BRAND": settings.BRAND
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -169,7 +170,7 @@ class ControlTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("{} - Evaluación de controles de Compliance".format(app_name)),
+            _("{} - Evaluación de controles de Compliance".format(configuration.app_name)),
             from_email,
             self.control_test_owner.email,
         )
@@ -197,7 +198,7 @@ class ControlTest(AuditModel):
             "evaluation_date_end": self.evaluation.date_end,
             "certification_year": self.evaluation.certification_year,
             "certification_period": self.evaluation.certification_period,
-            "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WS", user = self.control_test_supervisor, rol = 'control_test_supervisor'),
+            "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WS", user=self.control_test_supervisor, rol='control_test_supervisor'),
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_supervisor.html",
@@ -206,6 +207,7 @@ class ControlTest(AuditModel):
         context = {
             "content": body_html,
             "preheader": _("Controles pendientes de supervisar"),
+            "BRAND": settings.BRAND
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -215,7 +217,7 @@ class ControlTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("{} - Evaluación de controles de Compliance".format(app_name)),
+            _("{} - Evaluación de controles de Compliance".format(configuration.app_name)),
             from_email,
             self.control_test_supervisor.email,
         )

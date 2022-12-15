@@ -15,7 +15,7 @@ from django.core.mail import EmailMultiAlternatives
 from krm.utils.models import AuditModel
 
 from krm.configuration.models import Configuration
-app_name = Configuration.objects.get(pk=1).app_name
+
 
 class RiskTestResidual(AuditModel):
 
@@ -115,6 +115,7 @@ class RiskTestResidual(AuditModel):
         context = {
             "content": body_html,
             "preheader": _("Test de Riesgos pendientes de valorar"),
+            "BRAND": settings.BRAND
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -124,7 +125,7 @@ class RiskTestResidual(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("{} - Test de Riesgos pendientes de valorar".format(app_name)),
+            _("{} - Test de Riesgos pendientes de valorar".format(configuration.app_name)),
             from_email,
             self.evaluator.email,
         )

@@ -15,7 +15,7 @@ from django.core.mail import EmailMultiAlternatives
 from krm.utils.models import AuditModel
 
 from krm.configuration.models import Configuration
-app_name = Configuration.objects.get(pk=1).app_name
+
 
 class QuestionTest(AuditModel):
 
@@ -101,8 +101,8 @@ class QuestionTest(AuditModel):
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
             "user_email": self.evaluator.email,
             "evaluation_ref": self.evaluation.ref,
-            "evaluation_questionnaire_ref": self.questionnaire.ref,
-            "evaluation_questionnaire_name": self.questionnaire.name,
+            "evaluation_questionnaire_ref": self.evaluation.questionnaire.ref,
+            "evaluation_questionnaire_name": self.evaluation.questionnaire.name,
             "evaluation_date_begin": self.evaluation.date_begin,
             "evaluation_date_end": self.evaluation.date_end,
             "certification_year": self.evaluation.certification_year,
@@ -114,6 +114,7 @@ class QuestionTest(AuditModel):
         context = {
             "content": body_html,
             "preheader": _("Cuestionario pendiente de completar"),
+            "BRAND": settings.BRAND
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -123,7 +124,7 @@ class QuestionTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("{} - Cuestionario de Compliance".format(app_name)),
+            _("{} - Cuestionario de Compliance".format(configuration.app_name)),
             from_email,
             self.evaluator.email,
         )

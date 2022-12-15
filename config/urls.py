@@ -187,7 +187,6 @@ if 'rosetta' in settings.INSTALLED_APPS:
         path('rosetta/', include('rosetta.urls'))
     ]
 
-app_name = Configuration.objects.get(pk=1).app_name
-admin.site.index_title = _(app_name)
-admin.site.site_header = _(app_name)
-admin.site.site_title = _(app_name)
+admin.site.index_title = "Compliance Tool"
+admin.site.site_header = "Compliance Tool"
+admin.site.site_title = "Compliance Tool"
