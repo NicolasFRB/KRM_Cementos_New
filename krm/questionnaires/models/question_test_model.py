@@ -14,6 +14,8 @@ from django.core.mail import EmailMultiAlternatives
 # Utilities
 from krm.utils.models import AuditModel
 
+from krm.configuration.models import Configuration
+app_name = Configuration.objects.get(pk=1).app_name
 
 class QuestionTest(AuditModel):
 
@@ -121,7 +123,7 @@ class QuestionTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Cuestionario de Compliance"),
+            _("{} - Cuestionario de Compliance".format(app_name)),
             from_email,
             self.evaluator.email,
         )

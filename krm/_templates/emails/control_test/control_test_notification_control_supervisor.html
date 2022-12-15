@@ -4,7 +4,7 @@
   {% blocktrans with recovery_url=recovery_url %}
   Hola {{ user_email }},<br><br>
 
-  Tienes {{ ncontrols_pending }} evaluaciones de controles pendientes de supervisar en la plataforma <strong>KRM Tool</strong>, correspondientes a <strong>{{ evaluation_ref }}</strong>. El periodo a evaluar es {{ certification_year }} - {{ certification_period }}. Por favor, completa la evaluación antes del {{ evaluation_date_end }}.
+  Tienes {{ ncontrols_pending }} evaluaciones de controles pendientes de supervisar en la plataforma <strong>{{ CONFIGURATION.app_name }}</strong>, correspondientes a <strong>{{ evaluation_ref }}</strong>. El periodo a evaluar es {{ certification_year }} - {{ certification_period }}. Por favor, completa la evaluación antes del {{ evaluation_date_end }}.
 
   Puedes acceder a la plataforma desde <a href="{{ site_url }}">esta url</a> con tus credenciales.<br><br>
 

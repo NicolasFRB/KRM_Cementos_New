@@ -15,6 +15,8 @@ from django.core.mail import EmailMultiAlternatives
 from krm.utils.models import AuditModel
 from krm.risks.models import DomainRisk
 
+from krm.configuration.models import Configuration
+app_name = Configuration.objects.get(pk=1).app_name
 
 class ControlTest(AuditModel):
     """ControlTest model.
@@ -167,7 +169,7 @@ class ControlTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Evaluación de controles de Compliance"),
+            _("{} - Evaluación de controles de Compliance".format(app_name)),
             from_email,
             self.control_test_owner.email,
         )
@@ -213,7 +215,7 @@ class ControlTest(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Evaluación de controles de Compliance"),
+            _("{} - Evaluación de controles de Compliance".format(app_name)),
             from_email,
             self.control_test_supervisor.email,
         )

@@ -11,6 +11,8 @@ from django.core.mail import EmailMultiAlternatives
 import hashlib
 from random import choice
 
+from krm.configuration.models import Configuration
+app_name = Configuration.objects.get(pk=1).app_name
 
 def random_digits(number_digits=6):
     import random
@@ -209,7 +211,7 @@ class User(AbstractUser):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Nueva cuenta de usuario"),
+            _("{} - Nueva cuenta de usuario".format(app_name)),
             from_email,
             self.email,
         )
@@ -252,7 +254,7 @@ class User(AbstractUser):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Cambio de contraseña"),
+            _("{} - Cambio de contraseña".format(app_name)),
             from_email,
             self.email,
         )

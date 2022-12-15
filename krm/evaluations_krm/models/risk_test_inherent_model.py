@@ -14,6 +14,8 @@ from django.core.mail import EmailMultiAlternatives
 # Utilities
 from krm.utils.models import AuditModel
 
+from krm.configuration.models import Configuration
+app_name = Configuration.objects.get(pk=1).app_name
 
 class RiskTestInherent(AuditModel):
 
@@ -216,7 +218,7 @@ class RiskTestInherent(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Test de Riesgos pendientes de valorar"),
+            _("{} - Test de Riesgos pendientes de valorar".format(app_name)),
             from_email,
             self.expert.email,
         )

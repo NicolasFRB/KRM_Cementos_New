@@ -52,6 +52,9 @@ from krm.users.api import (
     UserViewSet,
 )
 
+from krm.configuration.models import Configuration
+
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'controls', ControlViewSet)
@@ -184,7 +187,7 @@ if 'rosetta' in settings.INSTALLED_APPS:
         path('rosetta/', include('rosetta.urls'))
     ]
 
-
-admin.site.index_title = _('KRM Tool')
-admin.site.site_header = _('KRM Tool')
-admin.site.site_title = _('KRM Tool')
+app_name = Configuration.objects.get(pk=1).app_name
+admin.site.index_title = _(app_name)
+admin.site.site_header = _(app_name)
+admin.site.site_title = _(app_name)
