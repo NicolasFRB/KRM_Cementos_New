@@ -69,11 +69,6 @@
 <!--begin::Container-->
 <div class="card mb-8">
   <!--begin::Card header-->
-  <div class="card-header">
-    <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
-    <!--end::Card header-->
-  </div>
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
@@ -189,33 +184,35 @@
     </div>
     <div class="row">
       <div style="margin:10px;">
+      <h5>{% trans 'Instrucciones del cuestionario de Compliance' %}</h5>
+      <br>
         <ul>       
           <li>
-            Este cuestionario debe ser cumplimentado por el Responsable del reporte dentro de los plazos establecidos.
+            {% trans 'Este cuestionario debe ser cumplimentado por el Responsable del reporte dentro de los plazos establecidos.' %}
           </li>
           <br>
           <li>
-            El reporte realizado afectará a las circunstancias reportables tanto en España como en el resto de países en los que opera Globalvia.
+            {% trans 'El reporte realizado afectará a las circunstancias reportables tanto en España como en el resto de países en los que opera Globalvia.' %}
           </li>
           <br>
           <li>
-            Las respuestas facilitadas en el cuestionario deben hacer referencia al intervalo del periodo de evaluación.
+            {% trans 'Las respuestas facilitadas en el cuestionario deben hacer referencia al intervalo del periodo de evaluación.' %}            
           </li>
           <br>
           <li>
-            En las preguntas donde se utiliza el término “relevante/s”, se refieren a circunstancias que puedan causar daños económicos o reputacionales a la concesión o al Grupo Globalvia, por motivo de su importe, repercusión mediática o trascendencia penal. A título de ejemplos, se incluirían en la categoría de “relevantes” aquellas circunstancias que se informan al órgano de administración de la concesión o de la sociedad matriz, las que puedan dar lugar a noticias negativas con repercusión en medios de comunicación, así como cualquier hecho -incluyendo litigios- que deba ser desglosado en los reportes financieros y no financieros que se publicitan.
+            {% trans 'En las preguntas donde se utiliza el término “relevante/s”, se refieren a circunstancias que puedan causar daños económicos o reputacionales a la concesión o al Grupo Globalvia, por motivo de su importe, repercusión mediática o trascendencia penal. A título de ejemplos, se incluirían en la categoría de “relevantes” aquellas circunstancias que se informan al órgano de administración de la concesión o de la sociedad matriz, las que puedan dar lugar a noticias negativas con repercusión en medios de comunicación, así como cualquier hecho -incluyendo litigios- que deba ser desglosado en los reportes financieros y no financieros que se publicitan.' %}            
           </li>
           <br>
           <li>
-            La información reportada tiene carácter confidencial y se facilita atendiendo al criterio experto del Responsable del reporte que la está facilitando, o de los responsables de las diferentes áreas que le hayan facilitado dicha información por motivo de especialidad.
+            {% trans 'La información reportada tiene carácter confidencial y se facilita atendiendo al criterio experto del Responsable del reporte que la está facilitando, o de los responsables de las diferentes áreas que le hayan facilitado dicha información por motivo de especialidad.' %}
           </li>
           <br>
           <li>
-            Con independencia de que este cuestionario se cumplimente atendiendo al periodo de evaluación, es responsabilidad del Responsable del reporte informar al Comité de Cumplimiento de forma inmediata sobre cualquier circunstancia significativa, puntualmente reportable, de la que se tenga noticia o se materialice antes de terminar el periodo de reporte.
+            {% trans 'Con independencia de que este cuestionario se cumplimente atendiendo al periodo de evaluación, es responsabilidad del Responsable del reporte informar al Comité de Cumplimiento de forma inmediata sobre cualquier circunstancia significativa, puntualmente reportable, de la que se tenga noticia o se materialice antes de terminar el periodo de reporte.' %}
           </li>
           <br>
           <li>
-            En relación con las preguntas formuladas, las respuestas “Sí” denotan una señal de alarma sobre el hecho informado, requiriendo que se detallen en el cuadro “Comentarios” las incidencias detectadas.
+            {% trans 'En relación con las preguntas formuladas, las respuestas “Sí” denotan una señal de alarma sobre el hecho informado, requiriendo que se detallen en el cuadro “Comentarios” las incidencias detectadas.' %}            
           </li>
         </ul>
       </div>
@@ -231,13 +228,20 @@
         <!--begin::Card header-->
         <div class="card-header">
           <!--begin::Card header-->
-          <div class="card-title fs-3 fw-bold">{{ q.question.ref }} - {{ q.question.title }}</div>
+          <div class="card-title fs-3 fw-bold" style="display:block;">
+            <div>
+              {{ q.question.ref }}
+            </div>
+            <div style="font-weight: 100 !important; font-size: 16px;">
+              {% for piece in q.question.title_lang_split %}
+                {{ piece }}{% if not forloop.last %}<br><br>{% endif %}
+              {% endfor %}
+            </div>
+          </div>
           <!--end::Card header-->
         </div>
         <div class="card-body">
-          <h4 class="mb-5">{% trans 'Parámetros de la pregunta' %}</h4>
-          <p class="mb-4"><strong>{% trans 'Alcance' %}</strong>: <span class="badge badge-secondary text-wrap mb-3">{{ q.scope.ref }} - {{ q.scope.name }}</span>
-
+          <p class="mb-4"><strong>{% trans 'Alcance' %}</strong>&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span>
           <div class="question_test" data-questiontestpk="{{ q.pk }}"
           data-answer="{{ q.answer}}"
           data-description="{{ q.description|default_if_none:'' }}" ></div>
