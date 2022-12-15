@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 
 from django.conf import settings
+from krm.configuration.models import Configuration
 
 
 def get_menu_urls(request, pk=None):
@@ -306,4 +307,5 @@ def get_menu_urls(request, pk=None):
         'QUESTIONNAIRES_URLS': questionnaires_urls,
         'QUESTIONS_URLS': questions_urls,
         'EVALUATIONS_QUESTIONNAIRES_URLS': evaluation_questionnaires_urls,
+        'CONFIGURATION': Configuration.objects.get(pk=1)
     }
