@@ -230,7 +230,7 @@
           <!--begin::Card header-->
           <div class="card-title fs-3 fw-bold" style="display:block;">
             <div>
-              {{ q.question.ref }}
+              <p class="mb-4">&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span>
             </div>
             <div style="font-weight: 100 !important; font-size: 16px;">
               {% for piece in q.question.title_lang_split %}
@@ -241,7 +241,7 @@
           <!--end::Card header-->
         </div>
         <div class="card-body">
-          <p class="mb-4"><strong>{% trans 'Alcance' %}</strong>&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span>
+          <!-- <p class="mb-4"><strong>{% trans 'Alcance' %}</strong>&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span> -->
           <div class="question_test" data-questiontestpk="{{ q.pk }}"
           data-answer="{{ q.answer}}"
           data-description="{{ q.description|default_if_none:'' }}" ></div>
