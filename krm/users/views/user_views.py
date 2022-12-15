@@ -240,7 +240,7 @@ class GaUserImportView(FormView):
                 user['last_name'] = str(row[2].value).title()
                 user['password'] = str(row[3].value)
                 user['welcome_email'] = str(row[4].value)
-                user['companies'] = str(row[5].value).split(',')
+                user['companies'] = [x.strip() for x in str(row[5].value).split(',')]
         
                 # Tenemos que comprobar que el email esté bien formado
                 if not re.match(
@@ -319,8 +319,8 @@ class GaUserImportView(FormView):
             if c['password'] != '':
                 u.set_password(c['password'])
 
-            for c in c['companies']:
-                company_obj = Company.objects.filter(ref=c).first()
+            for comp in c['companies']:
+                company_obj = Company.objects.filter(ref=comp).first()
                 u.companies.add(company_obj)
 
             u.save()
