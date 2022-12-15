@@ -261,7 +261,7 @@ class GaQuestionnaireImport(FormView):
             """
 
             questionnaire['ref'] = str(row[0].value).replace(' ', '')
-            questionnaire['name'] = str(row[1].value).replace(' ', '')
+            # questionnaire['name'] = str(row[1].value).replace(' ', '')
 
             # Comprobamos que no exista ya un cuestionario con esa referencia
             if Questionnaire.objects.filter(ref=questionnaire['ref']).count() > 0:
