@@ -37,8 +37,6 @@ from krm.users.decorators import (
     is_global_admin,
 )
 
-from krm.users.tasks import send_welcome_email
-
 
 @method_decorator([is_global_admin], name='dispatch')
 class GaUserListView(ListView):
