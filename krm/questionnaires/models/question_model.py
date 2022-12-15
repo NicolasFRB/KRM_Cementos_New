@@ -53,4 +53,4 @@ class Question(AuditModel):
 
     @property
     def title_lang_split(self):
-        return self.title.split('-lang_split-')
+        return self.title.split('ENG:')
