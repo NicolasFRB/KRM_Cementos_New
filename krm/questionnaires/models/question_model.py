@@ -50,3 +50,7 @@ class Question(AuditModel):
     @property
     def questionnaires_pk(self):
         return list(set([scope.questionnaire.pk for scope in self.scopes.all()]))
+
+    @property
+    def title_lang_split(self):
+        return self.title.split('-lang_split-')
