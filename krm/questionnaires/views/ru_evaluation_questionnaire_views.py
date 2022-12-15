@@ -70,10 +70,10 @@ class RuEvaluationQuestionnaireListView(ListView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Cuestionsrios'), 'url': reverse(
+            {'title': _('Evaluaciones de Cuestionsrios de Compliance'), 'url': reverse(
                 'evaluation_questionnaires:ru_evaluation_questionnaire_list')},
         ]
-        context['page_title'] = _('Evaluaciones de Cuestionarios')
+        context['page_title'] = _('Evaluaciones de Cuestionarios de Compliance')
         context['breadcrums'] = breadcrums
 
         evaluations_pending = EvaluationQuestionnaire.objects.filter(
@@ -124,7 +124,7 @@ class RuEvaluationQuestionnaireCompleteView(DetailView, FormView):
         context = KTLayout.init(context)
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Cuestionario'), 'url': reverse(
+            {'title': _('Evaluación de Cuestionario de Compliance'), 'url': reverse(
                 'evaluation_questionnaires:ru_evaluation_questionnaire_list')},
             {'title': self.object.ref}
         ]
@@ -136,7 +136,7 @@ class RuEvaluationQuestionnaireCompleteView(DetailView, FormView):
         context['questions'] = QuestionTest.objects.filter(
             evaluation=self.object,
             evaluator=self.request.user
-        )
+        ).order_by('scope', 'question__ref')
 
         return context
 
