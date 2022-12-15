@@ -1,6 +1,7 @@
 import requests
 from openpyxl import load_workbook
 from io import BytesIO
+import re
 
 from krm.configuration.forms import ImportForm
 
@@ -25,6 +26,7 @@ from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
 from krm.users.models import User
+from krm.companies.models import Company
 
 from krm.users.forms.user_form import(
     UserCreateForm,
@@ -34,6 +36,8 @@ from krm.users.forms.user_form import(
 from krm.users.decorators import (
     is_global_admin,
 )
+
+from krm.users.tasks import send_welcome_email
 
 
 @method_decorator([is_global_admin], name='dispatch')
@@ -218,8 +222,120 @@ class GaUserImportView(FormView):
         wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
 
         #Evaluaciones inherentes
-        # evaluation_krm_inherent_sheet = wb['EvaluationKrmInherent']
-        print("Hello hello")
+        users_to_create = []
+
+        nrow = 0
+        rows = wb['USER IMPORT'].rows
+        for i,row in enumerate(rows):
+            if nrow < 1:
+                nrow += 1
+                continue
+
+            user = {}
+
+            if (row[0].value != '' and
+                    row[1].value != '' and
+                    row[2].value != '' and
+                    row[3].value != ''):
+                user['email'] = str(row[0].value).lower().replace(' ', '')
+                user['first_name'] = str(row[1].value).title()
+                user['last_name'] = str(row[2].value).title()
+                user['password'] = str(row[3].value)
+                user['welcome_email'] = str(row[4].value)
+                user['companies'] = str(row[5].value).split(',')
+        
+                # Tenemos que comprobar que el email esté bien formado
+                if not re.match(
+                    '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
+                    user['email'].lower()
+                ):
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _(u'En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(i+1)
+                        )
+                    )
+                    return super(
+                        GaUserImportView,
+                        self
+                    ).form_invalid(form)
+                    break
+
+                # Tenemos que comprobar que no esté dado de alta
+                if User.objects.filter(email=user['email']).count() > 0:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _(u'El email introducido en la fila %s ya está registrado por otro usuario') % str(i+1)
+                        )
+                    )
+                    return super(
+                        GaUserImportView,
+                        self
+                    ).form_invalid(form)
+                    break
+
+                # Tenemos que comprobar que las compañías especificadas existen
+                for c in user['companies']:
+                    if Company.objects.filter(ref=c).count() == 0:
+                        messages.add_message(
+                            self.request,
+                            messages.ERROR,
+                            (
+                                _(u'La compañía %s de la fila %s no existe!') % (str(c), str(i+1))
+                            )
+                        )
+                        return super(
+                            GaUserImportView,
+                            self
+                        ).form_invalid(form)
+                        break
+
+            else:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _(u'En la fila %s falta algún campo obligatorio (columnas 1,2,3,4). Se ha abortado la importación') % str(i+1)
+                    )
+                )
+                return super(
+                    GaUserImportView,
+                    self
+                ).form_invalid(form)
+                break
+
+            users_to_create.append(user)
+
+        # Vamos a crear cosas =)
+        for c in users_to_create:
+            u = User.objects.create(
+                first_name=c['first_name'],
+                last_name=c['last_name'],
+                email=c['email']
+            )
+            u.add_action('User created')
+
+            if c['password'] != '':
+                u.set_password(c['password'])
+
+            for c in c['companies']:
+                company_obj = Company.objects.filter(ref=c).first()
+                u.companies.add(company_obj)
+
+            u.save()
+
+            if c['welcome_email'] == 'Y':
+                send_welcome_email.delay(u.pk)
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS, (
+                _(u'Se han creado %s usuarios para la compañía') % str(len(users_to_create)))
+        )
+
         return super(GaUserImportView, self).form_valid(form)
 
     def get_success_url(self):
