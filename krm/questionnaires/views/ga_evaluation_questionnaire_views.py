@@ -215,8 +215,11 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
             text_wrap = workbook.add_format({'text_wrap': True})
 
             columns = [
+                "QUESTIONNAIRE",
+                "QUESTION_REF",
                 "QUESTION",
                 "EVALUATOR",
+                "SCOPE",
                 "ANSWER",
                 "STATUS",
                 "DESCRIPTION",
@@ -226,23 +229,29 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
             for index, col_name in enumerate(columns):
                 worksheet.write(0, index, col_name, bold)
 
-            worksheet.set_column(0, 1, 70)  # Question
-            worksheet.set_column(1, 1, 25)  # Evaluator
-            worksheet.set_column(2, 1, 25)  # Answer
-            worksheet.set_column(3, 1, 25)  # Status
-            worksheet.set_column(4, 1, 25)  # Description
-            worksheet.set_column(5, 1, 25)  # Date
+            worksheet.set_column(0, 1, 25)  # Questionnnaire
+            worksheet.set_column(0, 2, 70)  # Question
+            worksheet.set_column(0, 3, 25)  # Question_REF
+            worksheet.set_column(1, 4, 25)  # Evaluator
+            worksheet.set_column(2, 5, 25)  # Scope
+            worksheet.set_column(3, 6, 25)  # Answer
+            worksheet.set_column(4, 7, 25)  # Status
+            worksheet.set_column(5, 8, 25)  # Description
+            worksheet.set_column(6, 9, 25)  # Date
 
             row = 1
 
             for question in evaluation.question_tests.all():
-                worksheet.write(row, 0, question.question.title, text_wrap)
-                worksheet.write(row, 1, question.evaluator.username)
-                worksheet.write(row, 2, question.get_answer_display())
-                worksheet.write(row, 3, question.get_status_display())
-                worksheet.write(row, 4, question.description)
+                worksheet.write(row, 0, evaluation.questionnaire.name, text_wrap)
+                worksheet.write(row, 1, question.question.ref, text_wrap)
+                worksheet.write(row, 2, question.question.title, text_wrap)
+                worksheet.write(row, 3, question.evaluator.username)
+                worksheet.write(row, 4, question.scope.name)
+                worksheet.write(row, 5, question.get_answer_display())
+                worksheet.write(row, 6, question.get_status_display())
+                worksheet.write(row, 7, question.description)
                 worksheet.write(
-                    row, 5, question.modified.strftime("%d/%m/%Y %H:%M:%S"))
+                    row, 8, question.modified.strftime("%d/%m/%Y %H:%M:%S"))
                 row += 1
 
             # Close the workbook before sending the data.
