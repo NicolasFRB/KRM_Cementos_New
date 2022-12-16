@@ -81,9 +81,10 @@ class UserCreateForm(forms.ModelForm):
 
     def save(self):
         user = super().save(commit=True)
+        from krm.users.tasks import send_welcome_email
 
         if self.cleaned_data.get("send_email_init_password"):
-            user.send_welcome_email()
+            send_welcome_email.delay(user.pk)
 
         if self.cleaned_data["password1"] != '':
             user.set_password(self.cleaned_data["password1"])

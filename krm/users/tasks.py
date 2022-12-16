@@ -12,21 +12,21 @@ from krm.users.models import User
 logger = logging.getLogger(__name__)
 
 
-# @celery_app.task
-# def send_welcome_email(user_pk):
-#     """ Tarea que se encargará de enviar un email de bienvenida a KRC Tool """
+@celery_app.task
+def send_welcome_email(user_pk):
+    """ Tarea que se encargará de enviar un email de bienvenida a KRC Tool """
 
-#     logger.info(
-#         "Comienzo de envío de mail de bienvenida para el usuario: {}".format(
-#             user_pk)
-#     )
-#     try:
-#         user = User.objects.get(pk=user_pk)
-#     except User.DoesNotExist:
-#         logger.error("Usuario no encontrado con pk: %s" % user_pk)
-#         return 1
+    logger.info(
+        "Comienzo de envío de mail de bienvenida para el usuario: {}".format(
+            user_pk)
+    )
+    try:
+        user = User.objects.get(pk=user_pk)
+    except User.DoesNotExist:
+        logger.error("Usuario no encontrado con pk: %s" % user_pk)
+        return 1
 
-#     user.send_welcome_email()
+    user.send_welcome_email()
 
 
 # @celery_app.task
