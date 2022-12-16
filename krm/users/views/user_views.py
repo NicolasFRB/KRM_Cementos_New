@@ -308,6 +308,7 @@ class GaUserImportView(FormView):
             users_to_create.append(user)
 
         # Vamos a crear cosas =)
+        from krm.users.tasks import send_welcome_email
         for c in users_to_create:
             u = User.objects.create(
                 first_name=c['first_name'],
@@ -323,10 +324,10 @@ class GaUserImportView(FormView):
                 company_obj = Company.objects.filter(ref=comp).first()
                 u.companies.add(company_obj)
 
-            u.save()
+            send_welcome_email.delay(u.pk)
 
             if c['welcome_email'] == 'Y':
-                u.send_welcome_email.delay(u.pk)
+                u.send_welcome_email()
 
         messages.add_message(
             self.request,
