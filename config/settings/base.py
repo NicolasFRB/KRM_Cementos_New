@@ -13,6 +13,8 @@ APPS_DIR = ROOT_DIR.path("krm")
 DEV = env.bool('KRM_DJANGO_DEV')
 DEVJS = env.bool('KRM_DJANGO_DEVJS')
 BRAND = env.str('KRM_BRAND')
+KRM_DEBUG_TOOLBAR = env.bool('KRM_DEBUG_TOOLBAR', False)
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '9mgu=0t7adojsh2zgkfn2kw(a!@ob(t^3f6ebch3_q7(2=yn)v'
