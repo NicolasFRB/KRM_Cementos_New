@@ -100,6 +100,8 @@ class RiskTestResidual(AuditModel):
 
         configuration = Configuration.objects.first()
 
+        translation.activate(self.evaluator.notification_language)
+
         # Esto notificará al control owner de que tiene controles por rellenar
         context = {
             "site_url": settings.SITE_URL,

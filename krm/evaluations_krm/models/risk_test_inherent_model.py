@@ -195,6 +195,8 @@ class RiskTestInherent(AuditModel):
 
         configuration = Configuration.objects.first()
 
+        translation.activate(self.expert.notification_language)
+
         context = {
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),

@@ -41,6 +41,7 @@ class UserCreateForm(forms.ModelForm):
             'is_superuser',
             'companies',
             'companies_admin',
+            'notification_language'
         )
 
     def __init__(self, *args, **kwargs):
@@ -109,6 +110,7 @@ class UserUpdateForm(forms.ModelForm):
             'companies',
             'companies_admin',
             'is_superuser',
+            'notification_language',
             'is_active'
         )
 
@@ -157,6 +159,7 @@ class UserAdminCreateForm(forms.ModelForm):
             'first_name',
             'last_name',
             'is_active',
+            'notification_language',
             'is_superuser',
         )
 
@@ -225,8 +228,11 @@ class UserAdmin(BaseUserAdmin):
                 (
                     'email',
                     'first_name',
-                    'last_name'
+                    'last_name',
                 ),
+                (
+                    'notification_language',
+                )
             )
         }),
         (u'Empresas', {

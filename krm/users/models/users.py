@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
+from django.utils import translation
 
 import hashlib
 from random import choice
@@ -67,6 +68,18 @@ class User(AbstractUser):
         null=True,
         max_length=140,
         verbose_name=_("Cargo que ocupa"),
+    )
+
+    NOTIFICATION_LANT_CHOICES = (
+        ('es', _('Español')),
+        ('en', _('English')),
+    )
+
+    notification_language = models.CharField(
+        max_length=2,
+        choices=NOTIFICATION_LANT_CHOICES,
+        default='es',
+        verbose_name=_("Idioma de notificaciones"),
     )
 
     @property
@@ -188,6 +201,8 @@ class User(AbstractUser):
 
         configuration = Configuration.objects.first()
 
+        translation.activate(self.notification_language)
+
         self.update_remember_key()
         remember_url = settings.SITE_URL + reverse(
             "auth:type_your_password", kwargs={"remember_key": self.remember_key}
@@ -230,6 +245,8 @@ class User(AbstractUser):
         from krm.configuration.models import Configuration
 
         configuration = Configuration.objects.first()
+
+        translation.activate(self.notification_language)
 
         self.update_remember_key()
         remember_url = settings.SITE_URL + reverse(

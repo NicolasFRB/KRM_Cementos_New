@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
+from django.utils import translation
 
 # Utilities
 from krm.utils.models import AuditModel
@@ -142,6 +143,8 @@ class ControlTest(AuditModel):
 
         configuration = Configuration.objects.first()
 
+        translation.activate(self.control_test_owner.notification_language)
+
         # Esto notificará al control owner de que tiene controles por rellenar
         context = {
             "site_url": settings.SITE_URL,
@@ -187,6 +190,8 @@ class ControlTest(AuditModel):
         from krm.configuration.models import Configuration
 
         configuration = Configuration.objects.first()
+        translation.activate(
+            self.control_test_supervisor.notification_language)
 
         # Esto notificará al control supervisor de que tiene controles por supervisar
         context = {
