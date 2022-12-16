@@ -86,7 +86,6 @@ class LoginView(FormView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse('users:dashboard'))
-
         else:
             return super(LoginView, self).dispatch(
                 request, request,
@@ -151,8 +150,6 @@ class TypeYourPassword(FormView):
         return context
 
     def get_initial(self):
-        user = get_object_or_404(
-            User, remember_key=self.kwargs.get('remember_key'))
         return {
             'remember_key': self.kwargs.get('remember_key')
         }
@@ -160,10 +157,15 @@ class TypeYourPassword(FormView):
     def dispatch(self, request, *args, **kwargs):
         logout(request)
         remember_key = kwargs['remember_key']
-        try:
+        if User.objects.filter(remember_key=remember_key).count() == 0:
+            self.user = None
+            messages.add_message(
+                self.request, messages.ERROR,
+                _('Enlace caducado, vuelva a solicitar recordar contraseña'))
+
+            return HttpResponseRedirect(reverse_lazy('auth:remember_password_form'))
+        else:
             self.user = User.objects.get(remember_key=remember_key)
-        except User.DoesNotExist:
-            raise Http404
         return super(TypeYourPassword, self).dispatch(
             request, request, *args, **kwargs)
 
@@ -192,7 +194,7 @@ class RememberEmailSended(TemplateView):
         return context
 
 
-@login_required
+@ login_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('auth:login'))
