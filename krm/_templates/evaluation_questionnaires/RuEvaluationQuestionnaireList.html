@@ -39,7 +39,11 @@
           {% for evaluation in evaluations_pending %}
           <tr>
             <td class="text-center align-middle"><a href="{% url 'evaluation_questionnaires:ru_evaluation_questionnaire_complete' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-            <td class="text-center align-middle">{{ evaluation.ref }}</td>
+            <td class="text-center align-middle">
+              <a href="{% url 'evaluation_questionnaires:ru_evaluation_questionnaire_complete' evaluation.pk %}">
+                <span class="badge badge-primary">{{ evaluation.ref }}</span>
+              </a>  
+            </td>
             <td class="align-middle">
               <div style="display:flex;">
                 <div style="width:90%">
