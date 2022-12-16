@@ -54,7 +54,7 @@
                       {% for rc in domain_risk.risks %}
                         <tr>
                           <td width="20px" class="align-middle"><input type="checkbox" name="risk_pk" class="checkboxinput form-check-input" id="risk_{{ rc.pk }}" {% if rc.active %}checked="checked" {% endif %} value="{{rc.pk }}"></td>
-                          <td class="text-center align-middle"><a href="{% url 'risks:ga_risk_detail' rc.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+                          <td class="text-center align-middle"><a href="{% url 'risks:ga_risk_detail' rc.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
                           <td class="text-center align-middle">{{ rc.risk.ref }}</td>
                           <td class="align-middle">{{ rc.risk.name|striptags|safe|truncatechars:200 }}</td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.description|striptags }}"></i></td>

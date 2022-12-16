@@ -156,6 +156,7 @@ class ControlTest(AuditModel):
             "certification_year": self.evaluation.certification_year,
             "certification_period": self.evaluation.certification_period,
             "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WO", user=self.control_test_owner, rol='control_test_owner'),
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_owner.html", context
@@ -204,6 +205,7 @@ class ControlTest(AuditModel):
             "certification_year": self.evaluation.certification_year,
             "certification_period": self.evaluation.certification_period,
             "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WS", user=self.control_test_supervisor, rol='control_test_supervisor'),
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_supervisor.html",

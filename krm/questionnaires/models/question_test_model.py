@@ -109,6 +109,7 @@ class QuestionTest(AuditModel):
             "evaluation_date_end": self.evaluation.date_end,
             "certification_year": self.evaluation.certification_year,
             "certification_period": self.evaluation.certification_period,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string(
             "emails/questionnaires/questionnaires_to_complete.html", context

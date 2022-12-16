@@ -124,7 +124,7 @@
         {% for evaluation in evaluations_pending %}
         <tr>
           <td class="text-center align-middle"><a href="{% url 'evaluations:ga_evaluation_detail' evaluation.pk %}"><i
-                class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+                class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
           <td class="align-middle">{{ evaluation.ref }}</td>
           <td class="align-middle">
             <div style="display:flex;">
@@ -243,7 +243,7 @@
         {% for evaluation in evaluations_finished %}
         <tr>
           <td class="text-center align-middle"><a href="{% url 'evaluations:ga_evaluation_detail' evaluation.pk %}"><i
-                class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+                class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
           <td class="align-middle">{{ evaluation.ref }}</td>
           <td class="align-middle">
             <div style="display:flex;">
