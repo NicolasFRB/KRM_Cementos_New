@@ -195,13 +195,14 @@ class User(AbstractUser):
 
         context = {
             "remember_url": remember_url,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string(
             "emails/users/welcome_email.html", context)
         context = {
             "content": body_html,
             "preheader": _("Establecer contraseña"),
-            "BRAND": settings.BRAND
+            "BRAND": settings.BRAND,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -237,14 +238,15 @@ class User(AbstractUser):
         )
 
         context = {
-            "remember_url": remember_url
+            "remember_url": remember_url,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string(
             "emails/users/remember_password.html", context)
         context = {
             "content": body_html,
             "preheader": _("Recordar contraseña"),
-            "BRAND": settings.BRAND
+            "BRAND": settings.BRAND,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM

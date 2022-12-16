@@ -202,6 +202,7 @@ class RiskTestInherent(AuditModel):
             "evaluation_ref": self.evaluation.ref,
             "evaluation_date_begin": self.evaluation.date_begin,
             "evaluation_date_end": self.evaluation.date_end,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string(
             "emails/risk_test_inherent/risk_test_email_expert.html", context
