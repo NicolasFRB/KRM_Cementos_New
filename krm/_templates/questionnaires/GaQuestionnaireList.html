@@ -34,7 +34,7 @@
       <tbody>
           {% for questionnaire in questionnaires %}
           <tr>
-            <td class="align-middle text-center"><a href="{% url 'questionnaires:ga_questionnaire_detail' questionnaire.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="align-middle text-center"><a href="{% url 'questionnaires:ga_questionnaire_detail' questionnaire.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="align-middle">{{ questionnaire.ref }}</td>
             <td class="align-middle">{{ questionnaire.name }}</td>
             <td>

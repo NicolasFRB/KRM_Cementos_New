@@ -105,7 +105,7 @@
         {% for risk in domain_risk.risks.all %}
         <tr>
           <td class="text-center"><a href="{% url 'risks:ga_risk_detail' risk.pk %}"><i
-                class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+                class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
           <td class="text-center">{{ risk.ref }}</td>
           <td>{{ risk.name }}</td>
           <td>{{ risk.description|striptags|safe|truncatechars:200 }}</td>

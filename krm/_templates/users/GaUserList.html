@@ -37,7 +37,7 @@
       <tbody>
           {% for user in users %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'users:ga_user_detail' user.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'users:ga_user_detail' user.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="align-middle">{{ user.email|default_if_none:"" }}</td>
             <td class="align-middle">{{ user.first_name|default_if_none:"" }}</td>
             <td class="align-middle">{{ user.last_name|default_if_none:"" }}</td>

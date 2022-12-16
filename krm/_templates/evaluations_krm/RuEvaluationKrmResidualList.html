@@ -51,7 +51,7 @@
       <tbody>
           {% for evaluation in evaluations_risk_residual_pending %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_risk_residual_complete' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_risk_residual_complete' evaluation.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">
@@ -121,7 +121,7 @@
       <tbody>
           {% for evaluation in evaluations_risk_residual_delivered %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_krm_residual_detail' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_krm_residual_detail' evaluation.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">
@@ -191,7 +191,7 @@
       <tbody>
           {% for evaluation in evaluations_risk_residual_finished %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_krm_residual_detail' evaluation.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ru_evaluation_krm_residual_detail' evaluation.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">
