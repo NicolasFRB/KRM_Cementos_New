@@ -22,6 +22,7 @@ from django.views.generic import (
     FormView,
 )
 
+from django.utils import translation
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
@@ -241,6 +242,7 @@ class GaUserImportView(FormView):
                 user['password'] = str(row[3].value)
                 user['welcome_email'] = str(row[4].value)
                 user['companies'] = [x.strip() for x in str(row[5].value).split(',')]
+                user['notification_language'] = str(row[6].value).strip()
         
                 # Tenemos que comprobar que el email esté bien formado
                 if not re.match(
@@ -291,6 +293,19 @@ class GaUserImportView(FormView):
                         ).form_invalid(form)
                         break
 
+                if user['notification_language'].lower() not in ['es', 'en']:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _(u'El lenguaje de notificación %s de la fila %s no existe! (Use "en" o "es" para inlgés o español, respectivamente)') % (str(user['notification_language']), str(i+1))
+                        )
+                    )
+                    return super(
+                        GaUserImportView,
+                        self
+                    ).form_invalid(form)
+
             else:
                 messages.add_message(
                     self.request,
@@ -313,8 +328,10 @@ class GaUserImportView(FormView):
             u = User.objects.create(
                 first_name=c['first_name'],
                 last_name=c['last_name'],
-                email=c['email']
+                email=c['email'],
+                notification_language = c['notification_language'],
             )
+            translation.activate(u.notification_language)
             u.add_action('User created')
 
             if c['password'] != '':
