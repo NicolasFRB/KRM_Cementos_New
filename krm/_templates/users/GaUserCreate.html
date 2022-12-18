@@ -61,6 +61,12 @@
               {{ form.send_email_init_password|as_crispy_field }}
             </div>
           </div>
+          <div class="col-12 col-md-4 mb-4">
+            <legend>{% trans 'Idioma de notificación' %}</legend>
+            <div class="mb-4 col-12">
+              {{ form.notification_language|as_crispy_field }}
+            </div>
+          </div>
           <div class="separator my-10"></div>
           <div class="col-12 col-md-6">
             <legend>{% trans 'Empresas a la que pertenece' %}</legend>
