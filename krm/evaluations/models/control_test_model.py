@@ -164,7 +164,8 @@ class ControlTest(AuditModel):
         context = {
             "content": body_html,
             "preheader": _("Controles pendientes de completar"),
-            "BRAND": settings.BRAND
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -214,7 +215,8 @@ class ControlTest(AuditModel):
         context = {
             "content": body_html,
             "preheader": _("Controles pendientes de supervisar"),
-            "BRAND": settings.BRAND
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM

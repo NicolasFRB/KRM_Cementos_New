@@ -118,7 +118,8 @@ class RiskTestResidual(AuditModel):
         context = {
             "content": body_html,
             "preheader": _("Test de Riesgos pendientes de valorar"),
-            "BRAND": settings.BRAND
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
