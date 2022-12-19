@@ -197,6 +197,10 @@ class RiskTestInherent(AuditModel):
 
         translation.activate(self.expert.notification_language)
 
+        if self.evaluation.certification_period:
+            period = " (%s)" % self.evaluation.certification_period
+        else:
+            period = ""
         context = {
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
@@ -204,6 +208,8 @@ class RiskTestInherent(AuditModel):
             "evaluation_ref": self.evaluation.ref,
             "evaluation_date_begin": self.evaluation.date_begin,
             "evaluation_date_end": self.evaluation.date_end,
+            "certification_year": self.evaluation.certification_year,
+            "certification_period": period,
             "app_name": configuration.app_name,
         }
         body_html = render_to_string(
