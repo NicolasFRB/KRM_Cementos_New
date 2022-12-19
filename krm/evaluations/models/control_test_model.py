@@ -146,6 +146,10 @@ class ControlTest(AuditModel):
         translation.activate(self.control_test_owner.notification_language)
 
         # Esto notificará al control owner de que tiene controles por rellenar
+        if self.evaluation.certification_period:
+            period = " (%s)" % self.evaluation.certification_period
+        else:
+            period = ""
         context = {
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
@@ -154,7 +158,7 @@ class ControlTest(AuditModel):
             "evaluation_date_begin": self.evaluation.date_begin,
             "evaluation_date_intermediate": self.evaluation.date_intermediate,
             "certification_year": self.evaluation.certification_year,
-            "certification_period": self.evaluation.certification_period,
+            "certification_period": period,
             "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WO", user=self.control_test_owner, rol='control_test_owner'),
             "app_name": configuration.app_name,
         }
@@ -196,6 +200,10 @@ class ControlTest(AuditModel):
             self.control_test_supervisor.notification_language)
 
         # Esto notificará al control supervisor de que tiene controles por supervisar
+        if self.evaluation.certification_period:
+            period = " (%s)" % self.evaluation.certification_period
+        else:
+            period = ""
         context = {
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
@@ -204,7 +212,7 @@ class ControlTest(AuditModel):
             "evaluation_date_begin": self.evaluation.date_begin,
             "evaluation_date_end": self.evaluation.date_end,
             "certification_year": self.evaluation.certification_year,
-            "certification_period": self.evaluation.certification_period,
+            "certification_period": period,
             "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WS", user=self.control_test_supervisor, rol='control_test_supervisor'),
             "app_name": configuration.app_name,
         }
