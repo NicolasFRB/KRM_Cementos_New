@@ -220,12 +220,12 @@ class GaUserImportView(FormView):
         input_excel = self.request.FILES['data_file'].read()
         wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
 
-        #Evaluaciones inherentes
+        # Evaluaciones inherentes
         users_to_create = []
 
         nrow = 0
         rows = wb['USER IMPORT'].rows
-        for i,row in enumerate(rows):
+        for i, row in enumerate(rows):
             if nrow < 1:
                 nrow += 1
                 continue
@@ -241,9 +241,10 @@ class GaUserImportView(FormView):
                 user['last_name'] = str(row[2].value).title()
                 user['password'] = str(row[3].value)
                 user['welcome_email'] = str(row[4].value)
-                user['companies'] = [x.strip() for x in str(row[5].value).split(',')]
+                user['companies'] = [x.strip()
+                                     for x in str(row[5].value).split(',')]
                 user['notification_language'] = str(row[6].value).strip()
-        
+
                 # Tenemos que comprobar que el email esté bien formado
                 if not re.match(
                     '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
@@ -253,7 +254,8 @@ class GaUserImportView(FormView):
                         self.request,
                         messages.ERROR,
                         (
-                            _(u'En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(i+1)
+                            _(u'En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(
+                                i+1)
                         )
                     )
                     return super(
@@ -268,7 +270,8 @@ class GaUserImportView(FormView):
                         self.request,
                         messages.ERROR,
                         (
-                            _(u'El email introducido en la fila %s ya está registrado por otro usuario') % str(i+1)
+                            _(u'El email introducido en la fila %s ya está registrado por otro usuario') % str(
+                                i+1)
                         )
                     )
                     return super(
@@ -284,7 +287,8 @@ class GaUserImportView(FormView):
                             self.request,
                             messages.ERROR,
                             (
-                                _(u'La compañía %s de la fila %s no existe!') % (str(c), str(i+1))
+                                _(u'La compañía %s de la fila %s no existe!') % (
+                                    str(c), str(i+1))
                             )
                         )
                         return super(
@@ -298,7 +302,8 @@ class GaUserImportView(FormView):
                         self.request,
                         messages.ERROR,
                         (
-                            _(u'El lenguaje de notificación %s de la fila %s no existe! (Use "en" o "es" para inlgés o español, respectivamente)') % (str(user['notification_language']), str(i+1))
+                            _(u'El lenguaje de notificación %s de la fila %s no existe! (Use "en" o "es" para inlgés o español, respectivamente)') % (
+                                str(user['notification_language']), str(i+1))
                         )
                     )
                     return super(
@@ -311,7 +316,8 @@ class GaUserImportView(FormView):
                     self.request,
                     messages.ERROR,
                     (
-                        _(u'En la fila %s falta algún campo obligatorio (columnas 1,2,3,4). Se ha abortado la importación') % str(i+1)
+                        _(u'En la fila %s falta algún campo obligatorio (columnas 1,2,3,4). Se ha abortado la importación') % str(
+                            i+1)
                     )
                 )
                 return super(
@@ -329,9 +335,9 @@ class GaUserImportView(FormView):
                 first_name=c['first_name'],
                 last_name=c['last_name'],
                 email=c['email'],
-                notification_language = c['notification_language'],
+                notification_language=c['notification_language'],
             )
-            translation.activate(u.notification_language)
+
             u.add_action('User created')
 
             if c['password'] != '':
@@ -341,10 +347,8 @@ class GaUserImportView(FormView):
                 company_obj = Company.objects.filter(ref=comp).first()
                 u.companies.add(company_obj)
 
-            send_welcome_email.delay(u.pk)
-
             if c['welcome_email'] == 'Y':
-                u.send_welcome_email()
+                send_welcome_email.delay(u.pk)
 
         messages.add_message(
             self.request,

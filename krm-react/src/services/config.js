@@ -1,10 +1,10 @@
 let base = "";
 if (window.location.hostname.indexOf("localhost") > -1) {
     base = "http://localhost:8000";
-} else if (window.location.hostname.indexOf("app.krmtool.com") > -1) {
-    base = "https://app.krmtool.com";
+} else if (window.location.hostname.indexOf("gvi.compliancetool.net") > -1) {
+    base = "https://gvi.compliancetool.net";
 } else {
-    base = "https://prod.krmtool.com";
+    base = "https://gvi.compliancetool.net";
 }
 
 const baseUrlApi = `${base}/api/`;
