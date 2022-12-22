@@ -10,7 +10,17 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 <style>
+
+  canvas{
+      width:125px !important;
+      height:125px !important;
+      padding: 0;
+      margin: auto;
+    }
   .badge.badge-success.n1 {
     margin: 5px;
     background-color: #b5b3b1 !important;
@@ -26,6 +36,48 @@
 </style>
 
 <script>
+
+function load_chart(id, n_pending, n_delivered, n_finished, title) {
+    
+    const data = {
+      labels: ['Pending', 'Delivered', 'Finished'],
+      datasets: [
+        {
+          label: '',
+          data: [n_pending, n_delivered, n_finished],
+          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
+        }
+      ]
+    };
+    const config = {
+      type: 'pie',
+      data: data,
+      fill: {
+          type: 'gradient',
+        },
+      options: {
+        animation : {
+          duration: 5000,
+        },
+        responsive: true,
+        plugins: {
+          legend: {
+            display:false,
+          },
+          title: {
+            display: true,
+            text: title,
+            font: {
+                size: 11,
+                family: 'Helvetica, Inter, sans-serif',
+            },
+          },
+          
+        },
+      },
+    };
+    const myChart = new Chart(document.querySelector('#'+id), config);
+  }
 
 function filter_table(id){
   var checkbox_ischecked = $('#'+id).is(':checked');
@@ -118,6 +170,24 @@ function color_ans(val, id){
           </div>
           <!--end::Col-->
         </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcances' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              {% for dom in evaluation.scopes %}
+                <a href="{% url 'scopes:ga_scope_detail' dom.pk %}">
+                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
       </div>
       <div class="col col-md-4">
         <div class="row mb-8">
@@ -175,6 +245,31 @@ function color_ans(val, id){
             </div>
           </div>
           <!--end::Col-->
+        </div>
+      </div>
+      <div class="col col-md-4">
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main','{{evaluation.nquestion_test_pending}}','{{evaluation.nquestion_test_delivered}}','{{evaluation.nquestion_test_finished}}', 'Preguntas lanzadas');
+        </script>
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main-experts"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main-experts','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}', 'Respondedores');
+        </script>
+        <div class="row mb-8">
+          <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
+            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
+            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+          </div>
         </div>
       </div>
     </div>
