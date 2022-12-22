@@ -213,6 +213,19 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Cuestionario')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
+        context['evaluation'].nquestion_test_pending = context['evaluation'].nquestion_test_by_state(0)
+        context['evaluation'].nquestion_test_delivered = context['evaluation'].nquestion_test_by_state(1)
+        context['evaluation'].nquestion_test_finished = context['evaluation'].nquestion_test_by_state(2)
+
+        context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_qt_state(0)
+        context['evaluation'].evaluators_delivered = context['evaluation'].get_evaluators_by_qt_state(1)
+        context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_qt_state(2)
+
+        context['evaluation'].total_evaluators = context['evaluation'].evaluators_pending.count() + context['evaluation'].evaluators_delivered.count() + \
+            context['evaluation'].evaluators_finished.count()
+
+        context['evaluation'].scopes = context['evaluation'].evaluated_scopes()
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
