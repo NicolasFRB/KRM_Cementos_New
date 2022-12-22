@@ -58,14 +58,47 @@ class GaEvaluationQuestionnaireListView(ListView):
             },
         ]
 
-        evaluations_pending = EvaluationQuestionnaire.objects.filter(
+        ev_pending = EvaluationQuestionnaire.objects.filter(
             status='EP')
-        evaluations_finished = EvaluationQuestionnaire.objects.filter(
+        ev_finished = EvaluationQuestionnaire.objects.filter(
             status='FI')
 
-        context['evaluations_pending'] = evaluations_pending
-        context['evaluations_finished'] = evaluations_finished
+        for ev in ev_pending:
+            ev.nquestion_test_pending = ev.nquestion_test_by_state(
+                0)
+            ev.nquestion_test_delivered = ev.nquestion_test_by_state(
+                1)
+            ev.nquestion_test_finished = ev.nquestion_test_by_state(
+                2)
 
+            ev.evaluators_pending = ev.get_evaluators_by_qt_state(0)
+            ev.evaluators_delivered = ev.get_evaluators_by_qt_state(1)
+            ev.evaluators_finished = ev.get_evaluators_by_qt_state(2)
+
+            ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + \
+                ev.evaluators_finished.count()
+
+            ev.scopes = ev.evaluated_scopes()
+
+        for ev in ev_finished:
+            ev.nquestion_test_pending = ev.nquestion_test_by_state(
+                0)
+            ev.nquestion_test_delivered = ev.nquestion_test_by_state(
+                1)
+            ev.nquestion_test_finished = ev.nquestion_test_by_state(
+                2)
+
+            ev.evaluators_pending = ev.get_evaluators_by_qt_state(0)
+            ev.evaluators_delivered = ev.get_evaluators_by_qt_state(1)
+            ev.evaluators_finished = ev.get_evaluators_by_qt_state(2)
+
+            ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + \
+                ev.evaluators_finished.count()
+
+            ev.scopes = ev.evaluated_scopes()
+
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
         return context
 
 
