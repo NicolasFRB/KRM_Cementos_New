@@ -37,7 +37,7 @@
             <td class="text-center align-middle">{{ question.ref }}</td>
             <td>{{ question.title }}</td>
             <td class="text-center">
-              <i class="bi bi-file-earmark-text fs-2x text-default" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% for scope in question.scopes.all %}{{ scope }}{% if not forloop.last %} - {% endif %}{% endfor %}"></i>
+              <i class="bi bi-file-earmark-text fs-2x text-default" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% for scope in question.scopes.all %}{{ scope }}{% if not forloop.last %};&nbsp {% endif %}{% endfor %}"></i>
             </td>
           </tr>
           {% endfor %}
