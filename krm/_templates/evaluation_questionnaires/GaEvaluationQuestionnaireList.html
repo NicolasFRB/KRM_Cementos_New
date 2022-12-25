@@ -151,12 +151,19 @@ canvas#race{position:relative; z-index:100;}
           </td>
           <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
           <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
-          <td class="text-center align-middle">
-            {% for scope in evaluation.scopes %}
-            <a href="{% url 'scopes:ga_scope_detail' scope.pk %}">
-              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ scope.name }}">{{ scope.ref }}</span>
-            </a>
-            {% endfor %}
+          <td class="text-center align-middle" >
+            <div id = 'box' class="text-center">
+              <div style="cursor: pointer" onclick="toggle_item(this)">
+                  <span class="badge badge-info" style="">{{ evaluation.scopes|length }}</span>
+              </div>
+              <div id = "box-container">
+                {% for scope in evaluation.scopes %}                                              
+                  <a href="{% url 'scopes:ga_scope_detail' scope.pk %}">
+                    <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ scope.name }}" id = "box-child">{{ scope.ref }}</span>
+                  </a>                                               
+                {% endfor %}
+              </div>
+            </div>
           </td>
           <td class="text-center align-middle">
             <div>
@@ -258,12 +265,19 @@ canvas#race{position:relative; z-index:100;}
           </td>
           <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
           <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
-          <td class="text-center align-middle">
-            {% for scope in evaluation.scopes %}
-            <a href="{% url 'scopes:ga_scope_detail' scope.pk %}">
-              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ scope.name }}">{{ scope.ref }}</span>
-            </a>
-            {% endfor %}
+          <td class="text-center align-middle" >
+            <div id = 'box' class="text-center">
+              <div style="cursor: pointer" onclick="toggle_item(this)">
+                  <span class="badge badge-info" style="">{{ evaluation.scopes|length }}</span>
+              </div>
+              <div id = "box-container">
+                {% for scope in evaluation.scopes %}                                              
+                  <a href="{% url 'scopes:ga_scope_detail' scope.pk %}">
+                    <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ scope.name }}" id = "box-child">{{ scope.ref }}</span>
+                  </a>                                               
+                {% endfor %}
+              </div>
+            </div>
           </td>
           <td class="text-center align-middle">
             <div>
