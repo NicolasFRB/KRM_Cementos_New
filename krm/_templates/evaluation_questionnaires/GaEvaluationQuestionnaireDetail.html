@@ -33,6 +33,7 @@
     margin: 5px;
     background-color: #a6ed9d !important;
   } 
+
 </style>
 
 <script>
@@ -91,7 +92,7 @@ function filter_table(id){
       }        
         return true;
     }).hide();
-    table.order( [ 5, 'desc' ] ).draw(); 
+    table.order( [ 5, 'asc' ] ).draw(); 
   } else {
     rows.show();
   }
@@ -114,6 +115,143 @@ function color_ans(val, id){
       arrow_dot.style.color = "#d9d3d2";
       arrow_dot.classList.toggle('bi-dash-circle-fill');
     }
+  }
+
+  function clean_specialchars(s) {
+    
+    return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
+
+  }
+
+  function split_lines(s) {
+    q = 0;
+    for (var i = 0; i < s.length; i++) {
+        q = q + 1;
+        if (q > 50 && s[i] == " "){
+          q = 0;
+          s = s.slice(0, i) + '</br>' + s.slice(i);
+        }
+    }
+    return s
+  }
+
+  function load_heat(id, qqt) {
+    var series_key_idx = {};
+    var series = [];
+    
+    qqt.forEach(function(r) {
+
+      evaluator = r.evaluator;
+      scope = r.scope;
+      scope_name = r.scope_name;
+
+      if (!(evaluator in series_key_idx)) {
+        series_key_idx[evaluator] = Object.keys(series_key_idx).length;
+        series.push({
+          "name": evaluator,
+          "data": [],
+        });
+      }
+
+
+      if (r.answer == 0){
+        answer = "Sin establecer";
+      } else if (r.answer == 1) {
+        answer = "Sí";
+      } else if (r.answer == 2) {
+        answer = "No";
+      } else if (r.answer == 3) {
+        answer = "N/A";
+      }
+      
+      if (r.description == null){
+        answer_text = "";
+      } else {
+        answer_text = split_lines(r.description);
+      }
+      question_text = split_lines(r.question_text);
+      series[series_key_idx[evaluator]]["data"].push({'x': r.question_ref, 'y': r.answer, 'answer_display': answer, 'answer_text': answer_text, 'question_text': question_text, 'evaluator': evaluator});
+    })
+    
+    var options = {
+      title: {
+        text: scope + ': ' + scope_name,
+      },
+      series: series,
+      chart: {
+        height: 120+40*series.length,
+        type: 'heatmap',
+      },
+    plotOptions: {
+      heatmap: {
+        shadeIntensity: 0.5,
+        radius: 0,
+        useFillColorAsStroke: true,
+        colorScale: {
+          ranges: [
+            {
+              from: 0,
+              to: 0,
+              name: 'Sin establecer',
+              color: '#f2efdf'
+            },
+            {
+              from: 1,
+              to: 1,
+              name: 'Si',
+              color: '#ed9f7b'
+            },
+            {
+              from: 2,
+              to: 2,
+              name: 'No',
+              color: '#a6ed9d'
+            },
+            {
+              from: 3,
+              to: 3,
+              name: 'N/A',
+              color: '#7dedf5'
+            },
+          ]
+        }
+      }
+    },
+    dataLabels: {
+      enabled: false
+      },
+    stroke: {
+      width: 1
+      },
+    legend: {
+      show: true,
+      },
+    tooltip:{
+        custom: function({series, seriesIndex, dataPointIndex, w}) {
+          var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+          
+          return '<div style="margin:10px;">' + 
+          '<br>' +
+          '<div style="font-size: 11px;">'+
+            '<b>'+data.x+'</b>'+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+            data.question_text+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+          '<br>'+
+            'Evaluador: ' + data.evaluator+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+            data.answer_display+': ' + data.answer_text +
+          '</div>';
+        },
+      },
+    };
+
+    var chart = new ApexCharts(document.querySelector("#"+id), options);
+    chart.render();
+    
   }
 
 </script>
@@ -273,6 +411,17 @@ function color_ans(val, id){
         </div>
       </div>
     </div>
+    {% for key, value in qqt_json.items %}
+      <div class="row">
+        <div>
+          <div id="heat-main-{{ key }}"></div>
+        </div>      
+        <script>   
+            var qqt = JSON.parse(clean_specialchars("{{ value }}"));          
+            load_heat("heat-main-{{ key }}", qqt);
+        </script>
+      </div>
+    {% endfor %}
   </div>
   <!--end::Card body-->
   <!--begin::Card footer-->

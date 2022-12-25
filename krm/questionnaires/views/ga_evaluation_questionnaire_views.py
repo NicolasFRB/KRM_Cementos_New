@@ -17,6 +17,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
 
 from django.utils.decorators import method_decorator
+from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 
 from krm.metronic.__init__ import KTLayout
@@ -226,6 +227,57 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
 
         context['evaluation'].scopes = context['evaluation'].evaluated_scopes()
 
+        from krm.questionnaires.models import (
+            QuestionTest,
+        )
+
+        # Serializar Evaluation no incluye sus hijos :(
+        # Busco los hijos
+        context['qqt'] = QuestionTest.objects.filter(
+            evaluation= context['evaluation'])
+
+        # Paso a dict para json
+        context['qqt_dict'] = [model_to_dict(m) for m in context['qqt']]
+
+        # MODEL_TO_DICT not getting properties :(
+        # Get .severity_level_expert
+        # TBI for cuadratico :/
+        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
+        for i, r1 in enumerate(context['qqt']):
+            context['qqt_dict'][i]['question_ref'] = r1.question.ref
+            context['qqt_dict'][i]['question_text'] = r1.question.title
+            context['qqt_dict'][i]['evaluator'] = r1.evaluator.username_no_domain
+            context['qqt_dict'][i]['scope'] = r1.scope.ref
+            context['qqt_dict'][i]['scope_name'] = r1.scope.name
+
+        # Sort by severity for a nice plot
+        context['qqt_dict'] = sorted(
+            context['qqt_dict'], key=lambda x: (x['question_ref']), reverse=False)
+
+        # Errores de encoding caracteres portugueses y españoles
+        for i, m in enumerate(context['qqt_dict']):
+            for k in m:
+                if type(context['qqt_dict'][i][k]) == str:
+                    context['qqt_dict'][i][k] = context['qqt_dict'][i][k].encode(
+                        'utf-8').decode('utf-8')
+        
+        # DIVIDE BY SCOPE
+        q_by_scope = {}
+        for q in context['qqt_dict']:
+            scope = q['scope']
+            if scope not in q_by_scope:
+                q_by_scope[scope] = []
+            q_by_scope[scope].append(q)
+
+        # JSON DUMP
+        context['qqt_json'] = {}
+        for scope in q_by_scope:
+            context['qqt_json'][scope] = json.dumps(
+                q_by_scope[scope],
+                default=str,
+                ensure_ascii=True,
+                )
+        
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
