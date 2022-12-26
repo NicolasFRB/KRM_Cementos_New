@@ -65,35 +65,31 @@ class GaEvaluationQuestionnaireListView(ListView):
             status='FI')
 
         for ev in ev_pending:
+            
             ev.nquestion_test_pending = ev.nquestion_test_by_state(
-                0)
-            ev.nquestion_test_delivered = ev.nquestion_test_by_state(
                 1)
             ev.nquestion_test_finished = ev.nquestion_test_by_state(
                 2)
 
-            ev.evaluators_pending = ev.get_evaluators_by_qt_state(0)
-            ev.evaluators_delivered = ev.get_evaluators_by_qt_state(1)
+            ev.evaluators_pending = ev.get_evaluators_by_qt_state(1)
             ev.evaluators_finished = ev.get_evaluators_by_qt_state(2)
 
-            ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + \
+            ev.total_evaluators = ev.evaluators_pending.count() + \
                 ev.evaluators_finished.count()
 
             ev.scopes = ev.evaluated_scopes()
 
         for ev in ev_finished:
+
             ev.nquestion_test_pending = ev.nquestion_test_by_state(
-                0)
-            ev.nquestion_test_delivered = ev.nquestion_test_by_state(
                 1)
             ev.nquestion_test_finished = ev.nquestion_test_by_state(
                 2)
 
-            ev.evaluators_pending = ev.get_evaluators_by_qt_state(0)
-            ev.evaluators_delivered = ev.get_evaluators_by_qt_state(1)
+            ev.evaluators_pending = ev.get_evaluators_by_qt_state(1)
             ev.evaluators_finished = ev.get_evaluators_by_qt_state(2)
 
-            ev.total_evaluators = ev.evaluators_pending.count() + ev.evaluators_delivered.count() + \
+            ev.total_evaluators = ev.evaluators_pending.count() + \
                 ev.evaluators_finished.count()
 
             ev.scopes = ev.evaluated_scopes()
@@ -214,16 +210,13 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Cuestionario')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        context['evaluation'].nquestion_test_pending = context['evaluation'].nquestion_test_by_state(0)
-        context['evaluation'].nquestion_test_delivered = context['evaluation'].nquestion_test_by_state(1)
+        context['evaluation'].nquestion_test_pending = context['evaluation'].nquestion_test_by_state(1)
         context['evaluation'].nquestion_test_finished = context['evaluation'].nquestion_test_by_state(2)
 
-        context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_qt_state(0)
-        context['evaluation'].evaluators_delivered = context['evaluation'].get_evaluators_by_qt_state(1)
+        context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_qt_state(1)
         context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_qt_state(2)
 
-        context['evaluation'].total_evaluators = context['evaluation'].evaluators_pending.count() + context['evaluation'].evaluators_delivered.count() + \
-            context['evaluation'].evaluators_finished.count()
+        context['evaluation'].total_evaluators = context['evaluation'].evaluators_pending.count() + context['evaluation'].evaluators_finished.count()
 
         context['evaluation'].scopes = context['evaluation'].evaluated_scopes()
 
