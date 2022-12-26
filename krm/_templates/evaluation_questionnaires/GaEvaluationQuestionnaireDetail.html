@@ -10,22 +10,72 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 <style>
+
+  canvas{
+      width:125px !important;
+      height:125px !important;
+      padding: 0;
+      margin: auto;
+    }
   .badge.badge-success.n1 {
-    margin: 5px;
-    background-color: #b5b3b1 !important;
-  } 
-  .badge.badge-success.n2 {
     margin: 5px;
     background-color: #ed9f7b !important;
   } 
+  
   .badge.badge-success.n3 {
     margin: 5px;
     background-color: #a6ed9d !important;
   } 
+
 </style>
 
 <script>
+
+function load_chart(id, n_pending, n_finished, title) {
+    
+    const data = {
+      labels: ['Pending', 'Finished'],
+      datasets: [
+        {
+          label: '',
+          data: [n_pending, n_finished],
+          backgroundColor: ["#ed9f7b","#a6ed9d"],
+        }
+      ]
+    };
+    const config = {
+      type: 'pie',
+      data: data,
+      fill: {
+          type: 'gradient',
+        },
+      options: {
+        animation : {
+          duration: 5000,
+        },
+        responsive: true,
+        plugins: {
+          legend: {
+            display:false,
+          },
+          title: {
+            display: true,
+            text: title,
+            font: {
+                size: 11,
+                family: 'Helvetica, Inter, sans-serif',
+            },
+          },
+          
+        },
+      },
+    };
+    const myChart = new Chart(document.querySelector('#'+id), config);
+  }
 
 function filter_table(id){
   var checkbox_ischecked = $('#'+id).is(':checked');
@@ -39,7 +89,7 @@ function filter_table(id){
       }        
         return true;
     }).hide();
-    table.order( [ 5, 'desc' ] ).draw(); 
+    table.order( [ 5, 'asc' ] ).draw(); 
   } else {
     rows.show();
   }
@@ -62,6 +112,153 @@ function color_ans(val, id){
       arrow_dot.style.color = "#d9d3d2";
       arrow_dot.classList.toggle('bi-dash-circle-fill');
     }
+  }
+
+  function clean_specialchars(s) {
+    
+    return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
+
+  }
+
+  function split_lines(s) {
+    q = 0;
+    for (var i = 0; i < s.length; i++) {
+        q = q + 1;
+        if (q > 50 && s[i] == " "){
+          q = 0;
+          s = s.slice(0, i) + '</br>' + s.slice(i);
+        }
+    }
+    return s
+  }
+
+  function load_heat(id, qqt, counter) {
+    var series_key_idx = {};
+    var series = [];
+
+    if (counter == 0) {
+      showleg = true;
+      offset = 18;
+    } else {
+      showleg = false;
+      offset = 0;
+    }
+    
+    qqt.forEach(function(r) {
+
+      evaluator = r.evaluator;
+      scope = r.scope;
+      scope_name = r.scope_name;
+
+      if (!(evaluator in series_key_idx)) {
+        series_key_idx[evaluator] = Object.keys(series_key_idx).length;
+        series.push({
+          "name": evaluator,
+          "data": [],
+        });
+      }
+
+
+      if (r.answer == 0){
+        answer = "Sin establecer";
+      } else if (r.answer == 1) {
+        answer = "Sí";
+      } else if (r.answer == 2) {
+        answer = "No";
+      } else if (r.answer == 3) {
+        answer = "N/A";
+      }
+      
+      if (r.description == null){
+        answer_text = "";
+      } else {
+        answer_text = split_lines(r.description);
+      }
+      question_text = split_lines(r.question_text);
+      series[series_key_idx[evaluator]]["data"].push({'x': r.question_ref, 'y': r.answer, 'answer_display': answer, 'answer_text': answer_text, 'question_text': question_text, 'evaluator': evaluator});
+    })
+    
+    var options = {
+      title: {
+        text: scope + ': ' + scope_name,
+      },
+      series: series,
+      chart: {
+        height: offset + 120+40*series.length,
+        type: 'heatmap',
+      },
+    plotOptions: {
+      heatmap: {
+        shadeIntensity: 0.5,
+        radius: 0,
+        useFillColorAsStroke: true,
+        colorScale: {
+          ranges: [
+            {
+              from: 0,
+              to: 0,
+              name: 'Sin establecer',
+              color: '#f2efdf'
+            },
+            {
+              from: 1,
+              to: 1,
+              name: 'Si',
+              color: '#ed9f7b'
+            },
+            {
+              from: 2,
+              to: 2,
+              name: 'No',
+              color: '#a6ed9d'
+            },
+            {
+              from: 3,
+              to: 3,
+              name: 'N/A',
+              color: '#7dedf5'
+            },
+          ]
+        }
+      }
+    },
+    dataLabels: {
+      enabled: false
+      },
+    stroke: {
+      width: 1
+      },
+    legend: {
+      show: showleg,
+      showForSingleSeries: true,
+      },
+    tooltip:{
+        custom: function({series, seriesIndex, dataPointIndex, w}) {
+          var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+          
+          return '<div style="margin:10px;">' + 
+          '<br>' +
+          '<div style="font-size: 11px;">'+
+            '<b>'+data.x+'</b>'+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+            data.question_text+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+          '<br>'+
+            'Evaluador: ' + data.evaluator+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+            'Respuesta: ' + data.answer_display+'<br>'+
+            data.answer_text +
+          '</div>';
+        },
+      },
+    };
+
+    var chart = new ApexCharts(document.querySelector("#"+id), options);
+    chart.render();
+    
   }
 
 </script>
@@ -114,6 +311,38 @@ function color_ans(val, id){
                   title="{{evaluation.get_status_display}}"></i></div>
               <div>{{ evaluation.get_status_display }}</div>
               {% endif %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nº de preguntas' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span class="badge badge-info">{{ evaluation.question_tests.count }}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcances' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              {% for dom in evaluation.scopes %}
+                <a href="{% url 'scopes:ga_scope_detail' dom.pk %}">
+                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+                </a>
+              {% endfor %}
             </div>
           </div>
           <!--end::Col-->
@@ -177,6 +406,30 @@ function color_ans(val, id){
           <!--end::Col-->
         </div>
       </div>
+      <div class="col col-md-4">
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main','{{evaluation.nquestion_test_pending}}','{{evaluation.nquestion_test_finished}}', 'Preguntas lanzadas');
+        </script>
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main-experts"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main-experts','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_finished.count}}', 'Respondedores');
+        </script>
+        <div class="row mb-8">
+          <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
+            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <!--end::Card body-->
@@ -208,6 +461,27 @@ function color_ans(val, id){
   </div>
   <!--end::Card footer-->
 </div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Mapa de calor del Cuestionario' %}</div>
+  </div> 
+  <div class="card-body">
+    {% for key, value in qqt_json.items %}
+      <div class="row">
+        <div>
+          <div id="heat-main-{{ key }}"></div>
+        </div>      
+        <script>   
+            var qqt = JSON.parse(clean_specialchars("{{ value }}"));          
+            load_heat("heat-main-{{ key }}", qqt, "{{ forloop.counter0 }}");
+        </script>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
 
 <div class="card">
   <!--begin::Card header-->

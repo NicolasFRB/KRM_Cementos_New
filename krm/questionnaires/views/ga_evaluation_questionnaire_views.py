@@ -17,6 +17,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
 
 from django.utils.decorators import method_decorator
+from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 
 from krm.metronic.__init__ import KTLayout
@@ -58,14 +59,43 @@ class GaEvaluationQuestionnaireListView(ListView):
             },
         ]
 
-        evaluations_pending = EvaluationQuestionnaire.objects.filter(
+        ev_pending = EvaluationQuestionnaire.objects.filter(
             status='EP')
-        evaluations_finished = EvaluationQuestionnaire.objects.filter(
+        ev_finished = EvaluationQuestionnaire.objects.filter(
             status='FI')
 
-        context['evaluations_pending'] = evaluations_pending
-        context['evaluations_finished'] = evaluations_finished
+        for ev in ev_pending:
+            
+            ev.nquestion_test_pending = ev.nquestion_test_by_state(
+                1)
+            ev.nquestion_test_finished = ev.nquestion_test_by_state(
+                2)
 
+            ev.evaluators_pending = ev.get_evaluators_by_qt_state(1)
+            ev.evaluators_finished = ev.get_evaluators_by_qt_state(2)
+
+            ev.total_evaluators = ev.evaluators_pending.count() + \
+                ev.evaluators_finished.count()
+
+            ev.scopes = ev.evaluated_scopes()
+
+        for ev in ev_finished:
+
+            ev.nquestion_test_pending = ev.nquestion_test_by_state(
+                1)
+            ev.nquestion_test_finished = ev.nquestion_test_by_state(
+                2)
+
+            ev.evaluators_pending = ev.get_evaluators_by_qt_state(1)
+            ev.evaluators_finished = ev.get_evaluators_by_qt_state(2)
+
+            ev.total_evaluators = ev.evaluators_pending.count() + \
+                ev.evaluators_finished.count()
+
+            ev.scopes = ev.evaluated_scopes()
+
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
         return context
 
 
@@ -180,6 +210,67 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Cuestionario')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
+        context['evaluation'].nquestion_test_pending = context['evaluation'].nquestion_test_by_state(1)
+        context['evaluation'].nquestion_test_finished = context['evaluation'].nquestion_test_by_state(2)
+
+        context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_qt_state(1)
+        context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_qt_state(2)
+
+        context['evaluation'].total_evaluators = context['evaluation'].evaluators_pending.count() + context['evaluation'].evaluators_finished.count()
+
+        context['evaluation'].scopes = context['evaluation'].evaluated_scopes()
+
+        from krm.questionnaires.models import (
+            QuestionTest,
+        )
+
+        # Serializar Evaluation no incluye sus hijos :(
+        # Busco los hijos
+        context['qqt'] = QuestionTest.objects.filter(
+            evaluation= context['evaluation'])
+
+        # Paso a dict para json
+        context['qqt_dict'] = [model_to_dict(m) for m in context['qqt']]
+
+        # MODEL_TO_DICT not getting properties :(
+        # Get .severity_level_expert
+        # TBI for cuadratico :/
+        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
+        for i, r1 in enumerate(context['qqt']):
+            context['qqt_dict'][i]['question_ref'] = r1.question.ref
+            context['qqt_dict'][i]['question_text'] = r1.question.title
+            context['qqt_dict'][i]['evaluator'] = r1.evaluator.username_no_domain
+            context['qqt_dict'][i]['scope'] = r1.scope.ref
+            context['qqt_dict'][i]['scope_name'] = r1.scope.name
+
+        # Sort by severity for a nice plot
+        context['qqt_dict'] = sorted(
+            context['qqt_dict'], key=lambda x: (x['question_ref']), reverse=False)
+
+        # Errores de encoding caracteres portugueses y españoles
+        for i, m in enumerate(context['qqt_dict']):
+            for k in m:
+                if type(context['qqt_dict'][i][k]) == str:
+                    context['qqt_dict'][i][k] = context['qqt_dict'][i][k].encode(
+                        'utf-8').decode('utf-8')
+        
+        # DIVIDE BY SCOPE
+        q_by_scope = {}
+        for q in context['qqt_dict']:
+            scope = q['scope']
+            if scope not in q_by_scope:
+                q_by_scope[scope] = []
+            q_by_scope[scope].append(q)
+
+        # JSON DUMP
+        context['qqt_json'] = {}
+        for scope in q_by_scope:
+            context['qqt_json'][scope] = json.dumps(
+                q_by_scope[scope],
+                default=str,
+                ensure_ascii=True,
+                )
+        
         context['js_template'] = ['js/custom/datatables.js']
 
         return context

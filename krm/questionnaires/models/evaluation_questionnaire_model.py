@@ -8,7 +8,6 @@ from ckeditor.fields import RichTextField
 
 from krm.utils.models import AuditModel
 from krm.users.models import User
-from krm.risks.models import DomainRisk
 
 
 def year_choices():
@@ -83,3 +82,34 @@ class EvaluationQuestionnaire(AuditModel):
     class Meta:
         verbose_name = _("Evaluación de Cuestionario")
         verbose_name_plural = _("Evaluaciones de Cuestionario")
+
+    # RETURN number of risks by state in evaluation
+    # OPTIONAL ARG: Filter by user
+    def nquestion_test_by_state(self, status, user=None):
+
+        if user:
+            return self.question_tests.filter(
+                status=status,
+                evaluator=user,
+            ).distinct().count()
+        else:
+            return self.question_tests.filter(
+                status=status,
+            ).distinct().count()
+
+    # RETURN experts by state of risks in evaluation
+    def get_evaluators_by_qt_state(self, status):
+
+        evaluators_id = set([qt.evaluator.pk for qt in self.question_tests.filter(
+            status=status)])
+
+        return User.objects.filter(id__in=evaluators_id)
+
+    # GET EVALUATED SCOPES
+    def evaluated_scopes(self):
+
+        from krm.questionnaires.models import Scope
+        
+        scopes_id = set([qt.scope.pk for qt in self.question_tests.all()])
+
+        return Scope.objects.filter(id__in = scopes_id)

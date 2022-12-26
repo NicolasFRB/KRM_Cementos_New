@@ -93,6 +93,13 @@ class RuEvaluationQuestionnaireListView(ListView):
             status='FI'
         ).distinct()
 
+        for ev in evaluations_pending:
+            ev.nquestion_test_pending_user = ev.nquestion_test_by_state(1, self.request.user)
+        for ev in evaluations_delivered:
+            ev.nquestion_test_delivered_user = ev.nquestion_test_by_state(2, self.request.user)
+        for ev in evaluations_finished:
+            ev.nquestion_test_finished_user = ev.nquestion_test_by_state(2, self.request.user)
+
         context['evaluations_pending'] = evaluations_pending
         context['evaluations_delivered'] = evaluations_delivered
         context['evaluations_finished'] = evaluations_finished
