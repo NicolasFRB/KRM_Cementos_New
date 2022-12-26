@@ -252,7 +252,7 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
             for k in m:
                 if type(context['qqt_dict'][i][k]) == str:
                     context['qqt_dict'][i][k] = context['qqt_dict'][i][k].encode(
-                        'utf-8').decode('utf-8')
+                        'utf-8').decode('utf-8').replace('"', '`').replace("'", '`')
         
         # DIVIDE BY SCOPE
         q_by_scope = {}
