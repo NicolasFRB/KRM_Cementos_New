@@ -23,12 +23,9 @@
     }
   .badge.badge-success.n1 {
     margin: 5px;
-    background-color: #b5b3b1 !important;
-  } 
-  .badge.badge-success.n2 {
-    margin: 5px;
     background-color: #ed9f7b !important;
   } 
+  
   .badge.badge-success.n3 {
     margin: 5px;
     background-color: #a6ed9d !important;
@@ -38,15 +35,15 @@
 
 <script>
 
-function load_chart(id, n_pending, n_delivered, n_finished, title) {
+function load_chart(id, n_pending, n_finished, title) {
     
     const data = {
-      labels: ['Pending', 'Delivered', 'Finished'],
+      labels: ['Pending', 'Finished'],
       datasets: [
         {
           label: '',
-          data: [n_pending, n_delivered, n_finished],
-          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
+          data: [n_pending, n_finished],
+          backgroundColor: ["#ed9f7b","#a6ed9d"],
         }
       ]
     };
@@ -135,9 +132,17 @@ function color_ans(val, id){
     return s
   }
 
-  function load_heat(id, qqt) {
+  function load_heat(id, qqt, counter) {
     var series_key_idx = {};
     var series = [];
+
+    if (counter == 0) {
+      showleg = true;
+      offset = 18;
+    } else {
+      showleg = false;
+      offset = 0;
+    }
     
     qqt.forEach(function(r) {
 
@@ -179,7 +184,7 @@ function color_ans(val, id){
       },
       series: series,
       chart: {
-        height: 120+40*series.length,
+        height: offset + 120+40*series.length,
         type: 'heatmap',
       },
     plotOptions: {
@@ -224,7 +229,8 @@ function color_ans(val, id){
       width: 1
       },
     legend: {
-      show: true,
+      show: showleg,
+      showForSingleSeries: true,
       },
     tooltip:{
         custom: function({series, seriesIndex, dataPointIndex, w}) {
@@ -243,7 +249,8 @@ function color_ans(val, id){
             'Evaluador: ' + data.evaluator+
           '</div>'+
           '<div style="font-size: 11px;">'+
-            data.answer_display+': ' + data.answer_text +
+            'Respuesta: ' + data.answer_display+'<br>'+
+            data.answer_text +
           '</div>';
         },
       },
@@ -304,6 +311,20 @@ function color_ans(val, id){
                   title="{{evaluation.get_status_display}}"></i></div>
               <div>{{ evaluation.get_status_display }}</div>
               {% endif %}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nº de preguntas' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              <span class="badge badge-info">{{ evaluation.question_tests.count }}</span>
             </div>
           </div>
           <!--end::Col-->
@@ -392,7 +413,7 @@ function color_ans(val, id){
           </div>
         </div>
         <script>
-          load_chart('pie-main','{{evaluation.nquestion_test_pending}}','{{evaluation.nquestion_test_delivered}}','{{evaluation.nquestion_test_finished}}', 'Preguntas lanzadas');
+          load_chart('pie-main','{{evaluation.nquestion_test_pending}}','{{evaluation.nquestion_test_finished}}', 'Preguntas lanzadas');
         </script>
         <div class="row mb-8">
           <div>
@@ -400,28 +421,16 @@ function color_ans(val, id){
           </div>
         </div>
         <script>
-          load_chart('pie-main-experts','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}', 'Respondedores');
+          load_chart('pie-main-experts','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_finished.count}}', 'Respondedores');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
             <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
           </div>
         </div>
       </div>
     </div>
-    {% for key, value in qqt_json.items %}
-      <div class="row">
-        <div>
-          <div id="heat-main-{{ key }}"></div>
-        </div>      
-        <script>   
-            var qqt = JSON.parse(clean_specialchars("{{ value }}"));          
-            load_heat("heat-main-{{ key }}", qqt);
-        </script>
-      </div>
-    {% endfor %}
   </div>
   <!--end::Card body-->
   <!--begin::Card footer-->
@@ -452,6 +461,27 @@ function color_ans(val, id){
   </div>
   <!--end::Card footer-->
 </div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Mapa de calor del Cuestionario' %}</div>
+  </div> 
+  <div class="card-body">
+    {% for key, value in qqt_json.items %}
+      <div class="row">
+        <div>
+          <div id="heat-main-{{ key }}"></div>
+        </div>      
+        <script>   
+            var qqt = JSON.parse(clean_specialchars("{{ value }}"));          
+            load_heat("heat-main-{{ key }}", qqt, "{{ forloop.counter0 }}");
+        </script>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
 
 <div class="card">
   <!--begin::Card header-->
