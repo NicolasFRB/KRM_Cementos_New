@@ -79,8 +79,8 @@ class GaScopeCreateView(CreateView):
             {'title': _('Cuestionarios'), 'url': reverse(
                 'questionnaires:ga_questionnaire_list')},
             {'title': _('Alcances'), 'url': '#'},
-            {'title': _('Nuevo Alcance'), 'url': reverse(
-                'scopes:ga_scope_create')},
+            #{'title': _('Nuevo Alcance'), 'url': reverse(
+            #    'scopes:ga_scope_create')},
         ]
         context['page_title'] = _('Nuevo Alcance')
         context['breadcrums'] = breadcrums
@@ -150,8 +150,8 @@ class GaScopeDeleteView(DeleteView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Cuestionarios'), 'url': reverse(
                 'questionnaires:ga_questionnaire_list')},
-            {'title': _('Alcance'), 'url': reverse(
-                'scopes:ga_scope_detail')},
+            #{'title': _('Alcance'), 'url': reverse(
+            #    'scopes:ga_scope_detail')},
             {'title': _('Eliminar')},
         ]
         context['page_title'] = _("Eliminar Alcance")

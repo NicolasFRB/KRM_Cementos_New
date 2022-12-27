@@ -137,8 +137,8 @@ class GaQuestionCreateView(CreateView):
         )
 
         return reverse_lazy(
-            'questionnaires:ga_questionnaire_detail',
-            kwargs={'pk': self.object.questionnaire.pk}
+            'questions:ga_question_list',
+            kwargs={}
         )
 
 
