@@ -50,6 +50,22 @@
         </div>
         <!--end::Col-->
       </div>
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-2">
+          <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Respondedores' %}</span></div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            {% for user in scope.user_to_assign.all %}
+              <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ user.full_name }} ({{ user.position }})">{{ user.username_no_domain }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
   </div>
   <!--end::Card body-->
   <!--begin::Card footer-->
