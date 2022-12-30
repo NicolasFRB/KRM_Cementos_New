@@ -6,6 +6,8 @@ from openpyxl import load_workbook
 from io import BytesIO
 
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import HttpResponseRedirect
 
 from django.views.generic import (
     FormView,
@@ -25,6 +27,7 @@ from krm.metronic.__init__ import KTLayout
 from krm.questionnaires.models import EvaluationQuestionnaire
 
 from krm.questionnaires.forms import EvaluationQuestionnaireCreateForm
+from krm.questionnaires.forms import EvaluationQuestionnaireNotificationForm
 
 from krm.questionnaires.forms import (
     EvaluationQuestionnaireActionForm,
@@ -180,7 +183,7 @@ class GaEvaluationQuestionnaireCreateView(FormView):
 
         from krm.questionnaires.tasks import question_test_send_notification
         for qt in question_test_to_notify:
-            question_test_send_notification.delay(qt.pk)
+            question_test_send_notification.delay(qt.pk, 'Initial Notification')
 
         messages.add_message(
             self.request,
@@ -395,4 +398,62 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
         return reverse_lazy(
             "evaluation_questionnaires:ga_evaluation_questionnaire_detail",
             kwargs={'pk': self.get_object().pk}
+        )
+
+
+@method_decorator([is_global_admin, ], name='dispatch')
+class GaEvaluationQuestionnaireNotificationsView(DetailView, FormView):
+    template_name = 'evaluation_questionnaires/GaEvaluationQuestionnaireNotifications.html'
+    model = EvaluationQuestionnaire
+    context_object_name = 'evaluation'
+    form_class = EvaluationQuestionnaireNotificationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.evaluation = get_object_or_404(
+            EvaluationQuestionnaire, pk=self.kwargs.get("pk"))
+        return super(GaEvaluationQuestionnaireNotificationsView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Evaluaciones de Cuestionario'), 'url': reverse(
+                'evaluation_questionnaires:ga_evaluation_questionnaire_list')},
+            {'title': self.object.ref, 'url': reverse(
+                'evaluation_questionnaires:ga_evaluation_questionnaire_detail', kwargs={'pk': self.object.pk})}
+        ]
+        context['page_title'] = f"{_('Notificaciones de cuestionario')} : {self.object.ref}"
+        context['breadcrums'] = breadcrums
+
+        context['evaluation'].evaluators_notifications = context['evaluation'].get_evaluators_for_notifications()
+
+        context['js_template'] = ['js/custom/datatables.js']
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        question_test_selected = request.POST.getlist('notify_pk')
+        
+        from krm.questionnaires.models import (
+            QuestionTest,
+        )
+        from krm.questionnaires.tasks import question_test_send_notification
+
+        for pk in question_test_selected:
+            qt = QuestionTest.objects.filter(pk = int(pk)).first()
+            question_test_send_notification.delay(qt.pk, 'Reminder')
+
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Enviadas notificaciones a %d usuarios!" % len(question_test_selected))
+        )
+
+        return HttpResponseRedirect(
+            reverse_lazy(
+                'evaluation_questionnaires:ga_evaluation_questionnaire_detail',
+                kwargs={'pk': self.evaluation.pk}
+            )
         )

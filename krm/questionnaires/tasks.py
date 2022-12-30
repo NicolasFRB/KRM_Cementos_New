@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @celery_app.task
-def question_test_send_notification(qt_pk):
+def question_test_send_notification(qt_pk, notif_type):
     logger.info(
         "Comienzo de envío de mail de notificación para el usuario para completar cuestionarios del test de pregunta: {}".format(qt_pk))
     try:
@@ -23,4 +23,4 @@ def question_test_send_notification(qt_pk):
         logger.error("Test de Pregunta no encontradoa con pk: %s" % qt_pk)
         return
 
-    qt.send_email_notification()
+    qt.send_email_notification(notif_type)

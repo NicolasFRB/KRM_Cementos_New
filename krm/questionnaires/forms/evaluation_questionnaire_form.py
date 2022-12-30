@@ -59,3 +59,8 @@ class EvaluationQuestionnaireActionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['action'].widget = HiddenInput()
+
+class EvaluationQuestionnaireNotificationForm(forms.Form):
+
+    notification_pk = SimpleArrayField(forms.CharField(
+        max_length=1000),  label=_('Notificar'))

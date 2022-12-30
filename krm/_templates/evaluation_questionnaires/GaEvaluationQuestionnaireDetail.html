@@ -437,6 +437,8 @@ function color_ans(val, id){
   <div class="card-footer py-6" style="display:flex;">
     <a href="{% url 'evaluation_questionnaires:ga_evaluation_questionnaire_list' %}" class="btn btn-sm  btn-secondary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
 
+    <a href="{% url 'evaluation_questionnaires:ga_evaluation_questionnaire_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
+
     {% if evaluation.status == 'EP' %}
       <form method="post" class="kt-form kt-form--label-right" novalidate>
         {% include '_includes/FormErrors.html' %}

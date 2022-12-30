@@ -90,7 +90,7 @@ class QuestionTest(AuditModel):
         verbose_name = _("Respuesta")
         verbose_name_plural = _("Respuestas")
 
-    def send_email_notification(self):
+    def send_email_notification(self, notif_type):
         from krm.configuration.models import Configuration
 
         configuration = Configuration.objects.first()
@@ -114,6 +114,7 @@ class QuestionTest(AuditModel):
             "certification_year": self.evaluation.certification_year,
             "certification_period": period,
             "app_name": configuration.app_name,
+            "notif_type": notif_type,
         }
         body_html = render_to_string(
             "emails/questionnaires/questionnaires_to_complete.html", context
@@ -141,7 +142,7 @@ class QuestionTest(AuditModel):
         msg.content_subtype = "html"
 
         self.evaluator.add_action(
-            _("Envío de email de Test de Pregunta"))
+            _("[%s] Envío de email de Test de Pregunta (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
             return msg.send(fail_silently=False)

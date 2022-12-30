@@ -6,6 +6,7 @@ from krm.questionnaires.views import (
     GaEvaluationQuestionnaireListView,
     GaEvaluationQuestionnaireCreateView,
     GaEvaluationQuestionnaireDetailView,
+    GaEvaluationQuestionnaireNotificationsView,
     # GaEvaluationQuestionnaireDeleteView,
     # GaEvaluationQuestionnaireUpdateView,
     # GaEvaluationQuestionnaireCreateView
@@ -25,6 +26,11 @@ urlpatterns = [
         'detail/<pk>/',
         GaEvaluationQuestionnaireDetailView.as_view(),
         name='ga_evaluation_questionnaire_detail'
+    ),
+    path(
+        'notifications/<pk>/',
+        GaEvaluationQuestionnaireNotificationsView.as_view(),
+        name='ga_evaluation_questionnaire_notifications'
     ),
     # path(
     #     'delete/<pk>/',
