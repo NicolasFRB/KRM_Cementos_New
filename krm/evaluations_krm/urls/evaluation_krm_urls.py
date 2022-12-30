@@ -21,6 +21,7 @@ from krm.evaluations_krm.views import (
     GaEvaluationResidualCreateView,
     GaEvaluationResidualDetailView,
     GaEvaluationResidualAdminComplete,
+    GaEvaluationResidualNotificationsView,
 
     CaEvaluationResidualCreateView,
     CaEvaluationResidualListView,
@@ -114,6 +115,11 @@ urlpatterns = [
         'residual/complete/<pk>/',
         GaEvaluationResidualAdminComplete.as_view(),
         name='ga_evaluation_residual_complete'
+    ),
+    path(
+        'residual/notifications/<pk>/',
+        GaEvaluationResidualNotificationsView.as_view(),
+        name='ga_evaluation_residual_notifications'
     ),
 
 

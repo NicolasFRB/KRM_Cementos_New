@@ -89,13 +89,13 @@ class RiskTestResidual(AuditModel):
     #     self.ref = self.ref.upper()
     #     super().save(*args, **kwargs)
 
-    def send_notification_evaluator(self):
+    def send_notification_evaluator(self, notif_type):
         from krm.evaluations_krm.tasks import (
             risk_test_send_notification_evaluator,
         )
-        risk_test_send_notification_evaluator.delay(self.pk)
+        risk_test_send_notification_evaluator.delay(self.pk, notif_type)
 
-    def send_email_notification_evaluator(self):
+    def send_email_notification_evaluator(self, notif_type):
         from krm.configuration.models import Configuration
 
         configuration = Configuration.objects.first()
@@ -117,6 +117,7 @@ class RiskTestResidual(AuditModel):
             "certification_year": self.evaluation.certification_year,
             "certification_period": period,
             "app_name": configuration.app_name,
+            "notif_type": notif_type,
         }
         body_html = render_to_string(
             "emails/risk_test_residual/risk_test_email_evaluator.html", context
@@ -144,7 +145,7 @@ class RiskTestResidual(AuditModel):
         msg.content_subtype = "html"
 
         self.evaluator.add_action(
-            _("Envío de email de Test de Riesgos pendientes de valorar"))
+            _("[%s] Envío de email de Test de Riesgos Residuales pendientes de valorar (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
             return msg.send(fail_silently=False)

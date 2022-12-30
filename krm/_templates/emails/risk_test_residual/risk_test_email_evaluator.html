@@ -2,6 +2,7 @@
 
 <p>
   {% blocktrans with recovery_url=recovery_url %}
+  <strong>{{ notif_type }}</strong><br /><br />
   Hola {{ user_email }},<br><br>
 
   Dispone de tests de riesgo residual pendientes de valorar dentro de la plataforma <strong>{{ app_name }}</strong> correspondientes a la Evaluación <strong>{{ evaluation_ref }}</strong> que tendrá lugar en el periodo desde el <strong>{{ evaluation_date_begin }}</strong> hasta el <strong>{{ evaluation_date_end }}</strong>.<br><br>

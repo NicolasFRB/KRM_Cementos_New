@@ -27,7 +27,7 @@ def risk_test_send_notification_expert(rt_pk):
 
 
 @celery_app.task
-def risk_test_send_notification_evaluator(rt_pk):
+def risk_test_send_notification_evaluator(rt_pk, notif_type):
     logger.info(
         "Comienzo de envío de mail de notificación para el evaluador del test de riesgo residual: {}".format(rt_pk))
     try:
@@ -36,4 +36,4 @@ def risk_test_send_notification_evaluator(rt_pk):
         logger.error("Test de Riesgo no encontradoa con pk: %s" % rt_pk)
         return
 
-    rt.send_email_notification_evaluator()
+    rt.send_email_notification_evaluator(notif_type)
