@@ -184,13 +184,13 @@ class RiskTestInherent(AuditModel):
 
         super().save(*args, **kwargs)
 
-    def send_notification_expert(self):
+    def send_notification_expert(self, notif_type):
         from krm.evaluations_krm.tasks import (
             risk_test_send_notification_expert,
         )
-        risk_test_send_notification_expert.delay(self.pk)
+        risk_test_send_notification_expert.delay(self.pk, notif_type)
 
-    def sent_email_notification_expert(self):
+    def sent_email_notification_expert(self, notif_type):
         from krm.configuration.models import Configuration
 
         configuration = Configuration.objects.first()
@@ -211,6 +211,7 @@ class RiskTestInherent(AuditModel):
             "certification_year": self.evaluation.certification_year,
             "certification_period": period,
             "app_name": configuration.app_name,
+            "notif_type": notif_type,
         }
         body_html = render_to_string(
             "emails/risk_test_inherent/risk_test_email_expert.html", context
@@ -238,7 +239,7 @@ class RiskTestInherent(AuditModel):
         msg.content_subtype = "html"
 
         self.expert.add_action(
-            _("Envío de email de Test de Riesgos pendientes de valorar"))
+            _("[%s] Envío de email de Test de Riesgos Inherentes pendientes de valorar (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
             msg.send(fail_silently=False)

@@ -636,9 +636,33 @@ function color_severity_dynamic(val, id){
       {% endif %}
     </div>
   </div>
-  <div class="card-footer py-6">
+  <div class="card-footer py-6" style="display:flex;">
+
+    <a href="{% url 'evaluations_krm:ga_evaluation_inherent_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+      class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+
+    <a href="{% url 'evaluations_krm:ga_evaluation_inherent_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
+
     <a href="{% url 'evaluations_krm:ga_evaluation_inherent_complete' evaluation.pk %}" class="btn btn-sm btn-primary me-2">
       {% trans 'Completar evaluación (Admin)' %}</a>
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% include '_includes/FormErrors.html' %}
+      {% csrf_token %}
+      <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
+      <input type="hidden" name="action" value="d">
+      <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
+    </form>
+
+    <!-- <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% include '_includes/FormErrors.html' %}
+      {% csrf_token %}
+        <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
+        <input type="hidden" name="action" value="f">
+        <button class="btn btn-sm btn-primary me-2">{% trans 'Finalizar evaluación' %}</button>
+    </form> -->
+
+    
   </div>
   <!--end::Card body-->
 </div>
