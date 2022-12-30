@@ -84,13 +84,18 @@
     <!--end::Card body-->
     <!--begin::Card footer-->
     <div class="card-footer py-6" style="display:flex;">
-      <form method="post" class="kt-form kt-form--label-right" novalidate>
-        {% include '_includes/FormErrors.html' %}
-        {% csrf_token %}
-        <input type="hidden" name="action" value="finish">
-        <button class="btn btn-sm btn-primary me-2"><i class="bi bi-clipboard-check"></i>
-          {% trans 'Notificar usuarios' %}</button>
-      </form>
+
+      {% if evaluation.status == "EP" %}
+
+        <form method="post" class="kt-form kt-form--label-right" novalidate>
+          {% include '_includes/FormErrors.html' %}
+          {% csrf_token %}
+          <input type="hidden" name="action" value="finish">
+          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-clipboard-check"></i>
+            {% trans 'Notificar usuarios' %}</button>
+        </form>
+
+      {% endif %}
     </div>
   </form>
   <!--end::Card footer-->
