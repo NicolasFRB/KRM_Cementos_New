@@ -603,8 +603,7 @@
                     <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
                     <span class="menu-title">{% trans 'Supervisar Controles' %}
                         {% if request.user.controls_test_supervisor_pending.count > 0 %}
-                        &nbsp;&nbsp;<span class="badge badge-primary">{{
-                            request.user.controls_test_supervisor_pending.count }}</span>
+                        &nbsp;&nbsp;<span class="badge badge-primary">{{request.user.controls_test_supervisor_pending.count }}</span>
                         {% endif %}
                     </span>
                 </a>
