@@ -47,6 +47,12 @@
 
 <script>
 
+function clean_specialchars(s) {
+    
+    return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
+
+  }
+
 function color_nc_dynamic(val, id){
     
     var arrow_dot = $("#"+id);
@@ -643,7 +649,7 @@ function color_severity(val, id){
             <div id="heat-main"></div>
           </div>      
           <script>
-              var rrt = JSON.parse("{{ rrt_json }}".replace(/&quot;/g,'"'));
+              var rrt = JSON.parse(clean_specialchars("{{ rrt_json }}"));
               load_heat("heat-main", rrt);
           </script>
         {% endif %}

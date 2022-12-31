@@ -45,6 +45,12 @@
 </style>
 <script>
 
+function clean_specialchars(s) {
+    
+    return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
+
+  }
+
 function color_severity_dynamic(val, id){
     
     var arrow_dot = $("#"+id);
@@ -624,7 +630,7 @@ function color_severity_dynamic(val, id){
           <div id="bar-main"></div>
         </div>      
         <script>
-            var rit = JSON.parse("{{ rit_json }}".replace(/&quot;/g,'"'));
+            var rit = JSON.parse(clean_specialchars("{{ rit_json }}"));
             load_bar("bar-main", rit);
         </script>
       {% else %}
