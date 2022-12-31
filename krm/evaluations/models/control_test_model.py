@@ -122,7 +122,7 @@ class ControlTest(AuditModel):
     def get_control_test_subprocess(self):
         return self.control.sub_processes.all()
 
-    def send_notification(self):
+    def send_notification(self, notif_type):
         from krm.evaluations.tasks import (
             control_test_send_notification_control_owner,
             control_test_send_notification_control_supervisor
@@ -133,12 +133,12 @@ class ControlTest(AuditModel):
             return
 
         if self.status == "WO":
-            control_test_send_notification_control_owner.delay(self.pk)
+            control_test_send_notification_control_owner.delay(self.pk, notif_type)
 
         elif self.status == "WS":
-            control_test_send_notification_control_supervisor(self.pk)
+            control_test_send_notification_control_supervisor.delay(self.pk, notif_type)
 
-    def sent_notification_control_owner(self):
+    def sent_notification_control_owner(self, notif_type):
         from krm.configuration.models import Configuration
 
         configuration = Configuration.objects.first()
@@ -161,6 +161,7 @@ class ControlTest(AuditModel):
             "certification_period": period,
             "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WO", user=self.control_test_owner, rol='control_test_owner'),
             "app_name": configuration.app_name,
+            "notif_type": notif_type,
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_owner.html", context
@@ -187,12 +188,13 @@ class ControlTest(AuditModel):
             subject, body_html, from_email, [to], [bcc])
         msg.content_subtype = "html"
 
-        self.control_test_owner.add_action(_("Control Owner email"))
+        self.control_test_owner.add_action(
+            _("[%s] Envío de email de Controles pendientes de completar (COwner) (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
             msg.send(fail_silently=False)
 
-    def sent_notification_control_supervisor(self):
+    def sent_notification_control_supervisor(self, notif_type):
         from krm.configuration.models import Configuration
 
         configuration = Configuration.objects.first()
@@ -215,6 +217,7 @@ class ControlTest(AuditModel):
             "certification_period": period,
             "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WS", user=self.control_test_supervisor, rol='control_test_supervisor'),
             "app_name": configuration.app_name,
+            "notif_type": notif_type,
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_supervisor.html",
@@ -242,6 +245,7 @@ class ControlTest(AuditModel):
             subject, body_html, from_email, [to], [bcc])
         msg.content_subtype = "html"
 
-        self.control_test_supervisor.add_action(_("Control Supervisor email"))
+        self.control_test_supervisor.add_action(
+            _("[%s] Envío de email de Controles pendientes de supervisar (CSupervisor) (%s)" % (notif_type.upper(), self.evaluation.ref)))
         if configuration.enable_emails:
             msg.send(fail_silently=False)

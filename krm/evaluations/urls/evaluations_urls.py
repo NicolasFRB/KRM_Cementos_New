@@ -7,6 +7,7 @@ from krm.evaluations.views import (
     GaEvaluationDetailView,
     GaEvaluationUpdateView,
     GaEvaluationDeleteView,
+    GaEvaluationNotificationView,
     EvaluationAssignImport,
 
     CaEvaluationListView,
@@ -42,6 +43,11 @@ urlpatterns = [
         'create/',
         GaEvaluationCreateView.as_view(),
         name='ga_evaluation_create'
+    ),
+    path(
+        'notifications/<pk>/',
+        GaEvaluationNotificationView.as_view(),
+        name='ga_evaluation_notifications'
     ),
     path(
         "assign-control-import/<pk>/",

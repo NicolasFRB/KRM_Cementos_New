@@ -8,6 +8,7 @@ from ckeditor.fields import RichTextField
 
 from krm.utils.models import AuditModel
 from krm.risks.models import DomainRisk
+from krm.users.models import User
 
 
 def year_choices():
@@ -169,6 +170,75 @@ class Evaluation(AuditModel):
                     already_checked.append(r.pk)
 
         return DomainRisk.objects.filter(id__in=domain_risks_pks)
+
+    # RETURN users by state of ctrl in evaluation
+    def get_users_by_ct_state(self, status = None):
+
+        if status == "WO":
+            experts_id = set([rt.control_test_owner.pk for rt in self.control_tests.filter(
+            status=status)])
+
+        elif status == "WS":
+            experts_id = set([rt.control_test_supervisor.pk for rt in self.control_tests.filter(
+            status=status)])
+
+        return User.objects.filter(id__in=experts_id)
+
+    # GET EVALUATORS FOR NOTIFICATIONS TABLE BY STATE
+    def get_evaluators_for_notifications_by_role(self, status):
+
+        evaluators_all = self.get_users_by_ct_state(status)
+        evaluators = []
+        ev_pk_found = {}
+
+        notif_subtype_map = {
+            'WO': 'COwner',
+            'WS': 'CSupervisor',
+        }
+
+        role_map = {
+            'WO': 'control_test_owner',
+            'WS': 'control_test_supervisor',
+        }
+
+        for evaluator in evaluators_all:
+            
+            notifications = [[n.action_description, n.created] for n in evaluator.actions_log.all() if self.ref in n.action_description and notif_subtype_map[status] in n.action_description]
+
+            if evaluator.pk not in ev_pk_found:
+                ev_pk_found[evaluator.pk] = len(evaluators)
+                evaluators.append({
+                    'qt_pk': -1,
+                    'evaluator_pk': evaluator.pk,
+                    'evaluator_email': evaluator.email,
+                    'objects_pending': 0,
+                    'objects_delivered': 0,
+                    'notifications': notifications,
+                    })
+
+            evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] += self.ncontrols_test_by_state(status, evaluator, role_map[status])
+
+            if status == "WO":
+                evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.ncontrols_test_by_state('WS', evaluator, role_map[status])
+
+            evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.ncontrols_test_by_state('WA', evaluator, role_map[status])
+            evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.ncontrols_test_by_state('FI', evaluator, role_map[status])
+
+            if evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] > 0 and status == "WO":
+                evaluators[ev_pk_found[evaluator.pk]]['qt_pk'] = self.control_tests.filter(
+                    evaluation__ref = self.ref,
+                    status=status,
+                    control_test_owner=evaluator,
+                    ).first().pk
+
+            if evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] > 0 and status == "WS":
+                evaluators[ev_pk_found[evaluator.pk]]['qt_pk'] = self.control_tests.filter(
+                    evaluation__ref = self.ref,
+                    status=status,
+                    control_test_supervisor=evaluator,
+                    ).first().pk
+
+        return evaluators
 
     # def generate_control_tests(self, only_key_control=False):
     #     from krc.process.models import Control

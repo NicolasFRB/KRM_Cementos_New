@@ -2,6 +2,7 @@
 
 <p>
   {% blocktrans with recovery_url=recovery_url %}
+  <strong>{{ notif_type }}</strong><br /><br />
   Hola {{ user_email }},<br><br>
 
   Tienes {{ ncontrols_pending }} evaluaciones de controles pendientes de completar en la plataforma <strong>{{ app_name }}</strong>, correspondientes a <strong>{{ evaluation_ref }}</strong>. El periodo a evaluar es {{ certification_year }}{{ certification_period }}. Por favor, completa la evaluación antes del {{ evaluation_date_intermediate }}.

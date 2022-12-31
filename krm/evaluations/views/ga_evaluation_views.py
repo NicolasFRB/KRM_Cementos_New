@@ -25,7 +25,7 @@ from django.http import HttpResponse
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload
+from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload, EvaluationNotificationForm
 from krm.evaluations.models import ControlTest
 
 from krm.metronic.__init__ import KTLayout
@@ -184,7 +184,7 @@ class GaEvaluationDetailView(FormView):
                 ct.save()
                 if ct.control_test_owner not in users_notificated:
                     users_notificated.append(ct.control_test_owner)
-                    ct.send_notification()
+                    ct.send_notification('Initial notification')
 
             messages.add_message(
                 self.request,
@@ -951,4 +951,74 @@ class EvaluationAssignImport(FormView):
     def get_success_url(self):
         return reverse_lazy(
             "evaluations:ga_evaluation_detail", kwargs={"pk": self.evaluation.pk}
+        )
+
+@method_decorator([is_global_admin, ], name='dispatch')
+class GaEvaluationNotificationView(DetailView, FormView):
+    template_name = 'evaluations/GaEvaluationNotifications.html'
+    model = Evaluation
+    context_object_name = 'evaluation'
+    form_class = EvaluationNotificationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.evaluation = get_object_or_404(
+            Evaluation, pk=self.kwargs.get("pk"))
+        return super(GaEvaluationNotificationView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Evaluaciones KRC'), 'url': reverse(
+                'evaluations:ga_evaluation_list')},
+            {'title': self.object.ref, 'url': reverse(
+                "evaluations:ga_evaluation_detail", kwargs={'pk': self.object.pk})}
+        ]
+        context['page_title'] = f"{_('Notificaciones de Controles')} : {self.object.ref}"
+        context['breadcrums'] = breadcrums
+
+        context['evaluation'].evaluators_notifications_co = context['evaluation'].get_evaluators_for_notifications_by_role("WO")
+        context['evaluation'].evaluators_notifications_cs = context['evaluation'].get_evaluators_for_notifications_by_role("WS")
+
+        context['js_template'] = ['js/custom/datatables.js']
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        ct_selected_co = request.POST.getlist('notify_pk_co')
+        ct_selected_cs = request.POST.getlist('notify_pk_cs')
+
+        print(ct_selected_co)
+        print(ct_selected_cs)
+        
+        from krm.evaluations.models import ControlTest
+
+        if ct_selected_co:
+            for pk in ct_selected_co:
+                ct = ControlTest.objects.filter(pk = int(pk)).first()
+                ct.send_notification('Reminder')
+
+            messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Enviadas notificaciones a %d usuarios!" % len(ct_selected_co))
+            )
+        
+        if ct_selected_cs:
+            for pk in ct_selected_cs:
+                ct = ControlTest.objects.filter(pk = int(pk)).first()
+                ct.send_notification('Reminder')
+
+            messages.add_message(
+                self.request, messages.SUCCESS, _(
+                    "Enviadas notificaciones a %d usuarios!" % len(ct_selected_cs))
+            )
+
+        return HttpResponseRedirect(
+            reverse_lazy(
+                "evaluations:ga_evaluation_detail",
+                kwargs={'pk': self.evaluation.pk}
+            )
         )

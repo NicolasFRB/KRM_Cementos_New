@@ -135,7 +135,7 @@ class RuControlTestDetail(CreateView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
-        self.control_test.send_notification()
+        self.control_test.send_notification('Notification')
 
         return super().form_valid(form)
 
@@ -239,7 +239,7 @@ class RuRemediationPlanCreate(CreateView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
-        self.control_test.send_notification()
+        self.control_test.send_notification('Notification')
 
         return super().form_valid(form)
 

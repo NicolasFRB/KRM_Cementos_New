@@ -147,7 +147,7 @@ class ControlTestDetail(FormView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
-        self.control_test.send_notification()
+        self.control_test.send_notification('Notification')
 
         description = form.cleaned_data["description"]
         if description:
@@ -200,7 +200,7 @@ class ControlTestUpdate(UpdateView):
     def form_valid(self, form):
         send_notification = form.cleaned_data["send_notification"]
         if send_notification:
-            self.object.send_notification()
+            self.object.send_notification('Notification')
         return super().form_valid(form)
 
     def get_success_url(self):
