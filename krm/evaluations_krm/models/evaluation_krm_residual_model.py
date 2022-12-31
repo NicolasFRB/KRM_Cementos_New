@@ -199,6 +199,7 @@ class EvaluationKrmResidual(AuditModel):
 
             if evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] > 0:
                 evaluators[ev_pk_found[evaluator.pk]]['qt_pk'] = self.risk_test_residuals.filter(
+                    evaluation__ref = self.ref,
                     status=1,
                     evaluator=evaluator,
                     ).first().pk

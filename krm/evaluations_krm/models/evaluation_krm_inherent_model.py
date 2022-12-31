@@ -157,6 +157,7 @@ class EvaluationKrmInherent(AuditModel):
 
             if evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] > 0:
                 evaluators[ev_pk_found[evaluator.pk]]['qt_pk'] = self.risk_test_inherents.filter(
+                    evaluation__ref = self.ref,
                     status=1,
                     expert=evaluator,
                     ).first().pk
