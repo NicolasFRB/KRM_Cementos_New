@@ -21,7 +21,7 @@
     {% for ct in cts %}
     <tr>
       <td class="text-center align-middle">
-        <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
+        <a href="{% url 'control_tests:ru_control_test_detail' ct.pk %}">
           <i class="bi bi-pencil fs-1x text-primary"></i>
         </a>
       </td>
@@ -44,7 +44,7 @@
         {% endif %}
       </td>
       <td class="text-center align-middle">
-        <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
+        <a href="{% url 'control_tests:ru_control_test_detail' ct.pk %}">
           <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-custom-class="custom-tooltip" title="{% trans Detalle %}">{{ ct.identifier }}</span>
         </a>
