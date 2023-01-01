@@ -310,6 +310,37 @@ class GaEvaluationResidualDetailView(FormView):
             ensure_ascii=True,
         )
 
+        # REPEAT FOR RISK COMPANY RESIDUAL (AGGREGATES)
+        context['rcr'] = RiskCompanyResidual.objects.filter(
+            evaluation=self.evaluation)
+        context['rcr_dict'] = [model_to_dict(m) for m in context['rcr']]
+        for i, r1 in enumerate(context['rcr']):
+            context['rcr_dict'][i]['risk_ref'] = r1.risk_company.risk.ref
+            context['rcr_dict'][i]['risk_name'] = r1.risk_company.risk.name
+            
+            context['rcr_dict'][i]['impact_inherent'] = r1.get_latest_impact_inherent
+            context['rcr_dict'][i]['probability_inherent'] = r1.get_latest_probability_inherent
+            context['rcr_dict'][i]['severity_inherent'] = r1.get_latest_severity_inherent
+            context['rcr_dict'][i]['probability_residual_eval'] = r1.probability_level_result_evaluator
+            context['rcr_dict'][i]['probability_residual_admin'] = r1.probability_level_result_admin
+            context['rcr_dict'][i]['nivel_de_control'] = r1.probability_level_residual_evaluator_aggregate_rounded
+
+        context['rcr_dict'] = sorted(
+            context['rcr_dict'], key=lambda x: (x['severity_inherent']+x['probability_residual_eval']), reverse=True)
+
+        for i, m in enumerate(context['rcr_dict']):
+            for k in m:
+                if type(context['rcr_dict'][i][k]) == str:
+                    context['rcr_dict'][i][k] = context['rcr_dict'][i][k].encode(
+                        'utf-8').decode('utf-8')
+            
+        context['rcr_json'] = json.dumps(
+            context['rcr_dict'],
+            default=str,
+            ensure_ascii=True,
+        )
+        
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context

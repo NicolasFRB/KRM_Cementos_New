@@ -47,6 +47,182 @@
 
 <script>
 
+function load_bar(id, rcr) {
+    r_impacto_inherente = [];
+    r_prob_inherente = [];
+    r_prob_residual = [];
+    nivel_de_control = [];
+    rcr.forEach(function(r) {
+
+      var r_i_inh = {x: '', y: '', name: ''}
+      var r_p_inh = {x: '', y: '', name: ''}
+      var r_p_res = {x: '', y: '', name: ''}
+      var nc = {x: '', y: '', name: ''}
+      
+      r_i_inh.x = r.risk_ref
+      r_i_inh.y = r.impact_inherent
+      r_i_inh.name = r.risk_name
+
+      r_p_inh.x = r.risk_ref
+      r_p_inh.y = r.probability_inherent-r.probability_residual_eval
+      r_p_inh.name = r.risk_name
+
+      r_p_res.x = r.risk_ref
+      r_p_res.y = r.probability_residual_eval
+      r_p_res.name = r.risk_name
+
+      nc.x = r.risk_ref
+      nc.y = -1-(r.nivel_de_control)
+      nc.name = r.risk_name
+      nc.nivel_de_control = r.nivel_de_control
+      
+      r_impacto_inherente.push(r_i_inh)
+      r_prob_inherente.push(r_p_inh)
+      r_prob_residual.push(r_p_res)
+      nivel_de_control.push(nc)
+    });
+
+    var options = {
+          series: [
+            {
+              name: 'Impacto inherente',
+              data: r_impacto_inherente,
+              type: 'column',
+            },
+            {
+              name: 'Probabilidad residual',
+              data: r_prob_residual,
+              type: 'column',
+            },
+            {
+              name: 'Probabilidad inherente',
+              data: r_prob_inherente,
+              type: 'column',
+            },
+            {
+              name: 'Nivel de contol',
+              data: nivel_de_control,
+              type: 'line',
+            },
+                    
+        ],
+        chart: {
+          height: 250,
+          type: 'line',
+          stacked: true,
+          toolbar: {
+            show:false,
+          }
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 5,
+            borderRadiusApplication: 'end',
+            borderRadiusWhenStacked: 'last',
+            dataLabels: {
+              position: 'center', // top, center, bottom
+            },
+          }
+        },
+        markers: {
+          size: 1
+        },
+        stroke: {
+          curve: 'stepline'
+        },
+        title: {
+            text: 'Valoración residual evaluadores',
+            align: 'left',
+            margin: 10,
+            offsetX: 0,
+            offsetY: 0,
+            floating: false,
+            style: {
+              fontSize:  '14px',
+              fontWeight:  'bold',
+              fontFamily:  'Helvetica, Inter, sans-serif',
+              color:  '#263238'
+            },
+        },
+        dataLabels: {
+          enabled: true,
+          enabledOnSeries: [0,1,3],
+          offsetY:10,
+          formatter: function (val, opts) {
+            var seriesIndex = opts.seriesIndex;
+            var dataPointIndex = opts.dataPointIndex;
+            var data = opts.w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+
+            if (seriesIndex == 3) {
+              return data.nivel_de_control;
+
+            } else {
+              return data.y;
+            }
+          },
+          style: {
+            fontSize: '10px',
+            colors: ["#304758"]
+          },
+          background: {
+            enabled: false,
+          },
+        },
+        tooltip:{
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+            markerColor = w.globals.markers.colors[seriesIndex];
+            return '<div style="margin:10px;">' + 
+            '<br>' +
+            '<div style="font-size: 11px;">'+
+              '<b>'+data.x+'</b>'+
+            '</div>'+
+            '<div style="font-size: 11px;">'+
+              data.name+
+            '</div>'+
+            '<br>' +
+              '<div class="apexcharts-legend-series">' +
+                '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
+                '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
+              '</div>'
+            +'</div>';
+          },
+        },
+        xaxis: {
+          position: 'bottom',
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          },
+          crosshairs: {
+            enabled:false,
+          },
+          tooltip: {
+            enabled: false,
+          }
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+            formatter: function (val) {
+              return val;
+            }
+          }        
+        },
+      };
+
+        var chart = new ApexCharts(document.querySelector("#"+id), options);
+        chart.render();
+  }
+
 function clean_specialchars(s) {
     
     return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
@@ -317,7 +493,7 @@ function color_severity(val, id){
     var options = {
       series: series,
       chart: {
-      height: 50+40*series.length,
+      height: 120+40*series.length,
       type: 'heatmap',
     },
     plotOptions: {
@@ -370,6 +546,10 @@ function color_severity(val, id){
     title: {
       display: false,
     },
+    legend: {
+      show: true,
+      showForSingleSeries: true,
+      },
     };
 
     var chart = new ApexCharts(document.querySelector("#"+id), options);
@@ -644,7 +824,7 @@ function color_severity(val, id){
   <div class="card-body">
     {% if evaluation.risk_test_residuals.all %}
       <div class="row">
-        {% if evaluation.nrisk_test_inherents_delivered != 0 or evaluation.nrisk_test_inherents_finished != 0 %}
+        {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
           <div>
             <div id="heat-main"></div>
           </div>      
@@ -733,37 +913,55 @@ function color_severity(val, id){
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{% trans 'Valoración agregada de Riesgo Residual' %}</div>
     <!--end::Card header-->
-    <div style="display:flex;">
-      <div style="position:relative; margin-right: 5em; top: 10px;">
-        <form>
-          <div class="form-check 1">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_experto" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-              <label class="form-check-label" for="flexRadioDefault1">Experto</label>
-          </div>
-          <div class="form-check 1" style="margin-top: 10px;">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
-              <label class="form-check-label" for="flexRadioDefault2">Admin</label> 
-          </div>
-        </form>
-      </div>
-      <div style="position:relative; right: 25px; top: 10px;">
-        <form>
-          <div class="form-check 2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cualitativo" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-              <label class="form-check-label" for="flexRadioDefault3">Cualitativo</label>
-          </div>
-          <div class="form-check 2" style="margin-top: 10px;">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
-              <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label> 
-          </div>
-        </form>
-      </div>
-    </div>
   </div>
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
     {% if evaluation.risk_company_residuals.all %}
+    <div class="row">
+      {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
+        <div>
+          <div id="bar-main"></div>
+        </div>      
+        <script>
+            var rcr = JSON.parse(clean_specialchars("{{ rcr_json }}"));
+            load_bar("bar-main", rcr);
+        </script>
+      {% endif %}
+    </div>
+    <hr>
+    <div class="row" style="margin-bottom: 10px;">
+      <div class="col-xl-9">
+      </div>
+      <div class="col-xl-3">
+        <div style="display:flex;">
+          <div style="position:relative; margin-right: 5em; top: 10px;">
+            <form>
+              <div class="form-check 1">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_experto" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
+                  <label class="form-check-label" for="flexRadioDefault1">Experto</label>
+              </div>
+              <div class="form-check 1" style="margin-top: 10px;">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
+                  <label class="form-check-label" for="flexRadioDefault2">Admin</label> 
+              </div>
+            </form>
+          </div>
+          <div style="position:relative; right: 25px; top: 10px;">
+            <form>
+              <div class="form-check 2">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cualitativo" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
+                  <label class="form-check-label" for="flexRadioDefault3">Cualitativo</label>
+              </div>
+              <div class="form-check 2" style="margin-top: 10px;">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
+                  <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label> 
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable" id="risk_eval_table_aggregates">
       <thead>
         <tr>
