@@ -23,6 +23,20 @@
       "bDestroy": true,
     });
   });
+
+  function update_popup(chk, user, list_id){
+    
+    if (chk.checked == true) {
+      var ul = document.getElementById(list_id);
+      var li = document.createElement("li");
+      li.setAttribute("id", user);
+      li.appendChild(document.createTextNode(user));
+      ul.appendChild(li);
+    } else {
+      u = document.getElementById(user);
+      u.remove();
+    }
+  }
 </script>
 
 {% endblock js_footer %}
@@ -63,7 +77,7 @@
           <tr class="mytable-row">
             <td class="text-center">
               {% if ev.objects_pending > 0 %}
-                <input type="checkbox" name="notify_pk_co" class="checkboxinput form-check-input" id="qt_{{ ev.qt_pk }}" value="{{ ev.qt_pk }}">
+                <input type="checkbox" name="notify_pk_co" class="checkboxinput form-check-input" id="qt_{{ ev.qt_pk }}" value="{{ ev.qt_pk }}" onclick="update_popup(this,'{{ ev.evaluator_email }}', 'userlist_co')">
               {% else %}
                 {% trans 'No hay tareas pendientes' %}
               {% endif %}
@@ -95,19 +109,41 @@
 
       {% if evaluation.status == "EP" %}
 
-        <form method="post" class="kt-form kt-form--label-right" novalidate>
-          {% include '_includes/FormErrors.html' %}
-          {% csrf_token %}
-          <input type="hidden" name="action" value="finish">
-          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-clipboard-check"></i>
-            {% trans 'Notificar usuarios (COwner)' %}</button>
-        </form>
+      <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <i class="bi bi-clipboard-check"></i>
+        {% trans 'Notificar usuarios (COwner)' %}
+      </button>
 
       {% endif %}
     </div>
-  </form>
   <!--end::Card footer-->
 </div>
+
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% trans 'Envío de notificaciones' %}</h5>
+      </div>
+      <div class="modal-body">
+        {% trans '¿Desea enviar una notificación de recordatorio de tareas pendientes a los siguientes usuarios?' %}
+        <div>
+          <br>
+          <ul id ="userlist_co">
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Cancelar</button>
+        
+        <button type="submit" class="btn btn-primary">
+          {% trans 'Enviar notificaciones' %}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
 
 <div class="card mb-8">
   <!--begin::Card header-->
@@ -139,7 +175,7 @@
           <tr class="mytable-row">
             <td class="text-center">
               {% if ev.objects_pending > 0 %}
-                <input type="checkbox" name="notify_pk_cs" class="checkboxinput form-check-input" id="qt_{{ ev.qt_pk }}" value="{{ ev.qt_pk }}">
+                <input type="checkbox" name="notify_pk_cs" class="checkboxinput form-check-input" id="qt_{{ ev.qt_pk }}" value="{{ ev.qt_pk }}" onclick="update_popup(this,'{{ ev.evaluator_email }}', 'userlist_cs')">
               {% else %}
                 {% trans 'No hay tareas pendientes' %}
               {% endif %}
@@ -171,18 +207,40 @@
 
       {% if evaluation.status == "EP" %}
 
-        <form method="post" class="kt-form kt-form--label-right" novalidate>
-          {% include '_includes/FormErrors.html' %}
-          {% csrf_token %}
-          <input type="hidden" name="action" value="finish">
-          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-clipboard-check"></i>
-            {% trans 'Notificar usuarios (CSupervisor)' %}</button>
-        </form>
+      <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        <i class="bi bi-clipboard-check"></i>
+        {% trans 'Notificar usuarios (CSupervisor)' %}
+      </button>
 
       {% endif %}
     </div>
-  </form>
   <!--end::Card footer-->
 </div>
+<!-- Modal-->
+<div class="modal" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% trans 'Envío de notificaciones' %}</h5>
+      </div>
+      <div class="modal-body">
+        {% trans '¿Desea enviar una notificación de recordatorio de tareas pendientes a los siguientes usuarios?' %}
+        <div>
+          <br>
+          <ul id ="userlist_cs">
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Cancelar</button>
+        
+        <button type="submit" class="btn btn-primary">
+          {% trans 'Enviar notificaciones' %}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
 
 {% endblock content %}

@@ -982,7 +982,7 @@ class GaEvaluationNotificationView(DetailView, FormView):
 
         context['evaluation'].evaluators_notifications_co = context['evaluation'].get_evaluators_for_notifications_by_role("WO")
         context['evaluation'].evaluators_notifications_cs = context['evaluation'].get_evaluators_for_notifications_by_role("WS")
-
+        
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -990,9 +990,6 @@ class GaEvaluationNotificationView(DetailView, FormView):
     def post(self, request, *args, **kwargs):
         ct_selected_co = request.POST.getlist('notify_pk_co')
         ct_selected_cs = request.POST.getlist('notify_pk_cs')
-
-        print(ct_selected_co)
-        print(ct_selected_cs)
         
         from krm.evaluations.models import ControlTest
 
