@@ -15,28 +15,39 @@
 
 <script>
   $(document).ready(function () {
-    $('#sendEvaluation').on('submit', function(e){
+    let modalConfirm = new bootstrap.Modal(document.getElementById('qConfirmModal'), {
+      keyboard: false
+    })
+
+    $('#buttonSend').on('click', function(e){
       let errorFound = false;
       $('#buttonSend').attr('data-kt-indicator', 'on');
       $('.card').removeClass('danger');
 
+      $("input[name^='answer-']").each(function(index){
+        if ($(this).val() == 0 || ($(this).val() == 1 && $(this).parent().find('textarea').val() == '')){
+          let parent = $(this).closest('div.card');
+          $(parent).addClass('danger');
+          $('html, body').animate({
+            scrollTop: $(parent).offset().top - 100
+          }, 1000);
+          e.preventDefault();
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+          errorFound=true;
+          return false;
+        }
+      });
+
       if(!errorFound){
-        $("input[name^='answer-']").each(function(index){
-          if ($(this).val() == 0 || ($(this).val() == 1 && $(this).parent().find('textarea').val() == '')){
-            let parent = $(this).closest('div.card');
-            $(parent).addClass('danger');
-            $('html, body').animate({
-              scrollTop: $(parent).offset().top - 100
-            }, 1000);
-            e.preventDefault();
-            $('#buttonSend').attr('data-kt-indicator', 'off');
-            errorFound=true;
-            e.preventDefault();
-            return false;
-          }
-        });
+        $('#buttonSend').attr('data-kt-indicator', 'off');
+        modalConfirm.show();
       }
-      return true;
+    })
+
+    $('#confirmSend').on('click', function(e){
+      $('#buttonSend').attr('data-kt-indicator', 'on');
+      modalConfirm.hide();
+      $('#sendEvaluation').submit();
     })
   });
 </script>
@@ -186,7 +197,7 @@
       <div style="margin:10px;">
       <h5>{% trans 'Instrucciones del cuestionario de Compliance' %}</h5>
       <br>
-        <ul>       
+        <ul>
           <li>
             {% trans 'Este cuestionario debe ser cumplimentado por el Responsable del reporte dentro de los plazos establecidos.' %}
           </li>
@@ -196,11 +207,11 @@
           </li>
           <br>
           <li>
-            {% trans 'Las respuestas facilitadas en el cuestionario deben hacer referencia al intervalo del periodo de evaluación.' %}            
+            {% trans 'Las respuestas facilitadas en el cuestionario deben hacer referencia al intervalo del periodo de evaluación.' %}
           </li>
           <br>
           <li>
-            {% trans 'En las preguntas donde se utiliza el término “relevante/s”, se refieren a circunstancias que puedan causar daños económicos o reputacionales a la concesión o al Grupo Globalvia, por motivo de su importe, repercusión mediática o trascendencia penal. A título de ejemplos, se incluirían en la categoría de “relevantes” aquellas circunstancias que se informan al órgano de administración de la concesión o de la sociedad matriz, las que puedan dar lugar a noticias negativas con repercusión en medios de comunicación, así como cualquier hecho -incluyendo litigios- que deba ser desglosado en los reportes financieros y no financieros que se publicitan.' %}            
+            {% trans 'En las preguntas donde se utiliza el término “relevante/s”, se refieren a circunstancias que puedan causar daños económicos o reputacionales a la concesión o al Grupo Globalvia, por motivo de su importe, repercusión mediática o trascendencia penal. A título de ejemplos, se incluirían en la categoría de “relevantes” aquellas circunstancias que se informan al órgano de administración de la concesión o de la sociedad matriz, las que puedan dar lugar a noticias negativas con repercusión en medios de comunicación, así como cualquier hecho -incluyendo litigios- que deba ser desglosado en los reportes financieros y no financieros que se publicitan.' %}
           </li>
           <br>
           <li>
@@ -212,7 +223,7 @@
           </li>
           <br>
           <li>
-            {% trans 'En relación con las preguntas formuladas, las respuestas “Sí” denotan una señal de alarma sobre el hecho informado, requiriendo que se detallen en el cuadro “Comentarios” las incidencias detectadas.' %}            
+            {% trans 'En relación con las preguntas formuladas, las respuestas “Sí” denotan una señal de alarma sobre el hecho informado, requiriendo que se detallen en el cuadro “Comentarios” las incidencias detectadas.' %}
           </li>
         </ul>
       </div>
@@ -262,13 +273,13 @@
             <form action="" novalidate id="sendEvaluation" method="post">
               {% csrf_token %}
               {{ form.ref|as_crispy_field }}
-              <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
-                <span class="indicator-label">Finalizar y enviar evaluación para su validación</span>
-                <span class="indicator-progress">
-                  Actualizando...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                </span>
-              </button>
             </form>
+            <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
+              <span class="indicator-label">Finalizar y enviar evaluación para su validación</span>
+              <span class="indicator-progress">
+                Actualizando...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -292,6 +303,29 @@
     </div>
   </div>
 {% endif %}
+
+
+<div class="modal fade" tabindex="-1" id="qConfirmModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{% trans 'Finalizar y enviar evaluación para su validación' %}</h3>
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-1"></span>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <p>{% trans 'Una vez enviado no será posible modificar las respuestas' %}</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">{% trans 'Cerrar y revisar' %}</button>
+                <button type="button" class="btn btn-primary" id="confirmSend">{% trans 'Finalizar y enviar evaluación para su validación' %}</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--end::Container-->
 {% endblock content %}

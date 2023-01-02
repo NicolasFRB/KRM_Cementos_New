@@ -31,4 +31,3 @@ class ActionLogUser(AuditModel):
         return "{} - {}".format(
             self.created.strftime("%d %b %Y %H:%M:%S"), self.action_description
         )
-        # return '%s - %s'.format(self.created, self.action_description)
