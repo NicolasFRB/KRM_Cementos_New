@@ -4648,7 +4648,7 @@ msgstr "Send back to Control Owner"
 
 #: krm/evaluations/forms/control_test_forms.py:148
 #: krm/evaluations/forms/control_test_forms.py:198
-msgid "Enviar de neuvo al Control Supervisor"
+msgid "Enviar de nuevo al Control Supervisor"
 msgstr "Send back to Control Supervisor"
 
 #: krm/evaluations/forms/control_test_forms.py:149
