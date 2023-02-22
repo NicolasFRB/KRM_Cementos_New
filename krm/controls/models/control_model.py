@@ -84,13 +84,17 @@ class Control(AuditModel):
 
     FREQUENCY_CONTROL_CHOICES = (
         ("BD", _("Bajo demanda")),
+        ("CO", _("Constante")),
         ("DI", _("Diario")),
         ("1W", _("Semanal")),
         ("2W", _("Quincenal")),
         ("1M", _("Mensual")),
+        ("2M", _("Bimensual")),
         ("3T", _("Trimestral")),
         ("6M", _("Semestral")),
         ("1Y", _("Anual")),
+        ("2Y", _("Bienal")),
+        ("3Y", _("Trienal"))
     )
 
     systems = models.CharField(
