@@ -6,7 +6,7 @@
       <p><span class="kt-font-bold">{% trans 'FECHA DE VENCIMIENTO DEL PLAN DE REMEDIACIÓN' %}: </span> {{ rm.date_end }}</p>
       <p><span class="kt-font-bold">{% trans 'FICHERO ADJUNTO' %}: </span>
       {% if rm.attachment %}
-        <a target="blank" href="{{ MEDIA_URL }}{{ rm.attachment }}"> {% trans 'Descargar adjunto' %}</a>
+        <a target="blank" download ref="{{ rm.attachment.url }}"> {% trans 'Descargar adjunto' %}</a>
 
       {% else %}
         {% trans 'No se ha adjuntado ningún fichero' %}

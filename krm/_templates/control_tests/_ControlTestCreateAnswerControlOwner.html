@@ -84,16 +84,9 @@
           <div class="kt-space-20"></div>
 
           {% if control_test.remediation_plans.all.count > 0 %}
-          <h5>{% trans 'PLANES DE REMEDIACIÓN' %}</h5>
+          <h5>{% trans 'PLAN DE REMEDIACIÓN' %}</h5>
           <div class="kt-space-20"></div>
-          {% for rm in control_test.remediation_plans.all %}
-          {% include 'includes/remediation_plan/ga/_remediation_plan.html' with rm=rm %}
-          {% if not forloop.last %}
-          <div class="kt-space-20"></div>
-          <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
-          <div class="kt-space-20"></div>
-          {% endif %}
-          {% endfor %}
+          {% include 'includes/remediation_plan/ga/_remediation_plan.html' with rm=control_test.remediation_plans.first %}
           <div class="kt-space-20"></div>
           <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
           <div class="kt-space-20"></div>

@@ -1,0 +1,10 @@
+# EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
+KRM_EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
+KRM_EMAIL_FROM='Compliance Tool <info@krctool.com>'
+KRM_EMAIL_DEV_TO='bienvenidosaez@baetica.com'
+KRM_EMAIL_HOST='smtp.dondominio.com'
+KRM_EMAIL_PORT='587'
+KRM_EMAIL_USE_TLS='True'
+KRM_EMAIL_HOST_USER='info@krctool.com'
+KRM_EMAIL_HOST_PASSWORD='eY95CDEwYanSCq@'
+KRM_EMAIL_BCC='Baetica Digital <it@baeticadigital.com>'

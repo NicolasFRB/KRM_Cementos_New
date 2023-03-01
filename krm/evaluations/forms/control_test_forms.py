@@ -145,7 +145,7 @@ class ControlTestCaForm(ModelForm):
     )
     CONTROL_STATUS_CHOICES = (
         ("WO", _("Enviar de nuevo al Control Owner")),
-        ("WS", _("Enviar de neuvo al Control Supervisor")),
+        ("WS", _("Enviar de nuevo al Control Supervisor")),
         ("WA", _("Por revisar por el Control Administrator")),
         ("FI", _("Finalizado")),
         ("RE", _("Reiniciar respuestas y devolver al Control Owner"))
@@ -181,6 +181,7 @@ class ControlTestCaForm(ModelForm):
             raise forms.ValidationError(
                 _('Debe establecer un nuevo estado del control para finalizar la revisión del control test'))
 
+
 class ControlTestGaForm(ModelForm):
 
     CONTROL_RESULT_CHOICES = (
@@ -195,7 +196,7 @@ class ControlTestGaForm(ModelForm):
     )
     CONTROL_STATUS_CHOICES = (
         ("WO", _("Enviar de nuevo al Control Owner")),
-        ("WS", _("Enviar de neuvo al Control Supervisor")),
+        ("WS", _("Enviar de nuevo al Control Supervisor")),
         ("WA", _("Por revisar por el Control Administrator")),
         ("FI", _("Finalizado")),
         ("RE", _("Reiniciar respuestas y devolver al Control Owner"))

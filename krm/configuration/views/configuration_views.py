@@ -38,6 +38,7 @@ from krm.controls.models import (
 
 from krm.process.models import (
     SubProcess,
+    Process
 )
 
 from krm.evaluations_krm.models import (
@@ -277,6 +278,7 @@ class GaImportView(FormView):
     def checkExcelRep(self, name, elem, elems_to_create, form, index, field_key):
         for e in elems_to_create:
             if e[field_key] == elem[field_key]:
+                self.errors_found += 1
                 messages.add_message(
                     self.request,
                     messages.ERROR,
@@ -289,6 +291,7 @@ class GaImportView(FormView):
 
     def checkDB(self, name, elem, DBreference, form, field_key):
         if DBreference.objects.filter(ref=elem[field_key]).count() > 0:
+            self.errors_found += 1
             messages.add_message(
                 self.request,
                 messages.ERROR,
@@ -300,6 +303,7 @@ class GaImportView(FormView):
             return super(GaImportView, self).form_invalid(form)
 
     def checkMaster(self, name, master_name, elem, elems_to_create, master_DBreference, master, form):
+        global errors_found
         exist = False
         if master_DBreference.objects.filter(ref=elem[master]).count() > 0:
             exist = True
@@ -310,6 +314,7 @@ class GaImportView(FormView):
                     exist = True
 
         if not exist:
+            self.errors_found += 1
             messages.add_message(
                 self.request,
                 messages.ERROR,
@@ -337,7 +342,8 @@ class GaImportView(FormView):
     def form_valid(self, form):
         input_excel = self.request.FILES['data_file'].read()
         wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
-        
+        self.errors_found = 0
+
         # Dominios de Riesgo
         domain_risk_sheet = wb['Domain Risk']
         domain_risk_to_create = []
@@ -377,7 +383,7 @@ class GaImportView(FormView):
                 self.checkExcelRep("riesgos maestros", risk_master, risk_master_to_create, form, i, "ref")
                 self.checkDB("riesgos maestros", risk_master, RiskMaster, form, "ref")
                 self.checkMaster("riesgos maestros", "dominios de riesgo", risk_master, domain_risk_to_create, DomainRisk, "domain_risk_ref", form)
-                
+
                 risk_master_to_create.append(risk_master)
 
         # Riesgos
@@ -422,6 +428,47 @@ class GaImportView(FormView):
                 self.checkMaster("riesgos", "riesgo maestro", risk, risk_master_to_create, RiskMaster, "risk_master_ref", form)
 
                 risk_to_create.append(risk)
+
+        #Procesos
+        process_sheet = wb['Procesos']
+        process_to_create = []
+        rows = process_sheet.rows
+
+        for i, row in enumerate(rows):
+            if not i == 0:
+                process = {}
+                if row[0].value is None:
+                    break # necesita mostrar el error
+                process['ref'] = row[0].value.strip().upper()
+                process['name'] = row[1].value
+                process['description'] = row[2].value
+
+                self.checkExcelRep("procesos de controles", process, process_to_create, form, i, "ref")
+                self.checkDB("procesos de controles", process, Process, form, "ref")
+                
+                process_to_create.append(process)
+
+        #Subprocesos
+        subprocess_sheet = wb['Subprocesos']
+        subprocess_to_create = []
+        rows = subprocess_sheet.rows
+
+        for i, row in enumerate(rows):
+            if not i == 0:
+                subprocess = {}
+                if row[0].value is None:
+                    break # necesita mostrar el error
+                subprocess['process_master_ref'] = row[0].value.strip().replace(' ','').upper()
+                subprocess['ref'] = row[1].value.strip().replace(' ', '').upper()
+                subprocess['name'] = row[2].value
+                subprocess['description'] = row[3].value
+
+                self.checkExcelRep("subprocesos de controles", subprocess, subprocess_to_create, form, i, "ref")
+                self.checkDB("procesos de controles", subprocess, SubProcess, form, "ref")
+                # self.checkMaster("riesgos maestros", "dominios de riesgo", risk_master, domain_risk_to_create, DomainRisk, "domain_risk_ref", form)
+                self.checkMaster("subprocesos", "procesos", subprocess, process_to_create, Process, "process_master_ref", form)
+
+                subprocess_to_create.append(subprocess)
 
         # Controles
         control_sheet = wb['Controls']
@@ -476,7 +523,7 @@ class GaImportView(FormView):
                     )
                     return super(GaImportView, self).form_invalid(form)
 
-                if control['control_frequency'] not in ('BD', 'DI', '1W', '2W', '1M', '3T', '6M', '1Y'):
+                if control['control_frequency'] not in ('CO','BD', 'DI', '1W', '2W', '1M', '2M','3T', '6M', '1Y', '2Y', '3Y'):
                     messages.add_message(
                         self.request,
                         messages.ERROR,
@@ -503,7 +550,7 @@ class GaImportView(FormView):
                 control_to_create.append(control)
                 
 
-                print('Ctrls to create', len(control_to_create), control_to_create)
+                # print('Ctrls to create', len(control_to_create), control_to_create)
 
                 self.checkDB("controles", control, Control, form, "ref")
                 for risk_ref in control['risk_refs']:
@@ -528,21 +575,21 @@ class GaImportView(FormView):
 
                 #self.checkMaster("controles", "subproceso", control, risk_to_create, Risk, "risk_ref", self, form)
 
-                for subprocess_ref in control['sub_process_refs']:
+            #     for subprocess_ref in control['sub_process_refs']:
 
-                    if SubProcess.objects.filter(ref=subprocess_ref).count() == 0:
-                        print(subprocess_ref)
-                        messages.add_message(
-                            self.request,
-                            messages.ERROR,
-                            (
-                                _('En la hoja de controles hay una REF a un subproceso que no existe: %s')
-                                % (subprocess_ref)
-                            ),
-                        )
-                        return super(GaImportView, self).form_invalid(form)
+            #         if SubProcess.objects.filter(ref=subprocess_ref).count() == 0:
+            #             print(subprocess_ref)
+            #             messages.add_message(
+            #                 self.request,
+            #                 messages.ERROR,
+            #                 (
+            #                     _('En la hoja de controles hay una REF a un subproceso que no existe: %s')
+            #                     % (subprocess_ref)
+            #                 ),
+            #             )
+            #             return super(GaImportView, self).form_invalid(form)
 
-            print('Ctrls to create', len(control_to_create), control_to_create)
+            # print('Ctrls to create', len(control_to_create), control_to_create)
 
         # Riesgos Compañías
         risk_sheet = wb['RiskCompany']
@@ -595,197 +642,245 @@ class GaImportView(FormView):
 
                 control_company_to_create.append(control_company)
 
-        print("All checks went good, loading in DB")
-        print("Domain", len(domain_risk_to_create))
-        print("RMaster", len(risk_master_to_create))
-        print("R2", len(risk_to_create))
-        print("Ctrls", len(control_to_create))
-        print("RiskCompany", len(risk_company_to_create))
-        print("CtrlCompany", len(control_company_to_create))
+        # print("All checks went good, loading in DB")
+        # print("Domain", len(domain_risk_to_create))
+        # print("RMaster", len(risk_master_to_create))
+        # print("R2", len(risk_to_create))
+        # print("Ctrls", len(control_to_create))
+        # print("RiskCompany", len(risk_company_to_create))
+        # print("CtrlCompany", len(control_company_to_create))
        
         # Vamos a crear cosas
-        dr_created, n = 0, len(domain_risk_to_create)
-        for i,dr in enumerate(domain_risk_to_create):
-            print("DomainRisk %d/%d" % (i, n))
-            DomainRisk.objects.create(
-                ref=dr['ref'],
-                name=dr['name'],
-                description=dr['description']
-            )
-            dr_created += 1
+        print(self.errors_found)
+        if self.errors_found == 0:
+            dr_created, n = 0, len(domain_risk_to_create)
+            for i,dr in enumerate(domain_risk_to_create):
+                # print("DomainRisk %d/%d" % (i, n))
+                DomainRisk.objects.create(
+                    ref=dr['ref'],
+                    name=dr['name'],
+                    description=dr['description']
+                )
+                dr_created += 1
 
-        if dr_created > 0:
-            messages.add_message(
-                self.request,
-                messages.SUCCESS,
-                (
-                    _(
-                        "{0} Dominios de Riesgo importados"
-                    ).format(
-                        dr_created,
-                    )
-                ),
-            )
+            if dr_created > 0:
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    (
+                        _(
+                            "{0} Dominios de Riesgo importados"
+                        ).format(
+                            dr_created,
+                        )
+                    ),
+                )
 
-        rm_created, n = 0, len(risk_master_to_create)
-        for i,rm in enumerate(risk_master_to_create):
-            print("RiskMaster %d/%d" % (i, n))
-            RiskMaster.objects.create(
-                ref=rm['ref'],
-                name=rm['name'],
-                description=rm['description'],
-                domain_risk=DomainRisk.objects.get(ref=rm['domain_risk_ref'])
-            )
-            rm_created += 1
+            rm_created, n = 0, len(risk_master_to_create)
+            for i,rm in enumerate(risk_master_to_create):
+                # print("RiskMaster %d/%d" % (i, n))
+                RiskMaster.objects.create(
+                    ref=rm['ref'],
+                    name=rm['name'],
+                    description=rm['description'],
+                    domain_risk=DomainRisk.objects.get(ref=rm['domain_risk_ref'])
+                )
+                rm_created += 1
 
-        if rm_created > 0:
-            messages.add_message(
-                self.request,
-                messages.SUCCESS,
-                (
-                    _(
-                        "{0} Riesgos Maestros importados"
-                    ).format(
-                        rm_created,
-                    )
-                ),
-            )
+            if rm_created > 0:
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    (
+                        _(
+                            "{0} Riesgos Maestros importados"
+                        ).format(
+                            rm_created,
+                        )
+                    ),
+                )
 
-        r_created, n = 0, len(risk_to_create)
-        for i,r in enumerate(risk_to_create):
-            print("Risk %d/%d" % (i, n))
-            Risk.objects.create(
-                ref=r['ref'],
-                name=r['name'],
-                description=r['description'],
-                risk_master=RiskMaster.objects.get(ref=r['risk_master_ref']),
-                impact_inherent=r['impact_inherent'],
-                probability_inherent=r['probability_inherent'],
-                impact_residual=r['impact_residual'],
-                probability_residual=r['probability_residual'],
-                krm_activity_affected=r['krm_activity_affected'],
-                krm_main_events=r['krm_main_events'],
-                krm_exposed_staff=r['krm_exposed_staff'],
-                krm_main_elements=r['krm_main_elements'],
-            )
-            r_created += 1
+            r_created, n = 0, len(risk_to_create)
+            for i,r in enumerate(risk_to_create):
+                # print("Risk %d/%d" % (i, n))
+                Risk.objects.create(
+                    ref=r['ref'],
+                    name=r['name'],
+                    description=r['description'],
+                    risk_master=RiskMaster.objects.get(ref=r['risk_master_ref']),
+                    impact_inherent=r['impact_inherent'],
+                    probability_inherent=r['probability_inherent'],
+                    impact_residual=r['impact_residual'],
+                    probability_residual=r['probability_residual'],
+                    krm_activity_affected=r['krm_activity_affected'],
+                    krm_main_events=r['krm_main_events'],
+                    krm_exposed_staff=r['krm_exposed_staff'],
+                    krm_main_elements=r['krm_main_elements'],
+                )
+                r_created += 1
 
-        c_created, n = 0, len(control_to_create)
-        for i,r in enumerate(control_to_create):
-            print("Control %d/%d" % (i, n))
-            key_control = False
-            is_elc = False
-            if r['key_control'] == 'X' or r['key_control'] == 'x':
-                key_control = True
-            if r['is_elc'] == 'X' or r['key_control'] == 'x':
-                is_elc = True
-            new_control = Control.objects.create(
-                ref=r['ref'],
-                name=r['name'],
-                description=r['description'],
-                testing_procedure=r['testing_procedure'],
-                key_control=key_control,
-                control_type=r['control_type'],
-                automation=r['automation'],
-                systems=r['systems'],
-                control_frequency=r['control_frequency'],
-                is_gap=r['is_gap'],
-                assert_existence=r['assert_existence'],
-                assert_completeness=r['assert_completeness'],
-                assert_valuation=r['assert_valuation'],
-                assert_rights=r['assert_rights'],
-                assert_disclosure=r['assert_disclosure'],
-                assert_accurancy=r['assert_accurancy'],
-                assert_froud=r['assert_froud'],
-                is_elc = is_elc,
-            )
+            p_created, n = 0, len(process_to_create)
+            for i,p in enumerate(process_to_create):
+                Process.objects.create(
+                ref=p['ref'],
+                name=p['name'],
+                description=p['description'],
+                )
+                p_created += 1
 
-            if Risk.objects.filter(
-                    ref__in=r['risk_refs']).count() > 0:
-                for risk_to_add in Risk.objects.filter(
-                        ref__in=r['risk_refs']):
-                    new_control.risks.add(risk_to_add)
-            if SubProcess.objects.filter(
-                    ref__in=r['sub_process_refs']).count() > 0:
-                for sub_process_to_add in SubProcess.objects.filter(
-                        ref__in=r['sub_process_refs']):
-                    new_control.sub_processes.add(sub_process_to_add)
-            c_created += 1
+            if p_created > 0:
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    (
+                        _(
+                            "{0} Procesos creados"
+                        ).format(
+                            p_created,
+                        )
+                    ),
+                )
 
-        if c_created > 0:
-            messages.add_message(
-                self.request,
-                messages.SUCCESS,
-                (
-                    _(
-                        "{0} Controles importados"
-                    ).format(
-                        c_created,
-                    )
-                ),
-            )
+            s_created, n = 0, len(subprocess_to_create)
+            for i,s in enumerate(subprocess_to_create):
+                # print("Risk %d/%d" % (i, n))
+                SubProcess.objects.create(
+                    ref=s['ref'],
+                    name=s['name'],
+                    description=s['description'],
+                    process=Process.objects.get(ref=s['process_master_ref'])
+                )
+                s_created += 1
 
-        # RiskCompany
-        risk_company_created, n = 0, len(risk_company_to_create)
-        for i,rc in enumerate(risk_company_to_create):
-            print("RiskCompany %d/%d" % (i, n))
-            rc_object = RiskCompany.objects.get(
-                company__ref=rc['company_ref'],
-                risk__ref=rc['risk_ref']
-            )
-            rc_object.active = True
+            if s_created > 0:
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    (
+                        _(
+                            "{0} Subprocesos creados"
+                        ).format(
+                            s_created,
+                        )
+                    ),
+                )
 
-            if rc['name'] != '':
-                rc_object.name = rc['name']
-            if rc['description'] != '':
-                rc_object.description = rc['description']
-            if rc['krm_activity_affected'] != '':
-                rc_object.krm_activity_affected = rc['krm_activity_affected']
-            if rc['krm_main_events'] != '':
-                rc_object.krm_main_events = rc['krm_main_events']
-            if rc['krm_exposed_staff'] != '':
-                rc_object.krm_exposed_staff = rc['krm_exposed_staff']
-            if rc['krm_main_elements'] != '':
-                rc_object.krm_main_elements = rc['krm_main_elements']
+            c_created, n = 0, len(control_to_create)
+            for i,r in enumerate(control_to_create):
+                # print("Control %d/%d" % (i, n))
+                key_control = False
+                is_elc = False
+                if r['key_control'] == 'X' or r['key_control'] == 'x':
+                    key_control = True
+                if r['is_elc'] == 'X' or r['key_control'] == 'x':
+                    is_elc = True
+                new_control = Control.objects.create(
+                    ref=r['ref'],
+                    name=r['name'],
+                    description=r['description'],
+                    testing_procedure=r['testing_procedure'],
+                    key_control=key_control,
+                    control_type=r['control_type'],
+                    automation=r['automation'],
+                    systems=r['systems'],
+                    control_frequency=r['control_frequency'],
+                    is_gap=r['is_gap'],
+                    assert_existence=r['assert_existence'],
+                    assert_completeness=r['assert_completeness'],
+                    assert_valuation=r['assert_valuation'],
+                    assert_rights=r['assert_rights'],
+                    assert_disclosure=r['assert_disclosure'],
+                    assert_accurancy=r['assert_accurancy'],
+                    assert_froud=r['assert_froud'],
+                    is_elc = is_elc,
+                )
 
-            rc_object.save()
-            risk_company_created += 1
+                if Risk.objects.filter(
+                        ref__in=r['risk_refs']).count() > 0:
+                    for risk_to_add in Risk.objects.filter(
+                            ref__in=r['risk_refs']):
+                        new_control.risks.add(risk_to_add)
+                if SubProcess.objects.filter(
+                        ref__in=r['sub_process_refs']).count() > 0:
+                    for sub_process_to_add in SubProcess.objects.filter(
+                            ref__in=r['sub_process_refs']):
+                        new_control.sub_processes.add(sub_process_to_add)
+                c_created += 1
 
-        if risk_company_created > 0:
-            messages.add_message(
-                self.request,
-                messages.SUCCESS,
-                (
-                    _(
-                        "{0} Riesgos Compañía creados"
-                    ).format(
-                        risk_company_created,
-                    )
-                ),
-            )
+            if c_created > 0:
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    (
+                        _(
+                            "{0} Controles importados"
+                        ).format(
+                            c_created,
+                        )
+                    ),
+                )
 
-        # ControlCompany
-        control_company_created, n = 0, len(control_company_to_create)
-        for i,cc in enumerate(control_company_to_create):
-            print("ControlCompany %d/%d" % (i, n))
-            company = Company.objects.get(ref=cc['company_ref'])
-            control = Control.objects.get(ref=cc['control_ref'])
+            # RiskCompany
+            risk_company_created, n = 0, len(risk_company_to_create)
+            for i,rc in enumerate(risk_company_to_create):
+                # print("RiskCompany %d/%d" % (i, n))
+                rc_object = RiskCompany.objects.get(
+                    company__ref=rc['company_ref'],
+                    risk__ref=rc['risk_ref']
+                )
+                rc_object.active = True
 
-            company.controls.add(control)
-            control_company_created += 1
+                if rc['name'] != '':
+                    rc_object.name = rc['name']
+                if rc['description'] != '':
+                    rc_object.description = rc['description']
+                if rc['krm_activity_affected'] != '':
+                    rc_object.krm_activity_affected = rc['krm_activity_affected']
+                if rc['krm_main_events'] != '':
+                    rc_object.krm_main_events = rc['krm_main_events']
+                if rc['krm_exposed_staff'] != '':
+                    rc_object.krm_exposed_staff = rc['krm_exposed_staff']
+                if rc['krm_main_elements'] != '':
+                    rc_object.krm_main_elements = rc['krm_main_elements']
 
-        if control_company_created > 0:
-            messages.add_message(
-                self.request,
-                messages.SUCCESS,
-                (
-                    _(
-                        "{0} Controles asociados a compañías creados"
-                    ).format(
-                        control_company_created,
-                    )
-                ),
-            )
+                rc_object.save()
+                risk_company_created += 1
+
+            if risk_company_created > 0:
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    (
+                        _(
+                            "{0} Riesgos Compañía creados"
+                        ).format(
+                            risk_company_created,
+                        )
+                    ),
+                )
+
+            # ControlCompany
+            control_company_created, n = 0, len(control_company_to_create)
+            for i,cc in enumerate(control_company_to_create):
+                # print("ControlCompany %d/%d" % (i, n))
+                company = Company.objects.get(ref=cc['company_ref'])
+                control = Control.objects.get(ref=cc['control_ref'])
+
+                company.controls.add(control)
+                control_company_created += 1
+
+            if control_company_created > 0:
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    (
+                        _(
+                            "{0} Controles asociados a compañías creados"
+                        ).format(
+                            control_company_created,
+                        )
+                    ),
+                )
 
         return super(GaImportView, self).form_valid(form)
 

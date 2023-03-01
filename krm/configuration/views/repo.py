@@ -530,7 +530,7 @@ class GaImportView(FormView):
                 )
                 return super(GaImportView, self).form_invalid(form)
 
-            if control['control_frequency'] not in ('BD', 'DI', '1W', '2W', '1M', '3T', '6M', '1Y'):
+            if control['control_frequency'] not in ('CO', 'BD', 'DI', '1W', '2W', '1M', '2M', '3T', '6M', '1Y', '2Y', '3Y'):
                 messages.add_message(
                     self.request,
                     messages.ERROR,

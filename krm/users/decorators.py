@@ -60,7 +60,7 @@ class is_company_admin(object):
 
     def __call__(self, request, *args, **kwargs):
         response = self.view_func(request, *args, **kwargs)
-        if request.user.is_company_admin:
+        if request.user.is_company_admin or request.user.is_superuser:
             return response
         raise PermissionDenied
 

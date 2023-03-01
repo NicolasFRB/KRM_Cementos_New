@@ -153,6 +153,7 @@
       </div>
     {% endif %}
 
+
     {% if control_test.status == 'WO' and request.user == control_test.control_test_owner %}
       <div class="card">
         {% if control_test.remediation_plan_needed %}

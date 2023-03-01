@@ -431,21 +431,25 @@ class GaControlImport(FormView):
                 control_control_frequency = str(
                     control_sheet.cell(row, 10).value)
                 if control_control_frequency not in (
+                    "CO",
                     "BD",
                     "DI",
                     "1W",
                     "2W",
                     "1M",
+                    "2M",
                     "3T",
                     "6M",
                     "1Y",
+                    "2Y",
+                    "3Y"
                 ):
                     messages.add_message(
                         self.request,
                         messages.ERROR,
                         (
                             _(
-                                u'En la fila %s "Control - Periodicidad" solo admite los valores BD, DI, 1W, 2W, 1M, 3T, 6M y 1Y'
+                                u'En la fila %s "Control - Periodicidad" solo admite los valores CO, BD, DI, 1W, 2W, 1M, 2M, 3T, 6M, 1Y, 2Y, 3Y'
                             )
                             % str(row + 1)
                         ),
