@@ -10,7 +10,7 @@ KRM_DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNg
 KRM_SITE_URL='http://test.compliancetool.net'
 # KRM_SITE_URL='http://localhost:8000'
 
-KRM_ACTIVATE=True
+KRM_ACTIVATE=False
 
 CELERY_BROKER_URL=redis://:V78jXv!qcm@redis:6379/0
 

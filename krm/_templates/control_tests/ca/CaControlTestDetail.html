@@ -43,7 +43,7 @@
 
 {% include '_includes/FormErrors.html' %}
 
-{% if control_test.remediation_plan_needed %}
+{% if control_test.remediation_plan_needed and control_test.remediation_plans.count == 0%}
   <div class="row mt-2 mb-2">
     <div class="col-sm">
       <div class="alert alert-warning ">
@@ -51,6 +51,14 @@
       </div>
     </div>
   </div>
+{% elif control_test.remediation_plan_needed and control_test.remediation_plans.count > 0 %}
+<div class="row mt-2 mb-2">
+  <div class="col-sm">
+    <div class="alert alert-warning ">
+      {% trans 'Puede editar el plan de remediación ya adjunto, en la parte inferior podrá rellenarlo si es el Control Owner' %}
+    </div>
+  </div>
+</div>
 {% endif %}
 
 <!--begin::Container-->
@@ -86,10 +94,8 @@
     {% if control_test.remediation_plans.all.count > 0 %}
       <div class="separator my-10"></div>
 
-      <h5 class="mb-8">{% trans 'PLANES DE REMEDIACIÓN' %}</h5>
-      {% for rm in control_test.remediation_plans.all %}
-        {% include '_includes/remediation_plan/ga/_remediation_plan.html' with rm=rm %}
-      {% endfor %}
+      <h5 class="mb-8">{% trans 'PLAN DE REMEDIACIÓN' %}</h5>
+        {% include '_includes/remediation_plan/ga/_remediation_plan.html' with rm=control_test.remediation_plans.first %}
     {% endif %}
   </div>
 </div>
