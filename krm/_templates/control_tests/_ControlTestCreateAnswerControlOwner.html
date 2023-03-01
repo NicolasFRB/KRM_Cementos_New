@@ -62,8 +62,18 @@
 
         </div>
 
+        <div class="row"></div>
         <div class="kt-section">
           <h5>{% trans 'RESPUESTAS' %}</h5>
+            <div class="col-xl-6">
+              <div style="margin-bottom:15px;">
+                <h5>{% trans 'RESULTADO' %}</h5>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <span style="float:right; font-size: 14px;" class="badge badge-{% if control_test.result == 'EF' %}success{% elif control_test.result == 'Alto' %}warnings{% endif %} text-wrap">{{ control_test.get_result_display }}</span>
+            </div>
+          </div>
           <div class="kt-space-20"></div>
           {% if control_test.answers.count > 0 %}
           {% for answer in control_test.answers.all %}

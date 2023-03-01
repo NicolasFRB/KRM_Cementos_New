@@ -233,6 +233,7 @@
   </div>
 </div>
 
+{% if KRM_ACTIVATE %}
 <div class="card mb-8">
   <div class="card-header">
     <div class="card-title fs-3 fw-bold">{% trans 'Usuarios evaluadores de Cuestionarios' %}&nbsp&nbsp<span
@@ -269,6 +270,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 
 {% if KRM_ACTIVATE %}
     <div class="card mb-8">
@@ -354,6 +356,7 @@
         </div>
       </div>
     </div>
+    {% endif %}
 
     <div class="card mb-8">
       <div class="card-header">
@@ -519,6 +522,6 @@
       <!--end::Card footer-->
     </div>
 
-{% endif %}
+
 <!--end::Container-->
 {% endblock content %}
