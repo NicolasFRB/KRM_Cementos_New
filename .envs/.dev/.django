@@ -1,11 +1,13 @@
+# LOCAL
 KRM_DJANGO_DEBUG=True
 KRM_DJANGO_DEV=True
 KRM_DJANGO_DEVJS=False
 KRM_BRAND='base'
-# KRM_BRAND='globalvia'
+KRM_DJANGO_DEVJS=True
+KRM_BRAND='base'
+KRM_DEBUG_TOOLBAR=True
 KRM_DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 KRM_DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
-# KRM_SITE_URL='http://app.krmtool.com'
 KRM_SITE_URL='http://localhost:8000'
 
 KRM_ACTIVATE=True
@@ -14,3 +16,22 @@ CELERY_BROKER_URL=redis://:V78jXv!qcm@redis:6379/0
 
 CELERY_FLOWER_USER=admin
 CELERY_FLOWER_PASSWORD=admin
+
+
+
+# GLOBALVÍA
+# KRM_DJANGO_DEBUG=True
+# KRM_DJANGO_DEV=True
+# KRM_DJANGO_DEVJS=False
+# KRM_BRAND='globalvia'
+# KRM_DEBUG_TOOLBAR=False
+# KRM_DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+# KRM_DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
+# KRM_SITE_URL='https://gvi.compliancetool.net'
+
+# KRM_ACTIVATE=True
+
+# CELERY_BROKER_URL=redis://:V78jXv!qcm@redis:6379/0
+
+# CELERY_FLOWER_USER=admin
+# CELERY_FLOWER_PASSWORD=aV6OGW54brOr
