@@ -1,5 +1,7 @@
 import json
 import uuid
+import xlwt
+
 
 from django.shortcuts import render
 from django.conf import settings
@@ -953,6 +955,7 @@ class EvaluationAssignImport(FormView):
             "evaluations:ga_evaluation_detail", kwargs={"pk": self.evaluation.pk}
         )
 
+
 @method_decorator([is_global_admin, ], name='dispatch')
 class GaEvaluationNotificationView(DetailView, FormView):
     template_name = 'evaluations/GaEvaluationNotifications.html'
@@ -980,9 +983,11 @@ class GaEvaluationNotificationView(DetailView, FormView):
         context['page_title'] = f"{_('Notificaciones de Controles')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        context['evaluation'].evaluators_notifications_co = context['evaluation'].get_evaluators_for_notifications_by_role("WO")
-        context['evaluation'].evaluators_notifications_cs = context['evaluation'].get_evaluators_for_notifications_by_role("WS")
-        
+        context['evaluation'].evaluators_notifications_co = context['evaluation'].get_evaluators_for_notifications_by_role(
+            "WO")
+        context['evaluation'].evaluators_notifications_cs = context['evaluation'].get_evaluators_for_notifications_by_role(
+            "WS")
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -990,22 +995,22 @@ class GaEvaluationNotificationView(DetailView, FormView):
     def post(self, request, *args, **kwargs):
         ct_selected_co = request.POST.getlist('notify_pk_co')
         ct_selected_cs = request.POST.getlist('notify_pk_cs')
-        
+
         from krm.evaluations.models import ControlTest
 
         if ct_selected_co:
             for pk in ct_selected_co:
-                ct = ControlTest.objects.filter(pk = int(pk)).first()
+                ct = ControlTest.objects.filter(pk=int(pk)).first()
                 ct.send_notification('Reminder')
 
             messages.add_message(
-            self.request, messages.SUCCESS, _(
-                "Enviadas notificaciones a %d usuarios!" % len(ct_selected_co))
+                self.request, messages.SUCCESS, _(
+                    "Enviadas notificaciones a %d usuarios!" % len(ct_selected_co))
             )
-        
+
         if ct_selected_cs:
             for pk in ct_selected_cs:
-                ct = ControlTest.objects.filter(pk = int(pk)).first()
+                ct = ControlTest.objects.filter(pk=int(pk)).first()
                 ct.send_notification('Reminder')
 
             messages.add_message(
