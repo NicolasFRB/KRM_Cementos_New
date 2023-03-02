@@ -49,3 +49,9 @@ class EvaluationInherenetCompleteForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['ref'].widget = HiddenInput()
+
+class EvaluationInherentNotificationForm(forms.Form):
+
+    notification_pk = SimpleArrayField(forms.CharField(
+        max_length=1000),  label=_('Notificar'))
+

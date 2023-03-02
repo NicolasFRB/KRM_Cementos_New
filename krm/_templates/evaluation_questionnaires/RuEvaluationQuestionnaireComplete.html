@@ -15,28 +15,39 @@
 
 <script>
   $(document).ready(function () {
-    $('#sendEvaluation').on('submit', function(e){
+    let modalConfirm = new bootstrap.Modal(document.getElementById('qConfirmModal'), {
+      keyboard: false
+    })
+
+    $('#buttonSend').on('click', function(e){
       let errorFound = false;
       $('#buttonSend').attr('data-kt-indicator', 'on');
       $('.card').removeClass('danger');
 
+      $("input[name^='answer-']").each(function(index){
+        if ($(this).val() == 0 || ($(this).val() == 1 && $(this).parent().find('textarea').val() == '')){
+          let parent = $(this).closest('div.card');
+          $(parent).addClass('danger');
+          $('html, body').animate({
+            scrollTop: $(parent).offset().top - 100
+          }, 1000);
+          e.preventDefault();
+          $('#buttonSend').attr('data-kt-indicator', 'off');
+          errorFound=true;
+          return false;
+        }
+      });
+
       if(!errorFound){
-        $("input[name^='answer-']").each(function(index){
-          if ($(this).val() == 0 || ($(this).val() == 2 && $(this).parent().find('textarea').val() == '')){
-            let parent = $(this).closest('div.card');
-            $(parent).addClass('danger');
-            $('html, body').animate({
-              scrollTop: $(parent).offset().top - 100
-            }, 1000);
-            e.preventDefault();
-            $('#buttonSend').attr('data-kt-indicator', 'off');
-            errorFound=true;
-            e.preventDefault();
-            return false;
-          }
-        });
+        $('#buttonSend').attr('data-kt-indicator', 'off');
+        modalConfirm.show();
       }
-      return true;
+    })
+
+    $('#confirmSend').on('click', function(e){
+      $('#buttonSend').attr('data-kt-indicator', 'on');
+      modalConfirm.hide();
+      $('#sendEvaluation').submit();
     })
   });
 </script>
@@ -69,11 +80,6 @@
 <!--begin::Container-->
 <div class="card mb-8">
   <!--begin::Card header-->
-  <div class="card-header">
-    <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
-    <!--end::Card header-->
-  </div>
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
@@ -113,18 +119,30 @@
           </div>
           <!--end::Col-->
         </div>
+        <div class="row mb-8">
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Evaluador' %}</span></div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+            <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ questions.first.evaluator.full_name }} ({{ questions.first.evaluator.position }})">{{ questions.first.evaluator.username_no_domain }}</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col col-md-3">
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-6">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de ceqificación' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-xl-6">
             <div class="fs-6">
-              <span>{{ evaluation.ceqification_year }}</span>
+              <span>{{ evaluation.certification_year }}</span>
             </div>
           </div>
           <!--end::Col-->
@@ -132,13 +150,13 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-6">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de ceqificación' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de certificación' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-xl-6">
             <div class="fs-6">
-              <span>{{ evaluation.ceqification_period }}</span>
+              <span>{{ evaluation.certification_period }}</span>
             </div>
           </div>
           <!--end::Col-->
@@ -175,6 +193,41 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div style="margin:10px;">
+      <h5>{% trans 'Instrucciones del cuestionario de Compliance' %}</h5>
+      <br>
+        <ul>
+          <li>
+            {% trans 'Este cuestionario debe ser cumplimentado por el Responsable del reporte dentro de los plazos establecidos.' %}
+          </li>
+          <br>
+          <li>
+            {% trans 'Antes de cada pregunta se indica el ámbito de aplicación de la misma. (ejemplo: "Delegación-USA", "Sociedad Concesionaria Concesiones de Madrid S.A.U.", "Asesoría Jurídica")' %}
+          </li>
+          <br>
+          <li>
+            {% trans 'Las respuestas facilitadas en el cuestionario deben hacer referencia al intervalo del periodo de evaluación.' %}
+          </li>
+          <br>
+          <li>
+            {% trans 'En las preguntas donde se utiliza el término “relevante/s”, se refieren a circunstancias que puedan causar daños económicos o reputacionales a la concesión o al Grupo Globalvia, por motivo de su importe, repercusión mediática o trascendencia penal. A título de ejemplos, se incluirían en la categoría de “relevantes” aquellas circunstancias que se informan al órgano de administración de la concesión o de la sociedad matriz, las que puedan dar lugar a noticias negativas con repercusión en medios de comunicación, así como cualquier hecho -incluyendo litigios- que deba ser desglosado en los reportes financieros y no financieros que se publicitan.' %}
+          </li>
+          <br>
+          <li>
+            {% trans 'La información reportada tiene carácter confidencial y se facilita atendiendo al criterio experto del Responsable del reporte que la está facilitando, o de los responsables de las diferentes áreas que le hayan facilitado dicha información por motivo de especialidad.' %}
+          </li>
+          <br>
+          <li>
+            {% trans 'Con independencia de que este cuestionario se cumplimente atendiendo al periodo de evaluación, es responsabilidad del Responsable del reporte informar al Comité de Cumplimiento de forma inmediata sobre cualquier circunstancia significativa, puntualmente reportable, de la que se tenga noticia o se materialice antes de terminar el periodo de reporte.' %}
+          </li>
+          <br>
+          <li>
+            {% trans 'En relación con las preguntas formuladas, las respuestas “Sí” denotan una señal de alarma sobre el hecho informado, requiriendo que se detallen en el cuadro “Comentarios” las incidencias detectadas.' %}
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
   <!--end::Card body-->
 </div>
@@ -186,15 +239,20 @@
         <!--begin::Card header-->
         <div class="card-header">
           <!--begin::Card header-->
-          <div class="card-title fs-3 fw-bold">{{ q.question.ref }} - {{ q.title }}</div>
+          <div class="card-title fs-3 fw-bold" style="display:block;">
+            <div>
+              <p class="mb-4">&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span>
+            </div>
+            <div style="font-weight: 100 !important; font-size: 16px;">
+              {% for piece in q.question.title_lang_split %}
+                {{ piece }}{% if not forloop.last %}<br><br>{% endif %}
+              {% endfor %}
+            </div>
+          </div>
           <!--end::Card header-->
         </div>
         <div class="card-body">
-          <h4 class="mb-5">{% trans 'Parámetros de la pregunta' %}</h4>
-          <p class="mb-4"><strong>{% trans 'Delegación' %}</strong>: {{ q.question.delegation }}</p>
-          <p class="mb-4"><strong>{% trans 'Concesión' %}</strong>: {{ q.question.concession }}</p>
-          <p class="mb-6"><strong>{% trans 'Área' %}</strong>: {{ q.question.area }}</p>
-
+          <!-- <p class="mb-4"><strong>{% trans 'Alcance' %}</strong>&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span> -->
           <div class="question_test" data-questiontestpk="{{ q.pk }}"
           data-answer="{{ q.answer}}"
           data-description="{{ q.description|default_if_none:'' }}" ></div>
@@ -215,13 +273,13 @@
             <form action="" novalidate id="sendEvaluation" method="post">
               {% csrf_token %}
               {{ form.ref|as_crispy_field }}
-              <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
-                <span class="indicator-label">Finalizar y enviar evaluación para su validación</span>
-                <span class="indicator-progress">
-                  Actualizando...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                </span>
-              </button>
             </form>
+            <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
+              <span class="indicator-label">Finalizar y enviar evaluación para su validación</span>
+              <span class="indicator-progress">
+                Actualizando...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -245,6 +303,29 @@
     </div>
   </div>
 {% endif %}
+
+
+<div class="modal fade" tabindex="-1" id="qConfirmModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{% trans 'Finalizar y enviar evaluación para su validación' %}</h3>
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-1"></span>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <p>{% trans 'Una vez enviado no será posible modificar las respuestas' %}</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">{% trans 'Cerrar y revisar' %}</button>
+                <button type="button" class="btn btn-primary" id="confirmSend">{% trans 'Finalizar y enviar evaluación para su validación' %}</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--end::Container-->
 {% endblock content %}

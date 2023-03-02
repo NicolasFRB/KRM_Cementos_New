@@ -37,7 +37,8 @@ from krm.users.models import User
 
 from krm.questionnaires.models import (
     Question,
-    Questionnaire
+    Questionnaire,
+    Scope
 )
 
 from krm.users.decorators import is_global_admin
@@ -140,7 +141,7 @@ class GaQuestionnaireCreateView(CreateView):
 class GaQuestionnaireUpdateView(UpdateView):
     form_class = QuestionnaireCreateForm
     model = Questionnaire
-    template_name = 'questionnaires/GaQuestionnaireCreate.html'
+    template_name = 'questionnaires/GaQuestionnaireUpdate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -223,40 +224,28 @@ class GaQuestionnaireImport(FormView):
         return context
 
     def form_valid(self, form):
-        questions_to_create = []
-
-        questionnaire_ref = form.cleaned_data["ref"]
-        if Questionnaire.objects.filter(ref=questionnaire_ref).count() > 0:
-            questionnaire_ref = f'{questionnaire_ref} - {uuid.uuid4().hex}'
-
-        questionnaire_name = form.cleaned_data["name"]
-        if Questionnaire.objects.filter(name=questionnaire_name).count() > 0:
-            questionnaire_name = f'{questionnaire_name} - {uuid.uuid4().hex}'
-
-        questionnaire = Questionnaire.objects.create(
-            ref=questionnaire_ref,
-            name=questionnaire_name
-        )
 
         input_excel = self.request.FILES['questionnaire_file'].read()
         wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
-        sheet = wb.active
 
+        # Questionnaires
+        questionnaires_sheet = wb['QUESTIONNAIRES']
+        questionnaires_to_create = []
         nrow = 0
-        rows = sheet.rows
+        rows = questionnaires_sheet.rows
         for row in rows:
             if nrow < 1:
                 nrow += 1
                 continue
 
-            question = {}
+            questionnaire = {}
             # Comprobamos que hay contenido en todas las celdas obligatorias
-            if row[3].value is None or row[4] is None:
+            if row[0].value is None or row[1] is None:
                 messages.add_message(
                     self.request,
                     messages.ERROR,
                     (
-                        _('En la fila %s falta algún campo obligatorio. Se ha abortado la importación') % str(
+                        _('En la hoja de Cuestionarios, en la fila %s falta algún campo obligatorio. Se ha abortado la importación') % str(
                             nrow+1)
                     )
                 )
@@ -267,32 +256,94 @@ class GaQuestionnaireImport(FormView):
                 break
 
             """
-                0   DELEGACION
-                1   CONCESION
-                2   AREA
-                3   REF
-                4   PREGUNTA
-                5   USUARIO/EMAIL
+                0   QUESTIONNAIRE_REF
+                1   QUESTIONNAIRE_NAME
             """
 
-            question['delegation'] = str(row[0].value).title()
-            question['concession'] = str(row[1].value).title()
-            question['area'] = str(row[2].value).title()
-            question['ref'] = str(row[3].value)
-            question['title'] = str(row[4].value)
-            if row[5].value is not None:
-                question['user'] = str(row[5].value).replace(' ', '')
+            questionnaire['ref'] = str(row[0].value).replace(' ', '')
+            questionnaire['name'] = str(row[1].value)
+
+            # Comprobamos que no exista ya un cuestionario con esa referencia
+            if Questionnaire.objects.filter(ref=questionnaire['ref']).count() > 0:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de Cuestionarios, en la fila %s ya existe un cuestionario con esa referencia. Se ha abortado la importación') % str(
+                            nrow+1)
+                    )
+                )
+                return super(
+                    GaQuestionnaireImport,
+                    self
+                ).form_invalid(form)
+                break
+
+            nrow += 1
+            questionnaires_to_create.append(questionnaire)
+
+        # Scopes
+        scopes_sheet = wb['SCOPES']
+        scopes_to_create = []
+        nrow = 0
+        rows = scopes_sheet.rows
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
+
+            scope = {}
+            # Comprobamos que hay contenido en todas las celdas obligatorias
+            if row[0].value is None or row[1] is None or row[2] is None:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la hoja de alcances, en la fila %s falta algún campo obligatorio. Se ha abortado la importación') % str(
+                            nrow+1)
+                    )
+                )
+                return super(
+                    GaQuestionnaireImport,
+                    self
+                ).form_invalid(form)
+                break
+
+            """
+                0   QUESTIONNAIRE_REF
+                1   SCOPE_REF
+                2   SCOPE_NAME
+                3   USUARIO/EMAIL
+            """
+
+            scope['questionnaire_ref'] = str(row[0].value).replace(' ', '')
+            # Comprobamos que el cuestionario existe
+            if Questionnaire.objects.filter(ref=scope['questionnaire_ref']).count() == 0:
+                if scope['questionnaire_ref'] not in [q['ref'] for q in questionnaires_to_create]:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('En la hoja de alcances, en la fila %s no existe el cuestionario con esa referencia. Se ha abortado la importación') % str(
+                                nrow+1)
+                        )
+                    )
+                    return super(
+                        GaQuestionnaireImport,
+                        self
+                    ).form_invalid(form)
+                    break
+            scope['ref'] = str(row[1].value).replace(' ', '')
+            scope['name'] = str(row[2].value)
+            if row[3].value is not None:
+                scope['users'] = str(row[3].value).replace(' ', '')
             else:
-                question['user'] = None
-            if row[6].value is not None:
-                question['order'] = int(row[6].value)
-            else:
-                question['order'] = 1
+                scope['users'] = None
 
             # Tenemos que comprobar que el email esté bien formado
-            if question['user'] is not None:
-                question['user'] = question['user'].split(',')
-                for email_user in question['user']:
+            if scope['users'] is not None:
+                scope['users'] = scope['users'].split(',')
+                for email_user in scope['users']:
                     if not re.match(
                         '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
                         email_user.lower()
@@ -326,31 +377,132 @@ class GaQuestionnaireImport(FormView):
                         break
 
             nrow += 1
+            scopes_to_create.append(scope)
 
+        # Questions
+        questions_sheet = wb['QUESTIONS']
+        questions_to_create = []
+        nrow = 0
+        rows = questions_sheet.rows
+
+        for row in rows:
+            if nrow < 1:
+                nrow += 1
+                continue
+
+            question = {}
+            # Comprobamos que hay contenido en todas las celdas obligatorias
+            if row[0].value is None or row[1] is None or row[2] is None:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la fila %s falta algún campo obligatorio. Se ha abortado la importación') % str(
+                            nrow+1)
+                    )
+                )
+                return super(
+                    GaQuestionnaireImport,
+                    self
+                ).form_invalid(form)
+                break
+
+            """
+                0   REF
+                1   ORDER
+                2   TITLE
+                3   SCOPES
+            """
+
+            question['ref'] = str(row[0].value)
+            question['title'] = str(row[1].value)
+            if row[2].value is not None:
+                question['scopes'] = str(
+                    row[2].value).replace(' ', '').split(',')
+            else:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('En la fila %s no se han establecido alcances para la pregunta') % str(
+                            nrow+1)
+                    )
+                )
+                return super(
+                    GaQuestionnaireImport,
+                    self
+                ).form_invalid(form)
+                break
+
+            # Tenemos que comprobar que los alcances introducidos existen o se van a crear
+            for scope in question['scopes']:
+                if Scope.objects.filter(ref=scope).count() == 0:
+                    # Si no existe previamente comprobamos que se va a crear en la importación
+                    if scope not in [scope['ref'] for scope in scopes_to_create]:
+                        messages.add_message(
+                            self.request,
+                            messages.ERROR,
+                            (
+                                _('En la fila %s el alcance %s no existe y no se va a crear en la importación') % (
+                                    str(nrow+1), scope)
+                            )
+                        )
+                        return super(
+                            GaQuestionnaireImport,
+                            self
+                        ).form_invalid(form)
+                        break
+
+            nrow += 1
             questions_to_create.append(question)
+
+        questionnaires_created = 0
+        for q in questionnaires_to_create:
+            if Questionnaire.objects.filter(ref=q['ref']).count() == 0:
+                Questionnaire.objects.create(**q)
+                questionnaires_created += 1
+
+        scopes_created = 0
+        for s in scopes_to_create:
+            questionnaire = Questionnaire.objects.get(
+                ref=s['questionnaire_ref'])
+            if Scope.objects.filter(ref=s['ref']).count() == 0:
+                scope = Scope.objects.create(
+                    ref=s['ref'],
+                    name=s['name'],
+                    questionnaire=questionnaire
+                )
+                scopes_created += 1
+
+            else:
+                scope = Scope.objects.get(ref=s['ref'])
+
+            if s['users'] is not None:
+                for user_email in s['users']:
+                    scope.user_to_assign.add(
+                        User.objects.get(email=user_email))
 
         questions_created = 0
         for q in questions_to_create:
-            new_question = Question.objects.create(
-                ref=q['ref'],
-                questionnaire=questionnaire,
-                delegation=q['delegation'],
-                concession=q['concession'],
-                area=q['area'],
-                title=q['title'],
-                order=q['order']
-            )
-            if q['user'] is not None:
-                for user_email in q['user']:
-                    new_question.user_to_assign.add(
-                        User.objects.get(email=user_email))
+            if Question.objects.filter(ref=q['ref']).count() == 0:
+                question = Question.objects.create(
+                    ref=q['ref'],
+                    title=q['title'],
+                )
+                questions_created += 1
+            else:
+                question = Question.objects.filter(ref=q['ref']).first()
 
-            questions_created += 1
+            if q['scopes'] is not None:
+                for scope in q['scopes']:
+                    scope_object = Scope.objects.get(ref=scope)
+                    if scope_object not in question.scopes.all():
+                        question.scopes.add(scope_object)
 
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            (_(f"Cuestionario {questionnaire.name} importado correctamente con {questions_created} preguntas")),
+            (_(f"Cuestionario {questionnaire.name} importado correctamente con con {scopes_created} alcances y  {questions_created} preguntas")),
         )
 
         return super(GaQuestionnaireImport, self).form_valid(form)

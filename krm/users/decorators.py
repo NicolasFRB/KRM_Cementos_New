@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 from django.utils.decorators import method_decorator
 from functools import wraps
 from django.urls import reverse_lazy
@@ -62,7 +60,7 @@ class is_company_admin(object):
 
     def __call__(self, request, *args, **kwargs):
         response = self.view_func(request, *args, **kwargs)
-        if request.user.is_company_admin:
+        if request.user.is_company_admin or request.user.is_superuser:
             return response
         raise PermissionDenied
 

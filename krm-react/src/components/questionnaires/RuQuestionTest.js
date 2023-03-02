@@ -25,7 +25,7 @@ function RuQuestionTest({ pk, initialAnswer, initialDescription }) {
       );
     setAnswer(newAnswer);
 
-    if (newAnswer === 2) {
+    if (newAnswer === 1) {
       $(`#id-description--${pk}`).focus();
       if (description === '') {
         $(`#id-description--${pk}`).addClass('is-invalid');

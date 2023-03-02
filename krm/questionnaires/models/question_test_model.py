@@ -14,6 +14,8 @@ from django.core.mail import EmailMultiAlternatives
 # Utilities
 from krm.utils.models import AuditModel
 
+from krm.configuration.models import Configuration
+
 
 class QuestionTest(AuditModel):
 
@@ -29,12 +31,6 @@ class QuestionTest(AuditModel):
         related_name="question_tests",
         on_delete=models.SET_NULL,
         null=True
-    )
-
-    title = models.CharField(
-        verbose_name=_("Enunciado"),
-        help_text=_('Enunciado copiado de la pregunta'),
-        max_length=5000
     )
 
     evaluator = models.ForeignKey(
@@ -80,9 +76,73 @@ class QuestionTest(AuditModel):
         blank=True,
     )
 
+    scope = models.ForeignKey(
+        "questionnaires.Scope",
+        verbose_name=_("Alcance"),
+        related_name="question_tests",
+        on_delete=models.CASCADE
+    )
+
     def __str__(self):
-        return f'{self.evaluation.ref} - {self.title}'
+        return f'{self.evaluation.ref} - {self.question.title}'
 
     class Meta:
         verbose_name = _("Respuesta")
         verbose_name_plural = _("Respuestas")
+
+    def send_email_notification(self, notif_type):
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
+        translation.activate(self.evaluator.notification_language)
+
+        # Esto notificará al control owner de que tiene controles por rellenar
+        if self.evaluation.certification_period:
+            period = " (%s)" % self.evaluation.certification_period
+        else:
+            period = ""
+        context = {
+            "site_url": settings.SITE_URL,
+            "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
+            "user_email": self.evaluator.email,
+            "evaluation_ref": self.evaluation.ref,
+            "evaluation_questionnaire_ref": self.evaluation.questionnaire.ref,
+            "evaluation_questionnaire_name": self.evaluation.questionnaire.name,
+            "evaluation_date_begin": self.evaluation.date_begin,
+            "evaluation_date_end": self.evaluation.date_end,
+            "certification_year": self.evaluation.certification_year,
+            "certification_period": period,
+            "app_name": configuration.app_name,
+            "notif_type": notif_type,
+        }
+        body_html = render_to_string(
+            "emails/questionnaires/questionnaires_to_complete.html", context
+        )
+        context = {
+            "content": body_html,
+            "preheader": _("Cuestionario pendiente de completar"),
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
+        }
+        body_html = render_to_string("emails/base-inline.html", context)
+        from_email = settings.EMAIL_FROM
+        if settings.EMAIL_BCC:
+            bcc = settings.EMAIL_BCC
+        else:
+            bcc = ""
+
+        subject, from_email, to = (
+            _("{} - Cuestionario de Compliance".format(configuration.app_name)),
+            from_email,
+            self.evaluator.email,
+        )
+        msg = EmailMultiAlternatives(
+            subject, body_html, from_email, [to], [bcc])
+        msg.content_subtype = "html"
+
+        self.evaluator.add_action(
+            _("[%s] Envío de email de Test de Pregunta (%s)" % (notif_type.upper(), self.evaluation.ref)))
+
+        if configuration.enable_emails:
+            return msg.send(fail_silently=False)

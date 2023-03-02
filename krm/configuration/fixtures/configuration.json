@@ -1,0 +1,11 @@
+[
+    {
+        "model": "configuration.configuration",
+        "pk": 1,
+        "fields": {
+            "app_name": "Compliance Tool",
+            "main_email": null,
+            "enable_emails": true
+        }
+    }
+]

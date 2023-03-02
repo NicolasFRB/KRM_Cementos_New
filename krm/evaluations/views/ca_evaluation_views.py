@@ -135,7 +135,7 @@ class CaEvaluationDetailView(FormView):
                 ct.save()
                 if ct.control_test_owner not in users_notificated:
                     users_notificated.append(ct.control_test_owner)
-                    ct.send_notification()
+                    ct.send_notification('Initial notification')
 
             messages.add_message(
                 self.request,

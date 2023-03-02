@@ -39,7 +39,7 @@
       <tbody>
           {% for company in companies %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'companies:ca_company_detail' company.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'companies:ca_company_detail' company.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ company.ref }}</td>
             <td class="align-middle">{{ company.name }}</td>
             <td class="text-center align-middle">{{ company.country.name }}</td>

@@ -26,7 +26,8 @@ from krm.companies.views import (
 urlpatterns = [
     path(
         '',
-        cache_page(60*60)(GaCompanyListView.as_view()),
+        # cache_page(60*60)(GaCompanyListView.as_view()),
+        GaCompanyListView.as_view(),
         name='ga_company_list'
     ),
     path(

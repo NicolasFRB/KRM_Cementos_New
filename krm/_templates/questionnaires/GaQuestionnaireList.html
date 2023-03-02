@@ -27,16 +27,22 @@
           <th class="text-center">{% trans 'Acción' %}</th>
           <th>{% trans 'REF' %}</th>
           <th>{% trans 'Nombre' %}</th>
+          <th class="text-center">{% trans 'Alcances' %}</th>
           <th class="text-center">{% trans 'Preguntas' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for questionnaire in questionnaires %}
           <tr>
-            <td class="align-middle text-center"><a href="{% url 'questionnaires:ga_questionnaire_detail' questionnaire.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="align-middle text-center"><a href="{% url 'questionnaires:ga_questionnaire_detail' questionnaire.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="align-middle">{{ questionnaire.ref }}</td>
             <td class="align-middle">{{ questionnaire.name }}</td>
-            <td class="align-middle text-center">{{ questionnaire.questions.all.count }}</td>
+            <td>
+              {% for scope in questionnaire.scopes.all %}
+                <span class="badge badge-secondary text-wrap mb-3">{{ scope }}</span> {% if not forloop.last %} {% endif %}
+              {% endfor %}
+            </td>
+            <td class="align-middle text-center">{{ questionnaire.questions.count }}</td>
           </tr>
           {% endfor %}
       </tbody>

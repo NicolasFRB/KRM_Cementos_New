@@ -107,3 +107,8 @@ class EvaluationAssignImportForm(forms.Form):
         label=_('Plantilla de asignación en excel a importar'),
         validators=[FileExtensionValidator(allowed_extensions=['xlsx', 'xls'])]
     )
+
+class EvaluationNotificationForm(forms.Form):
+
+    notification_pk = SimpleArrayField(forms.CharField(
+        max_length=1000),  label=_('Notificar'))

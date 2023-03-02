@@ -1,9 +1,3 @@
-"""Booking model."""
-import os
-import hashlib
-import random
-from tabnanny import verbose
-
 # Django
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -19,7 +13,8 @@ class Questionnaire(AuditModel):
 
     ref = models.CharField(
         verbose_name=_("Ref"),
-        max_length=200
+        max_length=200,
+        unique=True
     )
 
     name = models.CharField(verbose_name=_("Nombre"), max_length=500)
@@ -31,3 +26,8 @@ class Questionnaire(AuditModel):
         verbose_name = _("Cuestionario")
         verbose_name_plural = _("Cuestionarios")
         ordering = ["name"]
+
+    @property
+    def questions(self):
+        from .question_model import Question
+        return Question.objects.filter(scopes__in=self.scopes.all()).distinct()

@@ -11,9 +11,13 @@ class Configuration(SingletonModel):
         max_length=140
     )
     main_email = models.EmailField(
-        verbose_name='Email principal',
+        verbose_name=_('Email principal'),
         blank=True,
         null=True
+    )
+    enable_emails = models.BooleanField(
+        verbose_name=_('Habilitar envío de emails'),
+        default=False
     )
 
     def __str__(self):

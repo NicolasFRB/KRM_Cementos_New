@@ -58,8 +58,7 @@
             <div class="row mb-8">
               <!--begin::Col-->
               <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Apellidos'
-                    %}</span></div>
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Apellidos' %}</span></div>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
@@ -121,6 +120,20 @@
               </div>
               <!--end::Col-->
             </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-5">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Idioma de notificaciones' %}</span></div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-7">
+                <div class="fs-6">
+                  <span>{{ user.get_notification_language_display }}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
           </fieldset>
         </div>
       </div>
@@ -164,7 +177,7 @@
             {% for company in user.companies.all %}
             <tr>
               <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i
-                    class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+                    class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
               <td class="text-center align-middle">{{ company.ref }}</td>
               <td class="align-middle">{{ company.name }}</td>
               <td class="text-center align-middle">
@@ -219,7 +232,7 @@
             {% for company in user.companies_admin.all %}
             <tr>
               <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i
-                    class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+                    class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
               <td class="text-center align-middle">{{ company.ref }}</td>
               <td class="align-middle">{{ company.name }}</td>
               <td class="text-center align-middle">

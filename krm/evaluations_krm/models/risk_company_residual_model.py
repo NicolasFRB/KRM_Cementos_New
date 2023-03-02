@@ -62,9 +62,9 @@ class RiskCompanyResidual(AuditModel):
         return f'{self.evaluation.ref} - {self.risk_company.risk.name}'
 
     class Meta:
-        verbose_name = _("Evaluación de Riesgo Compañía Residual Agregado")
+        verbose_name = _("Evaluación de Riesgo Residual Agregada")
         verbose_name_plural = _(
-            "Evaluaciones de Riesgo Compañía Residual Agregados")
+            "Evaluaciones de Riesgo Residual Agregadas")
 
     @property
     def get_latest_impact_inherent(self):

@@ -70,10 +70,10 @@ class RuEvaluationQuestionnaireListView(ListView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Cuestionsrios'), 'url': reverse(
+            {'title': _('Evaluaciones de Cuestionsrios de Compliance'), 'url': reverse(
                 'evaluation_questionnaires:ru_evaluation_questionnaire_list')},
         ]
-        context['page_title'] = _('Evaluaciones de Cuestionarios')
+        context['page_title'] = _('Evaluaciones de Cuestionarios de Compliance')
         context['breadcrums'] = breadcrums
 
         evaluations_pending = EvaluationQuestionnaire.objects.filter(
@@ -92,6 +92,13 @@ class RuEvaluationQuestionnaireListView(ListView):
             question_tests__evaluator=self.request.user,
             status='FI'
         ).distinct()
+
+        for ev in evaluations_pending:
+            ev.nquestion_test_pending_user = ev.nquestion_test_by_state(1, self.request.user)
+        for ev in evaluations_delivered:
+            ev.nquestion_test_delivered_user = ev.nquestion_test_by_state(2, self.request.user)
+        for ev in evaluations_finished:
+            ev.nquestion_test_finished_user = ev.nquestion_test_by_state(2, self.request.user)
 
         context['evaluations_pending'] = evaluations_pending
         context['evaluations_delivered'] = evaluations_delivered
@@ -124,7 +131,7 @@ class RuEvaluationQuestionnaireCompleteView(DetailView, FormView):
         context = KTLayout.init(context)
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Cuestionario'), 'url': reverse(
+            {'title': _('Evaluación de Cuestionario de Compliance'), 'url': reverse(
                 'evaluation_questionnaires:ru_evaluation_questionnaire_list')},
             {'title': self.object.ref}
         ]
@@ -136,7 +143,7 @@ class RuEvaluationQuestionnaireCompleteView(DetailView, FormView):
         context['questions'] = QuestionTest.objects.filter(
             evaluation=self.object,
             evaluator=self.request.user
-        )
+        ).order_by('scope', 'question__ref')
 
         return context
 

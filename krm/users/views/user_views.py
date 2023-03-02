@@ -1,4 +1,9 @@
 import requests
+from openpyxl import load_workbook
+from io import BytesIO
+import re
+
+from krm.configuration.forms import ImportForm
 
 # Django
 from django.urls import reverse_lazy, reverse
@@ -14,12 +19,15 @@ from django.views.generic import (
     DetailView,
     UpdateView,
     DeleteView,
+    FormView,
 )
 
+from django.utils import translation
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
 from krm.users.models import User
+from krm.companies.models import Company
 
 from krm.users.forms.user_form import(
     UserCreateForm,
@@ -189,3 +197,167 @@ class GaUserDeleteView(DeleteView):
         return reverse_lazy(
             'users:ga_user_list'
         )
+
+
+@method_decorator([login_required, ], name='dispatch')
+class GaUserImportView(FormView):
+    template_name = 'users/GaUserImport.html'
+    form_class = ImportForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Importador de Usuarios')},
+        ]
+        context['page_title'] = _('Importador de Usuarios')
+        context['breadcrums'] = breadcrums
+        return context
+
+    def form_valid(self, form):
+        input_excel = self.request.FILES['data_file'].read()
+        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
+
+        # Evaluaciones inherentes
+        users_to_create = []
+
+        nrow = 0
+        rows = wb['USER IMPORT'].rows
+        for i, row in enumerate(rows):
+            if nrow < 1:
+                nrow += 1
+                continue
+
+            user = {}
+
+            if (row[0].value != '' and
+                    row[1].value != '' and
+                    row[2].value != '' and
+                    row[3].value != ''):
+                user['email'] = str(row[0].value).lower().replace(' ', '')
+                user['first_name'] = str(row[1].value).title()
+                user['last_name'] = str(row[2].value).title()
+                user['password'] = str(row[3].value)
+                user['welcome_email'] = str(row[4].value)
+                user['companies'] = [x.strip()
+                                     for x in str(row[5].value).split(',')]
+                user['notification_language'] = str(row[6].value).strip()
+
+                # Tenemos que comprobar que el email esté bien formado
+                if not re.match(
+                    '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
+                    user['email'].lower()
+                ):
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _(u'En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(
+                                i+1)
+                        )
+                    )
+                    return super(
+                        GaUserImportView,
+                        self
+                    ).form_invalid(form)
+                    break
+
+                # Tenemos que comprobar que no esté dado de alta
+                if User.objects.filter(email=user['email']).count() > 0:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _(u'El email introducido en la fila %s ya está registrado por otro usuario') % str(
+                                i+1)
+                        )
+                    )
+                    return super(
+                        GaUserImportView,
+                        self
+                    ).form_invalid(form)
+                    break
+
+                # Tenemos que comprobar que las compañías especificadas existen
+                for c in user['companies']:
+                    if Company.objects.filter(ref=c).count() == 0:
+                        messages.add_message(
+                            self.request,
+                            messages.ERROR,
+                            (
+                                _(u'La compañía %s de la fila %s no existe!') % (
+                                    str(c), str(i+1))
+                            )
+                        )
+                        return super(
+                            GaUserImportView,
+                            self
+                        ).form_invalid(form)
+                        break
+
+                if user['notification_language'].lower() not in ['es', 'en']:
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _(u'El lenguaje de notificación %s de la fila %s no existe! (Use "en" o "es" para inlgés o español, respectivamente)') % (
+                                str(user['notification_language']), str(i+1))
+                        )
+                    )
+                    return super(
+                        GaUserImportView,
+                        self
+                    ).form_invalid(form)
+
+            else:
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _(u'En la fila %s falta algún campo obligatorio (columnas 1,2,3,4). Se ha abortado la importación') % str(
+                            i+1)
+                    )
+                )
+                return super(
+                    GaUserImportView,
+                    self
+                ).form_invalid(form)
+                break
+
+            users_to_create.append(user)
+
+        # Vamos a crear cosas =)
+        from krm.users.tasks import send_welcome_email
+        for c in users_to_create:
+            u = User.objects.create(
+                first_name=c['first_name'],
+                last_name=c['last_name'],
+                email=c['email'],
+                notification_language=c['notification_language'],
+            )
+
+            u.add_action('User created')
+
+            if c['password'] != '':
+                u.set_password(c['password'])
+
+            for comp in c['companies']:
+                company_obj = Company.objects.filter(ref=comp).first()
+                u.companies.add(company_obj)
+
+            if c['welcome_email'] == 'Y':
+                send_welcome_email.delay(u.pk)
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS, (
+                _(u'Se han creado %s usuarios para la compañía') % str(len(users_to_create)))
+        )
+
+        return super(GaUserImportView, self).form_valid(form)
+
+    def get_success_url(self):
+
+        return reverse_lazy("users:ga_import_users")

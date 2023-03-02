@@ -39,7 +39,7 @@
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Editar Dominio de Riesgo' %}</div>
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -58,13 +58,6 @@
                 <div class="col-12 col-md-8 mb-4">
                   {{ form.name|as_crispy_field }}
                 </div>
-                <div class="col-12 mb-4">
-                  <fieldset>
-                    <!-- <legend>{% trans 'Descripción' %}</legend> -->
-                    {{ form.description|as_crispy_field }}
-                    <div id="word-count"></div>
-                  </fieldset>
-                </div>
               </div>
             </fieldset>
           </div>
@@ -74,7 +67,7 @@
 
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
-        <a href="{% url 'domain_risks:ga_domain_risk_detail' object.pk %}"
+        <a href="{% url 'questionnaires:ga_questionnaire_detail' object.pk %}"
           class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
       </div>
     </form>

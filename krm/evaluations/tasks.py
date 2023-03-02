@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @celery_app.task
-def control_test_send_notification_control_owner(ct_pk):
+def control_test_send_notification_control_owner(ct_pk, notif_type):
     logger.info(
         "Comienzo de envío de mail de notificación para control owner para el control test: {}".format(ct_pk))
     try:
@@ -22,11 +22,11 @@ def control_test_send_notification_control_owner(ct_pk):
         logger.error("Control Test no encontradoa con pk: %s" % ct_pk)
         return
 
-    ct.sent_notification_control_owner()
+    ct.sent_notification_control_owner(notif_type)
 
 
 @celery_app.task
-def control_test_send_notification_control_supervisor(ct_pk):
+def control_test_send_notification_control_supervisor(ct_pk, notif_type):
     logger.info(
         "Comienzo de envío de mail de notificación para control supervisor para el control test: {}".format(ct_pk))
     try:
@@ -35,4 +35,4 @@ def control_test_send_notification_control_supervisor(ct_pk):
         logger.error("Control Test no encontradoa con pk: %s" % ct_pk)
         return
 
-    ct.sent_notification_control_supervisor()
+    ct.sent_notification_control_supervisor(notif_type)

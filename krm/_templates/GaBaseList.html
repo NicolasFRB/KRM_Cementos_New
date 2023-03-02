@@ -34,7 +34,7 @@
       <tbody>
           {% for company in companies %}
           <tr>
-            <td class="text-center"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center">{{ company.vat }}</td>
             <td>{{ company.name }}</td>
             <td>{{ company.country.name }}</td>

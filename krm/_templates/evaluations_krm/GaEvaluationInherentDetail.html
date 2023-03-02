@@ -45,6 +45,12 @@
 </style>
 <script>
 
+function clean_specialchars(s) {
+    
+    return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
+
+  }
+
 function color_severity_dynamic(val, id){
     
     var arrow_dot = $("#"+id);
@@ -228,7 +234,7 @@ function color_severity_dynamic(val, id){
       labels: ['Pending', 'Delivered', 'Finished'],
       datasets: [
         {
-          label: 'Dataset 1',
+          label: '',
           data: [n_pending, n_delivered, n_finished],
           backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
         }
@@ -624,7 +630,7 @@ function color_severity_dynamic(val, id){
           <div id="bar-main"></div>
         </div>      
         <script>
-            var rit = JSON.parse("{{ rit_json }}".replace(/&quot;/g,'"'));
+            var rit = JSON.parse(clean_specialchars("{{ rit_json }}"));
             load_bar("bar-main", rit);
         </script>
       {% else %}
@@ -636,9 +642,33 @@ function color_severity_dynamic(val, id){
       {% endif %}
     </div>
   </div>
-  <div class="card-footer py-6">
+  <div class="card-footer py-6" style="display:flex;">
+
+    <a href="{% url 'evaluations_krm:ga_evaluation_inherent_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+      class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+
+    <a href="{% url 'evaluations_krm:ga_evaluation_inherent_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
+
     <a href="{% url 'evaluations_krm:ga_evaluation_inherent_complete' evaluation.pk %}" class="btn btn-sm btn-primary me-2">
       {% trans 'Completar evaluación (Admin)' %}</a>
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% include '_includes/FormErrors.html' %}
+      {% csrf_token %}
+      <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
+      <input type="hidden" name="action" value="d">
+      <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
+    </form>
+
+    <!-- <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% include '_includes/FormErrors.html' %}
+      {% csrf_token %}
+        <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
+        <input type="hidden" name="action" value="f">
+        <button class="btn btn-sm btn-primary me-2">{% trans 'Finalizar evaluación' %}</button>
+    </form> -->
+
+    
   </div>
   <!--end::Card body-->
 </div>
@@ -700,7 +730,7 @@ function color_severity_dynamic(val, id){
               {% if rt.status == 1 %}
                 <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">P</span>
               {% elif rt.status == 2 %}
-                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}"">E</span>   
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>   
               {% elif rt.status == 3 %}
                 <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
               {% endif %}

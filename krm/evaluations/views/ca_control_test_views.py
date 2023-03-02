@@ -168,7 +168,7 @@ class CaControlTestDetail(FormView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
-        self.control_test.send_notification()
+        self.control_test.send_notification('Notification')
 
         description = form.cleaned_data["description"]
         if description:

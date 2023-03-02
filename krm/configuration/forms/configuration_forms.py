@@ -11,6 +11,7 @@ class ConfigurationUpdateForm(ModelForm):
         fields = [
             'app_name',
             'main_email',
+            'enable_emails',
         ]
 
 

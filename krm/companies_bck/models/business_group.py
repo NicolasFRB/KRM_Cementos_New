@@ -1,8 +1,3 @@
-"""Booking model."""
-import os
-import hashlib
-import random
-
 # Django
 from django.core.mail import EmailMultiAlternatives
 from django.db import models
@@ -42,9 +37,11 @@ class BusinessGroup(KrcModel):
         error_messages={"unique": _("Dicho Vat ya está en uso.")},
     )
 
-    address = models.CharField(_("Dirección"), max_length=140, null=True, blank=True)
+    address = models.CharField(
+        _("Dirección"), max_length=140, null=True, blank=True)
 
-    state = models.CharField(_("Población"), max_length=140, null=True, blank=True)
+    state = models.CharField(
+        _("Población"), max_length=140, null=True, blank=True)
 
     cp = models.PositiveIntegerField(_("Código Postal"), null=True, blank=True)
 
@@ -55,7 +52,8 @@ class BusinessGroup(KrcModel):
         blank=True,
         null=True,
         unique=True,
-        error_messages={"unique": _("Dicho email ya está en uso por otro cliente.")},
+        error_messages={"unique": _(
+            "Dicho email ya está en uso por otro cliente.")},
     )
 
     def __str__(self):
@@ -105,7 +103,8 @@ class BusinessGroup(KrcModel):
         from krc.utils import COLORS
 
         controls = (
-            ControlTest.objects.filter(process_test__in=self.get_process_tests())
+            ControlTest.objects.filter(
+                process_test__in=self.get_process_tests())
             .values("status")
             .annotate(num_controls=Count("id"))
         )
@@ -124,7 +123,8 @@ class BusinessGroup(KrcModel):
         from krc.utils import COLORS
 
         controls = (
-            ControlTest.objects.filter(process_test__in=self.get_process_tests())
+            ControlTest.objects.filter(
+                process_test__in=self.get_process_tests())
             .values("result")
             .annotate(num_controls=Count("id"))
         )

@@ -1,0 +1,69 @@
+version: "3"
+
+volumes:
+  krm_test_postgres_data: {}
+  krm_test_postgres_data_backups: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/test/django/Dockerfile
+    image: krm_test_django
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.test/.django
+      - ./.envs/.test/.postgres
+      - ./.envs/.test/.email
+      - ./.envs/.test/.ubuntu
+    ports:
+      - "8000:8000"
+    command: /start
+
+  celeryworker:
+    <<: *django
+    image: krm_test_celeryworker
+    depends_on:
+      - django
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: krm_test_celerybeat
+    depends_on:
+      - django
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: krm_test_flower
+    depends_on:
+      - django
+    ports:
+      - "5555:5555"
+    command: /start-flower
+
+  redis:
+    image: 'redis:alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./compose/test/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - "6379"
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/test/postgres/Dockerfile
+    image: krm_test_postgres
+    volumes:
+      - krm_test_postgres_data:/var/lib/postgresql/data
+      - krm_test_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.test/.postgres

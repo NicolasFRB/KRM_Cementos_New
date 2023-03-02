@@ -42,6 +42,7 @@ from krm.risks.models import RiskCompany
 from krm.evaluations_krm.forms import (
     EvaluationResidualCreateForm,
     EvaluationResidualCompleteForm,
+    EvaluationResidualNotificationForm,
 )
 
 from krm.evaluations.forms import (
@@ -210,7 +211,7 @@ class GaEvaluationResidualCreateView(FormView):
                     rt.status = 1
                     rt.save()
                     if rt.evaluator not in users_notificated:
-                        rt.send_notification_evaluator()
+                        rt.send_notification_evaluator('Initial Notification')
                         users_notificated.append(rt.evaluator)
 
                 # Ahora para cada Evaluación vamos a crear los RiskCompanyResidual
@@ -308,6 +309,37 @@ class GaEvaluationResidualDetailView(FormView):
             default=str,
             ensure_ascii=True,
         )
+
+        # REPEAT FOR RISK COMPANY RESIDUAL (AGGREGATES)
+        context['rcr'] = RiskCompanyResidual.objects.filter(
+            evaluation=self.evaluation)
+        context['rcr_dict'] = [model_to_dict(m) for m in context['rcr']]
+        for i, r1 in enumerate(context['rcr']):
+            context['rcr_dict'][i]['risk_ref'] = r1.risk_company.risk.ref
+            context['rcr_dict'][i]['risk_name'] = r1.risk_company.risk.name
+            
+            context['rcr_dict'][i]['impact_inherent'] = r1.get_latest_impact_inherent
+            context['rcr_dict'][i]['probability_inherent'] = r1.get_latest_probability_inherent
+            context['rcr_dict'][i]['severity_inherent'] = r1.get_latest_severity_inherent
+            context['rcr_dict'][i]['probability_residual_eval'] = r1.probability_level_result_evaluator
+            context['rcr_dict'][i]['probability_residual_admin'] = r1.probability_level_result_admin
+            context['rcr_dict'][i]['nivel_de_control'] = r1.probability_level_residual_evaluator_aggregate_rounded
+
+        context['rcr_dict'] = sorted(
+            context['rcr_dict'], key=lambda x: (x['severity_inherent']+x['probability_residual_eval']), reverse=True)
+
+        for i, m in enumerate(context['rcr_dict']):
+            for k in m:
+                if type(context['rcr_dict'][i][k]) == str:
+                    context['rcr_dict'][i][k] = context['rcr_dict'][i][k].encode(
+                        'utf-8').decode('utf-8')
+            
+        context['rcr_json'] = json.dumps(
+            context['rcr_dict'],
+            default=str,
+            ensure_ascii=True,
+        )
+        
 
         context['js_template'] = ['js/custom/datatables.js']
 
@@ -433,4 +465,60 @@ class GaEvaluationResidualAdminComplete(DetailView, FormView):
 
         return reverse_lazy(
             "evaluations_krm:ga_evaluation_residual_list"
+        )
+
+@method_decorator([is_global_admin, ], name='dispatch')
+class GaEvaluationResidualNotificationsView(DetailView, FormView):
+    template_name = 'evaluations_krm/GaEvaluationResidualNotifications.html'
+    model = EvaluationKrmResidual
+    context_object_name = 'evaluation'
+    form_class = EvaluationResidualNotificationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.evaluation = get_object_or_404(
+            EvaluationKrmResidual, pk=self.kwargs.get("pk"))
+        return super(GaEvaluationResidualNotificationsView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Evaluaciones KRM'), 'url': reverse(
+                'evaluations_krm:ga_evaluation_residual_list')},
+            {'title': self.object.ref, 'url': reverse(
+                "evaluations_krm:ga_evaluation_krm_residual_detail", kwargs={'pk': self.object.pk})}
+        ]
+        context['page_title'] = f"{_('Notificaciones de Riesgo Residual')} : {self.object.ref}"
+        context['breadcrums'] = breadcrums
+
+        context['evaluation'].evaluators_notifications = context['evaluation'].get_evaluators_for_notifications()
+
+        context['js_template'] = ['js/custom/datatables.js']
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        risk_test_selected = request.POST.getlist('notify_pk')
+        
+        from krm.evaluations_krm.models import (
+            RiskTestResidual,
+        )
+
+        for pk in risk_test_selected:
+            rt = RiskTestResidual.objects.filter(pk = int(pk)).first()
+            rt.send_notification_evaluator('Reminder')
+
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Enviadas notificaciones a %d usuarios!" % len(risk_test_selected))
+        )
+
+        return HttpResponseRedirect(
+            reverse_lazy(
+                "evaluations_krm:ga_evaluation_krm_residual_detail",
+                kwargs={'pk': self.evaluation.pk}
+            )
         )

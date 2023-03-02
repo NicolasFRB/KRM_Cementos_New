@@ -45,6 +45,7 @@ from krm.companies.models import Company
 from krm.evaluations_krm.forms import (
     EvaluationInherentCreateForm,
     EvaluationInherenetCompleteForm,
+    EvaluationInherentNotificationForm,
 )
 
 from krm.risks.models import RiskCompany
@@ -208,7 +209,7 @@ class GaEvaluationInherentCreateView(FormView):
                     rt.status = 1
                     rt.save()
                     if rt.expert not in users_notificated:
-                        rt.send_notification_expert()
+                        rt.send_notification_expert('Initial notification')
                         users_notificated.append(rt.expert)
 
         messages.add_message(
@@ -422,4 +423,60 @@ class GaEvaluationInherentAdminComplete(DetailView, FormView):
 
         return reverse_lazy(
             "evaluations_krm:ga_evaluation_inherent_list"
+        )
+
+@method_decorator([is_global_admin, ], name='dispatch')
+class GaEvaluationInherentNotificationsView(DetailView, FormView):
+    template_name = 'evaluations_krm/GaEvaluationInherentNotifications.html'
+    model = EvaluationKrmInherent
+    context_object_name = 'evaluation'
+    form_class = EvaluationInherentNotificationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.evaluation = get_object_or_404(
+            EvaluationKrmInherent, pk=self.kwargs.get("pk"))
+        return super(GaEvaluationInherentNotificationsView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Evaluaciones KRM'), 'url': reverse(
+                'evaluations_krm:ga_evaluation_inherent_list')},
+            {'title': self.object.ref, 'url': reverse(
+                "evaluations_krm:ga_evaluation_krm_inherent_detail", kwargs={'pk': self.object.pk})}
+        ]
+        context['page_title'] = f"{_('Notificaciones de Riesgo Inherente')} : {self.object.ref}"
+        context['breadcrums'] = breadcrums
+
+        context['evaluation'].evaluators_notifications = context['evaluation'].get_evaluators_for_notifications()
+
+        context['js_template'] = ['js/custom/datatables.js']
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        risk_test_selected = request.POST.getlist('notify_pk')
+        
+        from krm.evaluations_krm.models import (
+            RiskTestInherent,
+        )
+
+        for pk in risk_test_selected:
+            rt = RiskTestInherent.objects.filter(pk = int(pk)).first()
+            rt.send_notification_expert('Reminder')
+
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Enviadas notificaciones a %d usuarios!" % len(risk_test_selected))
+        )
+
+        return HttpResponseRedirect(
+            reverse_lazy(
+                "evaluations_krm:ga_evaluation_krm_inherent_detail",
+                kwargs={'pk': self.evaluation.pk}
+            )
         )

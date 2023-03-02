@@ -182,7 +182,7 @@
         labels: ['Not started', 'Waiting Control Owner', 'Waiting Control Supervisor', 'Waiting Administrator', 'Finalized'],
         datasets: [
           {
-            label: 'Dataset 1',
+            label: '',
             data: [arg1, arg2, arg3, arg4, arg5],
             backgroundColor: ["#d4d0c7", "#ed9f7b", "#e6d68e", "#7dedf5", "#a6ed9d"],
           }
@@ -194,7 +194,7 @@
         labels: ['Not started', 'Effective', 'Not effective'],
         datasets: [
           {
-            label: 'Dataset 1',
+            label: '',
             data: [arg1, arg2, arg3],
             backgroundColor: ["#d4d0c7", "#a6ed9d", "#ed9f7b"],
           }
@@ -508,14 +508,14 @@
     {% if evaluation.status == 'SI' %}
     {% if evaluation.is_completed_assing %}
     <form method="post" class="kt-form kt-form--label-right" novalidate>
+      <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary"><i
+        class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
       {% include '_includes/FormErrors.html' %}
       {% csrf_token %}
       <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
       <input type="hidden" name="action" value="i">
       <button class="btn btn-sm btn-primary me-2"><i class="bi bi-clipboard-check"></i>
         {% trans 'Lanzar controles' %}</button>
-      <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary"><i
-          class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
     </form>
     {% else %}
     <button type="button" class="btn btn-sm btn-secondary me-2" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -537,22 +537,24 @@
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       {% include '_includes/FormErrors.html' %}
       {% csrf_token %}
+      <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+        class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
       <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
       <input type="hidden" name="action" value="f">
       <button class="btn btn-sm btn-primary me-2">{% trans 'Finalizar evaluación' %}</button>
-      <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary mr-2"><i
-          class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+      <a href="{% url 'evaluations:ga_evaluation_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
     </form>
     {% elif evaluation.status == 'FI' %}
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       {% include '_includes/FormErrors.html' %}
       {% csrf_token %}
+      <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+        class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
       <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
       <input type="hidden" name="action" value="d">
       <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación'
         %}</button>
-      <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary mr-2"><i
-          class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+      <a href="{% url 'evaluations:ga_evaluation_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
     </form>
     {% else %}
     <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary mr-2"><i
@@ -592,7 +594,7 @@
         <tr>
           <td class="text-center align-middle">
             <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
-              <i class="bi bi-eye-fill fs-1x text-primary"></i>
+              <i class="bi bi-hand-index-thumb fs-1x text-primary"></i>
             </a>
           </td>
           <td class="text-center align-middle">

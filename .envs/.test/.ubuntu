@@ -1,0 +1,2 @@
+TZ=Europe/Madrid
+DEBIAN_FRONTEND=noninteractive

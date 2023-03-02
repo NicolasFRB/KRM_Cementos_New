@@ -14,6 +14,8 @@ from django.core.mail import EmailMultiAlternatives
 # Utilities
 from krm.utils.models import AuditModel
 
+from krm.configuration.models import Configuration
+
 
 class RiskTestResidual(AuditModel):
 
@@ -87,14 +89,24 @@ class RiskTestResidual(AuditModel):
     #     self.ref = self.ref.upper()
     #     super().save(*args, **kwargs)
 
-    def send_notification_evaluator(self):
+    def send_notification_evaluator(self, notif_type):
         from krm.evaluations_krm.tasks import (
             risk_test_send_notification_evaluator,
         )
-        risk_test_send_notification_evaluator.delay(self.pk)
+        risk_test_send_notification_evaluator.delay(self.pk, notif_type)
 
-    def send_email_notification_evaluator(self):
+    def send_email_notification_evaluator(self, notif_type):
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
+        translation.activate(self.evaluator.notification_language)
+
         # Esto notificará al control owner de que tiene controles por rellenar
+        if self.evaluation.certification_period:
+            period = " (%s)" % self.evaluation.certification_period
+        else:
+            period = ""
         context = {
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
@@ -102,6 +114,10 @@ class RiskTestResidual(AuditModel):
             "evaluation_ref": self.evaluation.ref,
             "evaluation_date_begin": self.evaluation.date_begin,
             "evaluation_date_end": self.evaluation.date_end,
+            "certification_year": self.evaluation.certification_year,
+            "certification_period": period,
+            "app_name": configuration.app_name,
+            "notif_type": notif_type,
         }
         body_html = render_to_string(
             "emails/risk_test_residual/risk_test_email_evaluator.html", context
@@ -109,6 +125,8 @@ class RiskTestResidual(AuditModel):
         context = {
             "content": body_html,
             "preheader": _("Test de Riesgos pendientes de valorar"),
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -118,7 +136,7 @@ class RiskTestResidual(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Test de Riesgos pendientes de valorar"),
+            _("{} - Test de Riesgos pendientes de valorar".format(configuration.app_name)),
             from_email,
             self.evaluator.email,
         )
@@ -127,8 +145,10 @@ class RiskTestResidual(AuditModel):
         msg.content_subtype = "html"
 
         self.evaluator.add_action(
-            _("Envío de email de Test de Riesgos pendientes de valorar"))
-        msg.send(fail_silently=False)
+            _("[%s] Envío de email de Test de Riesgos Residuales pendientes de valorar (%s)" % (notif_type.upper(), self.evaluation.ref)))
+
+        if configuration.enable_emails:
+            return msg.send(fail_silently=False)
 
     @property
     def get_latest_impact_inherent(self):

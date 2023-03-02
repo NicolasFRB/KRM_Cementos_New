@@ -34,6 +34,7 @@
             <div class="menu-item">
                 <!--begin:Menu content-->
                 <div class="menu-content">
+                    <p>{{KRM_ACTIVATE}}</p>
                     <span class="menu-heading fw-semibold text-uppercase fs-7">{% trans 'GLOBAL ADMIN' %}</span>
                 </div>
                 <!--end:Menu content-->
@@ -51,7 +52,7 @@
             </div>
             <!--begin:Menu item-->
             <div data-kt-menu-trigger="click"
-                class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in RISKS_MASTERS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS or request.path == import %}show{% endif %}">
+                class="menu-item menu-accordion {% if request.path in RISKS_URLS or request.path in RISKS_MASTERS_URLS or request.path in DOMAIN_RISKS_URLS or request.path in CONTROLS_URLS or request.path in COMPANIES_URLS or request.path in USERS_URLS or request.path in PROCESS_URLS or request.path in SUBPROCESS_URLS or request.path in QUESTIONNAIRES_URLS or request.path in QUESTIONS_URLS or request.path == import %}show{% endif %}">
 
                 <!--begin:Menu link-->
                 <span class="menu-link">
@@ -183,7 +184,7 @@
                         </li>
                     </ul>
                     <!--end:Menu item-->
-
+                    {% if KRM_ACTIVATE %}
                     <div class="menu-item">
                         <a class="menu-link {% if request.path in QUESTIONNAIRES_URLS %}active{% endif %}"
                             href="{% url 'questionnaires:ga_questionnaire_list' %}">
@@ -192,8 +193,21 @@
                             </span>
                             <span class="menu-title">{% trans 'Cuestionarios' %}</span>
                         </a>
+                        <ul>
+                            <li>
+                                <div class="menu-item">
+                                    <a class="menu-link {% if request.path in QUESTIONS_URLS %}active{% endif %}"
+                                        href="{% url 'questions:ga_question_list' %}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">{% trans 'Preguntas' %}</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-
+                    {% endif %}
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
@@ -203,6 +217,17 @@
                                 <span class="bullet bullet-dot"></span>
                             </span>
                             <span class="menu-title">{% trans 'Importador' %}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {% if request.path ==  '/es/config/import_eval/' %}active{% endif %}"
+                            href="{% url 'configuration:ga_import_eval' %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">{% trans 'Importador ev. riesgo' %}</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
@@ -256,6 +281,7 @@
             <!--end:Menu item-->
 
             <!--begin:Menu item-->
+            {% if  KRM_ACTIVATE %}
             <div data-kt-menu-trigger="click"
                 class="menu-item menu-accordion {% if request.path in EVALUATIONS_KRM_URLS %}show{% endif %}">
                 <!--begin:Menu link-->
@@ -270,7 +296,6 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-
                         <a class="menu-link {% if request.path == ga_evaluation_inherent_list %}active{% endif %}"
                             href="{% url 'evaluations_krm:ga_evaluation_inherent_list' %}">
                             <span class="menu-bullet">
@@ -372,6 +397,7 @@
                 <!--end:Menu sub-->
             </div>
             <!--end:Menu item-->
+            {% endif %}
 
             <div class="menu-item">
                 <!--begin:Menu link-->
@@ -463,7 +489,7 @@
                 <!--end:Menu sub-->
             </div>
             <!--end:Menu item-->
-
+            {% if KRM_ACTIVATE %}
             <!--begin:Menu item-->
             <div data-kt-menu-trigger="click"
                 class="menu-item menu-accordion {% if request.path in CA_EVALUATIONS_KRM_URLS %}show{% endif %}">
@@ -536,7 +562,7 @@
                 <!--end:Menu sub-->
             </div>
             <!--end:Menu item-->
-
+            {% endif %}
             {% endif %}
 
             <!--begin:Menu item-->
@@ -566,8 +592,7 @@
                     <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
                     <span class="menu-title">{% trans 'Completar Controles' %}
                         {% if request.user.controls_test_owner_pending.count > 0 %}
-                        &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_owner_pending.count
-                            }}</span>
+                        &nbsp;&nbsp;<span class="badge badge-primary">{{ request.user.controls_test_owner_pending.count }}</span>
                         {% endif %}
                     </span>
                 </a>
@@ -580,14 +605,13 @@
                     <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
                     <span class="menu-title">{% trans 'Supervisar Controles' %}
                         {% if request.user.controls_test_supervisor_pending.count > 0 %}
-                        &nbsp;&nbsp;<span class="badge badge-primary">{{
-                            request.user.controls_test_supervisor_pending.count }}</span>
+                        &nbsp;&nbsp;<span class="badge badge-primary">{{request.user.controls_test_supervisor_pending.count }}</span>
                         {% endif %}
                     </span>
                 </a>
                 <!--end:Menu link-->
             </div>
-
+            {% if KRM_ACTIVATE %}
             <!--begin:Menu item-->
             <div class="menu-item">
                 <!--begin:Menu content-->
@@ -644,6 +668,7 @@
                 </a>
                 <!--end:Menu link-->
             </div>
+            {% endif %}
 
             <div class="menu-item">
                 <!--begin:Menu link-->

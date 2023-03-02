@@ -3,14 +3,19 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import SelectQuestionnaire from "./SelectQuestionnaire.js";
+import SelectScopes from "./SelectScopes.js";
 import SelectQuestions from "./SelectQuestions.js";
 
 let $ = window.$;
 
-function CreateEvaluationKrmInherent(props) {
+function CreateEvaluationQuestionnaire(props) {
   const [formData, setFormData] = useState({ 'completed': false });
   const [questionnaire, setQuestionnaire] = useState({ value: 0, label: '-' });
   const [selectedQuestions, setSelectedQuestions] = useState([]);
+  const [nQuestionTests, setNQuestionTests] = useState(0);
+  const [scopes, setScopes] = useState([]);
+  const [scopesSelected, setScopesSelected] = useState([]);
+  const [questions, setQuestions] = useState([]);
 
   const readFormData = () => {
     let newFormData = {};
@@ -29,10 +34,13 @@ function CreateEvaluationKrmInherent(props) {
     // eslint-disable-next-line
   }, []);
 
-  // useEffect(() => {
-  //     window.CustomDatatables.destroy();
-  //     window.CustomDatatables.init();
-  // }, []);
+  useEffect(() => {
+    let nQuestionTests = 0;
+    selectedQuestions.forEach((question) => {
+      nQuestionTests += question.evaluators.length;
+    });
+    setNQuestionTests(nQuestionTests);
+  }, [selectedQuestions]);
 
   const sendForm = (e) => {
     e.preventDefault();
@@ -54,14 +62,23 @@ function CreateEvaluationKrmInherent(props) {
             <div className="alert alert-primary">{t('q.complete-data')}</div>
           )}
           <div className={(formData.completed ? '' : 'd-none')}>
-            <SelectQuestionnaire questionnaire={questionnaire} setQuestionnaire={setQuestionnaire} />
+            <div className="row">
+              <div className="col col-12 col-sm-6">
+                <SelectQuestionnaire questionnaire={questionnaire} setQuestionnaire={setQuestionnaire} scopes={scopes} setScopes={setScopes} setScopesSelected={setScopesSelected} />
+              </div>
+              {questionnaire.value !== 0 && (
+                <div className="col col-12 col-sm-6" key={questionnaire.value}>
+                  <SelectScopes scopes={scopes} setScopesSelected={setScopesSelected} />
+                </div>
+              )}
+            </div>
           </div>
           <div className="separator my-10"></div>
         </div>
         <div className="col-12">
           <h3 className="mb-5">{t('q.step-3')}</h3>
-          {questionnaire.value !== 0 ? (
-            <SelectQuestions questionnaire={questionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} />
+          {(questionnaire.value !== 0 && scopesSelected && scopesSelected.length > 0) ? (
+            <SelectQuestions questionnaire={questionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} scopesSelected={scopesSelected} questions={questions} setQuestions={setQuestions} scopes={scopes} />
           ) : (
             <div className="alert alert-primary">{t('q.select-questionnaire')}</div>
           )}
@@ -74,7 +91,7 @@ function CreateEvaluationKrmInherent(props) {
             <div className="alert alert-primary">{t('q.select-question')}</div>
           ) : (
             <div className="col-12">
-              <p>{t('q.questions-to-launch', { 'nquestions': selectedQuestions.length })} </p>
+              <p>{t('q.questions-to-launch', { 'nquestions': nQuestionTests })} </p>
               <button onClick={sendForm} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
                 <span className="indicator-label">{t('q.launch')}</span>
                 <span className="indicator-progress">
@@ -84,6 +101,7 @@ function CreateEvaluationKrmInherent(props) {
               <input type="hidden" name="questions_to_evaluate" value={JSON.stringify(selectedQuestions.map((question) => {
                 return {
                   pk: question.pk,
+                  scope: question.scope,
                   evaluators: question.evaluators.map((evaluator) => {
                     return evaluator.value
                   })
@@ -97,4 +115,4 @@ function CreateEvaluationKrmInherent(props) {
   );
 }
 
-export default CreateEvaluationKrmInherent;
+export default CreateEvaluationQuestionnaire;

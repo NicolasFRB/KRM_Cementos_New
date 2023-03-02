@@ -18,7 +18,5 @@ class QuestionCreateForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["questionnaire"].widget.attrs["class"] = "form-select"
-        self.fields["questionnaire"].widget.attrs["data-control"] = "select2"
-        self.fields["user_to_assign"].widget.attrs["class"] = "form-select"
-        self.fields["user_to_assign"].widget.attrs["data-control"] = "select2"
+        self.fields["scopes"].widget.attrs["class"] = "form-select"
+        self.fields["scopes"].widget.attrs["data-control"] = "select2"

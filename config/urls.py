@@ -44,12 +44,16 @@ from krm.evaluations_krm.api import (
 from krm.questionnaires.api import (
     QuestionnaireViewSet,
     QuestionViewSet,
-    QuestionTestApiView
+    QuestionTestApiView,
+    ScopeViewSet,
 )
 
 from krm.users.api import (
     UserViewSet,
 )
+
+from krm.configuration.models import Configuration
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -61,6 +65,7 @@ router.register(r'domain-risks', DomainRiskViewSet)
 router.register(r'companies', CompanyViewSet)
 router.register(r'questionnaires', QuestionnaireViewSet)
 router.register(r'questions', QuestionViewSet)
+router.register(r'scopes', ScopeViewSet)
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
@@ -156,6 +161,10 @@ urlpatterns += i18n_patterns(
          include(('krm.questionnaires.urls.questionnaire_urls', 'questionnaires'),
                  namespace='questionnaires')
          ),
+    path('questionnaires/scopes/',
+         include(('krm.questionnaires.urls.scope_urls', 'scopes'),
+                 namespace='scopes')
+         ),
     path('questionnaires/questions/',
          include(('krm.questionnaires.urls.question_urls', 'questions'),
                  namespace='questions')
@@ -178,7 +187,6 @@ if 'rosetta' in settings.INSTALLED_APPS:
         path('rosetta/', include('rosetta.urls'))
     ]
 
-
-admin.site.index_title = _('KRM Tool')
-admin.site.site_header = _('KRM Tool')
-admin.site.site_title = _('KRM Tool')
+admin.site.index_title = "Compliance Tool"
+admin.site.site_header = "Compliance Tool"
+admin.site.site_title = "Compliance Tool"

@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 import Select from 'react-select'
 import { useTranslation } from "react-i18next";
 
-function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestions, setSelectedQuestions }) {
+function SelectQuestionnaire({ questionnaire, setQuestionnaire, setScopes, setScopesSelected }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // const [questionnaires, setQuestionnaires] = useState([]);
   const [selectOptions, setSelectOptions] = useState([]);
 
   const [t] = useTranslation("global");
@@ -22,10 +21,11 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestion
           let newSelectOptions = res.results.map((questionnaire) => {
             return {
               value: questionnaire.pk,
-              label: questionnaire.name
+              label: questionnaire.name,
+              scopes: questionnaire.scopes_names,
             }
           });
-          newSelectOptions.unshift({ value: 0, label: '-' });
+          newSelectOptions.unshift({ value: 0, label: '-', scopes: [] });
           setSelectOptions(newSelectOptions);
           setIsLoaded(true);
         },
@@ -36,6 +36,12 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestion
       );
   }, []);
 
+  useEffect(() => {
+    setScopes(questionnaire.scopes);
+    setScopesSelected([]);
+    // eslint-disable-next-line
+  }, [questionnaire, setScopes]);
+
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -44,10 +50,11 @@ function SelectQuestionnaire({ questionnaire, setQuestionnaire, selectedQuestion
     return (
       <div>
         {isLoaded && selectOptions && (
-          <div className="col col-12 col-md-6" key={questionnaire}>
-            <Select options={selectOptions} defaultValue={selectOptions[0]} onChange={setQuestionnaire} selectedQuestions={selectedQuestions} setSelectedQuestions={setSelectedQuestions} />
+          <>
+            <h5>Cuestionario</h5>
+            <Select options={selectOptions} defaultValue={selectOptions[0]} onChange={setQuestionnaire} />
             <input type="hidden" name="questionnaire" value={questionnaire.value} />
-          </div>
+          </>
         )}
       </div>
     );

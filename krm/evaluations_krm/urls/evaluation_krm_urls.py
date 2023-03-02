@@ -7,6 +7,7 @@ from krm.evaluations_krm.views import (
     GaEvaluationInherentListView,
     GaEvaluationInherentDetailView,
     GaEvaluationInherentAdminComplete,
+    GaEvaluationInherentNotificationsView,
 
     CaEvaluationInherentCreateView,
     CaEvaluationInherentListView,
@@ -21,6 +22,7 @@ from krm.evaluations_krm.views import (
     GaEvaluationResidualCreateView,
     GaEvaluationResidualDetailView,
     GaEvaluationResidualAdminComplete,
+    GaEvaluationResidualNotificationsView,
 
     CaEvaluationResidualCreateView,
     CaEvaluationResidualListView,
@@ -53,6 +55,11 @@ urlpatterns = [
         'inherent/complete/<pk>/',
         GaEvaluationInherentAdminComplete.as_view(),
         name='ga_evaluation_inherent_complete'
+    ),
+    path(
+        'inherent/notifications/<pk>/',
+        GaEvaluationInherentNotificationsView.as_view(),
+        name='ga_evaluation_inherent_notifications'
     ),
 
     path(
@@ -114,6 +121,11 @@ urlpatterns = [
         'residual/complete/<pk>/',
         GaEvaluationResidualAdminComplete.as_view(),
         name='ga_evaluation_residual_complete'
+    ),
+    path(
+        'residual/notifications/<pk>/',
+        GaEvaluationResidualNotificationsView.as_view(),
+        name='ga_evaluation_residual_notifications'
     ),
 
 

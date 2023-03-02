@@ -107,10 +107,13 @@ class EvaluationKrmInherent(AuditModel):
             ).distinct().count()
 
     # RETURN experts by state of risks in evaluation
-    def get_experts_by_rit_state(self, status):
+    def get_experts_by_rit_state(self, status = None):
 
-        experts_id = set([rt.expert.pk for rt in self.risk_test_inherents.filter(
+        if status:
+            experts_id = set([rt.expert.pk for rt in self.risk_test_inherents.filter(
             status=status)])
+        else:
+            experts_id = set([rt.expert.pk for rt in self.risk_test_inherents.all()])
 
         return User.objects.filter(id__in=experts_id)
 
@@ -125,3 +128,38 @@ class EvaluationKrmInherent(AuditModel):
                 domain_risks_pks.append(domain_pk)
 
         return DomainRisk.objects.filter(id__in=domain_risks_pks)
+
+    # GET EVALUATORS FOR NOTIFICATIONS TABLE BY STATE
+    def get_evaluators_for_notifications(self):
+
+        evaluators_all_states = self.get_experts_by_rit_state()
+        evaluators = []
+        ev_pk_found = {}
+
+        for evaluator in evaluators_all_states:
+            
+            notifications = [[n.action_description, n.created] for n in evaluator.actions_log.all() if self.ref in n.action_description]
+
+            if evaluator.pk not in ev_pk_found:
+                ev_pk_found[evaluator.pk] = len(evaluators)
+                evaluators.append({
+                    'qt_pk': -1,
+                    'evaluator_pk': evaluator.pk,
+                    'evaluator_email': evaluator.email,
+                    'objects_pending': 0,
+                    'objects_delivered': 0,
+                    'notifications': notifications,
+                    })
+
+            evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] += self.nrisk_test_inherents_by_state(1, evaluator)
+            evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.nrisk_test_inherents_by_state(2, evaluator)
+            evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.nrisk_test_inherents_by_state(3, evaluator)
+
+            if evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] > 0:
+                evaluators[ev_pk_found[evaluator.pk]]['qt_pk'] = self.risk_test_inherents.filter(
+                    evaluation__ref = self.ref,
+                    status=1,
+                    expert=evaluator,
+                    ).first().pk
+
+        return evaluators

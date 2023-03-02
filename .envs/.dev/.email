@@ -20,3 +20,4 @@ KRM_EMAIL_BCC='Baetica Digital <it@baeticadigital.com>'
 # KRM_EMAIL_HOST_USER = 'compliance_tool@globalvia.com'
 # KRM_EMAIL_HOST_PASSWORD = 'spiY6TrImlp#=AvE'
 # KRM_EMAIL_BCC = 'Baetica Digital <it@baeticadigital.com>'
+# EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"

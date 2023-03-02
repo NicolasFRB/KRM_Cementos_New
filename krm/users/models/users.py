@@ -7,9 +7,12 @@ from django.urls import reverse
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
+from django.utils import translation
 
 import hashlib
 from random import choice
+
+from krm.configuration.models import Configuration
 
 
 def random_digits(number_digits=6):
@@ -65,6 +68,18 @@ class User(AbstractUser):
         null=True,
         max_length=140,
         verbose_name=_("Cargo que ocupa"),
+    )
+
+    NOTIFICATION_LANT_CHOICES = (
+        ('es', _('Español')),
+        ('en', _('English')),
+    )
+
+    notification_language = models.CharField(
+        max_length=2,
+        choices=NOTIFICATION_LANT_CHOICES,
+        default='es',
+        verbose_name=_("Idioma de notificaciones"),
     )
 
     @property
@@ -182,6 +197,11 @@ class User(AbstractUser):
 
     def send_welcome_email(self):
         from django.conf import settings
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
+        translation.activate(self.notification_language)
 
         self.update_remember_key()
         remember_url = settings.SITE_URL + reverse(
@@ -190,13 +210,15 @@ class User(AbstractUser):
 
         context = {
             "remember_url": remember_url,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string(
             "emails/users/welcome_email.html", context)
         context = {
             "content": body_html,
             "preheader": _("Establecer contraseña"),
-            "BRAND": settings.BRAND
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -206,7 +228,7 @@ class User(AbstractUser):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Nueva cuenta de usuario"),
+            _("{} - Nueva cuenta de usuario".format(configuration.app_name)),
             from_email,
             self.email,
         )
@@ -215,23 +237,35 @@ class User(AbstractUser):
         msg.content_subtype = "html"
 
         self.add_action(_("Welcome email"))
-        return msg.send(fail_silently=False)
+
+        if configuration.enable_emails:
+            return msg.send(fail_silently=False)
+        else:
+            return True
 
     def send_email_remember_password(self):
+        from krm.configuration.models import Configuration
+
+        configuration = Configuration.objects.first()
+
+        translation.activate(self.notification_language)
+
         self.update_remember_key()
         remember_url = settings.SITE_URL + reverse(
             "auth:type_your_password", kwargs={"remember_key": self.remember_key}
         )
 
         context = {
-            "remember_url": remember_url
+            "remember_url": remember_url,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string(
             "emails/users/remember_password.html", context)
         context = {
             "content": body_html,
             "preheader": _("Recordar contraseña"),
-            "BRAND": settings.BRAND
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
@@ -241,7 +275,7 @@ class User(AbstractUser):
             bcc = ""
 
         subject, from_email, to = (
-            _("KRM Tool - Cambio de contraseña"),
+            _("{} - Cambio de contraseña".format(configuration.app_name)),
             from_email,
             self.email,
         )
@@ -250,4 +284,6 @@ class User(AbstractUser):
         msg.content_subtype = "html"
 
         self.add_action(_("Reset password email"))
-        msg.send(fail_silently=False)
+
+        if configuration.enable_emails:
+            msg.send(fail_silently=False)

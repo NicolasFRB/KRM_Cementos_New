@@ -28,5 +28,4 @@ POSTGRES_PASSWORD = "AVNS_wfCHm_eYJNcZjdUDUX2"
 # POSTGRES_USER=sBLRWyyPsInwHftmHAWmYJURGWBGFpLs
 # POSTGRES_PASSWORD=tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL
 
-
 # /Applications/"pgAdmin 4.app"/Contents/SharedSupport/pg_dump -U "krmtool-dev-user" -h "baetica-postgres-01-do-user-995005-0.b.db.ondigitalocean.com" -p "25060" -d "krmtool-local-db" | zip > ~/backup.sql.gz

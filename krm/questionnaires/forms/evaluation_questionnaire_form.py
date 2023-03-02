@@ -19,7 +19,7 @@ class EvaluationQuestionnaireCreateForm(ModelForm):
         max_length=140,
     )
     questions_to_evaluate = forms.CharField(
-        max_length=1000,
+        max_length=100000,
         label=_('Preguntas')
     )
 
@@ -59,3 +59,8 @@ class EvaluationQuestionnaireActionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['action'].widget = HiddenInput()
+
+class EvaluationQuestionnaireNotificationForm(forms.Form):
+
+    notification_pk = SimpleArrayField(forms.CharField(
+        max_length=1000),  label=_('Notificar'))

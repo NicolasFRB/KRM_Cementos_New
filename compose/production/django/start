@@ -6,4 +6,5 @@ set -o nounset
 
 
 python /app/manage.py collectstatic --noinput
+pip freeze
 /usr/local/bin/gunicorn config.wsgi-production --bind 0.0.0.0:5000 --chdir=/app

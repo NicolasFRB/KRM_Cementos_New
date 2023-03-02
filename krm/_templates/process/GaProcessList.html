@@ -35,7 +35,7 @@
       <tbody>
           {% for process in processes %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'process:ga_process_detail' process.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'process:ga_process_detail' process.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ process.ref }}</td>
             <td class="align-middle">{{ process.name }}</td>
             <td class="align-middle">{{ process.description|striptags|safe|truncatechars:200 }}</td>

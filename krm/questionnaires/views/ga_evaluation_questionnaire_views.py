@@ -6,6 +6,8 @@ from openpyxl import load_workbook
 from io import BytesIO
 
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import HttpResponseRedirect
 
 from django.views.generic import (
     FormView,
@@ -17,6 +19,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
 
 from django.utils.decorators import method_decorator
+from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 
 from krm.metronic.__init__ import KTLayout
@@ -24,6 +27,7 @@ from krm.metronic.__init__ import KTLayout
 from krm.questionnaires.models import EvaluationQuestionnaire
 
 from krm.questionnaires.forms import EvaluationQuestionnaireCreateForm
+from krm.questionnaires.forms import EvaluationQuestionnaireNotificationForm
 
 from krm.questionnaires.forms import (
     EvaluationQuestionnaireActionForm,
@@ -58,14 +62,43 @@ class GaEvaluationQuestionnaireListView(ListView):
             },
         ]
 
-        evaluations_pending = EvaluationQuestionnaire.objects.filter(
+        ev_pending = EvaluationQuestionnaire.objects.filter(
             status='EP')
-        evaluations_finished = EvaluationQuestionnaire.objects.filter(
+        ev_finished = EvaluationQuestionnaire.objects.filter(
             status='FI')
 
-        context['evaluations_pending'] = evaluations_pending
-        context['evaluations_finished'] = evaluations_finished
+        for ev in ev_pending:
+            
+            ev.nquestion_test_pending = ev.nquestion_test_by_state(
+                1)
+            ev.nquestion_test_finished = ev.nquestion_test_by_state(
+                2)
 
+            ev.evaluators_pending = ev.get_evaluators_by_qt_state(1)
+            ev.evaluators_finished = ev.get_evaluators_by_qt_state(2)
+
+            ev.total_evaluators = ev.evaluators_pending.count() + \
+                ev.evaluators_finished.count()
+
+            ev.scopes = ev.evaluated_scopes()
+
+        for ev in ev_finished:
+
+            ev.nquestion_test_pending = ev.nquestion_test_by_state(
+                1)
+            ev.nquestion_test_finished = ev.nquestion_test_by_state(
+                2)
+
+            ev.evaluators_pending = ev.get_evaluators_by_qt_state(1)
+            ev.evaluators_finished = ev.get_evaluators_by_qt_state(2)
+
+            ev.total_evaluators = ev.evaluators_pending.count() + \
+                ev.evaluators_finished.count()
+
+            ev.scopes = ev.evaluated_scopes()
+
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
         return context
 
 
@@ -100,9 +133,13 @@ class GaEvaluationQuestionnaireCreateView(FormView):
 
         from krm.questionnaires.models import (
             Question,
-            QuestionTest
+            QuestionTest,
         )
+        from krm.questionnaires.models import Scope
         from krm.users.models import User
+
+        users_notificated = []
+        question_test_to_notify = []
 
         question_test_created = 0
 
@@ -128,15 +165,25 @@ class GaEvaluationQuestionnaireCreateView(FormView):
         for question in questions_to_evaluate:
             q = Question.objects.get(
                 pk=question["pk"])
+            scope = Scope.objects.get(
+                pk=question["scope"]["scope_pk"]
+            )
             for evaluator in question["evaluators"]:
                 question_test = QuestionTest()
                 question_test.evaluation = evaluation
                 question_test.question = q
-                question_test.title = q.title
                 question_test.evaluator = User.objects.get(pk=evaluator)
                 question_test.status = 1
+                question_test.scope = scope
                 question_test.save()
                 question_test_created += 1
+                if question_test.evaluator not in users_notificated:
+                    users_notificated.append(question_test.evaluator)
+                    question_test_to_notify.append(question_test)
+
+        from krm.questionnaires.tasks import question_test_send_notification
+        for qt in question_test_to_notify:
+            question_test_send_notification.delay(qt.pk, 'Initial Notification')
 
         messages.add_message(
             self.request,
@@ -166,6 +213,67 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Cuestionario')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
+        context['evaluation'].nquestion_test_pending = context['evaluation'].nquestion_test_by_state(1)
+        context['evaluation'].nquestion_test_finished = context['evaluation'].nquestion_test_by_state(2)
+
+        context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_qt_state(1)
+        context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_qt_state(2)
+
+        context['evaluation'].total_evaluators = context['evaluation'].evaluators_pending.count() + context['evaluation'].evaluators_finished.count()
+
+        context['evaluation'].scopes = context['evaluation'].evaluated_scopes()
+
+        from krm.questionnaires.models import (
+            QuestionTest,
+        )
+
+        # Serializar Evaluation no incluye sus hijos :(
+        # Busco los hijos
+        context['qqt'] = QuestionTest.objects.filter(
+            evaluation= context['evaluation'])
+
+        # Paso a dict para json
+        context['qqt_dict'] = [model_to_dict(m) for m in context['qqt']]
+
+        # MODEL_TO_DICT not getting properties :(
+        # Get .severity_level_expert
+        # TBI for cuadratico :/
+        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
+        for i, r1 in enumerate(context['qqt']):
+            context['qqt_dict'][i]['question_ref'] = r1.question.ref
+            context['qqt_dict'][i]['question_text'] = r1.question.title
+            context['qqt_dict'][i]['evaluator'] = r1.evaluator.username_no_domain
+            context['qqt_dict'][i]['scope'] = r1.scope.ref
+            context['qqt_dict'][i]['scope_name'] = r1.scope.name
+
+        # Sort by severity for a nice plot
+        context['qqt_dict'] = sorted(
+            context['qqt_dict'], key=lambda x: (x['question_ref']), reverse=False)
+
+        # Errores de encoding caracteres portugueses y españoles
+        for i, m in enumerate(context['qqt_dict']):
+            for k in m:
+                if type(context['qqt_dict'][i][k]) == str:
+                    context['qqt_dict'][i][k] = context['qqt_dict'][i][k].encode(
+                        'utf-8').decode('utf-8').replace('"', '`').replace("'", '`')
+        
+        # DIVIDE BY SCOPE
+        q_by_scope = {}
+        for q in context['qqt_dict']:
+            scope = q['scope']
+            if scope not in q_by_scope:
+                q_by_scope[scope] = []
+            q_by_scope[scope].append(q)
+
+        # JSON DUMP
+        context['qqt_json'] = {}
+        for scope in q_by_scope:
+            context['qqt_json'][scope] = json.dumps(
+                q_by_scope[scope],
+                default=str,
+                ensure_ascii=True,
+                )
+        
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -201,8 +309,11 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
             text_wrap = workbook.add_format({'text_wrap': True})
 
             columns = [
+                "QUESTIONNAIRE",
+                "QUESTION_REF",
                 "QUESTION",
                 "EVALUATOR",
+                "SCOPE",
                 "ANSWER",
                 "STATUS",
                 "DESCRIPTION",
@@ -212,23 +323,29 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
             for index, col_name in enumerate(columns):
                 worksheet.write(0, index, col_name, bold)
 
-            worksheet.set_column(0, 1, 70)  # Question
-            worksheet.set_column(1, 1, 25)  # Evaluator
-            worksheet.set_column(2, 1, 25)  # Answer
-            worksheet.set_column(3, 1, 25)  # Status
-            worksheet.set_column(4, 1, 25)  # Description
-            worksheet.set_column(5, 1, 25)  # Date
+            worksheet.set_column(0, 1, 25)  # Questionnnaire
+            worksheet.set_column(0, 2, 70)  # Question
+            worksheet.set_column(0, 3, 25)  # Question_REF
+            worksheet.set_column(1, 4, 25)  # Evaluator
+            worksheet.set_column(2, 5, 25)  # Scope
+            worksheet.set_column(3, 6, 25)  # Answer
+            worksheet.set_column(4, 7, 25)  # Status
+            worksheet.set_column(5, 8, 25)  # Description
+            worksheet.set_column(6, 9, 25)  # Date
 
             row = 1
 
             for question in evaluation.question_tests.all():
-                worksheet.write(row, 0, question.question.title, text_wrap)
-                worksheet.write(row, 1, question.evaluator.username)
-                worksheet.write(row, 2, question.get_answer_display())
-                worksheet.write(row, 3, question.get_status_display())
-                worksheet.write(row, 4, question.description)
+                worksheet.write(row, 0, evaluation.questionnaire.name, text_wrap)
+                worksheet.write(row, 1, question.question.ref, text_wrap)
+                worksheet.write(row, 2, question.question.title, text_wrap)
+                worksheet.write(row, 3, question.evaluator.username)
+                worksheet.write(row, 4, question.scope.name)
+                worksheet.write(row, 5, question.get_answer_display())
+                worksheet.write(row, 6, question.get_status_display())
+                worksheet.write(row, 7, question.description)
                 worksheet.write(
-                    row, 5, question.modified.strftime("%d/%m/%Y %H:%M:%S"))
+                    row, 8, question.modified.strftime("%d/%m/%Y %H:%M:%S"))
                 row += 1
 
             # Close the workbook before sending the data.
@@ -281,4 +398,62 @@ class GaEvaluationQuestionnaireDetailView(DetailView, FormView):
         return reverse_lazy(
             "evaluation_questionnaires:ga_evaluation_questionnaire_detail",
             kwargs={'pk': self.get_object().pk}
+        )
+
+
+@method_decorator([is_global_admin, ], name='dispatch')
+class GaEvaluationQuestionnaireNotificationsView(DetailView, FormView):
+    template_name = 'evaluation_questionnaires/GaEvaluationQuestionnaireNotifications.html'
+    model = EvaluationQuestionnaire
+    context_object_name = 'evaluation'
+    form_class = EvaluationQuestionnaireNotificationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.evaluation = get_object_or_404(
+            EvaluationQuestionnaire, pk=self.kwargs.get("pk"))
+        return super(GaEvaluationQuestionnaireNotificationsView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Evaluaciones de Cuestionario'), 'url': reverse(
+                'evaluation_questionnaires:ga_evaluation_questionnaire_list')},
+            {'title': self.object.ref, 'url': reverse(
+                'evaluation_questionnaires:ga_evaluation_questionnaire_detail', kwargs={'pk': self.object.pk})}
+        ]
+        context['page_title'] = f"{_('Notificaciones de cuestionario')} : {self.object.ref}"
+        context['breadcrums'] = breadcrums
+
+        context['evaluation'].evaluators_notifications = context['evaluation'].get_evaluators_for_notifications()
+
+        context['js_template'] = ['js/custom/datatables.js']
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        question_test_selected = request.POST.getlist('notify_pk')
+        
+        from krm.questionnaires.models import (
+            QuestionTest,
+        )
+        from krm.questionnaires.tasks import question_test_send_notification
+
+        for pk in question_test_selected:
+            qt = QuestionTest.objects.filter(pk = int(pk)).first()
+            question_test_send_notification.delay(qt.pk, 'Reminder')
+
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Enviadas notificaciones a %d usuarios!" % len(question_test_selected))
+        )
+
+        return HttpResponseRedirect(
+            reverse_lazy(
+                'evaluation_questionnaires:ga_evaluation_questionnaire_detail',
+                kwargs={'pk': self.evaluation.pk}
+            )
         )

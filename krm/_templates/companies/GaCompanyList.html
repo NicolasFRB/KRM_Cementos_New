@@ -41,7 +41,7 @@
       <tbody>
           {% for company in companies %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ company.ref }}</td>
             <td class="align-middle">{{ company.name }}</td>
             <td class="text-center align-middle">
@@ -64,8 +64,8 @@
                   {% else %}
                     <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.expert.first_name }} {{ ced.expert.last_name }} ({{ ced.expert.position }})">{{ ced.domain_risk.ref }}</span></a>
                     <br>
-                  {% endif %}   
-                {% endfor %}   
+                  {% endif %}
+                {% endfor %}
               </td>
               <td class="text-center align-middle">
                 {% for ced in company.evaluators_domain_risk.all %}
@@ -75,8 +75,8 @@
                   {% else %}
                     <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% for evaluator in ced.evaluator.all %}{{ evaluator.first_name }} {{ evaluator.last_name }} ({{ evaluator.position }}){% if not forloop.last %}&#013;{% endif %}{% endfor %}">{{ ced.domain_risk.ref }}</span></a>
                     <br>
-                  {% endif %}   
-                {% endfor %}   
+                  {% endif %}
+                {% endfor %}
               </td>
             {% endif %}
           </tr>

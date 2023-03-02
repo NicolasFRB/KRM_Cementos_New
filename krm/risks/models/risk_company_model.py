@@ -29,7 +29,7 @@ class RiskCompany(AuditModel):
 
     name = models.CharField(
         verbose_name=_("Nombre"),
-        max_length=140
+        max_length=500
     )
 
     description = RichTextField(

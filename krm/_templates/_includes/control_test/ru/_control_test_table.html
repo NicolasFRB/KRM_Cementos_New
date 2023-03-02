@@ -21,7 +21,7 @@
     {% for ct in cts %}
     <tr>
       <td class="text-center align-middle">
-        <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
+        <a href="{% url 'control_tests:ru_control_test_detail' ct.pk %}">
           <i class="bi bi-pencil fs-1x text-primary"></i>
         </a>
       </td>
@@ -44,7 +44,7 @@
         {% endif %}
       </td>
       <td class="text-center align-middle">
-        <a href="{% url 'control_tests:control_test_detail' ct.pk %}">
+        <a href="{% url 'control_tests:ru_control_test_detail' ct.pk %}">
           <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-custom-class="custom-tooltip" title="{% trans Detalle %}">{{ ct.identifier }}</span>
         </a>
@@ -79,8 +79,7 @@
         {% if ct.control_test_owner %}
         <span class="badge badge-success" data-bs-toggle="tooltip" data-bs-placement="top"
           data-bs-custom-class="custom-tooltip" data-bs-delay-show="250"
-          title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id="box-child">CO: {{
-          ct.control_test_owner.username_no_domain }}</span>
+          title="{{ ct.control_test_owner.full_name }} ({{ ct.control_test_owner.position }})" id="box-child">CO: {{ ct.control_test_owner.username_no_domain }}</span>
         {% else %}
         {% trans 'Sin asignar' %}
         {% endif %}
