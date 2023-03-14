@@ -3,18 +3,18 @@
 <div class="c-remediation-plan">
   <div class="row">
     <div class="col-12">
-      <p><span class="fs-6 fw-semibold">{% trans 'FECHA DE VENCIMIENTO DEL PLAN DE REMEDIACIÓN' %}: </span> {{ rm.date_end }}
+      <p><span class="badge badge-secondary text-wrap">{% trans 'Fecha de vencimiento del plan de remediación' %}: </span> {{ rm.date_end }}
       </p>
-      <p><span class="fs-6 fw-semibold">{% trans 'USUARIO' %}: </span> {{ rm.user }}
+      <p><span class="badge badge-secondary text-wrap">{% trans 'Usuario' %}: </span> {{ rm.user }}
       </p>
-      <p><span class="fs-6 fw-semibold">{% trans 'FICHERO ADJUNTO' %}: </span>
+      <p><span class="badge badge-secondary text-wrap">{% trans 'Fichero adjunto' %}: </span>
       {% if rm.attachment %}
         <a target="blank" download href="{{ rm.attachment.url }}"> {% trans 'Descargar adjunto' %}</a>
 
       {% else %}
         {% trans 'No se ha adjuntado ningún fichero' %}
       {% endif %}</p>
-      <p><span class="fs-6 fw-semibold">{% trans 'DESCRIPCIÓN' %}: </span> </p>
+      <p><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}: </span> </p>
       {{ rm.description|safe }}
     </div>
   </div>

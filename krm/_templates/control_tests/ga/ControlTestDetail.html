@@ -112,15 +112,20 @@
         {% trans 'Todavía no hay respuestas para este test de control' %}
       </p>
     {% endif %}
-
+  </div>
+  </div>
     {% if control_test.remediation_plans.all.count > 0 %}
-      <div class="separator my-10"></div>
+  
 
-      <h5 class="mb-8">{% trans 'PLAN DE REMEDIACIÓN' %}</h5>
+  <div class="card mb-8">
+    <div class="card-header">
+      <div class="card-title fs-3 fw-bold">Plan de remediación</div>
+    </div>
+    <div class="card-body">
         {% include '_includes/remediation_plan/ga/_remediation_plan.html' with rm=control_test.remediation_plans.first %}
     {% endif %}
+    </div>
   </div>
-</div>
 
 {% if control_test.status != 'WS' or control_test.status != 'WO' %}
     {% if control_test.status == 'WS' and request.user == control_test.control_test_supervisor %}
