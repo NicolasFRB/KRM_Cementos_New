@@ -431,7 +431,7 @@
       </div>  
       <div class="row mb-8">
         <div class="col col-md-4">
-          {% if 'SCIFF' in control.domain_risks  %}
+          {% if control.systems != "-" and control.is_gap != "-" and control.assert_existence != "-" and control.assert_completeness != "-" and control.assert_valuation != "-" and control.assert_rights != "-" and control.assert_disclosure != "-" and control.assert_accurancy != "-" and control.assert_froud != "-" %}
             <div class="row mb-8">
               <!--begin::Col-->
               <div class="col-xl-5">
