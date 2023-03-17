@@ -1,0 +1,89 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Riesgos (N2) que aplican a la compañía' %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            {% include '_includes/FormErrors.html' %}
+          </div>
+          <div class="col-12 mb-4">
+            <div class="row">
+              <div class="mb-4 col-12">
+                {% for key, domain_risk in dms.items %}
+                <table class="table table-striped table-row-bordered gy-5 gs-7 mb-10 customDatatable">
+                    <thead>
+                      <tr>
+                        <th colspan="5"><h5>Dominio de Riesgo - <span class="badge badge-primary text-wrap">{{ domain_risk.name }}</span></h5></th>
+                      </tr>
+                      <tr>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th class="text-center" width="15%">{% trans 'REF' %}</th>
+                        <th width="30%">{% trans 'Nombre' %}</th>
+                        <th width="5%">{% trans 'Descripción' %}</th>
+                        <th width="5%">{% trans 'Principales elementos' %}</th>
+                        <th width="5%">{% trans 'Principales eventos' %}</th>
+                        <th width="5%">{% trans 'Actividad afectada' %}</th>                                                
+                        <th width="5%">{% trans 'Personal expuesto' %}</th>
+               
+                        <th>{% trans 'Riesgo Maestro (N1)' %}</th>          
+                        <th class="text-center">{% trans 'Nº de Controles' %}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for rc in domain_risk.risks %}
+                        <tr>
+                          <td width="20px" class="align-middle"><input type="checkbox" name="risk_pk" class="checkboxinput form-check-input" id="risk_{{ rc.pk }}" {% if rc.active %}checked="checked" {% endif %} value="{{rc.pk }}"></td>
+                          <td class="text-center align-middle"><a href="{% url 'risks:ga_risk_detail' rc.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+                          <td class="text-center align-middle">{{ rc.risk.ref }}</td>
+                          <td class="align-middle">{{ rc.risk.name|striptags|safe|truncatechars:200 }}</td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.description|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_elements|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_events|striptags }}"></i></td>
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_activity_affected|striptags }}"></i></td>                          
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_exposed_staff|striptags }}"></i></td>
+                          <td class="align-middle">{{ rc.risk.risk_master.ref }}</td>
+                          <td class="text-center align-middle"><span class="badge badge-info">{{ rc.risk.controls.count }}</span></td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::Body-->
+    
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+        <a href="{% url 'companies:ga_company_detail' company.pk %}"
+          class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+{% endblock content %}

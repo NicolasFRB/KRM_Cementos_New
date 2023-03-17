@@ -684,6 +684,7 @@ class GaEvaluationCreateView(FormView):
 
         for cc in controls_companies:
             if len(cc['cs']) > 0:
+
                 company = Company.objects.get(pk=cc['c'])
                 if Evaluation.objects.filter(
                     ref=f'{form.cleaned_data["ref"]} - {company.name}'
@@ -706,15 +707,150 @@ class GaEvaluationCreateView(FormView):
                     ],
                 )
 
-                for control in cc['cs']:
-                    control = Control.objects.get(pk=control)
-                    control_test = ControlTest.objects.create(
-                        evaluation=evaluation,
-                        control=control,
-                        date_begin=form.cleaned_data["date_begin"]
-                    )
+                # Ahora en este array nos llegará también el control owner y el control supervisor
 
-                    controls_created += 1
+                # [
+                #     {
+                #         "pk": 976,
+                #         "ownersSelected": [
+                #             {
+                #                 "pk": 98,
+                #                 "email": "39@39.com",
+                #                 "full_name": "Mario Ar"
+                #             },
+                #             {
+                #                 "pk": 106,
+                #                 "email": "bienvenidosaez@baetica.com",
+                #                 "full_name": "Bienvenido Sáez Muelas"
+                #             },
+                #             {
+                #                 "pk": 107,
+                #                 "email": "ru@baetica.com",
+                #                 "full_name": "ru@baetica.com "
+                #             }
+                #         ],
+                #         "supervisorsSelected": [
+                #             {
+                #                 "pk": 105,
+                #                 "email": "mrevuelta.deca@gmail.com",
+                #                 "full_name": "asd asd"
+                #             }
+                #         ]
+                #     }
+                # ]
+
+                for control in cc['csData']:
+                    control_owner = None
+                    control_supervisor = None
+
+                    control_object = Control.objects.get(pk=control['pk'])
+
+                    # Si el número de supervisores no coincide con el número de owners se establece como supervisor el primero de todos, si conincide, se hace uno a uno
+                    # if len(control['ownersSelected']) != len(control['supervisorsSelected']):
+                    #     if len(control['supervisorsSelected'] > 0):
+                    #         control_supervisor = control['supervisorsSelected'][0]['pk']
+                    #     for owner in control['ownersSelected']:
+                    #         control_owner = owner['pk']
+                    #         control_test = ControlTest.objects.create(
+                    #             evaluation=evaluation,
+                    #             control=control_object,
+                    #             date_begin=form.cleaned_data["date_begin"],
+                    #             control_test_owner=User.objects.get(
+                    #                 pk=control_owner),
+                    #             control_test_supervisor=User.objects.get(
+                    #                 pk=control_supervisor)
+                    #         )
+                    #         controls_created += 1
+                    # if len(control['ownersSelected'] > 0) and len(control['ownersSelected']) == len(control['supervisorsSelected']):
+                    #     # Si son de igual número hacemos controles uno a uno
+                    #     for i, owner in enumerate(control['ownersSelected']):
+                    #         control_owner = owner['pk']
+                    #         control_supervisor = control['supervisorsSelected'][i]['pk']
+                    #         control_test = ControlTest.objects.create(
+                    #             evaluation=evaluation,
+                    #             control=control_object,
+                    #             date_begin=form.cleaned_data["date_begin"],
+                    #             control_test_owner=User.objects.get(
+                    #                 pk=control_owner),
+                    #             control_test_supervisor=User.objects.get(
+                    #                 pk=control_supervisor)
+                    #         )
+                    #         controls_created += 1
+
+                    # else:
+                    #     # Si son de igual número hacemos controles uno a uno
+                    #     for i, owner in enumerate(control['ownersSelected']):
+                    #         control_owner = owner['pk']
+                    #         control_supervisor = control['supervisorsSelected'][i]['pk']
+                    #         control_test = ControlTest.objects.create(
+                    #             evaluation=evaluation,
+                    #             control=control_object,
+                    #             date_begin=form.cleaned_data["date_begin"],
+                    #             control_test_owner=User.objects.get(
+                    #                 pk=control_owner),
+                    #             control_test_supervisor=User.objects.get(
+                    #                 pk=control_supervisor)
+                    #         )
+                    #         controls_created += 1
+
+                    # Si el número de supervisores es menor que el número de owners, me quedo con el primer supervisor e itero por los owners
+                    if len(control['supervisorsSelected']) < len(control['ownersSelected']) or len(control['supervisorsSelected']) > len(control['ownersSelected']):
+                        control_supervisor = None
+                        if len(control['supervisorsSelected']) > 0:
+                            control_supervisor = control['supervisorsSelected'][0]['pk']
+                        for owner in control['ownersSelected']:
+                            control_owner = owner['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=User.objects.get(
+                                    pk=control_owner) if control_owner != None else None,
+                                control_test_supervisor=User.objects.get(
+                                    pk=control_supervisor) if control_supervisor != None else None
+                            )
+                            controls_created += 1
+
+                    # Si el número de supervisores es igual que el número de owners, itero por los owners y supervisores
+                    if len(control['supervisorsSelected']) > 0 and len(control['supervisorsSelected']) == len(control['ownersSelected']):
+                        for i, owner in enumerate(control['ownersSelected']):
+                            control_owner = owner['pk']
+                            control_supervisor = control['supervisorsSelected'][i]['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=User.objects.get(
+                                    pk=control_owner),
+                                control_test_supervisor=User.objects.get(
+                                    pk=control_supervisor)
+                            )
+                            controls_created += 1
+
+                    if len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) == 0:
+                        control_test = ControlTest.objects.create(
+                            evaluation=evaluation,
+                            control=control_object,
+                            date_begin=form.cleaned_data["date_begin"],
+                            control_test_owner=None,
+                            control_test_supervisor=None
+                        )
+                        controls_created += 1
+
+                    if len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) > 0:
+                        for i, owner in enumerate(control['ownersSelected']):
+                            control_owner = owner['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=User.objects.get(
+                                    pk=control_owner),
+                                control_test_supervisor=None
+                            )
+                            controls_created += 1
+
+                        controls_created += 1
 
                 evaluations_created += 1
 

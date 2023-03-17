@@ -146,12 +146,12 @@ function CreateEvaluationKrc(props) {
                     <h4 className="text-gray-900 fw-bold">{t('krc.elements-to-create')}</h4>
                     <div className="fs-6 text-gray-700 pe-7">
                       <ul>
-                        <li>{t('krc.launch-n-evaluations')}</li>
+                        <li>{t('krc.launch-n-evaluations')}: {nEvaluations}</li>
                       </ul>
                     </div>
                   </div>
                   <button onClick={sendForm} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
-                    <span className="indicator-label">{t('krm.lanzar-evaluaciones')}</span>
+                    <span className="indicator-label">{t('q.launch')}</span>
                     <span className="indicator-progress">
                       {t('krc.lanzando')}...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                     </span>

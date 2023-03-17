@@ -11,7 +11,8 @@ from django import forms
 from krm.companies.models import (
     Company,
     CompanyDomainRiskExperts,
-    CompanyDomainRiskEvaluator
+    CompanyDomainRiskEvaluator,
+    CompanyControls,
 )
 
 
@@ -20,9 +21,9 @@ class CompanyAdmin(admin.ModelAdmin):
     model = Company
     list_display = ('ref', 'name', 'vat', 'address',
                     'state', 'cp', 'country', 'email')
-    filter_horizontal = (
-        'controls',
-    )
+    # filter_horizontal = (
+    #     'controls',
+    # )
 
 
 @admin.register(CompanyDomainRiskExperts)
@@ -35,3 +36,14 @@ class CompanyDomainRiskExpertsAdmin(admin.ModelAdmin):
 class CompanyDomainRiskEvaluator(admin.ModelAdmin):
     model = CompanyDomainRiskEvaluator
     list_display = ('company', 'domain_risk', )
+
+
+@admin.register(CompanyControls)
+class CompanyControls(admin.ModelAdmin):
+    model = CompanyControls
+    list_display = ('company', 'active', 'control')
+    filter_horizontal = (
+        'control_test_owners',
+        'control_test_supervisors'
+    )
+    list_filter = ('active', 'company')
