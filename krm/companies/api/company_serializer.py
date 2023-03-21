@@ -9,7 +9,15 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 
 
+from krm.users.api import UserSerializer
+
+
 class CompanySerializer(serializers.ModelSerializer):
+    employees = UserSerializer(
+        read_only=True,
+        many=True
+    )
+
     class Meta:
         model = Company
         fields = [
@@ -17,6 +25,7 @@ class CompanySerializer(serializers.ModelSerializer):
             'name',
             'vat',
             'email',
+            'employees'
         ]
         read_only_fields = [f.name for f in Company._meta.get_fields()]
 

@@ -12,7 +12,7 @@ from krm.controls.models import Control
 
 from krm.process.models import SubProcess
 
-from krm.companies.api import CompanySerializer
+from krm.companies.api import CompanySerializer, CompanyControlSerializer
 from krm.controls.api import ControlSerializer
 
 
@@ -47,8 +47,6 @@ class ControlCompanyApiView(APIView):
         if 'process_pks' in request.GET:
             if request.GET['process_pks']:
                 process_pks = request.GET['process_pks'].split(',')
-        # if 'risk_pks' in request.GET:
-        #     risk_pks = request.GET['risk_pks'].split(',')
         if 'key_control' in request.GET:
             if request.GET['key_control'] == 'true':
                 key_control = True
@@ -63,41 +61,39 @@ class ControlCompanyApiView(APIView):
             company = CompanySerializer(c)
             data_item['c'] = company.data
             data_item['cs'] = []
-            control_list = c.controls.all()
+            control_list = c.company_controls.filter(active=True)
 
-            # Ahora cada control hay que serializarlo
+            # Ahora cada control hay que filtrarlo según los parámetros de entrada
             if domain_risk_pks:
                 control_list = control_list.filter(
-                    risks__risk_master__domain_risk__pk__in=(domain_risk_pks)
+                    control__risks__risk_master__domain_risk__pk__in=(
+                        domain_risk_pks)
                 )
-
-            # if risk_pks:
-            #     control_list = control_list.filter(risks__pk__in=(risk_pks)
-            #                                        )
 
             if process_pks:
                 sub_processes = SubProcess.objects.filter(
                     process__pk__in=(process_pks)).values_list('id', flat=True)
 
                 control_list = control_list.filter(
-                    sub_processes__in=sub_processes
+                    control__sub_processes__in=sub_processes
                 )
 
             if key_control:
                 control_list = control_list.filter(
-                    key_control=True
+                    control__key_control=True
                 )
 
             if elc:
                 # Si está marcado hay que añadirle todos los controles ELC que tenga la compañía cumpla o no los filtros anteriories
-                control_list_elc = c.controls.filter(is_elc=True)
+                control_list_elc = c.company_controls.filter(
+                    control__is_elc=True, active=True)
                 control_list = control_list | control_list_elc
 
             control_list = control_list.distinct()
 
             for control in control_list:
-                control_serializer = ControlSerializer(control)
-                data_item['cs'].append(control_serializer.data)
+                company_control_serializer = CompanyControlSerializer(control)
+                data_item['cs'].append(company_control_serializer.data)
 
             data.append(data_item)
 

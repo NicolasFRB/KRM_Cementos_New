@@ -10,7 +10,7 @@
     "step-4-select-controls": "Paso 4: Selección de controles a evaluar",
     "step-5-launch": "Paso 5: Resumen del lanzamiento",
     "elements-to-create": "Elementos que serán creados",
-    "launch-n-evaluations": "Se van a crear un total de {{nEvaluations}} evaluaciones",
+    "launch-n-evaluations": "Se van a crear un total de evaluaciones",
     "lanzar-evaluaciones": "Lanzar evaluaciones",
     "lanzando": "Lanzando",
     "select-control": "Selecciona al menos un control para poder lanzar la evaluación",

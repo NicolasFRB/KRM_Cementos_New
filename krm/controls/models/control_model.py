@@ -161,6 +161,14 @@ class Control(AuditModel):
         self.ref = self.ref.upper()
         super().save(*args, **kwargs)
 
+        from krm.companies.models import Company, CompanyControls
+        for company in Company.objects.all():
+            if CompanyControls.objects.filter(company=company, control=self).count() == 0:
+                CompanyControls.objects.create(
+                    company=company,
+                    control=self
+                )
+
     def domain_risks(self):
         domain_risks = []
         for risk in self.risks.all():
@@ -189,5 +197,5 @@ class Control(AuditModel):
         for risk in self.risks.all():
             if risk.risk_master.domain_risk not in domain_risks:
                 domain_risks.append(risk.risk_master.domain_risk)
-        
+
         return domain_risks

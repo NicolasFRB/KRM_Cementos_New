@@ -33,6 +33,7 @@ class ControlSerializer(serializers.ModelSerializer):
             'pk',
             'ref',
             'name',
+            'description',
             'risks',
             'sub_processes',
             'domain_risks',

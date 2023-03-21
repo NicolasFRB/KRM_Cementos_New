@@ -74,12 +74,12 @@ class Company(AuditModel):
         blank=True
     )
 
-    controls = models.ManyToManyField(
-        'controls.Control',
-        verbose_name=_('Controles asociados'),
-        blank=True,
-        related_name='companies'
-    )
+    # controls = models.ManyToManyField(
+    #     'controls.Control',
+    #     verbose_name=_('Controles asociados'),
+    #     blank=True,
+    #     related_name='companies'
+    # )
 
     evaluators = models.ManyToManyField(
         'users.User',
@@ -129,8 +129,9 @@ class Company(AuditModel):
         self.ref = self.ref.upper()
         super().save(*args, **kwargs)
 
-        from krm.companies.models import CompanyDomainRiskExperts, CompanyDomainRiskEvaluator
+        from krm.companies.models import CompanyDomainRiskExperts, CompanyDomainRiskEvaluator, CompanyControls
         from krm.risks.models import DomainRisk, Risk, RiskCompany
+        from krm.controls.models import Control
 
         for domain_risk in DomainRisk.objects.all():
             if CompanyDomainRiskExperts.objects.filter(company=self, domain_risk=domain_risk).count() == 0:
@@ -149,3 +150,18 @@ class Company(AuditModel):
                     company=self,
                     risk=risk
                 )
+
+        for control in Control.objects.all():
+            if CompanyControls.objects.filter(company=self, control=control).count() == 0:
+                CompanyControls.objects.create(
+                    company=self,
+                    control=control
+                )
+
+    @property
+    def get_controls_active(self):
+        return self.company_controls.filter(active=True)
+
+    @property
+    def get_controls_inactive(self):
+        return self.company_controls.filter(active=False)

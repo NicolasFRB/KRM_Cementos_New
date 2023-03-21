@@ -17,7 +17,7 @@ class CompanyCreateForm(ModelForm):
         fields = '__all__'
 
         widgets = {
-            'controls': CheckboxSelectMultiple(),
+            # 'controls': CheckboxSelectMultiple(),
             'evaluators': CheckboxSelectMultiple(),
         }
 
