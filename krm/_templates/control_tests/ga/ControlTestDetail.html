@@ -52,7 +52,7 @@
 
 {% include '_includes/FormErrors.html' %}
 
-{% if control_test.remediation_plan_needed and control_test.remediation_plans.count == 0%}
+{% if control_test.remediation_plan_needed %}
   <div class="row mt-2 mb-2">
     <div class="col-sm">
       <div class="alert alert-warning ">
@@ -60,24 +60,12 @@
       </div>
     </div>
   </div>
-{% elif control_test.remediation_plan_needed and control_test.remediation_plans.count > 0 %}
-<div class="row mt-2 mb-2">
-  <div class="col-sm">
-    <div class="alert alert-warning ">
-      {% trans 'Puede editar el plan de remediación ya adjunto, en la parte inferior podrá rellenarlo si es el Control Owner' %}
-    </div>
-  </div>
-</div>
 {% endif %}
 
 <!--begin::Container-->
 <div class="card mb-8">
   <!--begin::Card header-->
-  <div class="card-header">
-    <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Datos del Test de Control' %}: {{control_test.identifier }}</div>
-    <!--end::Card header-->
-  </div>
+  
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
@@ -85,20 +73,13 @@
   </div>
   <!--end::Card body-->
 </div>
-<!--end::Container-->
 
 <div class="card mb-8">
-
-  <div class="card-header" >
+  <div class="card-header">
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{% trans 'RESPUESTAS' %}</div>
-    <div class="col-xl-3">
-      <div style="margin-top:15px;">
-      <h5 style="float: right ; font-size: 14px;">{% trans 'RESULTADO ACTUAL:&emsp;' %}<span style="float:right; font-size: 14px;" class="badge badge-{% if control_test.result == 'EF' %}success{% else %}danger{% endif %} text-wrap">{{ control_test.get_result_display }}</span></h5></div>
-    </div>
-    </div> 
-  
     <!--end::Card header-->
+  </div>
   <div class="card-body">
     {% if control_test.answers.count > 0 %}
       {% for answer in control_test.answers.all %}
@@ -112,20 +93,17 @@
         {% trans 'Todavía no hay respuestas para este test de control' %}
       </p>
     {% endif %}
-  </div>
-  </div>
-    {% if control_test.remediation_plans.all.count > 0 %}
-  
 
-  <div class="card mb-8">
-    <div class="card-header">
-      <div class="card-title fs-3 fw-bold">Plan de remediación</div>
-    </div>
-    <div class="card-body">
-        {% include '_includes/remediation_plan/ga/_remediation_plan.html' with rm=control_test.remediation_plans.first %}
+    {% if control_test.remediation_plans.all.count > 0 %}
+      <div class="separator my-10"></div>
+
+      <h5 class="mb-8">{% trans 'PLANES DE REMEDIACIÓN' %}</h5>
+      {% for rm in control_test.remediation_plans.all %}
+        {% include '_includes/remediation_plan/ga/_remediation_plan.html' with rm=rm %}
+      {% endfor %}
     {% endif %}
-    </div>
   </div>
+</div>
 
 {% if control_test.status != 'WS' or control_test.status != 'WO' %}
     {% if control_test.status == 'WS' and request.user == control_test.control_test_supervisor %}
@@ -249,5 +227,6 @@
       </div>
     {% endif %}
 {% endif %}
+<!--end::Container-->
 
 {% endblock content %}

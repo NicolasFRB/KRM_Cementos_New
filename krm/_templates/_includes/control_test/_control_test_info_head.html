@@ -1,15 +1,20 @@
 {% load i18n %}
 
-
+<div class="accordion" id="kt_accordion_2">
+<form method="get" class="kt-form kt-form--label-right" >
 <div class="card mb-8">
+<div class="accordion-item">
   <!--begin::Card header-->
-  <div class="card-header">
+  <div class="card-header" id="kt_accordion_1_header_1" style="padding: inherit">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Datos de la evaluación' %}</div>
+    <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_1" aria-expanded="true" aria-controls="kt_accordion_1_body_1">
+      {% trans 'Datos de la evaluación' %}
+    </button>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
   <!--begin::Card body-->
+  <div id="kt_accordion_1_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_1" data-bs-parent="#kt_accordion_2">
   <div class="card-body">
     <div class="row">
       <div class="col col-md-6">
@@ -166,13 +171,22 @@
   </div>
   <!--end::Card body-->
 </div>
+</div>
+</div>
+</div>
 
+<div class="accordion" id="kt_accordion_2">
+<form method="get" class="kt-form kt-form--label-right" >
 <div class="card mb-8">
-  <div class="card-header">
+<div class="accordion-item">
+  <div class="card-header" id="kt_accordion_1_header_2" style="padding: inherit">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Datos del control' %}</div>
+    <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_2" aria-expanded="true" aria-controls="kt_accordion_1_body_2">
+      {% trans 'Datos generales del control' %}
+    </button>
     <!--end::Card header-->
   </div>
+  <div id="kt_accordion_1_body_2" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_2" data-bs-parent="#kt_accordion_2">
   <div class="card-body">
     <div class="row">
       <div class="row mb-8">
@@ -250,7 +264,26 @@
           </div>
         </div>
       </div>
-      <div class="separator my-2"></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="accordion" id="kt_accordion_2">
+<form method="get" class="kt-form kt-form--label-right" >
+<div class="card mb-8">
+<div class="accordion-item">
+  <div class="card-header" id="kt_accordion_1_header_3" style="padding: inherit">
+    <!--begin::Card header-->
+    <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_3" aria-expanded="true" aria-controls="kt_accordion_1_body_3">
+      {% trans 'Riesgos asociados al control' %}
+    </button>
+    <!--end::Card header-->
+  </div>
+  <div id="kt_accordion_1_body_3" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_3" data-bs-parent="#kt_accordion_2">
+  <div class="card-body">
+    <div class="row">
       <div class="row mb-8">
         {% if control_test_risks_company.count %}
         <div class="col col-12 mb-4">
@@ -307,252 +340,270 @@
           {% endif %}
         </div>
       </div>
-      <div class="row">
-        <div class="col col-md-4">
-          <fieldset>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.ref }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="accordion" id="kt_accordion_2">
+<form method="get" class="kt-form kt-form--label-right" >
+<div class="card mb-8">
+<div class="accordion-item">
+  <div class="card-header" id="kt_accordion_1_header_4" style="padding: inherit">
+    <!--begin::Card header-->
+    <button class="accordion-button fs-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_4" aria-expanded="true" aria-controls="kt_accordion_1_body_4">
+      {% trans 'Datos del control' %}
+    </button>
+    <!--end::Card header-->
+  </div>
+  <div id="kt_accordion_1_body_4" class="accordion-collapse collapse show" aria-labelledby="kt_accordion_1_header_4" data-bs-parent="#kt_accordion_2">
+  <div class="card-body">
+    <div class="row">
+      <div class="col col-md-4">
+        <fieldset>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo de control' %}</span></div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.ref }}</span>
               </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_control_type_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Frecuencia' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_control_frequency_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo de control' %}</span></div>
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Key control' %}</span></div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_control_type_display }}</span>
               </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.key_control|yesno:_("Si, No") }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'ELC' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.is_elc|yesno:_("Si, No") }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Frecuencia' %}</span></div>
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Automatización' %}</span></div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_control_frequency_display }}</span>
               </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_automation_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
             </div>
-            {% if 'SCIFF' in control.domain_risks  %}
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sistemas' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.systems }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Key control' %}</span></div>
             </div>
-            {% endif %}
-          </fieldset>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.key_control|yesno:_("Si, No") }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'ELC' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.is_elc|yesno:_("Si, No") }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Automatización' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_automation_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sistemas' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.systems }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+        </fieldset>
+      </div>
+      <div class="col col-md-8">
+        {% if control.name %}
+        <div class="row mb-8">
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Objetivo' %}</span></div>
+          <div>{{ control.name|safe }}</div>
         </div>
-        <div class="col col-md-8">
-          {% if control.name %}
-          <div class="row mb-8">
-            <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Objetivo' %}</span></div>
-            <div>{{ control.name|safe }}</div>
-          </div>
-          {% endif %}
-          <div class="row mb-8">
-            <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
-            <div>{{ control.description|safe }}</div>
-          </div>
-          <div class="row mb-8">
-            <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Evidencia' %}</span></div>
-            <div>{{ control.testing_procedure|safe }}</div>
-          </div>
+        {% endif %}
+        <div class="row mb-8">
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
+          <div>{{ control.description|safe }}</div>
         </div>
-      </div>  
+        <div class="row mb-8">
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Evidencia' %}</span></div>
+          <div>{{ control.testing_procedure|safe }}</div>
+        </div>
+      </div> 
       <div class="row mb-8">
         <div class="col col-md-4">
-          {% if control.systems != "-" and control.is_gap != "-" and control.assert_existence != "-" and control.assert_completeness != "-" and control.assert_valuation != "-" and control.assert_rights != "-" and control.assert_disclosure != "-" and control.assert_accurancy != "-" and control.assert_froud != "-" %}
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'GAP' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_is_gap_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'GAP' %}</span></div>
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Existencia' %}</span></div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_is_gap_display }}</span>
               </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_assert_existence_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Completitud' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_assert_completeness_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Existencia' %}</span></div>
             </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_existence_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Completitud' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_completeness_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
         </div>
         
         <div class="col col-md-4">
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Presentación' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_assert_disclosure_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Presentación' %}</span></div>
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Valoración' %}</span></div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_disclosure_display }}</span>
               </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_assert_valuation_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Obligación' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_assert_rights_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Valoración' %}</span></div>
             </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_valuation_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Obligación' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_rights_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
         </div>
 
         <div class="col col-md-4">
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Precisión' %}</span></div>
-              </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_assert_accurancy_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Precisión' %}</span></div>
             </div>
-            <div class="row mb-8">
-              <!--begin::Col-->
-              <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fraude' %}</span></div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_accurancy_display }}</span>
               </div>
-              <!--end::Col-->
-              <!--begin::Col-->
-              <div class="col-xl-7">
-                <div class="fs-6">
-                  <span>{{ control.get_assert_froud_display }}</span>
-                </div>
-              </div>
-              <!--end::Col-->
             </div>
-            {% endif %}
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fraude' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_assert_froud_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+</div>
+</div>
 </div>
