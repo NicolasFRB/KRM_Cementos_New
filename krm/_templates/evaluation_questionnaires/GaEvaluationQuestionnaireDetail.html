@@ -1,4 +1,5 @@
 {% extends layout %}
+{% load staticfiles %}
 
 {% load i18n %}
 {% trans "Sin asignar" as without_set %}
@@ -10,8 +11,8 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'js/apexcharts.js' %}"></script>
+<script src="{% static 'js/chart.js' %}"></script>
 
 <style>
 
@@ -24,19 +25,19 @@
   .badge.badge-success.n1 {
     margin: 5px;
     background-color: #ed9f7b !important;
-  } 
-  
+  }
+
   .badge.badge-success.n3 {
     margin: 5px;
     background-color: #a6ed9d !important;
-  } 
+  }
 
 </style>
 
 <script>
 
 function load_chart(id, n_pending, n_finished, title) {
-    
+
     const data = {
       labels: ['Pending', 'Finished'],
       datasets: [
@@ -70,7 +71,7 @@ function load_chart(id, n_pending, n_finished, title) {
                 family: 'Helvetica, Inter, sans-serif',
             },
           },
-          
+
         },
       },
     };
@@ -86,17 +87,17 @@ function filter_table(id){
       v = $(this).find("td:eq(5)").text().trim();
       if (v == "Si" || v == "Yes") {
           return false;
-      }        
+      }
         return true;
     }).hide();
-    table.order( [ 5, 'asc' ] ).draw(); 
+    table.order( [ 5, 'asc' ] ).draw();
   } else {
     rows.show();
   }
 }
 
 function color_ans(val, id){
-    
+
     var arrow_dot = document.querySelector("#"+id)
 
     if (val == 0) {
@@ -115,7 +116,7 @@ function color_ans(val, id){
   }
 
   function clean_specialchars(s) {
-    
+
     return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
 
   }
@@ -143,7 +144,7 @@ function color_ans(val, id){
       showleg = false;
       offset = 0;
     }
-    
+
     qqt.forEach(function(r) {
 
       evaluator = r.evaluator;
@@ -168,7 +169,7 @@ function color_ans(val, id){
       } else if (r.answer == 3) {
         answer = "N/A";
       }
-      
+
       if (r.description == null){
         answer_text = "";
       } else {
@@ -177,7 +178,7 @@ function color_ans(val, id){
       question_text = split_lines(r.question_text);
       series[series_key_idx[evaluator]]["data"].push({'x': r.question_ref, 'y': r.answer, 'answer_display': answer, 'answer_text': answer_text, 'question_text': question_text, 'evaluator': evaluator});
     })
-    
+
     var options = {
       title: {
         text: scope + ': ' + scope_name,
@@ -235,8 +236,8 @@ function color_ans(val, id){
     tooltip:{
         custom: function({series, seriesIndex, dataPointIndex, w}) {
           var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-          
-          return '<div style="margin:10px;">' + 
+
+          return '<div style="margin:10px;">' +
           '<br>' +
           '<div style="font-size: 11px;">'+
             '<b>'+data.x+'</b>'+
@@ -258,7 +259,7 @@ function color_ans(val, id){
 
     var chart = new ApexCharts(document.querySelector("#"+id), options);
     chart.render();
-    
+
   }
 
 </script>
@@ -426,7 +427,7 @@ function color_ans(val, id){
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
           </div>
         </div>
       </div>
@@ -446,20 +447,20 @@ function color_ans(val, id){
         <input type="hidden" name="action" value="finish">
         <button class="btn btn-sm btn-primary me-2"><i class="bi bi-clipboard-check"></i>
           {% trans 'Finalizar evaluación' %}</button>
-        
+
       </form>
     {% endif %}
-    
+
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       {% include '_includes/FormErrors.html' %}
       {% csrf_token %}
       <input type="hidden" name="action" value="download">
       <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
-      
+
     </form>
-    
-    
-    
+
+
+
   </div>
   <!--end::Card footer-->
 </div>
@@ -467,15 +468,15 @@ function color_ans(val, id){
 <div class="card">
   <div class="card-header">
     <div class="card-title fs-3 fw-bold">{% trans 'Mapa de calor del Cuestionario' %}</div>
-  </div> 
+  </div>
   <div class="card-body">
     {% for key, value in qqt_json.items %}
       <div class="row">
         <div>
           <div id="heat-main-{{ key }}"></div>
-        </div>      
-        <script>   
-            var qqt = JSON.parse(clean_specialchars("{{ value }}"));          
+        </div>
+        <script>
+            var qqt = JSON.parse(clean_specialchars("{{ value }}"));
             load_heat("heat-main-{{ key }}", qqt, "{{ forloop.counter0 }}");
         </script>
       </div>
@@ -516,7 +517,7 @@ function color_ans(val, id){
           <th>{% trans 'ID Pregunta' %}</th>
           <th>{% trans 'Enunciado' %}</th>
           <th>{% trans 'Evaluador' %}</th>
-          <th>{% trans 'Respuesta' %}</th>          
+          <th>{% trans 'Respuesta' %}</th>
           <th>{% trans 'Descripción' %}</th>
           <th>{% trans 'Fecha' %}</th>
         </tr>
@@ -528,7 +529,7 @@ function color_ans(val, id){
             {% if qt.status == 0 %}
               <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{qt.get_status_display}}">P</span>
             {% elif qt.status == 1 %}
-              <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{qt.get_status_display}}">E</span>   
+              <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{qt.get_status_display}}">E</span>
             {% elif qt.status == 2 %}
               <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{qt.get_status_display}}">F</span>
             {% endif %}
@@ -556,7 +557,7 @@ function color_ans(val, id){
           </td>
           <td class="text-center align-middle">
             <span><i class="bi bi-check-circle" id = "ans-dot-{{ forloop.counter0 }}"></i></span>
-            <span class="ans-evaluator">{{ qt.get_answer_display }}</span>            
+            <span class="ans-evaluator">{{ qt.get_answer_display }}</span>
           </td>
           <td class="align-middle">
             <div style="display:flex;">

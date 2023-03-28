@@ -224,7 +224,6 @@ KT_THEME_DIRECTION = 'ltr'
 KT_THEME_ASSETS = {
     "favicon": "media/logos/favicon.ico",
     "fonts": [
-        'https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700',
     ],
     "css": [
         "plugins/global/plugins.bundle.css",

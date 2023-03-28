@@ -1,4 +1,5 @@
 {% extends layout %}
+{% load staticfiles %}
 
 {% load i18n %}
 {% trans "Sin asignar" as without_set %}
@@ -10,8 +11,8 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'js/apexcharts.js' %}"></script>
+<script src="{% static 'js/chart.js' %}"></script>
 
 <style>
   canvas{
@@ -24,15 +25,15 @@
   .badge.badge-success.n1 {
   margin: 5px;
   background-color: #ed9f7b !important;
-} 
+}
 .badge.badge-success.n2 {
   margin: 5px;
   background-color: #e6d68e !important;
-} 
+}
 .badge.badge-success.n3 {
   margin: 5px;
   background-color: #a6ed9d !important;
-} 
+}
 
 #risk_eval_table tr > td:nth-child(n+9){
   display:none
@@ -46,16 +47,16 @@
 <script>
 
 function color_severity_dynamic(val, id){
-    
+
     var arrow_dot = $("#"+id);
-    
+
     if (val == 0) {
       arrow_dot.css('color',"#d9d3d2");
       arrow_dot.attr('class','bi-x-circle-fill');
     } else if (val <= 2) {
       arrow_dot.css('color',"#7ee34f");
       arrow_dot.attr('class','bi-arrow-down-circle-fill');
-    } else if (val <= 5) {      
+    } else if (val <= 5) {
       arrow_dot.css('color',"#cdd44c");
       arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
     } else if (val <= 11) {
@@ -68,7 +69,7 @@ function color_severity_dynamic(val, id){
   }
 
   function color_severity(val, id){
-    
+
     var arrow_dot = document.querySelector("#"+id)
 
     if (val == 0) {
@@ -88,7 +89,7 @@ function color_severity_dynamic(val, id){
       arrow_dot.classList.toggle('bi-arrow-up-circle-fill');
     }
   }
-  
+
   function load_bar(id, rit) {
     r_impacto = [];
     r_prob = [];
@@ -96,7 +97,7 @@ function color_severity_dynamic(val, id){
 
       var r_i = {x: '', y: '', name: ''}
       var r_p = {x: '', y: '', name: ''}
-      
+
       if (r.status < 2) {
         r_i.x = r.risk_ref
         r_i.y = 0
@@ -152,7 +153,7 @@ function color_severity_dynamic(val, id){
             },
           }
         },
-        
+
         dataLabels: {
           enabled: true,
           formatter: function (val) {
@@ -167,7 +168,7 @@ function color_severity_dynamic(val, id){
           custom: function({series, seriesIndex, dataPointIndex, w}) {
             var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
             markerColor = w.globals.markers.colors[seriesIndex];
-            return '<div style="margin:10px;">' + 
+            return '<div style="margin:10px;">' +
             '<br>' +
             '<div style="font-size: 11px;">'+
               '<b>'+data.x+'</b>'+
@@ -214,7 +215,7 @@ function color_severity_dynamic(val, id){
               return val;
             }
           }
-        
+
         },
       };
 
@@ -223,7 +224,7 @@ function color_severity_dynamic(val, id){
   }
 
   function load_chart(id, n_pending, n_delivered, n_finished, title) {
-    
+
     const data = {
       labels: ['Pending', 'Delivered', 'Finished'],
       datasets: [
@@ -257,7 +258,7 @@ function color_severity_dynamic(val, id){
                 family: 'Helvetica, Inter, sans-serif',
             },
           },
-          
+
         },
       },
     };
@@ -289,7 +290,7 @@ function color_severity_dynamic(val, id){
     var p_adm_num = dt.$(".prob-admin-num");
     var p_exp_qual = dt.$(".prob-expert-qual");
     var p_adm_qual = dt.$(".prob-admin-qual");
-    
+
     if (flexRadio_cualitativo && flexRadio_experto) {
 
       for(var i = 0; i < j_exp.length; i++) {
@@ -314,7 +315,7 @@ function color_severity_dynamic(val, id){
         $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
         color_severity_dynamic(parseFloat(s_exp_num[i].innerHTML), "sev-dot-" + i);
       }
-          
+
     } else if (flexRadio_cuantitativo && flexRadio_experto) {
 
       for(var i = 0; i < j_exp.length; i++) {
@@ -339,7 +340,7 @@ function color_severity_dynamic(val, id){
         $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
         color_severity_dynamic(parseFloat(s_exp_num[i].innerHTML), "sev-dot-" + i);
       }
-       
+
     } else if (flexRadio_cualitativo && flexRadio_admin) {
 
       for(var i = 0; i < j_exp.length; i++) {
@@ -364,9 +365,9 @@ function color_severity_dynamic(val, id){
         $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
         color_severity_dynamic(parseFloat(s_adm_num[i].innerHTML), "sev-dot-" + i);
       }
-      
+
     } else if (flexRadio_cuantitativo && flexRadio_admin) {
-      
+
       for(var i = 0; i < j_exp.length; i++) {
         j_exp[i].style.display = "none";
         j_adm[i].style.display = "inline-block";
@@ -506,9 +507,9 @@ function color_severity_dynamic(val, id){
           <div class="col-xl-7">
             <div class="fs-6">
               {% for dom in evaluation.domain_risks %}
-                
+
                   <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
-                
+
               {% endfor %}
             </div>
           </div>
@@ -613,7 +614,7 @@ function color_severity_dynamic(val, id){
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
-            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
           </div>
         </div>
       </div>
@@ -622,7 +623,7 @@ function color_severity_dynamic(val, id){
       {% if evaluation.nrisk_test_inherents_delivered != 0 or evaluation.nrisk_test_inherents_finished != 0 %}
         <div>
           <div id="bar-main"></div>
-        </div>      
+        </div>
         <script>
             var rit = JSON.parse("{{ rit_json }}".replace(/&quot;/g,'"'));
             load_bar("bar-main", rit);
@@ -658,7 +659,7 @@ function color_severity_dynamic(val, id){
           </div>
           <div class="form-check 1" style="margin-top: 10px;">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
-              <label class="form-check-label" for="flexRadioDefault2">Admin</label> 
+              <label class="form-check-label" for="flexRadioDefault2">Admin</label>
           </div>
         </form>
       </div>
@@ -670,7 +671,7 @@ function color_severity_dynamic(val, id){
           </div>
           <div class="form-check 2" style="margin-top: 10px;">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
-              <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label> 
+              <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label>
           </div>
         </form>
       </div>
@@ -686,11 +687,11 @@ function color_severity_dynamic(val, id){
             <th></th>
             <th>{% trans 'Riesgo' %}</th>
             <th>{% trans 'Descripción' %}</th>
-            <th>{% trans 'Dominio de riesgo / Experto' %}</th> 
-            <th class="justif-header">{% trans 'Justificación' %}</th> 
-            <th class="sev-header">{% trans 'Severidad' %}</th> 
+            <th>{% trans 'Dominio de riesgo / Experto' %}</th>
+            <th class="justif-header">{% trans 'Justificación' %}</th>
+            <th class="sev-header">{% trans 'Severidad' %}</th>
             <th class="imp-header">{% trans 'Impacto' %}</th>
-            <th class="prob-header">{% trans 'Probabilidad' %}</th>                                
+            <th class="prob-header">{% trans 'Probabilidad' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -700,12 +701,12 @@ function color_severity_dynamic(val, id){
               {% if rt.status == 1 %}
                 <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">P</span>
               {% elif rt.status == 2 %}
-                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>   
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>
               {% elif rt.status == 3 %}
                 <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
               {% endif %}
             </td>
-            <td class="text-center align-middle"> 
+            <td class="text-center align-middle">
               <a href="{% url 'risks_company:ca_risk_company_update' rt.risk.pk %}">
                 <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
               </a>
@@ -721,18 +722,18 @@ function color_severity_dynamic(val, id){
               </div>
             </td>
             <td class="text-center align-middle">
-              
+
                 <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
-                            
+
                 <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.expert.full_name }} ({{ rt.expert.position }})" id = "box-child">{{ rt.expert.username_no_domain }}</span>
             </td>
             <td class="text-center align-middle">
               <span class="justif-expert"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i></span>
               <span class="justif-admin" style="display:none;"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_admin }}"></i></span>
             </td>
-            
+
             <td class="text-center align-middle" data-order="{{ rt.severity_level_expert }}" id="sev-row-{{ forloop.counter0 }}">
-              <div style="display:flex; gap:10px;"> 
+              <div style="display:flex; gap:10px;">
                 <span><i class="bi bi-arrow-right-circle-fill" id = "sev-dot-{{ forloop.counter0 }}"></i></span>
                 <span class="sev-expert-num" style="display:none;">{{ rt.severity_level_expert }}</span>
                 <span class="sev-admin-num" style="display:none;">{{ rt.severity_level_admin }}</span>
@@ -746,7 +747,7 @@ function color_severity_dynamic(val, id){
               <span class="imp-expert-qual">{{ rt.get_impact_level_expert_display }}</span>
               <span class="imp-admin-qual" style="display:none;">{{ rt.get_impact_level_administrator_display }}</span>
             </td>
-            <td class="text-center align-middle" data-order="{{ rt.probability_level_expert }}">      
+            <td class="text-center align-middle" data-order="{{ rt.probability_level_expert }}">
               <span class="prob-expert-num" style="display:none;">{{ rt.probability_level_expert }}</span>
               <span class="prob-admin-num" style="display:none;">{{ rt.probability_level_administrator }}</span>
               <span class="prob-expert-qual">{{ rt.get_probability_level_expert_display }}</span>

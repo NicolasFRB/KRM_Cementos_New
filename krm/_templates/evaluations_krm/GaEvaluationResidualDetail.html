@@ -1,4 +1,5 @@
 {% extends layout %}
+{% load staticfiles %}
 
 {% load i18n %}
 {% trans "Sin asignar" as without_set %}
@@ -25,15 +26,15 @@
   .badge.badge-success.n1 {
   margin: 5px;
   background-color: #ed9f7b !important;
-} 
+}
 .badge.badge-success.n2 {
   margin: 5px;
   background-color: #e6d68e !important;
-} 
+}
 .badge.badge-success.n3 {
   margin: 5px;
   background-color: #a6ed9d !important;
-} 
+}
 
 #risk_eval_table tr > td:nth-child(n+9){
   display:none
@@ -58,7 +59,7 @@ function load_bar(id, rcr) {
       var r_p_inh = {x: '', y: '', name: ''}
       var r_p_res = {x: '', y: '', name: ''}
       var nc = {x: '', y: '', name: ''}
-      
+
       r_i_inh.x = r.risk_ref
       r_i_inh.y = r.impact_inherent
       r_i_inh.name = r.risk_name
@@ -75,7 +76,7 @@ function load_bar(id, rcr) {
       nc.y = -1-(r.nivel_de_control)
       nc.name = r.risk_name
       nc.nivel_de_control = r.nivel_de_control
-      
+
       r_impacto_inherente.push(r_i_inh)
       r_prob_inherente.push(r_p_inh)
       r_prob_residual.push(r_p_res)
@@ -104,7 +105,7 @@ function load_bar(id, rcr) {
               data: nivel_de_control,
               type: 'line',
             },
-                    
+
         ],
         chart: {
           height: 250,
@@ -172,7 +173,7 @@ function load_bar(id, rcr) {
           custom: function({series, seriesIndex, dataPointIndex, w}) {
             var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
             markerColor = w.globals.markers.colors[seriesIndex];
-            return '<div style="margin:10px;">' + 
+            return '<div style="margin:10px;">' +
             '<br>' +
             '<div style="font-size: 11px;">'+
               '<b>'+data.x+'</b>'+
@@ -215,7 +216,7 @@ function load_bar(id, rcr) {
             formatter: function (val) {
               return val;
             }
-          }        
+          }
         },
       };
 
@@ -224,22 +225,22 @@ function load_bar(id, rcr) {
   }
 
 function clean_specialchars(s) {
-    
+
     return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
 
   }
 
 function color_nc_dynamic(val, id){
-    
+
     var arrow_dot = $("#"+id);
-    
+
     if (val == 0) {
       arrow_dot.css('color',"#d9d3d2");
       arrow_dot.attr('class','bi-x-circle-fill');
     } else if (val <= 1) {
       arrow_dot.css('color',"#7ee34f");
       arrow_dot.attr('class','bi-arrow-down-circle-fill');
-    } else if (val <= 2) {      
+    } else if (val <= 2) {
       arrow_dot.css('color',"#cdd44c");
       arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
     } else if (val <= 3) {
@@ -252,7 +253,7 @@ function color_nc_dynamic(val, id){
 }
 
 function color_nc(val, id){
-    
+
     var arrow_dot = document.querySelector("#"+id)
 
     if (val == 0) {
@@ -274,7 +275,7 @@ function color_nc(val, id){
   }
 
 function color_severity_dynamic(val, id){
-  
+
   var arrow_dot = $("#"+id);
 
   if (val == 0) {
@@ -283,7 +284,7 @@ function color_severity_dynamic(val, id){
   } else if (val <= 2) {
     arrow_dot.css('color',"#7ee34f");
     arrow_dot.attr('class','bi-arrow-down-circle-fill');
-  } else if (val <= 5) {      
+  } else if (val <= 5) {
     arrow_dot.css('color',"#cdd44c");
     arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
   } else if (val <= 11) {
@@ -296,7 +297,7 @@ function color_severity_dynamic(val, id){
 }
 
 function color_severity(val, id){
-    
+
     var arrow_dot = document.querySelector("#"+id)
 
     if (val == 0) {
@@ -337,7 +338,7 @@ function color_severity(val, id){
       var sr_adm_num = dt.$(".sevr-adm-num");
       var sr_exp_qual = dt.$(".sevr-expert-qual");
       var sr_adm_qual = dt.$(".sevr-adm-qual");
-      
+
       if (flexRadio_cualitativo && flexRadio_experto) {
 
         for(var i = 0; i < s_adm_num.length; i++) {
@@ -360,7 +361,7 @@ function color_severity(val, id){
           color_nc_dynamic(parseFloat(nc_exp_num[i].innerHTML), "nc-dot-" + i);
           color_severity_dynamic(parseFloat(sr_exp_num[i].innerHTML), "sevr-dot-" + i);
         }
-            
+
       } else if (flexRadio_cuantitativo && flexRadio_experto) {
 
         for(var i = 0; i < s_adm_num.length; i++) {
@@ -382,7 +383,7 @@ function color_severity(val, id){
           color_nc_dynamic(parseFloat(nc_exp_num[i].innerHTML), "nc-dot-" + i);
           color_severity_dynamic(parseFloat(sr_exp_num[i].innerHTML), "sevr-dot-" + i);
         }
-        
+
       } else if (flexRadio_cualitativo && flexRadio_admin) {
 
         for(var i = 0; i < s_adm_num.length; i++) {
@@ -404,9 +405,9 @@ function color_severity(val, id){
           color_nc_dynamic(parseFloat(nc_adm_num[i].innerHTML), "nc-dot-" + i);
           color_severity_dynamic(parseFloat(sr_adm_num[i].innerHTML), "sevr-dot-" + i);
         }
-        
+
       } else if (flexRadio_cuantitativo && flexRadio_admin) {
-        
+
         for(var i = 0; i < s_adm_num.length; i++) {
           s_adm_num[i].style.display = "inline-block";
           s_adm_qual[i].style.display = "none";
@@ -430,7 +431,7 @@ function color_severity(val, id){
   }
 
   function load_chart(id, n_pending, n_delivered, n_finished, title) {
-    
+
     const data = {
       labels: ['Pending', 'Delivered', 'Finished'],
       datasets: [
@@ -464,7 +465,7 @@ function color_severity(val, id){
                 family: 'Helvetica, Inter, sans-serif',
             },
           },
-          
+
         },
       },
     };
@@ -485,11 +486,11 @@ function color_severity(val, id){
           "data": [],
         });
       }
-      
+
       series[series_key_idx[evaluator]]["data"].push({'x': r.risk_ref, 'y': r.probability_level_residual_evaluator});
     })
 
-    
+
     var options = {
       series: series,
       chart: {
@@ -554,7 +555,7 @@ function color_severity(val, id){
 
     var chart = new ApexCharts(document.querySelector("#"+id), options);
     chart.render();
-    
+
   }
 
 </script>
@@ -779,7 +780,7 @@ function color_severity(val, id){
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
-            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
           </div>
         </div>
       </div>
@@ -827,7 +828,7 @@ function color_severity(val, id){
         {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
           <div>
             <div id="heat-main"></div>
-          </div>      
+          </div>
           <script>
               var rrt = JSON.parse(clean_specialchars("{{ rrt_json }}"));
               load_heat("heat-main", rrt);
@@ -853,12 +854,12 @@ function color_severity(val, id){
               {% if rt.status == 1 %}
                 <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">P</span>
               {% elif rt.status == 2 %}
-                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>   
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>
               {% elif rt.status == 3 %}
                 <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
               {% endif %}
             </td>
-            <td class="text-center align-middle"> 
+            <td class="text-center align-middle">
               <a href="{% url 'risks_company:ga_risk_company_update' rt.risk.pk %}">
                 <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
               </a>
@@ -876,7 +877,7 @@ function color_severity(val, id){
             <td class="text-center align-middle">
               <a href="{% url 'domain_risks:ga_domain_risk_detail' rt.risk.risk.risk_master.domain_risk.pk %}">
                 <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
-              </a>              
+              </a>
                 <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} ({{ rt.evaluator.position }})" id = "box-child">{{ rt.evaluator.username_no_domain }}</span>
             </td>
             <td class="text-center align-middle">
@@ -922,7 +923,7 @@ function color_severity(val, id){
       {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
         <div>
           <div id="bar-main"></div>
-        </div>      
+        </div>
         <script>
             var rcr = JSON.parse(clean_specialchars("{{ rcr_json }}"));
             load_bar("bar-main", rcr);
@@ -943,7 +944,7 @@ function color_severity(val, id){
               </div>
               <div class="form-check 1" style="margin-top: 10px;">
                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
-                  <label class="form-check-label" for="flexRadioDefault2">Admin</label> 
+                  <label class="form-check-label" for="flexRadioDefault2">Admin</label>
               </div>
             </form>
           </div>
@@ -955,7 +956,7 @@ function color_severity(val, id){
               </div>
               <div class="form-check 2" style="margin-top: 10px;">
                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
-                  <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label> 
+                  <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label>
               </div>
             </form>
           </div>
@@ -976,7 +977,7 @@ function color_severity(val, id){
       <tbody>
         {% for rt in evaluation.risk_company_residuals.all %}
         <tr>
-          <td class="text-center align-middle"> 
+          <td class="text-center align-middle">
             <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk_company.name }}">{{ rt.risk_company.risk.ref }}</span>
           </td>
           <td class="align-middle">
@@ -989,28 +990,28 @@ function color_severity(val, id){
               </div>
             </div>
           </td>
-          <td class="text-center align-middle"> 
+          <td class="text-center align-middle">
             <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk_company.risk.risk_master.domain_risk.name }}">{{ rt.risk_company.risk.risk_master.domain_risk.ref }}</span>
             <div id = 'box' class="text-center">
               <div style="cursor: pointer" onclick="toggle_item(this)">
                   <span class="badge badge-info" style="">{{ rt.risk_test_residuals_calculus|length }} / {{ rt.risk_test_residuals_all|length }}</span>
               </div>
               <div id = "box-container">
-                {% for rrt in rt.risk_test_residuals.all %}                                              
-                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" data-html="true" title="{{ rrt.evaluator.full_name }} ({{ rrt.evaluator.position }}) - Nivel de control: {{ rrt.get_probability_level_residual_evaluator_display }} ({{ rrt.probability_level_residual_evaluator }}) - Justificación: {{ rrt.description_evaluator }}" id = "box-child">{{ rrt.evaluator.username_no_domain }}</span>                        
+                {% for rrt in rt.risk_test_residuals.all %}
+                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" data-html="true" title="{{ rrt.evaluator.full_name }} ({{ rrt.evaluator.position }}) - Nivel de control: {{ rrt.get_probability_level_residual_evaluator_display }} ({{ rrt.probability_level_residual_evaluator }}) - Justificación: {{ rrt.description_evaluator }}" id = "box-child">{{ rrt.evaluator.username_no_domain }}</span>
                 {% endfor %}
               </div>
-            </div>  
+            </div>
           </td>
           <td class="text-center align-middle" data-order="{{ rt.get_latest_severity_inherent }}" id="sev-row-{{ forloop.counter0 }}">
-            <div style="display:flex; gap:10px;"> 
+            <div style="display:flex; gap:10px;">
               <span><i class="bi bi-arrow-right-circle-fill" id = "sev-dot-{{ forloop.counter0 }}"></i></span>
               <span class="sev-adm-num" style="display:none;">{{ rt.get_latest_severity_inherent }}</span>
               <span class="sev-adm-qual">{{ rt.get_latest_severity_inherent_qualitative }}</span>
             </div>
           </td>
           <td class="text-center align-middle" data-order="{{ rt.probability_level_residual_evaluator_aggregate }}" id="nc-row-{{ forloop.counter0 }}">
-            <div style="display:flex; gap:10px;"> 
+            <div style="display:flex; gap:10px;">
               <span><i class="bi bi-arrow-right-circle-fill" id = "nc-dot-{{ forloop.counter0 }}"></i></span>
               <span class="nc-expert-num" style="display:none;">{{ rt.probability_level_residual_evaluator_aggregate_rounded }} ({{ rt.probability_level_residual_evaluator_aggregate }})</span>
               <span class="nc-expert-qual">{{ rt.probability_residual_evaluator_qualitative }} ({{ rt.probability_level_residual_evaluator_aggregate }})</span>
@@ -1019,7 +1020,7 @@ function color_severity(val, id){
             </div>
           </td>
           <td class="text-center align-middle" data-order="{{ rt.severity_residual_evaluator }}" id="sevr-row-{{ forloop.counter0 }}">
-            <div style="display:flex; gap:10px;"> 
+            <div style="display:flex; gap:10px;">
               <span><i class="bi bi-arrow-right-circle-fill" id = "sevr-dot-{{ forloop.counter0 }}"></i></span>
               <span class="sevr-expert-num" style="display:none;">{{ rt.severity_residual_evaluator }}</span>
               <span class="sevr-expert-qual">{{ rt.severity_residual_evaluator_qualitative }}</span>

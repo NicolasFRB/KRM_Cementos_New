@@ -1,4 +1,5 @@
 {% extends layout %}
+{% load staticfiles %}
 
 {% load i18n %}
 {% trans "Sin asignar" as without_set %}
@@ -23,15 +24,15 @@
   .badge.badge-success.n1 {
   margin: 5px;
   background-color: #ed9f7b !important;
-} 
+}
 .badge.badge-success.n2 {
   margin: 5px;
   background-color: #e6d68e !important;
-} 
+}
 .badge.badge-success.n3 {
   margin: 5px;
   background-color: #a6ed9d !important;
-} 
+}
 
 .pending-color{
   color: #ed9f7b !important;
@@ -52,18 +53,18 @@
 
 </style>
 <script>
-  
+
   function load_bar(id, rit) {
     r_prob = [];
     rit.forEach(function(r) {
       var r_p = {x: '', y: '', name: ''}
-      
+
       if (r.status < 2) {
         r_p.x = r.risk_ref
         r_p.y = 0
         r_p.name = r.risk_name
 
-      } else {    
+      } else {
         r_p.x = r.risk_ref
         r_p.y = r.probability_level_residual_evaluator
         r_p.name = r.risk_name
@@ -94,7 +95,7 @@
             },
           }
         },
-        
+
         dataLabels: {
           enabled: true,
           formatter: function (val) {
@@ -109,7 +110,7 @@
           custom: function({series, seriesIndex, dataPointIndex, w}) {
             var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
             markerColor = w.globals.markers.colors[seriesIndex];
-            return '<div style="margin:10px;">' + 
+            return '<div style="margin:10px;">' +
             '<br>' +
             '<div style="font-size: 11px;">'+
               '<b>'+data.x+'</b>'+
@@ -153,7 +154,7 @@
               return val;
             }
           }
-        
+
         },
       };
 
@@ -162,7 +163,7 @@
   }
 
   function load_chart(id, n_pending, n_delivered, n_finished) {
-    
+
     const data = {
       labels: ['Pending', 'Delivered', 'Finished'],
       datasets: [
@@ -191,7 +192,7 @@
           title: {
             display: false,
           },
-          
+
         },
         },
     };
@@ -386,7 +387,7 @@
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
-            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
           </div>
         </div>
       </div>
@@ -395,7 +396,7 @@
       {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
         <div>
           <div id="bar-main"></div>
-        </div>      
+        </div>
         <script>
             var rit = JSON.parse("{{ rrt_json }}".replace(/&quot;/g,'"'));
             load_bar("bar-main", rit);
@@ -425,7 +426,7 @@
       </div>
       <div class="form-check" style="margin-top: 10px;">
         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
-          <label class="form-check-label" for="flexRadioDefault2">Cuantitativo</label> 
+          <label class="form-check-label" for="flexRadioDefault2">Cuantitativo</label>
       </div>
     </div>
   </div>
@@ -439,10 +440,10 @@
             <th></th>
             <th>{% trans 'Riesgo' %}</th>
             <th>{% trans 'Descripción' %}</th>
-            <th>{% trans 'Dominio de riesgo / Experto' %}</th> 
-            <th>{% trans 'Justif. (Experto)' %}</th> 
-            <th>{% trans 'Nivel de control (Evaluador)' %}</th>                                  
-            <th>{% trans 'Nivel de control (Evaluador)' %}</th>                                  
+            <th>{% trans 'Dominio de riesgo / Experto' %}</th>
+            <th>{% trans 'Justif. (Experto)' %}</th>
+            <th>{% trans 'Nivel de control (Evaluador)' %}</th>
+            <th>{% trans 'Nivel de control (Evaluador)' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -457,7 +458,7 @@
                 <span class="bi bi-dot fs-3x finished-color"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}"></span>
               {% endif %}
             </td>
-            <td class="text-center align-middle"> 
+            <td class="text-center align-middle">
               <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
             </td>
             <td class="align-middle">
@@ -471,7 +472,7 @@
               </div>
             </td>
             <td class="text-center align-middle">
-              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>          
+              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
               <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} ({{ rt.evaluator.position }})" id = "box-child">{{ rt.evaluator.username_no_domain }}</span>
             </td>
             <td class="text-center align-middle">

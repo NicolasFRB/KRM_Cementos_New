@@ -1,12 +1,13 @@
 {% extends layout %}
-
+{% load staticfiles %}
 {% load i18n %}
 
 {% block content %}
 
 {% include '_includes/Messages.html' %}
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'js/apexcharts.js' %}"></script>
+<script src="{% static 'js/chart.js' %}"></script>
 
 <style>
   /* FAKEBOARD */
@@ -40,8 +41,8 @@
         <!--begin::Progress-->
         <div class="d-flex align-items-center flex-column mt-3 w-100">
           <div class="fw-bold fs-6 text-white opacity-75 w-100 mt-auto mb-2">
-            <div><span>93 usuarios</span> </div>            
-            <div><span>3 admins</span></div> 
+            <div><span>93 usuarios</span> </div>
+            <div><span>3 admins</span></div>
           </div>
           <div class="h-8px mx-3 w-100 bg-white bg-opacity-50 rounded">
             <div class="bg-primary rounded h-8px" role="progressbar" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
@@ -112,7 +113,7 @@
     </div>
   <!--end::Card body-->
   </div>
- 
+
   <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-50 mb-5 mb-xl-10" style="width: 20%; background-color: #00bab3;margin-left: 10px; margin-right: 10px;">
     <div class="card-header pt-5">
       <!--begin::Title-->
@@ -140,7 +141,7 @@
         </div>
       </div>
       <!--end::Progress-->
-    </div>    
+    </div>
   <!--end::Card body-->
   </div>
   <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-50 mb-5 mb-xl-10" style="width: 20%; background-color: #00bab3;margin-left: 10px; margin-right: 10px;">
@@ -165,7 +166,7 @@
   <!--end::Card body-->
   </div>
 </div>
-  
+
 <!--begin::Container-->
   <div class="card">
     <!--begin::Card body-->
@@ -205,7 +206,7 @@
                     <option value="1">2022</option>
                     <option value="2">2021</option>
                     <option value="2">2020</option>
-                  </select>            
+                  </select>
               </div>
               <div class="row mb-8">
                 <div style="font-size:11px;">Periodo</div>
@@ -272,28 +273,28 @@
           {% for i,r in df.iterrows %}
           <tr>
             <td class="text-center align-middle">
-              {{ r.tipo }}  
+              {{ r.tipo }}
             </td>
             <td class="text-center align-middle">
-              {{ r.ref }}  
+              {{ r.ref }}
             </td>
             <td class="align-middle">
-              {{ r.info }}  
+              {{ r.info }}
             </td>
             <td class="text-center align-middle">
-              {{ r.y }}  
+              {{ r.y }}
             </td>
             <td class="text-center align-middle">
-              {{ r.x }}  
+              {{ r.x }}
             </td>
             <td class="text-center align-middle">
-              {{ r.severidad }}  
+              {{ r.severidad }}
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-    </div>    
+    </div>
     <!--end::Card body-->
     <!--begin::Card footer-->
     <!-- <div class="card-footer py-6">
@@ -312,11 +313,11 @@
         show: false,
       },
   },
-  
+
   grid:{
     show:false,
   },
-  
+
   colors: ["#FFFFFF"],
   series: [
     {
@@ -332,7 +333,7 @@
       columnWidth: "0%"
     }
   },
-  
+
     xaxis: {
       categories: ['2021', '2021', '2022', '2022'],
       show: false,
@@ -468,7 +469,7 @@ var options = {
               cssClass: 'apexcharts-yaxis-title',
           },
       },
-      
+
       crosshairs: {
           show: true,
           position: 'back',
@@ -487,7 +488,7 @@ var options = {
             fontFamily: 0,
           },
       },
-      
+
   },
   xaxis: {
       type: 'numeric',
@@ -523,7 +524,7 @@ var options = {
           formatter: function(val) {
             return val.toFixed(0);
           },
-            
+
           datetimeUTC: true,
           datetimeFormatter: {
               year: 'yyyy',
@@ -558,7 +559,7 @@ var options = {
           offsetX: 0,
           offsetY: 0
       },
-     
+
       title: {
         text: 'Impacto',
           rotate: 0,
@@ -572,12 +573,12 @@ var options = {
               cssClass: 'apexcharts-yaxis-title',
           },
       },
-      
+
       crosshairs: {
           show: true,
           width: 1,
           position: 'back',
-          opacity: 0.9,        
+          opacity: 0.9,
           stroke: {
               color: '#b6b6b6',
               width: 0,
@@ -620,34 +621,34 @@ var options = {
         lines: {
           show: false  //or just here to disable only x axis grids
          }
-       },  
+       },
       yaxis: {
-        lines: { 
+        lines: {
           show: true  //or just here to disable only y axis
          }
-       }, 
+       },
       row: {
-        
+
         opacity: 0.6
-      },  
+      },
       column: {
-        
+
         opacity: 0.6
-      },    
+      },
     },
-  
+
   series: datasets['gvi'],
-  
+
   tooltip: {
     custom: function({series, seriesIndex, dataPointIndex, w}) {
       var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-      
-      return '<div style="margin:10px;">' + 
+
+      return '<div style="margin:10px;">' +
       '<br>' +
-      '<b>'+data.ref+'</b>' + '<br>' + 
-      
+      '<b>'+data.ref+'</b>' + '<br>' +
+
         '<span style="max-width:200px;word-wrap: break-word;">'+data.info+'</span>'+
-       
+
       '<ul>' +
       '<li><b>Probabilidad</b>: ' + data.x.toString() + '</li>' +
       '<li><b>Impacto</b>: ' + data.y.toString() + '</li>' +
@@ -667,10 +668,10 @@ var options = {
             background:{
               enabled: false,
             },
-            
+
             formatter: function(value, { seriesIndex, dataPointIndex, w }) {
-            return w.config.series[seriesIndex].data[dataPointIndex].ref; 
-      },     
+            return w.config.series[seriesIndex].data[dataPointIndex].ref;
+      },
   },
   markers: {
     size: 15,
