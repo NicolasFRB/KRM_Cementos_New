@@ -6,19 +6,101 @@
 
 {% include '_includes/Messages.html' %}
 
+<style>
+
+.card-body p {
+  color: white;
+  font-size: medium;
+}
+
+.card-body p i {
+  color: white;
+}
+
+</style>
+
+
 <!--begin::Container-->
 <div class="card">
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <div class="card-title fs-3 fw-bold">Tareas Asignadas</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
   <!--begin::Card body-->
   <div class="card-body">
     <div class="row mb-8">
-      <p>Por definir</p>
+      {% if request.user.controls_test_owner_pending.count > 0 or request.user.controls_test_supervisor_pending.count > 0 or request.user.risk_test_inherent_expert_pending.count > 0 or request.user.risk_test_residual_evaluator_pending.count > 0 or request.user.question_test_pending.count > 0 %}
+      <div style="display:flex;"><p style="color:gray; font-size:large"> <i class="bi bi-exclamation-square fa-lg" style="color:red"></i> &nbsp&nbsp Tienes {{ request.user.total_pending_actions }} tareas pendientes</p></div>
+
+
+      {% if request.user.controls_test_owner_pending.count > 0 or request.user.controls_test_supervisor_pending.count > 0%}
+      <div class="card" style="background-color: #00bab3; padding: 5px;">
+      <div class="card-header">
+        <div class="card-title fs-3 fw-bold text-white" style="opacity:85%;">Controles</div>
+      </div>
+      <div class="card-body" style="padding-left: 10px">
+        {% if request.user.controls_test_owner_pending.count > 0 %}
+        <a href="/es/evaluations/control-test/ru/control-test-owner/list/" class="card hover-elevate-up shadow-sm parent-hover">
+          <div class="card-body d-flex align-items" style="align-items:center;">
+            <span class="bi bi-pencil-square fs-2x"></span>
+            <span class="ms-3 text-gray-700 parent-hover-primary fs-4 fw-bold">
+              &nbsp&nbspTienes {{request.user.controls_test_owner_pending.count}} controles pendientes de completar
+            </span>
+          </div>
+        </a>
+        {% endif %}
+        {% if request.user.controls_test_supervisor_pending.count > 0 %}
+        <a href="/es/evaluations/control-test/ru/control-test-supervisor/list/" class="card hover-elevate-up shadow-sm parent-hover">
+          <div class="card-body d-flex align-items" style="align-items:center;">
+            <span class="bi bi-search fs-2x">
+            </span>
+            <span class="ms-3 text-gray-700 parent-hover-primary fs-6 fw-bold">
+              &nbsp&nbspTienes {{request.user.controls_test_supervisor_pending.count}} controles pendientes de supervisar
+            </span>
+          </div>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+      {% endif %}
+
+      {% if request.user.risk_test_inherent_expert_pending.count > 0 or request.user.risk_test_residual_evaluator_pending.count > 0 %}
+      <div class="card" style="background-color: #00bab3; padding: 5px;">
+      <div class="card-header">
+        <div class="card-title fs-3 fw-bold text-white" style="opacity:85%;">Riesgos</div>
+      </div>
+      <div class="card-body" style="padding-left: 10px">
+        {% if request.user.risk_test_inherent_expert_pending.count > 0 %}
+        <a href="/es/evaluations/krm/ru/inherent/" class="card hover-elevate-up shadow-sm parent-hover">
+          <div class="card-body d-flex align-items" style="align-items:center;">
+            <span class="bi bi-pencil-square fs-2x">
+            </span>
+            <span class="ms-3 text-gray-700 parent-hover-primary fs-6 fw-bold">
+              &nbsp&nbspTienes {{request.user.risk_test_inherent_expert_pending.count}} riesgos inherentes pendientes de completar
+            </span>
+          </div>
+        </a>
+        {% endif %}
+        {% if rrequest.user.risk_test_residual_evaluator_pending.count > 0 %}
+        <a href="/es/evaluations/krm/ru/residual/" class="card hover-elevate-up shadow-sm parent-hover">
+          <div class="card-body d-flex align-items" style="align-items:center;">
+            <span class="bi bi-search fs-2x">
+            </span>
+            <span class="ms-3 text-gray-700 parent-hover-primary fs-6 fw-bold">
+              &nbsp&nbspTienes {{request.user.risk_test_residual_evaluator_pending.count}} riesgos residuales pendientes de completar
+            </span>
+          </div>
+        </a>
+        {% endif %}
+      </div>
+      </div>
+      {% endif %}
+      {% else %}
+      <p>¡No tienes tareas pendientes!</p>
+      {% endif %}
     </div>
   </div>
   <!--end::Card body-->
