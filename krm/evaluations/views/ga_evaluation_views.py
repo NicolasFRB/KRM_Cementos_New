@@ -217,7 +217,7 @@ class GaEvaluationDetailView(FormView):
                 filename
             )
 
-            # wb = xlwt.Workbook(encoding="utf-8")
+            wb = xlwt.Workbook(encoding="utf-8")
             ws = wb.add_sheet("Controls")
 
             # Sheet header, first row
@@ -294,7 +294,7 @@ class GaEvaluationDetailView(FormView):
                 "PRESENTATION",  # 18
                 "ACCURACY",  # 19
                 "FRAUD",  # 20
-                "DOMINIOS DE RIESGO",
+                "DOMINIOS DE RIESGO", # 21
                 "TEST DE CONTROL ID",  # 22
                 "TEST DE CONTROL STATUS",  # 23
                 "CONTROL OWNER",  # 24
@@ -306,10 +306,14 @@ class GaEvaluationDetailView(FormView):
                 "RESULTADO\nEF (efectivo)\nNE (no efectivo)",  # 30
                 "PLAN DE REMEDIACIÓN TEXTO",  # 31
                 "PLAN DE REMEDIACIÓN FECHA",  # 32
-                "CONTROL SUPERVISOR",  # 33
-                "CONTROL SUPERVISOR EMPRESAS",  # 34
-                "CONTROL SUPERVISOR RESPUESTA",  # 35
-                "CONTROL SUPERVISOR FECHA RESPUESTA",  # 36
+                "PLAN DE REMEDIACIÓN LINK",  # 33
+                "CONTROL SUPERVISOR",  # 34
+                "CONTROL SUPERVISOR EMPRESAS",  # 35
+                "CONTROL SUPERVISOR RESPUESTA",  # 36
+                "CONTROL SUPERVISOR FECHA RESPUESTA",  # 37
+                "CONTROL ADMIN",  # 38
+                "CONTROL ADMIN RESPUESTA",  # 39
+                "CONTROL ADMIN FECHA RESPUESTA",  # 40
             ]
 
             for col_num in range(len(columns)):
@@ -440,7 +444,7 @@ class GaEvaluationDetailView(FormView):
 
                 domain_risks_text = ''
                 for risk in ct.control.risks.all():
-                    domain_risks_text += f'{risk.domain_risk.ref} - {risk.domain_risk.name}\n'
+                    domain_risks_text += f'{risk.risk_master.domain_risk.ref} - {risk.risk_master.domain_risk.name}\n'
                 ws.write(
                     row_num,
                     21,
@@ -541,9 +545,21 @@ class GaEvaluationDetailView(FormView):
                         font_style_body,
                     )  # 32
 
+                    if remediation_plan.attachment:
+                        resp_attach = settings.SITE_URL + "/media/" + remediation_plan.attachment.name
+                        ws.write(
+                            row_num,
+                            33,
+                            xlwt.Formula(
+                                    'HYPERLINK("%s";"Enlace al documento")'
+                                    % resp_attach
+                                    ),
+                            font_style_body,
+                        )  # 33
+
                 ws.write(
-                    row_num, 33, ct.control_test_supervisor.email, font_style_body
-                )  # 33
+                    row_num, 34, ct.control_test_supervisor.email, font_style_body
+                )  # 34
 
                 # Buscamos las compañías del control supervisor, solo aqueyas que sean del grupo empresarial al que pertenece
                 # la compañía sobre la que se ha lanzado el test de proceso
@@ -552,8 +568,8 @@ class GaEvaluationDetailView(FormView):
                     cs_company_str = "{}{}\n".format(
                         cs_company_str, cs_company.name
                     )
-                ws.write(row_num, 34, cs_company_str,
-                         font_style_body_wrap)  # 34
+                ws.write(row_num, 35, cs_company_str,
+                         font_style_body_wrap)  # 35
 
                 # Buscamos la última respuesta del control supervisor
                 if ct.answers.filter(user=ct.control_test_supervisor).count() > 0:
@@ -564,18 +580,41 @@ class GaEvaluationDetailView(FormView):
                     )
                     ws.write(
                         row_num,
-                        35,
+                        36,
                         answer.description.replace("<br>", "\n")
                         .replace("<p>", "")
                         .replace("</p>", "\n"),
                         font_style_body_wrap,
-                    )  # 35
+                    )  # 36
                     ws.write(
                         row_num,
-                        36,
+                        37,
                         answer.created.strftime("%d/%m/%Y, %H:%M:%S"),
-                        font_style_body,
-                    )  # 36
+                        font_style_body,xlwt
+                    )  # 37
+
+                if ct.answers.last() is not None:
+                    if ct.answers.last().user.is_superuser:
+                        last_admin_answer = ct.answers.last()
+
+                        ws.write(
+                            row_num,
+                            38,
+                            last_admin_answer.user.email,
+                            font_style_body_wrap
+                        )  # 38
+                        ws.write(
+                            row_num,
+                            39,
+                            last_admin_answer.description.replace("<br>", "\n"),
+                            font_style_body_wrap
+                        )  # 39
+                        ws.write(
+                            row_num,
+                            40,
+                            last_admin_answer.created.strftime("%d/%m/%Y, %H:%M:%S"),
+                            font_style_body_wrap
+                        )  # 40
 
             wb.save(response)
 

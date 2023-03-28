@@ -552,8 +552,7 @@
         class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
       <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
       <input type="hidden" name="action" value="d">
-      <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación'
-        %}</button>
+      <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
       <a href="{% url 'evaluations:ga_evaluation_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
     </form>
     {% else %}
