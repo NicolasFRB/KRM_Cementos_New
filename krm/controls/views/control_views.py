@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import xlwt
 import re
 
 # Create your views here.
@@ -20,6 +20,7 @@ from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
+from django.http import HttpResponse
 
 from django.utils.decorators import method_decorator
 
@@ -30,16 +31,21 @@ from krm.controls.forms import ControlCreateForm
 from krm.controls.models import Control
 from krm.risks.models import Risk
 from krm.process.models import SubProcess
+from krm.companies.models import Company, CompanyControls
 
 from krm.users.decorators import is_global_admin
 
-from krm.controls.forms import ControlImportForm
+from krm.controls.forms import (
+    ControlImportForm,
+    DownloadControlsActionForm
+        )
 
 
 @method_decorator([is_global_admin, ], name='dispatch')
-class GaControlListView(ListView):
+class GaControlListView(ListView,FormView):
     model = Control
     template_name = 'controls/GaControlList.html'
+    form_class = DownloadControlsActionForm
     context_object_name = 'controls'
     queryset = Control.objects.all().prefetch_related(
         'sub_processes').prefetch_related('risks__risk_master__domain_risk')
@@ -65,6 +71,141 @@ class GaControlListView(ListView):
         ]
         context['js_template'] = ['js/custom/datatables.js']
         return context
+
+    def form_valid(self, form):
+        action = form.cleaned_data["action"]
+
+        if action == 'd':
+
+            # Comienzo de la creacion de archivo de descarga del Test de Proceso
+            filename = "control_company.xls"
+            response = HttpResponse(content_type="application/ms-excel")
+            response["Content-Disposition"] = 'attachment; filename="{}"'.format(
+                filename
+            )
+
+            wb = xlwt.Workbook(encoding="utf-8")
+
+            # Sheet header, first row
+            row_num = 0
+
+            font_style_title = xlwt.easyxf("align: vert centre, horiz left")
+            font_style_title.font.bold = True
+
+            font_style_title_wrap = xlwt.easyxf(
+                "align: vert centre, horiz left, wrap yes"
+            )
+            font_style_title_wrap.font.bold = True
+
+            font_style_body = xlwt.easyxf("align: vert top, horiz left")
+            font_style_body_wrap = xlwt.easyxf(
+                "align: vert top, horiz left, wrap yes"
+            )
+
+            for company in Company.objects.all():
+                row_num = 0
+                ws = wb.add_sheet("{}".format(company.ref))
+
+                ws.col(0).width = 256 * 30
+                ws.col(1).width = 256 * 25
+                ws.col(2).width = 256 * 50
+                ws.col(3).width = 256 * 80
+                ws.col(4).width = 256 * 80
+                ws.col(5).width = 256 * 80
+                ws.col(6).width = 256 * 80
+
+                columns = [
+                    "COMPAÑIA",  # 0
+                    "CONTROL REF",  # 1
+                    "NOMBRE",  # 2
+                    "DESCRIPCIÓN",  # 3
+                    "RIESGOS",  # 4
+                    "SUB PROCESOS",  # 5
+                    "KEY CONTROL",  # 6
+                    "TIPO",  # 7
+                    "AUTOMATICO",  # 8
+                    "FRECUENCIA",  # 9
+                    "CONTROL OWNER",  # 10
+                    "CONTROL SUPERVISOR",  # 11
+                    ]
+
+                for col_num in range(len(columns)):
+                    if col_num in (21, 28):
+                        ws.write(
+                            row_num, col_num, columns[col_num], font_style_title_wrap
+                        )
+                    else:
+                        ws.write(row_num, col_num,
+                                columns[col_num], font_style_title)
+
+                if CompanyControls.objects.filter(company = company,active = True).count() > 0:
+
+                    for comp_cont in CompanyControls.objects.filter(company = company,active = True):
+                        row_num += 1
+                        ws.write(
+                            row_num, 0, comp_cont.company.name, font_style_body
+                        )  # 0
+                        ws.write(
+                            row_num, 1, comp_cont.control.ref, font_style_body
+                        )  # 1
+                        ws.write(
+                            row_num, 2, comp_cont.control.name, font_style_body
+                        )  # 2
+                        ws.write(
+                            row_num, 3, comp_cont.control.description, font_style_body
+                        )  # 3
+
+                        risks = []
+                        if comp_cont.control.risks.count() > 0:
+                            for risk in comp_cont.control.risks.all():
+                                risks.append(risk.ref)
+                            all_risks = ','.join(risks)
+                            ws.write(
+                                row_num, 4, all_risks, font_style_body
+                            )  # 4
+
+                        sub_processes = []   
+                        if comp_cont.control.sub_processes.count() > 0:
+                            for sp in comp_cont.control.sub_processes.all():
+                                sub_processes.append(sp.ref)
+                            all_sp = ','.join(sub_processes)
+                            ws.write(
+                                row_num, 5, all_sp, font_style_body
+                            )  # 5
+                        ws.write(
+                            row_num, 6, comp_cont.control.key_control, font_style_body
+                        )  # 6
+                        ws.write(
+                            row_num, 7, comp_cont.control.control_type, font_style_body
+                        )  # 7
+                        ws.write(
+                            row_num, 8, comp_cont.control.automation, font_style_body
+                        )  # 8
+                        ws.write(
+                            row_num, 9, comp_cont.control.control_frequency, font_style_body
+                        )  # 9
+                        
+                        owners = []   
+                        if comp_cont.control_test_owners.count() > 0:
+                            for co in comp_cont.control_test_owners.all():
+                                owners.append(co.email)
+                            all_co = ','.join(owners)
+                            ws.write(
+                                row_num, 10, all_co, font_style_body
+                            )  # 10
+                        supervisors = []   
+                        if comp_cont.control_test_supervisors.count() > 0:
+                            for cs in comp_cont.control_test_supervisors.all():
+                                supervisors.append(cs.email)
+                            all_cs = ','.join(supervisors)
+                            ws.write(
+                                row_num, 11, all_cs, font_style_body
+                            )  # 11
+                    
+            wb.save(response)
+            return response
+
+        return super().form_valid(form)
 
 
 @method_decorator([is_global_admin, ], name='dispatch')

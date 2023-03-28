@@ -29,12 +29,11 @@ from krm.risks.models import (
     Risk,
     RiskMaster,
     DomainRisk,
-    RiskCompany
+    RiskCompany,
 )
 
-from krm.controls.models import (
-    Control
-)
+from krm.controls.models import Control
+from krm.companies.models import CompanyControls
 
 from krm.process.models import (
     SubProcess,
@@ -303,15 +302,15 @@ class GaImportView(FormView):
             return super(GaImportView, self).form_invalid(form)
 
     def checkMaster(self, name, master_name, elem, elems_to_create, master_DBreference, master, form):
-        global errors_found
         exist = False
         if master_DBreference.objects.filter(ref=elem[master]).count() > 0:
             exist = True
         else: 
         # Si no existe buscamos si está en la hora de dominios de riesgo a crear
-            for dr in elems_to_create:
-                if elem[master] == dr['ref']:
-                    exist = True
+            if elems_to_create is not None:
+                for dr in elems_to_create:
+                    if elem[master] == dr['ref']:
+                        exist = True
 
         if not exist:
             self.errors_found += 1
@@ -324,6 +323,39 @@ class GaImportView(FormView):
                 ),
             )
             return super(GaImportView, self).form_invalid(form)
+
+    def check_user_in_company(self,control_company,user_type,form):
+        if control_company[user_type] is not None:
+            for user in control_company[user_type]:
+                owner = User.objects.get(email=user)
+                company = Company.objects.get(ref=control_company['company_ref'])
+                
+                if owner.companies.count() > 1: 
+                    if company not in owner.companies:
+                        self.errors_found += 1
+                        messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('El usuario %s no pertence a la compañia %s')
+                            % (owner.email, company.name)
+                        ),
+                    )
+                        return super(GaImportView, self).form_invalid(form)
+                
+                if owner.companies.count() <= 1:
+                    if company != owner.companies:
+                        self.errors_found += 1
+                        messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('El usuario %s no pertence a la compañia %s')
+                            % (owner.email, company.name)
+                        ),
+                    )
+                        return super(GaImportView, self).form_invalid(form)
+
 
     def success(name, created, self):
         if created > 0:
@@ -480,8 +512,8 @@ class GaImportView(FormView):
                 control = {}
 
                 # NONSENSE aqui: Puede ser ELC o no mitigar riesgos
-                # if row[0].value is None:
-                #     break 
+                if row[0].value is None:
+                    break 
 
                 if row[0].value is not None:
                     control['risk_refs'] = row[0].value.replace(' ', '').upper().split(',')
@@ -635,11 +667,24 @@ class GaImportView(FormView):
                 control_company['control_ref'] = row[0].value.strip().replace(' ', '').upper()
                 control_company['company_ref'] = row[1].value.strip().replace(' ', '').upper()
 
+                if row[2].value is not None:
+                    control_company['control_owners'] = row[2].value.strip().replace(' ', '').split(',')
+                else:
+                    control_company['control_owners'] = None
+                
+                if row[3].value is not None:
+                    control_company['control_supervisors'] = row[3].value.strip().replace(' ', '').split(',')
+                else:
+                    control_company['control_supervisors'] = None
+
                 # self.checkDB("control compañía", control_company, Company, form, "company_ref")
-
-                self.checkMaster("control compañía", "control", control_company, control_to_create, Control, "control_ref", form)
-                self.checkDB("control compañía", control_company, Control, form, "control_ref")
-
+                
+                self.checkMaster("Control company", "control", control_company, control_to_create, Control, "control_ref", form)
+                self.checkMaster("Control company", "compañia", control_company, None, Company, "company_ref", form)
+                
+                self.check_user_in_company(control_company,'control_owners',form)
+                self.check_user_in_company(control_company,'control_supervisors',form)
+                
                 control_company_to_create.append(control_company)
 
         # print("All checks went good, loading in DB")
@@ -651,7 +696,6 @@ class GaImportView(FormView):
         # print("CtrlCompany", len(control_company_to_create))
        
         # Vamos a crear cosas
-        print(self.errors_found)
         if self.errors_found == 0:
             dr_created, n = 0, len(domain_risk_to_create)
             for i,dr in enumerate(domain_risk_to_create):
@@ -820,6 +864,63 @@ class GaImportView(FormView):
                     ),
                 )
 
+            #control company
+            control_company_created = 0
+            for control in Control.objects.all():
+                for comp in Company.objects.all():
+                    if CompanyControls.objects.filter(company=comp, control=control).count() == 0:
+                        print('crear')
+                        CompanyControls.objects.create(
+                        company=comp,
+                        control=control
+                    )
+                    else:
+                        print('no crear')
+            
+                        
+            for i,cc in enumerate(control_company_to_create):
+                cont_comp = CompanyControls.objects.get(company = Company.objects.get(ref=cc['company_ref']), control = Control.objects.get(ref=cc['control_ref']))
+                cont_comp.active = True
+                control_company_created += 1
+
+
+                if cc['control_owners'] is not None:
+                    for owner in cc['control_owners']:
+                        owner_to_add = User.objects.get(email=owner)
+                        if cont_comp.control_test_owners.count() > 1:
+                            if owner_to_add not in cont_comp.control_test_owners.all():
+                                cont_comp.control_test_owners.add(owner_to_add)
+                        else:
+                            if owner_to_add != cont_comp.control_test_owners:
+                                cont_comp.control_test_owners.add(owner_to_add)
+
+                
+                if cc['control_supervisors'] is not None:
+                    for supervisor in cc['control_supervisors']:
+                        supervisor_to_add = User.objects.get(email=supervisor)
+                        if cont_comp.control_test_supervisors.count() > 1:
+                            if supervisor_to_add not in cont_comp.control_test_supervisors.all():
+                                cont_comp.control_test_supervisors.add(supervisor_to_add)
+                        else:
+                            if supervisor_to_add != cont_comp.control_test_supervisors:
+                                cont_comp.control_test_supervisors.add(supervisor_to_add)
+
+                cont_comp.save()
+
+                            
+            if control_company_created > 0:
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    (
+                        _(
+                            "{0} Controles asociados a compañías creados"
+                        ).format(
+                            control_company_created,
+                        )
+                    ),
+                )
+
             # RiskCompany
             risk_company_created, n = 0, len(risk_company_to_create)
             for i,rc in enumerate(risk_company_to_create):
@@ -855,29 +956,6 @@ class GaImportView(FormView):
                             "{0} Riesgos Compañía creados"
                         ).format(
                             risk_company_created,
-                        )
-                    ),
-                )
-
-            # ControlCompany
-            control_company_created, n = 0, len(control_company_to_create)
-            for i,cc in enumerate(control_company_to_create):
-                # print("ControlCompany %d/%d" % (i, n))
-                company = Company.objects.get(ref=cc['company_ref'])
-                control = Control.objects.get(ref=cc['control_ref'])
-
-                company.controls.add(control)
-                control_company_created += 1
-
-            if control_company_created > 0:
-                messages.add_message(
-                    self.request,
-                    messages.SUCCESS,
-                    (
-                        _(
-                            "{0} Controles asociados a compañías creados"
-                        ).format(
-                            control_company_created,
                         )
                     ),
                 )

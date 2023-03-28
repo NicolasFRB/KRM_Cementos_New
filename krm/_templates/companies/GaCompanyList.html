@@ -54,7 +54,7 @@
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.type_company }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.krm_risks_active.count }}</span></td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ company.controls.count }}</span></td>
+            <td class="text-center align-middle"><span class="badge badge-info">{{ company.get_controls_active.count }}</span></td>
             {% if KRM_ACTIVATE %}
               <td class="text-center align-middle">
                 {% for ced in company.experts_domain_risk %}

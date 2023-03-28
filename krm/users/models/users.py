@@ -178,6 +178,9 @@ class User(AbstractUser):
             status=1,
             evaluator=self,
         )
+    
+    def total_pending_actions(self):
+        return self.controls_test_owner_pending().count() + self.controls_test_supervisor_pending().count() + self.risk_test_inherent_expert_pending().count() + self.risk_test_residual_evaluator_pending().count() + self.question_test_pending().count()
 
     def save(self, *args, **kwargs):
         self.username = self.email

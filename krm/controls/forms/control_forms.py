@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, HiddenInput
 from django.utils.translation import gettext_lazy as _
 
 from django.core.validators import FileExtensionValidator
@@ -50,3 +50,11 @@ class ControlImportForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ControlImportForm, self).__init__(*args, **kwargs)
+
+class DownloadControlsActionForm(forms.Form):
+
+    action = forms.CharField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['action'].widget = HiddenInput()
