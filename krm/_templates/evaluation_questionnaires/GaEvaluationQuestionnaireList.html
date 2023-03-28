@@ -9,10 +9,10 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/chart.js' %}"></script>
 
 <style>
-  canvas{  
+  canvas{
     width:50px !important;
     height:50px !important;
     padding: 0;
@@ -24,19 +24,19 @@ canvas#race{position:relative; z-index:100;}
 .badge.badge-success.n1 {
   margin: 5px;
   background-color: #ed9f7b !important;
-} 
- 
+}
+
 .badge.badge-success.n3 {
   margin: 5px;
   background-color: #a6ed9d !important;
-} 
+}
 
 </style>
 
 <script>
 
   function load_chart(id, n_pending, n_finished) {
-    
+
     const data = {
       labels: ['Pending', 'Finished'],
       datasets: [
@@ -101,7 +101,7 @@ canvas#race{position:relative; z-index:100;}
 //       {title: 'Justificación'}
 //     ]
 //   });
-  
+
 
 // }
 </script>
@@ -154,10 +154,10 @@ canvas#race{position:relative; z-index:100;}
                   <span class="badge badge-info" style="">{{ evaluation.scopes|length }}</span>
               </div>
               <div id = "box-container">
-                {% for scope in evaluation.scopes %}                                              
+                {% for scope in evaluation.scopes %}
                   <a href="{% url 'scopes:ga_scope_detail' scope.pk %}">
                     <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ scope.name }}" id = "box-child">{{ scope.ref }}</span>
-                  </a>                                               
+                  </a>
                 {% endfor %}
               </div>
             </div>
@@ -168,7 +168,7 @@ canvas#race{position:relative; z-index:100;}
             </div>
             <div>
               <canvas id="pie-ep-{{ forloop.counter }}"></canvas>
-            </div>              
+            </div>
           </td>
           <script>
             load_chart('pie-ep-{{ forloop.counter }}','{{evaluation.nquestion_test_pending}}','{{evaluation.nquestion_test_finished}}');
@@ -179,7 +179,7 @@ canvas#race{position:relative; z-index:100;}
             </div>
             <div>
               <canvas id="pie-ep-evs-{{ forloop.counter }}"></canvas>
-            </div>              
+            </div>
           </td>
           <script>
             load_chart('pie-ep-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_finished.count}}');
@@ -189,15 +189,15 @@ canvas#race{position:relative; z-index:100;}
               <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% else %}
             <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-            {% endif %}              
-          </td>            
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     <div style="float: right;display: flex; margin-right: 15px !important;">
       <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
     </div>
     {% else %}
     <div class="row mt-2 mb-2">
@@ -267,10 +267,10 @@ canvas#race{position:relative; z-index:100;}
                   <span class="badge badge-info" style="">{{ evaluation.scopes|length }}</span>
               </div>
               <div id = "box-container">
-                {% for scope in evaluation.scopes %}                                              
+                {% for scope in evaluation.scopes %}
                   <a href="{% url 'scopes:ga_scope_detail' scope.pk %}">
                     <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ scope.name }}" id = "box-child">{{ scope.ref }}</span>
-                  </a>                                               
+                  </a>
                 {% endfor %}
               </div>
             </div>
@@ -281,7 +281,7 @@ canvas#race{position:relative; z-index:100;}
             </div>
             <div>
               <canvas id="pie-fi-{{ forloop.counter }}"></canvas>
-            </div>              
+            </div>
           </td>
           <script>
             load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.nquestion_test_pending}}','{{evaluation.nquestion_test_finished}}');
@@ -292,7 +292,7 @@ canvas#race{position:relative; z-index:100;}
             </div>
             <div>
               <canvas id="pie-fi-evs-{{ forloop.counter }}"></canvas>
-            </div>              
+            </div>
           </td>
           <script>
             load_chart('pie-fi-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_finished.count}}');
@@ -302,15 +302,15 @@ canvas#race{position:relative; z-index:100;}
               <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% else %}
             <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-            {% endif %}              
-          </td>            
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     <div style="float: right;display: flex; margin-right: 15px !important;">
       <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
     </div>
     {% else %}
     <div class="row mt-2 mb-2">

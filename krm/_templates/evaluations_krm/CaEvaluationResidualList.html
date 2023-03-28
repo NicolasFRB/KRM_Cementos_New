@@ -9,9 +9,9 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/chart.js' %}"></script>
 <style>
-  canvas{  
+  canvas{
     width:50px !important;
     height:50px !important;
     padding: 0;
@@ -23,20 +23,20 @@ canvas#race{position:relative; z-index:100;}
 .badge.badge-success.n1 {
   margin: 5px;
   background-color: #ed9f7b !important;
-} 
+}
 .badge.badge-success.n2 {
   margin: 5px;
   background-color: #e6d68e !important;
-} 
+}
 .badge.badge-success.n3 {
   margin: 5px;
   background-color: #a6ed9d !important;
-} 
+}
 
 </style>
 <script>
   function load_chart(id, n_pending, n_delivered, n_finished) {
-    
+
     const data = {
       labels: ['Pending', 'Delivered', 'Finished'],
       datasets: [
@@ -128,9 +128,9 @@ canvas#race{position:relative; z-index:100;}
                       title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
             <td class="text-center align-middle">
               {% for dom in evaluation.domain_risks %}
-              
+
                 <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
-              
+
               {% endfor %}
             </td>
             <td class="text-center align-middle">
@@ -139,7 +139,7 @@ canvas#race{position:relative; z-index:100;}
               </div>
               <div>
                 <canvas id="pie-ep-{{ forloop.counter }}"></canvas>
-              </div>              
+              </div>
             </td>
             <script>
               load_chart('pie-ep-{{ forloop.counter }}','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
@@ -150,7 +150,7 @@ canvas#race{position:relative; z-index:100;}
               </div>
               <div>
                 <canvas id="pie-ep-evs-{{ forloop.counter }}"></canvas>
-              </div>              
+              </div>
             </td>
             <script>
               load_chart('pie-ep-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}');
@@ -160,8 +160,8 @@ canvas#race{position:relative; z-index:100;}
                 <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
               {% else %}
               <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-              {% endif %}              
-            </td>            
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
       </tbody>
@@ -169,7 +169,7 @@ canvas#race{position:relative; z-index:100;}
     <div style="float: right;display: flex; margin-right: 15px !important;">
       <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
       <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
-      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
     </div>
     {% else %}
     <div class="row mt-2 mb-2">
@@ -236,9 +236,9 @@ canvas#race{position:relative; z-index:100;}
                       title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
             <td class="text-center align-middle">
               {% for dom in evaluation.domain_risks %}
-              
+
                 <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
-              
+
               {% endfor %}
             </td>
             <td class="text-center align-middle">
@@ -247,7 +247,7 @@ canvas#race{position:relative; z-index:100;}
               </div>
               <div>
                 <canvas id="pie-fi-{{ forloop.counter }}"></canvas>
-              </div>              
+              </div>
             </td>
             <script>
               load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
@@ -258,7 +258,7 @@ canvas#race{position:relative; z-index:100;}
               </div>
               <div>
                 <canvas id="pie-fi-evs-{{ forloop.counter }}"></canvas>
-              </div>              
+              </div>
             </td>
             <script>
               load_chart('pie-fi-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}');
@@ -268,8 +268,8 @@ canvas#race{position:relative; z-index:100;}
                 <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
               {% else %}
               <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-              {% endif %}              
-            </td>            
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
       </tbody>
@@ -277,7 +277,7 @@ canvas#race{position:relative; z-index:100;}
     <div style="float: right;display: flex; margin-right: 15px !important;">
       <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
       <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
-      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>      
+      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
     </div>
     {% else %}
     <div class="row mt-2 mb-2">
