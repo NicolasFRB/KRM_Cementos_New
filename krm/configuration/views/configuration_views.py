@@ -345,7 +345,7 @@ class GaImportView(FormView):
                         return super(GaImportView, self).form_invalid(form)
                 
                 if owner.companies.count() <= 1:
-                    if company != owner.companies.all():
+                    if company not in owner.companies.all():
                         self.errors_found += 1
                         messages.add_message(
                         self.request,
