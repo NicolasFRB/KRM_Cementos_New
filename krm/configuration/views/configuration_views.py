@@ -512,8 +512,8 @@ class GaImportView(FormView):
             if not i == 0:
                 control = {}
 
-                # NONSENSE aqui: Puede ser ELC o no mitigar riesgos
-                if row[0].value is None:
+                # si no hay id de control, se dejan de crear
+                if row[2].value is None:
                     break 
 
                 if row[0].value is not None:
