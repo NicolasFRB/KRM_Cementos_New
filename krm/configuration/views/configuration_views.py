@@ -327,11 +327,12 @@ class GaImportView(FormView):
     def check_user_in_company(self,control_company,user_type,form):
         if control_company[user_type] is not None:
             for user in control_company[user_type]:
+                print(user)
                 owner = User.objects.get(email=user)
                 company = Company.objects.get(ref=control_company['company_ref'])
                 
                 if owner.companies.count() > 1: 
-                    if company not in owner.companies:
+                    if company not in owner.companies.all():
                         self.errors_found += 1
                         messages.add_message(
                         self.request,
@@ -344,7 +345,7 @@ class GaImportView(FormView):
                         return super(GaImportView, self).form_invalid(form)
                 
                 if owner.companies.count() <= 1:
-                    if company != owner.companies:
+                    if company != owner.companies.all():
                         self.errors_found += 1
                         messages.add_message(
                         self.request,
@@ -668,12 +669,12 @@ class GaImportView(FormView):
                 control_company['company_ref'] = row[1].value.strip().replace(' ', '').upper()
 
                 if row[2].value is not None:
-                    control_company['control_owners'] = row[2].value.strip().replace(' ', '').split(',')
+                    control_company['control_owners'] = [x for x in row[2].value.strip().replace(' ', '').split(',') if '@' in x]
                 else:
                     control_company['control_owners'] = None
                 
                 if row[3].value is not None:
-                    control_company['control_supervisors'] = row[3].value.strip().replace(' ', '').split(',')
+                    control_company['control_supervisors'] = [x for x in row[3].value.strip().replace(' ', '').split(',') if '@' in x]
                 else:
                     control_company['control_supervisors'] = None
 
@@ -681,7 +682,7 @@ class GaImportView(FormView):
                 
                 self.checkMaster("Control company", "control", control_company, control_to_create, Control, "control_ref", form)
                 self.checkMaster("Control company", "compañia", control_company, None, Company, "company_ref", form)
-                
+                print(row[0],row[1])
                 self.check_user_in_company(control_company,'control_owners',form)
                 self.check_user_in_company(control_company,'control_supervisors',form)
                 
