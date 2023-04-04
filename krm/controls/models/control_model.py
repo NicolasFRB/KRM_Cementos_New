@@ -36,7 +36,7 @@ class Control(AuditModel):
     )
 
     testing_procedure = RichTextField(
-        _("Evidencia"),
+        _("Procedimiento de testeo"),
         config_name='awesome_ckeditor',
         max_length=10000,
         null=True,
@@ -144,6 +144,28 @@ class Control(AuditModel):
 
     is_elc = models.BooleanField(
         default=False, verbose_name=_("¿Es un control ELC?")
+    )
+
+    evidence = RichTextField(
+        _("Evidencia"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        null=True,
+        blank=True
+    )
+
+    SCOPE_CHOICES = (
+        ("S", _("Sociedad")),
+        ("C", _("Corporativo")),
+        ("G", _("Grupo")),
+    )
+
+    scope = models.CharField(
+        _("Alcance"),
+        max_length=1,
+        choices=SCOPE_CHOICES,
+        null=True,
+        blank=True
     )
 
     def __str__(self):
