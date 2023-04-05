@@ -17,6 +17,7 @@ class ControlCreateForm(ModelForm):
         self.fields["name"].widget.attrs["id"] = "control_name"
         self.fields["description"].widget.attrs["id"] = "control_description"
         self.fields["testing_procedure"].widget.attrs["id"] = "control_testing_procedure"
+        self.fields["evidence"].widget.attrs["id"] = "control_evidence"
 
         self.fields["risks"].widget.attrs["class"] = "form-select"
         self.fields["sub_processes"].widget.attrs["class"] = "form-select"
@@ -27,6 +28,7 @@ class ControlCreateForm(ModelForm):
         self.fields["automation"].widget.attrs["class"] = "form-select"
         self.fields["control_frequency"].widget.attrs["class"] = "form-select"
 
+        self.fields["scope"].widget.attrs["class"] = "form-select"
         self.fields["is_gap"].widget.attrs["class"] = "form-select"
         self.fields["assert_existence"].widget.attrs["class"] = "form-select"
         self.fields["assert_completeness"].widget.attrs["class"] = "form-select"

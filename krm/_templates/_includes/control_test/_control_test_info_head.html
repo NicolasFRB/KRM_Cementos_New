@@ -195,6 +195,8 @@
             <!--begin::Col-->
             <div class="col-xl-6">
               <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Control ref' %}</span></div>
+              <p></p>
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcance' %}</span></div>
             </div>
             <!--end::Col-->
             <!--begin::Col-->
@@ -205,7 +207,9 @@
                 {% else %}
                   <a href="#">
                 {% endif %}
-                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ control_test.control.ref }}">{{ control_test.control.ref }}</span>
+                  <div><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ control_test.control.ref }}">{{ control_test.control.ref }}</span></div>
+                  <p></p>
+                  <div><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ control_test.control.scope }}">{{ control_test.control.scope }}</span></div>
                 </a>
               </div>
             </div>
@@ -380,6 +384,20 @@
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcance' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.get_scope_display }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
               <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo de control' %}</span></div>
             </div>
             <!--end::Col-->
@@ -475,10 +493,14 @@
           <div>{{ control.description|safe }}</div>
         </div>
         <div class="row mb-8">
-          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Evidencia' %}</span></div>
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Plan de testeo' %}</span></div>
           <div>{{ control.testing_procedure|safe }}</div>
         </div>
-      </div> 
+        <div class="row mb-8">
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Evidencia' %}</span></div>
+          <div>{{ control.evidence|safe }}</div>
+        </div>
+      </div>
       <div class="row mb-8">
         <div class="col col-md-4">
           <div class="row mb-8">

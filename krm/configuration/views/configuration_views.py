@@ -154,7 +154,7 @@ class GaImportEvalView(FormView):
 
         dr_created, n = 0, len(evaluation_krm_inherent_to_create)
         for i,dr in enumerate(evaluation_krm_inherent_to_create):
-            print("Ev_ %d/%d" % (i, n))
+            #print("Ev_ %d/%d" % (i, n))
             EvaluationKrmInherent.objects.create(
                 ref=dr['ref'],
                 company=Company.objects.get(ref = dr['company']),
@@ -327,35 +327,20 @@ class GaImportView(FormView):
     def check_user_in_company(self,control_company,user_type,form):
         if control_company[user_type] is not None:
             for user in control_company[user_type]:
-                print(user)
                 owner = User.objects.get(email=user)
                 company = Company.objects.get(ref=control_company['company_ref'])
                 
-                if owner.companies.count() > 1: 
-                    if company not in owner.companies.all():
-                        self.errors_found += 1
-                        messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _('El usuario %s no pertence a la compañia %s')
-                            % (owner.email, company.name)
-                        ),
-                    )
-                        return super(GaImportView, self).form_invalid(form)
-                
-                if owner.companies.count() <= 1:
-                    if company not in owner.companies.all():
-                        self.errors_found += 1
-                        messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _('El usuario %s no pertence a la compañia %s')
-                            % (owner.email, company.name)
-                        ),
-                    )
-                        return super(GaImportView, self).form_invalid(form)
+                if company not in owner.companies.all():
+                    self.errors_found += 1
+                    messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('El usuario %s no pertence a la compañia %s')
+                        % (owner.email, company.name)
+                    ),
+                )
+                    return super(GaImportView, self).form_invalid(form)
 
 
     def success(name, created, self):
@@ -446,6 +431,7 @@ class GaImportView(FormView):
                 risk['krm_main_elements'] = row[11].value
                 
                 if risk['impact_inherent'] not in range(1, 6) or risk['impact_residual'] not in range(1, 6) or risk['probability_inherent'] not in range(1, 6) or risk['probability_residual'] not in range(1, 6):
+                    self.errors_found += 1
                     messages.add_message(
                         self.request,
                         messages.ERROR,
@@ -544,8 +530,11 @@ class GaImportView(FormView):
                 control['assert_accurancy'] = row[17].value
                 control['assert_froud'] = row[18].value
                 control['is_elc'] = row[19].value
+                control['evidence'] = row[20].value
+                control['scope'] = row[21].value
 
                 if control['automation'] == '':
+                    self.errors_found += 1
                     messages.add_message(
                         self.request,
                         messages.ERROR,
@@ -557,6 +546,7 @@ class GaImportView(FormView):
                     return super(GaImportView, self).form_invalid(form)
 
                 if control['control_frequency'] not in ('CO','BD', 'DI', '1W', '2W', '1M', '2M','3T', '6M', '1Y', '2Y', '3Y'):
+                    self.errors_found += 1
                     messages.add_message(
                         self.request,
                         messages.ERROR,
@@ -568,11 +558,24 @@ class GaImportView(FormView):
                     return super(GaImportView, self).form_invalid(form)
 
                 if control['is_gap'] not in ('Y', 'N', '-') or control['assert_existence'] not in ('Y', 'N', '-') or control['assert_completeness'] not in ('Y', 'N', '-') or control['assert_valuation'] not in ('Y', 'N', '-') or control['assert_rights'] not in ('Y', 'N', '-') or control['assert_disclosure'] not in ('Y', 'N', '-') or control['assert_accurancy'] not in ('Y', 'N', '-') or control['assert_froud'] not in ('Y', 'N', '-'):
+                    self.errors_found += 1
                     messages.add_message(
                         self.request,
                         messages.ERROR,
                         (
                             _('En la hoja de controles no ha establecido valor para alguna celda obligatoria en la fila %s')
+                            % (i)
+                        ),
+                    )
+                    return super(GaImportView, self).form_invalid(form)
+                
+                if control['scope'] not in ('S','G','C'):
+                    self.errors_found += 1
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('En la hoja de controles no ha establecido un valor correcto para el alcance en la fila %s')
                             % (i)
                         ),
                     )
@@ -682,7 +685,6 @@ class GaImportView(FormView):
                 
                 self.checkMaster("Control company", "control", control_company, control_to_create, Control, "control_ref", form)
                 self.checkMaster("Control company", "compañia", control_company, None, Company, "company_ref", form)
-                print(row[0],row[1])
                 self.check_user_in_company(control_company,'control_owners',form)
                 self.check_user_in_company(control_company,'control_supervisors',form)
                 
@@ -838,6 +840,8 @@ class GaImportView(FormView):
                     assert_accurancy=r['assert_accurancy'],
                     assert_froud=r['assert_froud'],
                     is_elc = is_elc,
+                    evidence = r['evidence'],
+                    scope = r['scope']
                 )
 
                 if Risk.objects.filter(
@@ -870,14 +874,10 @@ class GaImportView(FormView):
             for control in Control.objects.all():
                 for comp in Company.objects.all():
                     if CompanyControls.objects.filter(company=comp, control=control).count() == 0:
-                        print('crear')
                         CompanyControls.objects.create(
                         company=comp,
                         control=control
                     )
-                    else:
-                        print('no crear')
-            
                         
             for i,cc in enumerate(control_company_to_create):
                 cont_comp = CompanyControls.objects.get(company = Company.objects.get(ref=cc['company_ref']), control = Control.objects.get(ref=cc['control_ref']))
@@ -888,23 +888,13 @@ class GaImportView(FormView):
                 if cc['control_owners'] is not None:
                     for owner in cc['control_owners']:
                         owner_to_add = User.objects.get(email=owner)
-                        if cont_comp.control_test_owners.count() > 1:
-                            if owner_to_add not in cont_comp.control_test_owners.all():
-                                cont_comp.control_test_owners.add(owner_to_add)
-                        else:
-                            if owner_to_add != cont_comp.control_test_owners:
-                                cont_comp.control_test_owners.add(owner_to_add)
+                        cont_comp.control_test_owners.add(owner_to_add)
 
                 
                 if cc['control_supervisors'] is not None:
                     for supervisor in cc['control_supervisors']:
                         supervisor_to_add = User.objects.get(email=supervisor)
-                        if cont_comp.control_test_supervisors.count() > 1:
-                            if supervisor_to_add not in cont_comp.control_test_supervisors.all():
-                                cont_comp.control_test_supervisors.add(supervisor_to_add)
-                        else:
-                            if supervisor_to_add != cont_comp.control_test_supervisors:
-                                cont_comp.control_test_supervisors.add(supervisor_to_add)
+                        cont_comp.control_test_supervisors.add(supervisor_to_add)
 
                 cont_comp.save()
 

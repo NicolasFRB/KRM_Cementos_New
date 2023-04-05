@@ -112,11 +112,22 @@
                   {{ form.testing_procedure|as_crispy_field }}
                 </div>
               </div>
+              <div class="separator my-10"></div>
+              <div class="col-12 mb-4">
+                <div class="mb-4">
+                  <fieldset>
+                  {{ form.evidence|as_crispy_field }}
+                  </fieldset>
+                </div>
+              </div>
             </div>
 
             <div class="separator my-10"></div>
             <div class="row">
               <legend>{% trans 'Asertions' %}</legend>
+              <div class="mb-4 col-12 col-md-4">
+                {{ form.scope|as_crispy_field }}
+              </div>
               <div class="mb-4 col-12 col-md-4">
                 {{ form.is_gap|as_crispy_field }}
               </div>
