@@ -34,7 +34,7 @@
     <div class="row mb-8">
       {% if request.user.controls_test_owner_pending.count > 0 or request.user.controls_test_supervisor_pending.count > 0 or request.user.risk_test_inherent_expert_pending.count > 0 or request.user.risk_test_residual_evaluator_pending.count > 0 or request.user.question_test_pending.count > 0 %}
       <div style="display:flex;"><p style="color:gray; font-size:large"> <i class="bi bi-exclamation-square fa-lg" style="color:red"></i> &nbsp&nbsp Tienes {{ request.user.total_pending_actions }} tareas pendientes</p></div>
-
+      
 
       {% if request.user.controls_test_owner_pending.count > 0 or request.user.controls_test_supervisor_pending.count > 0%}
       <div class="card" style="background-color: #00bab3; padding: 5px;">
@@ -97,9 +97,11 @@
         {% endif %}
       </div>
       </div>
-      {% endif %}
+      {% endif %} 
+      
+    
       {% else %}
-      <p>¡No tienes tareas pendientes!</p>
+        <div style="display:flex;"><p style="color:gray; font-size:large"> <i class="bi bi-check2-circle fa-lg" style="color:green"></i> &nbsp&nbsp ¡No tienes tareas pendientes!</p></div>
       {% endif %}
     </div>
   </div>
