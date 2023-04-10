@@ -788,7 +788,6 @@ class GaEvaluationCreateView(FormView):
 
                     # Si el número de supervisores es menor que el número de owners, me quedo con el primer supervisor e itero por los owners
                     # if len(control['supervisorsSelected']) < len(control['ownersSelected']) or len(control['supervisorsSelected']) > len(control['ownersSelected']):
-
                     if len(control['supervisorsSelected']) < len(control['ownersSelected']) or (len(control['supervisorsSelected']) > len(control['ownersSelected']) and len(control['ownersSelected']) > 0):
                         control_supervisor = None
                         if len(control['supervisorsSelected']) > 0:
@@ -822,6 +821,7 @@ class GaEvaluationCreateView(FormView):
                             )
                             controls_created += 1
 
+                    # Si el número de supervisores es 0 y el número de owners es 0
                     elif len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) == 0:
                         control_test = ControlTest.objects.create(
                             evaluation=evaluation,
@@ -832,6 +832,7 @@ class GaEvaluationCreateView(FormView):
                         )
                         controls_created += 1
 
+                    # Si el número de supervisores es 0 y el número de owners es mayor que 0
                     elif len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) > 0:
                         for i, owner in enumerate(control['ownersSelected']):
                             control_owner = owner['pk']
@@ -845,6 +846,23 @@ class GaEvaluationCreateView(FormView):
                             )
                             controls_created += 1
 
+                    # Si el número de owners es 1 y supervisors es mayor que owners
+                    elif len(control['supervisorsSelected']) > len(control['ownersSelected']) and len(control['ownersSelected']) == 1:
+                        # Itero por los supervisores y creo un test de control para cada uno con el mismo owner
+                        for i, supervisor in enumerate(control['supervisorsSelected']):
+                            control_supervisor = supervisor['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=User.objects.get(
+                                    pk=control['ownersSelected'][0]['pk']),
+                                control_test_supervisor=User.objects.get(
+                                    pk=control_supervisor)
+                            )
+                            controls_created += 1
+
+                    # Si el número de supervisores es mayor que 0 y el número de owners es 0
                     elif len(control['supervisorsSelected']) > 0 and len(control['ownersSelected']) == 0:
                         for i, supervisor in enumerate(control['supervisorsSelected']):
                             control_supervisor = supervisor['pk']
