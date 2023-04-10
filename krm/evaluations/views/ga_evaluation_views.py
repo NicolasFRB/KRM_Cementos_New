@@ -294,7 +294,7 @@ class GaEvaluationDetailView(FormView):
                 "PRESENTATION",  # 18
                 "ACCURACY",  # 19
                 "FRAUD",  # 20
-                "DOMINIOS DE RIESGO", # 21
+                "DOMINIOS DE RIESGO",  # 21
                 "TEST DE CONTROL ID",  # 22
                 "TEST DE CONTROL STATUS",  # 23
                 "CONTROL OWNER",  # 24
@@ -551,9 +551,9 @@ class GaEvaluationDetailView(FormView):
                             row_num,
                             33,
                             xlwt.Formula(
-                                    'HYPERLINK("%s";"Enlace al documento")'
-                                    % resp_attach
-                                    ),
+                                'HYPERLINK("%s";"Enlace al documento")'
+                                % resp_attach
+                            ),
                             font_style_body,
                         )  # 33
 
@@ -590,7 +590,7 @@ class GaEvaluationDetailView(FormView):
                         row_num,
                         37,
                         answer.created.strftime("%d/%m/%Y, %H:%M:%S"),
-                        font_style_body,xlwt
+                        font_style_body, xlwt
                     )  # 37
 
                 if ct.answers.last() is not None:
@@ -606,13 +606,15 @@ class GaEvaluationDetailView(FormView):
                         ws.write(
                             row_num,
                             39,
-                            last_admin_answer.description.replace("<br>", "\n"),
+                            last_admin_answer.description.replace(
+                                "<br>", "\n"),
                             font_style_body_wrap
                         )  # 39
                         ws.write(
                             row_num,
                             40,
-                            last_admin_answer.created.strftime("%d/%m/%Y, %H:%M:%S"),
+                            last_admin_answer.created.strftime(
+                                "%d/%m/%Y, %H:%M:%S"),
                             font_style_body_wrap
                         )  # 40
 
@@ -784,56 +786,10 @@ class GaEvaluationCreateView(FormView):
 
                     control_object = Control.objects.get(pk=control['pk'])
 
-                    # Si el número de supervisores no coincide con el número de owners se establece como supervisor el primero de todos, si conincide, se hace uno a uno
-                    # if len(control['ownersSelected']) != len(control['supervisorsSelected']):
-                    #     if len(control['supervisorsSelected'] > 0):
-                    #         control_supervisor = control['supervisorsSelected'][0]['pk']
-                    #     for owner in control['ownersSelected']:
-                    #         control_owner = owner['pk']
-                    #         control_test = ControlTest.objects.create(
-                    #             evaluation=evaluation,
-                    #             control=control_object,
-                    #             date_begin=form.cleaned_data["date_begin"],
-                    #             control_test_owner=User.objects.get(
-                    #                 pk=control_owner),
-                    #             control_test_supervisor=User.objects.get(
-                    #                 pk=control_supervisor)
-                    #         )
-                    #         controls_created += 1
-                    # if len(control['ownersSelected'] > 0) and len(control['ownersSelected']) == len(control['supervisorsSelected']):
-                    #     # Si son de igual número hacemos controles uno a uno
-                    #     for i, owner in enumerate(control['ownersSelected']):
-                    #         control_owner = owner['pk']
-                    #         control_supervisor = control['supervisorsSelected'][i]['pk']
-                    #         control_test = ControlTest.objects.create(
-                    #             evaluation=evaluation,
-                    #             control=control_object,
-                    #             date_begin=form.cleaned_data["date_begin"],
-                    #             control_test_owner=User.objects.get(
-                    #                 pk=control_owner),
-                    #             control_test_supervisor=User.objects.get(
-                    #                 pk=control_supervisor)
-                    #         )
-                    #         controls_created += 1
-
-                    # else:
-                    #     # Si son de igual número hacemos controles uno a uno
-                    #     for i, owner in enumerate(control['ownersSelected']):
-                    #         control_owner = owner['pk']
-                    #         control_supervisor = control['supervisorsSelected'][i]['pk']
-                    #         control_test = ControlTest.objects.create(
-                    #             evaluation=evaluation,
-                    #             control=control_object,
-                    #             date_begin=form.cleaned_data["date_begin"],
-                    #             control_test_owner=User.objects.get(
-                    #                 pk=control_owner),
-                    #             control_test_supervisor=User.objects.get(
-                    #                 pk=control_supervisor)
-                    #         )
-                    #         controls_created += 1
-
                     # Si el número de supervisores es menor que el número de owners, me quedo con el primer supervisor e itero por los owners
-                    if len(control['supervisorsSelected']) < len(control['ownersSelected']) or len(control['supervisorsSelected']) > len(control['ownersSelected']):
+                    # if len(control['supervisorsSelected']) < len(control['ownersSelected']) or len(control['supervisorsSelected']) > len(control['ownersSelected']):
+
+                    if len(control['supervisorsSelected']) < len(control['ownersSelected']) or (len(control['supervisorsSelected']) > len(control['ownersSelected']) and len(control['ownersSelected']) > 0):
                         control_supervisor = None
                         if len(control['supervisorsSelected']) > 0:
                             control_supervisor = control['supervisorsSelected'][0]['pk']
@@ -851,7 +807,7 @@ class GaEvaluationCreateView(FormView):
                             controls_created += 1
 
                     # Si el número de supervisores es igual que el número de owners, itero por los owners y supervisores
-                    if len(control['supervisorsSelected']) > 0 and len(control['supervisorsSelected']) == len(control['ownersSelected']):
+                    elif len(control['supervisorsSelected']) > 0 and len(control['supervisorsSelected']) == len(control['ownersSelected']):
                         for i, owner in enumerate(control['ownersSelected']):
                             control_owner = owner['pk']
                             control_supervisor = control['supervisorsSelected'][i]['pk']
@@ -866,7 +822,7 @@ class GaEvaluationCreateView(FormView):
                             )
                             controls_created += 1
 
-                    if len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) == 0:
+                    elif len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) == 0:
                         control_test = ControlTest.objects.create(
                             evaluation=evaluation,
                             control=control_object,
@@ -876,7 +832,7 @@ class GaEvaluationCreateView(FormView):
                         )
                         controls_created += 1
 
-                    if len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) > 0:
+                    elif len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) > 0:
                         for i, owner in enumerate(control['ownersSelected']):
                             control_owner = owner['pk']
                             control_test = ControlTest.objects.create(
@@ -889,7 +845,21 @@ class GaEvaluationCreateView(FormView):
                             )
                             controls_created += 1
 
-                        controls_created += 1
+                    elif len(control['supervisorsSelected']) > 0 and len(control['ownersSelected']) == 0:
+                        for i, supervisor in enumerate(control['supervisorsSelected']):
+                            control_supervisor = supervisor['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=None,
+                                control_test_supervisor=User.objects.get(
+                                    pk=control_supervisor),
+                            )
+                            controls_created += 1
+
+                    else:
+                        pass
 
                 evaluations_created += 1
 
