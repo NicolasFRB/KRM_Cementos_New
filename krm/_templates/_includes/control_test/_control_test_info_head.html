@@ -1,5 +1,6 @@
 {% load i18n %}
 
+
 <div class="accordion" id="kt_accordion_2">
 <div class="card mb-8">
 <div class="accordion-item">
@@ -347,6 +348,18 @@
 </div>
 </div>
 </div>
+
+{% if BRAND == 'globalvia' %}
+
+<div class="row mt-2 mb-2">
+  <div class="col-sm">
+    <div class="alert alert-warning " style="color: darkslategray;">
+      {% trans 'Por favor, deberá subir las evidencias al sitio de WorkSpace ' %} <a href="https://workspace.globalvia.com/auth/realms/alfresco/protocol/openid-connect/auth?response_type=code&client_id=share&redirect_uri=https%3A%2F%2Fworkspace.globalvia.com%2Fshare%2Fpage%2Fsite%2Fcompliancecertificacin-de-controles%2Fdocumentlibrary&state=1d9f18d7-b87d-47b2-92bd-f8957da074af&login=true&scope=openid">"Compliance_certificación de controles "</a> {% trans '(Ruta: Documentos > 2022 > Sociedad > Área)' %}
+    </div>
+  </div>
+</div>
+
+{% endif %}
 
 <div class="accordion" id="kt_accordion_2">
 <div class="card mb-8">
