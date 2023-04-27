@@ -6,7 +6,7 @@ if (window.location.hostname.indexOf("localhost") > -1) {
 } else if (window.location.hostname.indexOf("test.compliancetool.net") > -1) {
   base = "https://test.compliancetool.net";
 } else {
-  base = "https://compliance.ofisat.net";
+  base = "https://gvi.compliancetool.net/";
 }
 
 const baseUrlApi = `${base}/api/`;
