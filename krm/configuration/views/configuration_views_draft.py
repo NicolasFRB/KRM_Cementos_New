@@ -101,8 +101,7 @@ class GaImportView(FormView):
                 self.request,
                 messages.ERROR,
                 (
-                    _('En la hoja de %s hay una REF de %s que no existe: %s')
-                    % (name, master_name, elem[master])
+                    _(f"En la hoja de {name} hay una REF de {master_name} que no existe: {elem[master]}")                    
                 ),
             )
             return super(GaImportView, self).form_invalid(form)
