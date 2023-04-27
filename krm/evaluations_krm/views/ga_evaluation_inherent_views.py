@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.conf import settings
 import json
 import uuid
-
+import xlsxwriter
 import re
 
 # Create your views here.
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
 from django.views.generic import (
     FormView,
@@ -329,6 +330,167 @@ class GaEvaluationInherentDetailView(FormView):
     def form_valid(self, form):
         action = form.cleaned_data["action"]
         evaluation = self.evaluation
+
+        if action == 'download':
+            import io
+
+            filename = f'inherent_evaluation_{evaluation.ref}.xlsx'
+
+            # Create an in-memory output file for the new workbook.
+            output = io.BytesIO()
+
+            workbook = xlsxwriter.Workbook(output)
+            worksheet = workbook.add_worksheet()
+
+            # Add a bold format to use to highlight cells.
+            bold = workbook.add_format({'bold': True})
+            text_wrap = workbook.add_format({'text_wrap': True})
+
+            columns = [
+                "Ev_REF",
+                "COMPANY",
+                "COMPANY_TYPE",
+                "DESCRIPTION",
+                "DATE_BEGIN",
+                "DATE_END",
+                "CERTIFICATION_YEAR",
+                "CERTIFICATION_PERIOD",
+                "Ev_STATUS",
+                "MAIN_ELEMENTS",
+                "MAIN_EVENTS",
+                "ACTIVITY_AFFECTED",
+                "EXPOSED_STAFF",
+                "DOMAIN_RISK",
+                "RI_REF_N1",
+                "RI_REF_N2",
+                "RI_NAME",
+                "RISK_DESCRIPTION",
+                "EXPERT_NAME",
+                "JUSTIFICATION_EXPERT",
+                "SEVERITY_LEVEL_EXPERT",
+                "SEVERITY_LEVEL_EXPERT_QUALITATIVE",
+                "IMPACT_LEVEL_EXPERT",
+                "IMPACT_LEVEL_EXPERT_QUALITATIVE",
+                "PROBABILITY_LEVEL_EXPERT",
+                "PROBABILITY_LEVEL_EXPERT_QUALITATIVE",
+                "ADMIN_SUPERVISOR",
+                "JUSTIFICATION_ADMIN",
+                "SEVERITY_LEVEL_ADMIN",
+                "SEVERITY_LEVEL_ADMIN_QUALITATIVE",
+                "IMPACT_LEVEL_ADMIN",
+                "IMPACT_LEVEL_ADMIN_QUALITATIVE",
+                "PROBABILITY_LEVEL_ADMIN",
+                "PROBABILITY_LEVEL_ADMIN_QUALITATIVE",
+            ]
+
+            for index, col_name in enumerate(columns):
+                worksheet.write(0, index, col_name, bold)
+
+            worksheet.set_column(0, 1, 25)    # Ev_REF
+            worksheet.set_column(1, 2, 25)    # COMPANY
+            worksheet.set_column(2, 3, 70)    # COMPANY_TYPE
+            worksheet.set_column(3, 4, 25)    # DESCRIPTION
+            worksheet.set_column(4, 5, 25)    # DATE_BEGIN
+            worksheet.set_column(5, 6, 25)    # DATE_END
+            worksheet.set_column(6, 7, 25)    # CERTIFICATION_YEAR
+            worksheet.set_column(7, 8, 25)    # CERTIFICATION_PERIOD
+            worksheet.set_column(8, 9, 70)    # Ev_STATUS
+
+            worksheet.set_column(9, 10, 70)   # MAIN_ELEMENTS
+            worksheet.set_column(10, 11, 70)  # MAIN_EVENTS
+            worksheet.set_column(11, 12, 70)  # ACTIVITY_AFFECTED
+            worksheet.set_column(12, 13, 25)  # EXPOSED_STAFF
+
+            worksheet.set_column(13, 14, 25)  # DOMAIN_RISK
+            worksheet.set_column(14, 15, 25)  # RI_REF_N1
+            worksheet.set_column(15, 16, 25)  # RI_REF_N2
+            worksheet.set_column(16, 17, 70)  # RI_NAME
+            worksheet.set_column(17, 18, 25)  # RISK_DESCRIPTION
+
+            worksheet.set_column(18, 19, 70)  # EXPERT_NAME
+            worksheet.set_column(19, 20, 25)  # JUSTIFICATION_EXPERT
+            worksheet.set_column(20, 21, 25)  # SEVERITY_LEVEL_EXPERT
+            worksheet.set_column(21, 22, 25)  # SEVERITY_LEVEL_EXPERT_QUALITATIVE
+            worksheet.set_column(22, 23, 25)  # IMPACT_LEVEL_EXPERT
+            worksheet.set_column(23, 24, 25)  # IMPACT_LEVEL_EXPERT_QUALITATIVE
+            worksheet.set_column(24, 25, 25)  # PROBABILITY_LEVEL_EXPERT
+            worksheet.set_column(25, 26, 25)  # PROBABILITY_LEVEL_EXPERT_QUALITATIVE
+
+            worksheet.set_column(26, 27, 70)  # ADMIN_SUPERVISOR
+            worksheet.set_column(27, 28, 25)  # JUSTIFICATION_ADMIN           
+            worksheet.set_column(28, 29, 25)  # SEVERITY_LEVEL_ADMIN
+            worksheet.set_column(29, 30, 25)  # SEVERITY_LEVEL_ADMIN_QUALITATIVE          
+            worksheet.set_column(30, 31, 25)  # IMPACT_LEVEL_ADMIN
+            worksheet.set_column(31, 32, 25)  # IMPACT_LEVEL_ADMIN_QUALITATIVE           
+            worksheet.set_column(32, 33, 25)  # PROBABILITY_LEVEL_ADMIN
+            worksheet.set_column(33, 34, 25)  # PROBABILITY_LEVEL_ADMIN_QUALITATIVE
+
+            row = 1
+            domains = ""
+
+            for rt in evaluation.risk_test_inherents.all():
+                #Evaluation 
+                worksheet.write(row, 0, evaluation.ref, text_wrap)
+                worksheet.write(row, 1, evaluation.company.name, text_wrap)
+                worksheet.write(row, 2, evaluation.company.type_company, text_wrap)
+                worksheet.write(row, 3, evaluation.description, text_wrap)
+                worksheet.write(row, 4, evaluation.date_begin.strftime("%d/%m/%Y"))
+                worksheet.write(row, 5, evaluation.date_end.strftime("%d/%m/%Y"))
+                worksheet.write(row, 6, evaluation.certification_year)
+                worksheet.write(row, 7, evaluation.certification_period)
+                worksheet.write(row, 8, evaluation.status)
+
+                worksheet.write(row, 9, rt.risk.krm_main_elements, text_wrap)
+                worksheet.write(row, 10, rt.risk.krm_main_events, text_wrap)
+                worksheet.write(row, 11, rt.risk.krm_activity_affected, text_wrap)
+                worksheet.write(row, 12, rt.risk.krm_exposed_staff, text_wrap)
+
+                for dom in evaluation.get_domain_risk_in_evaluation():
+                    if dom.ref not in domains:
+                        domains += dom.ref
+                worksheet.write(row, 13, domains)
+                worksheet.write(row, 14, rt.risk.risk.risk_master.ref, text_wrap)
+                worksheet.write(row, 15, rt.risk.risk.ref, text_wrap)
+                worksheet.write(row, 16, rt.risk.name, text_wrap)
+                worksheet.write(row, 17, rt.risk.description, text_wrap)
+
+                if rt.expert != None:
+                    worksheet.write(row, 18, rt.expert.full_name, text_wrap)
+                worksheet.write(row, 19, rt.description, text_wrap)
+                worksheet.write(row, 20, rt.severity_level_expert, text_wrap)
+                worksheet.write(row, 21, rt.severity_level_expert_qualitative, text_wrap)
+                worksheet.write(row, 22, rt.impact_level_expert, text_wrap)
+                worksheet.write(row, 23, rt.get_impact_level_expert_display(), text_wrap)
+                worksheet.write(row, 24, rt.probability_level_expert, text_wrap)
+                worksheet.write(row, 25, rt.get_probability_level_expert_display(), text_wrap)
+
+                if evaluation.admin_supervisor != None:
+                    worksheet.write(row, 26, evaluation.admin_supervisor.full_name)
+                worksheet.write(row, 27, rt.description_admin, text_wrap)
+                worksheet.write(row, 28, rt.severity_level_admin, text_wrap)
+                worksheet.write(row, 29, rt.severity_level_admin_qualitative, text_wrap)
+                worksheet.write(row, 30, rt.impact_level_administrator, text_wrap)
+                worksheet.write(row, 31, rt.get_impact_level_administrator_display(), text_wrap)
+                worksheet.write(row, 32, rt.probability_level_administrator, text_wrap)
+                worksheet.write(row, 33, rt.get_probability_level_administrator_display(), text_wrap)
+                
+                #worksheet.write(row, 2, evaluation.date_begin.strftime("%d/%m/%Y"))
+                
+                row += 1
+            # Close the workbook before sending the data.
+            workbook.close()
+
+            # Rewind the buffer.
+            output.seek(0)
+
+            # Set up the Http response.
+            response = HttpResponse(
+                output,
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
+            response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+            return response
 
         # if action == "i":
         #     evaluation.status = "EP"

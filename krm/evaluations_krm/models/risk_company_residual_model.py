@@ -67,6 +67,31 @@ class RiskCompanyResidual(AuditModel):
             "Evaluaciones de Riesgo Residual Agregadas")
 
     @property
+    def probability_residual_administrator_qualitative(self):
+        p = self.probability_level_residual_administrator
+        if p == 0: return "Sin establecer"
+        if p <= 1: return "Optimizado"
+        if p <= 2: return "Aceptable"
+        if p <= 3: return "Inadecuado"
+        if p <= 4: return "No controlado"
+        return "Sin establecer"
+
+    @property
+    def get_latest_inherent(self):
+        # Evaluaciones en las que se ha evaluado ese riesgo compañía
+        from krm.evaluations_krm.models import RiskTestInherent
+
+        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
+            risk = self.risk_company,
+            evaluation__status = 'FI',
+        )
+
+        if last_evaluate_risk_inherent.count() > 0:
+            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first()
+
+        return None
+    
+    @property
     def get_latest_impact_inherent(self):
         # Evaluaciones en las que se ha evaluado ese riesgo compañía
         from krm.evaluations_krm.models import RiskTestInherent

@@ -151,6 +151,29 @@ class RiskTestResidual(AuditModel):
             return msg.send(fail_silently=False)
 
     @property
+    def severity_residual_evaluator(self):
+        return self.probability_level_residual_evaluator * self.get_latest_impact_inherent
+    
+    @property
+    def severity_residual_evaluator_qualitative(self):
+        sev = self.severity_residual_evaluator
+        if sev == 0: return 0
+        if sev <= 2: return "No significativo"
+        if sev <= 5: return "Bajo"
+        if sev <= 11: return "Alto"
+        if sev <= 16: return "Crítico"
+        
+    @property
+    def probability_level_residual_evaluator_qualitative(self):
+        p = self.probability_level_residual_evaluator
+        if p <= 1: return "Optimizado"
+        if p <= 2: return "Aceptable"
+        if p <= 3: return "Inadecuado"
+        if p <= 4: return "No controlado"
+        if p <= 5: return "N/A"
+        return "Sin establecer"
+
+    @property
     def get_latest_impact_inherent(self):
         # Evaluaciones en las que se ha evaluado ese riesgo compañía
         from krm.evaluations_krm.models import RiskTestInherent

@@ -656,7 +656,7 @@ function color_severity_dynamic(val, id){
       {% include '_includes/FormErrors.html' %}
       {% csrf_token %}
       <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
-      <input type="hidden" name="action" value="d">
+      <input type="hidden" name="action" value="download">
       <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
     </form>
 

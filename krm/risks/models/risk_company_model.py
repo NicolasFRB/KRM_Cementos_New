@@ -101,6 +101,17 @@ class RiskCompany(AuditModel):
         return False
 
     @property
+    def evaluator_assign(self):
+        from krm.companies.models import CompanyDomainRiskEvaluator
+        evaluator = CompanyDomainRiskEvaluator.objects.get(
+            company=self.company,
+            domain_risk=self.risk.risk_master.domain_risk
+        )
+        if evaluator.evaluator:
+            return evaluator.evaluator.email
+        return False
+
+    @property
     def expert_pk(self):
         from krm.companies.models import CompanyDomainRiskExperts
         expert = CompanyDomainRiskExperts.objects.get(
