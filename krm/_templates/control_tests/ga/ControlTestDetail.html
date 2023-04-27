@@ -189,6 +189,7 @@
           <form method="post" enctype='multipart/form-data' novalidate>
             {% csrf_token %}
             <div class="card-body">
+              {% if BRAND != 'globalvia' %}
               <div class="row mb-4">
                 {% include '_includes/FormErrors.html' %}
                 <div class="col-12 col-xl-5 mb-4">
@@ -206,6 +207,7 @@
                     {{ form.attachment_3|as_crispy_field }}
                   </div>
                 </div>
+                {% endif %}
                 <div class="col-12 col-xl-7 mb-4">
                   <fieldset>
                     <legend>{% trans 'Descripción' %}</legend>
