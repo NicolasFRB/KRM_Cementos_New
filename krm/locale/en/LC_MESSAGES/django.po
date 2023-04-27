@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 06:27+0200\n"
+"POT-Creation-Date: 2023-04-27 19:15+0200\n"
 "PO-Revision-Date: 2023-04-27 16:40+0200\n"
 "Last-Translator: Mario  <marioalvarez1@kpmg.es>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid "Spanish"
 msgstr "Spanish"
 
 #: krm/_templates/GaBaseDetail.html:18
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:302
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:303
 #: krm/_templates/companies/CaCompanyDetail.html:224
 #: krm/_templates/companies/CaCompanyDomainRiskEvaluatorUpdate.html:29
 #: krm/_templates/companies/CaCompanyDomainRiskExpertsUpdate.html:29
@@ -59,8 +59,8 @@ msgid "Dominio de Riesgo"
 msgstr "Risk Domain"
 
 #: krm/_templates/GaBaseDetail.html:27
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:23
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:369
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:24
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:382
 #: krm/_templates/_includes/risk/__age/_risk_detail.html:19
 #: krm/_templates/_includes/risk/__au/_risk_detail.html:19
 #: krm/_templates/_includes/risk/__ga/_risk_detail.html:19
@@ -86,14 +86,12 @@ msgstr "Risk Domain"
 #: krm/_templates/questionnaires/GaQuestionnaireDetail.html:27
 #: krm/_templates/risks/GaRiskDetail.html:32
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:32
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:19
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:19
 msgid "Referencia"
 msgstr "Reference"
 
 #: krm/_templates/GaBaseDetail.html:42 krm/_templates/GaBaseDetail.html:100
 #: krm/_templates/GaBaseList.html:29
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:296
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:297
 #: krm/_templates/companies/CaCompanyDetail.html:44
 #: krm/_templates/companies/CaCompanyDetail.html:191
 #: krm/_templates/companies/CaCompanyDetail.html:260
@@ -132,18 +130,6 @@ msgstr "Reference"
 #: krm/companies/models/company_model.py:23
 #: krm/companies_bck/models/business_group.py:29
 #: krm/companies_bck/models/company.py:24
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:80
-#: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:34
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:21
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet_bg.html:34
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:21
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet_bg.html:34
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:75
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:75
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_header_portlet.html:20
-#: krm/old_templates/rates/RateDetail.html:42
-#: krm/old_templates/rates/RateUpdate.html:48
-#: krm/old_templates/users/UserDetail.html:42
 #: krm/process/models/process_model.py:27
 #: krm/questionnaires/models/questionnaire_model.py:20
 #: krm/questionnaires/models/scope_model.py:19
@@ -154,8 +140,8 @@ msgid "Nombre"
 msgstr "Name"
 
 #: krm/_templates/GaBaseDetail.html:57 krm/_templates/GaBaseDetail.html:101
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:297
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:488
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:298
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:501
 #: krm/_templates/_includes/control_test/ga/_control_test_answer.html:25
 #: krm/_templates/_includes/control_test/ru/_control_test_table.html:46
 #: krm/_templates/_includes/remediation_plan/ga/_remediation_plan.html:17
@@ -170,10 +156,10 @@ msgstr "Name"
 #: krm/_templates/companies/GaCompanyRiskKrmSelect.html:43
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:129
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:169
-#: krm/_templates/control_tests/ga/ControlTestDetail.html:211
+#: krm/_templates/control_tests/ga/ControlTestDetail.html:213
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:145
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:186
-#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:228
+#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:230
 #: krm/_templates/controls/GaControlDetail.html:201
 #: krm/_templates/controls/GaControlList.html:43
 #: krm/_templates/domain_risks/GaDomainRiskCreate.html:63
@@ -232,16 +218,6 @@ msgstr "Name"
 #: krm/evaluations/models/evaluation_model.py:41
 #: krm/evaluations_krm/models/evaluation_krm_inherent_model.py:40
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:41
-#: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:36
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:23
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet_bg.html:36
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:23
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet_bg.html:36
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:20
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:20
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:76
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:76
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_header_portlet.html:21
 #: krm/process/models/process_model.py:30
 #: krm/process/models/sub_process_model.py:26
 #: krm/questionnaires/models/evaluation_questionnaire_model.py:39
@@ -252,7 +228,7 @@ msgid "Descripción"
 msgstr "Description"
 
 #: krm/_templates/GaBaseDetail.html:74
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:164
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:165
 #: krm/_templates/_includes/risk/__age/_risk_detail.html:35
 #: krm/_templates/_includes/risk/__ga/_risk_detail.html:35
 #: krm/_templates/companies/GaCompanyDetail.html:185
@@ -278,20 +254,7 @@ msgstr "Description"
 #: krm/evaluations/views/ca_evaluation_views.py:329
 #: krm/evaluations/views/ga_evaluation_views.py:145
 #: krm/evaluations/views/ga_evaluation_views.py:912
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:25
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:49
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_answer.html:27
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_answer.html:36
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:35
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:29
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:55
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:29
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:55
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_header_portlet.html:27
-#: krm/old_templates/rates/RateDetail.html:66
-#: krm/old_templates/users/UserDetail.html:52
-#: krm/process/views/process_views.py:85
-#: krm/process/views/process_views.py:143
+#: krm/process/views/process_views.py:85 krm/process/views/process_views.py:143
 #: krm/process/views/sub_process_views.py:84
 #: krm/process/views/sub_process_views.py:153
 #: krm/questionnaires/views/ga_question_views.py:89
@@ -330,17 +293,6 @@ msgstr "Edit"
 #: krm/controls/views/control_views.py:332
 #: krm/evaluations/views/ca_evaluation_views.py:362
 #: krm/evaluations/views/ga_evaluation_views.py:945
-#: krm/old_templates/_layout/_base_confirm_delete.html:26
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:26
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:55
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:36
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:30
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:61
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:30
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:61
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_header_portlet.html:28
-#: krm/old_templates/_layout/krc_layout/_base_confirm_delete.html:21
-#: krm/old_templates/users/UserDetail.html:53
 #: krm/process/views/process_views.py:175
 #: krm/process/views/sub_process_views.py:185
 #: krm/questionnaires/views/ga_question_views.py:191
@@ -353,7 +305,7 @@ msgid "Eliminar"
 msgstr "Delete"
 
 #: krm/_templates/GaBaseDetail.html:79
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:165
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:166
 #: krm/_templates/companies/GaCompanyDetail.html:190
 #: krm/_templates/configuration/ConfigurationDetail.html:75
 #: krm/_templates/controls/GaControlDetail.html:376
@@ -382,9 +334,6 @@ msgstr "Delete"
 #: krm/_templates/scopes/GaScopeDetail.html:80
 #: krm/_templates/subprocess/GaSubProcessDetail.html:94
 #: krm/_templates/users/GaUserDetail.html:151
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:37
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:42
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:42
 msgid "Atrás"
 msgstr "Back"
 
@@ -521,11 +470,6 @@ msgstr "Action"
 #: krm/evaluations/models/evaluation_model.py:28
 #: krm/evaluations_krm/models/evaluation_krm_inherent_model.py:27
 #: krm/evaluations_krm/models/evaluation_krm_residual_model.py:28
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:8
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:8
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_table.html:9
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:6
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:9
 #: krm/process/models/process_model.py:22
 #: krm/questionnaires/forms/evaluation_questionnaire_form.py:18
 #: krm/questionnaires/models/evaluation_questionnaire_model.py:26
@@ -560,7 +504,6 @@ msgstr "VAT"
 #: krm/companies/models/company_model.py:53
 #: krm/companies_bck/models/business_group.py:48
 #: krm/companies_bck/models/company.py:50
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:111
 msgid "País"
 msgstr "Country"
 
@@ -574,8 +517,7 @@ msgstr "Country"
 #: krm/_templates/users/GaUserList.html:28
 #: krm/companies/models/company_model.py:58
 #: krm/companies_bck/models/business_group.py:51
-#: krm/companies_bck/models/company.py:52
-#: krm/old_templates/users/UserDetail.html:43 krm/users/forms/login.py:12
+#: krm/companies_bck/models/company.py:52 krm/users/forms/login.py:12
 #: krm/users/forms/remember_password_form_password.py:10
 msgid "Email"
 msgstr "Email"
@@ -612,10 +554,10 @@ msgstr "Email"
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:150
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:88
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:159
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:80
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:144
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:77
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:143
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:81
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:145
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:79
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:145
 #: krm/process/views/process_views.py:55
 #: krm/process/views/sub_process_views.py:54
 #: krm/process/views/sub_process_views.py:119
@@ -647,10 +589,10 @@ msgstr "New"
 #: krm/_templates/control_tests/ca/CaControlTestDetail.html:134
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:139
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:180
-#: krm/_templates/control_tests/ga/ControlTestDetail.html:222
+#: krm/_templates/control_tests/ga/ControlTestDetail.html:224
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:155
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:197
-#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:239
+#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:241
 #: krm/_templates/control_tests/ga/ControlTestUpdate.html:75
 #: krm/_templates/control_tests/ga/GaControlTestDetail.html:122
 #: krm/_templates/controls/GaControlCreate.html:153
@@ -689,22 +631,14 @@ msgstr "New"
 #: krm/_templates/users/GaUserImport.html:48
 #: krm/_templates/users/GaUserUpdate.html:87
 #: krm/_templates/users/login/UsersRememberPassword.html:40
-#: krm/old_templates/_layout/_base_confirm_delete.html:27
-#: krm/old_templates/_layout/krc_layout/_base_confirm_delete.html:22
-#: krm/old_templates/_layout/krc_layout/_base_form.html:53
-#: krm/old_templates/rates/RateCreate.html:85
-#: krm/old_templates/rates/RateUpdate.html:65
-#: krm/old_templates/users/UserCreate.html:64
-#: krm/old_templates/users/UserUpdate.html:64
-#: krm/old_templates/users/UsersRememberPassword.html:85
 msgid "Cancelar"
 msgstr "Cancel"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:10
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:11
 msgid "Datos de la evaluación"
 msgstr "Evaluation data"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:37
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:38
 #: krm/_templates/companies/CaCompanyDomainRiskEvaluatorUpdate.html:26
 #: krm/_templates/companies/CaCompanyDomainRiskExpertsUpdate.html:26
 #: krm/_templates/companies/GaCompanyControlUpdate.html:30
@@ -751,7 +685,7 @@ msgstr "Evaluation data"
 msgid "Compañía"
 msgstr "Company"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:51
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:52
 #: krm/_templates/companies/CaCompanyDetail.html:72
 #: krm/_templates/companies/CaCompanyDetail.html:308
 #: krm/_templates/companies/CaCompanyList.html:31
@@ -779,7 +713,7 @@ msgstr "Company"
 msgid "Tipo"
 msgstr "Type"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:65
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:66
 #: krm/_templates/companies/CaCompanyList.html:32
 #: krm/_templates/evaluations/GaEvaluationDetail.html:309
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:171
@@ -799,7 +733,7 @@ msgstr "Type"
 msgid "Sociedades en alcance"
 msgstr "Companies in scope"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:81
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:82
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:296
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:131
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:244
@@ -851,7 +785,7 @@ msgstr "Companies in scope"
 msgid "Estado"
 msgstr "State"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:103
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:104
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:355
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:139
 #: krm/_templates/evaluations/CaEvaluationDetail.html:33
@@ -877,7 +811,7 @@ msgstr "State"
 msgid "Año de certificación"
 msgstr "Certification year"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:117
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:118
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:369
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:153
 #: krm/_templates/evaluations/CaEvaluationDetail.html:34
@@ -903,7 +837,7 @@ msgstr "Certification year"
 msgid "Periodo de certificación"
 msgstr "Certification period"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:131
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:132
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:383
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:169
 #: krm/_templates/evaluations/CaEvaluationDetail.html:37
@@ -924,7 +858,7 @@ msgstr "Certification period"
 msgid "Fecha de inicio"
 msgstr "Start date"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:145
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:146
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:397
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:183
 #: krm/_templates/evaluations/GaEvaluationDetail.html:442
@@ -943,17 +877,16 @@ msgstr "Start date"
 msgid "Fecha de fin"
 msgstr "End date"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:183
-#| msgid "Datos del control"
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:184
 msgid "Datos generales del control"
 msgstr "General control data"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:195
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:196
 msgid "Control ref"
 msgstr "Control ref"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:197
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:383
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:198
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:396
 #: krm/_templates/controls/GaControlDetail.html:103
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:515
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:255
@@ -963,33 +896,32 @@ msgstr "Control ref"
 msgid "Alcance"
 msgstr "Scope"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:217
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:218
 msgid "Riesgos mitigados por el control"
 msgstr "Riesgos mitigados por el control"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:225
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:226
 msgid "Subprocesos del control"
 msgstr "Control subprocesses"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:233
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:234
 #: krm/_templates/controls/GaControlDetail.html:186
 msgid "Sin subprocesos asociados"
 msgstr "No associated sub-processes"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:242
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:243
 msgid "Control owner"
 msgstr "Control owner"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:256
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:257
 msgid "Control supervisor"
 msgstr "Control supervisor"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:281
-#| msgid "Riesgos mitigados por el control"
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:282
 msgid "Riesgos asociados al control"
 msgstr "Risks associated with control"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:295
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:296
 #: krm/_templates/dashboards/ga/GaDashboard.html:266
 #: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:687
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:672
@@ -999,12 +931,11 @@ msgstr "Risks associated with control"
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:968
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:562
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:440
-#: krm/_templates/risks/GaRiskDetail.html:18
-#: krm/risks/models/risk_model.py:109
+#: krm/_templates/risks/GaRiskDetail.html:18 krm/risks/models/risk_model.py:109
 msgid "Riesgo"
 msgstr "Risk"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:298
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:299
 #: krm/_templates/companies/GaCompanyControlSelect.html:44
 #: krm/_templates/companies/GaCompanyDetail.html:377
 #: krm/_templates/companies/GaCompanyRiskKrmSelect.html:44
@@ -1020,7 +951,7 @@ msgstr "Risk"
 msgid "Principales elementos"
 msgstr "Main items"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:299
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:300
 #: krm/_templates/companies/GaCompanyControlSelect.html:45
 #: krm/_templates/companies/GaCompanyDetail.html:378
 #: krm/_templates/companies/GaCompanyRiskKrmSelect.html:45
@@ -1033,7 +964,7 @@ msgstr "Main items"
 msgid "Principales eventos"
 msgstr "Main events"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:300
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:301
 #: krm/_templates/companies/GaCompanyControlSelect.html:46
 #: krm/_templates/companies/GaCompanyDetail.html:379
 #: krm/_templates/companies/GaCompanyRiskKrmSelect.html:46
@@ -1047,7 +978,7 @@ msgstr "Main events"
 msgid "Actividad afectada"
 msgstr "Affected Activity"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:301
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:302
 #: krm/_templates/companies/GaCompanyControlSelect.html:47
 #: krm/_templates/companies/GaCompanyDetail.html:380
 #: krm/_templates/companies/GaCompanyRiskKrmSelect.html:47
@@ -1060,7 +991,7 @@ msgstr "Affected Activity"
 msgid "Personal expuesto"
 msgstr "Exposed personnel"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:303
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:304
 #: krm/_templates/companies/GaCompanyControlSelect.html:49
 #: krm/_templates/companies/GaCompanyDetail.html:382
 #: krm/_templates/companies/GaCompanyRiskKrmSelect.html:49
@@ -1072,23 +1003,31 @@ msgstr "Exposed personnel"
 msgid "Riesgo Maestro (N1)"
 msgstr "Master Risk (N1)"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:340
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:341
 #: krm/_templates/controls/GaControlDetail.html:132
 #: krm/_templates/controls/GaControlDetail.html:159
 msgid "Sin riesgos asociados"
 msgstr "No associated risks"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:357
+msgid "Por favor, deberá subir las evidencias al sitio de WorkSpace "
+msgstr ""
+
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:357
+msgid "(Ruta: Documentos > 2022 > Sociedad > Área)"
+msgstr ""
+
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:370
 msgid "Datos del control"
 msgstr "Control data"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:397
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:410
 #: krm/_templates/controls/GaControlDetail.html:44
 #: krm/controls/models/control_model.py:70
 msgid "Tipo de control"
 msgstr "Control type"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:411
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:424
 #: krm/_templates/companies/CaCompanyDetail.html:307
 #: krm/_templates/controls/GaControlDetail.html:58
 #: krm/_templates/controls/GaControlList.html:45
@@ -1103,19 +1042,19 @@ msgstr "Control type"
 msgid "Frecuencia"
 msgstr "Frequency"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:425
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:438
 #: krm/_templates/controls/GaControlDetail.html:72
 msgid "Key control"
 msgstr "Key control"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:431
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:445
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:444
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:458
 #: krm/_templates/controls/GaControlDetail.html:78
 #: krm/_templates/controls/GaControlDetail.html:92
 msgid "Si, No"
 msgstr "Yes, No"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:439
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:452
 #: krm/_templates/controls/GaControlDetail.html:86
 #: krm/_templates/controls/GaControlList.html:48
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:588
@@ -1124,28 +1063,28 @@ msgstr "Yes, No"
 msgid "ELC"
 msgstr "ELC"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:453
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:466
 #: krm/_templates/controls/GaControlDetail.html:210
 msgid "Automatización"
 msgstr "Automation"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:467
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:480
 #: krm/_templates/controls/GaControlDetail.html:224
 #: krm/controls/models/control_model.py:101
 msgid "Sistemas"
 msgstr "Systems"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:483
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:496
 #: krm/_templates/companies/CaCompanyDetail.html:305
 #: krm/_templates/controls/GaControlDetail.html:197
 msgid "Objetivo"
 msgstr "Goal"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:492
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:505
 msgid "Plan de testeo"
 msgstr "Testing plan"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:496
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:509
 #: krm/_templates/_includes/control_test/ga/_control_test_answer.html:56
 #: krm/_templates/_includes/control_test/ru/_control_test_table.html:47
 #: krm/_templates/controls/GaControlDetail.html:237
@@ -1163,85 +1102,69 @@ msgstr "Testing plan"
 msgid "Evidencia"
 msgstr "Evidence"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:505
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:518
 #: krm/_templates/controls/GaControlDetail.html:248
 #: krm/controls/models/control_model.py:114
 msgid "GAP"
 msgstr "GAP"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:519
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:532
 #: krm/_templates/controls/GaControlDetail.html:262
 msgid "Existencia"
 msgstr "Existence"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:533
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:546
 #: krm/_templates/controls/GaControlDetail.html:276
 msgid "Completitud"
 msgstr "Completeness"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:550
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:563
 #: krm/_templates/controls/GaControlDetail.html:293
 msgid "Presentación"
 msgstr "Presentation"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:564
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:577
 #: krm/_templates/controls/GaControlDetail.html:307
 msgid "Valoración"
 msgstr "Assessment"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:578
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:591
 #: krm/_templates/controls/GaControlDetail.html:321
 msgid "Obligación"
 msgstr "Obligation"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:595
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:608
 #: krm/_templates/controls/GaControlDetail.html:338
 msgid "Precisión"
 msgstr "Accuracy"
 
-#: krm/_templates/_includes/control_test/_control_test_info_head.html:609
+#: krm/_templates/_includes/control_test/_control_test_info_head.html:622
 #: krm/_templates/controls/GaControlDetail.html:352
 msgid "Fraude"
 msgstr "Fraud"
 
 #: krm/_templates/_includes/control_test/au/_control_test_answer.html:6
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_answer.html:6
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_answer.html:6
 msgid "FECHA"
 msgstr "DATE"
 
 #: krm/_templates/_includes/control_test/au/_control_test_answer.html:7
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_answer.html:7
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_answer.html:7
 msgid "USUARIO"
 msgstr "USER"
 
 #: krm/_templates/_includes/control_test/au/_control_test_answer.html:8
 #: krm/_templates/_includes/remediation_plan/au/_remediation_plan.html:7
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_answer.html:8
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_answer.html:8
-#: krm/old_templates/_layout/krc_includes/remediation_plan/au/_remediation_plan.html:7
-#: krm/old_templates/_layout/krc_includes/remediation_plan/ga/_remediation_plan.html:7
 msgid "FICHERO ADJUNTO"
 msgstr "ATTACHED FILE"
 
 #: krm/_templates/_includes/control_test/au/_control_test_answer.html:10
 #: krm/_templates/_includes/remediation_plan/au/_remediation_plan.html:9
 #: krm/_templates/_includes/remediation_plan/ga/_remediation_plan.html:12
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_answer.html:10
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_answer.html:10
-#: krm/old_templates/_layout/krc_includes/remediation_plan/au/_remediation_plan.html:9
-#: krm/old_templates/_layout/krc_includes/remediation_plan/ga/_remediation_plan.html:9
 msgid "Descargar adjunto"
 msgstr "Download attached file"
 
 #: krm/_templates/_includes/control_test/au/_control_test_answer.html:13
 #: krm/_templates/_includes/remediation_plan/au/_remediation_plan.html:12
 #: krm/_templates/_includes/remediation_plan/ga/_remediation_plan.html:15
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_answer.html:13
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_answer.html:13
-#: krm/old_templates/_layout/krc_includes/remediation_plan/au/_remediation_plan.html:12
-#: krm/old_templates/_layout/krc_includes/remediation_plan/ga/_remediation_plan.html:12
 msgid "No se ha adjuntado ningún fichero"
 msgstr "No file has been attached"
 
@@ -1250,17 +1173,6 @@ msgstr "No file has been attached"
 #: krm/_templates/_includes/risk/__age/_risk_list.html:24
 #: krm/_templates/_includes/risk/__au/_risk_list.html:24
 #: krm/_templates/_includes/risk/__ga/_risk_list.html:24
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:9
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:10
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:9
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:10
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:15
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_answer.html:17
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_answer.html:17
-#: krm/old_templates/_layout/krc_includes/remediation_plan/au/_remediation_plan.html:14
-#: krm/old_templates/_layout/krc_includes/remediation_plan/ga/_remediation_plan.html:14
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_list.html:24
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_list.html:24
 msgid "DESCRIPCIÓN"
 msgstr "DESCRIPTION"
 
@@ -1291,9 +1203,6 @@ msgstr "DESCRIPTION"
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:4
 #: krm/_templates/evaluations_krm/RuEvaluationRiskInherentComplete.html:4
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:4
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_table.html:2
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:2
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:2
 msgid "Sin asignar"
 msgstr "Unassigned"
 
@@ -1301,28 +1210,18 @@ msgstr "Unassigned"
 #: krm/_templates/_includes/control_test/ca/_control_test_table.html:44
 #: krm/_templates/_includes/control_test/ga/_control_test_table.html:42
 #: krm/_templates/evaluations/CaEvaluationDetail.html:120
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_table.html:10
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:7
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:10
 msgid "CONTROL"
 msgstr "CONTROL"
 
 #: krm/_templates/_includes/control_test/au/_control_test_table.html:45
 #: krm/_templates/_includes/control_test/ca/_control_test_table.html:45
 #: krm/_templates/_includes/control_test/ga/_control_test_table.html:43
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:12
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_table.html:11
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:8
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:11
 msgid "CONTROL OWNER"
 msgstr "CONTROL OWNER"
 
 #: krm/_templates/_includes/control_test/au/_control_test_table.html:46
 #: krm/_templates/_includes/control_test/ca/_control_test_table.html:46
 #: krm/_templates/_includes/control_test/ga/_control_test_table.html:44
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_table.html:12
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:9
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:12
 msgid "CONTROL SUPERVISOR"
 msgstr "CONTROL SUPERVISOR"
 
@@ -1330,9 +1229,6 @@ msgstr "CONTROL SUPERVISOR"
 #: krm/_templates/_includes/control_test/ca/_control_test_table.html:47
 #: krm/_templates/_includes/control_test/ga/_control_test_table.html:45
 #: krm/_templates/evaluations/CaEvaluationDetail.html:123
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_table.html:13
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:10
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:13
 msgid "STATUS"
 msgstr "STATUS"
 
@@ -1341,18 +1237,12 @@ msgstr "STATUS"
 #: krm/_templates/_includes/control_test/ga/_control_test_table.html:46
 #: krm/_templates/control_tests/_ControlTestCreateAnswerControlOwner.html:71
 #: krm/_templates/evaluations/CaEvaluationDetail.html:124
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:18
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_table.html:14
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:11
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:14
 msgid "RESULTADO"
 msgstr "RESULT"
 
 #: krm/_templates/_includes/control_test/au/_control_test_table.html:110
 #: krm/_templates/_includes/control_test/ca/_control_test_table.html:110
 #: krm/_templates/_includes/control_test/ru/_control_test_table.html:149
-#: krm/old_templates/_layout/krc_includes/control_test/au/_control_test_table.html:48
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:56
 msgid "Sin controles"
 msgstr "No controls"
 
@@ -1367,10 +1257,6 @@ msgstr "No controls"
 #: krm/_templates/control_tests/ga/ControlTestAssign.html:39
 #: krm/_templates/evaluations/CaEvaluationDetail.html:140
 #: krm/_templates/evaluations/CaEvaluationDetail.html:147
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:29
-#: krm/old_templates/_layout/krc_includes/control_test/ga/_control_test_table.html:36
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:36
-#: krm/old_templates/_layout/krc_includes/control_test/ru/_control_test_table.html:43
 msgid "Asignar"
 msgstr "Assign"
 
@@ -1381,8 +1267,6 @@ msgstr "Assign"
 #: krm/_templates/evaluations/GaEvaluationNotifications.html:167
 #: krm/_templates/evaluations_krm/GaEvaluationInherentNotifications.html:60
 #: krm/_templates/evaluations_krm/GaEvaluationResidualNotifications.html:61
-#: krm/old_templates/users/UserDetail.html:5
-#: krm/old_templates/users/UserDetail.html:34
 msgid "Usuario"
 msgstr "User"
 
@@ -1427,7 +1311,6 @@ msgstr "Attachment 3"
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:527
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:75
 #: krm/_templates/subprocess/GaSubProcessDetail.html:120
-#: krm/old_templates/pages/Home.html:46 krm/old_templates/pages/__home.html:46
 msgid "Dominios de riesgo"
 msgstr "Risk domains"
 
@@ -1447,18 +1330,14 @@ msgid "Efectividad"
 msgstr "Effectiveness"
 
 #: krm/_templates/_includes/remediation_plan/au/_remediation_plan.html:6
-#: krm/old_templates/_layout/krc_includes/remediation_plan/au/_remediation_plan.html:6
-#: krm/old_templates/_layout/krc_includes/remediation_plan/ga/_remediation_plan.html:6
 msgid "FECHA DE VENCIMIENTO DEL PLAN DE REMEDIACIÓN"
 msgstr "EXPIRATION DATE OF THE REMEDIATION PLAN"
 
 #: krm/_templates/_includes/remediation_plan/ga/_remediation_plan.html:6
-#| msgid "Fecha de vencimiento del Plan de Remediación"
 msgid "Fecha de vencimiento del plan de remediación"
 msgstr "Remediation plan due date"
 
 #: krm/_templates/_includes/remediation_plan/ga/_remediation_plan.html:10
-#| msgid "Archivo adjunto"
 msgid "Fichero adjunto"
 msgstr "Attached file"
 
@@ -1478,16 +1357,12 @@ msgstr "Attached file"
 #: krm/_templates/risks_masters/GaRiskMasterCreate.html:60
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:28
 #: krm/_templates/risks_masters/GaRiskMasterUpdate.html:62
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:12
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:12
 msgid "Datos del Riesgo"
 msgstr "Risk Data"
 
 #: krm/_templates/_includes/risk/__age/_risk_detail.html:21
 #: krm/_templates/_includes/risk/__au/_risk_detail.html:21
 #: krm/_templates/_includes/risk/__ga/_risk_detail.html:21
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:21
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:21
 #: krm/process/models/sub_process_model.py:43
 msgid "Sub Proceso"
 msgstr "Sub Process"
@@ -1495,8 +1370,6 @@ msgstr "Sub Process"
 #: krm/_templates/_includes/risk/__age/_risk_detail.html:24
 #: krm/_templates/_includes/risk/__au/_risk_detail.html:24
 #: krm/_templates/_includes/risk/__ga/_risk_detail.html:24
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:24
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:24
 msgid "Categoría"
 msgstr "Category"
 
@@ -1510,8 +1383,6 @@ msgstr "Category"
 #: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:357
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:567
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:352
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:25
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:25
 msgid "Impacto"
 msgstr "Impact"
 
@@ -1525,81 +1396,59 @@ msgstr "Impact"
 #: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:388
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:568
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:383
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:26
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:26
 msgid "Probabilidad"
 msgstr "Probability"
 
 #: krm/_templates/_includes/risk/__age/_risk_detail.html:27
 #: krm/_templates/_includes/risk/__au/_risk_detail.html:27
 #: krm/_templates/_includes/risk/__ga/_risk_detail.html:27
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_detail.html:27
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_detail.html:27
 msgid "Rating"
 msgstr "Rating"
 
 #: krm/_templates/_includes/risk/__age/_risk_list.html:14
 #: krm/_templates/_includes/risk/__au/_risk_list.html:14
 #: krm/_templates/_includes/risk/__ga/_risk_list.html:14
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_list.html:14
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_list.html:14
 msgid "Riesgos que pertenecen al Sub Proceso"
 msgstr "Risks belonging to the Sub Process"
 
 #: krm/_templates/_includes/risk/__age/_risk_list.html:23
 #: krm/_templates/_includes/risk/__au/_risk_list.html:23
 #: krm/_templates/_includes/risk/__ga/_risk_list.html:23
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_list.html:23
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_list.html:23
 msgid "#"
 msgstr "#"
 
 #: krm/_templates/_includes/risk/__age/_risk_list.html:25
 #: krm/_templates/_includes/risk/__au/_risk_list.html:25
 #: krm/_templates/_includes/risk/__ga/_risk_list.html:25
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_list.html:25
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_list.html:25
 msgid "CONTROLES"
 msgstr "CONTROLS"
 
 #: krm/_templates/_includes/risk/__age/_risk_list.html:26
 #: krm/_templates/_includes/risk/__au/_risk_list.html:26
 #: krm/_templates/_includes/risk/__ga/_risk_list.html:26
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:18
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:18
-#: krm/old_templates/_layout/krc_includes/process_test/au/_process_test_table.html:11
-#: krm/old_templates/_layout/krc_includes/process_test/ga/_process_test_table.html:11
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_list.html:26
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_list.html:26
 msgid "MARCOS NORMATIVOS"
 msgstr "REGULATORY FRAMEWORKS"
 
 #: krm/_templates/_includes/risk/__age/_risk_list.html:41
 #: krm/_templates/_includes/risk/__au/_risk_list.html:40
 #: krm/_templates/_includes/risk/__ga/_risk_list.html:40
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_list.html:40
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_list.html:40
 msgid "Sin controles definidos para este riesgo"
 msgstr "No defined controls for this risk"
 
 #: krm/_templates/_includes/risk/__age/_risk_list.html:54
 #: krm/_templates/_includes/risk/__au/_risk_list.html:53
 #: krm/_templates/_includes/risk/__ga/_risk_list.html:53
-#: krm/old_templates/_layout/krc_includes/risk/au/_risk_list.html:53
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_list.html:53
 msgid "No se han creado riesgos para este Sub Proceso"
 msgstr "No risks have been created for this sub-process"
 
 #: krm/_templates/_includes/risk/__age/_risk_list.html:62
 #: krm/_templates/_includes/risk/__ga/_risk_list.html:60
-#: krm/old_templates/_layout/krc_includes/risk/ga/_risk_list.html:60
 #: krm/risks/views/risk_views.py:121
 msgid "Nuevo Riesgo"
 msgstr "New Risk"
 
 #: krm/_templates/companies/CaCompanyDetail.html:18
 #: krm/_templates/companies/GaCompanyCreate.html:53
-#: krm/old_templates/rates/RateCreate.html:44
 msgid "Datos de la Compañía"
 msgstr "Company Information"
 
@@ -1613,9 +1462,6 @@ msgstr "Corporate scope"
 #: krm/companies/models/company_model.py:26
 #: krm/companies_bck/models/business_group.py:32
 #: krm/companies_bck/models/company.py:34
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:90
-#: krm/old_templates/_layout/krc_includes/companies/age/_company_list_table.html:9
-#: krm/old_templates/_layout/krc_includes/companies/ga/_company_list_table.html:9
 msgid "CIF"
 msgstr "CIF"
 
@@ -1624,7 +1470,6 @@ msgstr "CIF"
 #: krm/companies/models/company_model.py:35
 #: krm/companies_bck/models/business_group.py:41
 #: krm/companies_bck/models/company.py:43
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:121
 msgid "Dirección"
 msgstr "Address"
 
@@ -1633,7 +1478,6 @@ msgstr "Address"
 #: krm/companies/models/company_model.py:42
 #: krm/companies_bck/models/business_group.py:44
 #: krm/companies_bck/models/company.py:46
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:131
 msgid "Población"
 msgstr "City"
 
@@ -1754,11 +1598,6 @@ msgstr "Edit list of applicable controls"
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:643
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:500
 #: krm/_templates/users/login/UsersPasswordResetOk.html:22
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:22
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:25
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:25
-#: krm/old_templates/rates/RateDetail.html:64
-#: krm/old_templates/users/UserDetail.html:51
 msgid "Volver"
 msgstr "Go Back"
 
@@ -1824,11 +1663,6 @@ msgstr "Risks applicable to the company"
 #: krm/_templates/subprocess/GaSubProcessCreate.html:74
 #: krm/_templates/users/GaUserCreate.html:84
 #: krm/_templates/users/GaUserUpdate.html:85
-#: krm/old_templates/_layout/krc_layout/_base_form.html:52
-#: krm/old_templates/rates/RateCreate.html:84
-#: krm/old_templates/rates/RateUpdate.html:64
-#: krm/old_templates/users/UserCreate.html:63
-#: krm/old_templates/users/UserUpdate.html:63
 msgid "Guardar"
 msgstr "Save"
 
@@ -1858,13 +1692,11 @@ msgid "¿Aplica para esta compañía?"
 msgstr "Does it apply to this company?"
 
 #: krm/_templates/companies/GaCompanyControlUpdate.html:70
-#| msgid "Control owner"
 msgid "Control Owners"
 msgstr "Control Ownerd"
 
 #: krm/_templates/companies/GaCompanyControlUpdate.html:81
 #: krm/_templates/companies/GaCompanyDetail.html:437
-#| msgid "Supervisar Controles"
 msgid "Supervisores"
 msgstr "Supervisors"
 
@@ -1912,7 +1744,6 @@ msgid "Editar lista de riesgos que aplican"
 msgstr "Edit list of applicable risks"
 
 #: krm/_templates/companies/GaCompanyDetail.html:424
-#| msgid "Controles que aplican en la compañía"
 msgid "Controles y responsables que aplican en la compañía"
 msgstr "Controls and responsible persons that apply in the company"
 
@@ -1936,8 +1767,6 @@ msgstr "Yes"
 #: krm/_templates/companies/GaCompanyDetail.html:511
 #: krm/_templates/configuration/ConfigurationDetail.html:65
 #: krm/controls/models/control_model.py:110
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:35
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:35
 #: krm/questionnaires/models/question_test_model.py:46
 msgid "No"
 msgstr "No"
@@ -2001,8 +1830,7 @@ msgstr "Check for possible error messages"
 #: krm/_templates/users/GaUserImport.html:38
 msgid "Si no hay errores se le comunicará el resultado de la importación"
 msgstr ""
-"If there are no errors, the result of the import will be communicated to "
-"you."
+"If there are no errors, the result of the import will be communicated to you."
 
 #: krm/_templates/companies/GaCompanyImport.html:51
 #: krm/_templates/companies/GaCompanyList.html:94
@@ -2025,7 +1853,6 @@ msgid "Nombre de la aplicación"
 msgstr "Evaluation Controls"
 
 #: krm/_templates/configuration/ConfigurationDetail.html:44
-#| msgid "Enviar notificación"
 msgid "Email para notificaciones"
 msgstr "Email for notificationsSend notification"
 
@@ -2044,7 +1871,6 @@ msgstr "Modify"
 #: krm/_templates/control_tests/_ControlTestDetailSupervisor.html:7
 #: krm/evaluations/models/control_test_answer.py:41
 #: krm/evaluations/models/control_test_model.py:98
-#: krm/old_templates/_layout/krc_layout/partials/_dropdown-notifications.html:10
 msgid "Test de Control"
 msgstr "Control Test"
 
@@ -2088,7 +1914,6 @@ msgstr "There are still no answers for this control test"
 #: krm/_templates/control_tests/_ControlTestCreateAnswerControlSupervisor.html:116
 #: krm/_templates/control_tests/ca/CaControlTestDetail.html:101
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:118
-#| msgid "PLANES DE REMEDIACIÓN"
 msgid "PLAN DE REMEDIACIÓN"
 msgstr "REMEDIATION PLAN"
 
@@ -2114,15 +1939,13 @@ msgstr "Select a file"
 
 #: krm/_templates/control_tests/_ControlTestCreateAnswerControlOwner.html:129
 #: krm/_templates/control_tests/_ControlTestDetailOwner.html:126
-#: krm/_templates/control_tests/ga/ControlTestDetail.html:220
-#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:237
+#: krm/_templates/control_tests/ga/ControlTestDetail.html:222
+#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:239
 msgid "Testeo finalizado"
 msgstr "Testing completed"
 
 #: krm/_templates/control_tests/_ControlTestCreateAnswerControlSupervisor.html:45
 #: krm/_templates/control_tests/_ControlTestDetailSupervisor.html:44
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-auditor.html:33
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-global-admin.html:64
 msgid "Tests de Proceso"
 msgstr "Process Tests"
 
@@ -2151,8 +1974,7 @@ msgstr ""
 msgid ""
 "Es necesario especificar la información que necesita utilizando caja de "
 "texto de arriba"
-msgstr ""
-"You need to specify the information you need using the text box above."
+msgstr "You need to specify the information you need using the text box above."
 
 #: krm/_templates/control_tests/_ControlTestCreateAnswerControlSupervisor.html:143
 #: krm/_templates/control_tests/_ControlTestDetailSupervisor.html:143
@@ -2177,7 +1999,6 @@ msgstr "Review completed"
 #: krm/controls/views/control_views.py:330
 #: krm/controls/views/control_views.py:363
 #: krm/controls/views/control_views.py:366
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-global-admin.html:32
 msgid "Controles"
 msgstr "Controls"
 
@@ -2209,14 +2030,11 @@ msgid ""
 "Debe establecerse un plan de remediación, en la parte inferior podrá "
 "rellenarlo si es el Control Owner"
 msgstr ""
-"A remediation plan must be established, you can fill it out at the bottom if"
-" you are the Control Owner."
+"A remediation plan must be established, you can fill it out at the bottom if "
+"you are the Control Owner."
 
 #: krm/_templates/control_tests/ca/CaControlTestDetail.html:58
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:67
-#| msgid ""
-#| "Debe establecerse un plan de remediación, en la parte inferior podrá "
-#| "rellenarlo si es el Control Owner"
 msgid ""
 "Puede editar el plan de remediación ya adjunto, en la parte inferior podrá "
 "rellenarlo si es el Control Owner"
@@ -2274,8 +2092,8 @@ msgstr "NEW REMEDIATION PLAN"
 msgid "Datos del plan de remediación"
 msgstr "Remediation plan information"
 
-#: krm/_templates/control_tests/ga/ControlTestDetail.html:196
-#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:213
+#: krm/_templates/control_tests/ga/ControlTestDetail.html:197
+#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:214
 msgid "Resultado y evidencias"
 msgstr "Results and evidences"
 
@@ -2351,11 +2169,8 @@ msgstr "Download Controls"
 
 #: krm/_templates/dashboards/ca/CaDashboard.html:27
 #: krm/_templates/dashboards/ga/GaDashboard.html:301
-#: krm/_templates/dashboards/ru/RuDashboard.html:111
+#: krm/_templates/dashboards/ru/RuDashboard.html:110
 #: krm/_templates/layout/partials/sidebar-layout/header/_navbar.html:62
-#: krm/old_templates/_layout/_partials/_menu.html:140
-#: krm/old_templates/users/UsersLogin.html:84
-#: krm/old_templates/users/UsersLoginCode.html:81
 msgid "Salir"
 msgstr "Exit"
 
@@ -2373,9 +2188,6 @@ msgstr "Concession type"
 
 #: krm/_templates/dashboards/ga/GaDashboard.html:265
 #: krm/companies/models/company_model.py:18
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:74
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:74
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_header_portlet.html:19
 #: krm/questionnaires/models/question_model.py:17
 #: krm/questionnaires/models/questionnaire_model.py:15
 #: krm/questionnaires/models/scope_model.py:15
@@ -2389,6 +2201,54 @@ msgstr "Ref"
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:566
 msgid "Severidad"
 msgstr "Severity"
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:27
+msgid "Tareas Asignadas"
+msgstr ""
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:35
+#: krm/_templates/dashboards/ru/RuDashboard.html:49
+#: krm/_templates/dashboards/ru/RuDashboard.html:60
+#: krm/_templates/dashboards/ru/RuDashboard.html:81
+#: krm/_templates/dashboards/ru/RuDashboard.html:92
+msgid "Tienes"
+msgstr ""
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:35
+#, fuzzy
+#| msgid "No hay tareas pendientes"
+msgid "tareas pendientes"
+msgstr "No pending tasks"
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:49
+#, fuzzy
+#| msgid "Controles pendientes de completar"
+msgid "controles pendientes de completar"
+msgstr "Controls to be completed"
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:60
+#, fuzzy
+#| msgid "Controles pendientes de supervisar"
+msgid "controles pendientes de supervisar"
+msgstr "Controls pending supervision"
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:81
+#, fuzzy
+#| msgid "Controles pendientes de completar"
+msgid "riesgos inherentes pendientes de completar"
+msgstr "Controls to be completed"
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:92
+#, fuzzy
+#| msgid "Controles pendientes de completar"
+msgid "riesgos residuales pendientes de completar"
+msgstr "Controls to be completed"
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:103
+#, fuzzy
+#| msgid "No hay tareas pendientes"
+msgid "¡No tienes tareas pendientes!"
+msgstr "No pending tasks"
 
 #: krm/_templates/dashboards/test.html:5
 msgid "Test"
@@ -2442,13 +2302,22 @@ msgstr "Edit Risk Domain"
 #| "\n"
 #| "  Hola %(user_email)s,<br><br>\n"
 #| "\n"
-#| "  Tienes %(ncontrols_pending)s evaluaciones de controles pendientes de completar en la plataforma <strong>%(app_name)s</strong>, correspondientes a <strong>%(evaluation_ref)s</strong>. El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_intermediate)s.\n"
+#| "  Tienes %(ncontrols_pending)s evaluaciones de controles pendientes de "
+#| "completar en la plataforma <strong>%(app_name)s</strong>, "
+#| "correspondientes a <strong>%(evaluation_ref)s</strong>. El periodo a "
+#| "evaluar es %(certification_year)s%(certification_period)s. Por favor, "
+#| "completa la evaluación antes del %(evaluation_date_intermediate)s.\n"
 #| "\n"
-#| "  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> con tus credenciales.<br><br>\n"
+#| "  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</"
+#| "a> con tus credenciales.<br><br>\n"
 #| "\n"
-#| "  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href=\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico.<br><br>\n"
+#| "  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href="
+#| "\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico."
+#| "<br><br>\n"
 #| "\n"
-#| "  Ante cualquier duda, puedes contactar con Compliance a través del siguiente correo: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+#| "  Ante cualquier duda, puedes contactar con Compliance a través del "
+#| "siguiente correo: <a href=\"mailto:compliance@globalvia.com"
+#| "\">compliance@globalvia.com</a>.<br><br>\n"
 #| "\n"
 #| "  Muchas gracias por tu colaboración.<br><br>\n"
 #| "\n"
@@ -2459,13 +2328,22 @@ msgid ""
 "  <strong>%(notif_type)s</strong><br /><br />\n"
 "  Hola %(user_email)s,<br><br>\n"
 "\n"
-"  Tienes %(ncontrols_pending)s evaluaciones de controles pendientes de completar en la plataforma <strong>%(app_name)s</strong>, correspondientes a <strong>%(evaluation_ref)s</strong>. El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_intermediate)s.\n"
+"  Tienes %(ncontrols_pending)s evaluaciones de controles pendientes de "
+"completar en la plataforma <strong>%(app_name)s</strong>, correspondientes a "
+"<strong>%(evaluation_ref)s</strong>. El periodo a evaluar es "
+"%(certification_year)s%(certification_period)s. Por favor, completa la "
+"evaluación antes del %(evaluation_date_intermediate)s.\n"
 "\n"
-"  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> con tus credenciales.<br><br>\n"
+"  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> "
+"con tus credenciales.<br><br>\n"
 "\n"
-"  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href=\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico.<br><br>\n"
+"  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href="
+"\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico."
+"<br><br>\n"
 "\n"
-"  Ante cualquier duda, puedes contactar con Compliance a través del siguiente correo: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+"  Ante cualquier duda, puedes contactar con Compliance a través del "
+"siguiente correo: <a href=\"mailto:compliance@globalvia.com"
+"\">compliance@globalvia.com</a>.<br><br>\n"
 "\n"
 "  Muchas gracias por tu colaboración.<br><br>\n"
 "\n"
@@ -2475,13 +2353,22 @@ msgstr ""
 "\n"
 "Hello %(user_email)s,<br><br>\n"
 "\n"
-"You have %(ncontrols_pending)s evaluations of controls to be completed on the platform <strong>%(app_name)s</strong>, for <strong>%(evaluation_ref)s</strong>. The evaluation period is %(certification_year)s%(certification_period)s. Please complete the evaluation by %(evaluation_date_intermediate)s.\n"
+"You have %(ncontrols_pending)s evaluations of controls to be completed on "
+"the platform <strong>%(app_name)s</strong>, for <strong>%(evaluation_ref)s</"
+"strong>. The evaluation period is %(certification_year)s"
+"%(certification_period)s. Please complete the evaluation by "
+"%(evaluation_date_intermediate)s.\n"
 "\n"
-"You can access the platform from <a href=\"%(site_url)s\">this url</a> with your credentials.<br><br>\n"
+"You can access the platform from <a href=\"%(site_url)s\">this url</a> with "
+"your credentials.<br><br>\n"
 "\n"
-"If you do not remember your password, you can recover it by accessing <a href=\"%(recovery_url)s\">this url</a> and indicating your email address.<br><br>\n"
+"If you do not remember your password, you can recover it by accessing <a "
+"href=\"%(recovery_url)s\">this url</a> and indicating your email address."
+"<br><br>\n"
 "\n"
-"If you have any questions, please contact Compliance at the following email address: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+"If you have any questions, please contact Compliance at the following email "
+"address: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia."
+"com</a>.<br><br>\n"
 "\n"
 "Thank you very much for your cooperation.<br><br>\n"
 "\n"
@@ -2493,13 +2380,22 @@ msgstr ""
 #| "\n"
 #| "  Hola %(user_email)s,<br><br>\n"
 #| "\n"
-#| "  Tienes %(ncontrols_pending)s evaluaciones de controles pendientes de supervisar en la plataforma <strong>%(app_name)s</strong>, correspondientes a <strong>%(evaluation_ref)s</strong>. El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
+#| "  Tienes %(ncontrols_pending)s evaluaciones de controles pendientes de "
+#| "supervisar en la plataforma <strong>%(app_name)s</strong>, "
+#| "correspondientes a <strong>%(evaluation_ref)s</strong>. El periodo a "
+#| "evaluar es %(certification_year)s%(certification_period)s. Por favor, "
+#| "completa la evaluación antes del %(evaluation_date_end)s.\n"
 #| "\n"
-#| "  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> con tus credenciales.<br><br>\n"
+#| "  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</"
+#| "a> con tus credenciales.<br><br>\n"
 #| "\n"
-#| "  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href=\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico.<br><br>\n"
+#| "  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href="
+#| "\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico."
+#| "<br><br>\n"
 #| "\n"
-#| "  Ante cualquier duda, puedes contactar con Compliance a través del siguiente correo: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+#| "  Ante cualquier duda, puedes contactar con Compliance a través del "
+#| "siguiente correo: <a href=\"mailto:compliance@globalvia.com"
+#| "\">compliance@globalvia.com</a>.<br><br>\n"
 #| "\n"
 #| "  Muchas gracias por tu colaboración.<br><br>\n"
 #| "\n"
@@ -2510,13 +2406,22 @@ msgid ""
 "  <strong>%(notif_type)s</strong><br /><br />\n"
 "  Hola %(user_email)s,<br><br>\n"
 "\n"
-"  Tienes %(ncontrols_pending)s evaluaciones de controles pendientes de supervisar en la plataforma <strong>%(app_name)s</strong>, correspondientes a <strong>%(evaluation_ref)s</strong>. El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
+"  Tienes %(ncontrols_pending)s evaluaciones de controles pendientes de "
+"supervisar en la plataforma <strong>%(app_name)s</strong>, correspondientes "
+"a <strong>%(evaluation_ref)s</strong>. El periodo a evaluar es "
+"%(certification_year)s%(certification_period)s. Por favor, completa la "
+"evaluación antes del %(evaluation_date_end)s.\n"
 "\n"
-"  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> con tus credenciales.<br><br>\n"
+"  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> "
+"con tus credenciales.<br><br>\n"
 "\n"
-"  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href=\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico.<br><br>\n"
+"  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href="
+"\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico."
+"<br><br>\n"
 "\n"
-"  Ante cualquier duda, puedes contactar con Compliance a través del siguiente correo: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+"  Ante cualquier duda, puedes contactar con Compliance a través del "
+"siguiente correo: <a href=\"mailto:compliance@globalvia.com"
+"\">compliance@globalvia.com</a>.<br><br>\n"
 "\n"
 "  Muchas gracias por tu colaboración.<br><br>\n"
 "\n"
@@ -2526,13 +2431,22 @@ msgstr ""
 "\n"
 "Hola %(user_email)s,<br><br>\n"
 "\n"
-"You have %(ncontrols_pending)s evaluations of controls to be supervised on the platform <strong>%(app_name)s</strong>, for <strong>%(evaluation_ref)s</strong>. The evaluation period is %(certification_year)s%(certification_period)s. Please complete the evaluation by %(evaluation_date_end)s.\n"
+"You have %(ncontrols_pending)s evaluations of controls to be supervised on "
+"the platform <strong>%(app_name)s</strong>, for <strong>%(evaluation_ref)s</"
+"strong>. The evaluation period is %(certification_year)s"
+"%(certification_period)s. Please complete the evaluation by "
+"%(evaluation_date_end)s.\n"
 "\n"
-"You can access the platform from <a href=\"%(site_url)s\">this url</a> with your credentials.<br><br>\n"
+"You can access the platform from <a href=\"%(site_url)s\">this url</a> with "
+"your credentials.<br><br>\n"
 "\n"
-"If you do not remember your password, you can recover it by accessing <a href=\"%(recovery_url)s\">this url</a> and indicating your email address.<br><br>\n"
+"If you do not remember your password, you can recover it by accessing <a "
+"href=\"%(recovery_url)s\">this url</a> and indicating your email address."
+"<br><br>\n"
 "\n"
-"If you have any questions, please contact Compliance at the following email address: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+"If you have any questions, please contact Compliance at the following email "
+"address: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia."
+"com</a>.<br><br>\n"
 "\n"
 "Thank you very much for your cooperation.<br><br>\n"
 "\n"
@@ -2542,13 +2456,16 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"  Una evaluación en %(CONFIGURATION.app_name)s requiere de su atención.<br><br>Dispone de preguntas asociadas a su dominio de riesgo para\n"
+"  Una evaluación en %(CONFIGURATION.app_name)s requiere de su atención."
+"<br><br>Dispone de preguntas asociadas a su dominio de riesgo para\n"
 "  supervisar y responder.<br><br>\n"
 "  <a href=\"%(site_url)s\">Acceder a %(CONFIGURATION.app_name)s</a>\n"
 "  "
 msgstr ""
 "\n"
-"An evaluation in %(CONFIGURATION.app_name)s requires your attention.<br><br>You have questions associated with your risk domain to monitor and answer.<br><br>\n"
+"An evaluation in %(CONFIGURATION.app_name)s requires your attention."
+"<br><br>You have questions associated with your risk domain to monitor and "
+"answer.<br><br>\n"
 "<a href=\"%(site_url)s\">Access %(CONFIGURATION.app_name)s</a>"
 
 #: krm/_templates/emails/questionnaires/questionnaires_to_complete.html:4
@@ -2557,15 +2474,25 @@ msgstr ""
 #| "\n"
 #| "  Hola %(user_email)s,<br /><br />\n"
 #| "\n"
-#| "  Como parte del procedimiento de <i>reporting</i> al Comité de Auditoría y Riesgos de Globalvia, necesitamos que completes el cuestionario de Compliance correspondiente a un cuestionario de %(evaluation_questionnaire_name)s (%(evaluation_questionnaire_ref)s) en la plataforma <strong>%(app_name)s</strong>.\n"
+#| "  Como parte del procedimiento de <i>reporting</i> al Comité de Auditoría "
+#| "y Riesgos de Globalvia, necesitamos que completes el cuestionario de "
+#| "Compliance correspondiente a un cuestionario de "
+#| "%(evaluation_questionnaire_name)s (%(evaluation_questionnaire_ref)s) en "
+#| "la plataforma <strong>%(app_name)s</strong>.\n"
 #| "\n"
-#| "  El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
+#| "  El periodo a evaluar es %(certification_year)s%(certification_period)s. "
+#| "Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
 #| "\n"
-#| "  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> con tus credenciales.<br><br>\n"
+#| "  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</"
+#| "a> con tus credenciales.<br><br>\n"
 #| "\n"
-#| "  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href=\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico.<br><br>\n"
+#| "  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href="
+#| "\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico."
+#| "<br><br>\n"
 #| "\n"
-#| "  Ante cualquier duda, puedes contactar con Compliance a través del siguiente correo: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+#| "  Ante cualquier duda, puedes contactar con Compliance a través del "
+#| "siguiente correo: <a href=\"mailto:compliance@globalvia.com"
+#| "\">compliance@globalvia.com</a>.<br><br>\n"
 #| "\n"
 #| "  Muchas gracias por tu colaboración.<br><br>\n"
 #| "\n"
@@ -2576,15 +2503,25 @@ msgid ""
 "  <strong>%(notif_type)s</strong><br /><br />\n"
 "  Hola %(user_email)s,<br /><br />\n"
 "\n"
-"  Como parte del procedimiento de <i>reporting</i> al Comité de Auditoría y Riesgos de Globalvia, necesitamos que completes el cuestionario de Compliance correspondiente a un cuestionario de %(evaluation_questionnaire_name)s (%(evaluation_questionnaire_ref)s) en la plataforma <strong>%(app_name)s</strong>.\n"
+"  Como parte del procedimiento de <i>reporting</i> al Comité de Auditoría y "
+"Riesgos de Globalvia, necesitamos que completes el cuestionario de "
+"Compliance correspondiente a un cuestionario de "
+"%(evaluation_questionnaire_name)s (%(evaluation_questionnaire_ref)s) en la "
+"plataforma <strong>%(app_name)s</strong>.\n"
 "\n"
-"  El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
+"  El periodo a evaluar es %(certification_year)s%(certification_period)s. "
+"Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
 "\n"
-"  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> con tus credenciales.<br><br>\n"
+"  Puedes acceder a la plataforma desde <a href=\"%(site_url)s\">esta url</a> "
+"con tus credenciales.<br><br>\n"
 "\n"
-"  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href=\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico.<br><br>\n"
+"  Si no recuerdas tu contraseña, puedes recuperarla accediendo a <a href="
+"\"%(recovery_url)s\">esta url</a> e indicando tu correo electrónico."
+"<br><br>\n"
 "\n"
-"  Ante cualquier duda, puedes contactar con Compliance a través del siguiente correo: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+"  Ante cualquier duda, puedes contactar con Compliance a través del "
+"siguiente correo: <a href=\"mailto:compliance@globalvia.com"
+"\">compliance@globalvia.com</a>.<br><br>\n"
 "\n"
 "  Muchas gracias por tu colaboración.<br><br>\n"
 "\n"
@@ -2594,15 +2531,25 @@ msgstr ""
 "\n"
 "Hello %(user_email)s,<br /><br />\n"
 "\n"
-"As part of the procedure for <i>reporting</i> to the Audit and Risk Committee of Globalvia, we need you to complete the Compliance questionnaire corresponding to a questionnaire for %(evaluation_questionnaire_name)s (%(evaluation_questionnaire_ref)s) on the platform <strong>%(app_name)s</strong>.\n"
+"As part of the procedure for <i>reporting</i> to the Audit and Risk "
+"Committee of Globalvia, we need you to complete the Compliance questionnaire "
+"corresponding to a questionnaire for %(evaluation_questionnaire_name)s "
+"(%(evaluation_questionnaire_ref)s) on the platform <strong>%(app_name)s</"
+"strong>.\n"
 "\n"
-"The evaluation period is %(certification_year)s%(certification_period)s. Please complete the evaluation by %(evaluation_date_end)s.\n"
+"The evaluation period is %(certification_year)s%(certification_period)s. "
+"Please complete the evaluation by %(evaluation_date_end)s.\n"
 "\n"
-"You can access the platform from <a href=\"%(site_url)s\">this url</a> with your credentials.<br><br>\n"
+"You can access the platform from <a href=\"%(site_url)s\">this url</a> with "
+"your credentials.<br><br>\n"
 "\n"
-"If you do not remember your password, you can recover it by accessing <a href=\"%(recovery_url)s\">this url</a> and indicating your email address.<br><br>\n"
+"If you do not remember your password, you can recover it by accessing <a "
+"href=\"%(recovery_url)s\">this url</a> and indicating your email address."
+"<br><br>\n"
 "\n"
-"If you have any questions, please contact Compliance at the following email address: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia.com</a>.<br><br>\n"
+"If you have any questions, please contact Compliance at the following email "
+"address: <a href=\"mailto:compliance@globalvia.com\">compliance@globalvia."
+"com</a>.<br><br>\n"
 "\n"
 "Thank you very much for your cooperation..<br><br>\n"
 "\n"
@@ -2614,13 +2561,21 @@ msgstr ""
 #| "\n"
 #| "  Hola %(user_email)s,<br><br>\n"
 #| "\n"
-#| "  Dispone de tests de riesgo pendientes de valorar dentro de la plataforma <strong>%(app_name)s</strong> correspondientes a la Evaluación <strong>%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde el <strong>%(evaluation_date_begin)s</strong> hasta el <strong>%(evaluation_date_end)s</strong>.<br><br>\n"
+#| "  Dispone de tests de riesgo pendientes de valorar dentro de la "
+#| "plataforma <strong>%(app_name)s</strong> correspondientes a la Evaluación "
+#| "<strong>%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde "
+#| "el <strong>%(evaluation_date_begin)s</strong> hasta el <strong>"
+#| "%(evaluation_date_end)s</strong>.<br><br>\n"
 #| "\n"
-#| "  El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
+#| "  El periodo a evaluar es %(certification_year)s%(certification_period)s. "
+#| "Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
 #| "\n"
-#| "  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso para poder completarlos.<br><br>\n"
+#| "  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de "
+#| "acceso para poder completarlos.<br><br>\n"
 #| "\n"
-#| "  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico.<br><br>\n"
+#| "  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a "
+#| "href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico."
+#| "<br><br>\n"
 #| "\n"
 #| "  Gracias.\n"
 #| "  "
@@ -2629,13 +2584,21 @@ msgid ""
 "  <strong>%(notif_type)s</strong><br /><br />\n"
 "  Hola %(user_email)s,<br><br>\n"
 "\n"
-"  Dispone de tests de riesgo pendientes de valorar dentro de la plataforma <strong>%(app_name)s</strong> correspondientes a la Evaluación <strong>%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde el <strong>%(evaluation_date_begin)s</strong> hasta el <strong>%(evaluation_date_end)s</strong>.<br><br>\n"
+"  Dispone de tests de riesgo pendientes de valorar dentro de la plataforma "
+"<strong>%(app_name)s</strong> correspondientes a la Evaluación <strong>"
+"%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde el <strong>"
+"%(evaluation_date_begin)s</strong> hasta el <strong>%(evaluation_date_end)s</"
+"strong>.<br><br>\n"
 "\n"
-"  El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
+"  El periodo a evaluar es %(certification_year)s%(certification_period)s. "
+"Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
 "\n"
-"  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso para poder completarlos.<br><br>\n"
+"  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso "
+"para poder completarlos.<br><br>\n"
 "\n"
-"  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico.<br><br>\n"
+"  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a "
+"href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico."
+"<br><br>\n"
 "\n"
 "  Gracias.\n"
 "  "
@@ -2643,13 +2606,21 @@ msgstr ""
 "\n"
 "Hello %(user_email)s,<br><br>\n"
 "\n"
-"You have Risk tests to be assessed available within the platform. <strong>%(app_name)s</strong> for the Evaluation <strong>%(evaluation_ref)s</strong> which will take place during the period from <strong>%(evaluation_date_begin)s</strong> to <strong>%(evaluation_date_end)s</strong>.<br><br>\n"
+"You have Risk tests to be assessed available within the platform. <strong>"
+"%(app_name)s</strong> for the Evaluation <strong>%(evaluation_ref)s</strong> "
+"which will take place during the period from <strong>"
+"%(evaluation_date_begin)s</strong> to <strong>%(evaluation_date_end)s</"
+"strong>.<br><br>\n"
 "\n"
-"The evaluation period is %(certification_year)s%(certification_period)s. Please complete the evaluation by %(evaluation_date_end)s.\n"
+"The evaluation period is %(certification_year)s%(certification_period)s. "
+"Please complete the evaluation by %(evaluation_date_end)s.\n"
 "\n"
-"You can access the platform from <a href=\"%(site_url)s\">this url</a> with your access data to complete them.<br><br>\n"
+"You can access the platform from <a href=\"%(site_url)s\">this url</a> with "
+"your access data to complete them.<br><br>\n"
 "\n"
-"If you do not remember your password, you can recover it by accessing <a href=\"%(recovery_url)s\">this url</a> and indicating your email address.<br><br>\n"
+"If you do not remember your password, you can recover it by accessing <a "
+"href=\"%(recovery_url)s\">this url</a> and indicating your email address."
+"<br><br>\n"
 "\n"
 "Thank you."
 
@@ -2659,13 +2630,21 @@ msgstr ""
 #| "\n"
 #| "  Hola %(user_email)s,<br><br>\n"
 #| "\n"
-#| "  Dispone de tests de riesgo residual pendientes de valorar dentro de la plataforma <strong>%(app_name)s</strong> correspondientes a la Evaluación <strong>%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde el <strong>%(evaluation_date_begin)s</strong> hasta el <strong>%(evaluation_date_end)s</strong>.<br><br>\n"
+#| "  Dispone de tests de riesgo residual pendientes de valorar dentro de la "
+#| "plataforma <strong>%(app_name)s</strong> correspondientes a la Evaluación "
+#| "<strong>%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde "
+#| "el <strong>%(evaluation_date_begin)s</strong> hasta el <strong>"
+#| "%(evaluation_date_end)s</strong>.<br><br>\n"
 #| "\n"
-#| "  El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
+#| "  El periodo a evaluar es %(certification_year)s%(certification_period)s. "
+#| "Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
 #| "\n"
-#| "  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso para poder completarlos.<br><br>\n"
+#| "  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de "
+#| "acceso para poder completarlos.<br><br>\n"
 #| "\n"
-#| "  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico.<br><br>\n"
+#| "  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a "
+#| "href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico."
+#| "<br><br>\n"
 #| "\n"
 #| "  Gracias.\n"
 #| "  "
@@ -2674,13 +2653,21 @@ msgid ""
 "  <strong>%(notif_type)s</strong><br /><br />\n"
 "  Hola %(user_email)s,<br><br>\n"
 "\n"
-"  Dispone de tests de riesgo residual pendientes de valorar dentro de la plataforma <strong>%(app_name)s</strong> correspondientes a la Evaluación <strong>%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde el <strong>%(evaluation_date_begin)s</strong> hasta el <strong>%(evaluation_date_end)s</strong>.<br><br>\n"
+"  Dispone de tests de riesgo residual pendientes de valorar dentro de la "
+"plataforma <strong>%(app_name)s</strong> correspondientes a la Evaluación "
+"<strong>%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde el "
+"<strong>%(evaluation_date_begin)s</strong> hasta el <strong>"
+"%(evaluation_date_end)s</strong>.<br><br>\n"
 "\n"
-"  El periodo a evaluar es %(certification_year)s%(certification_period)s. Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
+"  El periodo a evaluar es %(certification_year)s%(certification_period)s. "
+"Por favor, completa la evaluación antes del %(evaluation_date_end)s.\n"
 "\n"
-"  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso para poder completarlos.<br><br>\n"
+"  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso "
+"para poder completarlos.<br><br>\n"
 "\n"
-"  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico.<br><br>\n"
+"  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a "
+"href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico."
+"<br><br>\n"
 "\n"
 "  Gracias.\n"
 "  "
@@ -2688,13 +2675,21 @@ msgstr ""
 "\n"
 "Hello %(user_email)s,<br><br>\n"
 "\n"
-"You have Residual risk tests available within the platform that are pending assessment. <strong>%(app_name)s</strong> for the Evaluation <strong>%(evaluation_ref)s</strong> which will take place during the period from <strong>%(evaluation_date_begin)s</strong> to <strong>%(evaluation_date_end)s</strong>.<br><br>\n"
+"You have Residual risk tests available within the platform that are pending "
+"assessment. <strong>%(app_name)s</strong> for the Evaluation <strong>"
+"%(evaluation_ref)s</strong> which will take place during the period from "
+"<strong>%(evaluation_date_begin)s</strong> to <strong>"
+"%(evaluation_date_end)s</strong>.<br><br>\n"
 "\n"
-"The evaluation period is %(certification_year)s%(certification_period)s. Please complete the evaluation by %(evaluation_date_end)s.\n"
+"The evaluation period is %(certification_year)s%(certification_period)s. "
+"Please complete the evaluation by %(evaluation_date_end)s.\n"
 "\n"
-"You can access the platform from <a href=\"%(site_url)s\">this url</a>with your access data to complete them.<br><br>\n"
+"You can access the platform from <a href=\"%(site_url)s\">this url</a>with "
+"your access data to complete them.<br><br>\n"
 "\n"
-"If you do not remember your password, you can recover it by accessing <a href=\"%(recovery_url)s\">this url</a> and indicating your email address.<br><br>\n"
+"If you do not remember your password, you can recover it by accessing <a "
+"href=\"%(recovery_url)s\">this url</a> and indicating your email address."
+"<br><br>\n"
 "\n"
 "Thank you."
 
@@ -2702,34 +2697,52 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"  Bienvenido a Compliance Tool.<br /><br />Se ha creado una cuenta de usuario con su dirección de email. Para poder establecer una contraseña de acceso a la plataforma haga clic en el siguiente enlace para acceder al formulario correspondiente.<br /><br /><a href=\"%(remember_url)s\">Establecer contraseña en Compliance Tool</a>\n"
+"  Bienvenido a Compliance Tool.<br /><br />Se ha creado una cuenta de "
+"usuario con su dirección de email. Para poder establecer una contraseña de "
+"acceso a la plataforma haga clic en el siguiente enlace para acceder al "
+"formulario correspondiente.<br /><br /><a href=\"%(remember_url)s"
+"\">Establecer contraseña en Compliance Tool</a>\n"
 "  "
 msgstr ""
 "\n"
-"Welcome to Compliance Tool.<br /><br />A user account has been created with your email address. In order to set a password to access the platform, please click on the following link to access the corresponding form.<br /><br /><a href=\"%(remember_url)s\">Set password on Compliance Tool</a>"
+"Welcome to Compliance Tool.<br /><br />A user account has been created with "
+"your email address. In order to set a password to access the platform, "
+"please click on the following link to access the corresponding form.<br /"
+"><br /><a href=\"%(remember_url)s\">Set password on Compliance Tool</a>"
 
 #: krm/_templates/emails/users/remember_password.html:4
 #, python-format
 msgid ""
 "\n"
-"  Se ha iniciado el recordatorio de clave para su usuario en %(app_name)s. Pulse en el siguiente enlace para acceder al formulario correspondiente.<br /><br /><a href=\"%(remember_url)s\">Restablecer contraseña en %(app_name)s</a>\n"
+"  Se ha iniciado el recordatorio de clave para su usuario en %(app_name)s. "
+"Pulse en el siguiente enlace para acceder al formulario correspondiente.<br /"
+"><br /><a href=\"%(remember_url)s\">Restablecer contraseña en %(app_name)s</"
+"a>\n"
 "  "
 msgstr ""
 "\n"
-"The password reminder has been started for your user in %(app_name)s. Click on the following link to access the corresponding form.<br /><br /><a href=\"%(remember_url)s\">Reset password on %(app_name)s</a>"
+"The password reminder has been started for your user in %(app_name)s. Click "
+"on the following link to access the corresponding form.<br /><br /><a href="
+"\"%(remember_url)s\">Reset password on %(app_name)s</a>"
 
 #: krm/_templates/emails/users/welcome_email.html:4
 #, python-format
 msgid ""
 "\n"
-"  Bienvenido a %(app_name)s.<br /><br />Se ha creado una cuenta de usuario con su dirección de email. Para poder establecer una contraseña de acceso a la plataforma haga clic en el siguiente enlace para acceder al formulario correspondiente.<br /><br /><a href=\"%(remember_url)s\">Establecer contraseña en %(app_name)s</a>\n"
+"  Bienvenido a %(app_name)s.<br /><br />Se ha creado una cuenta de usuario "
+"con su dirección de email. Para poder establecer una contraseña de acceso a "
+"la plataforma haga clic en el siguiente enlace para acceder al formulario "
+"correspondiente.<br /><br /><a href=\"%(remember_url)s\">Establecer "
+"contraseña en %(app_name)s</a>\n"
 "  "
 msgstr ""
 "\n"
-"Welcome to %(app_name)s.<br /><br />A user account has been created with your email address. In order to set a password to access the platform, please click on the following link to access the corresponding form.<br /><br /><a href=\"%(remember_url)s\">Set password on %(app_name)s</a>"
+"Welcome to %(app_name)s.<br /><br />A user account has been created with "
+"your email address. In order to set a password to access the platform, "
+"please click on the following link to access the corresponding form.<br /"
+"><br /><a href=\"%(remember_url)s\">Set password on %(app_name)s</a>"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:321
-#| msgid "Nº de Pregunta"
 msgid "Nº de preguntas"
 msgstr "Nº of Questions"
 
@@ -2792,8 +2805,6 @@ msgstr "Completed"
 #: krm/_templates/evaluations/GaEvaluationDetail.html:557
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:650
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:794
-#: krm/old_templates/_layout/krc_layout/partials/_dropdown-notifications.html:7
-#| msgid "Idioma de notificaciones"
 msgid "Notificaciones"
 msgstr "Notifications"
 
@@ -2827,7 +2838,6 @@ msgid "Descargar Evaluación"
 msgstr "Download Evaluation"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:469
-#| msgid "Evaluadores de Cuestionarios"
 msgid "Mapa de calor del Cuestionario"
 msgstr "Questionnaire heat map"
 
@@ -2919,7 +2929,6 @@ msgstr "Evaluation dates"
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:33
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:106
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:177
-#| msgid "Nº de Pregunta"
 msgid "Nº Preguntas"
 msgstr "Nº of Questions"
 
@@ -2937,7 +2946,6 @@ msgid "Nº Evaluadores"
 msgstr "Nº Evaluators"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:205
-#| msgid "No existen evaluaciones de cuestionarios entregadas"
 msgid "No existen evaluaciones de cuestionarios en proceso"
 msgstr "No questionnaire evaluations in process"
 
@@ -2955,12 +2963,10 @@ msgid "Enviar recordatorio"
 msgstr "Send reminder"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireNotifications.html:62
-#| msgid "Revisión completada"
 msgid "Preguntas completadas"
 msgstr "Completed questions"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireNotifications.html:63
-#| msgid "Preguntas del Alcance"
 msgid "Preguntas pendientes"
 msgstr "Pending questions"
 
@@ -2969,7 +2975,6 @@ msgstr "Pending questions"
 #: krm/_templates/evaluations/GaEvaluationNotifications.html:170
 #: krm/_templates/evaluations_krm/GaEvaluationInherentNotifications.html:63
 #: krm/_templates/evaluations_krm/GaEvaluationResidualNotifications.html:64
-#| msgid "Justificación"
 msgid "Notificación"
 msgstr "Notification"
 
@@ -2984,7 +2989,6 @@ msgstr "No pending tasks"
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireNotifications.html:106
 #: krm/_templates/evaluations_krm/GaEvaluationInherentNotifications.html:105
 #: krm/_templates/evaluations_krm/GaEvaluationResidualNotifications.html:106
-#| msgid "Editar usuario"
 msgid "Notificar usuarios"
 msgstr "Notify users"
 
@@ -2993,7 +2997,6 @@ msgstr "Notify users"
 #: krm/_templates/evaluations/GaEvaluationNotifications.html:224
 #: krm/_templates/evaluations_krm/GaEvaluationInherentNotifications.html:118
 #: krm/_templates/evaluations_krm/GaEvaluationResidualNotifications.html:119
-#| msgid "Idioma de notificaciones"
 msgid "Envío de notificaciones"
 msgstr "Sending notifications"
 
@@ -3013,7 +3016,6 @@ msgstr ""
 #: krm/_templates/evaluations/GaEvaluationNotifications.html:238
 #: krm/_templates/evaluations_krm/GaEvaluationInherentNotifications.html:132
 #: krm/_templates/evaluations_krm/GaEvaluationResidualNotifications.html:133
-#| msgid "Enviar notificación"
 msgid "Enviar notificaciones"
 msgstr "Send notifications"
 
@@ -3038,12 +3040,12 @@ msgstr ""
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:206
 msgid ""
 "Antes de cada pregunta se indica el ámbito de aplicación de la misma. "
-"(ejemplo: \"Delegación-USA\", \"Sociedad Concesionaria Concesiones de Madrid"
-" S.A.U.\", \"Asesoría Jurídica\")"
+"(ejemplo: \"Delegación-USA\", \"Sociedad Concesionaria Concesiones de Madrid "
+"S.A.U.\", \"Asesoría Jurídica\")"
 msgstr ""
 "The scope of the question is indicated before each question (e.g. "
-"\"Delegation-USA\", \"Sociedad Concesionaria Concesiones de Madrid S.A.U.\","
-" \"Asesoría Jurídica\")."
+"\"Delegation-USA\", \"Sociedad Concesionaria Concesiones de Madrid S.A.U.\", "
+"\"Asesoría Jurídica\")."
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:210
 msgid ""
@@ -3068,11 +3070,11 @@ msgstr ""
 "In the questions where the term \"relevant\" is used, it refers to "
 "circumstances that may cause economic or reputational damage to the "
 "concession or to the Globalvia Group, due to their magnitude, media "
-"repercussions or criminal implications. For example, the category "
-"\"relevant\" would include those circumstances that are reported to the "
-"administrative body of the concession or to the parent company, those that "
-"may raise negative news with repercussions in the media, as well as any fact"
-" -including litigation- that must be disclosed in the financial and non-"
+"repercussions or criminal implications. For example, the category \"relevant"
+"\" would include those circumstances that are reported to the administrative "
+"body of the concession or to the parent company, those that may raise "
+"negative news with repercussions in the media, as well as any fact -"
+"including litigation- that must be disclosed in the financial and non-"
 "financial reports that are published."
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:218
@@ -3084,8 +3086,8 @@ msgid ""
 msgstr ""
 "The information reported is confidential and is provided according to the "
 "expert judgment of the person responsible for the report who is reporting "
-"it, or of the persons responsible for the different areas that have provided"
-" such information for reasons of specialty."
+"it, or of the persons responsible for the different areas that have provided "
+"such information for reasons of specialty."
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:222
 msgid ""
@@ -3095,11 +3097,11 @@ msgid ""
 "circunstancia significativa, puntualmente reportable, de la que se tenga "
 "noticia o se materialice antes de terminar el periodo de reporte."
 msgstr ""
-"Regardless of whether this questionnaire is completed in accordance with the"
-" evaluation period, it is the responsibility of the person responsible for "
-"the report to inform the Compliance Committee immediately of any significant"
-" circumstance, punctually reportable, of which he/she becomes aware or which"
-" materializes before the end of the reporting period."
+"Regardless of whether this questionnaire is completed in accordance with the "
+"evaluation period, it is the responsibility of the person responsible for "
+"the report to inform the Compliance Committee immediately of any significant "
+"circumstance, punctually reportable, of which he/she becomes aware or which "
+"materializes before the end of the reporting period."
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:226
 msgid ""
@@ -3128,7 +3130,6 @@ msgid "Una vez enviado no será posible modificar las respuestas"
 msgstr "Once submitted, it will not be possible to modify the answers"
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:323
-#| msgid "Cerrar Sesión"
 msgid "Cerrar y revisar"
 msgstr "Close and review"
 
@@ -3230,14 +3231,6 @@ msgid "No existen tests de control para esta Evaluación"
 msgstr "There are no control tests for this evaluation"
 
 #: krm/_templates/evaluations/CaEvaluationList.html:30
-#: krm/old_templates/rates/RateCreate.html:12
-#: krm/old_templates/rates/RateDetail.html:11
-#: krm/old_templates/rates/RateUpdate.html:12
-#: krm/old_templates/users/UserCreate.html:12
-#: krm/old_templates/users/UserDetail.html:11
-#: krm/old_templates/users/UserList.html:15
-#: krm/old_templates/users/UserUpdate.html:12
-#: krm/old_templates/users/UsersPasswordResetOk.html:81
 msgid "Inicio"
 msgstr "Home"
 
@@ -3318,7 +3311,6 @@ msgid "No existen evaluaciones de controles finalizadas"
 msgstr "There are no completed control evaluations"
 
 #: krm/_templates/evaluations/GaEvaluationNotifications.html:70
-#| msgid "Controles por completar"
 msgid "Controles completados"
 msgstr "Controls completed"
 
@@ -3332,7 +3324,6 @@ msgid "Notificar usuarios (COwner)"
 msgstr "Notify users (COwner)"
 
 #: krm/_templates/evaluations/GaEvaluationNotifications.html:168
-#| msgid "Control supervisor"
 msgid "Controles supervisados"
 msgstr "Supervised controls"
 
@@ -3661,13 +3652,11 @@ msgstr ""
 
 #: krm/_templates/evaluations_krm/GaEvaluationInherentNotifications.html:61
 #: krm/_templates/evaluations_krm/GaEvaluationResidualNotifications.html:62
-#| msgid "Riesgos asociados"
 msgid "Riesgos completados"
 msgstr "Risks completed"
 
 #: krm/_templates/evaluations_krm/GaEvaluationInherentNotifications.html:62
 #: krm/_templates/evaluations_krm/GaEvaluationResidualNotifications.html:63
-#| msgid "pendientes"
 msgid "Riesgos pendientes"
 msgstr "Pending risks"
 
@@ -3706,10 +3695,9 @@ msgid "Nivel de control (Evaluador)"
 msgstr "Level of control (Evaluator)"
 
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:566
-#| msgid "No existen tests de control para esta Evaluación"
 msgid ""
-"No existen Entity Level Controls (ELC) para mitigar los riesgos mostrados en"
-" esta evaluación"
+"No existen Entity Level Controls (ELC) para mitigar los riesgos mostrados en "
+"esta evaluación"
 msgstr ""
 "No Entity Level Controls (ELCs) are in place to mitigate the risks shown in "
 "this assessment"
@@ -3719,10 +3707,15 @@ msgstr ""
 msgid "Aviso legal"
 msgstr "Legal Notice"
 
+#: krm/_templates/layout/partials/sidebar-layout/_footer.html:10
+#, fuzzy
+#| msgid "Control"
+msgid "Contacto:"
+msgstr "Control"
+
 #: krm/_templates/layout/partials/sidebar-layout/header/_navbar.html:15
 #: krm/_templates/layout/partials/sidebar-layout/header/_navbar.html:47
 #: krm/_templates/partials/menus/_user-account-menu.html:47
-#: krm/old_templates/_layout/krc_layout/partials/_dropdown-languages.html:18
 #: krm/users/models/users.py:74
 msgid "Español"
 msgstr "Spanish"
@@ -3730,7 +3723,6 @@ msgstr "Spanish"
 #: krm/_templates/layout/partials/sidebar-layout/header/_navbar.html:26
 #: krm/_templates/layout/partials/sidebar-layout/header/_navbar.html:56
 #: krm/_templates/partials/menus/_user-account-menu.html:39
-#: krm/old_templates/_layout/krc_layout/partials/_dropdown-languages.html:10
 msgid "Inglés"
 msgstr "English"
 
@@ -3802,28 +3794,22 @@ msgstr "GLOBAL ADMIN"
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:156
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:264
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:384
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:72
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:141
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:246
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:383
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:446
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:69
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:140
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:251
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:402
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:488
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:73
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:142
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:247
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:545
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:608
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:71
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:142
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:253
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:647
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:733
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:57
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:114
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:167
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:56
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:116
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:177
-#: krm/old_templates/_layout/_partials/_menu.html:17
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-auditor.html:15
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:21
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:39
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:97
-#: krm/old_templates/_layout/krc_layout/partials/_breadcrums.html:5
 #: krm/process/views/process_views.py:47 krm/process/views/process_views.py:76
 #: krm/process/views/process_views.py:106
 #: krm/process/views/process_views.py:140
@@ -3882,13 +3868,8 @@ msgid "Maestros"
 msgstr "Masters"
 
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:132
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-auditor.html:24
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-global-admin.html:18
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:117
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:63
-#: krm/process/models/process_model.py:38
-#: krm/process/views/process_views.py:48 krm/process/views/process_views.py:51
-#: krm/process/views/process_views.py:77
+#: krm/process/models/process_model.py:38 krm/process/views/process_views.py:48
+#: krm/process/views/process_views.py:51 krm/process/views/process_views.py:77
 #: krm/process/views/process_views.py:107
 #: krm/process/views/process_views.py:141
 #: krm/process/views/process_views.py:173
@@ -3924,27 +3905,10 @@ msgstr "Sub Processes"
 #: krm/companies/views/company_views.py:238
 #: krm/companies/views/company_views.py:303
 #: krm/companies_bck/models/company.py:59
-#: krm/old_templates/_layout/_partials/_menu.html:65
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:76
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:55
-#: krm/old_templates/pages/Home.html:92 krm/old_templates/pages/__home.html:92
-#: krm/old_templates/rates/RateCreate.html:14
 msgid "Compañías"
 msgstr "Companies"
 
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:180
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-global-admin.html:55
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:146
-#: krm/old_templates/base/Home.html:74 krm/old_templates/pages/Home.html:120
-#: krm/old_templates/pages/__home.html:120
-#: krm/old_templates/users/Dashboard.html:74
-#: krm/old_templates/users/UserCreate.html:14
-#: krm/old_templates/users/UserDetail.html:13
-#: krm/old_templates/users/UserList.html:5
-#: krm/old_templates/users/UserList.html:18
-#: krm/old_templates/users/UserList.html:33
-#: krm/old_templates/users/UserUpdate.html:14
-#: krm/old_templates/users/ru/Dashboard.html:74
 #: krm/users/views/user_views.py:54 krm/users/views/user_views.py:57
 #: krm/users/views/user_views.py:82 krm/users/views/user_views.py:112
 #: krm/users/views/user_views.py:145 krm/users/views/user_views.py:178
@@ -3970,7 +3934,6 @@ msgstr "Questionnaires"
 
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:204
 #: krm/_templates/questionnaires/GaQuestionnaireList.html:31
-#: krm/old_templates/pages/Home.html:74 krm/old_templates/pages/__home.html:74
 #: krm/questionnaires/forms/evaluation_questionnaire_form.py:23
 #: krm/questionnaires/models/question_model.py:38
 #: krm/questionnaires/views/ga_question_views.py:53
@@ -4013,11 +3976,11 @@ msgstr "Create KRC evaluation"
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:65
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:68
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:94
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:247
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:447
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:141
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:252
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:489
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:248
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:609
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:143
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:254
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:734
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:168
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:178
 msgid "Evaluaciones KRM"
@@ -4056,8 +4019,6 @@ msgstr "Create RR evaluation"
 #: krm/evaluations/views/ga_evaluation_views.py:703
 #: krm/evaluations/views/ga_evaluation_views.py:910
 #: krm/evaluations/views/ga_evaluation_views.py:943
-#: krm/old_templates/pages/Home.html:106
-#: krm/old_templates/pages/__home.html:106
 msgid "Evaluaciones"
 msgstr "Evaluations"
 
@@ -4108,7 +4069,6 @@ msgid "Responder cuestionarios"
 msgstr "Answer questionnaires"
 
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:677
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-regular-user.html:43
 msgid "Cerrar Sesión"
 msgstr "Logout"
 
@@ -4121,7 +4081,6 @@ msgid "Idioma"
 msgstr "Language"
 
 #: krm/_templates/partials/menus/_user-account-menu.html:56
-#: krm/old_templates/_layout/krc_layout/partials/_dropdown-user.html:23
 msgid "Cerrar sesión"
 msgstr "Logout"
 
@@ -4190,7 +4149,6 @@ msgid "No existen riesgos asociados a este Riesgo Maestro (N1)"
 msgstr "There are no risks associated with this Master Risk (N1)."
 
 #: krm/_templates/scopes/GaScopeDetail.html:56
-#| msgid "Posibles respondedores"
 msgid "Respondedores"
 msgstr "Responders"
 
@@ -4230,8 +4188,6 @@ msgid "Empresas que administra"
 msgstr "Companies managed"
 
 #: krm/_templates/users/GaUserDetail.html:28
-#: krm/old_templates/users/UserCreate.html:44
-#: krm/old_templates/users/UserUpdate.html:44
 msgid "Datos del Usuario"
 msgstr "User information"
 
@@ -4285,13 +4241,10 @@ msgid "Iniciar sesión en "
 msgstr "Login"
 
 #: krm/_templates/users/login/UserLogin.html:56
-#: krm/old_templates/users/UsersLogin.html:89
 msgid "He olvidado mi contraseña"
 msgstr "I forgot my password"
 
 #: krm/_templates/users/login/UserLogin.html:65
-#: krm/old_templates/users/UsersLogin.html:82
-#: krm/old_templates/users/UsersLoginCode.html:79
 msgid "Iniciar sesión"
 msgstr "Login"
 
@@ -4307,7 +4260,6 @@ msgid "Email enviado"
 msgstr "Email sent"
 
 #: krm/_templates/users/login/UsersPasswordResetOk.html:19
-#: krm/old_templates/users/UsersPasswordResetOk.html:73
 msgid ""
 "Se le acaba de enviar un email con las instrucciones a seguir para resetear "
 "su password."
@@ -4316,12 +4268,10 @@ msgstr ""
 "password."
 
 #: krm/_templates/users/login/UsersPasswordResetOk.html:20
-#: krm/old_templates/users/UsersPasswordResetOk.html:75
 msgid "Revise su bandeja de entrada y siga las instrucciones."
 msgstr "Check your inbox and follow the instructions."
 
 #: krm/_templates/users/login/UsersPasswordResetOk.html:21
-#: krm/old_templates/users/UsersPasswordResetOk.html:76
 msgid "Gracias."
 msgstr "Thanks."
 
@@ -4366,22 +4316,18 @@ msgid "Activo"
 msgstr "Active"
 
 #: krm/companies/models/company_control.py:29
-#| msgid "Cumplimentador del Test de Control (Control Owner)"
 msgid "Cumplimentadores del Control (Control Owner)"
 msgstr "Control Owner (Control Owner)"
 
 #: krm/companies/models/company_control.py:36
-#| msgid "Enviar de nuevo al Control Supervisor"
 msgid "Supervisores del Control (Control Supervisor)"
 msgstr "Control Supervisors (Control Supervisor)"
 
 #: krm/companies/models/company_control.py:45
-#| msgid "Importar Compañías"
 msgid "Control para Compañías"
 msgstr "Control for Companies"
 
 #: krm/companies/models/company_control.py:47
-#| msgid "Controles que aplican en la compañía"
 msgid "Controles para compañías"
 msgstr "Controls for companies"
 
@@ -4410,7 +4356,6 @@ msgstr "This Vat is already in use."
 #: krm/companies/models/company_model.py:48
 #: krm/companies_bck/models/business_group.py:46
 #: krm/companies_bck/models/company.py:48
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:140
 msgid "Código Postal"
 msgstr "Postal Code"
 
@@ -4500,7 +4445,6 @@ msgid "Asignar control owners y supervisores a un Control"
 msgstr "Assign control owners and supervisors to a Control"
 
 #: krm/companies/views/company_control_views.py:63
-#| msgid "Compañía modificacda correctamente"
 msgid "Control-Compañía modificado correctamente"
 msgstr "Control-Company modified correctly"
 
@@ -4520,8 +4464,6 @@ msgstr "Companies"
 #: krm/companies/views/company_views.py:128
 #: krm/companies_bck/views/age/business_group.py:168
 #: krm/companies_bck/views/ga/business_group.py:195
-#: krm/old_templates/rates/RateCreate.html:17
-#: krm/old_templates/rates/RateCreate.html:32
 msgid "Nueva Compañía"
 msgstr "New Company"
 
@@ -4548,8 +4490,8 @@ msgid ""
 "sus evaluaciónes?: </span> {0}? <span class=\"kt-font-bold\">Se borrarán "
 "todos los datos asociados la misma.</span>"
 msgstr ""
-"<span class=\"kt-font-bold\">Are you sure you want to delete the Company and"
-" all your evaluations?: </span> {0}? <span class=\"kt-font-bold\">All "
+"<span class=\"kt-font-bold\">Are you sure you want to delete the Company and "
+"all your evaluations?: </span> {0}? <span class=\"kt-font-bold\">All "
 "associated data will be deleted.</span>"
 
 #: krm/companies/views/company_views.py:243
@@ -4580,8 +4522,7 @@ msgstr "Import Companies"
 msgid ""
 "En la fila %s el email introducido no es correcto. Se ha abortado la "
 "importación"
-msgstr ""
-"In the row %s the entered email is not correct. The import was aborted"
+msgstr "In the row %s the entered email is not correct. The import was aborted"
 
 #: krm/companies/views/company_views.py:377
 #, python-format
@@ -4602,8 +4543,7 @@ msgstr "The VAT entered in row %s is already registered by another company."
 #, python-format
 msgid ""
 "En la fila %s falta algún campo obligatorio. Se ha abortado la importación"
-msgstr ""
-"Some required fields are missing in the %s row. The import was aborted"
+msgstr "Some required fields are missing in the %s row. The import was aborted"
 
 #: krm/companies/views/company_views.py:438
 #, python-format
@@ -4645,11 +4585,11 @@ msgstr "Company successfully modified"
 #: krm/companies_bck/views/age/business_group.py:247
 #, python-format
 msgid ""
-"¿Seguro que desea <span class=\"kt-font-bold\">eliminar la Compañía "
-"%s</span>? Se borrarán todos los datos asociados a la misma."
+"¿Seguro que desea <span class=\"kt-font-bold\">eliminar la Compañía %s</"
+"span>? Se borrarán todos los datos asociados a la misma."
 msgstr ""
-"are you sure you want to <span class=\"kt-font-bold\">delete the company "
-"%s</span>? All associated data will be deleted."
+"are you sure you want to <span class=\"kt-font-bold\">delete the company %s</"
+"span>? All associated data will be deleted."
 
 #: krm/companies_bck/views/age/business_group.py:383
 #: krm/companies_bck/views/ga/business_group.py:416
@@ -4685,8 +4625,8 @@ msgstr "Business Group correctly eliminated"
 #: krm/companies_bck/views/ga/business_group.py:174
 #, python-format
 msgid ""
-"¿Seguro que desea <span class=\"kt-font-bold\">eliminar el Grupo Empresarial"
-" %s</span>? Se borrarán todos los datos asociados al mismo."
+"¿Seguro que desea <span class=\"kt-font-bold\">eliminar el Grupo Empresarial "
+"%s</span>? Se borrarán todos los datos asociados al mismo."
 msgstr ""
 "are you sure you want to <span class=\"kt-font-bold\">delete the Business "
 "Group %s</span>? All data associated with it will be deleted."
@@ -4694,11 +4634,11 @@ msgstr ""
 #: krm/companies_bck/views/ga/business_group.py:281
 #, python-format
 msgid ""
-"¿Seguro que desea <span class=\"kt-font-bold\">eliminar la Región %s</span>?"
-" Se borrarán todos los datos asociados a la misma."
+"¿Seguro que desea <span class=\"kt-font-bold\">eliminar la Región %s</span>? "
+"Se borrarán todos los datos asociados a la misma."
 msgstr ""
-"are you sure you want to <span class=\"kt-font-bold\">delete the region "
-"%s</span>? All data associated with it will be deleted."
+"are you sure you want to <span class=\"kt-font-bold\">delete the region %s</"
+"span>? All data associated with it will be deleted."
 
 #: krm/configuration/models/configuration.py:14
 msgid "Email principal"
@@ -4752,7 +4692,6 @@ msgid "En la hoja de %s hay una REF que ya existe: %s"
 msgstr "In the %s sheet there is a REF that already exists: %s"
 
 #: krm/configuration/views/configuration_views.py:321
-#: krm/configuration/views/configuration_views_draft.py:104
 #, python-format
 msgid "En la hoja de %s hay una REF de %s que no existe: %s"
 msgstr "In the %s sheet there is a REF of %s that does not exist: %s"
@@ -4763,20 +4702,20 @@ msgid "El usuario %s no pertence a la compañia %s"
 msgstr "No users in the company"
 
 #: krm/configuration/views/configuration_views.py:353
-#: krm/configuration/views/configuration_views_draft.py:117
+#: krm/configuration/views/configuration_views_draft.py:116
 #, python-format, python-brace-format
 msgid "{0} %s importados"
 msgstr "{0} %s imported"
 
 #: krm/configuration/views/configuration_views.py:439
-#: krm/configuration/views/configuration_views_draft.py:199
+#: krm/configuration/views/configuration_views_draft.py:198
 #: krm/configuration/views/repo.py:423
 #, python-format
 msgid "Impacto o probabilidad erróneos en la fila: %s"
 msgstr "Wrong impact or probability in the row: %s"
 
 #: krm/configuration/views/configuration_views.py:542
-#: krm/configuration/views/configuration_views_draft.py:256
+#: krm/configuration/views/configuration_views_draft.py:255
 #: krm/configuration/views/repo.py:527
 #, python-format
 msgid ""
@@ -4787,18 +4726,18 @@ msgstr ""
 "%s row."
 
 #: krm/configuration/views/configuration_views.py:554
-#: krm/configuration/views/configuration_views_draft.py:267
+#: krm/configuration/views/configuration_views_draft.py:266
 #: krm/configuration/views/repo.py:538
 #, python-format
 msgid ""
-"En la hoja de controles no ha establecido valor para Control Frequency en la"
-" fila %s"
+"En la hoja de controles no ha establecido valor para Control Frequency en la "
+"fila %s"
 msgstr ""
 "In the control sheet you have not set a value for Control Frequency in the "
 "%s row."
 
 #: krm/configuration/views/configuration_views.py:566
-#: krm/configuration/views/configuration_views_draft.py:278
+#: krm/configuration/views/configuration_views_draft.py:277
 #: krm/configuration/views/repo.py:549
 #, python-format
 msgid ""
@@ -4811,8 +4750,8 @@ msgstr ""
 #: krm/configuration/views/configuration_views.py:578
 #, fuzzy, python-format
 #| msgid ""
-#| "En la hoja de controles no ha establecido valor para Control Frequency en la"
-#| " fila %s"
+#| "En la hoja de controles no ha establecido valor para Control Frequency en "
+#| "la fila %s"
 msgid ""
 "En la hoja de controles no ha establecido un valor correcto para el alcance "
 "en la fila %s"
@@ -4827,14 +4766,14 @@ msgid "En la hoja de controles hay una REF a un riesgo que no existe: %s"
 msgstr "In the control sheet there is a REF to a risk that does not exist: %s"
 
 #: krm/configuration/views/configuration_views.py:719
-#: krm/configuration/views/configuration_views_draft.py:384
+#: krm/configuration/views/configuration_views_draft.py:383
 #: krm/configuration/views/repo.py:754
 #, python-brace-format
 msgid "{0} Dominios de Riesgo importados"
 msgstr "{0} Imported Risk Domains"
 
 #: krm/configuration/views/configuration_views.py:743
-#: krm/configuration/views/configuration_views_draft.py:408
+#: krm/configuration/views/configuration_views_draft.py:407
 #: krm/configuration/views/repo.py:778
 #, python-brace-format
 msgid "{0} Riesgos Maestros importados"
@@ -4853,21 +4792,21 @@ msgid "{0} Subprocesos creados"
 msgstr "Associated sub-processes"
 
 #: krm/configuration/views/configuration_views.py:865
-#: krm/configuration/views/configuration_views_draft.py:482
+#: krm/configuration/views/configuration_views_draft.py:481
 #: krm/configuration/views/repo.py:852
 #, python-brace-format
 msgid "{0} Controles importados"
 msgstr "{0} Imported controls"
 
 #: krm/configuration/views/configuration_views.py:908
-#: krm/configuration/views/configuration_views_draft.py:544
+#: krm/configuration/views/configuration_views_draft.py:543
 #: krm/configuration/views/repo.py:914
 #, python-brace-format
 msgid "{0} Controles asociados a compañías creados"
 msgstr "{0} Controls associated with companies created"
 
 #: krm/configuration/views/configuration_views.py:947
-#: krm/configuration/views/configuration_views_draft.py:521
+#: krm/configuration/views/configuration_views_draft.py:520
 #: krm/configuration/views/repo.py:891
 #, python-brace-format
 msgid "{0} Riesgos Compañía creados"
@@ -4884,7 +4823,15 @@ msgstr "In the %s sheet there is a repeated REF: %s in the %s row."
 msgid "En la hoja de dominios de riesgo hay una REF que ya existe: %s"
 msgstr "In the risk domain sheet there is a REF that already exists: %s"
 
-#: krm/configuration/views/configuration_views_draft.py:305
+#: krm/configuration/views/configuration_views_draft.py:104
+#, fuzzy, python-brace-format
+#| msgid "En la hoja de %s hay una REF de %s que no existe: %s"
+msgid ""
+"En la hoja de {name} hay una REF de {master_name} que no existe: "
+"{elem[master]}"
+msgstr "In the %s sheet there is a REF of %s that does not exist: %s"
+
+#: krm/configuration/views/configuration_views_draft.py:304
 #: krm/configuration/views/repo.py:610
 #, python-format
 msgid "En la hoja de controles hay una REF a un subproceso que no existe: %s"
@@ -4893,8 +4840,7 @@ msgstr ""
 
 #: krm/configuration/views/repo.py:304
 #, python-format
-msgid ""
-"En la hoja de dominios de riesgo hay una REF repetida: %s en la fila %s"
+msgid "En la hoja de dominios de riesgo hay una REF repetida: %s en la fila %s"
 msgstr "In the risk domain sheet there is a repeated REF: %s in the %s row."
 
 #: krm/configuration/views/repo.py:350
@@ -4910,11 +4856,11 @@ msgstr "In the master risk sheet there is a REF that already exists: %s"
 #: krm/configuration/views/repo.py:384
 #, python-format
 msgid ""
-"En la hoja de riesgo maestro hay una REF de dominio de riesgo que no existe:"
-" %s"
+"En la hoja de riesgo maestro hay una REF de dominio de riesgo que no existe: "
+"%s"
 msgstr ""
-"En la hoja de riesgo maestro hay una REF de dominio de riesgo que no existe:"
-" %s"
+"En la hoja de riesgo maestro hay una REF de dominio de riesgo que no existe: "
+"%s"
 
 #: krm/configuration/views/repo.py:435
 #, python-format
@@ -4946,8 +4892,7 @@ msgstr "In the control sheet there is a control REF that already exists: %s"
 msgid ""
 "En la hoja de riesgo compañía hay una REF a una compañía que no existe: %s"
 msgstr ""
-"In the company risk sheet there is a REF to a company that does not exist: "
-"%s"
+"In the company risk sheet there is a REF to a company that does not exist: %s"
 
 #: krm/controls/models/control_model.py:23
 msgid "Objetivo del Control"
@@ -4958,7 +4903,6 @@ msgid "Descripción del Control"
 msgstr "Control Description"
 
 #: krm/controls/models/control_model.py:39
-#| msgid "Dominio de Riesgo"
 msgid "Procedimiento de testeo"
 msgstr "Testing procedure"
 
@@ -5015,7 +4959,6 @@ msgid "Mensual"
 msgstr "Monthly"
 
 #: krm/controls/models/control_model.py:92
-#| msgid "Mensual"
 msgid "Bimensual"
 msgstr "Bimonthly"
 
@@ -5032,12 +4975,10 @@ msgid "Anual"
 msgstr "Annual"
 
 #: krm/controls/models/control_model.py:96
-#| msgid "Quincenal"
 msgid "Bienal"
 msgstr "Biennial"
 
 #: krm/controls/models/control_model.py:97
-#| msgid "Quincenal"
 msgid "Trienal"
 msgstr "Triennial"
 
@@ -5051,44 +4992,30 @@ msgid "No aplica"
 msgstr "Not applicable"
 
 #: krm/controls/models/control_model.py:118
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:40
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:40
 msgid "Existency"
 msgstr "Existency"
 
 #: krm/controls/models/control_model.py:122
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:41
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:41
 msgid "Completness"
 msgstr "Completness"
 
 #: krm/controls/models/control_model.py:126
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:42
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:42
 msgid "Valuation"
 msgstr "Valuation"
 
 #: krm/controls/models/control_model.py:130
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:43
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:43
 msgid "Obligation right"
 msgstr "Obligation right"
 
 #: krm/controls/models/control_model.py:134
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:44
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:44
 msgid "Presentation"
 msgstr "Presentation"
 
 #: krm/controls/models/control_model.py:138
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:45
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:45
 msgid "Accurancy"
 msgstr "Accurancy"
 
 #: krm/controls/models/control_model.py:142
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:46
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:46
 msgid "Fraud"
 msgstr "Fraud"
 
@@ -5113,7 +5040,6 @@ msgid "Nuevo control"
 msgstr "New control"
 
 #: krm/controls/views/control_views.py:268
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list.html:24
 msgid "Nuevo Control"
 msgstr "New control"
 
@@ -5144,9 +5070,9 @@ msgid ""
 "{0}? <span class=\"kt-font-bold\">Se borrarán todos los datos asociados al "
 "mismo.</span>"
 msgstr ""
-"<span class=\"kt-font-bold\">Are you sure you want to remove the Control: "
-"</span> {0}? <span class=\"kt-font-bold\">All data associated with it will "
-"be deleted.</span>"
+"<span class=\"kt-font-bold\">Are you sure you want to remove the Control: </"
+"span> {0}? <span class=\"kt-font-bold\">All data associated with it will be "
+"deleted.</span>"
 
 #: krm/controls/views/control_views.py:390
 #, python-format
@@ -5170,8 +5096,7 @@ msgid ""
 "En la fila %s \"Control - ID\" no puede ser vacío ni tener una extensión "
 "mayor de 140 caracteres"
 msgstr ""
-"In the %s row \"Control - ID\" cannot be empty or longer than 140 "
-"characters."
+"In the %s row \"Control - ID\" cannot be empty or longer than 140 characters."
 
 #: krm/controls/views/control_views.py:459
 #, python-format
@@ -5231,16 +5156,17 @@ msgstr ""
 msgid ""
 "En la fila %s \"Control - Sistemas\" no puede tener una extensión mayor de "
 "140 caracteres"
-msgstr "In the row %s \"Control - Systems\" cannot be longer than 140 characters."
+msgstr ""
+"In the row %s \"Control - Systems\" cannot be longer than 140 characters."
 
 #: krm/controls/views/control_views.py:593
 #, fuzzy, python-format
 #| msgid ""
-#| "En la fila %s \"Control - Periodicidad\" solo admite los valores BD, DI, 1W,"
-#| " 2W, 1M, 3T, 6M y 1Y"
+#| "En la fila %s \"Control - Periodicidad\" solo admite los valores BD, DI, "
+#| "1W, 2W, 1M, 3T, 6M y 1Y"
 msgid ""
-"En la fila %s \"Control - Periodicidad\" solo admite los valores CO, BD, DI,"
-" 1W, 2W, 1M, 2M, 3T, 6M, 1Y, 2Y, 3Y"
+"En la fila %s \"Control - Periodicidad\" solo admite los valores CO, BD, DI, "
+"1W, 2W, 1M, 2M, 3T, 6M, 1Y, 2Y, 3Y"
 msgstr ""
 "In the row %s \"Control - Periodicity\" only the values BD, DI, 1W, 2W, 1M, "
 "3T, 6M and 1Y are allowed."
@@ -5292,7 +5218,8 @@ msgstr ""
 #: krm/controls/views/control_views.py:710
 #, python-format
 msgid "En la fila %s \"Control Fraud\" solo admite los valores -, Y y N"
-msgstr "In the row %s \"Fraud Control\" only the values -, Y and N are allowed."
+msgstr ""
+"In the row %s \"Fraud Control\" only the values -, Y and N are allowed."
 
 #: krm/controls/views/control_views.py:730
 #, python-format
@@ -5444,8 +5371,7 @@ msgstr "Description of control follow-up"
 msgid ""
 "Debe establecer un nuevo estado del control para finalizar la revisión del "
 "control test"
-msgstr ""
-"You must set a new control status to finalize the test control review."
+msgstr "You must set a new control status to finalize the test control review."
 
 #: krm/evaluations/forms/evaluation_forms.py:17
 msgid "Controles a evaluar"
@@ -5463,7 +5389,6 @@ msgstr "Assignment template in excel to import"
 #: krm/evaluations_krm/forms/evaluation_krm_inherent_forms.py:56
 #: krm/evaluations_krm/forms/evaluation_krm_residual_forms.py:54
 #: krm/questionnaires/forms/evaluation_questionnaire_form.py:66
-#| msgid "Modificar"
 msgid "Notificar"
 msgstr "Notify"
 
@@ -5534,9 +5459,9 @@ msgstr "Description of the execution or surveillance of the control"
 #: krm/evaluations_krm/models/risk_test_residual_model.py:61
 #: krm/questionnaires/models/question_test_model.py:72
 msgid ""
-"En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo"
-" texto. Si el tamaño del texto es mayor a 8000 caracteres considere "
-"incluirlo como una evidencia"
+"En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo "
+"texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo "
+"como una evidencia"
 msgstr ""
 "In case you are pasting from the clipboard make sure that you have copied "
 "only text. If the size of the text is larger than 8000 characters consider "
@@ -5611,17 +5536,6 @@ msgstr "Control test status"
 #: krm/evaluations_krm/models/risk_company_residual_model.py:36
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:47
 #: krm/evaluations_krm/models/risk_test_residual_model.py:43
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:93
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:105
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:114
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:124
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:134
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:143
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:31
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:31
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:22
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:22
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:22
 #: krm/questionnaires/models/question_test_model.py:44
 msgid "Sin establecer"
 msgstr "Not established"
@@ -5666,8 +5580,8 @@ msgstr "Allow self-monitoring of controls"
 
 #: krm/evaluations/models/evaluation_model.py:89
 msgid ""
-"Si se habilita, el Control Supervisor del test de control puede ser el mismo"
-" Control Owner"
+"Si se habilita, el Control Supervisor del test de control puede ser el mismo "
+"Control Owner"
 msgstr ""
 "If enabled, the Control Supervisor of the control test can be the same as "
 "the Control Owner."
@@ -5716,7 +5630,7 @@ msgstr "Maximum file size is 50MB"
 
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:99
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:153
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:148
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:149
 msgid "Nueva Evaluación de Riesgo Inherente [KRM]"
 msgstr "New Inherent Risk Assessment [KRM]."
 
@@ -5725,8 +5639,8 @@ msgstr "New Inherent Risk Assessment [KRM]."
 #: krm/evaluations/views/ga_evaluation_views.py:887
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:222
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:236
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:218
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:223
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:219
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:225
 #, python-format
 msgid "%s Evaluaciones creadas correctamente"
 msgstr "%s Evaluations created correctly"
@@ -5816,8 +5730,8 @@ msgstr ""
 #: krm/evaluations/views/ga_evaluation_views.py:1009
 #, python-format
 msgid ""
-"En la fila %s hay un control que no pertenece a dicho Test de Control. Se ha"
-" abortado la importación"
+"En la fila %s hay un control que no pertenece a dicho Test de Control. Se ha "
+"abortado la importación"
 msgstr ""
 "In the row %s there is a control that does not belong to that Control Test. "
 "The import has been aborted"
@@ -5846,8 +5760,8 @@ msgstr ""
 #: krm/evaluations/views/ga_evaluation_views.py:1097
 #, python-format
 msgid ""
-"En la fila %s el control owner y el control supervisor son el mismo usuario."
-" La evaluación no permite la autosupervisión"
+"En la fila %s el control owner y el control supervisor son el mismo usuario. "
+"La evaluación no permite la autosupervisión"
 msgstr ""
 "In the %s row the control owner and the control supervisor are the same "
 "user. The evaluation does not allow self-supervision"
@@ -5863,10 +5777,10 @@ msgstr "Correctly modified control test"
 
 #: krm/evaluations/views/ga_evaluation_views.py:1171
 #: krm/evaluations/views/ga_evaluation_views.py:1181
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:474
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:516
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:636
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:761
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:451
-#, python-format, fuzzy
+#, python-format
 msgid "Enviadas notificaciones a %d usuarios!"
 msgstr ""
 
@@ -5976,8 +5890,7 @@ msgstr "Level of Economic Impact indicated by the Risk Domain Expert"
 
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:57
 msgid ""
-"Nivel de Impacto en Continuidad indicado por el Experto del Dominio de "
-"Riesgo"
+"Nivel de Impacto en Continuidad indicado por el Experto del Dominio de Riesgo"
 msgstr "Continuity Impact Level indicated by the Risk Domain Expert"
 
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:63
@@ -6090,20 +6003,20 @@ msgstr "Sending of Risk Test email pending assessment"
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:75
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:148
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:251
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:73
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:76
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:142
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:74
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:77
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:143
 msgid "Evaluaciones de Riesgo Inherente KRM"
 msgstr "Inherent Risk Assessments KRM"
 
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:228
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:224
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:225
 #, python-format
 msgid "%s Test de Riesgos creados correctamente"
 msgstr "%s Risk Test successfully created"
 
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:387
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:384
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:546
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:58
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:60
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:115
@@ -6112,8 +6025,8 @@ msgstr "Inherent Risk Assessments"
 
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:424
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:445
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:421
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:463
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:583
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:708
 msgid "Evaluación supervisada correctamente"
 msgstr "Correctly supervised evaluation"
 
@@ -6121,24 +6034,24 @@ msgstr "Correctly supervised evaluation"
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:84
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:157
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:265
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:70
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:73
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:72
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:75
 msgid "Evaluaciones de Riesgo Residual KRM"
 msgstr "Residual Risk Assessments KRM"
 
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:162
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:146
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:148
 msgid "Nueva Evaluación de Riesgo Residual [KRM]"
 msgstr "New Residual Risk Assessment [KRM]."
 
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:242
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:229
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:231
 #, python-format
 msgid "%s Test de Riesgos Residual creados correctamente"
 msgstr "%s Residual Risk Test created correctly"
 
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:385
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:403
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:648
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:57
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:59
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:117
@@ -6146,7 +6059,7 @@ msgid "Evaluaciones de Riesgo Residual"
 msgstr "Residual Risk Assessments"
 
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:431
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:449
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:694
 msgid "--Sin completar--"
 msgstr "--Not completed--"
 
@@ -6158,805 +6071,6 @@ msgstr "Evaluation sent to validate correctly"
 #: krm/layout/views.py:54
 msgid "Dominio de riesgo actualizado correctamente"
 msgstr "Risk domain correctly updated"
-
-#: krm/old_templates/_layout/_partials/_menu.html:25
-msgid "Productos"
-msgstr "Products"
-
-#: krm/old_templates/_layout/_partials/_menu.html:33
-#, fuzzy
-msgid "Clientes"
-msgstr "Pending"
-
-#: krm/old_templates/_layout/_partials/_menu.html:41
-#, fuzzy
-msgid "Presupuestos"
-msgstr "Answers"
-
-#: krm/old_templates/_layout/_partials/_menu.html:49
-#: krm/old_templates/rates/RateList.html:5
-#: krm/old_templates/rates/RateList.html:18
-#: krm/old_templates/rates/RateList.html:33
-#: krm/old_templates/rates/RateUpdate.html:6
-#: krm/old_templates/rates/RateUpdate.html:14
-#, fuzzy
-msgid "Tarifas"
-msgstr "Edit user"
-
-#: krm/old_templates/_layout/_partials/_menu.html:57
-msgid "Pruebas"
-msgstr "Tests"
-
-#: krm/old_templates/_layout/_partials/_menu.html:73
-#, fuzzy
-msgid "SAGE"
-msgstr ""
-
-#: krm/old_templates/_layout/krc_emails/control_test/control_test_notification_control_owner.html:4
-#, fuzzy, python-format
-msgid ""
-"\n"
-"  Hola %(user_email)s,<br><br>\n"
-"\n"
-"  Dispone de controles pendientes de cumplimentar dentro de la plataforma <strong>PRHGE</strong> correspondientes a la\n"
-"  Autoevaluación del Proceso de <strong>%(process_name)s</strong> que tendrá lugar en el periodo desde el\n"
-"  <strong>%(process_test_from)s</strong> hasta el <strong>%(process_test_to)s</strong>.<br><br>\n"
-"\n"
-"  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso para poder completarlos.<br><br>\n"
-"\n"
-"  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href=\"%(recovery_url)s\">esta url</a>\n"
-"  indicando su correo electrónico.<br><br>\n"
-"\n"
-"  Gracias.\n"
-"  "
-msgstr ""
-"\n"
-"Hello %(user_email)s,<br><br>\n"
-"\n"
-"You have controls pending completion within the platform <strong>KRM Tool</strong> corresponding to the Self-Assessment of the Process <strong>%(evaluation_ref)s</strong> which will take place during the period from <strong>%(evaluation_date_begin)s</strong> to <strong>%(evaluation_date_intermediate)s</strong>.<br><br>\n"
-"\n"
-"Access from <a href=\"%(site_url)s\">this url</a> with your login information in order to complete them.<br><br>\n"
-"\n"
-"If you do not remember your credentials, you can retrieve your password from <a href=\"%(recovery_url)s\">this url</a> indicating your e-mail address.<br><br>\n"
-"\n"
-"Thank you."
-
-#: krm/old_templates/_layout/krc_emails/control_test/control_test_notification_control_supervisor.html:4
-#, fuzzy, python-format
-msgid ""
-"\n"
-"  Hola %(user_email)s,<br><br>\n"
-"\n"
-"  Dispone de controles pendientes de revisar dentro de la plataforma <strong>PRHGE</strong> correspondientes a la\n"
-"  Autoevaluación del Proceso de <strong>%(process_name)s</strong> que tendrá lugar en el periodo desde el\n"
-"  <strong>%(process_test_from)s</strong> hasta el <strong>%(process_test_to)s</strong>.<br><br>\n"
-"\n"
-"  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso para poder revisarlos.<br><br>\n"
-"\n"
-"  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href=\"%(recovery_url)s\">esta url</a>\n"
-"  indicando su correo electrónico.<br><br>\n"
-"\n"
-"  Gracias.\n"
-"  "
-msgstr ""
-"\n"
-"Hello %(user_email)s,<br><br>\n"
-"\n"
-"You have controls pending review within the platform <strong>KRM Tool</strong> corresponding to the Self-Assessment of the Process <strong>%(evaluation_ref)s</strong> which will take place during the period from strong>%(evaluation_date_begin)s</strong> to <strong>%(evaluation_date_intermediate)s</strong>.<br><br>\n"
-"\n"
-"Access from <a href=\"%(site_url)s\">this url</a> with your login information in order to complete them.<br><br>\n"
-"\n"
-"If you do not remember your credentials, you can retrieve your password from <a href=\"%(recovery_url)s\">this url</a> indicating your e-mail address.<br><br>\n"
-"\n"
-"Thank you."
-
-#: krm/old_templates/_layout/krc_emails/users/init_password.html:4
-#, fuzzy, python-format
-msgid ""
-"\n"
-"  Bienvenido a PRHGE.<br><br>Se ha creado una cuenta de usuario con su dirección de email. Para poder establecer una\n"
-"  contraseña de acceso a la plataforma haga clic en el siguiente enlace para acceder al formulario\n"
-"  correspondiente.<br><br><a href=\"%(remember_url)s\">Establecer contraseña</a>\n"
-"  "
-msgstr ""
-"\n"
-"Welcome to KRM Tool.<br><br>A user account has been created with your email address. In order to set up a\n"
-"password to access the platform, click on the following link to access the corresponding form.\n"
-"<br><br><a href=\"%(remember_url)s\">Set password in KRM Tool</a>"
-
-#: krm/old_templates/_layout/krc_emails/users/remember_password.html:8
-#, fuzzy, python-format
-msgid ""
-"\n"
-"  Se ha iniciado el recordatorio de clave para su usuario. Pulse en el siguiente enlace para acceder al formulario\n"
-"  correspondiente.<br><br><a href=\"%(remember_url)s\">Restablecer contraseña en PRHGE</a>\n"
-"  "
-msgstr ""
-"\n"
-"The password reminder for your user has been started. Click on the following link to access the form\n"
-"corresponding.<br><br><a href=\"%(remember_url)s\">Reset password in KRM Tool</a>"
-
-#: krm/old_templates/_layout/krc_emails/users/welcome_email.html:4
-#, fuzzy, python-format
-msgid ""
-"\n"
-"  Bienvenido a PRHGE.<br><br>Se ha creado una cuenta de usuario con su dirección de email. Para poder establecer una\n"
-"  contraseña de acceso a la plataforma haga clic en el siguiente enlace para acceder al formulario\n"
-"  correspondiente.<br><br><a href=\"%(remember_url)s\">Establecer contraseña en PRHGE</a>\n"
-"  "
-msgstr ""
-"\n"
-"Welcome to KRM Tool.<br><br>A user account has been created with your email address. In order to set up a\n"
-"password to access the platform, click on the following link to access the corresponding form.\n"
-"<br><br><a href=\"%(remember_url)s\">Set password in KRM Tool</a>"
-
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:12
-#, fuzzy
-msgid "Datos del Grupo Empresarial:"
-msgstr "New Business Group"
-
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:21
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:43
-#: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:23
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet_bg.html:23
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet_bg.html:23
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:23
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:49
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:23
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:49
-#, fuzzy
-msgid "Desplegar"
-msgstr "Obligation"
-
-#: krm/old_templates/_layout/krc_includes/business_group/ga/_business_group_portlet.html:102
-#, fuzzy
-msgid "Correo Electrónico"
-msgstr "Enter your email address"
-
-#: krm/old_templates/_layout/krc_includes/companies/age/_company_list_table.html:4
-#: krm/old_templates/_layout/krc_includes/companies/ga/_company_list_table.html:4
-#, fuzzy
-msgid "Listado de compañías asociadas al Grupo Empresarial."
-msgstr "% companies have been imported into the business Group"
-
-#: krm/old_templates/_layout/krc_includes/companies/age/_company_list_table.html:8
-#: krm/old_templates/_layout/krc_includes/companies/ga/_company_list_table.html:8
-#: krm/old_templates/_layout/krc_includes/users/age/_users_company_list.html:9
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_company_list.html:9
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_list.html:7
-#: krm/old_templates/rates/RateList.html:47
-#: krm/old_templates/users/UserList.html:47
-msgid "NOMBRE"
-msgstr "NAME"
-
-#: krm/old_templates/_layout/krc_includes/companies/age/_company_list_table.html:10
-#: krm/old_templates/_layout/krc_includes/companies/ga/_company_list_table.html:10
-msgid "PAÍS"
-msgstr "COUNTRY"
-
-#: krm/old_templates/_layout/krc_includes/companies/age/_company_list_table.html:11
-#: krm/old_templates/_layout/krc_includes/companies/ga/_company_list_table.html:11
-#: krm/old_templates/_layout/krc_includes/users/age/_users_company_list.html:8
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_company_list.html:8
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_list.html:6
-msgid "EMAIL"
-msgstr "EMAIL"
-
-#: krm/old_templates/_layout/krc_includes/companies/age/_company_list_table.html:28
-#: krm/old_templates/_layout/krc_includes/companies/ga/_company_list_table.html:28
-#, fuzzy
-msgid "Sin compañías pertenecientes al Grupo Empresarial"
-msgstr "% companies have been imported into the business Group"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list.html:14
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list.html:14
-#, fuzzy
-msgid "Controles asociados al Riesgo"
-msgstr "Associated controls"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:11
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:11
-#, fuzzy
-msgid "PLAN DE ACCIÓN"
-msgstr "REMEDIATION PLANS"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:12
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:12
-msgid "P. DE TESTEO"
-msgstr "TESTING PLAN"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:13
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:13
-#, fuzzy
-msgid "KEY CONTROL"
-msgstr "CONTROL"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:14
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:14
-msgid "TIPO"
-msgstr "TYPE"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:15
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:15
-msgid "AUTOMATIZACIÓN"
-msgstr "AUTOMATION"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:16
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:16
-msgid "FRECUENCIA"
-msgstr "FREQUENCY"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:17
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:17
-msgid "ASSERTIONS"
-msgstr "ASSERTIONS"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:35
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:35
-#: krm/questionnaires/models/question_test_model.py:45
-msgid "Si"
-msgstr "Yes"
-
-#: krm/old_templates/_layout/krc_includes/control/au/_control_list_table.html:59
-#: krm/old_templates/_layout/krc_includes/control/ga/_control_list_table.html:59
-#, fuzzy
-msgid "No hay controles definidos para dicho riesgo"
-msgstr "No defined controls for this risk"
-
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:3
-#, fuzzy
-msgid "DATOS DEL CONTROL"
-msgstr "CONTROL"
-
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:7
-msgid "OBJETIVO"
-msgstr "OBJECTIVE"
-
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:8
-msgid "FRECUENCIA DEL CONTROL"
-msgstr "CONTROL FREQUENCY"
-
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:9
-msgid "TEST DE PROCESO"
-msgstr "PROCESS TEST"
-
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:10
-msgid "IDENTIFICADOR DEL TEST DE CONTROL"
-msgstr "CONTROL TEST IDENTIFIER"
-
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:11
-#, fuzzy
-msgid "USUARIO SUPERVISOR"
-msgstr "CONTROL SUPERVISOR"
-
-#: krm/old_templates/_layout/krc_includes/control_test/_control_test_info_head.html:17
-#: krm/old_templates/_layout/krc_includes/process_test/age/_process_test_table.html:9
-#: krm/old_templates/_layout/krc_includes/process_test/au/_process_test_table.html:9
-#: krm/old_templates/_layout/krc_includes/process_test/ga/_process_test_table.html:9
-#: krm/old_templates/rates/RateDetail.html:95
-#, fuzzy
-msgid "ESTADO"
-msgstr "RESULT"
-
-#: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:14
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:14
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet_bg.html:14
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:14
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet_bg.html:14
-#, fuzzy
-msgid "Datos del proceso"
-msgstr "Risk Data"
-
-#: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:35
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:22
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet_bg.html:35
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:22
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet_bg.html:35
-msgid "Siglas"
-msgstr "Acronyms"
-
-#: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:39
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:26
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet_bg.html:39
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:26
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet_bg.html:39
-#, fuzzy
-msgid "Grupos Empresariales que lo pueden usar:"
-msgstr "Business group to which it belongs"
-
-#: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:46
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:33
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet_bg.html:46
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:33
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet_bg.html:46
-#, fuzzy
-msgid "Ningún grupo empresarial"
-msgstr "Business group"
-
-#: krm/old_templates/_layout/krc_includes/process/age/_process_header_portlet.html:59
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet_bg.html:59
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet_bg.html:59
-#, fuzzy
-msgid "Generar Test de Proceso a Compañías"
-msgstr "Risk Domain Experts for Companies"
-
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:46
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:46
-#: krm/process/views/sub_process_views.py:122
-msgid "Nuevo Sub Proceso"
-msgstr "New Sub Process"
-
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:47
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:47
-#: krm/process/views/process_views.py:145
-msgid "Editar Proceso"
-msgstr "Edit Process"
-
-#: krm/old_templates/_layout/krc_includes/process/au/_process_header_portlet.html:48
-#: krm/old_templates/_layout/krc_includes/process/ga/_process_header_portlet.html:48
-#: krm/process/views/process_views.py:177
-msgid "Eliminar Proceso"
-msgstr "Delete Process"
-
-#: krm/old_templates/_layout/krc_includes/process_test/age/_process_test_table.html:6
-#: krm/old_templates/_layout/krc_includes/process_test/au/_process_test_table.html:6
-#: krm/old_templates/_layout/krc_includes/process_test/ga/_process_test_table.html:6
-#, fuzzy
-msgid "#IDENTIFICADOR"
-msgstr ""
-
-#: krm/old_templates/_layout/krc_includes/process_test/age/_process_test_table.html:7
-#: krm/old_templates/_layout/krc_includes/process_test/au/_process_test_table.html:7
-#: krm/old_templates/_layout/krc_includes/process_test/ga/_process_test_table.html:7
-#: krm/old_templates/_layout/krc_includes/risk/_risk_info_head.html:11
-msgid "PROCESO"
-msgstr "PROCESS"
-
-#: krm/old_templates/_layout/krc_includes/process_test/age/_process_test_table.html:8
-#: krm/old_templates/_layout/krc_includes/process_test/au/_process_test_table.html:8
-#: krm/old_templates/_layout/krc_includes/process_test/ga/_process_test_table.html:8
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_list.html:9
-#: krm/old_templates/rates/RateList.html:48
-msgid "COMPAÑÍA"
-msgstr "COMPANY"
-
-#: krm/old_templates/_layout/krc_includes/process_test/age/_process_test_table.html:10
-#: krm/old_templates/_layout/krc_includes/process_test/au/_process_test_table.html:10
-#: krm/old_templates/_layout/krc_includes/process_test/ga/_process_test_table.html:10
-#, fuzzy
-msgid "Nº CONTROLES"
-msgstr "CONTROLS"
-
-#: krm/old_templates/_layout/krc_includes/risk/_risk_info_head.html:3
-#, fuzzy
-msgid "DATOS DEL RIESGO"
-msgstr "DESCRIPTION"
-
-#: krm/old_templates/_layout/krc_includes/risk/_risk_info_head.html:7
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:34
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:46
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:46
-msgid "REFERENCIA"
-msgstr "REFERENCE"
-
-#: krm/old_templates/_layout/krc_includes/risk/_risk_info_head.html:8
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:35
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:47
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:47
-#, fuzzy
-msgid "DESCRIPCIÓN DEL RIESGO"
-msgstr "DESCRIPTION"
-
-#: krm/old_templates/_layout/krc_includes/risk/_risk_info_head.html:12
-msgid "SUB PROCESO"
-msgstr "SUB PROCESS"
-
-#: krm/old_templates/_layout/krc_includes/risk/_risk_info_head.html:14
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:39
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:51
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:51
-#, fuzzy
-msgid "CATEGORÍA DE RIESGO"
-msgstr "DESCRIPTION"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_header_portlet.html:14
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_header_portlet.html:14
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_header_portlet.html:14
-#, fuzzy
-msgid "Datos del Sub Proceso:"
-msgstr "Risk Data"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:15
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:15
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:15
-#, fuzzy
-msgid "Subproceso:"
-msgstr "Subprocesses"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:20
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:20
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:20
-#, fuzzy
-msgid "Descripción del Sub Proceso"
-msgstr "Risk Description"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:25
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:36
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:36
-msgid "RIESGOS DEL SUBPROCESO"
-msgstr "RISKS OF THE SUB-PROCESS"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:29
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:41
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:41
-msgid "RIESGO: "
-msgstr "RISK:"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:46
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:60
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:62
-#, fuzzy
-msgid "Listado de Controles definidos para dicho Riesgo"
-msgstr "No defined controls for this risk"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:50
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:65
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:67
-#, fuzzy
-msgid "No se han establecido Controles para este Riesgo"
-msgstr "No risks have been created for this sub-process"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:56
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:71
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:73
-#, fuzzy
-msgid "Final del riesgo"
-msgstr "Risk domains"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/age/_sub_process_list.html:63
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:78
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:80
-#, fuzzy
-msgid "No se han creado riesgos para este Sub Proceso "
-msgstr "No risks have been created for this sub-process"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/au/_sub_process_list.html:28
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:28
-#, fuzzy
-msgid "Detalle de Subproceso"
-msgstr "Subprocess identifier"
-
-#: krm/old_templates/_layout/krc_includes/sub_process/ga/_sub_process_list.html:58
-#, fuzzy
-msgid "Detalle de Riesgo"
-msgstr "Risk Data"
-
-#: krm/old_templates/_layout/krc_includes/users/age/_users_company_list.html:10
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_company_list.html:10
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_list.html:8
-msgid "APELLIDOS"
-msgstr "SURNAMES"
-
-#: krm/old_templates/_layout/krc_includes/users/age/_users_company_list.html:11
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_company_list.html:11
-msgid "ÚLTIMO ACCESO"
-msgstr "LAST ACCESS"
-
-#: krm/old_templates/_layout/krc_includes/users/age/_users_company_list.html:12
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_company_list.html:12
-msgid "ADMINISTRADOR DEL GRUPO EMPRESARIAL"
-msgstr "MANAGER OF THE CORPORATE GROUP"
-
-#: krm/old_templates/_layout/krc_includes/users/age/_users_company_list.html:29
-#, fuzzy
-msgid "Sin usuarios en esta compañía"
-msgstr "No users in the company"
-
-#: krm/old_templates/_layout/krc_includes/users/ga/_users_list.html:10
-msgid "GRUPO EMPRESARIAL QUE ADMINISTRA"
-msgstr "CORPORATE GROUP THAT MANAGES"
-
-#: krm/old_templates/_layout/krc_layout/_base_form.html:34
-#, fuzzy
-msgid "Nuevo x"
-msgstr "New"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-auditor.html:5
-msgid "Audit User"
-msgstr "Audit User"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-global-admin.html:9
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:46
-#, fuzzy
-msgid "Grupos Empresariales"
-msgstr "Business groups"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-global-admin.html:46
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:131
-#, fuzzy
-msgid "Test de proceso"
-msgstr "Process Tests"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-global-admin.html:73
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:79
-#, fuzzy
-msgid "Planes de Remediación"
-msgstr "Remediation plans"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-regular-user.html:8
-#, fuzzy
-msgid "Completar controles"
-msgstr "Complete Controls"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-regular-user.html:21
-#, fuzzy
-msgid "Revisar controles"
-msgstr "Supervise Controls"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu-regular-user.html:34
-#, fuzzy
-msgid "Mi perfil"
-msgstr "Edit profile"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:10
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:12
-#, fuzzy
-msgid "Administrador Global"
-msgstr "Dashboard for Global Administrator"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:61
-msgid "Regiones"
-msgstr "Regions"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.1.html:98
-msgid "Marcos normativos"
-msgstr "Regulatory frameworks"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:30
-#, fuzzy
-msgid "Administrador G. Empresarial"
-msgstr "Edit Business Group: %s"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:47
-#, fuzzy
-msgid "Grupo Empresarial"
-msgstr "Business group"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:71
-#, fuzzy
-msgid "Test de Proceso"
-msgstr "Process Tests"
-
-#: krm/old_templates/_layout/krc_layout/partials/_aside-menu.html:86
-msgid "Regular User"
-msgstr "Regular User"
-
-#: krm/old_templates/_layout/krc_layout/partials/_dropdown-notifications.html:20
-#: krm/old_templates/_layout/krc_layout/partials/_dropdown-notifications.html:27
-#, fuzzy
-msgid "Un test de control está pendiente de rellenar"
-msgstr "Controls to be completed"
-
-#: krm/old_templates/_layout/krc_layout/partials/_footer-base.html:7
-msgid "Faqs"
-msgstr "Faqs"
-
-#: krm/old_templates/_layout/krc_layout/partials/_footer-base.html:8
-msgid "About"
-msgstr "About"
-
-#: krm/old_templates/base/Home.html:27 krm/old_templates/pages/Home.html:27
-#: krm/old_templates/pages/__home.html:27
-#: krm/old_templates/users/Dashboard.html:27
-#: krm/old_templates/users/ru/Dashboard.html:27
-#, fuzzy
-msgid "Dashboard Administrador Global"
-msgstr "Dashboard for Global Administrator"
-
-#: krm/old_templates/base/Home.html:46
-#: krm/old_templates/users/Dashboard.html:46
-#: krm/old_templates/users/ru/Dashboard.html:46
-msgid "Sellos"
-msgstr ""
-
-#: krm/old_templates/base/Home.html:60
-#: krm/old_templates/rates/RateCreate.html:6
-#: krm/old_templates/rates/RateDetail.html:13
-#: krm/old_templates/users/Dashboard.html:60
-#: krm/old_templates/users/ru/Dashboard.html:60
-msgid "Oficinas"
-msgstr "Offices"
-
-#: krm/old_templates/base/Home.html:88
-#: krm/old_templates/users/Dashboard.html:88
-#: krm/old_templates/users/ru/Dashboard.html:88
-msgid "Manuscritos"
-msgstr ""
-
-#: krm/old_templates/pages/Home.html:60 krm/old_templates/pages/__home.html:60
-msgid "Taxonomías"
-msgstr ""
-
-#: krm/old_templates/pages/Pruebas.html:27
-msgid "Página para pruebas"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:5
-#: krm/old_templates/rates/RateDetail.html:32
-msgid "Oficina"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:43
-msgid "Permite manuscritos"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:44
-#, fuzzy
-msgid "Sello al que pertenece"
-msgstr "Process to which it belongs"
-
-#: krm/old_templates/rates/RateDetail.html:48
-msgid "Política de privacidad"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:51
-#, fuzzy
-msgid "Email de respuesta"
-msgstr "Author of the answer"
-
-#: krm/old_templates/rates/RateDetail.html:54
-#, fuzzy
-msgid "Administradores"
-msgstr "Waiting Administrator"
-
-#: krm/old_templates/rates/RateDetail.html:82
-msgid "Manuscritos asociadas a la oficina"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:92
-msgid "SELLO - OFICINA"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:93
-msgid "TITULO"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:94
-msgid "AUTOR"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:96
-#: krm/old_templates/users/UserList.html:50
-msgid "ACCIONES"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:116
-msgid "Error"
-msgstr ""
-
-#: krm/old_templates/rates/RateDetail.html:137
-msgid "No se hay registrados manuscritos para las oficinas de este sello."
-msgstr ""
-
-#: krm/old_templates/rates/RateList.html:49
-msgid "SAGE CODE"
-msgstr ""
-
-#: krm/old_templates/rates/RateList.html:50
-msgid "SAGE ID"
-msgstr ""
-
-#: krm/old_templates/rates/RateList.html:67
-msgid "No se han registado Tarifas."
-msgstr ""
-
-#: krm/old_templates/rates/RateList.html:73
-msgid "Actualizar desde SAGE"
-msgstr ""
-
-#: krm/old_templates/rates/RateUpdate.html:17
-#: krm/old_templates/rates/RateUpdate.html:32
-#, fuzzy
-msgid "Editar Tarifa"
-msgstr "Edit user"
-
-#: krm/old_templates/rates/RateUpdate.html:44
-#, fuzzy
-msgid "Datos de la Tarifa"
-msgstr "User information"
-
-#: krm/old_templates/rates/RateUpdate.html:49
-msgid "Sello"
-msgstr ""
-
-#: krm/old_templates/sage/SageStatus.html:27
-msgid "SAGE Status"
-msgstr ""
-
-#: krm/old_templates/users/UserCreate.html:6
-#: krm/old_templates/users/UserCreate.html:32
-#: krm/users/views/user_views.py:114
-msgid "Nuevo usuario"
-msgstr "New user"
-
-#: krm/old_templates/users/UserCreate.html:17
-#: krm/old_templates/users/UserList.html:89 krm/users/views/user_views.py:117
-msgid "Nuevo Usuario"
-msgstr "New User"
-
-#: krm/old_templates/users/UserDetail.html:44
-#, fuzzy
-msgid "Is administrador"
-msgstr "Supervisión administrador"
-
-#: krm/old_templates/users/UserDetail.html:45
-#, fuzzy
-msgid "Oficinas que administra"
-msgstr "Companías que administra"
-
-#: krm/old_templates/users/UserList.html:48
-msgid "ADMIN"
-msgstr "ADMIN"
-
-#: krm/old_templates/users/UserList.html:49
-msgid "OFICINAS QUE ADMINISTRA"
-msgstr "OFFICES IT MANAGES"
-
-#: krm/old_templates/users/UserList.html:83
-msgid "No hay usuarios registrados."
-msgstr "There are no registered users."
-
-#: krm/old_templates/users/UserUpdate.html:6
-#: krm/old_templates/users/UserUpdate.html:32
-#: krm/users/views/user_views.py:147
-msgid "Editar usuario"
-msgstr "Edit user"
-
-#: krm/old_templates/users/UserUpdate.html:17
-#: krm/users/views/user_views.py:149
-msgid "Editar Usuario"
-msgstr "Edit User"
-
-#: krm/old_templates/users/UsersLogin.html:70
-msgid "INICIAR SESIÓN"
-msgstr "LOG IN"
-
-#: krm/old_templates/users/UsersLoginCode.html:71
-msgid "CÓDIGO DE INICIO DE SESIÓN"
-msgstr "LOGIN CODE"
-
-#: krm/old_templates/users/UsersLoginCode.html:106
-#: krm/old_templates/users/UsersPasswordResetOk.html:100
-#: krm/old_templates/users/UsersRememberPassword.html:103
-#: krm/old_templates/users/UsersTypePassword.html:102
-msgid "Bienvenido a"
-msgstr "Welcome to"
-
-#: krm/old_templates/users/UsersPasswordResetOk.html:68
-msgid "EMAIL ENVIADO"
-msgstr "EMAIL SENT"
-
-#: krm/old_templates/users/UsersRememberPassword.html:71
-#: krm/old_templates/users/UsersTypePassword.html:71
-msgid "RESTABLECER CONTRASEÑA"
-msgstr "RESET PASSWORD"
-
-#: krm/old_templates/users/UsersRememberPassword.html:77
-#: krm/old_templates/users/UsersTypePassword.html:77
-msgid ""
-"Introduzca su email para iniciar el proceso de restablecimiento de "
-"contraseña"
-msgstr "Enter your email to start the password reset process"
-
-#: krm/old_templates/users/UsersRememberPassword.html:83
-#, fuzzy
-msgid "Restablecer contraseña"
-msgstr "Reset password"
-
-#: krm/old_templates/users/UsersTypePassword.html:84
-#: krm/users/models/users.py:222
-msgid "Establecer contraseña"
-msgstr "Set password"
 
 #: krm/process/models/sub_process_model.py:15
 msgid "Identificador de subproceso"
@@ -6975,9 +6089,17 @@ msgstr "New Process"
 msgid "Proceso creado correctamente"
 msgstr "Process successfully created"
 
+#: krm/process/views/process_views.py:145
+msgid "Editar Proceso"
+msgstr "Edit Process"
+
 #: krm/process/views/process_views.py:155
 msgid "Proceso actualizado correctamente"
 msgstr "Process correctly updated"
+
+#: krm/process/views/process_views.py:177
+msgid "Eliminar Proceso"
+msgstr "Delete Process"
 
 #: krm/process/views/process_views.py:185
 msgid "Proceso eliminado correctamente"
@@ -6990,9 +6112,13 @@ msgid ""
 "sus evaluaciónes?: </span> {0}? <span class=\"kt-font-bold\">Se borrarán "
 "todos los datos asociados al mismo.</span>"
 msgstr ""
-"<span class=\"kt-font-bold\">Are you sure you want to delete the Process and"
-" all its evaluations? </span> {0}? <span class=\"kt-font-bold\">All data "
+"<span class=\"kt-font-bold\">Are you sure you want to delete the Process and "
+"all its evaluations? </span> {0}? <span class=\"kt-font-bold\">All data "
 "associated with it will be deleted.</span>"
+
+#: krm/process/views/sub_process_views.py:122
+msgid "Nuevo Sub Proceso"
+msgstr "New Sub Process"
 
 #: krm/process/views/sub_process_views.py:132
 msgid "Sub PRoceso creado correctamente"
@@ -7018,8 +6144,8 @@ msgstr "Sub Process successfully eliminated"
 #: krm/process/views/sub_process_views.py:202
 #, python-brace-format
 msgid ""
-"<span class=\"kt-font-bold\">¿Seguro que desea eliminar el Sub Proceso: "
-"</span> {0} {1}? <span class=\"kt-font-bold\">Se borrarán todos los datos "
+"<span class=\"kt-font-bold\">¿Seguro que desea eliminar el Sub Proceso: </"
+"span> {0} {1}? <span class=\"kt-font-bold\">Se borrarán todos los datos "
 "asociados al mismo.</span>"
 msgstr ""
 "<span class=\"kt-font-bold\">Are you sure you want to delete the Sub "
@@ -7043,6 +6169,10 @@ msgstr "Question"
 #: krm/questionnaires/models/question_test_model.py:24
 msgid "Evaluación de cuestionario"
 msgstr "Questionnaire evaluation"
+
+#: krm/questionnaires/models/question_test_model.py:45
+msgid "Si"
+msgstr "Yes"
 
 #: krm/questionnaires/models/question_test_model.py:58
 msgid "Esperando respuesta del evaluador"
@@ -7122,8 +6252,8 @@ msgstr "Question correctly eliminated"
 #, python-brace-format
 msgid ""
 "<span class=\"kt-font-bold\">¿Seguro que desea eliminar la pregunta y todas "
-"sus respuestas?: </span> {0}? <span class=\"kt-font-bold\">Se borrarán todos"
-" los datos asociados al mismo.</span>"
+"sus respuestas?: </span> {0}? <span class=\"kt-font-bold\">Se borrarán todos "
+"los datos asociados al mismo.</span>"
 msgstr ""
 "<span class=\"kt-font-bold\">Are you sure you want to delete the question "
 "and all its answers?: </span> {0}? <span class=\"kt-font-bold\">All data "
@@ -7176,17 +6306,17 @@ msgstr "Import Questionnaire"
 #: krm/questionnaires/views/ga_questionnaire_views.py:248
 #, python-format
 msgid ""
-"En la hoja de Cuestionarios, en la fila %s falta algún campo obligatorio. Se"
-" ha abortado la importación"
+"En la hoja de Cuestionarios, en la fila %s falta algún campo obligatorio. Se "
+"ha abortado la importación"
 msgstr ""
-"In the Questionnaires sheet, some required fields are missing in the %s row."
-" The import has been cancelled"
+"In the Questionnaires sheet, some required fields are missing in the %s row. "
+"The import has been cancelled"
 
 #: krm/questionnaires/views/ga_questionnaire_views.py:272
 #, python-format
 msgid ""
-"En la hoja de Cuestionarios, en la fila %s ya existe un cuestionario con esa"
-" referencia. Se ha abortado la importación"
+"En la hoja de Cuestionarios, en la fila %s ya existe un cuestionario con esa "
+"referencia. Se ha abortado la importación"
 msgstr ""
 "In the Questionnaires sheet, in the row %s there is already a questionnaire "
 "with that reference. The import has been cancelled"
@@ -7378,9 +6508,8 @@ msgid ""
 "al mismo.</span>"
 msgstr ""
 "<span class=\"kt-font-bold\">Are you sure you want to remove the Risk "
-"Domain, Master Risks and associated risks?: </span> {0} {1}? <span "
-"class=\"kt-font-bold\">All associated risks and controls will be "
-"deleted.</span>"
+"Domain, Master Risks and associated risks?: </span> {0} {1}? <span class="
+"\"kt-font-bold\">All associated risks and controls will be deleted.</span>"
 
 #: krm/risks/views/risk_master_views.py:74
 msgid "Riesgos Maestro (N1)"
@@ -7414,13 +6543,13 @@ msgstr "Master Risk successfully eliminated"
 #: krm/risks/views/risk_master_views.py:201
 #, python-brace-format
 msgid ""
-"<span class=\"kt-font-bold\">¿Seguro que desea eliminar el Riesgo Maestro: "
-"</span> {0} {1}? <span class=\"kt-font-bold\">Se borrarán todos los datos "
+"<span class=\"kt-font-bold\">¿Seguro que desea eliminar el Riesgo Maestro: </"
+"span> {0} {1}? <span class=\"kt-font-bold\">Se borrarán todos los datos "
 "asociados al mismo.</span>"
 msgstr ""
 "<span class=\"kt-font-bold\">Are you sure you want to eliminate the Master "
-"Risk: </span> {0} {1}? <span class=\"kt-font-bold\">All associated data will"
-" be deleted.</span>"
+"Risk: </span> {0} {1}? <span class=\"kt-font-bold\">All associated data will "
+"be deleted.</span>"
 
 #: krm/risks/views/risk_views.py:118
 msgid "Nuevo (N2)"
@@ -7450,13 +6579,13 @@ msgstr "Risk (N2) successfully removed"
 #: krm/risks/views/risk_views.py:202
 #, python-brace-format
 msgid ""
-"<span class=\"kt-font-bold\">¿Seguro que desea eliminar el Riesgo (N2): "
-"</span> {0} {1}? <span class=\"kt-font-bold\">Se borrarán todos los datos "
+"<span class=\"kt-font-bold\">¿Seguro que desea eliminar el Riesgo (N2): </"
+"span> {0} {1}? <span class=\"kt-font-bold\">Se borrarán todos los datos "
 "asociados al mismo.</span>"
 msgstr ""
 "<span class=\"kt-font-bold\">Are you sure you want to eliminate the Risk "
-"(N2): </span> {0} {1}? <span class=\"kt-font-bold\">All associated data will"
-" be deleted.</span>"
+"(N2): </span> {0} {1}? <span class=\"kt-font-bold\">All associated data will "
+"be deleted.</span>"
 
 #: krm/users/forms/login.py:14
 msgid "Password"
@@ -7540,6 +6669,10 @@ msgstr "Password recovery key"
 msgid "Cargo que ocupa"
 msgstr "Position held"
 
+#: krm/users/models/users.py:222
+msgid "Establecer contraseña"
+msgstr "Set password"
+
 #: krm/users/models/users.py:234
 msgid "{} - Nueva cuenta de usuario"
 msgstr "{} - New user account"
@@ -7568,9 +6701,25 @@ msgstr "Dashboard for Global Administrator"
 msgid "Dashboard para el usuario regular"
 msgstr "Dashboard for regular users"
 
+#: krm/users/views/user_views.py:114
+msgid "Nuevo usuario"
+msgstr "New user"
+
+#: krm/users/views/user_views.py:117
+msgid "Nuevo Usuario"
+msgstr "New User"
+
 #: krm/users/views/user_views.py:126
 msgid "Usuario creado correctamente"
 msgstr "User successfully created"
+
+#: krm/users/views/user_views.py:147
+msgid "Editar usuario"
+msgstr "Edit user"
+
+#: krm/users/views/user_views.py:149
+msgid "Editar Usuario"
+msgstr "Edit User"
 
 #: krm/users/views/user_views.py:158
 msgid "Usuario modificado correctamente"
@@ -7583,11 +6732,11 @@ msgstr "Delete User"
 #: krm/users/views/user_views.py:188
 #, python-format
 msgid ""
-"¿Seguro que desea <span class=\"kt-font-bold\">eliminar el Usuario "
-"%s</span>? Se borrarán todos los datos asociados al mismo."
+"¿Seguro que desea <span class=\"kt-font-bold\">eliminar el Usuario %s</"
+"span>? Se borrarán todos los datos asociados al mismo."
 msgstr ""
-"Are you sure you want to <span class=\"kt-font-bold\">delete User %s</span>?"
-" All associated data will be deleted."
+"Are you sure you want to <span class=\"kt-font-bold\">delete User %s</span>? "
+"All associated data will be deleted."
 
 #: krm/users/views/user_views.py:194
 msgid "Usuario eliminado correctamente"
@@ -7600,8 +6749,7 @@ msgstr "Users Importer"
 #: krm/users/views/user_views.py:273
 #, python-format
 msgid "El email introducido en la fila %s ya está registrado por otro usuario"
-msgstr ""
-"The email entered in the row %s is already registered by another user."
+msgstr "The email entered in the row %s is already registered by another user."
 
 #: krm/users/views/user_views.py:290
 #, python-format
@@ -7611,11 +6759,11 @@ msgstr "The company %s in row %s does not exist!"
 #: krm/users/views/user_views.py:305
 #, python-format
 msgid ""
-"El lenguaje de notificación %s de la fila %s no existe! (Use \"en\" o \"es\""
-" para inlgés o español, respectivamente)"
+"El lenguaje de notificación %s de la fila %s no existe! (Use \"en\" o \"es\" "
+"para inlgés o español, respectivamente)"
 msgstr ""
-"The notification language %s in row %s does not exist! (Use \"en\" or \"es\""
-" for English or Spanish, respectively)."
+"The notification language %s in row %s does not exist! (Use \"en\" or \"es\" "
+"for English or Spanish, respectively)."
 
 #: krm/users/views/user_views.py:319
 #, python-format
@@ -7647,6 +6795,478 @@ msgstr "Link expired, request password reminder again"
 msgid "Password cambiado correctamente"
 msgstr "Password successfully changed"
 
+#~ msgid "Productos"
+#~ msgstr "Products"
+
+#, fuzzy
+#~ msgid "Clientes"
+#~ msgstr "Pending"
+
+#, fuzzy
+#~ msgid "Presupuestos"
+#~ msgstr "Answers"
+
+#, fuzzy
+#~ msgid "Tarifas"
+#~ msgstr "Edit user"
+
+#~ msgid "Pruebas"
+#~ msgstr "Tests"
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "\n"
+#~ "  Hola %(user_email)s,<br><br>\n"
+#~ "\n"
+#~ "  Dispone de controles pendientes de cumplimentar dentro de la plataforma "
+#~ "<strong>PRHGE</strong> correspondientes a la\n"
+#~ "  Autoevaluación del Proceso de <strong>%(process_name)s</strong> que "
+#~ "tendrá lugar en el periodo desde el\n"
+#~ "  <strong>%(process_test_from)s</strong> hasta el <strong>"
+#~ "%(process_test_to)s</strong>.<br><br>\n"
+#~ "\n"
+#~ "  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de "
+#~ "acceso para poder completarlos.<br><br>\n"
+#~ "\n"
+#~ "  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a "
+#~ "href=\"%(recovery_url)s\">esta url</a>\n"
+#~ "  indicando su correo electrónico.<br><br>\n"
+#~ "\n"
+#~ "  Gracias.\n"
+#~ "  "
+#~ msgstr ""
+#~ "\n"
+#~ "Hello %(user_email)s,<br><br>\n"
+#~ "\n"
+#~ "You have controls pending completion within the platform <strong>KRM "
+#~ "Tool</strong> corresponding to the Self-Assessment of the Process <strong>"
+#~ "%(evaluation_ref)s</strong> which will take place during the period from "
+#~ "<strong>%(evaluation_date_begin)s</strong> to <strong>"
+#~ "%(evaluation_date_intermediate)s</strong>.<br><br>\n"
+#~ "\n"
+#~ "Access from <a href=\"%(site_url)s\">this url</a> with your login "
+#~ "information in order to complete them.<br><br>\n"
+#~ "\n"
+#~ "If you do not remember your credentials, you can retrieve your password "
+#~ "from <a href=\"%(recovery_url)s\">this url</a> indicating your e-mail "
+#~ "address.<br><br>\n"
+#~ "\n"
+#~ "Thank you."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "\n"
+#~ "  Hola %(user_email)s,<br><br>\n"
+#~ "\n"
+#~ "  Dispone de controles pendientes de revisar dentro de la plataforma "
+#~ "<strong>PRHGE</strong> correspondientes a la\n"
+#~ "  Autoevaluación del Proceso de <strong>%(process_name)s</strong> que "
+#~ "tendrá lugar en el periodo desde el\n"
+#~ "  <strong>%(process_test_from)s</strong> hasta el <strong>"
+#~ "%(process_test_to)s</strong>.<br><br>\n"
+#~ "\n"
+#~ "  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de "
+#~ "acceso para poder revisarlos.<br><br>\n"
+#~ "\n"
+#~ "  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a "
+#~ "href=\"%(recovery_url)s\">esta url</a>\n"
+#~ "  indicando su correo electrónico.<br><br>\n"
+#~ "\n"
+#~ "  Gracias.\n"
+#~ "  "
+#~ msgstr ""
+#~ "\n"
+#~ "Hello %(user_email)s,<br><br>\n"
+#~ "\n"
+#~ "You have controls pending review within the platform <strong>KRM Tool</"
+#~ "strong> corresponding to the Self-Assessment of the Process <strong>"
+#~ "%(evaluation_ref)s</strong> which will take place during the period from "
+#~ "strong>%(evaluation_date_begin)s</strong> to <strong>"
+#~ "%(evaluation_date_intermediate)s</strong>.<br><br>\n"
+#~ "\n"
+#~ "Access from <a href=\"%(site_url)s\">this url</a> with your login "
+#~ "information in order to complete them.<br><br>\n"
+#~ "\n"
+#~ "If you do not remember your credentials, you can retrieve your password "
+#~ "from <a href=\"%(recovery_url)s\">this url</a> indicating your e-mail "
+#~ "address.<br><br>\n"
+#~ "\n"
+#~ "Thank you."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "\n"
+#~ "  Bienvenido a PRHGE.<br><br>Se ha creado una cuenta de usuario con su "
+#~ "dirección de email. Para poder establecer una\n"
+#~ "  contraseña de acceso a la plataforma haga clic en el siguiente enlace "
+#~ "para acceder al formulario\n"
+#~ "  correspondiente.<br><br><a href=\"%(remember_url)s\">Establecer "
+#~ "contraseña</a>\n"
+#~ "  "
+#~ msgstr ""
+#~ "\n"
+#~ "Welcome to KRM Tool.<br><br>A user account has been created with your "
+#~ "email address. In order to set up a\n"
+#~ "password to access the platform, click on the following link to access "
+#~ "the corresponding form.\n"
+#~ "<br><br><a href=\"%(remember_url)s\">Set password in KRM Tool</a>"
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "\n"
+#~ "  Se ha iniciado el recordatorio de clave para su usuario. Pulse en el "
+#~ "siguiente enlace para acceder al formulario\n"
+#~ "  correspondiente.<br><br><a href=\"%(remember_url)s\">Restablecer "
+#~ "contraseña en PRHGE</a>\n"
+#~ "  "
+#~ msgstr ""
+#~ "\n"
+#~ "The password reminder for your user has been started. Click on the "
+#~ "following link to access the form\n"
+#~ "corresponding.<br><br><a href=\"%(remember_url)s\">Reset password in KRM "
+#~ "Tool</a>"
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "\n"
+#~ "  Bienvenido a PRHGE.<br><br>Se ha creado una cuenta de usuario con su "
+#~ "dirección de email. Para poder establecer una\n"
+#~ "  contraseña de acceso a la plataforma haga clic en el siguiente enlace "
+#~ "para acceder al formulario\n"
+#~ "  correspondiente.<br><br><a href=\"%(remember_url)s\">Establecer "
+#~ "contraseña en PRHGE</a>\n"
+#~ "  "
+#~ msgstr ""
+#~ "\n"
+#~ "Welcome to KRM Tool.<br><br>A user account has been created with your "
+#~ "email address. In order to set up a\n"
+#~ "password to access the platform, click on the following link to access "
+#~ "the corresponding form.\n"
+#~ "<br><br><a href=\"%(remember_url)s\">Set password in KRM Tool</a>"
+
+#, fuzzy
+#~ msgid "Datos del Grupo Empresarial:"
+#~ msgstr "New Business Group"
+
+#, fuzzy
+#~ msgid "Desplegar"
+#~ msgstr "Obligation"
+
+#, fuzzy
+#~ msgid "Correo Electrónico"
+#~ msgstr "Enter your email address"
+
+#, fuzzy
+#~ msgid "Listado de compañías asociadas al Grupo Empresarial."
+#~ msgstr "% companies have been imported into the business Group"
+
+#~ msgid "NOMBRE"
+#~ msgstr "NAME"
+
+#~ msgid "PAÍS"
+#~ msgstr "COUNTRY"
+
+#~ msgid "EMAIL"
+#~ msgstr "EMAIL"
+
+#, fuzzy
+#~ msgid "Sin compañías pertenecientes al Grupo Empresarial"
+#~ msgstr "% companies have been imported into the business Group"
+
+#, fuzzy
+#~ msgid "Controles asociados al Riesgo"
+#~ msgstr "Associated controls"
+
+#, fuzzy
+#~ msgid "PLAN DE ACCIÓN"
+#~ msgstr "REMEDIATION PLANS"
+
+#~ msgid "P. DE TESTEO"
+#~ msgstr "TESTING PLAN"
+
+#, fuzzy
+#~ msgid "KEY CONTROL"
+#~ msgstr "CONTROL"
+
+#~ msgid "TIPO"
+#~ msgstr "TYPE"
+
+#~ msgid "AUTOMATIZACIÓN"
+#~ msgstr "AUTOMATION"
+
+#~ msgid "FRECUENCIA"
+#~ msgstr "FREQUENCY"
+
+#~ msgid "ASSERTIONS"
+#~ msgstr "ASSERTIONS"
+
+#, fuzzy
+#~ msgid "No hay controles definidos para dicho riesgo"
+#~ msgstr "No defined controls for this risk"
+
+#, fuzzy
+#~ msgid "DATOS DEL CONTROL"
+#~ msgstr "CONTROL"
+
+#~ msgid "OBJETIVO"
+#~ msgstr "OBJECTIVE"
+
+#~ msgid "FRECUENCIA DEL CONTROL"
+#~ msgstr "CONTROL FREQUENCY"
+
+#~ msgid "TEST DE PROCESO"
+#~ msgstr "PROCESS TEST"
+
+#~ msgid "IDENTIFICADOR DEL TEST DE CONTROL"
+#~ msgstr "CONTROL TEST IDENTIFIER"
+
+#, fuzzy
+#~ msgid "USUARIO SUPERVISOR"
+#~ msgstr "CONTROL SUPERVISOR"
+
+#, fuzzy
+#~ msgid "ESTADO"
+#~ msgstr "RESULT"
+
+#, fuzzy
+#~ msgid "Datos del proceso"
+#~ msgstr "Risk Data"
+
+#~ msgid "Siglas"
+#~ msgstr "Acronyms"
+
+#, fuzzy
+#~ msgid "Grupos Empresariales que lo pueden usar:"
+#~ msgstr "Business group to which it belongs"
+
+#, fuzzy
+#~ msgid "Ningún grupo empresarial"
+#~ msgstr "Business group"
+
+#, fuzzy
+#~ msgid "Generar Test de Proceso a Compañías"
+#~ msgstr "Risk Domain Experts for Companies"
+
+#~ msgid "PROCESO"
+#~ msgstr "PROCESS"
+
+#~ msgid "COMPAÑÍA"
+#~ msgstr "COMPANY"
+
+#, fuzzy
+#~ msgid "Nº CONTROLES"
+#~ msgstr "CONTROLS"
+
+#, fuzzy
+#~ msgid "DATOS DEL RIESGO"
+#~ msgstr "DESCRIPTION"
+
+#~ msgid "REFERENCIA"
+#~ msgstr "REFERENCE"
+
+#, fuzzy
+#~ msgid "DESCRIPCIÓN DEL RIESGO"
+#~ msgstr "DESCRIPTION"
+
+#~ msgid "SUB PROCESO"
+#~ msgstr "SUB PROCESS"
+
+#, fuzzy
+#~ msgid "CATEGORÍA DE RIESGO"
+#~ msgstr "DESCRIPTION"
+
+#, fuzzy
+#~ msgid "Datos del Sub Proceso:"
+#~ msgstr "Risk Data"
+
+#, fuzzy
+#~ msgid "Subproceso:"
+#~ msgstr "Subprocesses"
+
+#, fuzzy
+#~ msgid "Descripción del Sub Proceso"
+#~ msgstr "Risk Description"
+
+#~ msgid "RIESGOS DEL SUBPROCESO"
+#~ msgstr "RISKS OF THE SUB-PROCESS"
+
+#~ msgid "RIESGO: "
+#~ msgstr "RISK:"
+
+#, fuzzy
+#~ msgid "Listado de Controles definidos para dicho Riesgo"
+#~ msgstr "No defined controls for this risk"
+
+#, fuzzy
+#~ msgid "No se han establecido Controles para este Riesgo"
+#~ msgstr "No risks have been created for this sub-process"
+
+#, fuzzy
+#~ msgid "Final del riesgo"
+#~ msgstr "Risk domains"
+
+#, fuzzy
+#~ msgid "No se han creado riesgos para este Sub Proceso "
+#~ msgstr "No risks have been created for this sub-process"
+
+#, fuzzy
+#~ msgid "Detalle de Subproceso"
+#~ msgstr "Subprocess identifier"
+
+#, fuzzy
+#~ msgid "Detalle de Riesgo"
+#~ msgstr "Risk Data"
+
+#~ msgid "APELLIDOS"
+#~ msgstr "SURNAMES"
+
+#~ msgid "ÚLTIMO ACCESO"
+#~ msgstr "LAST ACCESS"
+
+#~ msgid "ADMINISTRADOR DEL GRUPO EMPRESARIAL"
+#~ msgstr "MANAGER OF THE CORPORATE GROUP"
+
+#, fuzzy
+#~ msgid "Sin usuarios en esta compañía"
+#~ msgstr "No users in the company"
+
+#~ msgid "GRUPO EMPRESARIAL QUE ADMINISTRA"
+#~ msgstr "CORPORATE GROUP THAT MANAGES"
+
+#, fuzzy
+#~ msgid "Nuevo x"
+#~ msgstr "New"
+
+#~ msgid "Audit User"
+#~ msgstr "Audit User"
+
+#, fuzzy
+#~ msgid "Grupos Empresariales"
+#~ msgstr "Business groups"
+
+#, fuzzy
+#~ msgid "Test de proceso"
+#~ msgstr "Process Tests"
+
+#, fuzzy
+#~ msgid "Planes de Remediación"
+#~ msgstr "Remediation plans"
+
+#, fuzzy
+#~ msgid "Completar controles"
+#~ msgstr "Complete Controls"
+
+#, fuzzy
+#~ msgid "Revisar controles"
+#~ msgstr "Supervise Controls"
+
+#, fuzzy
+#~ msgid "Mi perfil"
+#~ msgstr "Edit profile"
+
+#, fuzzy
+#~ msgid "Administrador Global"
+#~ msgstr "Dashboard for Global Administrator"
+
+#~ msgid "Regiones"
+#~ msgstr "Regions"
+
+#~ msgid "Marcos normativos"
+#~ msgstr "Regulatory frameworks"
+
+#, fuzzy
+#~ msgid "Administrador G. Empresarial"
+#~ msgstr "Edit Business Group: %s"
+
+#, fuzzy
+#~ msgid "Grupo Empresarial"
+#~ msgstr "Business group"
+
+#, fuzzy
+#~ msgid "Test de Proceso"
+#~ msgstr "Process Tests"
+
+#~ msgid "Regular User"
+#~ msgstr "Regular User"
+
+#, fuzzy
+#~ msgid "Un test de control está pendiente de rellenar"
+#~ msgstr "Controls to be completed"
+
+#~ msgid "Faqs"
+#~ msgstr "Faqs"
+
+#~ msgid "About"
+#~ msgstr "About"
+
+#, fuzzy
+#~ msgid "Dashboard Administrador Global"
+#~ msgstr "Dashboard for Global Administrator"
+
+#~ msgid "Oficinas"
+#~ msgstr "Offices"
+
+#, fuzzy
+#~ msgid "Sello al que pertenece"
+#~ msgstr "Process to which it belongs"
+
+#, fuzzy
+#~ msgid "Email de respuesta"
+#~ msgstr "Author of the answer"
+
+#, fuzzy
+#~ msgid "Administradores"
+#~ msgstr "Waiting Administrator"
+
+#, fuzzy
+#~ msgid "Editar Tarifa"
+#~ msgstr "Edit user"
+
+#, fuzzy
+#~ msgid "Datos de la Tarifa"
+#~ msgstr "User information"
+
+#, fuzzy
+#~ msgid "Is administrador"
+#~ msgstr "Supervisión administrador"
+
+#, fuzzy
+#~ msgid "Oficinas que administra"
+#~ msgstr "Companías que administra"
+
+#~ msgid "ADMIN"
+#~ msgstr "ADMIN"
+
+#~ msgid "OFICINAS QUE ADMINISTRA"
+#~ msgstr "OFFICES IT MANAGES"
+
+#~ msgid "No hay usuarios registrados."
+#~ msgstr "There are no registered users."
+
+#~ msgid "INICIAR SESIÓN"
+#~ msgstr "LOG IN"
+
+#~ msgid "CÓDIGO DE INICIO DE SESIÓN"
+#~ msgstr "LOGIN CODE"
+
+#~ msgid "Bienvenido a"
+#~ msgstr "Welcome to"
+
+#~ msgid "EMAIL ENVIADO"
+#~ msgstr "EMAIL SENT"
+
+#~ msgid "RESTABLECER CONTRASEÑA"
+#~ msgstr "RESET PASSWORD"
+
+#~ msgid ""
+#~ "Introduzca su email para iniciar el proceso de restablecimiento de "
+#~ "contraseña"
+#~ msgstr "Enter your email to start the password reset process"
+
+#, fuzzy
+#~ msgid "Restablecer contraseña"
+#~ msgstr "Reset password"
+
 #~ msgid "No existen controles que apliquen sobre esta compañía"
 #~ msgstr "There are no controls that apply to this company"
 
@@ -7666,8 +7286,8 @@ msgstr "Password successfully changed"
 #~ "El reporte realizado afectará a las circunstancias reportables tanto en "
 #~ "España como en el resto de países en los que opera Globalvia."
 #~ msgstr ""
-#~ "The report completed will affect the reportable circumstances both in Spain "
-#~ "and in the rest of the countries in which Globalvia operates."
+#~ "The report completed will affect the reportable circumstances both in "
+#~ "Spain and in the rest of the countries in which Globalvia operates."
 
 #~ msgid "KRM Tool"
 #~ msgstr "KRM Tool"
@@ -7680,11 +7300,18 @@ msgstr "Password successfully changed"
 #~ "\n"
 #~ "  Hola %(user_email)s,<br><br>\n"
 #~ "\n"
-#~ "  Dispone de controles pendientes de revisar dentro de la plataforma <strong>KRM Tool</strong> correspondientes a la Autoevaluación del Proceso de <strong>%(evaluation_ref)s</strong> que tendrá lugar en el periodo desde el <strong>%(evaluation_date_begin)s</strong> hasta el <strong>%(evaluation_date_intermediate)s</strong>.<br><br>\n"
+#~ "  Dispone de controles pendientes de revisar dentro de la plataforma "
+#~ "<strong>KRM Tool</strong> correspondientes a la Autoevaluación del "
+#~ "Proceso de <strong>%(evaluation_ref)s</strong> que tendrá lugar en el "
+#~ "periodo desde el <strong>%(evaluation_date_begin)s</strong> hasta el "
+#~ "<strong>%(evaluation_date_intermediate)s</strong>.<br><br>\n"
 #~ "\n"
-#~ "  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de acceso para poder revisarlos.<br><br>\n"
+#~ "  Acceda desde <a href=\"%(site_url)s\">esta url</a> con sus datos de "
+#~ "acceso para poder revisarlos.<br><br>\n"
 #~ "\n"
-#~ "  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico.<br><br>\n"
+#~ "  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a "
+#~ "href=\"%(recovery_url)s\">esta url</a> indicando su correo electrónico."
+#~ "<br><br>\n"
 #~ "\n"
 #~ "  Gracias.\n"
 #~ "  "
@@ -7692,11 +7319,18 @@ msgstr "Password successfully changed"
 #~ "\n"
 #~ "Hello %(user_email)s,<br><br>\n"
 #~ "\n"
-#~ "You have controls pending review within the platform <strong>KRM Tool</strong> corresponding to the Self-Assessment of the Process <strong>%(evaluation_ref)s</strong> which will take place during the period from strong>%(evaluation_date_begin)s</strong> to <strong>%(evaluation_date_intermediate)s</strong>.<br><br>\n"
+#~ "You have controls pending review within the platform <strong>KRM Tool</"
+#~ "strong> corresponding to the Self-Assessment of the Process <strong>"
+#~ "%(evaluation_ref)s</strong> which will take place during the period from "
+#~ "strong>%(evaluation_date_begin)s</strong> to <strong>"
+#~ "%(evaluation_date_intermediate)s</strong>.<br><br>\n"
 #~ "\n"
-#~ "Access from <a href=\"%(site_url)s\">this url</a> with your login information in order to complete them.<br><br>\n"
+#~ "Access from <a href=\"%(site_url)s\">this url</a> with your login "
+#~ "information in order to complete them.<br><br>\n"
 #~ "\n"
-#~ "If you do not remember your credentials, you can retrieve your password from <a href=\"%(recovery_url)s\">this url</a> indicating your e-mail address.<br><br>\n"
+#~ "If you do not remember your credentials, you can retrieve your password "
+#~ "from <a href=\"%(recovery_url)s\">this url</a> indicating your e-mail "
+#~ "address.<br><br>\n"
 #~ "\n"
 #~ "Thank you."
 
@@ -7714,15 +7348,17 @@ msgstr "Password successfully changed"
 #~ msgstr "Login to KRM Tool"
 
 #, python-format
-#~ msgid "En la hoja de riesgo compañía hay una REF de riesgo que no existe: %s"
-#~ msgstr "In the company risk sheet there is a risk REF that does not exist: %s"
+#~ msgid ""
+#~ "En la hoja de riesgo compañía hay una REF de riesgo que no existe: %s"
+#~ msgstr ""
+#~ "In the company risk sheet there is a risk REF that does not exist: %s"
 
 #, python-format
 #~ msgid ""
 #~ "En la hoja de riesgo compañía hay una REF de un control que no existe: %s"
 #~ msgstr ""
-#~ "In the company risk sheet there is a REF for a control that does not exist: "
-#~ "%s"
+#~ "In the company risk sheet there is a REF for a control that does not "
+#~ "exist: %s"
 
 #~ msgid "KRM Tool - Test de Riesgos pendientes de valorar"
 #~ msgstr "KRM Tool - Test of Risks to be assessed"
