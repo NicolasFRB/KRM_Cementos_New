@@ -38,7 +38,7 @@
       {% if request.user.controls_test_owner_pending.count > 0 or request.user.controls_test_supervisor_pending.count > 0%}
       <div class="card" style="background-color: #00bab3; padding: 5px;">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold text-white" style="opacity:85%;">Controles</div>
+        <div class="card-title fs-3 fw-bold text-white" style="opacity:85%;">{% trans 'Controles' %}</div>
       </div>
       <div class="card-body" style="padding-left: 10px">
         {% if request.user.controls_test_owner_pending.count > 0 %}
@@ -69,7 +69,7 @@
       {% if request.user.risk_test_inherent_expert_pending.count > 0 or request.user.risk_test_residual_evaluator_pending.count > 0 %}
       <div class="card" style="background-color: #00bab3; padding: 5px;">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold text-white" style="opacity:85%;">Riesgos</div>
+        <div class="card-title fs-3 fw-bold text-white" style="opacity:85%;">{% trans 'Riesgos' %}</div>
       </div>
       <div class="card-body" style="padding-left: 10px">
         {% if request.user.risk_test_inherent_expert_pending.count > 0 %}
