@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 19:15+0200\n"
-"PO-Revision-Date: 2023-05-03 11:42+0200\n"
+"POT-Creation-Date: 2023-05-03 18:43+0200\n"
+"PO-Revision-Date: 2023-05-03 19:04+0200\n"
 "Last-Translator: Mario  <marioalvarez1@kpmg.es>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -156,7 +156,7 @@ msgstr "Name"
 #: krm/_templates/companies/GaCompanyRiskKrmSelect.html:43
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:129
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:169
-#: krm/_templates/control_tests/ga/ControlTestDetail.html:213
+#: krm/_templates/control_tests/ga/ControlTestDetail.html:215
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:145
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:186
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:230
@@ -590,7 +590,7 @@ msgstr "New"
 #: krm/_templates/control_tests/ca/CaControlTestDetail.html:134
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:139
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:180
-#: krm/_templates/control_tests/ga/ControlTestDetail.html:224
+#: krm/_templates/control_tests/ga/ControlTestDetail.html:226
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:155
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:197
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:241
@@ -1942,7 +1942,7 @@ msgstr "Select a file"
 
 #: krm/_templates/control_tests/_ControlTestCreateAnswerControlOwner.html:129
 #: krm/_templates/control_tests/_ControlTestDetailOwner.html:126
-#: krm/_templates/control_tests/ga/ControlTestDetail.html:222
+#: krm/_templates/control_tests/ga/ControlTestDetail.html:224
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:239
 msgid "Testeo finalizado"
 msgstr "Testing completed"
@@ -1988,6 +1988,7 @@ msgid "Revisión completada"
 msgstr "Review completed"
 
 #: krm/_templates/control_tests/_ControlTestDetail.html:20
+#: krm/_templates/dashboards/ru/RuDashboard.html:41
 #: krm/_templates/domain_risks/GaDomainRiskList.html:33
 #: krm/_templates/evaluations/CaEvaluationList.html:31
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:432
@@ -2097,7 +2098,7 @@ msgid "Datos del plan de remediación"
 msgstr "Remediation plan information"
 
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:197
-#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:214
+#: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:213
 msgid "Resultado y evidencias"
 msgstr "Results and evidences"
 
@@ -2219,40 +2220,41 @@ msgid "Tienes"
 msgstr "You have"
 
 #: krm/_templates/dashboards/ru/RuDashboard.html:35
-#, fuzzy
 #| msgid "No hay tareas pendientes"
 msgid "tareas pendientes"
-msgstr "No pending tasks"
+msgstr "pending tasks"
 
 #: krm/_templates/dashboards/ru/RuDashboard.html:49
-#, fuzzy
 #| msgid "Controles pendientes de completar"
 msgid "controles pendientes de completar"
-msgstr "Controls to be completed"
+msgstr "controls to be completed"
 
 #: krm/_templates/dashboards/ru/RuDashboard.html:60
-#, fuzzy
 #| msgid "Controles pendientes de supervisar"
 msgid "controles pendientes de supervisar"
-msgstr "Controls pending supervision"
+msgstr "controls pending supervision"
+
+#: krm/_templates/dashboards/ru/RuDashboard.html:72
+#: krm/_templates/domain_risks/GaDomainRiskList.html:54
+#: krm/risks/models/risk_model.py:110 krm/risks/views/risk_views.py:46
+#: krm/risks/views/risk_views.py:116 krm/risks/views/risk_views.py:150
+msgid "Riesgos"
+msgstr "Risks"
 
 #: krm/_templates/dashboards/ru/RuDashboard.html:81
-#, fuzzy
 #| msgid "Controles pendientes de completar"
 msgid "riesgos inherentes pendientes de completar"
-msgstr "Controls to be completed"
+msgstr "inherent risks pending completion"
 
 #: krm/_templates/dashboards/ru/RuDashboard.html:92
-#, fuzzy
 #| msgid "Controles pendientes de completar"
 msgid "riesgos residuales pendientes de completar"
-msgstr "Controls to be completed"
+msgstr "residual risks pending completion"
 
 #: krm/_templates/dashboards/ru/RuDashboard.html:103
-#, fuzzy
 #| msgid "No hay tareas pendientes"
 msgid "¡No tienes tareas pendientes!"
-msgstr "No pending tasks"
+msgstr "You don't have any pending tasks!"
 
 #: krm/_templates/dashboards/test.html:5
 msgid "Test"
@@ -2288,12 +2290,6 @@ msgstr "There are no Master Risks (N1) associated with this risk domain."
 #: krm/risks/views/risk_master_views.py:182
 msgid "Riesgos Maestros (N1)"
 msgstr "Master Risks (N1)"
-
-#: krm/_templates/domain_risks/GaDomainRiskList.html:54
-#: krm/risks/models/risk_model.py:110 krm/risks/views/risk_views.py:46
-#: krm/risks/views/risk_views.py:116 krm/risks/views/risk_views.py:150
-msgid "Riesgos"
-msgstr "Risks"
 
 #: krm/_templates/domain_risks/GaDomainRiskUpdate.html:42
 #: krm/risks/views/domain_risk_views.py:144
@@ -3558,10 +3554,9 @@ msgid "Aviso legal"
 msgstr "Legal Notice"
 
 #: krm/_templates/layout/partials/sidebar-layout/_footer.html:10
-#, fuzzy
 #| msgid "Control"
 msgid "Contacto:"
-msgstr "Control"
+msgstr "Contact us:"
 
 #: krm/_templates/layout/partials/sidebar-layout/header/_navbar.html:15
 #: krm/_templates/layout/partials/sidebar-layout/header/_navbar.html:47
@@ -4550,9 +4545,9 @@ msgid "En la hoja de %s hay una REF de %s que no existe: %s"
 msgstr "In the %s sheet there is a REF of %s that does not exist: %s"
 
 #: krm/configuration/views/configuration_views.py:339
-#, fuzzy, python-format
+#, python-format
 msgid "El usuario %s no pertence a la compañia %s"
-msgstr "No users in the company"
+msgstr "The user %s does not belong to the company %s"
 
 #: krm/configuration/views/configuration_views.py:353
 #: krm/configuration/views/configuration_views_draft.py:116
@@ -4601,7 +4596,7 @@ msgstr ""
 "obligatoria en la fila %s"
 
 #: krm/configuration/views/configuration_views.py:578
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "En la hoja de controles no ha establecido valor para Control Frequency en la"
 #| " fila %s"
@@ -4609,7 +4604,7 @@ msgid ""
 "En la hoja de controles no ha establecido un valor correcto para el alcance "
 "en la fila %s"
 msgstr ""
-"In the control sheet you have not set a value for Control Frequency in the "
+"In the control sheet you have not set a correct value for the scope in the "
 "%s row."
 
 #: krm/configuration/views/configuration_views.py:605
@@ -4633,16 +4628,16 @@ msgid "{0} Riesgos Maestros importados"
 msgstr "{0} Imported Master Risks"
 
 #: krm/configuration/views/configuration_views.py:784
-#, fuzzy, python-brace-format
+#, python-brace-format
 #| msgid "Sub Procesos asociados"
 msgid "{0} Procesos creados"
-msgstr "Associated sub-processes"
+msgstr "{0} Processes created"
 
 #: krm/configuration/views/configuration_views.py:808
-#, fuzzy, python-brace-format
+#, python-brace-format
 #| msgid "SubProcesos asociados"
 msgid "{0} Subprocesos creados"
-msgstr "Associated sub-processes"
+msgstr "{0} Subprocesses created"
 
 #: krm/configuration/views/configuration_views.py:865
 #: krm/configuration/views/configuration_views_draft.py:481
@@ -4651,14 +4646,14 @@ msgstr "Associated sub-processes"
 msgid "{0} Controles importados"
 msgstr "{0} Imported controls"
 
-#: krm/configuration/views/configuration_views.py:908
+#: krm/configuration/views/configuration_views.py:912
 #: krm/configuration/views/configuration_views_draft.py:543
 #: krm/configuration/views/repo.py:914
 #, python-brace-format
 msgid "{0} Controles asociados a compañías creados"
 msgstr "{0} Controls associated with companies created"
 
-#: krm/configuration/views/configuration_views.py:947
+#: krm/configuration/views/configuration_views.py:951
 #: krm/configuration/views/configuration_views_draft.py:520
 #: krm/configuration/views/repo.py:891
 #, python-brace-format
@@ -4677,12 +4672,14 @@ msgid "En la hoja de dominios de riesgo hay una REF que ya existe: %s"
 msgstr "In the risk domain sheet there is a REF that already exists: %s"
 
 #: krm/configuration/views/configuration_views_draft.py:104
-#, fuzzy, python-brace-format
+#, python-brace-format
 #| msgid "En la hoja de %s hay una REF de %s que no existe: %s"
 msgid ""
 "En la hoja de {name} hay una REF de {master_name} que no existe: "
 "{elem[master]}"
-msgstr "In the %s sheet there is a REF of %s that does not exist: %s"
+msgstr ""
+"In the {name} sheet there is a REF of {master_name} that does not exist: "
+"{elem[master]}"
 
 #: krm/configuration/views/configuration_views_draft.py:304
 #: krm/configuration/views/repo.py:610
@@ -5015,7 +5012,7 @@ msgid ""
 msgstr "In the row %s \"Control - Systems\" cannot be longer than 140 characters."
 
 #: krm/controls/views/control_views.py:593
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "En la fila %s \"Control - Periodicidad\" solo admite los valores BD, DI, 1W,"
 #| " 2W, 1M, 3T, 6M y 1Y"
@@ -5023,8 +5020,8 @@ msgid ""
 "En la fila %s \"Control - Periodicidad\" solo admite los valores CO, BD, DI,"
 " 1W, 2W, 1M, 2M, 3T, 6M, 1Y, 2Y, 3Y"
 msgstr ""
-"In the row %s \"Control - Periodicity\" only the values BD, DI, 1W, 2W, 1M, "
-"3T, 6M and 1Y are allowed."
+"In the row %s \"Control - Periodicity\" only the values CO, BD, DI, 1W, 2W, "
+"1M, 2M, 3T, 6M, 1Y, 2Y, 3Y are allowed."
 
 #: krm/controls/views/control_views.py:607
 #, python-format
@@ -5413,17 +5410,18 @@ msgid "{} - Evaluación de controles de Compliance"
 msgstr "{} - Evaluation of compliance controls"
 
 #: krm/evaluations/models/control_test_model.py:192
-#, fuzzy, python-format
+#, python-format
 #| msgid "KRM Tool - Controles pendientes de completar"
 msgid "[%s] Envío de email de Controles pendientes de completar (COwner) (%s)"
-msgstr "KRM Tool - Controls pending completion"
+msgstr "[%s] Sending of email of Controls to be completed (COwner) (%s)"
 
 #: krm/evaluations/models/control_test_model.py:249
-#, fuzzy, python-format
+#, python-format
 #| msgid "KRC Tool - Controles pendientes de supervisar"
 msgid ""
 "[%s] Envío de email de Controles pendientes de supervisar (CSupervisor) (%s)"
-msgstr "KRC Tool - Controls to be supervised"
+msgstr ""
+"(%s) [%s] Sending of email of Controls to be monitored (CSupervisor) (%s)"
 
 #: krm/evaluations/models/evaluation_model.py:53
 msgid "Fecha límite para Control Owners"
@@ -5637,7 +5635,7 @@ msgstr "Correctly modified control test"
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:451
 #, python-format
 msgid "Enviadas notificaciones a %d usuarios!"
-msgstr ""
+msgstr "Notifications have been sent to %d users!"
 
 #: krm/evaluations/views/ru_control_test_views.py:152
 #: krm/evaluations/views/ru_control_test_views.py:167
@@ -6051,10 +6049,10 @@ msgid "{} - Cuestionario de Compliance"
 msgstr "{} - Compliance Questionnaire"
 
 #: krm/questionnaires/models/question_test_model.py:145
-#, fuzzy, python-format
+#, python-format
 #| msgid "Envío de email de Test de Pregunta"
 msgid "[%s] Envío de email de Test de Pregunta (%s)"
-msgstr "Send test question emails"
+msgstr "[%s] Test Question Email sent (%s)"
 
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:51
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:54
