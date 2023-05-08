@@ -75,11 +75,14 @@
 </div>
 
 <div class="card mb-8">
-  <div class="card-header">
+  <div class="card-header" >
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{% trans 'RESPUESTAS' %}</div>
-    <!--end::Card header-->
-  </div>
+    <div class="col-xl-3">
+      <div style="margin-top:15px;">
+      <h5 style="float: right ; font-size: 14px;">{% trans 'RESULTADO ACTUAL:&emsp;' %}<span style="float:right; font-size: 14px;" class="badge badge-{% if control_test.result == 'EF' %}success{% else %}danger{% endif %} text-wrap">{{ control_test.get_result_display }}</span></h5></div>
+    </div>
+    </div> 
   <div class="card-body">
     {% if control_test.answers.count > 0 %}
       {% for answer in control_test.answers.all %}
