@@ -127,6 +127,7 @@ class GaControlListView(ListView,FormView):
                     "FRECUENCIA",  # 9
                     "CONTROL OWNER",  # 10
                     "CONTROL SUPERVISOR",  # 11
+                    "ALCANCE",  # 12
                     ]
 
                 for col_num in range(len(columns)):
@@ -139,7 +140,6 @@ class GaControlListView(ListView,FormView):
                                 columns[col_num], font_style_title)
 
                 if CompanyControls.objects.filter(company = company,active = True).count() > 0:
-
                     for comp_cont in CompanyControls.objects.filter(company = company,active = True):
                         row_num += 1
                         ws.write(
@@ -167,7 +167,7 @@ class GaControlListView(ListView,FormView):
                         sub_processes = []   
                         if comp_cont.control.sub_processes.count() > 0:
                             for sp in comp_cont.control.sub_processes.all():
-                                sub_processes.append(sp.ref)
+                                sub_processes.append(sp.name)
                             all_sp = ','.join(sub_processes)
                             ws.write(
                                 row_num, 5, all_sp, font_style_body
@@ -176,13 +176,13 @@ class GaControlListView(ListView,FormView):
                             row_num, 6, comp_cont.control.key_control, font_style_body
                         )  # 6
                         ws.write(
-                            row_num, 7, comp_cont.control.control_type, font_style_body
+                            row_num, 7, comp_cont.control.get_control_type_display(), font_style_body
                         )  # 7
                         ws.write(
-                            row_num, 8, comp_cont.control.automation, font_style_body
+                            row_num, 8, comp_cont.control.get_automation_display(), font_style_body
                         )  # 8
                         ws.write(
-                            row_num, 9, comp_cont.control.control_frequency, font_style_body
+                            row_num, 9, comp_cont.control.get_control_frequency_display(), font_style_body
                         )  # 9
                         
                         owners = []   
@@ -201,6 +201,10 @@ class GaControlListView(ListView,FormView):
                             ws.write(
                                 row_num, 11, all_cs, font_style_body
                             )  # 11
+
+                        ws.write(
+                            row_num, 12, comp_cont.control.get_scope_display(), font_style_body
+                        )  # 12
                     
             wb.save(response)
             return response
