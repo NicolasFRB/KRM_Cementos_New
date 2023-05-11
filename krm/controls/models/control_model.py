@@ -212,6 +212,12 @@ class Control(AuditModel):
         companies = set(companies)
         companies = list(companies)
         return companies
+    
+    def is_sciff(self):
+        if self.is_gap == '-' and self.assert_existence == '-' and self.assert_completeness == '-' and self.assert_valuation == '-' and self.assert_rights == '-' and self.assert_disclosure == '-' and self.assert_accurancy == '-' and self.assert_froud == '-':
+            return False
+        else:
+            return True
 
     @property
     def domain_risks_objects(self):

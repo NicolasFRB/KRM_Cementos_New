@@ -212,8 +212,14 @@
                   </div>
                   {% endif %}
                 </div>
-                
+
                 <div class="col-12 col-xl-7 mb-4">
+                {% if BRAND == 'globalvia' %}
+                    <div class="alert alert-warning " style="color: darkslategray;">
+                      {% trans 'Por favor, recuerde indicar la ruta de WorkSpace en la que se almacena la documentación que evidencia la ejecución del control' %}
+                    </div>
+                {% endif %}
+                
                   <fieldset>
                     <legend>{% trans 'Descripción' %}</legend>
                     {{ form.description|as_crispy_field }}
