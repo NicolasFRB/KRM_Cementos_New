@@ -13,7 +13,7 @@ from django.core.validators import FileExtensionValidator
 class EvaluationCreateForm(ModelForm):
 
     controls_companies_to_evaluate = forms.CharField(
-        max_length=10000,
+        max_length=200000,
         label=_('Controles a evaluar')
     )
 
@@ -107,6 +107,7 @@ class EvaluationAssignImportForm(forms.Form):
         label=_('Plantilla de asignación en excel a importar'),
         validators=[FileExtensionValidator(allowed_extensions=['xlsx', 'xls'])]
     )
+
 
 class EvaluationNotificationForm(forms.Form):
 
