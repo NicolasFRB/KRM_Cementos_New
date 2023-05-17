@@ -75,6 +75,10 @@ class GaControlListView(ListView,FormView):
     def form_valid(self, form):
         action = form.cleaned_data["action"]
 
+        def remove_html_tags(text):
+            clean = re.compile('<.*?>')
+            return re.sub(clean, '', text)
+
         if action == 'd':
 
             # Comienzo de la creacion de archivo de descarga del Test de Proceso
@@ -152,7 +156,7 @@ class GaControlListView(ListView,FormView):
                             row_num, 2, comp_cont.control.name, font_style_body
                         )  # 2
                         ws.write(
-                            row_num, 3, comp_cont.control.description, font_style_body
+                            row_num, 3, remove_html_tags(comp_cont.control.description), font_style_body
                         )  # 3
 
                         risks = []

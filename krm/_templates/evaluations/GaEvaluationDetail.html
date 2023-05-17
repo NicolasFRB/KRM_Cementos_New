@@ -624,11 +624,11 @@
           <td class="align-middle">
             <div style="display:flex;">
               <div style="width:90%">
-                {{ ct.control.description|striptags|truncatechars:100 }}
+                {{ ct.control.description|truncatechars:100|safe }}
               </div>
             </td>
             <td class="text-center align-middle">
-              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ct.control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
+              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ct.control.evidence|striptags }}" style="margin-right:5px;"></i>
             </td>
             <td class="text-center align-middle">
               {% for dom in ct.get_control_test_domain_risks.all %}
