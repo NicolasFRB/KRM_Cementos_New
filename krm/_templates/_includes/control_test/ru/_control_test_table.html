@@ -86,7 +86,7 @@
       <td class="align-middle">
         <div style="display:flex;">
           <div style="width:90%">
-            {{ ct.control.description|striptags|truncatechars:100 }}
+            {{ ct.control.description|truncatechars:100|safe }}
           </div>
           <div style="width:10%">
             <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"
