@@ -60,7 +60,7 @@
         </a>
       </td>
       <td class="text-center align-middle">
-        {% if ct.status == "FI" %}
+        {% if ct.status == "NS" %}
         <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
           data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">NS</span>
         {% elif ct.status == "WO" %}
