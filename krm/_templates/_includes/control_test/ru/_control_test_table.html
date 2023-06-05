@@ -43,6 +43,7 @@
       <th></th>
       <th>Status</th>
       <th class="text-center align-middle">{% trans 'REF' %}</th>
+      <th class="text-center align-middle">{% trans 'Sociedad' %}</th>
       <th class="text-center align-middle">{% trans 'Descripción' %}</th>
       <th class="text-center align-middle">{% trans 'Evidencia' %}</th>
       <th class="text-center align-middle">{% trans 'Dominios de riesgo' %}</th>
@@ -82,6 +83,10 @@
           <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-custom-class="custom-tooltip" title="{% trans Detalle %}">{{ ct.identifier }}</span>
         </a>
+      </td>
+      <td class="text-center align-middle">
+          <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-custom-class="custom-tooltip" title="{% trans ct.evaluation.company.name %}">{{ ct.evaluation.company.ref }}</span>
       </td>
       <td class="align-middle">
         <div style="display:flex;">
