@@ -508,6 +508,7 @@
       {% trans 'Eliminar' %}</a> -->
     {% if evaluation.status == 'SI' %}
     {% if evaluation.is_completed_assing %}
+    <div style="float: left;">
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary"><i
         class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
@@ -517,9 +518,17 @@
       <input type="hidden" name="action" value="i">
       <button class="btn btn-sm btn-primary me-2"><i class="bi bi-clipboard-check"></i>
         {% trans 'Lanzar controles' %}</button>
-        <input type="hidden" name="action" value="d">
+    </form>
+    </div>
+    <div style="float: right;">
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% include '_includes/FormErrors.html' %}
+      {% csrf_token %}
+      <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
+      <input type="hidden" name="action" value="d">
         <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
     </form>
+    </div>
     {% else %}
     <button type="button" class="btn btn-sm btn-secondary me-2" data-bs-toggle="tooltip" data-bs-placement="top"
       title="{% trans 'Debe asignar todos los controles para lanzar la evaluación' %}"><i
@@ -537,6 +546,7 @@
       class="btn btn-sm btn btn-secondary">{% trans 'Subir plantilla de asignación de controles' %}</a>
     {% endif %}
     {% elif evaluation.status == 'EP' %}
+    <div style="float: left;">
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       {% include '_includes/FormErrors.html' %}
       {% csrf_token %}
@@ -545,10 +555,18 @@
       <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
       <input type="hidden" name="action" value="f">
       <button class="btn btn-sm btn-primary me-2">{% trans 'Finalizar evaluación' %}</button>
-      <input type="hidden" name="action" value="d">
-      <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
-      <a href="{% url 'evaluations:ga_evaluation_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
     </form>
+    </div>
+    <div style="float:right">
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% include '_includes/FormErrors.html' %}
+      {% csrf_token %}
+      <a href="{% url 'evaluations:ga_evaluation_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
+      <input type="hidden" name="action" value="d">
+      <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
+      <button class="btn btn-sm btn-primary me-2" style="margin-left: 5px;"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
+    </form>
+    </div>
     {% elif evaluation.status == 'FI' %}
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       {% include '_includes/FormErrors.html' %}
@@ -558,7 +576,6 @@
       <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
       <input type="hidden" name="action" value="d">
       <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
-      <a href="{% url 'evaluations:ga_evaluation_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
     </form>
     {% else %}
     <a href="{% url 'evaluations:ga_evaluation_list' %}" class="btn btn-sm btn-secondary mr-2"><i
