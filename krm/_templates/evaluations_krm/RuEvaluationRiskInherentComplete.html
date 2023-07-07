@@ -324,7 +324,11 @@
                 </div>
               </fieldset>
             </div>
-            <div class="col-xl-12">            
+            <div class="col-xl-12"> 
+              <div class="row mb-8">
+                <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
+                <div>{{ rt.risk.description|safe }}</div> 
+              </div>          
               <div class="row mb-8">
                 <div class="col col-xl-6">
                     <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span></div>

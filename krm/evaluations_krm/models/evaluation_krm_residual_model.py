@@ -164,10 +164,11 @@ class EvaluationKrmResidual(AuditModel):
 
     # RETURN ELC Controls - common for all risks in evaluation
     def get_controls_elc(self):
+        from krm.companies.models import CompanyControls
 
         controls = Control.objects.filter(
             is_elc=True,
-            pk__in=[control.pk for control in self.company.controls.all()]
+            pk__in=[control.pk for control in CompanyControls.objects.filter(company=self.company, active=True)]
         )
         return controls
 

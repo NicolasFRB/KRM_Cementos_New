@@ -250,10 +250,11 @@ class RiskTestResidual(AuditModel):
 
     def get_controls_attempt_to_mitigate(self):
         from krm.controls.models import Control
+        from krm.companies.models import CompanyControls
         # Controles que aplican a esa compañía, los cuales están asociados al riesgo de este test de riesgo residual
         controls = Control.objects.filter(
             risks__id__exact=self.risk.risk.pk,
-            pk__in=[control.pk for control in self.evaluation.company.controls.all()]
+            pk__in=[control.pk for control in CompanyControls.objects.filter(company=self.evaluation.company, active=True)]
         )
         return controls
 

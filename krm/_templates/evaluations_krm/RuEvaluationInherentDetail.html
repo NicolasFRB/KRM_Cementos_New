@@ -588,10 +588,10 @@
             <td class="align-middle">
               <div style="display:flex;">
                 <div style="width:90%">
-                  {{ rt.risk.krm_main_elements|striptags|truncatechars:100 }}
+                  {{ rt.risk.description|striptags|truncatechars:80 }}
                 </div>
                 <div style="width:10%">
-                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.krm_main_elements }}" style="margin-right:5px;"></i>
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.description }}" style="margin-right:5px;"></i>
                 </div>
               </div>
             </td>

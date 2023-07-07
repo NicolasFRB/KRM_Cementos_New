@@ -884,12 +884,10 @@ class GaImportView(FormView):
                 cont_comp.active = True
                 control_company_created += 1
 
-
                 if cc['control_owners'] is not None:
                     for owner in cc['control_owners']:
                         owner_to_add = User.objects.get(email=owner)
-                        cont_comp.control_test_owners.add(owner_to_add)
-
+                        cont_comp.control_test_owners.add(owner_to_add)                
                 
                 if cc['control_supervisors'] is not None:
                     for supervisor in cc['control_supervisors']:
