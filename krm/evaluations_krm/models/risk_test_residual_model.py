@@ -254,7 +254,7 @@ class RiskTestResidual(AuditModel):
         # Controles que aplican a esa compañía, los cuales están asociados al riesgo de este test de riesgo residual
         controls = Control.objects.filter(
             risks__id__exact=self.risk.risk.pk,
-            pk__in=[control.pk for control in CompanyControls.objects.filter(company=self.evaluation.company, active=True)]
+            pk__in=[control.control.pk for control in CompanyControls.objects.filter(company=self.evaluation.company, active=True)]
         )
         return controls
 
