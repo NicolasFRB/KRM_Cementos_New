@@ -168,7 +168,7 @@ class EvaluationKrmResidual(AuditModel):
 
         controls = Control.objects.filter(
             is_elc=True,
-            pk__in=[control.pk for control in CompanyControls.objects.filter(company=self.company, active=True)]
+            pk__in=[control.control.pk for control in CompanyControls.objects.filter(company=self.company, active=True)]
         )
         return controls
 
