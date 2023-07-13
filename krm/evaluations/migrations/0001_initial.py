@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True, help_text='Fecha y hora de la última modificación del objeto.', verbose_name='Fecha de modificación')),
                 ('date_begin', models.DateField(verbose_name='Fecha en la que comenzará el Test de Control')),
                 ('status', models.CharField(choices=[('SI', 'Sin iniciar'), ('WO', 'En espera de respuesta del Control Owner'), ('WS', 'En espera de respuesta del Control Supervisor'), ('WA', 'En espera de respuesta del Control Administrator'), ('FI', 'Finalizado')], default='SI', max_length=2, verbose_name='Estado del test de control')),
-                ('result', models.CharField(choices=[('EF', 'Efectivo'), ('SE', 'Sin establecer'), ('NE', 'No efectivo')], default='SE', max_length=2, verbose_name='Resultado del test de control')),
+                ('result', models.CharField(choices=[('EF', 'Efectivo'), ('SE', 'Sin establecer'), ('NE', 'No efectivo'), ('NA', 'N/A')], default='SE', max_length=2, verbose_name='Resultado del test de control')),
                 ('remediation_plan_needed', models.BooleanField(default=False, verbose_name='¿Es necesario un plan de remediación?')),
                 ('control', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='control_tests', to='controls.control')),
                 ('control_test_owner', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='controls_test_owner', to=settings.AUTH_USER_MODEL, verbose_name='Cumplimentador del Test de Control (Control Owner)')),
