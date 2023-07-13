@@ -192,12 +192,12 @@
 
     } else {
       data = {
-        labels: ['Not started', 'Effective', 'Not effective'],
+        labels: ['Not started', 'Effective', 'Not effective', "N/A"],
         datasets: [
           {
             label: '',
-            data: [arg1, arg2, arg3],
-            backgroundColor: ["#d4d0c7", "#a6ed9d", "#ed9f7b"],
+            data: [arg1, arg2, arg3, arg4],
+            backgroundColor: ["#d4d0c7", "#a6ed9d", "#ed9f7b", "#e6d68e"],
           }
         ]
       };
@@ -481,7 +481,7 @@
           </div>
         </div>
         <script>
-          load_chart('pie-main2', 'Controles por efectividad', '{{evaluation.ncontrols_test_by_result_se}}', '{{evaluation.ncontrols_test_by_result_ef}}', '{{evaluation.ncontrols_test_by_result_ne}}');
+          load_chart('pie-main2', 'Controles por efectividad', '{{evaluation.ncontrols_test_by_result_se}}', '{{evaluation.ncontrols_test_by_result_ef}}', '{{evaluation.ncontrols_test_by_result_ne}}', '{{evaluation.ncontrols_test_by_result_na}}');
         </script>
         <div class="row mb-8">
           <div
@@ -492,6 +492,8 @@
               data-bs-custom-class="custom-tooltip" title="{% trans 'Effective' %}">EF</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{% trans 'Not effective' %}">NE</span>
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-custom-class="custom-tooltip" title="{% trans 'N/A' %}">NA</span>
           </div>
         </div>
       </div>
@@ -684,6 +686,8 @@
                 <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EF</span>
               {% elif ct.result == "NE" %}
                 <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NE</span>
+              {% elif ct.result == "NA" %}
+              <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NA</span>
               {% endif %}
             </td>
           </tr>

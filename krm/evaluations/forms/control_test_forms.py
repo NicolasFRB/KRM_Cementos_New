@@ -137,6 +137,7 @@ class ControlTestCaForm(ModelForm):
         ("", _("-")),
         ("EF", _("Efectivo")),
         ("NE", _("No efectivo")),
+        ("NA", _("N/A")),
     )
     control_result = forms.ChoiceField(
         required=True,
@@ -188,6 +189,7 @@ class ControlTestGaForm(ModelForm):
         ("", _("-")),
         ("EF", _("Efectivo")),
         ("NE", _("No efectivo")),
+        ("NA", _("N/A")),
     )
     control_result = forms.ChoiceField(
         required=True,

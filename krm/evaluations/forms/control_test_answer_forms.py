@@ -14,6 +14,7 @@ class ControlTestAnswerCreateForm(ModelForm):
         ("", _("-")),
         ("EF", _("Efectivo")),
         ("NE", _("No efectivo")),
+        ("NA", _("N/A")),
     )
     control_result = forms.ChoiceField(
         required=True, choices=CONTROL_RESULT_CHOICES, label=_("Resultado del control")
@@ -90,6 +91,7 @@ class ControlTestAnswerOwnerCreateForm(ModelForm):
         ("", _("-")),
         ("EF", _("Efectivo")),
         ("NE", _("No efectivo")),
+        ("NA", _("N/A")),
     )
     control_result = forms.ChoiceField(
         required=True,

@@ -166,6 +166,8 @@ class GaEvaluationDetailView(FormView):
             "EF")
         context['evaluation'].ncontrols_test_by_result_ne = context['evaluation'].ncontrols_test_by_result(
             "NE")
+        context['evaluation'].ncontrols_test_by_result_na = context['evaluation'].ncontrols_test_by_result(
+            "NA")
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
@@ -303,7 +305,7 @@ class GaEvaluationDetailView(FormView):
                 "CONTROL OWNER FECHA RESPUESTA",  # 27
                 "CONTROL OWNER ADJUNTO",  # 28
                 "ADJUNTO LINK",  # 29
-                "RESULTADO\nEF (efectivo)\nNE (no efectivo)",  # 30
+                "RESULTADO\nEF (efectivo)\nNE (no efectivo)\nNA (no aplica)",  # 30
                 "PLAN DE REMEDIACIÓN TEXTO",  # 31
                 "PLAN DE REMEDIACIÓN FECHA",  # 32
                 "PLAN DE REMEDIACIÓN LINK",  # 33
