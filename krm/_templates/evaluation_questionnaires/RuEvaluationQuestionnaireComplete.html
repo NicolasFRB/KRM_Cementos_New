@@ -234,30 +234,35 @@
 
 {% if questions %}
     {% for q in questions %}
-
+    <div class="accordion" id="kt_accordion_2">
       <div class="card  mb-5">
-        <!--begin::Card header-->
-        <div class="card-header">
+        <div class="accordion-item">
           <!--begin::Card header-->
-          <div class="card-title fs-3 fw-bold" style="display:block;">
-            <div>
-              <p class="mb-4">&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span>
-            </div>
-            <div style="font-weight: 100 !important; font-size: 16px;">
-              {% for piece in q.question.title_lang_split %}
-                {{ piece }}{% if not forloop.last %}<br><br>{% endif %}
-              {% endfor %}
-            </div>
+          <div class="card-header" id="kt_accordion_1_header_{{ forloop.counter }}" style="padding: inherit">
+            <!--begin::Card header-->
+            <button class="accordion-button fs-3 fw-bold collapsed" style="display:block;" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_{{ forloop.counter }}" aria-expanded="true" aria-controls="kt_accordion_1_body_{{ forloop.counter }}">
+              <div>
+                <p class="mb-4">&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span>
+              </div>
+              <div style="font-weight: 100 !important; font-size: 16px;">
+                {% for piece in q.question.title_lang_split %}
+                  {{ piece }}{% if not forloop.last %}<br><br>{% endif %}
+                {% endfor %}
+              </div>
+            </button>   
           </div>
           <!--end::Card header-->
-        </div>
-        <div class="card-body">
-          <!-- <p class="mb-4"><strong>{% trans 'Alcance' %}</strong>&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span> -->
-          <div class="question_test" data-questiontestpk="{{ q.pk }}"
-          data-answer="{{ q.answer}}"
-          data-description="{{ q.description|default_if_none:'' }}" ></div>
+          <div id="kt_accordion_1_body_{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_{{ forloop.counter }}" data-bs-parent="#kt_accordion_2">
+            <div class="card-body">
+              <!-- <p class="mb-4"><strong>{% trans 'Alcance' %}</strong>&nbsp&nbsp<span class="badge badge-secondary text-wrap mb-3" style="font-size:14px;">{{ q.scope.name }}</span> -->
+              <div class="question_test" data-questiontestpk="{{ q.pk }}"
+              data-answer="{{ q.answer}}"
+              data-description="{{ q.description|default_if_none:'' }}" ></div>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
     {% endfor %}
 
     <div class="card">
