@@ -484,6 +484,10 @@ class GaEvaluationDetailView(FormView):
                             answer = ct.answers.filter(
                                 user=ct.control_test_owner
                             ).order_by("-created")[1]
+                        else: 
+                            answer = ct.answers.filter(
+                                user=ct.control_test_owner
+                            ).order_by("-created")[0]
                     else:
                         answer = (
                             ct.answers.filter(user=ct.control_test_owner)
@@ -592,7 +596,7 @@ class GaEvaluationDetailView(FormView):
                         row_num,
                         37,
                         answer.created.strftime("%d/%m/%Y, %H:%M:%S"),
-                        font_style_body, xlwt
+                        font_style_body
                     )  # 37
 
                 if ct.answers.last() is not None:
