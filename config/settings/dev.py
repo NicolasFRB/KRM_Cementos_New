@@ -23,8 +23,11 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://4924-81-38-122-210.eu.ngrok.io/'
-    '*',
+    'http://localhost:8000',
+    'http://localhost:3000',
+    'http://app.krmtool.com',
+    'https://app.krmtool.com',
+    'http://cstool.sacyr.com:444'
 ]
 
 

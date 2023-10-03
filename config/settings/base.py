@@ -472,6 +472,9 @@ CORS_ALLOWED_ORIGINS = [
     'localhost:3000',
     'app.krmtool.com',
     'app.krmtool.com',
+    'cstool.sacyr.com',
+    'cstool.sacyr.com:444',
+    'http://cstool.sacyr.com:444'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -479,10 +482,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://app.krmtool.com',
     'https://app.krmtool.com',
-    'localhost:8000',
-    'localhost:3000',
-    'app.krmtool.com',
-    'app.krmtool.com',
+    'http://cstool.sacyr.com:444'
 ]
 
 ALLOWED_HOSTS = [
@@ -494,6 +494,9 @@ ALLOWED_HOSTS = [
     'localhost:3000',
     'app.krmtool.com',
     'app.krmtool.com',
+    'cstool.sacyr.com',
+    'cstool.sacyr.com:444',
+    'http://cstool.sacyr.com:444'
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
