@@ -1,0 +1,7 @@
+-r ./base.txt
+
+# gunicorn==19.9.0
+# whitenoise==5.0.1  # https://github.com/evansd/whitenoise
+
+gunicorn==19.9.0
+whitenoise==5.0.1

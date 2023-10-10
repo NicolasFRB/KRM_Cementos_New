@@ -1,0 +1,35 @@
+FROM python:3.9-alpine
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+ENV PYTHONUNBUFFERED 1
+
+RUN apk update \
+  && apk add --virtual build-essential \
+  && apk add libpq-dev tree gettext \
+  # psycopg2 dependencies
+
+  && apk add --virtual build-deps gcc python3-dev musl-dev \
+  && apk add postgresql-dev \
+  # Pillow dependencies
+  && apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev \
+  # CFFI dependencies
+  && apk add libffi-dev py-cffi \
+  # Translations dependencies
+  && apk add gettext \
+  # https://docs.djangoproject.com/en/dev/ref/django-admin/#dbshell
+  && apk add postgresql-client \
+  && apk add graphviz-dev \
+  && apk add libpq-dev tree gettext \
+  && apk add inetutils-telnet \
+  && apk add iputils-ping \
+  && apk add graphviz-dev \
+  && apk add nano
+
+RUN addgroup -S django \
+  && adduser -S -G django django
+
+# Requirements are installed here to ensure they will be cached.
+COPY ./requirements/base.txt /requirements/base.txt
+RUN pip install --no-cache-dir -r /requirements/base.txt
