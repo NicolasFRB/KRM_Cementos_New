@@ -25,38 +25,38 @@ services:
       - "8000:8000"
     command: /start
 
-  # celeryworker:
-  #   <<: *django
-  #   image: krm_sacyr_local_celeryworker
-  #   depends_on:
-  #     - django
-  #   ports: []
-  #   command: /start-celeryworker
+  celeryworker:
+    <<: *django
+    image: krm_sacyr_local_celeryworker
+    depends_on:
+      - django
+    ports: []
+    command: /start-celeryworker
 
-  # celerybeat:
-  #   <<: *django
-  #   image: krm_sacyr_local_celerybeat
-  #   depends_on:
-  #     - django
-  #   ports: []
-  #   command: /start-celerybeat
+  celerybeat:
+    <<: *django
+    image: krm_sacyr_local_celerybeat
+    depends_on:
+      - django
+    ports: []
+    command: /start-celerybeat
 
-  # flower:
-  #   <<: *django
-  #   image: krm_sacyr_local_flower
-  #   depends_on:
-  #     - django
-  #   ports:
-  #     - "5555:5555"
-  #   command: /start-flower
+  flower:
+    <<: *django
+    image: krm_sacyr_local_flower
+    depends_on:
+      - django
+    ports:
+      - "5555:5555"
+    command: /start-flower
 
-  # redis:
-  #   image: 'redis:alpine'
-  #   command: redis-server /usr/local/etc/redis/redis.conf
-  #   volumes:
-  #     - ./compose/sacyr/redis/redis.conf:/usr/local/etc/redis/redis.conf
-  #   expose:
-  #     - "6379"
+  redis:
+    image: 'redis:alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./compose/sacyr/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - "6379"
 
   sacyr_postgres:
     build:

@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 COPY ./requirements /requirements
 RUN pip install -r /requirements/dev.txt
 
-COPY ./compose/production/django/entrypoint /entrypoint
+COPY ./compose/sacyr/django/entrypoint /entrypoint
 RUN sed -i 's/\r//' /entrypoint
 RUN chmod +x /entrypoint
 
