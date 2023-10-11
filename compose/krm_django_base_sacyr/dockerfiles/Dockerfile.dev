@@ -9,7 +9,6 @@ RUN apk update \
   && apk add --virtual build-essential \
   && apk add libpq-dev tree gettext \
   # psycopg2 dependencies
-
   && apk add --virtual build-deps gcc python3-dev musl-dev \
   && apk add postgresql-dev \
   # Pillow dependencies
