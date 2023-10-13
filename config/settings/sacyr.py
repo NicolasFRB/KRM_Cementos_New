@@ -27,7 +27,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://app.krmtool.com',
     'https://app.krmtool.com',
-    'http://krmtool.sacyr.com',
+    'http://krctool.sacyr.com',
     'https://krctool.sacyr.com'
 ]
 

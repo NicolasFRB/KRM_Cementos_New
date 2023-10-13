@@ -7,7 +7,7 @@ KRM_BRAND=''
 KRM_DEBUG_TOOLBAR=False
 KRM_DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 KRM_DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
-KRM_SITE_URL='https://krmtool.sacyr.com'
+KRM_SITE_URL='https://krctool.sacyr.com'
 
 KRM_ACTIVATE=True
 
