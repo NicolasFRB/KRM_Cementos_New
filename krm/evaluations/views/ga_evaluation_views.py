@@ -305,7 +305,7 @@ class GaEvaluationDetailView(FormView):
                 "CONTROL OWNER FECHA RESPUESTA",  # 27
                 "CONTROL OWNER ADJUNTO",  # 28
                 "ADJUNTO LINK",  # 29
-                "RESULTADO\nEF (efectivo)\nNE (no efectivo)\nNA (no aplica)",  # 30
+                "RESULTADO\nEF (efectivo)\nNE (no efectivo)\nNA (No aplica en el periodo certificado)",  # 30
                 "PLAN DE REMEDIACIÓN TEXTO",  # 31
                 "PLAN DE REMEDIACIÓN FECHA",  # 32
                 "PLAN DE REMEDIACIÓN LINK",  # 33

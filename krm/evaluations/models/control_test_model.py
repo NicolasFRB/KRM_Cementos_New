@@ -77,7 +77,7 @@ class ControlTest(AuditModel):
         ("EF", _("Efectivo")),
         ("SE", _("Sin establecer")),
         ("NE", _("No efectivo")),
-        ("NA", _("N/A")),
+        ("NA", _("No aplica en el periodo certificado")),
     )
 
     result = models.CharField(
