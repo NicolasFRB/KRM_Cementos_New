@@ -208,7 +208,7 @@
                 {% endif %}
                   <div><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ control_test.control.ref }}">{{ control_test.control.ref }}</span></div>
                   <p></p>
-                  <div><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ control_test.control.scope }}">{{ control_test.control.scope }}</span></div>
+                  <div><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ control_test.control.scope }}">{{ control_test.control.get_scope_display }}</span></div>
                 </a>
               </div>
             </div>
@@ -395,20 +395,6 @@
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcance' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_scope_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
               <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo de control' %}</span></div>
             </div>
             <!--end::Col-->
@@ -512,133 +498,63 @@
           <div>{{ control.evidence|safe }}</div>
         </div>
       </div>
-      {% if control.is_sciff %}
-      <div class="row mb-8">
-        <div class="col col-md-4">
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'GAP' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_is_gap_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Existencia' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_assert_existence_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Completitud' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_assert_completeness_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-        </div>
-        
-        <div class="col col-md-4">
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Presentación' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_assert_disclosure_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Valoración' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_assert_valuation_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Obligación' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_assert_rights_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-        </div>
-
-        <div class="col col-md-4">
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Precisión' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_assert_accurancy_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <div class="row mb-8">
-            <!--begin::Col-->
-            <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fraude' %}</span></div>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-7">
-              <div class="fs-6">
-                <span>{{ control.get_assert_froud_display }}</span>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-        </div>
-      </div>
-      {% endif %}
+      <table>
+        <thead>
+          {% if control.is_gap != '-' %}
+          <th> <div class="fs-6 fw-semibold" style="display: flex; justify-content: center;"><span class="badge badge-secondary text-wrap">{% trans 'GAP' %}</span></div></th>
+          {% endif %}
+          {% if control.assert_existence != '-' %}
+          <th> <div class="fs-6 fw-semibold" style="display: flex; justify-content: center;"><span class="badge badge-secondary text-wrap">{% trans 'Existencia' %}</span></div></th>
+          {% endif %}
+          {% if control.assert_completeness != '-' %}
+          <th> <div class="fs-6 fw-semibold" style="display: flex; justify-content: center;"><span class="badge badge-secondary text-wrap">{% trans 'Integridad' %}</span></div></th>
+          {% endif %}
+          {% if control.assert_valuation != '-' %}
+          <th> <div class="fs-6 fw-semibold" style="display: flex; justify-content: center;"><span class="badge badge-secondary text-wrap">{% trans 'Valoración' %}</span></div></th>
+          {% endif %}
+          {% if control.assert_disclosure != '-' %}
+          <th> <div class="fs-6 fw-semibold" style="display: flex; justify-content: center;"><span class="badge badge-secondary text-wrap">{% trans 'Obligacion' %}</span></div></th>
+          {% endif %}
+          {% if control.assert_rights != '-' %}
+          <th> <div class="fs-6 fw-semibold" style="display: flex; justify-content: center;"><span class="badge badge-secondary text-wrap">{% trans 'Presentación' %}</span></div></th>
+          {% endif %}
+          {% if control.assert_accurancy != '-' %}
+          <th> <div class="fs-6 fw-semibold" style="display: flex; justify-content: center;"><span class="badge badge-secondary text-wrap">{% trans 'Precisión' %}</span></div></th>
+          {% endif %}
+          {% if control.assert_froud != '-' %}
+          <th> <div class="fs-6 fw-semibold" style="display: flex; justify-content: center;"><span class="badge badge-secondary text-wrap">{% trans 'Fraude' %}</span></div></th>
+          {% endif %}
+        </thead>
+        <tbody>
+          <tr>
+          {% if control.is_gap != '-' %}
+          <td><div class="fs-6" style="display: flex; justify-content: center;"><span>{{ control.get_is_gap_display }}</span></div></td>
+          {% endif %}
+          {% if control.assert_existence != '-' %}
+          <td><div class="fs-6" style="display: flex; justify-content: center;"><span>{{ control.get_assert_existence_display }}</span></div></td>
+          {% endif %}
+          {% if control.assert_completeness != '-' %}
+          <td><div class="fs-6" style="display: flex; justify-content: center;"><span>{{ control.get_assert_completeness_display }}</span></div></td>
+          {% endif %}
+          {% if control.assert_valuation != '-' %}
+          <td><div class="fs-6" style="display: flex; justify-content: center;"><span>{{ control.get_assert_valuation_display }}</span></div></td>
+          {% endif %}
+          {% if control.assert_disclosure != '-' %}
+          <td><div class="fs-6" style="display: flex; justify-content: center;"><span>{{ control.get_assert_disclosure_display }}</span></div></td>
+          {% endif %}
+          {% if control.assert_rights != '-' %}
+          <td><div class="fs-6" style="display: flex; justify-content: center;"><span>{{ control.get_assert_rights_display }}</span></div></td>
+          {% endif %}
+          {% if control.assert_accurancy != '-' %}
+          <td><div class="fs-6" style="display: flex; justify-content: center;"><span>{{ control.get_assert_accurancy_display }}</span></div></td>
+          {% endif %}
+          {% if control.assert_froud != '-' %}
+          <td><div class="fs-6" style="display: flex; justify-content: center;"><span>{{ control.get_assert_froud_display }}</span></div></td></td>
+          {% endif %}
+        </tbody>
+    </table>
     </div>
   </div>
-</div>
 </div>
 </div>
 </div>

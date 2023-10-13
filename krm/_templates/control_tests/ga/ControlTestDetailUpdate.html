@@ -141,6 +141,19 @@
                   <p><strong>{% trans 'Si necesita más información para poder marcar el control como Completado, marque la siguiente casilla. Esto le devolverá el control al responsable de cumplimentarlo para que pueda aportar más información. Utilice el campo de texto anterior para requerir la información necesaria.' %}</strong></p>
                   {{ form.more_information|as_crispy_field }}
                 </div>
+                <div class="col-12 col-xl-5 mb-4">
+                  {% if BRAND != 'globalvia'  %}
+                  <div class="mb-8">
+                      {{ form.attachment_1|as_crispy_field }}
+                  </div>
+                  <div class="mb-8">
+                    {{ form.attachment_2|as_crispy_field }}
+                  </div>
+                  <div class="mb-8">
+                    {{ form.attachment_3|as_crispy_field }}
+                  </div>
+                  {% endif %}
+                </div>
                 <div class="mb-8 col-12">
                   <legend>{% trans 'Descripción' %}</legend>
                   {{ form.description|as_crispy_field }}

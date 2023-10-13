@@ -150,10 +150,16 @@ class ControlTestDetail(FormView):
         self.control_test.send_notification('Notification')
 
         description = form.cleaned_data["description"]
+        attachment_1 = form.cleaned_data["attachment_1"]
+        attachment_2 = form.cleaned_data["attachment_2"]
+        attachment_3 = form.cleaned_data["attachment_3"]
         if description:
             ControlTestAnswer.objects.create(
                 control_test=self.control_test,
                 description=description,
+                attachment_1 = attachment_1,
+                attachment_2 = attachment_2,
+                attachment_3 = attachment_3,
                 user=self.request.user,
             )
 

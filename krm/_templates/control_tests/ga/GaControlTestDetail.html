@@ -107,16 +107,33 @@
       {% csrf_token %}
       <div class="card-body">
         {% include '_includes/FormErrors.html' %}
-        <div class="row mb-4">
-          <div class="mb-8 col-12 col-md-8 col-xl-4">
+        <div class="row mb-3">
+          <div class="col-12 col-md-8">
+          <div class="row mb-5">
+          <div class="col-md-6">
             {{ form.control_status|as_crispy_field }}
           </div>
-          <div class="mb-8 col-12 col-md-8 col-xl-4">
+          <div class="col-md-6">
             {{ form.control_result|as_crispy_field }}
           </div>
-          <div class="mb-8 col-12 col-xl-8">
+          </div>
+          <div class="col-md-12">
             {{ form.description|as_crispy_field }}
             <div id="word-count"></div>
+          </div>
+          </div>
+          <div class="col-6 col-md-4">
+            {% if BRAND == 'globalvia'  %}
+            <div class="mb-8">
+              {{ form.attachment_1|as_crispy_field }}
+            </div>
+            <div class="mb-8">
+              {{ form.attachment_2|as_crispy_field }}
+            </div>
+            <div class="mb-8">
+              {{ form.attachment_3|as_crispy_field }}
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>

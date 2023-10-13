@@ -82,6 +82,11 @@ class User(AbstractUser):
         verbose_name=_("Idioma de notificaciones"),
     )
 
+    is_auditor = models.BooleanField(
+        default=False,
+        verbose_name=_("¿Es auditor?"),
+    )
+
     @property
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -178,7 +183,7 @@ class User(AbstractUser):
             status=1,
             evaluator=self,
         )
-    
+
     def total_pending_actions(self):
         return self.controls_test_owner_pending().count() + self.controls_test_supervisor_pending().count() + self.risk_test_inherent_expert_pending().count() + self.risk_test_residual_evaluator_pending().count() + self.question_test_pending().count()
 
