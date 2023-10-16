@@ -329,13 +329,18 @@
           <!--begin::Col-->
           <div class="col-xl-7">
             <div class="fs-6" style="display:flex;">
-              {% if evaluation.status == "EP" %}
+            {% if evaluation.status == "EP" %}
               <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success" data-bs-toggle="tooltip"
                   data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                   title="{{evaluation.get_status_display}}"></i></div>
               <div>{{ evaluation.get_status_display }}</div>
-              {% else %}
+              {% elif evaluation.status == "FI" %}
               <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip"
+                  data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                  title="{{evaluation.get_status_display}}"></i></div>
+              <div>{{ evaluation.get_status_display }}</div>
+              {% else %}
+              <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip"
                   data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                   title="{{evaluation.get_status_display}}"></i></div>
               <div>{{ evaluation.get_status_display }}</div>

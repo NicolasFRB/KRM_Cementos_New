@@ -28,6 +28,8 @@ from krm.evaluations_krm.views import (
     CaEvaluationResidualListView,
     CaEvaluationResidualDetailView,
     CaEvaluationResidualAdminComplete,
+    CaEvaluationInherentNotificationsView,
+    CaEvaluationResidualNotificationsView,
 
     RuEvaluationRiskResidualList,
     RuEvaluationRiskResidualComplete,
@@ -61,7 +63,11 @@ urlpatterns = [
         GaEvaluationInherentNotificationsView.as_view(),
         name='ga_evaluation_inherent_notifications'
     ),
-
+    path(
+        'ca-inherent/notifications/<pk>/',
+        CaEvaluationInherentNotificationsView.as_view(),
+        name='ca_evaluation_inherent_notifications'
+    ),
     path(
         'ca/inherent/',
         CaEvaluationInherentListView.as_view(),
@@ -127,9 +133,11 @@ urlpatterns = [
         GaEvaluationResidualNotificationsView.as_view(),
         name='ga_evaluation_residual_notifications'
     ),
-
-
-
+    path(
+        'ca-residual/notifications/<pk>/',
+        CaEvaluationResidualNotificationsView.as_view(),
+        name='ca_evaluation_residual_notifications'
+    ),
     path(
         'ca/residual/',
         CaEvaluationResidualListView.as_view(),

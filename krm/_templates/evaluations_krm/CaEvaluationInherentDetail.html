@@ -45,6 +45,12 @@
 </style>
 <script>
 
+function clean_specialchars(s) {
+
+    return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
+
+  }
+
 function color_severity_dynamic(val, id){
 
     var arrow_dot = $("#"+id);
@@ -506,9 +512,7 @@ function color_severity_dynamic(val, id){
           <div class="col-xl-7">
             <div class="fs-6">
               {% for dom in evaluation.domain_risks %}
-
-                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
-
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
               {% endfor %}
             </div>
           </div>
@@ -624,7 +628,7 @@ function color_severity_dynamic(val, id){
           <div id="bar-main"></div>
         </div>
         <script>
-            var rit = JSON.parse("{{ rit_json }}".replace(/&quot;/g,'"'));
+            var rit = JSON.parse(clean_specialchars("{{ rit_json }}"));
             load_bar("bar-main", rit);
         </script>
       {% else %}
@@ -636,9 +640,33 @@ function color_severity_dynamic(val, id){
       {% endif %}
     </div>
   </div>
-  <div class="card-footer py-6">
+  <div class="card-footer py-6" style="display:flex;">
+
+    <a href="{% url 'evaluations_krm:ca_evaluation_inherent_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+      class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+
+    <a href="{% url 'evaluations_krm:ca_evaluation_inherent_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
+
     <a href="{% url 'evaluations_krm:ca_evaluation_inherent_complete' evaluation.pk %}" class="btn btn-sm btn-primary me-2">
       {% trans 'Completar evaluación (Admin)' %}</a>
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% include '_includes/FormErrors.html' %}
+      {% csrf_token %}
+      <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
+      <input type="hidden" name="action" value="download">
+      <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
+    </form>
+
+    <!-- <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% include '_includes/FormErrors.html' %}
+      {% csrf_token %}
+        <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
+        <input type="hidden" name="action" value="f">
+        <button class="btn btn-sm btn-primary me-2">{% trans 'Finalizar evaluación' %}</button>
+    </form> -->
+
+
   </div>
   <!--end::Card body-->
 </div>
@@ -713,18 +741,16 @@ function color_severity_dynamic(val, id){
             <td class="align-middle">
               <div style="display:flex;">
                 <div style="width:90%">
-                  {{ rt.risk.krm_main_elements|striptags|truncatechars:100 }}
+                  {{ rt.risk.description|striptags|truncatechars:80 }}
                 </div>
                 <div style="width:10%">
-                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.krm_main_elements }}" style="margin-right:5px;"></i>
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.description }}" style="margin-right:5px;"></i>
                 </div>
               </div>
             </td>
             <td class="text-center align-middle">
-
-                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
-
-                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.expert.full_name }} ({{ rt.expert.position }})" id = "box-child">{{ rt.expert.username_no_domain }}</span>
+              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
+              <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.expert.full_name }} ({{ rt.expert.position }})" id = "box-child">{{ rt.expert.username_no_domain }}</span>
             </td>
             <td class="text-center align-middle">
               <span class="justif-expert"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i></span>

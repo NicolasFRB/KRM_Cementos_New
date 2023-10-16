@@ -43,13 +43,7 @@
                 {{ form.position|as_crispy_field }}
               </div>
               <div class="mb-4 col-12">
-                {{ form.is_superuser|as_crispy_field }}
-              </div>
-              <div class="mb-4 col-12">
                 {{ form.is_active|as_crispy_field }}
-              </div>
-              <div class="mb-4 col-12">
-                {{ form.is_auditor|as_crispy_field }}
               </div>
             </div>
           </fieldset>
@@ -86,11 +80,10 @@
 
     <div class="card-footer py-6">
       <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
-      <a href="{% url 'users:ga_user_detail' object.pk %}" class="btn btn-sm btn-secondary ms-2"><i
+      <a href="{% url 'users:ca_user_detail' object.pk %}" class="btn btn-sm btn-secondary ms-2"><i
           class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
     </div>
   </form>
-
 </div>
 <!--end::Container-->
 

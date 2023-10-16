@@ -50,7 +50,6 @@
 
 {% endblock js_footer %}
 
-
 {% block content %}
 
 <!--begin::Container-->
@@ -133,10 +132,10 @@
     <!--end::Body-->
   </form>
 
-    <div class="card-footer py-6">
-      <a href="{% url 'evaluations:ca_evaluation_list' %}"
-        class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
-    </div>
+  <div class="card-footer py-6">
+    <a href="{% url 'evaluations:ca_evaluation_list' %}"
+      class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+  </div>
 
 </div>
 

@@ -60,7 +60,6 @@ class GaRiskListView(ListView):
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
-
 @method_decorator([login_required, ], name='dispatch')
 class GaRiskDetailView(DetailView):
     model = Risk
@@ -88,7 +87,6 @@ class GaRiskDetailView(DetailView):
         ]
         context['js_template'] = ['js/custom/datatables.js']
         return context
-
 
 @method_decorator([login_required, ], name='dispatch')
 class GaRiskCreateView(CreateView):
@@ -167,7 +165,6 @@ class GaRiskUpdateView(UpdateView):
             'risks:ga_risk_detail',
             kwargs={"pk": self.object.pk},
         )
-
 
 @method_decorator([login_required, ], name='dispatch')
 class GaRiskDeleteView(DeleteView):
