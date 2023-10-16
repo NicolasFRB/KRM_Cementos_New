@@ -15,7 +15,10 @@ from krm.evaluations.views import (
     CaEvaluationDetailView,
     CaEvaluationUpdateView,
     CaEvaluationDeleteView,
-    CaEvaluationAssignImport
+    CaEvaluationAssignImport,
+
+    AuEvaluationListView,
+    AuEvaluationDetailView
 )
 
 urlpatterns = [
@@ -85,4 +88,16 @@ urlpatterns = [
         CaEvaluationAssignImport.as_view(),
         name="ca_evaluation_import_assign_control",
     ),
+
+    path(
+        'auditor/evaluations-krc/',
+        AuEvaluationListView.as_view(),
+        name='au_evaluation_list'
+    ),
+    path(
+        'auditor/evaluations-krc/<pk>/',
+        AuEvaluationDetailView.as_view(),
+        name='au_evaluation_detail'
+    ),
+
 ]

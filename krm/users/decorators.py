@@ -39,6 +39,19 @@ class is_global_admin(object):
         raise PermissionDenied
 
 
+class is_auditor(object):
+
+    def __init__(self, view_func):
+        self.view_func = view_func
+        wraps(view_func)(self)
+
+    def __call__(self, request, *args, **kwargs):
+        response = self.view_func(request, *args, **kwargs)
+        if request.user and request.user.is_auditor:
+            return response
+        raise PermissionDenied
+
+
 class in_kpmg_group(object):
 
     def __init__(self, view_func):
@@ -92,6 +105,7 @@ def user_can_view_control_test(function):
 
         if (
             request.user.is_superuser
+            or request.user.is_auditor
             or request.user == ct.control_test_supervisor
             or request.user == ct.control_test_owner
             or ct.evaluation.company in request.user.companies_admin.all()
@@ -110,7 +124,7 @@ def user_can_view_evaluation(function):
             raise Http404
 
         if (
-            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
+            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser or request.user.is_auditor
         ):
             return function(request, *args, **kwargs)
         raise PermissionDenied

@@ -13,7 +13,9 @@ from krm.evaluations.views import (
 
     CaControlTestAssign,
     CaControlTestAdministratorList,
-    CaControlTestDetail
+    CaControlTestDetail,
+
+    AuControlTestDetail
 )
 
 urlpatterns = [
@@ -81,5 +83,11 @@ urlpatterns = [
         "ca/<pk>/detail/",
         CaControlTestDetail.as_view(),
         name="ca_control_test_detail",
+    ),
+
+    path(
+        "au/<pk>/detail/",
+        AuControlTestDetail.as_view(),
+        name="au_control_test_detail",
     ),
 ]
