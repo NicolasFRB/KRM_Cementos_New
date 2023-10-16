@@ -41,7 +41,8 @@ class UserCreateForm(forms.ModelForm):
             'is_superuser',
             'companies',
             'companies_admin',
-            'notification_language'
+            'notification_language',
+            'is_auditor'
         )
 
     def __init__(self, *args, **kwargs):
@@ -112,7 +113,8 @@ class UserUpdateForm(forms.ModelForm):
             'companies_admin',
             'is_superuser',
             'notification_language',
-            'is_active'
+            'is_active',
+            'is_auditor'
         )
 
     def __init__(self, *args, **kwargs):
@@ -162,6 +164,7 @@ class UserAdminCreateForm(forms.ModelForm):
             'is_active',
             'notification_language',
             'is_superuser',
+            'is_auditor'
         )
 
     def clean_password2(self):
@@ -254,6 +257,7 @@ class UserAdmin(BaseUserAdmin):
                 'is_active',
                 'is_staff',
                 'is_superuser',
+                'is_auditor',
                 'groups',
                 # 'user_permissions'
             ),
