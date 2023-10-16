@@ -15,7 +15,8 @@ from krm.evaluations.views import (
     CaEvaluationDetailView,
     CaEvaluationUpdateView,
     CaEvaluationDeleteView,
-    CaEvaluationAssignImport
+    CaEvaluationAssignImport,
+    CaEvaluationNotificationView
 )
 
 urlpatterns = [
@@ -84,5 +85,10 @@ urlpatterns = [
         "ca/assign-control-import/<pk>/",
         CaEvaluationAssignImport.as_view(),
         name="ca_evaluation_import_assign_control",
+    ),
+    path(
+        'ca/notifications/<pk>/',
+        CaEvaluationNotificationView.as_view(),
+        name='ca_evaluation_notifications'
     ),
 ]

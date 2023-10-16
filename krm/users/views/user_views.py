@@ -31,11 +31,13 @@ from krm.companies.models import Company
 
 from krm.users.forms.user_form import(
     UserCreateForm,
-    UserUpdateForm
+    UserUpdateForm,
+    CaUserUpdateForm
 )
 
 from krm.users.decorators import (
     is_global_admin,
+    is_company_admin,
 )
 
 
@@ -67,6 +69,33 @@ class GaUserListView(ListView):
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
+@method_decorator([is_company_admin], name='dispatch')
+class CaUserListView(ListView):
+    template_name = 'users/CaUserList.html'
+    model = User
+    context_object_name = 'users'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Usuarios'), 'url': reverse(
+                'users:ca_user_list')},
+        ]
+        context['page_title'] = _('Usuarios')
+        context['breadcrums'] = breadcrums
+        context['actions'] = [
+            {
+                'title': _('Nuevo'),
+                'url': reverse('users:ca_user_create'),
+                'primary': True,
+                'icon': '<i class="bi bi-plus-lg"></i>'
+            },
+        ]
+        context['js_template'] = ['js/custom/datatables.js']
+        return context
 
 @method_decorator([is_global_admin], name='dispatch')
 class GaUserDetailView(DetailView):
@@ -89,6 +118,33 @@ class GaUserDetailView(DetailView):
             {
                 'title': _('Editar'),
                 'url': reverse('users:ga_user_update', kwargs={'pk': self.object.pk}),
+                'primary': True,
+                'icon': '<i class="bi bi-pencil"></i>'
+            },
+        ]
+
+        return context
+    
+@method_decorator([is_company_admin], name='dispatch')
+class CaUserDetailView(DetailView):
+    template_name = 'users/CaUserDetail.html'
+    model = User
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Usuarios'), 'url': reverse('users:ca_user_list')},
+            {'title': self.object.full_name}
+        ]
+        context['page_title'] = f"{_('Usuario')} : {self.object.full_name}"
+        context['breadcrums'] = breadcrums
+        context['actions'] = [
+            {
+                'title': _('Editar'),
+                'url': reverse('users:ca_user_update', kwargs={'pk': self.object.pk}),
                 'primary': True,
                 'icon': '<i class="bi bi-pencil"></i>'
             },
@@ -163,6 +219,38 @@ class GaUserUpdateView(UpdateView):
             kwargs={'pk': self.object.pk}
         )
 
+@method_decorator((is_company_admin), name='dispatch')
+class CaUserUpdateView(UpdateView):
+    template_name = 'users/CaUserUpdate.html'
+    model = User
+    form_class = CaUserUpdateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Usuarios'), 'url': reverse(
+                'users:ca_user_list')},
+            {'title': _('Editar usuario')},
+        ]
+        context['page_title'] = _('Editar Usuario')
+        context['breadcrums'] = breadcrums
+
+        return context
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            _('Usuario modificado correctamente')
+        )
+
+        return reverse_lazy(
+            'users:ca_user_detail',
+            kwargs={'pk': self.object.pk}
+        )
 
 @method_decorator((is_global_admin), name='dispatch')
 class GaUserDeleteView(DeleteView):

@@ -20,7 +20,8 @@ from krm.companies.views import (
     CaCompanyUpdateView,
     CaCompanyRiskKrmSelectView,
     CaCompanyDomainRiskExpertsUpdateView,
-    CaCompanyDomainRiskEvaluatorUpdateView
+    CaCompanyDomainRiskEvaluatorUpdateView,
+    CaCompanyControlUpdate
 )
 
 
@@ -78,6 +79,10 @@ urlpatterns = [
     path('company-controls/<pk>/',
          GaCompanyControlUpdate.as_view(),
          name='ga_company_control_update'),
+
+    path('ca-company-controls/<pk>/',
+    CaCompanyControlUpdate.as_view(),
+    name='ca_company_control_update'),
 
     path(
         'ca/',

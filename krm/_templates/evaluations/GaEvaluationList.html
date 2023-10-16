@@ -167,13 +167,13 @@
           </script>
           <td class="text-center align-middle">
             {% if evaluation.status == "FI" %}
-            <i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
+            <i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% elif evaluation.status == "EP" %}
             <i class="bi bi-dot fs-3x text-success" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% else %}
-            <i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+            <i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% endif %}
           </td>
@@ -286,13 +286,13 @@
           </td>
           <td class="text-center align-middle">
             {% if evaluation.status == "FI" %}
-            <i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
+            <i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% elif evaluation.status == "EP" %}
             <i class="bi bi-dot fs-3x text-success" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% else %}
-            <i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+            <i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% endif %}
           </td>
