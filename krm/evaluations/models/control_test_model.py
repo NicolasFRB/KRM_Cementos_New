@@ -163,6 +163,7 @@ class ControlTest(AuditModel):
             "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WO", user=self.control_test_owner, rol='control_test_owner'),
             "app_name": configuration.app_name,
             "notif_type": notif_type,
+            "MAIN_EMAIL": configuration.main_email,
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_owner.html", context
@@ -172,7 +173,9 @@ class ControlTest(AuditModel):
             "preheader": _("Controles pendientes de completar"),
             "BRAND": settings.BRAND,
             "app_name": configuration.app_name,
+            "MAIN_EMAIL": configuration.main_email,
         }
+
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
         if settings.EMAIL_BCC:
@@ -219,6 +222,7 @@ class ControlTest(AuditModel):
             "ncontrols_pending": self.evaluation.ncontrols_test_by_state("WS", user=self.control_test_supervisor, rol='control_test_supervisor'),
             "app_name": configuration.app_name,
             "notif_type": notif_type,
+            "MAIN_EMAIL": configuration.main_email,
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_supervisor.html",
@@ -229,6 +233,7 @@ class ControlTest(AuditModel):
             "preheader": _("Controles pendientes de supervisar"),
             "BRAND": settings.BRAND,
             "app_name": configuration.app_name,
+            "MAIN_EMAIL": configuration.main_email,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM
