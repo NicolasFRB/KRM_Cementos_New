@@ -22,7 +22,7 @@ class RemediationPlanCreateForm(ModelForm):
         description = self.cleaned_data.get("description")
         if len(description) == 0:
             raise forms.ValidationError("Campo obligatorio")        
-        elif len(description) < 20:
+        elif len(description) < 3:
             raise forms.ValidationError("Debe proporcionar información suficiente para finalizar la evaluación")
         elif len(description) < 5000:
             return description
