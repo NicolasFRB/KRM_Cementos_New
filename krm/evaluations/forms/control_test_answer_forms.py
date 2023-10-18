@@ -123,7 +123,7 @@ class ControlTestAnswerOwnerCreateForm(ModelForm):
         description = self.cleaned_data.get("description")
         if len(description) == 0:
             raise forms.ValidationError("Campo obligatorio")        
-        elif len(description) < 20:
+        elif len(description) < 3:
             raise forms.ValidationError("Debe proporcionar información suficiente para finalizar la evaluación")
         elif len(description) < 5000:
             return description
@@ -165,6 +165,6 @@ class ControlTestAnswerSupervisorCreateForm(ModelForm):
                 raise forms.ValidationError(
                     _('Debe especificar la información necesaria que necesita del Control Owner'))
         else:
-            if len(description) < 20:
+            if len(description) < 3:
                 raise forms.ValidationError(
                 _('Debe proporcionar información suficiente para finalizar la evaluación'))
