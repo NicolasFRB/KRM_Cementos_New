@@ -434,6 +434,7 @@
             </div>
             <!--end::Col-->
           </div>
+          {% if BRAND != 'sacyr' %}
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
@@ -448,6 +449,7 @@
             </div>
             <!--end::Col-->
           </div>
+          {% endif %}
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
@@ -462,6 +464,7 @@
             </div>
             <!--end::Col-->
           </div>
+          {% if BRAND != 'sacyr' %}
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
@@ -476,19 +479,28 @@
             </div>
             <!--end::Col-->
           </div>
+          {% endif %}
         </fieldset>
       </div>
       <div class="col col-md-8">
         {% if control.name %}
+        {% if BRAND == 'sacyr' %}
+        <div class="row mb-8">
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
+          <div>{{ control.name|safe }}</div>
+        </div>
+        {% else %}
         <div class="row mb-8">
           <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Objetivo' %}</span></div>
           <div>{{ control.name|safe }}</div>
         </div>
         {% endif %}
+        {% endif %}
         <div class="row mb-8">
           <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
           <div>{{ control.description|safe }}</div>
         </div>
+        {% if BRAND != 'sacyr' %}
         <div class="row mb-8">
           <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Plan de testeo' %}</span></div>
           <div>{{ control.testing_procedure|safe }}</div>
@@ -497,6 +509,7 @@
           <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Evidencia' %}</span></div>
           <div>{{ control.evidence|safe }}</div>
         </div>
+        {% endif %}
       </div>
       <table>
         <thead>
