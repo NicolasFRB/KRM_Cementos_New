@@ -30,6 +30,8 @@
           <th>{% trans 'Apellidos' %}</th>
           <th>{% trans 'Cargo' %}</th>
           <th>{% trans 'Compañía/as' %}</th>
+          <th>{% trans 'Activo' %}</th>
+          <th>{% trans 'Superusuario' %}</th>
           <th>{% trans 'Compañía/as que administra' %}</th>
           <th>{% trans 'Último inicio de sesión' %}</th>
         </tr>
@@ -48,7 +50,9 @@
                   {% if not forloop.last %}<br>{% endif %}
                 {% endfor %}
             </td>
-            <td class="align-middle">
+            <td class="text-center align-middle">{% if user.is_active == True %}SI{% else %}NO{% endif %}</td>
+            <td class="text-center align-middle">{% if user.is_admin == True %}SI{% else %}NO{% endif %}</td>
+            <td class="text-center align-middle">
               {% for company in user.companies_admin.all %}
                 <a href="{% url 'companies:ga_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>
                   {% if not forloop.last %}<br>{% endif %}
