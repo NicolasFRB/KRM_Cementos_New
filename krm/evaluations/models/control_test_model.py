@@ -103,6 +103,18 @@ class ControlTest(AuditModel):
     def identifier(self):
         return str(self.control.ref).zfill(4)
         # return str(self.process_test.identifier) + '-' + str(self.control.ref).zfill(4)
+    
+    def has_attachment(self):
+        l1 = list(self.answers.exclude(attachment_1__exact='').exclude(attachment_1__isnull=True).values_list("attachment_1", flat=True))
+        l2 = list(self.answers.exclude(attachment_2__exact='').exclude(attachment_2__isnull=True).values_list("attachment_2", flat=True))
+        l3 = list(self.answers.exclude(attachment_3__exact='').exclude(attachment_3__isnull=True).values_list("attachment_3", flat=True))
+        return l1 + l2 + l3
+
+    def get_all_subprocesses(self):
+        return list(self.control.sub_processes.values_list("ref", flat=True).exclude(ref__exact=''))
+    
+    def get_all_risks(self):
+        return list(self.control.risks.values_list("ref", flat=True).exclude(ref__exact=''))
 
     def get_control_test_risks_company(self):
         risks_company = self.evaluation.company.krm_risks.filter(active=True)

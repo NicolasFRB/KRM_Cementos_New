@@ -1,0 +1,798 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %} 
+<script>
+  {% get_current_language as LANGUAGE_CODE %}
+  {% if LANGUAGE_CODE == 'es' %}
+    $(".datepicker").flatpickr({
+      "locale": "es",
+      dateFormat: "d/m/Y",
+    });
+  {% else %}
+    $(".datepicker").flatpickr({
+          "locale": "en",
+          dateFormat: "Y-m-d",
+    });
+  {% endif %}
+
+  $(document).ready(function(){
+    
+    $('.filterable .filters input').keyup(function(e){
+        /* Ignore tab key */
+        var code = e.keyCode || e.which;
+        if (code == '9') return;
+        /* Useful DOM data and selectors */
+        var $input = $(this),
+        inputContent = $input.val().toLowerCase(),
+        $panel = $input.parents('.filterable'),
+        column = $panel.find('.filters th').index($input.parents('th')),
+        $table = $panel.find('.table'),
+        $rows = $table.find('tbody tr');
+        /* Dirtiest filter function ever ;) */
+        var $filteredRows = $rows.filter(function(){
+            var value = $(this).find('td').eq(column).text().toLowerCase();
+            return value.indexOf(inputContent) === -1;
+        });
+        /* Clean previous no-result if exist */
+        $table.find('tbody .no-result').remove();
+        /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+        $rows.show();
+        $filteredRows.hide();
+        /* Prepend no-result row if all rows are filtered */
+        if ($filteredRows.length === $rows.length) {
+            $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="'+ $table.find('.filters th').length +'">No result found</td></tr>'));
+        }
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+  var control_tests = {};
+  var evidences = {};
+  var frequency_evaluation = {};
+  var evals = [];
+  var control_type_evaluation = {'Preventivo': {}, 'Detectivo': {}};
+  var key_controls_evaluation = {"Key": {}, "Non-key": {}};
+  var ct_status_evaluation = {};
+  var ct_result_evaluation = {"Efectivo": {}, "Sin establecer": {}, "No efectivo": {}, "N/A": {}};
+  var subprocesses = {};
+  var risks = {};
+
+  // var dict_status = {};
+  // var dict_ev_status = {};
+  // var map = new Map();
+  // var evaluations = [];
+
+  function evidence_percentage(id){
+    var keys = [];
+    var values = [];
+    var percentages = [];
+
+    Object.entries(evidences).forEach(([key, value]) => {
+      keys.push(key);
+      value = value.map(str => str.replace('[]', ''));
+      const nonEmptyListsCount = value.filter(list => list.length > 0).length;
+      percentages.push((nonEmptyListsCount/value.length * 100).toFixed(2));
+    });
+
+    var options = {
+      chart: {
+        type: 'polarArea',
+      },
+      noData: {
+        text: "No data available",
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          color: undefined,
+          fontSize: '14px',
+          fontFamily: undefined
+        }
+      },
+      title: {
+        floating: false,
+        text: 'Percentage of controls with evidences per evaluation',
+        align: 'middle',
+        offsetY: -5,
+        style: {
+          fontSize: '18px'
+        }
+      },
+      series: percentages,
+      labels: keys,
+      dataLabels: {
+        enabled: true,
+        formatter: function (val, opts) {
+          return percentages[opts.seriesIndex] + '%'; // Format the values to display as percentages with two decimal places
+        },
+      },
+      stroke: {
+        colors: ['#fff']
+      },
+      fill: {
+        opacity: 0.8
+      },
+      legend: {
+        position: "top", 
+      },
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200
+          },
+        }
+      }]
+    };
+
+    var chart = new ApexCharts(document.querySelector("#"+id), options);
+    chart.render();
+  }
+
+  function ct_subprocesses (id){
+    var keys = [];
+    var series = [];
+    
+    Object.entries(subprocesses).forEach(([key, value]) => {
+      var dict = [];
+      var data_dict = [];
+      keys.push(key);
+      
+      value = value.map(str => str.replace('[', ''));
+      value = value.map(str => str.replace(']', ''));
+      value = value.map(str => str.replace(new RegExp("\'", 'g'), ""));
+
+      for (const v of value){
+        const v_mod = v.replace(new RegExp("\'", 'g'), "");
+        if (Object.keys(dict).includes(v)){
+          dict[v] += 1;
+        }else{
+          dict[v] = 1;
+        }
+      }
+
+      Object.entries(dict).forEach(([key2, value2]) => {
+        data_dict.push({x: key2, y: value2});
+      });
+
+      series.push({
+        "name": key,
+        "data": data_dict
+      });
+    });
+
+    var options = {
+      series: series, 
+      legend: {
+        position: "top",
+        show: true
+      },
+      labels: keys,
+      noData: {
+        text: "No data available",
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          color: undefined,
+          fontSize: '14px',
+          fontFamily: undefined
+        }
+      },
+      title: {
+        text: 'Subprocesses per evaluation',
+        align: 'middle',
+        offsetY: -5,
+        style: {
+          fontSize: '18px'
+        }
+      },
+      chart: {
+        height: 350,
+        type: 'treemap'
+      },
+    };
+
+    var chart = new ApexCharts(document.querySelector("#"+id), options);
+    chart.render();
+  }
+
+  function ct_frequency (id, dict, labels, title){
+    var keys = [];
+    var values = [];
+    var series = [];
+    
+    Object.entries(dict).forEach(([key, value]) => {
+      keys.push(key);
+      values = [];
+      Object.entries(value).forEach(([key2, value2]) => {
+        values.push(value2);
+      });
+      series.push({
+        "name": key,
+        "data": values,
+      });
+    });
+
+    var options = {
+      series: series,
+      chart: {
+        type: 'bar',
+        height: 350,
+        stacked: true,
+      },
+      noData: {
+        text: "No data available",
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          color: undefined,
+          fontSize: '14px',
+          fontFamily: undefined
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          dataLabels: {
+            total: {
+              enabled: true,
+              offsetX: 0,
+              style: {
+                fontSize: '13px',
+                fontWeight: 900
+              }
+            }
+          }
+        },
+      },
+      stroke: {
+        width: 1,
+        colors: ['#fff']
+      },
+      title: {
+        text: title,
+        align: 'middle',
+        offsetY: -5,
+        style: {
+          fontSize: '18px'
+        }
+      },
+      xaxis: {
+        categories: labels,
+        labels: {
+          formatter: function (val) {
+            return val
+          }
+        }
+      },
+      yaxis: {
+        title: {
+          text: undefined
+        },
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return val
+          }
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      legend: {
+        position: 'top',
+      }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#"+id), options);
+    chart.render();
+  }
+
+  function ct_control_type (id, dict, labels, title){
+    var keys = [];
+    var values = [];
+    var series = [];
+
+    console.log(dict);
+    
+    Object.entries(dict).forEach(([key, value]) => {
+      keys.push(key);
+      values = [];
+      Object.entries(value).forEach(([key2, value2]) => {
+        values.push(value2);
+      });
+      series.push({
+        "name": key,
+        "data": values,
+      });
+    });
+
+    console.log(series);
+
+    var options = {
+        series: series,
+        chart: {
+          type: 'bar',
+          height: 350,
+          stacked: true,
+          toolbar: {
+            show: true
+          },
+          zoom: {
+            enabled: true
+          }
+        },
+        noData: {
+        text: "No data available",
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          color: undefined,
+          fontSize: '14px',
+          fontFamily: undefined
+        }
+      },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: 'top',
+            }
+          }
+        }],
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            borderRadius: 10,
+            dataLabels: {
+              total: {
+                enabled: true,
+                style: {
+                  fontSize: '13px',
+                  fontWeight: 900
+                }
+              }
+            }
+          },
+        },
+        title: {
+          text: title,
+          align: 'middle',
+          offsetY: -5,
+          style: {
+            fontSize: '18px'
+          }
+        },
+        xaxis: {
+          categories: labels,
+        },
+        yaxis: {
+          labels: {
+          formatter: function (val) {
+            return Math.round(val)
+          }
+        }
+        },
+        legend: {
+          position: 'top',
+        },
+        fill: {
+          opacity: 1
+        }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#"+id), options);
+      chart.render();
+  }
+
+  function ct_risks(id){
+    var series = [];
+
+    var eval = {};
+    var control = {};
+    var risk = {};
+    var aux = {};
+    
+    Object.entries(risks).forEach(([key, value]) => {
+
+      if (!Object.keys(eval).includes(key)){
+        eval[key] = Object.keys(eval).length + 1;
+        aux[key] = Object.keys(aux).length;
+      }
+
+      series.push({
+        "name": key,
+        "data": [],
+      });
+
+      Object.entries(value).forEach(([key2, value2]) => {
+        Object.entries(value2).forEach(([key3, value3]) => {
+
+          if (!Object.keys(control).includes(key3)){
+            control[key3] = Object.keys(control).length + 1;
+          }
+          
+          value3 = value3.replace("[", "");
+          value3 = value3.replace("]", "");
+          value3 = value3.replace(new RegExp("\'", 'g'), "");
+          value3 = value3.replace(new RegExp(" ", 'g'), "");
+          value3 = value3.split(',');
+
+          for (const v of value3){
+
+            if (!Object.keys(risk).includes(v)){
+              risk[v] = Object.keys(risk).length + 1;
+            }
+            series[aux[key]]["data"].push([risk[v], control[key3], 6]);
+          }
+        });
+      });
+    });
+
+    var options = {
+      series: series, 
+      legend: {
+        position: "top",
+        show: true,
+      },
+      chart: {
+        height: 350,
+        type: 'scatter',
+        width: '100%'
+      },
+      xaxis: {
+        overwriteCategories: Object.keys(risk),
+        labels: {
+          rotate: -25,
+          rotateAlways: true,
+          hideOverlappingLabels: false,
+          showDuplicates: false,
+          style: {
+            fontSize: '5px',
+          }
+        },
+      },
+      yaxis: {
+        max: 10,
+        labels: {
+          formatter: function (value) {
+            // Add your custom formatting logic here
+            return Object.keys(control).filter(key => control[key] === value);
+          },
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      title: {
+        text: 'Risks per evaluation',
+        align: 'middle',
+        style: {
+          fontSize: '18px'
+        }
+      },
+      tooltip:{
+        custom: function({series, seriesIndex, dataPointIndex, w}) {
+          var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+
+          return '<div style="margin:10px;">' +
+          '<div style="font-size: 11px;">'+ '<b>' + 'Control: ' + '</b>' 
+          + Object.keys(control).filter(key => control[key] === data[1])+
+          '</div>' +
+          '<div style="font-size: 11px;">'+ '<b>' + 'Riesgo: ' + '</b>' 
+          + Object.keys(risk).filter(key => risk[key] === data[0])+
+          '</div>';
+        },
+      },
+    };
+
+    var chart = new ApexCharts(document.querySelector("#"+id), options);
+    chart.render();
+  }
+</script>
+
+<div class="accordion" id="kt_accordion_2">
+  <form method="get" class="kt-form kt-form--label-right" >
+    <div class="card">
+      <div class="accordion-item">
+        <div class="card-header" id="kt_accordion_1_header_3" style="padding: inherit">
+          <!--begin::Card header-->
+          <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_3" aria-expanded="false" aria-controls="kt_accordion_1_body_3">
+          {% trans 'Search filters' %}
+          </button>
+          <!--end::Card header-->
+        </div>
+        <div id="kt_accordion_1_body_3" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_3" data-bs-parent="#kt_accordion_2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                {% include '_includes/FormErrors.html' %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-12">
+                <div class="row">
+                  <div class="col-12">
+                    {% include '_includes/FormErrors.html' %}
+                  </div>
+                  <div class="row mb-4 col-12 col-md-8">
+                    <fieldset>
+                      <div class="row">
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.evaluation|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.company|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_year|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_period|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.process_status|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.control_status|as_crispy_field }}</div>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <div class="row mb-4 col-12 col-md-4 align-items-start">
+                    <fieldset>
+                      <legend>Date of evaluation</legend>
+                      <div class="row">
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.date_evaluation_begin|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.date_evaluation_end|as_crispy_field }}</div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer py-6">
+            <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i>Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Charts' %}</div>
+  </div> 
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col-xl-6">
+        <div id="chart-6"></div>
+      </div>
+      <div class="col-xl-6">
+        <div id="chart-7"></div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-xl-6">
+        <div id="chart-1"></div>
+      </div>
+      <div class="col-xl-6">
+        <div id="chart-2"></div>
+      </div>
+    </div>
+    
+    <div class="row mb-4">
+      <div class="col-xl-6">
+        <div id="chart-3"></div>
+      </div>
+      <div class="col-xl-6">
+        <div id="chart-4"></div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div id="chart-5"></div>
+    </div>
+    <!-- <div class="row mb-4">
+      <div id="chart-8"></div>
+    </div> -->
+
+    {% for e in evaluations %}
+      <script>  
+        var frequencies = {"Bajo demanda": 0, "Constante": 0, "Diario": 0, "Semanal": 0, "Quincenal": 0, "Mensual": 0, "Bimensual": 0, "Trimestral": 0, "Semestral": 0, "Anual": 0, "Bienal": 0, "Trienal": 0};
+        var ct_types = {"Preventivo": 0, "Detectivo": 0};
+        var key_controls = {"Key": 0, "Non-key": 0};
+        var ct_status = {"Sin iniciar": 0, "En espera de respuesta del Control Owner": 0, "En espera de respuesta del Control Supervisor": 0, "En espera de respuesta del Control Administrator": 0, "Finalizado": 0};
+        var ct_result = {"Efectivo": 0, "Sin establecer": 0, "No efectivo": 0, "N/A": 0};
+      </script>
+      {% for ct in e.get_all_control_test_in_evaluation %}
+      <script>
+        switch("{{ct.control.control_frequency}}"){
+          case 'BD':
+            frequencies['Bajo demanda'] += 1;
+            break;
+          case 'CO':
+            frequencies['Constante'] += 1;
+            break;
+          case 'DI':
+            frequencies['Diario'] += 1;
+            break;
+          case '1W':
+            frequencies['Semanal'] += 1;
+            break;
+          case '2W':
+            frequencies['Quincenal'] += 1;
+            break;
+          case '1M':
+            frequencies['Mensual'] += 1;
+            break;
+          case '2M':
+            frequencies['Bimensual'] += 1;
+            break;
+          case '3T':
+            frequencies['Trimestral'] += 1;
+            break;
+          case '6M':
+            frequencies['Semestral'] += 1;
+            break;
+          case '1Y':
+            frequencies['Anual'] += 1;
+            break;
+          case '2Y':
+            frequencies['Bienal'] += 1;
+            break;
+          case '3Y':
+            frequencies['Trienal'] += 1;
+            break;
+        }
+
+        switch ("{{ct.control.control_type}}"){
+          case 'P':
+            ct_types['Preventivo'] += 1;
+            break;
+          case 'D':
+            ct_types['Detectivo'] += 1;
+            break;
+        }
+
+        switch ("{{ct.control.key_control}}"){
+          case 'True':
+            key_controls['Key'] += 1;
+            break;
+          case 'False':
+            key_controls['Non-key'] += 1;
+            break;
+        }
+
+        switch("{{ct.status}}"){
+          case 'SI':
+            ct_status['Sin iniciar'] += 1;
+            break;
+          case 'WO':
+            ct_status['En espera de respuesta del Control Owner'] += 1;
+            break;
+          case 'WS':
+            ct_status['En espera de respuesta del Control Supervisor'] += 1;
+            break;
+          case 'WA':
+            ct_status['En espera de respuesta del Control Administrator'] += 1;
+            break;
+          case 'FI':
+            ct_status['Finalizado'] += 1;
+            break;
+        }
+
+        switch ("{{ct.result}}"){
+          case "EF":
+            ct_result["Efectivo"] += 1;
+            break;
+          case "SE":
+            ct_result["Sin establecer"] += 1;
+            break;
+          case "NE":
+            ct_result["No efectivo"] += 1;
+            break;
+          case "NA":
+            ct_result["N/A"] += 1;
+            break;
+        }
+
+        if (!("{{e}}" in control_tests)){
+          control_tests["{{e}}"] = ["{{ct}}"];
+          evidences["{{e}}"] = ["{{ct.has_attachment}}"];
+          subprocesses["{{e}}"] = [];
+          risks["{{e}}"] = [];
+          if ("{{ct.get_all_subprocesses|safe}}" != '[]'){
+            subprocesses["{{e}}"].push("{{ct.get_all_subprocesses|safe}}");
+          }
+          if ("{{ct.get_all_risks|safe}}" != '[]'){
+            risks["{{e}}"].push({"{{ct}}": "{{ct.get_all_risks|safe}}"});
+          }
+        }else{
+          control_tests["{{e}}"].push("{{ct}}");
+          evidences["{{e}}"].push("{{ct.has_attachment}}");
+          if ("{{ct.get_all_subprocesses|safe}}" != '[]'){
+            subprocesses["{{e}}"].push("{{ct.get_all_subprocesses|safe}}");
+          }
+          if ("{{ct.get_all_risks|safe}}" != '[]'){
+            risks["{{e}}"].push({"{{ct}}": "{{ct.get_all_risks|safe}}"});
+          }
+        }
+      </script>
+      {% endfor %}
+      <script> 
+        frequency_evaluation["{{e}}"] =  frequencies; 
+
+        control_type_evaluation["Preventivo"]["{{e}}"] = ct_types['Preventivo']; 
+        control_type_evaluation["Detectivo"]["{{e}}"] = ct_types['Detectivo']; 
+
+        key_controls_evaluation["Key"]["{{e}}"] = key_controls["Key"];
+        key_controls_evaluation["Non-key"]["{{e}}"] = key_controls["Non-key"];
+
+        ct_status_evaluation["{{e}}"] = ct_status;
+
+        ct_result_evaluation["Efectivo"]["{{e}}"] = ct_result["Efectivo"];
+        ct_result_evaluation["Sin establecer"]["{{e}}"] = ct_result["Sin establecer"];
+        ct_result_evaluation["No efectivo"]["{{e}}"] = ct_result["No efectivo"];
+        ct_result_evaluation["N/A"]["{{e}}"] = ct_result["N/A"];
+
+        evals.push("{{e}}");
+      </script>
+    {% endfor %}
+    <script>
+      // var l_control_type = ["Preventivo", "Detectivo"];
+      // var l_key_control = ["Key", "Non-key"];
+      var l_status = ["Sin iniciar", ["En espera de respuesta", "del Control Owner"], ["En espera de respuesta", "del Control Supervisor"], ["En espera de respuesta", "del Control Administrator"], "Finalizado"];
+      var l_frequencies = ["Bajo demanda", "Constante", "Diario", "Semanal", "Quincenal", "Mensual", "Bimensual", "Trimestral", "Semestral", "Anual", "Bienal", "Trienal"];
+      // var l_result = ["Efectivo", "Sin establecer", "No efectivo", "N/A"];
+      
+      evidence_percentage("chart-1");
+      ct_frequency("chart-2", frequency_evaluation, l_frequencies, 'Control Tests Frequency per evaluation');
+      ct_control_type("chart-3", control_type_evaluation, evals, "Control Test Types per evaluation");
+      ct_control_type("chart-4", key_controls_evaluation, evals, "Key Control Test per evaluation");
+      ct_subprocesses("chart-5");
+      ct_frequency("chart-6", ct_status_evaluation, l_status, "Control Test Status per evaluation");
+      ct_control_type("chart-7", ct_result_evaluation, evals, "Control Test Result per evaluation");
+      // ct_risks("chart-8");
+    </script>
+  </div>
+</div>
+
+<div class="accordion" id="kt_accordion_1">
+  <div class="card">
+    <div class="accordion-item">
+      <div class="card-header" id="kt_accordion_1_header_2" style="padding: inherit">
+        <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_2" aria-expanded="false" aria-controls="kt_accordion_1_body_2">
+        {% trans 'Results obtained' %}
+        </button>
+      </div>
+      <div id="kt_accordion_1_body_2" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_2" data-bs-parent="#kt_accordion_1">
+        <div class="card-body">
+          {% if evaluations.count %}
+            {% include '_includes/control_test/_control_test_list.html' with evaluations=evaluations%}
+          {% else %}
+            <div class="alert alert-primary">{% trans 'No results' %}.</div>
+          {% endif %}
+        </div>
+
+        <form method="POST" class="kt-form kt-form--label-right" novalidate style="padding: 15px;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="download">
+          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>Download results</button> 
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

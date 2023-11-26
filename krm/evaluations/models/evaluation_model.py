@@ -112,6 +112,9 @@ class Evaluation(AuditModel):
             if ct.control_test_supervisor is None or ct.control_test_owner is None:
                 return False
         return True
+    
+    def get_all_control_test_in_evaluation(self):
+        return self.control_tests.all()
 
     # RETURN number of ctrls by state in evaluation
     # OPTIONAL ARG: Filter by user
