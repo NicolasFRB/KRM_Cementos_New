@@ -44,6 +44,33 @@
 
   });
 </script>
+<script>
+  // fin_btn = document.getElementById('finalizado');
+
+  // fin_btn.onclick = function (event) {
+  //   result_widget = document.getElementById('id_control_result');
+  //   alert(result_widget.val());
+  //   if ('{{form.control_result.result}}' == ''){
+  //     alert('Sin completar');
+  //     event.preventDefault();
+  //   }
+  // }
+  $(document).ready(function () {
+
+    $('#finalizado').click(function (event) {
+        // Get the selected value
+        var result_widget = $('#id_control_result').val();
+        var description_widget = $('#word-count').children(0).children(1).text();
+        var char_count = description_widget.split(': ').pop()
+        
+        if (result_widget == '' || char_count == '0') {
+          event.preventDefault();
+          $('#exampleModal').modal('show');
+        }
+        
+    });
+});
+</script>
 {% endblock js_footer %}
 
 {% block content %}
@@ -51,6 +78,22 @@
 {% include '_includes/Messages.html' %}
 
 {% include '_includes/FormErrors.html' %}
+
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% trans 'Respuesta incompleta' %}</h5>
+      </div>
+      <div class="modal-body">
+        {% trans 'Quedan campos pendientes de completar. Por favor, revise su respuesta' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% if control_test.remediation_plan_needed %}
   <div class="row mt-2 mb-2">
@@ -82,7 +125,7 @@
       <div style="margin-top:15px;">
       <h5 style="float: right ; font-size: 14px;">{% trans 'RESULTADO ACTUAL:&emsp;' %}<span style="float:right; font-size: 14px;" class="badge badge-{% if control_test.result == 'EF' %}success{% else %}danger{% endif %} text-wrap">{{ control_test.get_result_display }}</span></h5></div>
     </div>
-    </div> 
+  </div> 
   <div class="card-body">
     {% if control_test.answers.count > 0 %}
       {% for answer in control_test.answers.all %}
@@ -142,7 +185,7 @@
                   {% endif %}
                 </div>
                 <div class="mb-8 col-12">
-                  <legend>{% trans 'Descripción' %}</legend>
+                  <legend>{% trans 'Comentario' %}</legend>
                   {{ form.description|as_crispy_field }}
                   <div id="word-count"></div>
                 </div>
@@ -182,7 +225,7 @@
                 </div>
                 <div class="col-12 col-xl-7 mb-4">
                   <fieldset>
-                    <legend>{% trans 'Descripción' %}</legend>
+                    <legend>{% trans 'Comentario' %}</legend>
                     {{ form.description|as_crispy_field }}
                     <div id="word-count"></div>
                   </fieldset>
@@ -234,7 +277,7 @@
                 {% endif %}
                 
                   <fieldset>
-                    <legend>{% trans 'Descripción' %}</legend>
+                    <legend>{% trans 'Comentario' %}</legend>
                     {{ form.description|as_crispy_field }}
                     <div id="word-count"></div>
                   </fieldset>
@@ -243,7 +286,7 @@
             </div>
             
             <div class="card-footer py-6">
-              <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Testeo finalizado' %}</button>
+              <button class="btn btn-sm btn-primary" id="finalizado"><i class="bi bi-hdd"></i> {% trans 'Testeo finalizado' %}</button>
               <!-- <button
               class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button> -->
             </div>
