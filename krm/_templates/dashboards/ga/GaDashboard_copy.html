@@ -609,7 +609,7 @@
 
     {% for e in evaluations %}
       <script>  
-        var frequencies = {"Bajo demanda": 0, "Constante": 0, "Diario": 0, "Semanal": 0, "Quincenal": 0, "Mensual": 0, "Bimensual": 0, "Trimestral": 0, "Semestral": 0, "Anual": 0, "Bienal": 0, "Trienal": 0};
+        var frequencies = {"Bajo demanda": 0, "Constante": 0, "Diario": 0, "Semanal": 0, "Quincenal": 0, "Mensual": 0, "Bimensual": 0, "Trimestral": 0, "Cuatrimestral": 0, "Semestral": 0, "Anual": 0, "Bienal": 0, "Trienal": 0, "Quinquenal": 0};
         var ct_types = {"Preventivo": 0, "Detectivo": 0};
         var key_controls = {"Key": 0, "Non-key": 0};
         var ct_status = {"Sin iniciar": 0, "En espera de respuesta del Control Owner": 0, "En espera de respuesta del Control Supervisor": 0, "En espera de respuesta del Control Administrator": 0, "Finalizado": 0};
@@ -642,6 +642,9 @@
           case '3T':
             frequencies['Trimestral'] += 1;
             break;
+          case '4T':
+            frequencies['Cuatrimestral'] += 1;
+            break;
           case '6M':
             frequencies['Semestral'] += 1;
             break;
@@ -653,6 +656,9 @@
             break;
           case '3Y':
             frequencies['Trienal'] += 1;
+            break;
+          case '5Y':
+            frequencies['Quinquenal'] += 1;
             break;
         }
 
@@ -753,7 +759,7 @@
       // var l_control_type = ["Preventivo", "Detectivo"];
       // var l_key_control = ["Key", "Non-key"];
       var l_status = ["Sin iniciar", ["En espera de respuesta", "del Control Owner"], ["En espera de respuesta", "del Control Supervisor"], ["En espera de respuesta", "del Control Administrator"], "Finalizado"];
-      var l_frequencies = ["Bajo demanda", "Constante", "Diario", "Semanal", "Quincenal", "Mensual", "Bimensual", "Trimestral", "Semestral", "Anual", "Bienal", "Trienal"];
+      var l_frequencies = ["Bajo demanda", "Constante", "Diario", "Semanal", "Quincenal", "Mensual", "Bimensual", "Trimestral", "Cuatrimestral", "Semestral", "Anual", "Bienal", "Trienal", "Quinquenal"];
       // var l_result = ["Efectivo", "Sin establecer", "No efectivo", "N/A"];
       
       evidence_percentage("chart-1");

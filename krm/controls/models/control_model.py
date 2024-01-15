@@ -91,10 +91,12 @@ class Control(AuditModel):
         ("1M", _("Mensual")),
         ("2M", _("Bimensual")),
         ("3T", _("Trimestral")),
+        ("4T", _("Cuatrimestral")),
         ("6M", _("Semestral")),
         ("1Y", _("Anual")),
         ("2Y", _("Bienal")),
-        ("3Y", _("Trienal"))
+        ("3Y", _("Trienal")),
+        ("5Y", _("Quinquenal"))
     )
 
     systems = models.CharField(
