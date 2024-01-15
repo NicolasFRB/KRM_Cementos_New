@@ -3,7 +3,7 @@
 from datetime import date
 
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm,  HiddenInput
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
@@ -321,3 +321,11 @@ class UserAdmin(BaseUserAdmin):
         'companies',
         'companies_admin'
     )
+
+class UsersActionForm(forms.Form):
+
+    action = forms.CharField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['action'].widget = HiddenInput()
