@@ -167,9 +167,18 @@ class ControlTestDetail(FormView):
 
     def get_success_url(self):
 
+        status = self.control_test.status
+        dict_status = {
+            "WO": "Control enviado de nuevo al Control Owner",
+            "WS": "Control enviado de nuevo al Control Supervisor",
+            "WA": "Control pendiente de revisión por el Control Administrator",
+            "FI": "Control finalizado",
+            "RE": "Respuestas reiniciadas y enviado de nuevo al Control Owner"
+        }
+        
         messages.add_message(
             self.request, messages.SUCCESS, _(
-                "Control administrado correctamente")
+                dict_status[status])
         )
 
         return reverse_lazy(

@@ -142,7 +142,6 @@ class RuControlTestDetail(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-
         if self.request.user == self.control_test.control_test_owner:
 
             if self.control_test.result == "EF":
@@ -170,10 +169,16 @@ class RuControlTestDetail(CreateView):
                     return reverse_lazy("control_tests:ru_control_test_owner_list")
 
         if self.request.user == self.control_test.control_test_supervisor:
-            messages.add_message(
-                self.request, messages.SUCCESS, _(
-                    "Control revisado correctamente")
-            )
+            if self.control_test.status == "WO" and self.control_test.result == "SE":
+                messages.add_message(
+                    self.request, messages.SUCCESS, _(
+                        "Enviado a Control Owner")
+                )
+            else:
+                messages.add_message(
+                    self.request, messages.SUCCESS, _(
+                        "Control revisado correctamente")
+                )
             return reverse_lazy("control_tests:ru_control_test_supervisor_list")
 
         # Si es efectivo se retorna a la tabla de controles por rellenar
