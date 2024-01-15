@@ -123,6 +123,20 @@
             <div class="row mb-8">
               <!--begin::Col-->
               <div class="col-xl-5">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Última acción' %}</span></div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-7">
+                <div class="fs-6">
+                  <span>{{ user.actions_log.last }}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-5">
                 <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Idioma de notificaciones' %}</span></div>
               </div>
               <!--end::Col-->
