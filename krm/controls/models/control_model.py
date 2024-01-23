@@ -170,6 +170,11 @@ class Control(AuditModel):
         blank=True
     )
 
+    block = models.BooleanField(
+        default=False,
+        verbose_name=_("¿Bloqueado?")
+    )
+
     def __str__(self):
         clean_name = strip_tags(self.name)
         if len(clean_name) > 100:
@@ -214,7 +219,7 @@ class Control(AuditModel):
         companies = set(companies)
         companies = list(companies)
         return companies
-    
+
     def is_sciff(self):
         if self.is_gap == '-' and self.assert_existence == '-' and self.assert_completeness == '-' and self.assert_valuation == '-' and self.assert_rights == '-' and self.assert_disclosure == '-' and self.assert_accurancy == '-' and self.assert_froud == '-':
             return False
@@ -229,3 +234,8 @@ class Control(AuditModel):
                 domain_risks.append(risk.risk_master.domain_risk)
 
         return domain_risks
+
+    @property
+    def control_is_used_by_evaluation(self):
+        from krm.evaluations.models import ControlTest
+        return ControlTest.objects.filter(control=self).exists()

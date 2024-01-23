@@ -61,7 +61,10 @@ class ControlCompanyApiView(APIView):
             company = CompanySerializer(c)
             data_item['c'] = company.data
             data_item['cs'] = []
-            control_list = c.company_controls.filter(active=True)
+            control_list = c.company_controls.filter(
+              active=True,
+              control__block=False
+            )
 
             # Ahora cada control hay que filtrarlo según los parámetros de entrada
             if domain_risk_pks:
