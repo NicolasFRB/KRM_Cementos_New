@@ -319,22 +319,30 @@ class GaControlUpdateView(UpdateView):
             for sub_process in old_control.sub_processes.all():
                 self.object.sub_processes.add(sub_process)
 
-            # Company controls
+            # Company controls hago copia de cada uno
             from krm.companies.models import CompanyControls
             for company_control in CompanyControls.objects.filter(control=old_control):
+
+                # Para cada company_control antiguos tengo que copiar los control_test_owners y control_test_supervisors
+
+                # Buscamos el recién creado
+                company_control_new = CompanyControls.objects.get(
+                    company=company_control.company,
+                    control=self.object
+                )
+
+                company_control_new.active = company_control.active
+                company_control_new.save()
+
+                # Tengo que copiar control_test_owners y control_test_supervisors
                 owners = company_control.control_test_owners.all()
                 supervisors = company_control.control_test_supervisors.all()
 
-                company_control.pk = None
-                company_control.control = self.object
-                company_control.save()
-                import ipdb; ipdb.set_trace()
-
                 # Tengo que copiar control_test_owners y control_test_supervisors
                 for owner in owners:
-                    company_control.control_test_owners.add(owner)
+                    company_control_new.control_test_owners.add(owner)
                 for supervisor in supervisors:
-                    company_control.control_test_supervisors.add(supervisor)
+                    company_control_new.control_test_supervisors.add(supervisor)
 
 
             return HttpResponseRedirect(

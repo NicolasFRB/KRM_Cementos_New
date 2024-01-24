@@ -41,9 +41,9 @@ class CompanyDomainRiskEvaluator(admin.ModelAdmin):
 @admin.register(CompanyControls)
 class CompanyControls(admin.ModelAdmin):
     model = CompanyControls
-    list_display = ('company', 'active', 'control')
+    list_display = ('pk', 'company', 'active', 'control')
     filter_horizontal = (
         'control_test_owners',
         'control_test_supervisors'
     )
-    list_filter = ('active', 'company')
+    list_filter = ('active', 'company', 'control__block')
