@@ -69,3 +69,5 @@ CELERY_TASK_DEFAULT_ROUTING_KEY = "krm"
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # WHITENOISE_MANIFEST_STRICT = False
 # INSTALLED_APPS += ['whitenoise.runserver_nostatic']  # noqa F405
+
+SESSION_COOKIE_AGE = 3600
