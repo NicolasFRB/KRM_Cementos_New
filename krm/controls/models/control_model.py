@@ -160,6 +160,7 @@ class Control(AuditModel):
         ("S", _("Sociedad")),
         ("C", _("Corporativo")),
         ("G", _("Grupo")),
+        ("D", _("Division")),
     )
 
     scope = models.CharField(

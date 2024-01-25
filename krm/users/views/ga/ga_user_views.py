@@ -74,9 +74,9 @@ class GaDashboardView(ListView, FormView):
         else:
             context['search_evaluation_form'] = EvaluationDashboardForm()
             context['evaluations'] = Evaluation.objects.all()
-        
+
         return context
-    
+
     def get_queryset(self):
         qs = Evaluation.objects.filter(pk=-1)
         qs_control = ControlTest.objects.filter(pk=-1)
@@ -124,13 +124,13 @@ class GaDashboardView(ListView, FormView):
 
             if len(certification_year) > 0:
                 qs = qs.filter(certification_year__in=certification_year)
-                
+
             if len(certification_period) > 0:
                 qs = qs.filter(certification_period__in=certification_period)
 
             if len(status) > 0:
                 qs = qs.filter(status__in=status)
-            
+
             if len(control_status) > 0:
                 qs = qs_control.filter(status__in=control_status)
 
@@ -140,7 +140,7 @@ class GaDashboardView(ListView, FormView):
             qs = Evaluation.objects.all()
 
         return qs
-    
+
     def form_valid(self, form):
         action = form.cleaned_data["action"]
         #from atenea.interactions.models.interaction_model import Interaction
@@ -163,7 +163,7 @@ class GaDashboardView(ListView, FormView):
                        'Control',
                        'Fecha de inicio',
                        'Supervisor',
-                       'Control Owner', 
+                       'Control Owner',
                        'Status',
                        'Resultado'
                     ]
