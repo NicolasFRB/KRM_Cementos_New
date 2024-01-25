@@ -112,6 +112,7 @@
           </div>
           <!--end::Col-->
         </div>
+        {% if control_test.evaluation.certification_period != None %}
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-6">
@@ -126,6 +127,7 @@
           </div>
           <!--end::Col-->
         </div>
+        {% endif %}
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
@@ -195,7 +197,9 @@
             <div class="col-xl-6">
               <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Control ref' %}</span></div>
               <p></p>
+              {% if control_test.control.scope != None %}
               <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcance' %}</span></div>
+              {% endif %}
             </div>
             <!--end::Col-->
             <!--begin::Col-->
@@ -208,7 +212,9 @@
                 {% endif %}
                   <div><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ control_test.control.ref }}">{{ control_test.control.ref }}</span></div>
                   <p></p>
+                  {% if control_test.control.scope != None %}
                   <div><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ control_test.control.scope }}">{{ control_test.control.get_scope_display }}</span></div>
+                  {% endif %}
                 </a>
               </div>
             </div>
@@ -465,6 +471,7 @@
             <!--end::Col-->
           </div>
           {% if BRAND != 'sacyr' %}
+          {% if control.systems != None %}
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
@@ -479,6 +486,7 @@
             </div>
             <!--end::Col-->
           </div>
+          {% endif %}
           {% endif %}
         </fieldset>
       </div>
@@ -496,10 +504,12 @@
         </div>
         {% endif %}
         {% endif %}
+        {% if control.description != None %}
         <div class="row mb-8">
           <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
           <div>{{ control.description|safe }}</div>
         </div>
+        {% endif %}
         {% if BRAND != 'sacyr' %}
         <div class="row mb-8">
           <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Plan de testeo' %}</span></div>

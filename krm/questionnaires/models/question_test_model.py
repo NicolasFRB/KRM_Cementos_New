@@ -115,6 +115,7 @@ class QuestionTest(AuditModel):
             "certification_period": period,
             "app_name": configuration.app_name,
             "notif_type": notif_type,
+            "MAIN_EMAIL": configuration.main_email,
         }
         body_html = render_to_string(
             "emails/questionnaires/questionnaires_to_complete.html", context
@@ -124,6 +125,7 @@ class QuestionTest(AuditModel):
             "preheader": _("Cuestionario pendiente de completar"),
             "BRAND": settings.BRAND,
             "app_name": configuration.app_name,
+            "MAIN_EMAIL": configuration.main_email,
         }
         body_html = render_to_string("emails/base-inline.html", context)
         from_email = settings.EMAIL_FROM

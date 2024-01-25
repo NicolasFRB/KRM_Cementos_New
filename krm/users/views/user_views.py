@@ -2,16 +2,18 @@ import requests
 from openpyxl import load_workbook
 from io import BytesIO
 import re
+import xlwt
 
 from krm.configuration.forms import ImportForm
 
 # Django
 from django.urls import reverse_lazy, reverse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.views.generic import (
     ListView,
@@ -31,12 +33,17 @@ from krm.companies.models import Company
 
 from krm.users.forms.user_form import(
     UserCreateForm,
-    UserUpdateForm
+    UserUpdateForm,
+    CaUserUpdateForm,
+    UsersActionForm
 )
 
 from krm.users.decorators import (
     is_global_admin,
+    is_company_admin,
 )
+
+from django.http import HttpResponse
 
 
 @method_decorator([is_global_admin], name='dispatch')
@@ -44,6 +51,8 @@ class GaUserListView(ListView):
     template_name = 'users/GaUserList.html'
     model = User
     context_object_name = 'users'
+    form_class = UsersActionForm
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,6 +76,152 @@ class GaUserListView(ListView):
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
+    def post(self, request, *args, **kwargs):
+        action = request.POST.get('action')
+        users = User.objects.all()
+
+        if action == 'd':
+
+            # Comienzo de la creacion de archivo de descarga del Test de Proceso
+            filename = "download_users.xls"
+            response = HttpResponse(content_type="application/ms-excel")
+            response["Content-Disposition"] = 'attachment; filename="{}"'.format(
+                filename
+            )
+
+            wb = xlwt.Workbook(encoding="utf-8")
+            ws = wb.add_sheet("Controls")
+
+            # Sheet header, first row
+            row_num = 0
+
+            font_style_title = xlwt.easyxf("align: vert centre, horiz left")
+            font_style_title.font.bold = True
+
+            font_style_title_wrap = xlwt.easyxf(
+                "align: vert centre, horiz left, wrap yes"
+            )
+            font_style_title_wrap.font.bold = True
+
+            font_style_body = xlwt.easyxf("align: vert top, horiz left")
+            font_style_body_wrap = xlwt.easyxf(
+                "align: vert top, horiz left, wrap yes"
+            )
+
+            date_format = xlwt.Style.XFStyle()
+            date_format.num_format_str = 'DD/MM/YY'
+
+            ws.col(0).width = 256 * 25
+            ws.col(1).width = 256 * 25
+            ws.col(2).width = 256 * 25
+            ws.col(3).width = 256 * 25
+            ws.col(4).width = 256 * 25
+            ws.col(5).width = 256 * 25
+            ws.col(6).width = 256 * 25
+            ws.col(7).width = 256 * 25
+            ws.col(8).width = 256 * 25
+            ws.col(9).width = 256 * 25
+
+            columns = [
+                "NOMBRE",  # 0
+                "CARGO",  # 2
+                "CORREO ELECTRÓNICO",  # 3
+                "ACTIVO",  # 3
+                "SUPERUSUARIO",  # 3
+                "ÚLTIMO INICIO DE SESIÓN",  # 4
+                "ÚLTIMA ACCIÓN",  # 5
+                "IDIOMA DE NOTIFICACIONES",  # 6
+                "COMPAÑÍAS A LAS QUE PERTENECE",  # 7
+                "COMPAÑÍAS QUE ADMINISTRA",  # 8
+            ]
+
+            for col_num in range(len(columns)):
+                if col_num in (21, 28):
+                    ws.write(
+                        row_num, col_num, columns[col_num], font_style_title_wrap
+                    )
+                else:
+                    ws.write(row_num, col_num,
+                             columns[col_num], font_style_title)
+
+            for u in users:
+                row_num += 1
+                ws.write(
+                    row_num, 0, u.full_name, font_style_body
+                )  # 0
+                ws.write(
+                    row_num, 1, u.position, font_style_body
+                )  # 1
+                ws.write(row_num, 2, u.email, font_style_body)  
+                ws.write(row_num, 3, u.is_active, font_style_body)  
+                ws.write(row_num, 4, u.is_admin, font_style_body)  
+                
+                last_login = u.last_login
+
+                if last_login != None:
+                    ws.write(row_num, 5, last_login.strftime("%d/%m/%Y %H:%M:%S"))
+                else:
+                    ws.write(row_num, 5, '', font_style_body)    
+                # ws.write(row_num, 5, u.last_login, font_style_body)  
+                
+                last_action_log = str(u.actions_log.last())
+
+                if last_action_log != 'None':
+                    ws.write(row_num, 6, last_action_log, font_style_body)
+                else:
+                    ws.write(row_num, 6, '', font_style_body)                
+                
+                ws.write(row_num, 7, u.notification_language, font_style_body)  
+                companies = ''
+                for company in u.companies.all():
+                    companies += f'{company.name}\n'
+                ws.write(
+                    row_num,
+                    8,
+                    companies,
+                    font_style_body_wrap,
+                ) 
+                companies_admin = ''
+                for company in u.companies_admin.all():
+                    companies_admin += f'{company.name}\n'
+                ws.write(
+                    row_num,
+                    9,
+                    companies_admin,
+                    font_style_body_wrap,
+                ) 
+
+            wb.save(response)
+            return response
+        return redirect('users:ga_user_list')
+    
+@method_decorator([is_company_admin], name='dispatch')
+class CaUserListView(ListView):
+    template_name = 'users/CaUserList.html'
+    model = User
+    context_object_name = 'users'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Usuarios'), 'url': reverse(
+                'users:ca_user_list')},
+        ]
+        context['page_title'] = _('Usuarios')
+        context['breadcrums'] = breadcrums
+        context['actions'] = [
+            {
+                'title': _('Nuevo'),
+                'url': reverse('users:ca_user_create'),
+                'primary': True,
+                'icon': '<i class="bi bi-plus-lg"></i>'
+            },
+        ]
+        context['js_template'] = ['js/custom/datatables.js']
+        return context
 
 @method_decorator([is_global_admin], name='dispatch')
 class GaUserDetailView(DetailView):
@@ -89,6 +244,33 @@ class GaUserDetailView(DetailView):
             {
                 'title': _('Editar'),
                 'url': reverse('users:ga_user_update', kwargs={'pk': self.object.pk}),
+                'primary': True,
+                'icon': '<i class="bi bi-pencil"></i>'
+            },
+        ]
+
+        return context
+    
+@method_decorator([is_company_admin], name='dispatch')
+class CaUserDetailView(DetailView):
+    template_name = 'users/CaUserDetail.html'
+    model = User
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Usuarios'), 'url': reverse('users:ca_user_list')},
+            {'title': self.object.full_name}
+        ]
+        context['page_title'] = f"{_('Usuario')} : {self.object.full_name}"
+        context['breadcrums'] = breadcrums
+        context['actions'] = [
+            {
+                'title': _('Editar'),
+                'url': reverse('users:ca_user_update', kwargs={'pk': self.object.pk}),
                 'primary': True,
                 'icon': '<i class="bi bi-pencil"></i>'
             },
@@ -163,6 +345,38 @@ class GaUserUpdateView(UpdateView):
             kwargs={'pk': self.object.pk}
         )
 
+@method_decorator((is_company_admin), name='dispatch')
+class CaUserUpdateView(UpdateView):
+    template_name = 'users/CaUserUpdate.html'
+    model = User
+    form_class = CaUserUpdateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Usuarios'), 'url': reverse(
+                'users:ca_user_list')},
+            {'title': _('Editar usuario')},
+        ]
+        context['page_title'] = _('Editar Usuario')
+        context['breadcrums'] = breadcrums
+
+        return context
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            _('Usuario modificado correctamente')
+        )
+
+        return reverse_lazy(
+            'users:ca_user_detail',
+            kwargs={'pk': self.object.pk}
+        )
 
 @method_decorator((is_global_admin), name='dispatch')
 class GaUserDeleteView(DeleteView):

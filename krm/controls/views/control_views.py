@@ -2,6 +2,8 @@ from django.shortcuts import render
 import xlwt
 import re
 
+import datetime
+
 # Create your views here.
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
@@ -47,7 +49,7 @@ class GaControlListView(ListView,FormView):
     template_name = 'controls/GaControlList.html'
     form_class = DownloadControlsActionForm
     context_object_name = 'controls'
-    queryset = Control.objects.all().prefetch_related(
+    queryset = Control.objects.filter(block=False).prefetch_related(
         'sub_processes').prefetch_related('risks__risk_master__domain_risk')
 
     def get_context_data(self, **kwargs):
@@ -168,7 +170,7 @@ class GaControlListView(ListView,FormView):
                                 row_num, 4, all_risks, font_style_body
                             )  # 4
 
-                        sub_processes = []   
+                        sub_processes = []
                         if comp_cont.control.sub_processes.count() > 0:
                             for sp in comp_cont.control.sub_processes.all():
                                 sub_processes.append(sp.name)
@@ -188,8 +190,8 @@ class GaControlListView(ListView,FormView):
                         ws.write(
                             row_num, 9, comp_cont.control.get_control_frequency_display(), font_style_body
                         )  # 9
-                        
-                        owners = []   
+
+                        owners = []
                         if comp_cont.control_test_owners.count() > 0:
                             for co in comp_cont.control_test_owners.all():
                                 owners.append(co.email)
@@ -197,7 +199,7 @@ class GaControlListView(ListView,FormView):
                             ws.write(
                                 row_num, 10, all_co, font_style_body
                             )  # 10
-                        supervisors = []   
+                        supervisors = []
                         if comp_cont.control_test_supervisors.count() > 0:
                             for cs in comp_cont.control_test_supervisors.all():
                                 supervisors.append(cs.email)
@@ -209,7 +211,7 @@ class GaControlListView(ListView,FormView):
                         ws.write(
                             row_num, 12, comp_cont.control.get_scope_display(), font_style_body
                         )  # 12
-                    
+
             wb.save(response)
             return response
 
@@ -295,6 +297,65 @@ class GaControlUpdateView(UpdateView):
     form_class = ControlCreateForm
     model = Control
     template_name = 'controls/GaControlUpdate.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        # Si el control ha sido utilizado en alguna evaluación no se puede editar, se clona y se redirecciona a la vista de edición de ese nuevo control
+
+        # Debemos copiar los riesgos en los que intervenía, subprocessos y risk company
+        if self.object.control_is_used_by_evaluation:
+            old_control = self.get_object()
+            now = datetime.datetime.now()
+            old_control.ref = self.object.ref + "_" + now.strftime("%Y%m%d%H%M%S")
+            old_control.block = True
+            old_control.save()
+            self.object.pk = None
+            self.object.save()
+
+            for risk in old_control.risks.all():
+                self.object.risks.add(risk)
+
+            for sub_process in old_control.sub_processes.all():
+                self.object.sub_processes.add(sub_process)
+
+            # Company controls hago copia de cada uno
+            from krm.companies.models import CompanyControls
+            for company_control in CompanyControls.objects.filter(control=old_control):
+
+                # Para cada company_control antiguos tengo que copiar los control_test_owners y control_test_supervisors
+
+                # Buscamos el recién creado
+                company_control_new = CompanyControls.objects.get(
+                    company=company_control.company,
+                    control=self.object
+                )
+
+                company_control_new.active = company_control.active
+                company_control_new.save()
+
+                # Tengo que copiar control_test_owners y control_test_supervisors
+                owners = company_control.control_test_owners.all()
+                supervisors = company_control.control_test_supervisors.all()
+
+                # Tengo que copiar control_test_owners y control_test_supervisors
+                for owner in owners:
+                    company_control_new.control_test_owners.add(owner)
+                for supervisor in supervisors:
+                    company_control_new.control_test_supervisors.add(supervisor)
+
+
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'controls:ga_control_update',
+                    kwargs={"pk": self.object.pk},
+                )
+            )
+
+        return super(GaControlUpdateView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

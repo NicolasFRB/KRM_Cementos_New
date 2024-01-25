@@ -84,6 +84,7 @@ class CaCompanyDetailView(DetailView):
         context['page_title'] = f"{_('Compañía')} : {self.object.name}"
         context['breadcrums'] = breadcrums
 
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
 
@@ -106,6 +107,7 @@ class CaCompanyUpdateView(UpdateView):
         context['page_title'] = _('Editar Compañía')
         context['breadcrums'] = breadcrums
 
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def get_success_url(self):
@@ -142,10 +144,12 @@ class CaCompanyRiskKrmSelectView(FormView):
             {'title': _('Compañías'), 'url': reverse(
                 'companies:ca_company_list')},
             {'title': self.company.name, 'url': reverse(
-                'companies:ga_company_detail', kwargs={'pk': self.company.pk})},
-            {'title': _('Seleccionar riesgos que le aplican')},
+                'companies:ca_company_detail', kwargs={'pk': self.company.pk})},
+            {'title': _(
+                'Selección de Riesgos (N2) que aplican a %s' % self.company.name)},
         ]
-        context['page_title'] = _("Seleccionar Riesgos que le aplican")
+        context['page_title'] = _(
+            'Selección de Riesgos (N2) que aplican a %s' % self.company.name)
         context['breadcrums'] = breadcrums
 
         context['risks_companies'] = RiskCompany.objects.filter(
@@ -168,11 +172,13 @@ class CaCompanyRiskKrmSelectView(FormView):
                 dm[dm_pk]['risks'].append(risk_company)
 
         context['dms'] = dm
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def post(self, request, *args, **kwargs):
-        risk_company_selected = request.POST.getlist('risk_pk')
+        risk_company_selected = request.POST.get('selectedPKs')
+        risk_company_selected = risk_company_selected.split(',')
+        
         self.company.krm_risks.filter(
             pk__in=risk_company_selected).update(active=True)
         self.company.krm_risks.exclude(
@@ -180,7 +186,7 @@ class CaCompanyRiskKrmSelectView(FormView):
 
         messages.add_message(
             self.request, messages.SUCCESS, _(
-                "Lista de Riesgos KRM actualizada correctamente")
+                "Riesgos (N2) que aplican sobre %s actualizados correctamente" % self.company.name)
         )
 
         return HttpResponseRedirect(

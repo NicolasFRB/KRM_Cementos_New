@@ -32,6 +32,12 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('users:ga_user_list'),
         reverse_lazy('users:ga_user_create'),
     ]
+
+    ca_users_urls = [
+        reverse_lazy('users:ca_user_list'),
+        reverse_lazy('users:ca_user_create'),
+    ]
+
     process_urls = [
         reverse_lazy('process:ga_process_list'),
         reverse_lazy('process:ga_process_create'),
@@ -165,6 +171,22 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             )
         ]
+
+        ca_users_urls = ca_users_urls + [
+            reverse_lazy(
+                'users:ca_user_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'users:ca_user_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'users:ca_user_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+        
         process_urls = process_urls + [
             reverse_lazy(
                 'process:ga_process_detail',
@@ -294,6 +316,7 @@ def get_menu_urls(request, pk=None):
         'CONTROLS_URLS': controls_urls,
         'COMPANIES_URLS': companies_urls,
         'USERS_URLS': users_urls,
+        'CA_USERS_URLS': ca_users_urls,
         'PROCESS_URLS': process_urls,
         'SUBPROCESS_URLS': sub_process_urls,
         'EVALUATIONS_URLS': evaluations_urls,

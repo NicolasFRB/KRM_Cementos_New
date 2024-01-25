@@ -12,17 +12,18 @@
   <script defer src="{% static 'main.react.js' %}"></script>
 {% endif %}
 
+
 <script>
   $(document).ready(function () {
-    $('#sendEvaluation').on('submit', function (e) {
-      if (!document.getElementById('clone').checked) {
+    $('#sendEvaluation').on('submit', function(e){
+      if(!document.getElementById('clone').checked){
         let errorFound = false;
         $('#buttonSend').attr('data-kt-indicator', 'on');
         $('.card').removeClass('danger');
-
+  
         if (!errorFound) {
-          $("input[name^='probability-']").each(function (index) {
-            if ($(this).val() == 5) {
+          $("input[name^='probability-']").each(function(index){
+            if ($(this).val() == 5){
               let parent = $(this).closest('div.card');
               $(parent).addClass('danger');
               $('html, body').animate({
@@ -35,7 +36,7 @@
             }
           });
         }
-
+  
         if (!errorFound) {
           $("input[name^='impact-']").each(function (index) {
             if ($(this).val() == 5) {
@@ -51,7 +52,7 @@
             }
           });
         }
-
+  
         if (!errorFound) {
           $("textarea[name^='descriptionAdmin-']").each(function (index) {
             if ($(this).val() == '') {
@@ -98,418 +99,438 @@
 
 {% include '_includes/Messages.html' %}
 
+<div class="accordion" id="kt_accordion_2">
 <!--begin::Container-->
-<div class="card mb-8">
-  <!--begin::Card header-->
-  <div class="card-header">
-    <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
-    <!--end::Card header-->
-  </div>
-  <!--end::Card header-->
-  <!--begin::Card body-->
-  <div class="card-body">
-    <div class="row">
-      <div class="col col-md-6">
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-7">
-            <div class="fs-6">
-              <span>{{ evaluation.ref }}</span>
-            </div>
-          </div>
-          <!--end::Col-->
-        </div>
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-7">
-            <div class="fs-6">
+  <div class="card mb-8">
+    <div class="accordion-item">
+      <!--begin::Card header-->
+      <div class="card-header" id="kt_accordion_1_header_0" style="padding: inherit">
+        <!--begin::Card header-->
+        <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_0" aria-expanded="true" aria-controls="kt_accordion_1_body_0">
+          {{ page_title }}
+        </button>
+        <!--end::Card header-->
+      </div>
+      <!--end::Card header-->
+      <div id="kt_accordion_1_body_0" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_0" data-bs-parent="#kt_accordion_2">
+        <!--begin::Card body-->
+        <div class="card-body">
+          <div class="row">
+            <div class="col col-md-6">
               <div class="row mb-8">
-                {% if evaluation.company.country %}
-                <div class="col-xl-2">
-                  <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.company.country.name}}">
-                    <img class="w-20px h-20px rounded-circle me-3" src="{{evaluation.company.country.flag}}">
-                  </span>
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
                 </div>
-                {% endif %}
-                <div class="col-xl-10">
-                  <div><span>{{ evaluation.company.ref }}</span></div>
-                  <div><span>{{ evaluation.company.name }}</span></div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <span>{{ evaluation.ref }}</span>
+                  </div>
                 </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <div class="row mb-8">
+                      {% if evaluation.company.country %}
+                      <div class="col-xl-2">
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.company.country.name}}">
+                          <img class="w-20px h-20px rounded-circle me-3" src="{{evaluation.company.country.flag}}">
+                        </span>
+                      </div>
+                      {% endif %}
+                      <div class="col-xl-10">
+                        <div><span>{{ evaluation.company.ref }}</span></div>
+                        <div><span>{{ evaluation.company.name }}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                  <span class="badge badge-info">{{ evaluation.company.type_company }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sociedades en alcance' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    {% for c in evaluation.company.companies_in_scope_as_list %}
+                      <span class="badge badge-info">{{ c }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Estado' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6" style="display:flex;">
+                    {% if evaluation.status == "EP" %}
+                      <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                      <div>{{ evaluation.get_status_display }}</div>
+                    {% else %}
+                      <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                      <div>{{ evaluation.get_status_display }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+            </div>
+            <div class="col col-md-3">
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                  <div class="fs-6">
+                    <span>{{ evaluation.certification_year }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de certificación' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                  <div class="fs-6">
+                    <span>{{ evaluation.certification_period }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+            </div>
+            <div class="col col-md-3">
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <span>{{ evaluation.date_begin }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de fin' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <span>{{ evaluation.date_end }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
               </div>
             </div>
           </div>
-          <!--end::Col-->
         </div>
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-7">
-            <div class="fs-6">
-            <span class="badge badge-info">{{ evaluation.company.type_company }}</span>
-            </div>
-          </div>
-          <!--end::Col-->
-        </div>
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sociedades en alcance' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-7">
-            <div class="fs-6">
-              {% for c in evaluation.company.companies_in_scope_as_list %}
-                <span class="badge badge-info">{{ c }}</span>
-              {% endfor %}
-            </div>
-          </div>
-          <!--end::Col-->
-        </div>
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Estado' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-7">
-            <div class="fs-6" style="display:flex;">
-              {% if evaluation.status == "EP" %}
-                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
-                <div>{{ evaluation.get_status_display }}</div>
-              {% else %}
-                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
-                <div>{{ evaluation.get_status_display }}</div>
-              {% endif %}
-            </div>
-          </div>
-          <!--end::Col-->
-        </div>
-      </div>
-      <div class="col col-md-3">
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-6">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-6">
-            <div class="fs-6">
-              <span>{{ evaluation.certification_year }}</span>
-            </div>
-          </div>
-          <!--end::Col-->
-        </div>
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-6">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de certificación' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-6">
-            <div class="fs-6">
-              <span>{{ evaluation.certification_period }}</span>
-            </div>
-          </div>
-          <!--end::Col-->
-        </div>
-      </div>
-      <div class="col col-md-3">
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-7">
-            <div class="fs-6">
-              <span>{{ evaluation.date_begin }}</span>
-            </div>
-          </div>
-          <!--end::Col-->
-        </div>
-        <div class="row mb-8">
-          <!--begin::Col-->
-          <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de fin' %}</span></div>
-          </div>
-          <!--end::Col-->
-          <!--begin::Col-->
-          <div class="col-xl-7">
-            <div class="fs-6">
-              <span>{{ evaluation.date_end }}</span>
-            </div>
-          </div>
-          <!--end::Col-->
-        </div>
+        <!--end::Card body-->
       </div>
     </div>
   </div>
-  <!--end::Card body-->
 </div>
 
 {% if risks_test_inherent %}
     {% for rt in risks_test_inherent %}
-      <div class="card mb-5">
-        <!--begin::Card header-->
-        <div class="card-header">
+    <div class="accordion" id="kt_accordion_2">
+      <div class="card  mb-5">
+        <div class="accordion-item">
           <!--begin::Card header-->
-          <div class="card-title fs-3 fw-bold"><span class="badge badge-primary">{{ rt.risk.risk.ref }}</span>&nbsp{{ rt.risk.risk.name }}</div>
-          <!--end::Card header-->
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-xl-6">
-              <fieldset>
-                <!-- <legend class="mb-8">{% trans 'Datos del Riesgo' %}</legend> -->
-                <div class="row mb-8">
-                  <!--begin::Col-->
-                  <div class="col-xl-4">
-                    <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominio de Riesgo' %}</span></div>
-                  </div>
-                  <!--end::Col-->
-                  <!--begin::Col-->
-                  <div class="col-xl-8">
-                    <div class="fs-6">
-                      <div>
-                        <span class="badge badge-primary text-wrap">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
-                      </div>
-                      <div>
-                        {{ rt.risk.risk.risk_master.domain_risk.name }}
-                      </div>
-                    </div>
-                  </div>
-                  <!--end::Col-->
-                </div>
-              </fieldset>
-            </div>
-            <div class="col-xl-6">
-              <fieldset>  
-                <div class="row mb-8">
-                  <!--begin::Col-->
-                  <div class="col-xl-4">
-                    <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Riesgo Maestro' %}</span></div>
-                  </div>
-                  <!--end::Col-->
-                  <!--begin::Col-->
-                  <div class="col-xl-8">
-                    <div class="fs-6">
-                      <div>
-                        <span class="badge badge-primary text-wrap">{{ rt.risk.risk.risk_master.ref }}</span>
-                      </div>
-                      <div>
-                        {{ rt.risk.risk.risk_master.name }}
-                      </div>
-                    </div>
-                  </div>
-                  <!--end::Col-->
-                </div>
-              </fieldset>
-            </div>
-            <div class="col-xl-12">            
-              <div class="row mb-8">
-                <div class="col col-xl-6">
-                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span></div>
-                    <div>{{ rt.risk.krm_main_elements|safe }}</div>
-                </div>
-                <div class="col col-xl-6">
-                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales eventos' %}</span></div>
-                    <div>{{ rt.risk.krm_main_events|safe }}</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-12">
-              <div class="row mb-8">
-                <div class="col col-xl-6">
-                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Actividad afectada' %}</span></div>
-                    <div>{{ rt.risk.krm_activity_affected|safe }}</div>
-                </div>
-                <div class="col col-xl-6">
-                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Personal expuesto' %}</span></div>
-                    <div>{{ rt.risk.krm_exposed_staff|safe }}</div>
-                </div>
-              </div>
-            </div>
+          <div class="card-header" id="kt_accordion_1_header_{{ forloop.counter }}" style="padding: inherit">
+            <!--begin::Card header-->
+            <button class="accordion-button fs-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_{{ forloop.counter }}" aria-expanded="true" aria-controls="kt_accordion_1_body_{{ forloop.counter }}">
+              <span class="badge badge-primary">{{ rt.risk.risk.ref }}</span>&nbsp{{ rt.risk.risk.name }}
+            </button>
+            <!--end::Card header-->
           </div>
-        </div>
-        <!--begin::Card footer-->
-        <div class="card-footer py-6">
-          <div class="valoration-expert">
-            <div class="row mb-10">
-              <div class="col col-12">
-                <h4 class="mb-7">Valoración dada por el Experto de Dominio de Riesgo asociado</h4>
-              </div>
+          <div id="kt_accordion_1_body_{{ forloop.counter }}" class="accordion-collapse collapse show" aria-labelledby="kt_accordion_1_header_{{ forloop.counter }}" data-bs-parent="#kt_accordion_2">
+            <div class="card-body">
               <div class="row">
-                <div class="col col-12 col-xl-5 mb-5 mb-xl-0">
-                  <div class="mb-5">
-                    <h5 class="mb-7">Impacto de continuidad</h5>
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_continuity_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Bajo' %}</label>
+                <div class="col-xl-6">
+                  <fieldset>
+                    <!-- <legend class="mb-8">{% trans 'Datos del Riesgo' %}</legend> -->
+                    <div class="row mb-8">
+                      <!--begin::Col-->
+                      <div class="col-xl-4">
+                        <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominio de Riesgo' %}</span></div>
+                      </div>
+                      <!--end::Col-->
+                      <!--begin::Col-->
+                      <div class="col-xl-8">
+                        <div class="fs-6">
+                          <div>
+                            <span class="badge badge-primary text-wrap">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
+                          </div>
+                          <div>
+                            {{ rt.risk.risk.risk_master.domain_risk.name }}
+                          </div>
                         </div>
                       </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_continuity_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Medio' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_continuity_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Alto' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_continuity_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Crítico' %}</label>
-                        </div>
-                      </div>
+                      <!--end::Col-->
                     </div>
-                  </div>
-
-                  <div class="mb-5">
-                    <h5 class="mb-7">Impacto económico</h5>
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_economic_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Bajo' %}</label>
+                  </fieldset>
+                </div>
+                <div class="col-xl-6">
+                  <fieldset>  
+                    <div class="row mb-8">
+                      <!--begin::Col-->
+                      <div class="col-xl-4">
+                        <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Riesgo Maestro' %}</span></div>
+                      </div>
+                      <!--end::Col-->
+                      <!--begin::Col-->
+                      <div class="col-xl-8">
+                        <div class="fs-6">
+                          <div>
+                            <span class="badge badge-primary text-wrap">{{ rt.risk.risk.risk_master.ref }}</span>
+                          </div>
+                          <div>
+                            {{ rt.risk.risk.risk_master.name }}
+                          </div>
                         </div>
                       </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_economic_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Medio' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_economic_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Alto' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_economic_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Crítico' %}</label>
-                        </div>
-                      </div>
+                      <!--end::Col-->
                     </div>
-                  </div>
-                  
-                  <div class="mb-5">
-                    <h5 class="mb-7">Impacto en imagen</h5>
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_branding_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Bajo' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_branding_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Medio' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_branding_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Alto' %}</label>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-check form-check-custom form-check-solid mb-4">
-                          <input {% if rt.impact_branding_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
-                            type="radio" disabled>
-                          <label class="form-check-label">{% trans 'Crítico' %}</label>
-                        </div>
-                      </div>
+                  </fieldset>
+                </div>
+                <div class="col-xl-12">
+                  <div class="row mb-8">
+                    <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
+                    <div>{{ rt.risk.description|safe }}</div> 
+                  </div>             
+                  <div class="row mb-8">
+                    <div class="col col-xl-6">
+                        <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span></div>
+                        <div>{{ rt.risk.krm_main_elements|safe }}</div>
+                    </div>
+                    <div class="col col-xl-6">
+                        <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales eventos' %}</span></div>
+                        <div>{{ rt.risk.krm_main_events|safe }}</div>
                     </div>
                   </div>
                 </div>
-
-                <div class="col col-12 col-xl-6 mb-5 offset-xl-1">
-                  <h5 class="mb-7">Probabilidad</h5>
+                <div class="col-xl-12">
+                  <div class="row mb-8">
+                    <div class="col col-xl-6">
+                        <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Actividad afectada' %}</span></div>
+                        <div>{{ rt.risk.krm_activity_affected|safe }}</div>
+                    </div>
+                    <div class="col col-xl-6">
+                        <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Personal expuesto' %}</span></div>
+                        <div>{{ rt.risk.krm_exposed_staff|safe }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--begin::Card footer-->
+            <div class="card-footer py-6">
+              <div class="valoration-expert">
+                <div class="row mb-10">
+                  <div class="col col-12">
+                    <h4 class="mb-7">Valoración dada por el Experto de Dominio de Riesgo asociado</h4>
+                  </div>
                   <div class="row">
-                    <div class="col">
-                      <div class="form-check form-check-custom form-check-solid mb-4">
-                        <input {% if rt.probability_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                          disabled>
-                        <label class="form-check-label">{% trans 'Bajo' %}</label>
+                    <div class="col col-12 col-xl-5 mb-5 mb-xl-0">
+                      <div class="mb-5">
+                        <h5 class="mb-7">Impacto de continuidad</h5>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_continuity_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Bajo' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_continuity_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Medio' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_continuity_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Alto' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_continuity_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Crítico' %}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-5">
+                        <h5 class="mb-7">Impacto económico</h5>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_economic_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Bajo' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_economic_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Medio' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_economic_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Alto' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_economic_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Crítico' %}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="mb-5">
+                        <h5 class="mb-7">Impacto en imagen</h5>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_branding_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Bajo' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_branding_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Medio' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_branding_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Alto' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input {% if rt.impact_branding_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input"
+                                type="radio" disabled>
+                              <label class="form-check-label">{% trans 'Crítico' %}</label>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="col">
-                      <div class="form-check form-check-custom form-check-solid mb-4">
-                        <input {% if rt.probability_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                          disabled>
-                        <label class="form-check-label">{% trans 'Medio' %}</label>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="form-check form-check-custom form-check-solid mb-4">
-                        <input {% if rt.probability_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                          disabled>
-                        <label class="form-check-label">{% trans 'Alto' %}</label>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="form-check form-check-custom form-check-solid mb-4">
-                        <input {% if rt.probability_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                          disabled>
-                        <label class="form-check-label">{% trans 'Crítico' %}</label>
+
+                    <div class="col col-12 col-xl-6 mb-5 offset-xl-1">
+                      <h5 class="mb-7">Probabilidad</h5>
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-check form-check-custom form-check-solid mb-4">
+                            <input {% if rt.probability_level_expert == 1 %} checked="checked" {% endif %} class="form-check-input" type="radio"
+                              disabled>
+                            <label class="form-check-label">{% trans 'Bajo' %}</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-check form-check-custom form-check-solid mb-4">
+                            <input {% if rt.probability_level_expert == 2 %} checked="checked" {% endif %} class="form-check-input" type="radio"
+                              disabled>
+                            <label class="form-check-label">{% trans 'Medio' %}</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-check form-check-custom form-check-solid mb-4">
+                            <input {% if rt.probability_level_expert == 3 %} checked="checked" {% endif %} class="form-check-input" type="radio"
+                              disabled>
+                            <label class="form-check-label">{% trans 'Alto' %}</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-check form-check-custom form-check-solid mb-4">
+                            <input {% if rt.probability_level_expert == 4 %} checked="checked" {% endif %} class="form-check-input" type="radio"
+                              disabled>
+                            <label class="form-check-label">{% trans 'Crítico' %}</label>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div class="row">
+                    <h5>Descripción de la valoración por el Experto de Dominio de Riesgo asociado</h5>
+                    <p>{{ rt.description|default_if_none:'Sin completar' }}</p>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <h5>Descripción de la valoración por el Experto de Dominio de Riesgo asociado</h5>
-                <p>{{ rt.description|default_if_none:'Sin completar' }}</p>
-              </div>
             </div>
+
+            <div class="card-footer py-6">
+              <div class="admin_risk_test_inherent" data-risktestpk="{{ rt.pk }}" data-impact="{{ rt.impact_level_administrator}}" data-probability="{{ rt.probability_level_administrator }}" data-description="{{ rt.description_admin|default_if_none:'' }}"></div>
+            </div>
+            <!--end::Card footer-->
           </div>
         </div>
-
-        <div class="card-footer py-6">
-          <div class="admin_risk_test_inherent" data-risktestpk="{{ rt.pk }}" data-impact="{{ rt.impact_level_administrator}}" data-probability="{{ rt.probability_level_administrator }}" data-description="{{ rt.description_admin|default_if_none:'' }}"></div>
-        </div>
-        <!--end::Card footer-->
       </div>
+    </div>
     {% endfor %}
 
     <div class="card">
@@ -531,24 +552,22 @@
                   <!--begin::Content-->
                   <div class="fw-semibold">
                     <div class="fs-6">
-                      {% trans 'Si como supervisor deja algún riesgo sin valorar se tomarán en cuenta los valores dados por
-                      los expertos asociados a cada dominio de riesgo al que pertenece.' %}
+                      {% trans 'Si como supervisor deja algún riesgo sin valorar se tomarán en cuenta los valores dados por los expertos asociados a cada dominio de riesgo al que pertenece.' %}
                     </div>
                   </div>
                   <!--end::Content-->
                 </div>
                 <!--end::Wrapper-->
               </div>
-    
+
               <div class="form-check form-check-custom form-check-solid mb-10">
                 <input class="form-check-input" type="checkbox" value="1" id="clone" name="clone" />
                 <label class="form-check-label" for="clone">
                   {% trans 'Usar la valoración dada por los expertos para los riesgos no completados' %}
                 </label>
               </div>
-    
-              <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap"
-                data-kt-indicator="off">
+              
+              <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
                 <span class="indicator-label">{% trans 'Finalizar evaluación' %}</span>
                 <span class="indicator-progress">
                   {% trans 'Actualizando...' %}<span class="spinner-border spinner-border-sm align-middle ms-2"></span>

@@ -160,8 +160,8 @@ class Company(AuditModel):
 
     @property
     def get_controls_active(self):
-        return self.company_controls.filter(active=True)
+        return self.company_controls.filter(active=True, control__block=False)
 
     @property
     def get_controls_inactive(self):
-        return self.company_controls.filter(active=False)
+        return self.company_controls.filter(active=False, control__block=False)

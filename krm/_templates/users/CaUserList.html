@@ -30,8 +30,6 @@
           <th>{% trans 'Apellidos' %}</th>
           <th>{% trans 'Cargo' %}</th>
           <th>{% trans 'Compañía/as' %}</th>
-          <th>{% trans 'Activo' %}</th>
-          <th>{% trans 'Superusuario' %}</th>
           <th>{% trans 'Compañía/as que administra' %}</th>
           <th>{% trans 'Último inicio de sesión' %}</th>
         </tr>
@@ -39,22 +37,20 @@
       <tbody>
           {% for user in users %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'users:ga_user_detail' user.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'users:ca_user_detail' user.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="align-middle">{{ user.email|default_if_none:"" }}</td>
             <td class="align-middle">{{ user.first_name|default_if_none:"" }}</td>
             <td class="align-middle">{{ user.last_name|default_if_none:"" }}</td>
             <td class="align-middle">{{ user.position|default_if_none:"" }}</td>
             <td class="align-middle">
                 {% for company in user.companies.all %}
-                  <a href="{% url 'companies:ga_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>
+                  <a href="{% url 'companies:ca_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>
                   {% if not forloop.last %}<br>{% endif %}
                 {% endfor %}
             </td>
-            <td class="text-center align-middle">{% if user.is_active == True %}SI{% else %}NO{% endif %}</td>
-            <td class="text-center align-middle">{% if user.is_admin == True %}SI{% else %}NO{% endif %}</td>
-            <td class="text-center align-middle">
+            <td class="align-middle">
               {% for company in user.companies_admin.all %}
-                <a href="{% url 'companies:ga_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>
+                <a href="{% url 'companies:ca_company_detail' company.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ company.name }}">{{ company.ref }}</span></a>
                   {% if not forloop.last %}<br>{% endif %}
               {% endfor %}
             </td>
@@ -66,24 +62,12 @@
   </div>
   <!--end::Card body-->
   <!--begin::Card footer-->
-  <div class="card-footer py-6 d-flex align-items-center">
-    <div class="me-2">
-    <a href="{% url 'users:ga_user_create' %}" class="btn btn-sm btn-primary">
+  <div class="card-footer py-6">
+    <a href="{% url 'users:ca_user_create' %}" class="btn btn-sm btn-primary">
       <i class="bi bi-plus-lg"></i>
       {% trans 'Nuevo' %}</a>
-    </div>
-    <div class="me-2">
-      <a href="{% url 'users:ga_import_users' %}" class="btn btn-sm btn-secondary">
+      <a href="{% url 'users:ca_import_users' %}" class="btn btn-sm btn-secondary">
       {% trans 'Importar' %}</a>
-    </div>
-    <div class="me-2">
-      <form method="post" class="kt-form kt-form--label-right" novalidate>
-      {% include '_includes/FormErrors.html' %}
-      {% csrf_token %}
-      <input type="hidden" name="action" value="d">
-        <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar usuarios' %}</button>
-      </form>
-    </div>
   </div>
   <!--end::Card footer-->
 </div>

@@ -270,7 +270,9 @@ class GaCompanyRiskKrmSelectView(FormView):
         return context
 
     def post(self, request, *args, **kwargs):
-        risk_company_selected = request.POST.getlist('risk_pk')
+        risk_company_selected = request.POST.get('selectedPKs')
+        risk_company_selected = risk_company_selected.split(',')
+        
         self.company.krm_risks.filter(
             pk__in=risk_company_selected).update(active=True)
         self.company.krm_risks.exclude(
@@ -287,7 +289,6 @@ class GaCompanyRiskKrmSelectView(FormView):
                 kwargs={'pk': self.company.pk}
             )
         )
-
 
 @method_decorator([is_global_admin, ], name='dispatch')
 class GaCompanyImportView(FormView):
