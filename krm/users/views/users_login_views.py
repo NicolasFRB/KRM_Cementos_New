@@ -70,7 +70,7 @@ class DashboardView(RedirectView):
     #     return context
 
 
-# @method_decorator(decorators, name='dispatch')
+@method_decorator(decorators, name='dispatch')
 class LoginView(FormView):
     template_name = 'users/login/UserLogin.html'
     form_class = LoginForm
