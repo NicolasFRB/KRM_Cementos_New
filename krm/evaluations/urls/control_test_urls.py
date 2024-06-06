@@ -15,7 +15,9 @@ from krm.evaluations.views import (
     CaControlTestAdministratorList,
     CaControlTestDetail,
 
-    AuControlTestDetail
+    AuControlTestDetail,
+
+    delete_attachment
 )
 
 urlpatterns = [
@@ -90,4 +92,10 @@ urlpatterns = [
         AuControlTestDetail.as_view(),
         name="au_control_test_detail",
     ),
+
+    path(
+        "control-test-detail/delete-attachment/<pk_answer>/<pk_attachment>/",
+        delete_attachment,
+        name='delete_attachment'
+    )
 ]

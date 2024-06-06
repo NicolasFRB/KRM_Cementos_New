@@ -59,19 +59,21 @@
         <!-- end::Col -->
         <!-- begin::Col -->
         <div class="col-xl-7">
-          <div>
+          <div class="attachment__item">
             {% if answer.attachment_1 %}
+
               <a target="blank" download href="{{ answer.attachment_1.url }}">{% trans 'Adjunto 1' %}</a>
+               - <a data-attachment="1" data-pk="{{ answer.pk }}" href="{% url "control_tests:delete_attachment" answer.pk 1 %}" class="js-attachment__delete">{% trans 'Eliminar adjunto' %}</a>
             {% endif %}
           </div>
-          <div>
+          <div class="attachment__item">
             {% if answer.attachment_2 %}
-              <a target="blank" download href="{{ answer.attachment_2.url }}">{% trans 'Adjunto 2' %}</a>
+              <a target="blank" download href="{{ answer.attachment_2.url }}">{% trans 'Adjunto 2' %}</a> - <a data-attachment="2" data-pk="{{ answer.pk }}" href="{% url "control_tests:delete_attachment" answer.pk 2  %}" class="js-attachment__delete">{% trans 'Eliminar adjunto' %}</a>
             {% endif %}
           </div>
-          <div>
+          <div class="attachment__item">
             {% if answer.attachment_3 %}
-              <a target="blank" download href="{{ answer.attachment_3.url }}">{% trans 'Adjunto 3' %}</a>
+              <a target="blank" download href="{{ answer.attachment_3.url }}">{% trans 'Adjunto 3' %}</a> - <a data-attachment="4" data-pk="{{ answer.pk }}" href="{% url "control_tests:delete_attachment" answer.pk 3  %}" class="js-attachment__delete">{% trans 'Eliminar adjunto' %}</a>
             {% endif %}
           </div>
         </div>

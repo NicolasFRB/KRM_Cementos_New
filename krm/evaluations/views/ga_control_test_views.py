@@ -1,6 +1,6 @@
 
 from django.shortcuts import render
-
+from django.http import HttpResponse
 # Create your views here.
 from django.shortcuts import render
 
@@ -96,7 +96,7 @@ class ControlTestAssign(UpdateView):
 class ControlTestDetail(FormView):
     template_name = "control_tests/ga/GaControlTestDetail.html"
     form_class = ControlTestGaForm
-    
+
     def dispatch(self, request, *args, **kwargs):
         control_test = get_object_or_404(ControlTest, pk=self.kwargs.get("pk"))
         self.control_test = control_test
@@ -175,7 +175,7 @@ class ControlTestDetail(FormView):
             "FI": "Control finalizado",
             "RE": "Respuestas reiniciadas y enviado de nuevo al Control Owner"
         }
-        
+
         messages.add_message(
             self.request, messages.SUCCESS, _(
                 dict_status[status])
@@ -228,3 +228,30 @@ class ControlTestUpdate(UpdateView):
             "control_tests:control_test_detail",
             kwargs={"pk": self.object.pk},
         )
+
+
+def delete_attachment(request, pk_answer, pk_attachment):
+    # Comprobamos si el usuario está autenticado
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("users:login"))
+
+    # Ahora comprobamos que el usuario es el control supervisor, control owner o administrador
+    answer = get_object_or_404(ControlTestAnswer, pk=pk_answer)
+    if request.user == answer.control_test.control_test_supervisor or request.user == answer.control_test.control_test_owner or request.user.is_global_admin:
+        if pk_attachment == '1':
+            answer.attachment_1.delete()
+            answer.attachment_1 = None
+        elif pk_attachment == '2':
+            answer.attachment_2.delete()
+            answer.attachment_2 = None
+        elif pk_attachment == '3':
+            answer.attachment_3.delete()
+            answer.attachment_3 = None
+
+        answer.save()
+
+        # Devolvemos un status 200
+        return HttpResponse(status=200)
+    else:
+        # Devolvemos un status 403
+        return HttpResponse(status=403)
