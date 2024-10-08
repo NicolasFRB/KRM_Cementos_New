@@ -11,7 +11,7 @@ import xlsxwriter
 from django.http import HttpResponse
 
 from django.contrib import messages
-# import pandas as pd
+import pandas as pd
 
 from django.views.generic import (
     FormView,
