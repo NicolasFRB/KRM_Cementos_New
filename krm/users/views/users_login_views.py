@@ -2,6 +2,10 @@
 """Users views."""
 import hashlib
 
+from urllib.parse import quote_plus, urlencode
+from authlib.integrations.django_client import OAuth
+from django.conf import settings
+
 from django.contrib.auth import login, authenticate, logout
 from datetime import date
 from django.urls import reverse_lazy, reverse
@@ -46,6 +50,17 @@ decorators = [
     never_cache,
 ]
 
+oauth = OAuth()
+
+oauth.register(
+    "auth0",
+    client_id="1Dk3p7qRl4ETYA9emXHwooqES1wuVN5S",
+    client_secret="Hs-F46aKi3a-4NDz0aS9LgJtBSGAadpSngPNb0TbLqOGoHyLejo00OHg2_wYFzOV",
+    client_kwargs={
+        "scope": "openid profile email",
+    },
+    server_metadata_url=f"https://dev-njl8nr7c8xdkfs74.us.auth0.com/.well-known/openid-configuration",
+)
 
 @method_decorator(login_required, name='dispatch')
 class DashboardView(RedirectView):
@@ -70,46 +85,103 @@ class DashboardView(RedirectView):
     #     return context
 
 
+class LoginView(RedirectView):
+    # template_name = 'users/login/UserLogin.html'
+    def get_redirect_url(self, **kwargs):
+        return oauth.auth0.authorize_redirect(
+            self.request, self.request.build_absolute_uri(reverse("users:dashboard"))
+        )
+
+# # Login
+# def login_view(request):
+#     return oauth.auth0.authorize_redirect(
+#         request, request.build_absolute_uri(reverse("users:callback"))
+#     )
+
+class CallbackView(RedirectView):
+
+    def get_redirect_url(self, **kwargs):
+        token = oauth.auth0.authorize_access_token(self.request)
+        self.request.session["user"] = token
+        return HttpResponseRedirect(self.request.build_absolute_uri(reverse("users:dashboard")))
+    
+
+# def callback_view(request):
+#     token = oauth.auth0.authorize_access_token(request)
+#     request.session["user"] = token
+#     return HttpResponseRedirect(request.build_absolute_uri(reverse("users:dashboard")))
+
+
+class LogoutView(RedirectView):
+
+    def get_redirect_url(self, **kwargs):
+        self.request.session.clear()
+
+        return HttpResponseRedirect(
+            f"https://dev-njl8nr7c8xdkfs74.us.auth0.com/v2/logout?"
+            + urlencode(
+                {
+                    "returnTo": self.request.build_absolute_uri(reverse("users:dashboard")),
+                    "client_id": "1Dk3p7qRl4ETYA9emXHwooqES1wuVN5S",
+                },
+                quote_via=quote_plus,
+            ),
+        )
+    
+# def logout_view(request):
+#     request.session.clear()
+
+#     return HttpResponseRedirect(
+#         f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
+#         + urlencode(
+#             {
+#                 "returnTo": request.build_absolute_uri(reverse("users:dashboard")),
+#                 "client_id": settings.AUTH0_CLIENT_ID,
+#             },
+#             quote_via=quote_plus,
+#         ),
+#     )
+
 # @method_decorator(decorators, name='dispatch')
-class LoginView(FormView):
-    template_name = 'users/login/UserLogin.html'
-    form_class = LoginForm
+# class LoginView(FormView):
+#     template_name = 'users/login/UserLogin.html'
+#     form_class = LoginForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context = KTLayout.init(context)
-        context.update({
-            'layout': KTTheme.setLayout('auth.html', context),
-        })
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context = KTLayout.init(context)
+#         context.update({
+#             'layout': KTTheme.setLayout('auth.html', context),
+#         })
+#         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('users:dashboard'))
+#     def dispatch(self, request, *args, **kwargs):
+#         if request.user.is_authenticated:
+#             return HttpResponseRedirect(reverse('users:dashboard'))
 
-        else:
-            return super(LoginView, self).dispatch(
-                request, request,
-                *args, **kwargs
-            )
+#         else:
+#             return super(LoginView, self).dispatch(
+#                 request, request,
+#                 *args, **kwargs
+#             )
 
-    def form_valid(self, form):
-        usuario = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=usuario, password=password)
+#     def form_valid(self, form):
+#         usuario = form.cleaned_data.get('username')
+#         password = form.cleaned_data.get('password')
+#         user = authenticate(username=usuario, password=password)
 
-        if user is not None:
-            from django.utils import translation
-            translation.activate('es')
-            login(self.request, user)
-            return HttpResponseRedirect(
-                reverse('users:dashboard')
-            )
+#         if user is not None:
+#             from django.utils import translation
+#             translation.activate('es')
+#             login(self.request, user)
+#             return HttpResponseRedirect(
+#                 reverse('users:dashboard')
+#             )
 
-        else:
-            messages.add_message(
-                self.request, messages.ERROR, _('Usuario no válido'))
-            return super(LoginView, self).form_invalid(form)
+#         else:
+#             messages.add_message(
+#                 self.request, messages.ERROR, _('Usuario no válido'))
+#             return super(LoginView, self).form_invalid(form)
 
 
 class RememberPassword(FormView):
@@ -192,7 +264,7 @@ class RememberEmailSended(TemplateView):
         return context
 
 
-@login_required
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('auth:login'))
+# @login_required   
+# def logout_view(request):
+#     logout(request)
+#     return HttpResponseRedirect(reverse('auth:login'))

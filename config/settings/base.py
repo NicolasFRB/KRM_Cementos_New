@@ -489,3 +489,9 @@ ALLOWED_HOSTS = [
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 KRM_ACTIVATE = env.bool("KRM_ACTIVATE")
+
+
+# Load Auth0 application settings into memory
+AUTH0_DOMAIN = env.str("AUTH0_DOMAIN")
+AUTH0_CLIENT_ID = env.str("AUTH0_CLIENT_ID")
+AUTH0_CLIENT_SECRET = env.str("AUTH0_CLIENT_SECRET")
