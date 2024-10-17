@@ -1,0 +1,74 @@
+version: "3"
+
+volumes:
+  krm_production_postgres_data: {}
+  krm_production_postgres_data_backups: {}
+  production_django_media: {}
+  production_django_logs: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: krm_production_django
+    depends_on:
+      - postgres
+      - redis_krm_prod
+    env_file:
+      - ./.envs/.prod/.django
+      - ./.envs/.prod/.postgres
+      - ./.envs/.prod/.email
+      - ./.envs/.prod/.ubuntu
+    volumes:
+      - production_django_media:/krm-media
+      - production_django_logs:/krm-logs
+    ports:
+      - "8080:5000"
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: krm_production_postgres
+    volumes:
+      - krm_production_postgres_data:/var/lib/postgresql/data
+      - krm_production_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.prod/.postgres
+
+#  celeryworker:
+#    <<: *django
+#    image: krm_production_celeryworker
+#    depends_on:
+#      - django
+#    ports: []
+#    command: /start-celeryworker
+
+#  celerybeat:
+#    <<: *django
+#    image: krm_production_celerybeat
+#    depends_on:
+#      - django
+#    ports: []
+#    command: /start-celerybeat
+
+  # flower:
+  #   <<: *django
+  #   image: krm_production_flower
+  #   depends_on:
+  #     - django
+  #   ports:
+  #     - "5555:5555"
+  #   command: /start-flower
+
+  redis_krm_prod:
+    image: redis:6.2.4
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./compose/production/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - "6379"
+    # ports:
+    #   - "6379:6379"

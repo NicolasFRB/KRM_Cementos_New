@@ -50,11 +50,11 @@ class GaCompanyListView(ListView):
     model = Company
     template_name = 'companies/GaCompanyList.html'
     context_object_name = 'companies'
-    queryset = Company.objects.all()\
-        # .prefetch_related('experts_domain_risk').all()\
+    queryset = Company.objects.all()
+    # .prefetch_related('krm_risks').all()\
+    # .annotate(n_risks=Count('krm_risks', distinct=True))
     # .prefetch_related('companydomainriskevaluator').all()\
     # .prefetch_related('krm_risks_active').all()\
-    # .annotate(n_risks=Count('krm_risks', distinct=True))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -104,7 +104,7 @@ class GaCompanyDetailView(DetailView):
                 'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
 
@@ -127,7 +127,7 @@ class GaCompanyCreateView(CreateView):
         ]
         context['page_title'] = _('Nueva Compañía')
         context['breadcrums'] = breadcrums
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def get_success_url(self):
@@ -150,6 +150,12 @@ class GaCompanyUpdateView(UpdateView):
     model = Company
     template_name = 'companies/GaCompanyCreate.html'
 
+    def get_form(self, *args, **kwargs):
+        form = super(GaCompanyUpdateView, self).get_form(*args, **kwargs)
+        if self.object:
+            form.fields['evaluators'].queryset = self.object.employees.all()
+        return form
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
@@ -162,7 +168,7 @@ class GaCompanyUpdateView(UpdateView):
         ]
         context['page_title'] = _('Editar Compañía')
         context['breadcrums'] = breadcrums
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def get_success_url(self):
@@ -260,11 +266,13 @@ class GaCompanyRiskKrmSelectView(FormView):
                 dm[dm_pk]['risks'].append(risk_company)
 
         context['dms'] = dm
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def post(self, request, *args, **kwargs):
-        risk_company_selected = request.POST.getlist('risk_pk')
+        risk_company_selected = request.POST.get('selectedPKs')
+        risk_company_selected = risk_company_selected.split(',')
+        
         self.company.krm_risks.filter(
             pk__in=risk_company_selected).update(active=True)
         self.company.krm_risks.exclude(
@@ -281,7 +289,6 @@ class GaCompanyRiskKrmSelectView(FormView):
                 kwargs={'pk': self.company.pk}
             )
         )
-
 
 @method_decorator([is_global_admin, ], name='dispatch')
 class GaCompanyImportView(FormView):

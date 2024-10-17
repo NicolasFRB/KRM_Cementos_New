@@ -1,6 +1,8 @@
 from django.shortcuts import render
-
+import xlwt
 import re
+
+import datetime
 
 # Create your views here.
 from django.shortcuts import render
@@ -20,6 +22,7 @@ from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
+from django.http import HttpResponse
 
 from django.utils.decorators import method_decorator
 
@@ -30,19 +33,24 @@ from krm.controls.forms import ControlCreateForm
 from krm.controls.models import Control
 from krm.risks.models import Risk
 from krm.process.models import SubProcess
+from krm.companies.models import Company, CompanyControls
 
 from krm.users.decorators import is_global_admin
 
-from krm.controls.forms import ControlImportForm
+from krm.controls.forms import (
+    ControlImportForm,
+    DownloadControlsActionForm
+        )
 
 
 @method_decorator([is_global_admin, ], name='dispatch')
-class GaControlListView(ListView):
+class GaControlListView(ListView,FormView):
     model = Control
     template_name = 'controls/GaControlList.html'
+    form_class = DownloadControlsActionForm
     context_object_name = 'controls'
-    queryset = Control.objects.all().prefetch_related(
-        'sub_processes').prefetch_related('risks')
+    queryset = Control.objects.filter(block=False).prefetch_related(
+        'sub_processes').prefetch_related('risks__risk_master__domain_risk')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,6 +73,149 @@ class GaControlListView(ListView):
         ]
         context['js_template'] = ['js/custom/datatables.js']
         return context
+
+    def form_valid(self, form):
+        action = form.cleaned_data["action"]
+
+        def remove_html_tags(text):
+            clean = re.compile('<.*?>')
+            return re.sub(clean, '', text)
+
+        if action == 'd':
+
+            # Comienzo de la creacion de archivo de descarga del Test de Proceso
+            filename = "control_company.xls"
+            response = HttpResponse(content_type="application/ms-excel")
+            response["Content-Disposition"] = 'attachment; filename="{}"'.format(
+                filename
+            )
+
+            wb = xlwt.Workbook(encoding="utf-8")
+
+            # Sheet header, first row
+            row_num = 0
+
+            font_style_title = xlwt.easyxf("align: vert centre, horiz left")
+            font_style_title.font.bold = True
+
+            font_style_title_wrap = xlwt.easyxf(
+                "align: vert centre, horiz left, wrap yes"
+            )
+            font_style_title_wrap.font.bold = True
+
+            font_style_body = xlwt.easyxf("align: vert top, horiz left")
+            font_style_body_wrap = xlwt.easyxf(
+                "align: vert top, horiz left, wrap yes"
+            )
+
+            for company in Company.objects.all():
+                row_num = 0
+                ws = wb.add_sheet("{}".format(company.ref))
+
+                ws.col(0).width = 256 * 30
+                ws.col(1).width = 256 * 25
+                ws.col(2).width = 256 * 50
+                ws.col(3).width = 256 * 80
+                ws.col(4).width = 256 * 80
+                ws.col(5).width = 256 * 80
+                ws.col(6).width = 256 * 80
+
+                columns = [
+                    "COMPAÑIA",  # 0
+                    "CONTROL REF",  # 1
+                    "NOMBRE",  # 2
+                    "DESCRIPCIÓN",  # 3
+                    "RIESGOS",  # 4
+                    "SUB PROCESOS",  # 5
+                    "KEY CONTROL",  # 6
+                    "TIPO",  # 7
+                    "AUTOMATICO",  # 8
+                    "FRECUENCIA",  # 9
+                    "CONTROL OWNER",  # 10
+                    "CONTROL SUPERVISOR",  # 11
+                    "ALCANCE",  # 12
+                    ]
+
+                for col_num in range(len(columns)):
+                    if col_num in (21, 28):
+                        ws.write(
+                            row_num, col_num, columns[col_num], font_style_title_wrap
+                        )
+                    else:
+                        ws.write(row_num, col_num,
+                                columns[col_num], font_style_title)
+
+                if CompanyControls.objects.filter(company = company,active = True).count() > 0:
+                    for comp_cont in CompanyControls.objects.filter(company = company,active = True):
+                        row_num += 1
+                        ws.write(
+                            row_num, 0, comp_cont.company.name, font_style_body
+                        )  # 0
+                        ws.write(
+                            row_num, 1, comp_cont.control.ref, font_style_body
+                        )  # 1
+                        ws.write(
+                            row_num, 2, comp_cont.control.name, font_style_body
+                        )  # 2
+                        ws.write(
+                            row_num, 3, remove_html_tags(comp_cont.control.description), font_style_body
+                        )  # 3
+
+                        risks = []
+                        if comp_cont.control.risks.count() > 0:
+                            for risk in comp_cont.control.risks.all():
+                                risks.append(risk.ref)
+                            all_risks = ','.join(risks)
+                            ws.write(
+                                row_num, 4, all_risks, font_style_body
+                            )  # 4
+
+                        sub_processes = []
+                        if comp_cont.control.sub_processes.count() > 0:
+                            for sp in comp_cont.control.sub_processes.all():
+                                sub_processes.append(sp.name)
+                            all_sp = ','.join(sub_processes)
+                            ws.write(
+                                row_num, 5, all_sp, font_style_body
+                            )  # 5
+                        ws.write(
+                            row_num, 6, comp_cont.control.key_control, font_style_body
+                        )  # 6
+                        ws.write(
+                            row_num, 7, comp_cont.control.get_control_type_display(), font_style_body
+                        )  # 7
+                        ws.write(
+                            row_num, 8, comp_cont.control.get_automation_display(), font_style_body
+                        )  # 8
+                        ws.write(
+                            row_num, 9, comp_cont.control.get_control_frequency_display(), font_style_body
+                        )  # 9
+
+                        owners = []
+                        if comp_cont.control_test_owners.count() > 0:
+                            for co in comp_cont.control_test_owners.all():
+                                owners.append(co.email)
+                            all_co = ','.join(owners)
+                            ws.write(
+                                row_num, 10, all_co, font_style_body
+                            )  # 10
+                        supervisors = []
+                        if comp_cont.control_test_supervisors.count() > 0:
+                            for cs in comp_cont.control_test_supervisors.all():
+                                supervisors.append(cs.email)
+                            all_cs = ','.join(supervisors)
+                            ws.write(
+                                row_num, 11, all_cs, font_style_body
+                            )  # 11
+
+                        ws.write(
+                            row_num, 12, comp_cont.control.get_scope_display(), font_style_body
+                        )  # 12
+
+            wb.save(response)
+            return response
+
+        return super().form_valid(form)
 
 
 @method_decorator([is_global_admin, ], name='dispatch')
@@ -146,6 +297,65 @@ class GaControlUpdateView(UpdateView):
     form_class = ControlCreateForm
     model = Control
     template_name = 'controls/GaControlUpdate.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        # Si el control ha sido utilizado en alguna evaluación no se puede editar, se clona y se redirecciona a la vista de edición de ese nuevo control
+
+        # Debemos copiar los riesgos en los que intervenía, subprocessos y risk company
+        if self.object.control_is_used_by_evaluation:
+            old_control = self.get_object()
+            now = datetime.datetime.now()
+            old_control.ref = self.object.ref + "_" + now.strftime("%Y%m%d%H%M%S")
+            old_control.block = True
+            old_control.save()
+            self.object.pk = None
+            self.object.save()
+
+            for risk in old_control.risks.all():
+                self.object.risks.add(risk)
+
+            for sub_process in old_control.sub_processes.all():
+                self.object.sub_processes.add(sub_process)
+
+            # Company controls hago copia de cada uno
+            from krm.companies.models import CompanyControls
+            for company_control in CompanyControls.objects.filter(control=old_control):
+
+                # Para cada company_control antiguos tengo que copiar los control_test_owners y control_test_supervisors
+
+                # Buscamos el recién creado
+                company_control_new = CompanyControls.objects.get(
+                    company=company_control.company,
+                    control=self.object
+                )
+
+                company_control_new.active = company_control.active
+                company_control_new.save()
+
+                # Tengo que copiar control_test_owners y control_test_supervisors
+                owners = company_control.control_test_owners.all()
+                supervisors = company_control.control_test_supervisors.all()
+
+                # Tengo que copiar control_test_owners y control_test_supervisors
+                for owner in owners:
+                    company_control_new.control_test_owners.add(owner)
+                for supervisor in supervisors:
+                    company_control_new.control_test_supervisors.add(supervisor)
+
+
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'controls:ga_control_update',
+                    kwargs={"pk": self.object.pk},
+                )
+            )
+
+        return super(GaControlUpdateView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -431,21 +641,25 @@ class GaControlImport(FormView):
                 control_control_frequency = str(
                     control_sheet.cell(row, 10).value)
                 if control_control_frequency not in (
+                    "CO",
                     "BD",
                     "DI",
                     "1W",
                     "2W",
                     "1M",
+                    "2M",
                     "3T",
                     "6M",
                     "1Y",
+                    "2Y",
+                    "3Y"
                 ):
                     messages.add_message(
                         self.request,
                         messages.ERROR,
                         (
                             _(
-                                u'En la fila %s "Control - Periodicidad" solo admite los valores BD, DI, 1W, 2W, 1M, 3T, 6M y 1Y'
+                                u'En la fila %s "Control - Periodicidad" solo admite los valores CO, BD, DI, 1W, 2W, 1M, 2M, 3T, 6M, 1Y, 2Y, 3Y'
                             )
                             % str(row + 1)
                         ),
@@ -614,198 +828,6 @@ class GaControlImport(FormView):
                         ),
                     )
                     return super(ProcessImport, self).form_invalid(form)
-
-        # process_to_create = {}
-        # process_sheet = book.sheet_by_index(0)
-        # process_to_create["name"] = str(process_sheet.cell(0, 1).value)
-        # process_to_create["acronym"] = str(process_sheet.cell(1, 1).value)
-        # process_to_create["description"] = str(process_sheet.cell(2, 1).value)
-        # process = Process.objects.create(
-        #     name=process_to_create["name"],
-        #     acronym=process_to_create["acronym"],
-        #     description=process_to_create["description"],
-        # )
-
-        # # Hay que añadir los grupos empresariales
-        # for bg in form.cleaned_data["business_group"]:
-        #     process.business_group.add(bg)
-
-        # process.save()
-
-        # process_to_create["pk"] = process.pk
-
-        # self.process_pk = process.pk
-
-        # subprocess_to_create = []
-        # sub_process_sheet = book.sheet_by_index(1)
-        # for row in range(sub_process_sheet.nrows):
-        #     if row > 0:
-        #         subprocess = {}
-        #         if type(sub_process_sheet.cell(row, 0).value) == float:
-        #             subprocess_ref = str(
-        #                 int(sub_process_sheet.cell(row, 0).value))
-        #         else:
-        #             subprocess_ref = str(sub_process_sheet.cell(row, 0).value)
-        #         subprocess["ref"] = subprocess_ref
-        #         subprocess["name"] = str(sub_process_sheet.cell(row, 1).value)
-        #         subprocess["description"] = str(
-        #             sub_process_sheet.cell(row, 2).value
-        #         ).replace("\n", "<br>")
-        #         sub_process = SubProcess.objects.create(
-        #             ref=subprocess["ref"],
-        #             name=subprocess["name"],
-        #             description=subprocess["description"],
-        #             process=process,
-        #         )
-        #         subprocess["sub_process"] = sub_process
-        #         subprocess_to_create.append(subprocess)
-
-        # risks_news = []
-        # risk_sheet = book.sheet_by_index(2)
-        # for row in range(risk_sheet.nrows):
-        #     if row > 0:
-        #         risk = {}
-        #         # risk['sub_process'] = str(risk_sheet.cell(row, 2).value)
-        #         # sub_process_ref = str(risk_sheet.cell(row, 0).value)
-        #         if type(risk_sheet.cell(row, 0).value) == float:
-        #             sub_process_ref = str(int(risk_sheet.cell(row, 0).value))
-        #         else:
-        #             sub_process_ref = str(risk_sheet.cell(row, 0).value)
-        #         for sb in subprocess_to_create:
-        #             if sb["ref"] == sub_process_ref:
-        #                 risk["sub_process"] = sb["sub_process"]
-        #                 break
-        #         # risk['ref'] = str(risk_sheet.cell(row, 1).value)
-        #         if type(risk_sheet.cell(row, 1).value) == float:
-        #             risk["ref"] = str(int(risk_sheet.cell(row, 1).value))
-        #         else:
-        #             risk["ref"] = str(risk_sheet.cell(row, 1).value)
-        #         risk["description"] = str(risk_sheet.cell(row, 2).value).replace(
-        #             "\n", "<br>"
-        #         )
-        #         risk["category"] = str(risk_sheet.cell(row, 3).value)
-        #         risk["impact"] = int(risk_sheet.cell(row, 4).value)
-        #         risk["probability"] = int(risk_sheet.cell(row, 5).value)
-        #         risk_new = Risk.objects.create(
-        #             sub_process=risk["sub_process"],
-        #             ref=risk["ref"],
-        #             description=risk["description"],
-        #             category=risk["category"],
-        #             impact=risk["impact"],
-        #             probability=risk["probability"],
-        #         )
-        #         risk["risk"] = risk_new
-        #         risks_news.append(risk)
-
-        # controls_news = []
-        # control_sheet = book.sheet_by_index(3)
-        # for row in range(control_sheet.nrows):
-        #     if row > 0:
-        #         control = {}
-        #         # risk_ref = str(control_sheet.cell(row, 0).value)
-        #         if type(control_sheet.cell(row, 0).value) == float:
-        #             risk_ref = str(int(control_sheet.cell(row, 0).value))
-        #         else:
-        #             risk_ref = str(control_sheet.cell(row, 0).value)
-        #         for risk in risks_news:
-        #             if risk["ref"] == risk_ref:
-        #                 control["risk"] = risk["risk"]
-        #                 break
-        #         # control['ref'] = str(control_sheet.cell(row, 1).value)
-        #         if type(control_sheet.cell(row, 1).value) == float:
-        #             control["ref"] = str(int(control_sheet.cell(row, 1).value))
-        #         else:
-        #             control["ref"] = str(control_sheet.cell(row, 1).value)
-        #         control["objetive"] = str(control_sheet.cell(row, 2).value).replace(
-        #             "\n", "<br>"
-        #         )
-        #         control["description"] = str(control_sheet.cell(row, 3).value).replace(
-        #             "\n", "<br>"
-        #         )
-        #         control["action_plan"] = str(control_sheet.cell(row, 4).value).replace(
-        #             "\n", "<br>"
-        #         )
-        #         control["testing_procedure"] = str(
-        #             control_sheet.cell(row, 5).value
-        #         ).replace("\n", "<br>")
-
-        #         control["key_control"] = str(control_sheet.cell(row, 6).value)
-        #         if control["key_control"] == "X":
-        #             control["key_control"] = True
-        #         else:
-        #             control["key_control"] = False
-
-        #         control["control_type"] = str(control_sheet.cell(row, 7).value)
-        #         control["automation"] = str(control_sheet.cell(row, 8).value)
-        #         control["systems"] = str(control_sheet.cell(row, 9).value).replace(
-        #             "\n", "<br>"
-        #         )
-        #         control["control_frequency"] = str(
-        #             control_sheet.cell(row, 10).value)
-
-        #         control["is_gap"] = str(control_sheet.cell(row, 11).value)
-        #         control["assert_existence"] = str(
-        #             control_sheet.cell(row, 12).value)
-
-        #         control["assert_completeness"] = str(
-        #             control_sheet.cell(row, 13).value)
-
-        #         control["assert_valuation"] = str(
-        #             control_sheet.cell(row, 14).value)
-
-        #         control["assert_rights"] = str(
-        #             control_sheet.cell(row, 15).value)
-
-        #         control["assert_disclosure"] = str(
-        #             control_sheet.cell(row, 16).value)
-
-        #         control["assert_accurancy"] = str(
-        #             control_sheet.cell(row, 17).value)
-
-        #         control["assert_froud"] = str(
-        #             control_sheet.cell(row, 18).value)
-
-        #         # control["regulatory_framework"] = str(control_sheet.cell(row, 19).value)
-
-        #         control_new = Control.objects.create(
-        #             risk=control["risk"],
-        #             ref=control["ref"],
-        #             objective=control["objetive"],
-        #             description=control["description"],
-        #             action_plan=control["action_plan"],
-        #             testing_procedure=control["testing_procedure"],
-        #             key_control=control["key_control"],
-        #             control_type=control["control_type"],
-        #             automation=control["automation"],
-        #             systems=control["systems"],
-        #             control_frequency=control["control_frequency"],
-        #             is_gap=control["is_gap"],
-        #             assert_existence=control["assert_existence"],
-        #             assert_completeness=control["assert_completeness"],
-        #             assert_valuation=control["assert_valuation"],
-        #             assert_rights=control["assert_rights"],
-        #             assert_disclosure=control["assert_disclosure"],
-        #             assert_accurancy=control["assert_accurancy"],
-        #             assert_froud=control["assert_froud"],
-        #         )
-
-        #         # Ahora le añadimos la relación con los marcos normativos
-        #         # Cogemos el valor y quitamos los espacios
-        #         control_regulatory_framework = str(
-        #             control_sheet.cell(row, 19).value
-        #         ).replace(" ", "")
-        #         control_regulatory_framework_list = control_regulatory_framework.split(
-        #             ","
-        #         )
-        #         regulatory_frameworks = RegulatoryFramework.objects.filter(
-        #             acronym__in=control_regulatory_framework_list
-        #         )
-        #         for rf in regulatory_frameworks:
-        #             control_new.regulatory_frameworks.add(rf)
-        #             control_new.save()
-
-        #         control["control"] = control_new
-        #         controls_news.append(control)
 
         messages.add_message(
             self.request,

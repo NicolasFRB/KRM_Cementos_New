@@ -80,10 +80,59 @@
             </div>
             <!--end::Col-->
           </div>
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-5">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'ELC' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-7">
+              <div class="fs-6">
+                <span>{{ control.is_elc|yesno:_("Si, No") }}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
         </fieldset>
       </div>
       <div class="col col-md-8">
         <fieldset>
+          <div class="row mb-8 justify-content-start"  style="margin-bottom:.5rem !important;">
+          <div class="col-xl-3">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcance' %}</span></div>
+          </div>
+          <div class="col-xl-3">
+          <div class="fs-6 fw-semibold"><a><span class="badge badge-primary text-wrap" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.get_scope_display }}">{{ control.get_scope_display }}</span></a></div>
+          </div>
+          </div>
+          <div class="row mb-8 justify-content-start"  style="margin-bottom:.5rem !important;">
+            <!--begin::Col-->
+            <div class="col-xl-3">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->            
+            {% if control.risks.count %}
+              {% for domain_risk in control.domain_risks_objects %}
+                {% if not forloop.first and forloop.counter0|divisibleby:3 %}
+                  </div>
+                  <div class="row mb-8 justify-content-start" style="margin-bottom:.5rem !important;">
+                    <div class="col-xl-3">
+                      <div class="fs-6 fw-semibold"></div>
+                    </div>
+                  {% endif %}
+                    <div class="col-xl-3">
+                      <div class="fs-6 fw-semibold"><a href="{% url 'domain_risks:ga_domain_risk_detail' domain_risk.pk %}"><span class="badge badge-primary text-wrap" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ domain_risk.name }}">{{ domain_risk.ref }}</span></a></div>
+                    </div>
+              {% endfor %}
+                
+            {% else %}
+              <div class="col-xl-6">
+                <div class="fs-6 fw-semibold"><span class="badge badge-danger text-wrap">{% trans 'Sin riesgos asociados' %}</span></div>
+              </div>
+            {% endif %} 
+          </div>
           <div class="row mb-8 justify-content-start"  style="margin-bottom:.5rem !important;">
             <!--begin::Col-->
             <div class="col-xl-3">
@@ -136,7 +185,7 @@
               <div class="col-xl-6">
                 <div class="fs-6 fw-semibold"><span class="badge badge-danger text-wrap">{% trans 'Sin subprocesos asociados' %}</span></div>
               </div>
-            {% endif %} 
+            {% endif %}
           </div>   
         </fieldset>
       </div>
@@ -185,8 +234,10 @@
           </div>
       </div>
       <div class="col col-md-8">
-          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Procedimiento de testeo' %}</span></div>
-          <div>{{ control.testing_procedure|safe }}</div>
+          <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Evidencia' %}</span></div>
+          <div>{{ control.evidence|safe }}</div>
+            <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Plan de Testeo' %}</span></div>
+            <div>{{ control.testing_procedure|safe }}</div>
       </div>
     </div>
     <div class="row mb-8">
@@ -222,7 +273,7 @@
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
-              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Completitud' %}</span></div>
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Integridad' %}</span></div>
             </div>
             <!--end::Col-->
             <!--begin::Col-->

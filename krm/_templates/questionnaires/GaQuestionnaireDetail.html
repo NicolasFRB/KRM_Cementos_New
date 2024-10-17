@@ -1,0 +1,164 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-2">
+          <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ questionnaire.ref }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-2">
+          <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ questionnaire.name }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'questionnaires:ga_questionnaire_update' questionnaire.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-pencil"></i>
+      {% trans 'Editar' %}</a>
+    <a href="{% url 'questionnaires:ga_questionnaire_delete' questionnaire.pk %}" class="btn btn-sm btn-danger ms-2">
+      <i class="bi bi-trash"></i>
+      {% trans 'Eliminar' %}</a>
+      <a href="{% url 'questionnaires:ga_questionnaire_list' %}" class="btn btn-sm btn-secondary ms-2"><i
+            class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+
+
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Alcances' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if questionnaire.scopes.all %}
+    <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center" width="5%">{% trans 'Acción' %}</th>
+          <th class="text-center" width="15%">{% trans 'REF' %}</th>
+          <th>{% trans 'Nombre' %}</th>
+          <th>{% trans 'Posibles respondedores' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for scope in questionnaire.scopes.all %}
+          <tr>
+            <td class="text-center align-middle"><a href="{% url 'scopes:ga_scope_detail' scope.pk %}"><i class="bi bi-eye fs-1x text-primary"></i></a></td>
+            <td class="align-middle">{{ scope.ref }}</td>
+            <td class="align-middle">{{ scope.name }}</td>
+            <td class="align-middle">
+              {% for user in scope.user_to_assign.all %}
+                <span class="badge badge-primary mb-2">{{ user.email }}</span>{% if not forloop.last %}<br>{% endif %}
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen alcances para este cuestionario' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'scopes:ga_scope_create' questionnaire.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-plus-lg"></i>
+      {% trans 'Añadir' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Preguntas del Cuestionario' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if questionnaire.questions.all %}
+    <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center" width="5%">{% trans 'Acción' %}</th>
+          <th class="text-center" width="15%">{% trans 'REF' %}</th>
+          <th>{% trans 'Enunciado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for question in questionnaire.questions %}
+        <tr>
+          <td class="text-center align-middle"><a href="{% url 'questions:ga_question_detail' question.pk %}"><i class="bi bi-eye fs-1x text-primary"></i></a></td>
+          <td class="text-center align-middle">{{ question.ref }}</td>
+          <td class="align-middle">{{ question.title }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen preguntas para este cuestionario' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+
+{% endblock content %}

@@ -10,6 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path("krm")
 
+DEV = env.bool('KRM_DJANGO_DEV')
+DEVJS = env.bool('KRM_DJANGO_DEVJS')
+BRAND = env.str('KRM_BRAND')
+KRM_DEBUG_TOOLBAR = env.bool('KRM_DEBUG_TOOLBAR', False)
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '9mgu=0t7adojsh2zgkfn2kw(a!@ob(t^3f6ebch3_q7(2=yn)v'
 
@@ -46,6 +52,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'whitenoise.runserver_nostatic',
 ]
 
 THIRD_PARTY_APPS = [
@@ -54,19 +61,21 @@ THIRD_PARTY_APPS = [
     'django_countries',
     'ckeditor',
     'django_filters',
-    'rest_framework'
+    'rest_framework',
+    'rosetta',
 ]
 
 LOCAL_APPS = [
     'users',
     'configuration',
     'risks',
+    'process',
     'controls',
     'companies',
-    'process',
     'evaluations',
     'evaluations_krm',
-    "taskapp",
+    'taskapp',
+    'questionnaires',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -75,6 +84,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     "django.middleware.locale.LocaleMiddleware",
@@ -118,7 +128,8 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-STATIC_URL = 'static/'
+STATIC_ROOT = str(ROOT_DIR("staticfiles"))
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     str(ROOT_DIR.path("krm").path('static')),
 ]
@@ -213,7 +224,6 @@ KT_THEME_DIRECTION = 'ltr'
 KT_THEME_ASSETS = {
     "favicon": "media/logos/favicon.ico",
     "fonts": [
-        'https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700',
     ],
     "css": [
         "plugins/global/plugins.bundle.css",
@@ -318,14 +328,14 @@ KT_THEME_VENDORS = {
             "plugins/custom/typedjs/typedjs.bundle.js"
         ]
     },
-    "cookiealert": {
-        "css": [
-            "plugins/custom/cookiealert/cookiealert.bundle.css"
-        ],
-        "js": [
-            "plugins/custom/cookiealert/cookiealert.bundle.js"
-        ]
-    },
+    # "cookiealert": {
+    #     "css": [
+    #         "plugins/custom/cookiealert/cookiealert.bundle.css"
+    #     ],
+    #     "js": [
+    #         "plugins/custom/cookiealert/cookiealert.bundle.js"
+    #     ]
+    # },
     "cropper": {
         "css": [
             "plugins/custom/cropper/cropper.bundle.css"
@@ -366,42 +376,42 @@ KT_THEME_VENDORS = {
             "plugins/custom/leaflet/leaflet.bundle.js"
         ]
     },
-    "amcharts": {
-        "js": [
-            "https://cdn.amcharts.com/lib/5/index.js",
-            "https://cdn.amcharts.com/lib/5/xy.js",
-            "https://cdn.amcharts.com/lib/5/percent.js",
-            "https://cdn.amcharts.com/lib/5/radar.js",
-            "https://cdn.amcharts.com/lib/5/themes/Animated.js"
-        ]
-    },
-    "amcharts-maps": {
-        "js": [
-            "https://cdn.amcharts.com/lib/5/index.js",
-            "https://cdn.amcharts.com/lib/5/map.js",
-            "https://cdn.amcharts.com/lib/5/geodata/worldLow.js",
-            "https://cdn.amcharts.com/lib/5/geodata/continentsLow.js",
-            "https://cdn.amcharts.com/lib/5/geodata/usaLow.js",
-            "https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js",
-            "https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js",
-            "https://cdn.amcharts.com/lib/5/themes/Animated.js"
-        ]
-    },
-    "amcharts-stock": {
-        "js": [
-            "https://cdn.amcharts.com/lib/5/index.js",
-            "https://cdn.amcharts.com/lib/5/xy.js",
-            "https://cdn.amcharts.com/lib/5/themes/Animated.js"
-        ]
-    },
-    "bootstrap-select": {
-        "css": [
-            "plugins/custom/bootstrap-select/bootstrap-select.bundle.css"
-        ],
-        "js": [
-            "plugins/custom/bootstrap-select/bootstrap-select.bundle.js"
-        ]
-    }
+    # "amcharts": {
+    #     "js": [
+    #         "https://cdn.amcharts.com/lib/5/index.js",
+    #         "https://cdn.amcharts.com/lib/5/xy.js",
+    #         "https://cdn.amcharts.com/lib/5/percent.js",
+    #         "https://cdn.amcharts.com/lib/5/radar.js",
+    #         "https://cdn.amcharts.com/lib/5/themes/Animated.js"
+    #     ]
+    # },
+    # "amcharts-maps": {
+    #     "js": [
+    #         "https://cdn.amcharts.com/lib/5/index.js",
+    #         "https://cdn.amcharts.com/lib/5/map.js",
+    #         "https://cdn.amcharts.com/lib/5/geodata/worldLow.js",
+    #         "https://cdn.amcharts.com/lib/5/geodata/continentsLow.js",
+    #         "https://cdn.amcharts.com/lib/5/geodata/usaLow.js",
+    #         "https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js",
+    #         "https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js",
+    #         "https://cdn.amcharts.com/lib/5/themes/Animated.js"
+    #     ]
+    # },
+    # "amcharts-stock": {
+    #     "js": [
+    #         "https://cdn.amcharts.com/lib/5/index.js",
+    #         "https://cdn.amcharts.com/lib/5/xy.js",
+    #         "https://cdn.amcharts.com/lib/5/themes/Animated.js"
+    #     ]
+    # },
+    # "bootstrap-select": {
+    #     "css": [
+    #         "plugins/custom/bootstrap-select/bootstrap-select.bundle.css"
+    #     ],
+    #     "js": [
+    #         "plugins/custom/bootstrap-select/bootstrap-select.bundle.js"
+    #     ]
+    # }
 }
 
 
@@ -442,7 +452,7 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     # ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 50,
+    'PAGE_SIZE': 99999,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -462,6 +472,9 @@ CORS_ALLOWED_ORIGINS = [
     'localhost:3000',
     'app.krmtool.com',
     'app.krmtool.com',
+    'cstool.sacyr.com',
+    'cstool.sacyr.com:444',
+    'http://cstool.sacyr.com:444'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -469,10 +482,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://app.krmtool.com',
     'https://app.krmtool.com',
-    'localhost:8000',
-    'localhost:3000',
-    'app.krmtool.com',
-    'app.krmtool.com',
+    'http://cstool.sacyr.com:444'
 ]
 
 ALLOWED_HOSTS = [
@@ -484,6 +494,9 @@ ALLOWED_HOSTS = [
     'localhost:3000',
     'app.krmtool.com',
     'app.krmtool.com',
+    'cstool.sacyr.com',
+    'cstool.sacyr.com:444',
+    'http://cstool.sacyr.com:444'
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -6,6 +6,8 @@ from krm.evaluations_krm.views import (
     GaEvaluationInherentCreateView,
     GaEvaluationInherentListView,
     GaEvaluationInherentDetailView,
+    GaEvaluationInherentAdminComplete,
+    GaEvaluationInherentNotificationsView,
 
     CaEvaluationInherentCreateView,
     CaEvaluationInherentListView,
@@ -13,18 +15,36 @@ from krm.evaluations_krm.views import (
     CaEvaluationInherentAdminComplete,
 
     RuEvaluationRiskInherentList,
-    RuEvaluationRiskInherentComplete
+    RuEvaluationRiskInherentComplete,
+    RuEvaluationRiskInherentDetail,
+
+    GaEvaluationResidualListView,
+    GaEvaluationResidualCreateView,
+    GaEvaluationResidualDetailView,
+    GaEvaluationResidualAdminComplete,
+    GaEvaluationResidualNotificationsView,
+
+    CaEvaluationResidualCreateView,
+    CaEvaluationResidualListView,
+    CaEvaluationResidualDetailView,
+    CaEvaluationResidualAdminComplete,
+    CaEvaluationInherentNotificationsView,
+    CaEvaluationResidualNotificationsView,
+
+    RuEvaluationRiskResidualList,
+    RuEvaluationRiskResidualComplete,
+    RuEvaluationRiskResidualDetail,
 )
 
 urlpatterns = [
     path(
-        '',
+        'inherent/',
         GaEvaluationInherentListView.as_view(),
-        name='ga_evaluation_krm_list'
+        name='ga_evaluation_inherent_list'
     ),
 
     path(
-        'create/',
+        'inherent/create/',
         GaEvaluationInherentCreateView.as_view(),
         name='ga_evaluation_inherent_create'
     ),
@@ -33,38 +53,128 @@ urlpatterns = [
         GaEvaluationInherentDetailView.as_view(),
         name='ga_evaluation_krm_inherent_detail'
     ),
-
     path(
-        'ca/',
+        'inherent/complete/<pk>/',
+        GaEvaluationInherentAdminComplete.as_view(),
+        name='ga_evaluation_inherent_complete'
+    ),
+    path(
+        'inherent/notifications/<pk>/',
+        GaEvaluationInherentNotificationsView.as_view(),
+        name='ga_evaluation_inherent_notifications'
+    ),
+    path(
+        'ca-inherent/notifications/<pk>/',
+        CaEvaluationInherentNotificationsView.as_view(),
+        name='ca_evaluation_inherent_notifications'
+    ),
+    path(
+        'ca/inherent/',
         CaEvaluationInherentListView.as_view(),
         name='ca_evaluation_inherent_list'
     ),
 
     path(
-        'ca/create/',
+        'ca/inherent/create/',
         CaEvaluationInherentCreateView.as_view(),
         name='ca_evaluation_inherent_create'
     ),
     path(
-        'ca/detail/<pk>/',
+        'ca/inherent/detail/<pk>/',
         CaEvaluationInherentDetailView.as_view(),
         name='ca_evaluation_inherent_detail'
     ),
     path(
-        'ca/complete/<pk>/',
+        'ca/inherent/complete/<pk>/',
         CaEvaluationInherentAdminComplete.as_view(),
         name='ca_evaluation_inherent_complete'
     ),
 
     path(
-        'ru/',
+        'ru/inherent/',
         RuEvaluationRiskInherentList.as_view(),
         name='ru_evaluation_risk_inherent_list'
     ),
 
     path(
-        'ru/complete/<pk>/',
+        'ru/inherent/complete/<pk>/',
         RuEvaluationRiskInherentComplete.as_view(),
         name='ru_evaluation_risk_inherent_complete'
+    ),
+
+    path(
+        'ru/inherent/detail/<pk>/',
+        RuEvaluationRiskInherentDetail.as_view(),
+        name='ru_evaluation_krm_inherent_detail'
+    ),
+
+    path(
+        'residual/',
+        GaEvaluationResidualListView.as_view(),
+        name='ga_evaluation_residual_list'
+    ),
+    path(
+        'residual/create/',
+        GaEvaluationResidualCreateView.as_view(),
+        name='ga_evaluation_residual_create'
+    ),
+    path(
+        'residual/detail/<pk>/',
+        GaEvaluationResidualDetailView.as_view(),
+        name='ga_evaluation_krm_residual_detail'
+    ),
+    path(
+        'residual/complete/<pk>/',
+        GaEvaluationResidualAdminComplete.as_view(),
+        name='ga_evaluation_residual_complete'
+    ),
+    path(
+        'residual/notifications/<pk>/',
+        GaEvaluationResidualNotificationsView.as_view(),
+        name='ga_evaluation_residual_notifications'
+    ),
+    path(
+        'ca-residual/notifications/<pk>/',
+        CaEvaluationResidualNotificationsView.as_view(),
+        name='ca_evaluation_residual_notifications'
+    ),
+    path(
+        'ca/residual/',
+        CaEvaluationResidualListView.as_view(),
+        name='ca_evaluation_residual_list'
+    ),
+
+    path(
+        'ca/residual/create/',
+        CaEvaluationResidualCreateView.as_view(),
+        name='ca_evaluation_residual_create'
+    ),
+    path(
+        'ca/residual/detail/<pk>/',
+        CaEvaluationResidualDetailView.as_view(),
+        name='ca_evaluation_residual_detail'
+    ),
+    path(
+        'ca/residual/complete/<pk>/',
+        CaEvaluationResidualAdminComplete.as_view(),
+        name='ca_evaluation_residual_complete'
+    ),
+
+    path(
+        'ru/residual/',
+        RuEvaluationRiskResidualList.as_view(),
+        name='ru_evaluation_risk_residual_list'
+    ),
+
+    path(
+        'ru/residual/complete/<pk>/',
+        RuEvaluationRiskResidualComplete.as_view(),
+        name='ru_evaluation_risk_residual_complete'
+    ),
+
+    path(
+        'ru/residual/detail/<pk>/',
+        RuEvaluationRiskResidualDetail.as_view(),
+        name='ru_evaluation_krm_residual_detail'
     ),
 ]

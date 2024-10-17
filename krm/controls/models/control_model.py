@@ -84,13 +84,19 @@ class Control(AuditModel):
 
     FREQUENCY_CONTROL_CHOICES = (
         ("BD", _("Bajo demanda")),
+        ("CO", _("Constante")),
         ("DI", _("Diario")),
         ("1W", _("Semanal")),
         ("2W", _("Quincenal")),
         ("1M", _("Mensual")),
+        ("2M", _("Bimensual")),
         ("3T", _("Trimestral")),
+        ("4T", _("Cuatrimestral")),
         ("6M", _("Semestral")),
         ("1Y", _("Anual")),
+        ("2Y", _("Bienal")),
+        ("3Y", _("Trienal")),
+        ("5Y", _("Quinquenal"))
     )
 
     systems = models.CharField(
@@ -138,6 +144,38 @@ class Control(AuditModel):
         _("Fraud"), max_length=1, choices=ASSERTION_CHOICES, default="-"
     )
 
+    is_elc = models.BooleanField(
+        default=False, verbose_name=_("¿Es un control ELC?")
+    )
+
+    evidence = RichTextField(
+        _("Evidencia"),
+        config_name='awesome_ckeditor',
+        max_length=10000,
+        null=True,
+        blank=True
+    )
+
+    SCOPE_CHOICES = (
+        ("S", _("Sociedad")),
+        ("C", _("Corporativo")),
+        ("G", _("Grupo")),
+        ("D", _("Division")),
+    )
+
+    scope = models.CharField(
+        _("Alcance"),
+        max_length=1,
+        choices=SCOPE_CHOICES,
+        null=True,
+        blank=True
+    )
+
+    block = models.BooleanField(
+        default=False,
+        verbose_name=_("¿Bloqueado?")
+    )
+
     def __str__(self):
         clean_name = strip_tags(self.name)
         if len(clean_name) > 100:
@@ -152,6 +190,14 @@ class Control(AuditModel):
     def save(self, *args, **kwargs):
         self.ref = self.ref.upper()
         super().save(*args, **kwargs)
+
+        from krm.companies.models import Company, CompanyControls
+        for company in Company.objects.all():
+            if CompanyControls.objects.filter(company=company, control=self).count() == 0:
+                CompanyControls.objects.create(
+                    company=company,
+                    control=self
+                )
 
     def domain_risks(self):
         domain_risks = []
@@ -174,3 +220,23 @@ class Control(AuditModel):
         companies = set(companies)
         companies = list(companies)
         return companies
+
+    def is_sciff(self):
+        if self.is_gap == '-' and self.assert_existence == '-' and self.assert_completeness == '-' and self.assert_valuation == '-' and self.assert_rights == '-' and self.assert_disclosure == '-' and self.assert_accurancy == '-' and self.assert_froud == '-':
+            return False
+        else:
+            return True
+
+    @property
+    def domain_risks_objects(self):
+        domain_risks = []
+        for risk in self.risks.all():
+            if risk.risk_master.domain_risk not in domain_risks:
+                domain_risks.append(risk.risk_master.domain_risk)
+
+        return domain_risks
+
+    @property
+    def control_is_used_by_evaluation(self):
+        from krm.evaluations.models import ControlTest
+        return ControlTest.objects.filter(control=self).exists()

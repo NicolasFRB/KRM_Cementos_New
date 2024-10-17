@@ -18,6 +18,17 @@ class RemediationPlanCreateForm(ModelForm):
             "attachment"
         ]
 
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        if len(description) == 0:
+            raise forms.ValidationError("Campo obligatorio")        
+        elif len(description) < 3:
+            raise forms.ValidationError("Debe proporcionar información suficiente para finalizar la evaluación")
+        elif len(description) < 5000:
+            return description
+        else:
+            raise forms.ValidationError("Muy largo")
+
     def __init__(self, *argv, **kwargs):
         super(RemediationPlanCreateForm, self).__init__(*argv, **kwargs)
         self.fields["date_end"].widget.attrs["class"] = "datepicker"

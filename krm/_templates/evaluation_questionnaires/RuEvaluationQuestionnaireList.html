@@ -1,0 +1,227 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header" style="display: flex;">
+    <!--begin::Card header-->
+      <div class="d-flex justify-content-between align-items-center" style="width:100%;">
+        <div class="card-title fs-3 fw-bold">{{ page_title }} {% trans 'pendientes' %}</div>
+      </div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluations_pending.count %}
+    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+        <th class="text-center align-middle">{% trans 'Cuestionario' %}</th>
+          <th class="text-center align-middle">{% trans 'REF' %}</th>
+          <th class="text-center align-middle">{% trans 'Descripción' %}</th>
+          <th class="text-center align-middle">{% trans 'Nº Preguntas' %}</th>
+          <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
+          <th class="text-center align-middle">{% trans 'Estado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for evaluation in evaluations_pending %}
+          <tr>
+            <td class="text-center align-middle"><a href="{% url 'evaluation_questionnaires:ru_evaluation_questionnaire_complete' evaluation.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+            <td class="align-middle">
+              <a href="{% url 'evaluation_questionnaires:ru_evaluation_questionnaire_complete' evaluation.pk %}">
+                <span class="badge badge-primary">{{ evaluation.ref }}</span>
+              </a>  
+            </td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">
+              <span class="badge badge-info">{{ evaluation.nquestion_test_pending_user }}</span>            
+            </td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen evaluaciones de cuestionarios pendientes' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header" style="display: flex;">
+    <!--begin::Card header-->
+    <div class="d-flex justify-content-between align-items-center" style="width:100%;">
+      <div class="card-title fs-3 fw-bold">{{ page_title }} {% trans 'entregadas' %}</div>
+    </div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluations_delivered.count %}
+    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+        <th class="text-center align-middle">{% trans 'Cuestionario' %}</th>
+          <th class="text-center align-middle">{% trans 'REF' %}</th>
+          <th class="text-center align-middle">{% trans 'Descripción' %}</th>
+          <th class="text-center align-middle">{% trans 'Nº Preguntas' %}</th>
+          <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
+          <th class="text-center align-middle">{% trans 'Estado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for evaluation in evaluations_delivered %}
+          <tr>
+            <td class="text-center align-middle"><i class="bi bi-check-circle-fill fs-1x text-primary"></i></td>
+            <td class="align-middle">
+                <span class="badge badge-primary">{{ evaluation.ref }}</span> 
+            </td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">
+              <span class="badge badge-info">{{ evaluation.nquestion_test_delivered_user }}</span>            
+            </td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen evaluaciones de cuestionarios entregadas' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header" style="display: flex;">
+    <!--begin::Card header-->
+    <div class="d-flex justify-content-between align-items-center" style="width:100%;">
+      <div class="card-title fs-3 fw-bold">{{ page_title }} {% trans 'finalizadas' %}</div>
+    </div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluations_finished.count %}
+    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+        <th class="text-center align-middle">{% trans 'Cuestionario' %}</th>
+          <th class="text-center align-middle">{% trans 'REF' %}</th>
+          <th class="text-center align-middle">{% trans 'Descripción' %}</th>
+          <th class="text-center align-middle">{% trans 'Nº Preguntas' %}</th>
+          <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
+          <th class="text-center align-middle">{% trans 'Estado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for evaluation in evaluations_finished %}
+          <tr>
+            <td class="text-center align-middle"><i class="bi bi-check-circle-fill fs-1x text-primary"></i></td>
+            <td class="align-middle">
+                <span class="badge badge-primary">{{ evaluation.ref }}</span> 
+            </td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">
+              <span class="badge badge-info">{{ evaluation.nquestion_test_finished_user }}</span>            
+            </td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen evaluaciones de cuestionarios finalizadas' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+{% endblock content %}

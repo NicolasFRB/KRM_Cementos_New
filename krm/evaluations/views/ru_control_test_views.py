@@ -59,8 +59,10 @@ class RuControlTestDetail(CreateView):
         control_test = get_object_or_404(ControlTest, pk=self.kwargs.get("pk"))
         self.control_test = control_test
 
-        if control_test.remediation_plan_needed and self.request.user == control_test.control_test_owner:
+        if control_test.remediation_plan_needed and self.request.user == control_test.control_test_owner and control_test.remediation_plans.count() == 0:
             return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail_create_remediation_plan", kwargs={"pk": control_test.pk}))
+        elif control_test.remediation_plan_needed and self.request.user == control_test.control_test_owner and control_test.remediation_plans.count() > 0:
+            return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail_update_remediation_plan", kwargs={"pk":control_test.remediation_plans.first().pk}))
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_class(self):
@@ -91,6 +93,9 @@ class RuControlTestDetail(CreateView):
         context['page_title'] = f"{_('Control Test')} : {self.control_test.identifier}"
         context['breadcrums'] = breadcrums
         context['control_test'] = self.control_test
+        context['control'] = self.control_test.control
+        context['control_test_risks_company'] = self.control_test.get_control_test_risks_company()
+        context['control_test_subprocess'] = self.control_test.get_control_test_subprocess()
         if self.control_test.evaluation.company in self.request.user.companies_admin.all():
             context['ca'] = True
         return context
@@ -132,12 +137,11 @@ class RuControlTestDetail(CreateView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
-        self.control_test.send_notification()
+        self.control_test.send_notification('Notification')
 
         return super().form_valid(form)
 
     def get_success_url(self):
-
         if self.request.user == self.control_test.control_test_owner:
 
             if self.control_test.result == "EF":
@@ -165,10 +169,16 @@ class RuControlTestDetail(CreateView):
                     return reverse_lazy("control_tests:ru_control_test_owner_list")
 
         if self.request.user == self.control_test.control_test_supervisor:
-            messages.add_message(
-                self.request, messages.SUCCESS, _(
-                    "Control revisado correctamente")
-            )
+            if self.control_test.status == "WO" and self.control_test.result == "SE":
+                messages.add_message(
+                    self.request, messages.SUCCESS, _(
+                        "Enviado a Control Owner")
+                )
+            else:
+                messages.add_message(
+                    self.request, messages.SUCCESS, _(
+                        "Control revisado correctamente")
+                )
             return reverse_lazy("control_tests:ru_control_test_supervisor_list")
 
         # Si es efectivo se retorna a la tabla de controles por rellenar
@@ -236,7 +246,68 @@ class RuRemediationPlanCreate(CreateView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
-        self.control_test.send_notification()
+        self.control_test.send_notification('Notification')
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            _("Plan de remediación establecido correctamente"),
+        )
+
+        return reverse_lazy("control_tests:ru_control_test_owner_list")
+
+@method_decorator((login_required), name="dispatch")
+class RuRemediationPlanUpdate(UpdateView):
+    template_name = 'control_tests/ga/ControlTestDetailUpdate.html'
+    model = RemediationPlan
+    form_class = RemediationPlanCreateForm
+
+    def dispatch(self, request, *args, **kwargs):
+        remediation_plan = get_object_or_404(RemediationPlan, pk=self.kwargs.get("pk"))
+        self.remediation_plan = remediation_plan
+        self.control_test = self.remediation_plan.control_test
+
+        return super().dispatch(request, *args, **kwargs)
+
+
+    def get_context_data(self, **kwargs):
+        print(self.remediation_plan)
+        from datetime import date
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Control Test')},
+            {'title': _('Nuevo Plan de Remediación')},
+        ]
+        context['page_title'] = f"{_('Nuevo Plan de Remediación para el Control Test')} : {self.control_test.identifier}"
+        context['breadcrums'] = breadcrums
+        context['control_test'] = self.control_test
+        return context
+
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.control_test = self.control_test
+        self.remediation_plan = form.save()
+
+        self.control_test.status = 'WS'
+        self.control_test.remediation_plan_needed = False
+
+        # Apuntamos en el diario del usuario la acción
+        self.request.user.add_action(
+            "Plan de Remediación establecido para el Control Test: %s" % str(
+                self.control_test.identifier)
+        )
+
+        # Ahora para mandar las notificaciones comprobamos a quien corresponde
+        self.control_test.save()
+        self.control_test.send_notification('Notification')
 
         return super().form_valid(form)
 

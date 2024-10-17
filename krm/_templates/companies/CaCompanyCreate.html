@@ -1,0 +1,114 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block pageCss %}
+<style>
+  #div_id_controls>label {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: var(--kt-text-dark);
+  }
+  #div_id_controls .form-check{
+    margin-bottom: 30px;
+  }
+
+  #div_id_evaluators>label {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: var(--kt-text-dark);
+  }
+  #div_id_evaluators .form-check{
+    margin-bottom: 30px;
+  }
+</style>
+{% endblock pageCss %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            {% include '_includes/FormErrors.html' %}
+          </div>
+          <div class="col-12 mb-4">
+            <fieldset>
+              <legend>{% trans 'Datos de la Compañía' %}</legend>
+              <div class="row">
+                <div class="mb-4 col-md-2 col-12">
+                  {{ form.ref|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-4 col-12">
+                  {{ form.name|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-2 col-12">
+                  {{ form.vat|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-4 col-12">
+                  {{ form.email|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-6 col-12">
+                  {{ form.type_company|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-6 col-12">
+                  {{ form.companies_in_scope|as_crispy_field }}
+                </div>
+              </div>
+              <div class="separator my-10"></div>
+              <div class="row">
+                <div class="mb-4 col-12">
+                  {{ form.address|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-4 col-12">
+                  {{ form.state|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-4 col-12">
+                  {{ form.cp|as_crispy_field }}
+                </div>
+                <div class="mb-4 col-md-4 col-12">
+                  {{ form.country|as_crispy_field }}
+                </div>
+              </div>
+              <div class="separator my-10"></div>
+              {% if object.pk %}
+                <div class="separator my-10"></div>
+                <div class="row">
+                  <div class="col col-12 mb-4">
+                    {{ form.evaluators|as_crispy_field }}
+                  </div>
+                </div>
+              {% endif %}
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <!--end::Body-->
+
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+        <a href="{% url 'companies:ca_company_list' %}"
+          class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+{% endblock content %}

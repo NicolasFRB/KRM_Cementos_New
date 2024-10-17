@@ -7,7 +7,6 @@ import os
 
 # Base
 DEBUG = env.bool('KRM_DJANGO_DEBUG')
-DEV = env.bool('KRM_DJANGO_DEV')
 
 # Security
 SECRET_KEY = env.str('KRM_DJANGO_SECRET_KEY')
@@ -24,8 +23,11 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://4924-81-38-122-210.eu.ngrok.io/'
-    '*',
+    'http://localhost:8000',
+    'http://localhost:3000',
+    'http://app.krmtool.com',
+    'https://app.krmtool.com',
+    'http://cstool.sacyr.com:444'
 ]
 
 
@@ -36,7 +38,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-if DEV:
+if KRM_DEBUG_TOOLBAR:
     INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
     import socket  # only if you haven't already imported this
@@ -46,14 +48,23 @@ if DEV:
 
 
 # Celery
-CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-CELERY_ACCEPT_CONTENT = ["json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 CELERYD_TASK_TIME_LIMIT = 5 * 60
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
-CELERY_TIMEZONE = "Europe/Madrid"
-CELERY_TASK_DEFAULT_QUEUE = "krc"
-CELERY_TASK_DEFAULT_EXCHANGE = "krc"
-CELERY_TASK_DEFAULT_ROUTING_KEY = "krc"
+CELERY_TIMEZONE = 'Europe/Madrid'
+CELERY_TASK_DEFAULT_QUEUE = "krm"
+CELERY_TASK_DEFAULT_EXCHANGE = "krm"
+CELERY_TASK_DEFAULT_ROUTING_KEY = "krm"
+
+
+# # WhiteNoise
+# MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
+
+# # Static  files
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WHITENOISE_MANIFEST_STRICT = False
+# INSTALLED_APPS += ['whitenoise.runserver_nostatic']  # noqa F405

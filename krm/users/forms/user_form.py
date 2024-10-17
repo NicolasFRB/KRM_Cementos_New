@@ -3,7 +3,7 @@
 from datetime import date
 
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm,  HiddenInput
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
@@ -35,11 +35,14 @@ class UserCreateForm(forms.ModelForm):
         fields = (
             'first_name',
             'last_name',
+            'position',
             'email',
             'send_email_init_password',
             'is_superuser',
             'companies',
             'companies_admin',
+            'notification_language',
+            'is_auditor'
         )
 
     def __init__(self, *args, **kwargs):
@@ -80,9 +83,10 @@ class UserCreateForm(forms.ModelForm):
 
     def save(self):
         user = super().save(commit=True)
+        from krm.users.tasks import send_welcome_email
 
         if self.cleaned_data.get("send_email_init_password"):
-            user.send_welcome_email()
+            send_welcome_email.delay(user.pk)
 
         if self.cleaned_data["password1"] != '':
             user.set_password(self.cleaned_data["password1"])
@@ -101,11 +105,16 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
+            'email',
             'first_name',
             'last_name',
+            'position',
             'companies',
             'companies_admin',
-            'is_superuser'
+            'is_superuser',
+            'notification_language',
+            'is_active',
+            'is_auditor'
         )
 
     def __init__(self, *args, **kwargs):
@@ -136,6 +145,56 @@ class UserUpdateForm(forms.ModelForm):
             user.save()
         return user
 
+class CaUserUpdateForm(forms.ModelForm):
+    """Formulario de creación de usuarios """
+    password1 = forms.CharField(label=_('Contraseña'), widget=forms.PasswordInput, required=False,
+                                help_text=_('Si no se establece se generará una automáticamente'))
+    password2 = forms.CharField(label=_('Repita su contraseña'), widget=forms.PasswordInput,
+                                required=False, help_text=_('Debe indicar la misma contraseña que en el campo anterior para prevenir errores'))
+
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'position',
+            'companies',
+            'companies_admin',
+            'is_superuser',
+            'notification_language',
+            'is_active'
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(CaUserUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields["companies"].widget.attrs["class"] = "form-select"
+        self.fields["companies"].widget.attrs["data-control"] = "select2"
+        self.fields["companies"].disabled = True
+        self.fields["companies_admin"].widget.attrs["class"] = "form-select"
+        self.fields["companies_admin"].widget.attrs["data-control"] = "select2"
+        self.fields["companies_admin"].disabled = True
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+
+        if password1 != password2:
+            raise forms.ValidationError(_('Las contraseñas no coinciden'))
+
+        if password2 != '':
+            validate_password(password2)
+
+        return password2
+
+    def save(self):
+        user = super().save(commit=True)
+
+        if self.cleaned_data["password1"] != '':
+            user.set_password(self.cleaned_data["password1"])
+            user.save()
+        return user
 
 class UserAdminCreateForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
@@ -153,7 +212,9 @@ class UserAdminCreateForm(forms.ModelForm):
             'first_name',
             'last_name',
             'is_active',
+            'notification_language',
             'is_superuser',
+            'is_auditor'
         )
 
     def clean_password2(self):
@@ -221,8 +282,11 @@ class UserAdmin(BaseUserAdmin):
                 (
                     'email',
                     'first_name',
-                    'last_name'
+                    'last_name',
                 ),
+                (
+                    'notification_language',
+                )
             )
         }),
         (u'Empresas', {
@@ -243,6 +307,7 @@ class UserAdmin(BaseUserAdmin):
                 'is_active',
                 'is_staff',
                 'is_superuser',
+                'is_auditor',
                 'groups',
                 # 'user_permissions'
             ),
@@ -256,3 +321,11 @@ class UserAdmin(BaseUserAdmin):
         'companies',
         'companies_admin'
     )
+
+class UsersActionForm(forms.Form):
+
+    action = forms.CharField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['action'].widget = HiddenInput()

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.conf import settings
 import json
 import uuid
+import xlsxwriter 
 
 import re
 
@@ -22,6 +23,7 @@ from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
+from django.forms.models import model_to_dict
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
@@ -52,14 +54,15 @@ from krm.users.decorators import (
 )
 
 from krm.evaluations_krm.forms import (
-    EvaluationInherenetCompleteForm
+    EvaluationInherenetCompleteForm,
+    EvaluationInherentNotificationForm
 )
 
 
 @method_decorator([login_required, is_company_admin, ], name='dispatch')
 class CaEvaluationInherentListView(ListView):
     model = EvaluationKrmInherent
-    template_name = 'evaluations/CaEvaluationInherentList.html'
+    template_name = 'evaluations_krm/CaEvaluationInherentList.html'
     context_object_name = 'evaluations'
 
     def get_context_data(self, **kwargs):
@@ -81,21 +84,62 @@ class CaEvaluationInherentListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+        ev_pending = EvaluationKrmInherent.objects.filter(
+            status="EP", company__in=self.request.user.companies_admin.all())
+        ev_finished = EvaluationKrmInherent.objects.filter(
+            status="FI", company__in=self.request.user.companies_admin.all())
+
+        for ev in ev_pending:
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
+                1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(
+                2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(
+                3)
+
+            ev.experts_pending = ev.get_experts_by_rit_state(1)
+            ev.experts_delivered = ev.get_experts_by_rit_state(2)
+            ev.experts_finished = ev.get_experts_by_rit_state(3)
+
+            ev.total_experts = ev.experts_pending.count() + ev.experts_delivered.count() + \
+                ev.experts_finished.count()
+
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
+
+        for ev in ev_finished:
+            ev.nrisk_test_inherents_pending = ev.nrisk_test_inherents_by_state(
+                1)
+            ev.nrisk_test_inherents_delivered = ev.nrisk_test_inherents_by_state(
+                2)
+            ev.nrisk_test_inherents_finished = ev.nrisk_test_inherents_by_state(
+                3)
+
+            ev.experts_pending = ev.get_experts_by_rit_state(1)
+            ev.experts_delivered = ev.get_experts_by_rit_state(2)
+            ev.experts_finished = ev.get_experts_by_rit_state(3)
+
+            ev.total_experts = ev.experts_pending.count() + ev.experts_delivered.count() + \
+                ev.experts_finished.count()
+
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
+
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
-    def get_queryset(self):
-        from krm.evaluations_krm.models import EvaluationKrmInherent
-        return EvaluationKrmInherent.objects.filter(
-            company__in=self.request.user.companies_admin.all()
-        )
+    # def get_queryset(self):
+    #     from krm.evaluations_krm.models import EvaluationKrmInherent
+    #     return EvaluationKrmInherent.objects.filter(
+    #         company__in=self.request.user.companies_admin.all()
+    #     )
 
 
 @method_decorator([login_required, is_company_admin, ], name='dispatch')
 class CaEvaluationInherentCreateView(FormView):
     form_class = EvaluationInherentCreateForm
     model = EvaluationKrmInherent
-    template_name = 'evaluations/CaEvaluationInherentCreate.html'
+    template_name = 'evaluations_krm/CaEvaluationInherentCreate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -104,10 +148,11 @@ class CaEvaluationInherentCreateView(FormView):
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones de Riesgo Inherente KRM'), 'url': reverse(
-                'evaluations_krm:ca_evaluation_inherent_list')},
+                'evaluations:ca_evaluation_list')},
             {'title': _('Nuevo'), 'url': reverse(
                 'evaluations_krm:ca_evaluation_inherent_create')},
         ]
+
         context['page_title'] = _('Nueva Evaluación de Riesgo Inherente [KRM]')
         context['breadcrums'] = breadcrums
         context['js_template'] = ['js/custom/datatables.js']
@@ -172,7 +217,8 @@ class CaEvaluationInherentCreateView(FormView):
                     rt.status = 1
                     rt.save()
                     if rt.expert not in users_notificated:
-                        rt.send_notification_expert()
+                        rt.send_notification_expert('Initial notification')
+                        users_notificated.append(rt.expert)
 
         messages.add_message(
             self.request,
@@ -191,7 +237,7 @@ class CaEvaluationInherentCreateView(FormView):
 
 @method_decorator([login_required, is_company_admin, user_can_view_evaluation_inherent], name='dispatch')
 class CaEvaluationInherentDetailView(FormView):
-    template_name = 'evaluations/CaEvaluationInherentDetail.html'
+    template_name = 'evaluations_krm/CaEvaluationInherentDetail.html'
     form_class = EvaluationActionForm
 
     def dispatch(self, request, *args, **kwargs):
@@ -220,6 +266,69 @@ class CaEvaluationInherentDetailView(FormView):
         #         'icon': '<i class="bi bi-pencil"></i>'
         #     },
         # ]
+
+        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(
+            1)
+        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(
+            2)
+        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(
+            3)
+
+        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(
+            1)
+        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(
+            2)
+        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(
+            3)
+
+        context['evaluation'].total_experts = context['evaluation'].experts_pending.count(
+        ) + context['evaluation'].experts_delivered.count() + context['evaluation'].experts_finished.count()
+
+        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
+
+        # Serializar Evaluation no incluye sus hijos :(
+        # Busco los hijos
+        context['rit'] = RiskTestInherent.objects.filter(
+            evaluation=self.evaluation)
+
+        # Paso a dict para json
+        context['rit_dict'] = [model_to_dict(m) for m in context['rit']]
+
+        # MODEL_TO_DICT not getting properties :(
+        # Get .severity_level_expert
+        # TBI for cuadratico :/
+        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
+        for i, r1 in enumerate(context['rit']):
+            context['rit_dict'][i]['risk_ref'] = r1.risk.risk.ref
+            context['rit_dict'][i]['risk_name'] = r1.risk.risk.name
+            for r2 in context['rit_dict']:
+                if r1.id == r2['id']:
+                    r2['severity_level_expert'] = r1.severity_level_expert
+
+        # QUITAR RESTO DE ATTRIBUTES (solo dan problemas con el encoding)
+        for i, r1 in enumerate(context['rit']):
+            for k in context['rit_dict'][i].copy():
+                if k not in ['risk_ref', 'risk_name', 'expert', 'impact_level_expert', 'probability_level_expert', 'severity_level_expert']:
+                    del context['rit_dict'][i][k]
+
+        # Sort by severity for a nice plot
+        context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (
+            x['severity_level_expert'], x['risk_ref']), reverse=True)
+
+        # Errores de encoding caracteres portugueses y españoles
+        for i, m in enumerate(context['rit_dict']):
+            for k in m:
+                if type(context['rit_dict'][i][k]) == str:
+                    context['rit_dict'][i][k] = context['rit_dict'][i][k].encode(
+                        'utf-8').decode('utf-8')
+
+        # JSON DUMP
+        context['rit_json'] = json.dumps(
+            context['rit_dict'],
+            default=str,
+            ensure_ascii=True,
+        )
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -227,6 +336,167 @@ class CaEvaluationInherentDetailView(FormView):
     def form_valid(self, form):
         action = form.cleaned_data["action"]
         evaluation = self.evaluation
+
+        if action == 'download':
+            import io
+
+            filename = f'inherent_evaluation_{evaluation.ref}.xlsx'
+
+            # Create an in-memory output file for the new workbook.
+            output = io.BytesIO()
+
+            workbook = xlsxwriter.Workbook(output)
+            worksheet = workbook.add_worksheet()
+
+            # Add a bold format to use to highlight cells.
+            bold = workbook.add_format({'bold': True})
+            text_wrap = workbook.add_format({'text_wrap': True})
+
+            columns = [
+                "Ev_REF",
+                "COMPANY",
+                "COMPANY_TYPE",
+                "DESCRIPTION",
+                "DATE_BEGIN",
+                "DATE_END",
+                "CERTIFICATION_YEAR",
+                "CERTIFICATION_PERIOD",
+                "Ev_STATUS",
+                "MAIN_ELEMENTS",
+                "MAIN_EVENTS",
+                "ACTIVITY_AFFECTED",
+                "EXPOSED_STAFF",
+                "DOMAIN_RISK",
+                "RI_REF_N1",
+                "RI_REF_N2",
+                "RI_NAME",
+                "RISK_DESCRIPTION",
+                "EXPERT_NAME",
+                "JUSTIFICATION_EXPERT",
+                "SEVERITY_LEVEL_EXPERT",
+                "SEVERITY_LEVEL_EXPERT_QUALITATIVE",
+                "IMPACT_LEVEL_EXPERT",
+                "IMPACT_LEVEL_EXPERT_QUALITATIVE",
+                "PROBABILITY_LEVEL_EXPERT",
+                "PROBABILITY_LEVEL_EXPERT_QUALITATIVE",
+                "ADMIN_SUPERVISOR",
+                "JUSTIFICATION_ADMIN",
+                "SEVERITY_LEVEL_ADMIN",
+                "SEVERITY_LEVEL_ADMIN_QUALITATIVE",
+                "IMPACT_LEVEL_ADMIN",
+                "IMPACT_LEVEL_ADMIN_QUALITATIVE",
+                "PROBABILITY_LEVEL_ADMIN",
+                "PROBABILITY_LEVEL_ADMIN_QUALITATIVE",
+            ]
+
+            for index, col_name in enumerate(columns):
+                worksheet.write(0, index, col_name, bold)
+
+            worksheet.set_column(0, 1, 25)    # Ev_REF
+            worksheet.set_column(1, 2, 25)    # COMPANY
+            worksheet.set_column(2, 3, 70)    # COMPANY_TYPE
+            worksheet.set_column(3, 4, 25)    # DESCRIPTION
+            worksheet.set_column(4, 5, 25)    # DATE_BEGIN
+            worksheet.set_column(5, 6, 25)    # DATE_END
+            worksheet.set_column(6, 7, 25)    # CERTIFICATION_YEAR
+            worksheet.set_column(7, 8, 25)    # CERTIFICATION_PERIOD
+            worksheet.set_column(8, 9, 70)    # Ev_STATUS
+
+            worksheet.set_column(9, 10, 70)   # MAIN_ELEMENTS
+            worksheet.set_column(10, 11, 70)  # MAIN_EVENTS
+            worksheet.set_column(11, 12, 70)  # ACTIVITY_AFFECTED
+            worksheet.set_column(12, 13, 25)  # EXPOSED_STAFF
+
+            worksheet.set_column(13, 14, 25)  # DOMAIN_RISK
+            worksheet.set_column(14, 15, 25)  # RI_REF_N1
+            worksheet.set_column(15, 16, 25)  # RI_REF_N2
+            worksheet.set_column(16, 17, 70)  # RI_NAME
+            worksheet.set_column(17, 18, 25)  # RISK_DESCRIPTION
+
+            worksheet.set_column(18, 19, 70)  # EXPERT_NAME
+            worksheet.set_column(19, 20, 25)  # JUSTIFICATION_EXPERT
+            worksheet.set_column(20, 21, 25)  # SEVERITY_LEVEL_EXPERT
+            worksheet.set_column(21, 22, 25)  # SEVERITY_LEVEL_EXPERT_QUALITATIVE
+            worksheet.set_column(22, 23, 25)  # IMPACT_LEVEL_EXPERT
+            worksheet.set_column(23, 24, 25)  # IMPACT_LEVEL_EXPERT_QUALITATIVE
+            worksheet.set_column(24, 25, 25)  # PROBABILITY_LEVEL_EXPERT
+            worksheet.set_column(25, 26, 25)  # PROBABILITY_LEVEL_EXPERT_QUALITATIVE
+
+            worksheet.set_column(26, 27, 70)  # ADMIN_SUPERVISOR
+            worksheet.set_column(27, 28, 25)  # JUSTIFICATION_ADMIN           
+            worksheet.set_column(28, 29, 25)  # SEVERITY_LEVEL_ADMIN
+            worksheet.set_column(29, 30, 25)  # SEVERITY_LEVEL_ADMIN_QUALITATIVE          
+            worksheet.set_column(30, 31, 25)  # IMPACT_LEVEL_ADMIN
+            worksheet.set_column(31, 32, 25)  # IMPACT_LEVEL_ADMIN_QUALITATIVE           
+            worksheet.set_column(32, 33, 25)  # PROBABILITY_LEVEL_ADMIN
+            worksheet.set_column(33, 34, 25)  # PROBABILITY_LEVEL_ADMIN_QUALITATIVE
+
+            row = 1
+            domains = ""
+
+            for rt in evaluation.risk_test_inherents.all():
+                #Evaluation 
+                worksheet.write(row, 0, evaluation.ref, text_wrap)
+                worksheet.write(row, 1, evaluation.company.name, text_wrap)
+                worksheet.write(row, 2, evaluation.company.type_company, text_wrap)
+                worksheet.write(row, 3, evaluation.description, text_wrap)
+                worksheet.write(row, 4, evaluation.date_begin.strftime("%d/%m/%Y"))
+                worksheet.write(row, 5, evaluation.date_end.strftime("%d/%m/%Y"))
+                worksheet.write(row, 6, evaluation.certification_year)
+                worksheet.write(row, 7, evaluation.certification_period)
+                worksheet.write(row, 8, evaluation.status)
+
+                worksheet.write(row, 9, rt.risk.krm_main_elements, text_wrap)
+                worksheet.write(row, 10, rt.risk.krm_main_events, text_wrap)
+                worksheet.write(row, 11, rt.risk.krm_activity_affected, text_wrap)
+                worksheet.write(row, 12, rt.risk.krm_exposed_staff, text_wrap)
+
+                for dom in evaluation.get_domain_risk_in_evaluation():
+                    if dom.ref not in domains:
+                        domains += dom.ref
+                worksheet.write(row, 13, domains)
+                worksheet.write(row, 14, rt.risk.risk.risk_master.ref, text_wrap)
+                worksheet.write(row, 15, rt.risk.risk.ref, text_wrap)
+                worksheet.write(row, 16, rt.risk.name, text_wrap)
+                worksheet.write(row, 17, rt.risk.description, text_wrap)
+
+                if rt.expert != None:
+                    worksheet.write(row, 18, rt.expert.full_name, text_wrap)
+                worksheet.write(row, 19, rt.description, text_wrap)
+                worksheet.write(row, 20, rt.severity_level_expert, text_wrap)
+                worksheet.write(row, 21, rt.severity_level_expert_qualitative, text_wrap)
+                worksheet.write(row, 22, rt.impact_level_expert, text_wrap)
+                worksheet.write(row, 23, rt.get_impact_level_expert_display(), text_wrap)
+                worksheet.write(row, 24, rt.probability_level_expert, text_wrap)
+                worksheet.write(row, 25, rt.get_probability_level_expert_display(), text_wrap)
+
+                if evaluation.admin_supervisor != None:
+                    worksheet.write(row, 26, evaluation.admin_supervisor.full_name)
+                worksheet.write(row, 27, rt.description_admin, text_wrap)
+                worksheet.write(row, 28, rt.severity_level_admin, text_wrap)
+                worksheet.write(row, 29, rt.severity_level_admin_qualitative, text_wrap)
+                worksheet.write(row, 30, rt.impact_level_administrator, text_wrap)
+                worksheet.write(row, 31, rt.get_impact_level_administrator_display(), text_wrap)
+                worksheet.write(row, 32, rt.probability_level_administrator, text_wrap)
+                worksheet.write(row, 33, rt.get_probability_level_administrator_display(), text_wrap)
+                
+                #worksheet.write(row, 2, evaluation.date_begin.strftime("%d/%m/%Y"))
+                
+                row += 1
+            # Close the workbook before sending the data.
+            workbook.close()
+
+            # Rewind the buffer.
+            output.seek(0)
+
+            # Set up the Http response.
+            response = HttpResponse(
+                output,
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
+            response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+            return response
 
         # if action == "i":
         #     evaluation.status = "EP"
@@ -281,7 +551,7 @@ class CaEvaluationInherentAdminComplete(DetailView, FormView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones de Riesgo Inherente')}
         ]
-        context['page_title'] = f"{_('Evaluación de Riesgos Inherentes')} : {self.object.ref}"
+        context['page_title'] = f"{_('Evaluación de Riesgo Inherente')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
         context['risks_test_inherent'] = self.object.risk_test_inherents.filter()
@@ -290,12 +560,25 @@ class CaEvaluationInherentAdminComplete(DetailView, FormView):
 
     def form_valid(self, form):
         evaluation = self.get_object()
-        RiskTestInherent.objects.filter(
+        # RiskTestInherent.objects.filter(
+        #     evaluation=evaluation
+        # ).update(
+        #     status=3
+        # )
+        risk_inherents = RiskTestInherent.objects.filter(
             evaluation=evaluation
-        ).update(
-            status=3
         )
+        for ri in risk_inherents:
+            ri.status = 3
+            if ri.probability_level_administrator == 5:
+                ri.probability_level_administrator = ri.probability_level_expert
+            if ri.impact_level_administrator == 5:
+                ri.impact_level_administrator = ri.impact_level_expert
+            if ri.description_admin == '':
+                ri.description_admin = ri.description_expert
+            ri.save()
         evaluation.status = 'FI'
+        evaluation.admin_supervisor = self.request.user
         evaluation.save()
         return super().form_valid(form)
 
@@ -308,4 +591,60 @@ class CaEvaluationInherentAdminComplete(DetailView, FormView):
 
         return reverse_lazy(
             "evaluations_krm:ca_evaluation_inherent_list"
+        )
+    
+@method_decorator([is_company_admin, ], name='dispatch')
+class CaEvaluationInherentNotificationsView(DetailView, FormView):
+    template_name = 'evaluations_krm/CaEvaluationInherentNotifications.html'
+    model = EvaluationKrmInherent
+    context_object_name = 'evaluation'
+    form_class = EvaluationInherentNotificationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.evaluation = get_object_or_404(
+            EvaluationKrmInherent, pk=self.kwargs.get("pk"))
+        return super(CaEvaluationInherentNotificationsView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Evaluaciones KRM'), 'url': reverse(
+                'evaluations_krm:ca_evaluation_inherent_list')},
+            {'title': self.object.ref, 'url': reverse(
+                "evaluations_krm:ca_evaluation_inherent_detail", kwargs={'pk': self.object.pk})}
+        ]
+        context['page_title'] = f"{_('Notificaciones de Riesgo Inherente')} : {self.object.ref}"
+        context['breadcrums'] = breadcrums
+
+        context['evaluation'].evaluators_notifications = context['evaluation'].get_evaluators_for_notifications()
+
+        context['js_template'] = ['js/custom/datatables.js']
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        risk_test_selected = request.POST.getlist('notify_pk')
+        
+        from krm.evaluations_krm.models import (
+            RiskTestInherent,
+        )
+
+        for pk in risk_test_selected:
+            rt = RiskTestInherent.objects.filter(pk = int(pk)).first()
+            rt.send_notification_expert('Reminder')
+
+        messages.add_message(
+            self.request, messages.SUCCESS, _(
+                "Enviadas notificaciones a %d usuarios!" % len(risk_test_selected))
+        )
+
+        return HttpResponseRedirect(
+            reverse_lazy(
+                "evaluations_krm:ca_evaluation_inherent_detail",
+                kwargs={'pk': self.evaluation.pk}
+            )
         )

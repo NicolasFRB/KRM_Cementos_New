@@ -9,7 +9,11 @@
 {% block content %}
 <div class="text-center mb-12">
   <a href="/" class="login-logo">
-    <img style="max-width: 180px;" src="{% static 'media/logos/krm-logo.svg' %}" alt="KRM Tool - Logo" />
+    {% if BRAND == 'globalvia' %}
+      <img style="max-width: 180px;" src="{% static 'media/logos/krm-logo-globalvia.svg' %}" alt="KRM Tool - Logo" />
+    {% else %}
+      <img style="max-width: 180px;" src="{% static 'media/logos/krm-logo.svg' %}" alt="KRM Tool - Logo" />
+    {% endif %}
   </a>
 </div>
 
@@ -20,7 +24,7 @@
     <div class="text-center mb-11">
         <!--begin::Title-->
         <h1 class="text-dark fw-bolder mb-3">
-            {% trans 'Iniciar sesión en KRM Tool' %}
+            {% trans 'Iniciar sesión en ' %}{{ CONFIGURATION.app_name }}
         </h1>
         <!--end::Title-->
     </div>
@@ -36,7 +40,7 @@
     </div>
 
     <!--end::Input group--->
-    <div class="fv-row mb-3">    
+    <div class="fv-row mb-3">
         <!--begin::Password-->
         {{ form.password|as_crispy_field }}
         <!--end::Password-->
@@ -53,7 +57,7 @@
         </a>
         <!--end::Link-->
     </div>
-    <!--end::Wrapper-->    
+    <!--end::Wrapper-->
 
     <!--begin::Submit button-->
     <div class="d-grid mb-10">
@@ -63,6 +67,6 @@
     </div>
     <!--end::Submit button-->
 </form>
-<!--end::Form--> 
+<!--end::Form-->
 
 {% endblock content %}

@@ -19,62 +19,77 @@
   </div>
   <!--end::Card header-->
 
-    <form method="post" class="kt-form kt-form--label-right" novalidate>
-      {% csrf_token %}
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12">
-            {% include '_includes/FormErrors.html' %}
-          </div>
-          <div class="col-12 col-md-4 mb-4">
-            <fieldset>
-              <legend>{% trans 'Datos del usuario' %}</legend>
-              <div class="row">
-                <div class="mb-4 col-12">
-                  {{ form.first_name|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12">
-                  {{ form.last_name|as_crispy_field }}
-                </div>
-                <div class="mb-4 col-12">
-                  {{ form.is_superuser|as_crispy_field }}
-                </div>
+  <form method="post" class="kt-form kt-form--label-right" novalidate>
+    {% csrf_token %}
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          {% include '_includes/FormErrors.html' %}
+        </div>
+        <div class="col-12 col-md-6 mb-4">
+          <fieldset>
+            <legend>{% trans 'Datos del usuario' %}</legend>
+            <div class="row">
+              <div class="mb-4 col-12">
+                {{ form.email|as_crispy_field }}
               </div>
-            </fieldset>
-          </div>
+              <div class="mb-4 col-12">
+                {{ form.first_name|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12">
+                {{ form.last_name|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12">
+                {{ form.position|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12">
+                {{ form.is_superuser|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12">
+                {{ form.is_active|as_crispy_field }}
+              </div>
+              <div class="mb-4 col-12">
+                {{ form.is_auditor|as_crispy_field }}
+              </div>
+            </div>
+          </fieldset>
+        </div>
 
-          <div class="col-12 col-md-4 mb-4">
-            <legend>{% trans 'Usuario y Contraseña' %}</legend>
-            <div class="mb-4">
-              <span class="fs-6 fw-semibold">{% trans 'Email' %}: </span> <span>{{ object.email|default_if_none:"" }}</span>
-            </div>
-            <div class="mb-4">
-              {{ form.password1|as_crispy_field }}
-            </div>
-            <div class="mb-4">
-              {{ form.password2|as_crispy_field }}
-            </div>
+        <div class="col-12 col-md-6 mb-4">
+          <legend>&nbsp</legend>
+          <div class="mb-4">
+            <span>&nbsp</span>
           </div>
-          <div class="separator my-10"></div>
-          <div class="col-12 col-md-6">
-            <legend>{% trans 'Empresas a la que pertenece' %}</legend>
-              {{ form.companies|as_crispy_field }}
+          <div class="mb-4">
+            {{ form.password1|as_crispy_field }}
           </div>
-          <div class="separator my-10"></div>
-          <div class="col-12 col-md-6">
-            <legend>{% trans 'Empresas que administra' %}</legend>
-            {{ form.companies_admin|as_crispy_field }}
+          <div class="mb-4">
+            {{ form.password2|as_crispy_field }}
+          </div>
+          <div class="mb-4">
+            {{ form.notification_language|as_crispy_field }}
           </div>
         </div>
+        <div class="separator my-10"></div>
+        <div class="col-12 col-md-6">
+          <legend>{% trans 'Compañías a la que pertenece' %}</legend>
+          {{ form.companies|as_crispy_field }}
+        </div>
+        <div class="separator my-10"></div>
+        <div class="col-12 col-md-6">
+          <legend>{% trans 'Compañías que administra' %}</legend>
+          {{ form.companies_admin|as_crispy_field }}
+        </div>
       </div>
-      <!--end::Body-->
-    
-      <div class="card-footer py-6">
-        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
-        <a href="{% url 'users:ga_user_detail' object.pk %}"
-          class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
-      </div>
-    </form>
+    </div>
+    <!--end::Body-->
+
+    <div class="card-footer py-6">
+      <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+      <a href="{% url 'users:ga_user_detail' object.pk %}" class="btn btn-sm btn-secondary ms-2"><i
+          class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+    </div>
+  </form>
 
 </div>
 <!--end::Container-->

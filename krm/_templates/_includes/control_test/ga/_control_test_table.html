@@ -1,5 +1,40 @@
 {% load i18n %}
 {% trans "Sin asignar" as without_set %}
+
+<style>
+  canvas {
+    width: 125px !important;
+    height: 125px !important;
+    padding: 0;
+    margin: auto;
+  }
+
+  .badge.badge-success.n1 {
+    margin: 5px;
+    background-color: #d4d0c7 !important;
+  }
+
+  .badge.badge-success.n2 {
+    margin: 5px;
+    background-color: #ed9f7b !important;
+  }
+
+  .badge.badge-success.n3 {
+    margin: 5px;
+    background-color: #e6d68e !important;
+  }
+
+  .badge.badge-success.n4 {
+    margin: 5px;
+    background-color: #7dedf5 !important;
+  }
+
+  .badge.badge-success.n5 {
+    margin: 5px;
+    background-color: #a6ed9d !important;
+  }
+</style>
+
 <table class="table table-striped table-bordered table-hover datatable">
   <thead>
     <tr>
@@ -30,8 +65,39 @@
               <a href="{% url 'process_test:ga_control_test_assign' ct.pk %}">{% trans 'Asignar' %}</a>
             {% endif %}
           </td>
-          <td>{{ ct.get_status_display }}</td>
-          <td>{{ ct.get_result_display }}</td>
+          <td class="text-center align-middle">
+            {% if ct.status == "NS" %}
+            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">NS</span>
+            {% elif ct.status == "WO" %}
+            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">WO</span>
+            {% elif ct.status == "WS" %}
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">WS</span>
+            {% elif ct.status == "WA" %}
+            <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">WA</span>
+            {% elif ct.status == "FI" %}
+            <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_status_display %}">FI</span>
+            {% endif %}
+          </td>
+          <td class="text-center align-middle">
+            {% if ct.result == "SE" %}
+            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NS</span>
+            {% elif ct.result == "EF" %}
+            <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EF</span>
+            {% elif ct.result == "NE" %}
+            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NE</span>
+            {% elif ct.result == "NA" %}
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NA</span>
+            {% endif %}
+          </td>
       </tr>
     {% endfor %}
   </tbody>

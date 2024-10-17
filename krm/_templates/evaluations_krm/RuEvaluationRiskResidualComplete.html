@@ -1,0 +1,635 @@
+{% extends layout %}
+
+{% load i18n %}
+{% trans "Sin asignar" as without_set %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+{% if DEVJS %}
+  <script defer src="http://localhost:3000/static/js/bundle.js"></script>
+{% else %}
+  <script defer src="{% static 'main.react.js' %}"></script>
+{% endif %}
+
+
+<script>
+  $(document).ready(function () {
+    $('#sendEvaluation').on('submit', function(e){
+      let errorFound = false;
+      $('#buttonSend').attr('data-kt-indicator', 'on');
+      $('.card').removeClass('danger');
+
+      if(!errorFound){
+        $("input[name^='probability-']").each(function(index){
+          if ($(this).val() == 0){
+            let parent = $(this).closest('div.card');
+            $(parent).addClass('danger');
+            $('html, body').animate({
+              scrollTop: $(parent).offset().top - 100
+            }, 1000);
+            e.preventDefault();
+            $('#buttonSend').attr('data-kt-indicator', 'off');
+            errorFound=true;
+            e.preventDefault();
+            return false;
+          }
+        });
+      }
+      if (!errorFound) {
+        $("textarea[name^='description-']").each(function (index) {
+          if ($(this).val() == '') {
+            let parent = $(this).closest('div.card');
+            $(parent).addClass('danger');
+            $('html, body').animate({
+              scrollTop: $(parent).offset().top - 100
+            }, 1000);
+            $('#buttonSend').attr('data-kt-indicator', 'off');
+            errorFound = true;
+            e.preventDefault();
+            return false;
+          }
+        });
+      }
+      return true;
+    })
+  });
+</script>
+
+{% endblock js_footer %}
+
+{% block pageCss %}
+<style>
+
+  .form-check-input:hover,
+  .form-check-label:hover{
+    cursor:pointer;
+  }
+
+  .form-check-custom .form-check-label{
+    margin-left: 0;
+    padding-left: 10px;
+  }
+
+  .card.danger {
+    border: 2px solid var(--kt-danger);
+  }
+</style>
+{% endblock pageCss %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+<a id="elc_href_back"></a>
+<div class="accordion" id="kt_accordion_2">
+  <!--begin::Container-->
+  <div class="card mb-8">
+    <div class="accordion-item">
+      <!--begin::Card header-->
+      <div class="card-header" id="kt_accordion_1_header_0" style="padding: inherit">
+        <!--begin::Card header-->
+        <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_0" aria-expanded="true" aria-controls="kt_accordion_1_body_0">
+          {{ page_title }}
+        </button>
+        <!--end::Card header-->
+      </div>
+      <!--end::Card header-->
+      <div id="kt_accordion_1_body_0" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_0" data-bs-parent="#kt_accordion_2">
+        <!--begin::Card body-->
+        <div class="card-body">
+          <div class="row">
+            <div class="col col-md-6">
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Referencia' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <span>{{ evaluation.ref }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <div class="row mb-8">
+                      {% if evaluation.company.country %}
+                      <div class="col-xl-2">
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.company.country.name}}">
+                          <img class="w-20px h-20px rounded-circle me-3" src="{{evaluation.company.country.flag}}">
+                        </span>
+                      </div>
+                      {% endif %}
+                      <div class="col-xl-10">
+                        <div><span>{{ evaluation.company.ref }}</span></div>
+                        <div><span>{{ evaluation.company.name }}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Tipo' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                  <span class="badge badge-info">{{ evaluation.company.type_company }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Sociedades en alcance' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    {% for c in evaluation.company.companies_in_scope_as_list %}
+                      <span class="badge badge-info">{{ c }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Estado' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6" style="display:flex;">
+                    {% if evaluation.status == "EP" %}
+                      <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                      <div>{{ evaluation.get_status_display }}</div>
+                    {% else %}
+                      <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i></div>
+                      <div>{{ evaluation.get_status_display }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    {% for dom in evaluation.domain_risks %}
+                      
+                        <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+                      
+                    {% endfor %}
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+            </div>
+            <div class="col col-md-3">
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Año de certificación' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                  <div class="fs-6">
+                    <span>{{ evaluation.certification_year }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Periodo de certificación' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-6">
+                  <div class="fs-6">
+                    <span>{{ evaluation.certification_period }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+            </div>
+            <div class="col col-md-3">
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <span>{{ evaluation.date_begin }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+              <div class="row mb-8">
+                <!--begin::Col-->
+                <div class="col-xl-5">
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de fin' %}</span></div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-7">
+                  <div class="fs-6">
+                    <span>{{ evaluation.date_end }}</span>
+                  </div>
+                </div>
+                <!--end::Col-->
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <p>
+              A continuación se presenta la ficha de evaluación de riesgo residual, mostrando riesgo a riesgo aquellos seleccionados para ser evaluados. Para cada riesgo se muestran los <b>elementos clave</b> del mismo, así como la <b>evaluación de riesgo inherente</b>. Esto es, el riesgo en ausencia de cualquier medida de control.
+            </p>
+            <p>
+              Para estimar el riesgo residual puede apoyarse en los <b>Controles</b> que aparecen especificamente como mitigantes del riesgo, además de la lista mostrada al final de esta página que contiene los controles <a href="#elc_href"><b>ELC (Entity Level Controls)</b></a>, que son comunes a todos los riesgos.
+            </p>
+          </div>
+        </div>
+        <!--end::Card body-->
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if risks_test_residual %}
+    {% for rt in risks_test_residual %}
+    <div class="accordion" id="kt_accordion_2">
+      <div class="card  mb-5">
+        <div class="accordion-item">
+          <!--begin::Card header-->
+          <div class="card-header" id="kt_accordion_1_header_{{ forloop.counter }}" style="padding: inherit">
+            <!--begin::Card header-->
+            <button class="accordion-button fs-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_{{ forloop.counter }}" aria-expanded="true" aria-controls="kt_accordion_1_body_{{ forloop.counter }}">
+              <span class="badge badge-primary">{{ rt.risk.risk.ref }}</span>&nbsp{{ rt.risk.risk.name }}
+            </button>
+            <!--end::Card header-->
+          </div>
+          <div id="kt_accordion_1_body_{{ forloop.counter }}" class="accordion-collapse collapse show" aria-labelledby="kt_accordion_1_header_{{ forloop.counter }}" data-bs-parent="#kt_accordion_2">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-5">
+                  <div style="margin-bottom:15px;">
+                    <h5> Datos del riesgo </h5>
+                  </div>
+                  <fieldset>
+                    <!-- <legend class="mb-8">{% trans 'Datos del Riesgo' %}</legend> -->
+                    <div class="row mb-8">
+                      <!--begin::Col-->
+                      <div class="col-xl-4">
+                        <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominio de Riesgo' %}</span></div>
+                      </div>
+                      <!--end::Col-->
+                      <!--begin::Col-->
+                      <div class="col-xl-8">
+                        <div class="fs-6">
+                          <div>
+                            <span class="badge badge-primary text-wrap">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
+                          </div>
+                          <div>
+                            {{ rt.risk.risk.risk_master.domain_risk.name }}
+                          </div>
+                        </div>
+                      </div>
+                      <!--end::Col-->
+                    </div>
+                    <div class="row mb-8">
+                      <!--begin::Col-->
+                      <div class="col-xl-4">
+                        <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Riesgo Maestro' %}</span></div>
+                      </div>
+                      <!--end::Col-->
+                      <!--begin::Col-->
+                      <div class="col-xl-8">
+                        <div class="fs-6">
+                          <div>
+                            <span class="badge badge-primary text-wrap">{{ rt.risk.risk.risk_master.ref }}</span>
+                          </div>
+                          <div>
+                            {{ rt.risk.risk.risk_master.name }}
+                          </div>
+                        </div>
+                      </div>
+                      <!--end::Col-->
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-xl-1">
+                </div>            
+                <div class="col-xl-6">
+                  <div class="row">
+                    <div class="col-xl-6">
+                      <div style="margin-bottom:15px;">
+                        <h5> Evaluación inherente (experto legal)</h5>
+                      </div>
+                    </div>
+                    <div class="col-xl-6">
+                      <span style="float:right; font-size: 14px;" class="badge badge-{% if rt.get_latest_severity_inherent_qualitative == 'Bajo' %}success{% elif rt.get_latest_severity_inherent_qualitative == 'Alto' %}warning{% elif rt.get_latest_severity_inherent_qualitative == 'Crítico' %}danger{% else %}secondary{% endif %} text-wrap">{{ rt.get_latest_severity_inherent_qualitative }} ({{ rt.get_latest_severity_inherent }})</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="row">
+                      <span class="badge badge-secondary">{% trans 'Impacto' %}</span>
+                    </div>
+                    <div class="row" style="font-size:14px;display:flex;">
+                      <div class="col">
+                        <div class="form-check form-check-custom form-check-solid mb-4">
+                          <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-1-5" {% if rt.get_latest_impact_inherent == 1 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 1 %} disabled {% endif %}>
+                          <label class="form-check-label" for="p-pk-1-5">1<br>Bajo</label>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-check form-check-custom form-check-solid mb-4">
+                          <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-2-5" {% if rt.get_latest_impact_inherent == 2 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 2 %} disabled {% endif %}>
+                          <label class="form-check-label" for="p-pk-2-5">2<br>Medio</label>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-check form-check-custom form-check-solid mb-4">
+                          <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-3-5" {% if rt.get_latest_impact_inherent == 3 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 3 %} disabled {% endif %}>
+                          <label class="form-check-label" for="p-pk-3-5">3<br>Alto</label>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-check form-check-custom form-check-solid mb-4">
+                          <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-4-5" {% if rt.get_latest_impact_inherent == 4 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 4 %} disabled {% endif %}>
+                          <label class="form-check-label" for="p-pk-4-5">4<br>Crítico</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="row">
+                      <span class="badge badge-secondary">{% trans 'Probabilidad' %}</span>
+                    </div>
+                    <div class="row" style="font-size:14px;display:flex;">
+                      <div class="col">
+                        <div class="form-check form-check-custom form-check-solid mb-4">
+                          <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-1-5" {% if rt.get_latest_probability_inherent == 1 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 1 %} disabled {% endif %}>
+                          <label class="form-check-label" for="p-pk-1-5">1<br>Bajo</label>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-check form-check-custom form-check-solid mb-4">
+                          <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-2-5" {% if rt.get_latest_probability_inherent == 2 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 2 %} disabled {% endif %}>
+                          <label class="form-check-label" for="p-pk-2-5">2<br>Medio</label>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-check form-check-custom form-check-solid mb-4">
+                          <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-3-5" {% if rt.get_latest_probability_inherent == 3 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 3 %} disabled {% endif %}>
+                          <label class="form-check-label" for="p-pk-3-5">3<br>Alto</label>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-check form-check-custom form-check-solid mb-4">
+                          <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-4-5" {% if rt.get_latest_probability_inherent == 4 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 4 %} disabled {% endif %}>
+                          <label class="form-check-label" for="p-pk-4-5">4<br>Crítico</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="display:table">
+                <div style="display:table-row">
+                  <div class="col-xl-5" style="display:table-cell;">
+                    <div class="fs-6">
+                      <div class="fs-6 fw-semibold" style="margin-bottom: 10px">
+                        <span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span>
+                      </div>
+                      <div>{{ rt.risk.krm_main_elements|safe }}</div>
+                    </div>
+                  </div>
+                  <div class="col-xl-1" style="display:table-cell;">
+                  </div>
+                  <div class="col-xl-6" style="display:table-cell;">
+                    <div class="row">
+                      <div class="col-xl-9">
+                        <span class="badge badge-secondary text-wrap">{% trans 'Controles' %}</span>
+                      </div>
+                      <div class="col-xl-3">
+                        <span class="badge badge-info text-wrap" style="float:right;">{{ rt.controls_attempt_to_mitigate.count }} controles</span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      {% if rt.controls_attempt_to_mitigate.count > 0 %}
+                        <div style="overflow:auto;max-height:250px;margin-top:10px;">
+                          <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+                            <thead>
+                              <tr class="fw-semibold fs-6">
+                                <th class="text-center">{% trans 'REF' %}</th>
+                                <th class="text-center">{% trans 'Descripción' %}</th>
+                                <th class="text-center">{% trans 'Evidencia' %}</th>
+                                <th class="text-center">{% trans 'Frecuencia' %}</th>
+                                <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for control in rt.controls_attempt_to_mitigate %}
+                                <tr>
+                                  <td class="text-center align-middle">
+                                    <span class="badge badge-primary">{{ control.ref }}</span>
+                                  </td>
+                                  <td class="align-middle">
+                                    <div style="display:flex;">
+                                      <div style="width:90%">
+                                        {{ control.description|striptags|truncatechars:50 }}
+                                      </div>
+                                      <div style="width:10%">
+                                        <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description|striptags }}" style="margin-right:5px;"></i>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td class="text-center align-middle">
+                                    <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
+                                  </td>
+                                  <td class="text-center align-middle">{{ control.control_frequency }}</td>         
+                                  <td class="text-center align-middle">
+                                    <div id = 'box' class="text-center">
+                                      <div style="cursor: pointer" onclick="toggle_item(this)">
+                                          <span class="badge badge-info" style="">{{ control.domain_risks_objects|length }}</span>
+                                      </div>
+                                      <div id = "box-container">
+                                        {% for domain_risk in control.domain_risks_objects %}                                              
+                                          <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ domain_risk.name }}" id = "box-child">{{ domain_risk.ref }}</span>                          
+                                        {% endfor %}
+                                      </div>
+                                    </div>
+                                  </td>         
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      {% else %}
+                        <div style="text-align: -webkit-center;">
+                          <div class="alert alert-primary" style="margin-top: 15px; width: 90%;">{% trans 'No existen controles que mitiguen este riesgo' %}.</div>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!--begin::Card footer-->
+            <div class="card-footer py-6">
+              <div class="risk_test_residual" data-risktestpk="{{ rt.pk }}"
+              data-probability="{{ rt.probability_level_residual_evaluator }}"
+              data-description="{{ rt.description_evaluator|default_if_none:'' }}" ></div>
+            </div>
+            <!--end::Card footer-->
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+<a id="elc_href"></a>
+    <div class="card mb-8">
+      <!--begin::Card header-->
+      <div class="card-header">
+        <!--begin::Card header-->
+        <div class="card-title fs-3 fw-bold">Entity Level Controls (ELC) - {{ evaluation.get_controls_elc.count }} controles</div>
+        <a href="#elc_href_back" style="margin-top: 10px;">Volver arriba</a>
+        <!--end::Card header-->
+      </div>
+      <!--end::Card header-->
+      <!--begin::Card body-->
+      <div class="card-body">
+        <div class="row">
+        {% if evaluation.get_controls_elc %}
+        <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+          <thead>
+            <tr class="fw-semibold fs-6">
+              <th class="text-center">{% trans 'REF' %}</th>
+              <th class="text-center">{% trans 'Descripción' %}</th>
+              <th class="text-center">{% trans 'Evidencia' %}</th>
+              <th class="text-center">{% trans 'Frecuencia' %}</th>
+              <th class="text-center">{% trans 'ELC' %}</th>
+              <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for control in evaluation.get_controls_elc.all %}
+              <tr>
+                <td class="text-center align-middle">{{ control.ref }}</td>
+                <td class="align-middle">
+                  <div style="display:flex;">
+                    <div style="width:90%">
+                      {{ control.description|striptags|truncatechars:100 }}
+                    </div>
+                    <div style="width:10%">
+                      <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description|striptags }}" style="margin-right:5px;"></i>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center align-middle">
+                  <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
+                </td>
+                <td class="text-center align-middle">{{ control.control_frequency }}</td>       
+                <td class="text-center align-middle">{{ control.is_elc|yesno:_("Yes, No") }}</td>       
+                <td class="text-center align-middle">
+                  <div id = 'box' class="text-center">
+                    <div style="cursor: pointer" onclick="toggle_item(this)">
+                        <span class="badge badge-info" style="">{{ control.domain_risks_objects|length }}</span>
+                    </div>
+                    <div id = "box-container">
+                      {% for domain_risk in control.domain_risks_objects %}                                              
+                          <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ domain_risk.name }}" id = "box-child">{{ domain_risk.ref }}</span>                                           
+                      {% endfor %}
+                    </div>
+                  </div>
+                </td>     
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+          <div class="alert alert-primary">{% trans 'No existen Entity Level Controls (ELC) para mitigar los riesgos mostrados en esta evaluación' %}.
+          </div>
+        {% endif %}
+        </div>
+      </div>
+      <!--end::Card body-->
+    </div>
+
+    <div class="card">
+      <!--begin::Card header-->
+      <div class="card-header">
+        <!--begin::Card header-->
+        <div class="card-title fs-3 fw-bold">{% trans 'Finalizar evaluación' %}</div>
+        <!--end::Card header-->
+      </div>
+      <div class="card-body">
+        <div class="row mt-2 mb-2">
+          <div class="col-12">
+            <form action="" novalidate id="sendEvaluation" method="post">
+              {% csrf_token %}
+              {{ form.ref|as_crispy_field }}
+              <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
+                <span class="indicator-label">Finalizar y enviar evaluación para su validación</span>
+                <span class="indicator-progress">
+                  Actualizando...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% else %}
+  <div class="card">
+    <!--begin::Card header-->
+    <div class="card-header">
+      <!--begin::Card header-->
+      <div class="card-title fs-3 fw-bold">{{ rt }}</div>
+      <!--end::Card header-->
+    </div>
+    <div class="card-body">
+      <div class="row mt-2 mb-2">
+        <div class="col-12">
+          <div class="alert alert-primary">{% trans 'No existen tests de riesgo residual pendientes para esta Evaluación' %}.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<!--end::Container-->
+{% endblock content %}

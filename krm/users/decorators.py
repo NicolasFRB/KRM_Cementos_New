@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 from django.utils.decorators import method_decorator
 from functools import wraps
 from django.urls import reverse_lazy
@@ -17,7 +15,9 @@ from krm.companies.models import (
 )
 from krm.evaluations_krm.models import (
     RiskTestInherent,
-    EvaluationKrmInherent
+    EvaluationKrmInherent,
+    RiskTestResidual,
+    EvaluationKrmResidual
 )
 
 from krm.risks.models import (
@@ -35,6 +35,19 @@ class is_global_admin(object):
     def __call__(self, request, *args, **kwargs):
         response = self.view_func(request, *args, **kwargs)
         if request.user and request.user.is_superuser:
+            return response
+        raise PermissionDenied
+
+
+class is_auditor(object):
+
+    def __init__(self, view_func):
+        self.view_func = view_func
+        wraps(view_func)(self)
+
+    def __call__(self, request, *args, **kwargs):
+        response = self.view_func(request, *args, **kwargs)
+        if request.user and request.user.is_auditor:
             return response
         raise PermissionDenied
 
@@ -60,7 +73,7 @@ class is_company_admin(object):
 
     def __call__(self, request, *args, **kwargs):
         response = self.view_func(request, *args, **kwargs)
-        if request.user.is_company_admin:
+        if request.user.is_company_admin or request.user.is_superuser:
             return response
         raise PermissionDenied
 
@@ -92,6 +105,7 @@ def user_can_view_control_test(function):
 
         if (
             request.user.is_superuser
+            or request.user.is_auditor
             or request.user == ct.control_test_supervisor
             or request.user == ct.control_test_owner
             or ct.evaluation.company in request.user.companies_admin.all()
@@ -110,7 +124,7 @@ def user_can_view_evaluation(function):
             raise Http404
 
         if (
-            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
+            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser or request.user.is_auditor
         ):
             return function(request, *args, **kwargs)
         raise PermissionDenied
@@ -189,6 +203,40 @@ def user_can_view_evaluation_inherent(function):
         try:
             evaluation = EvaluationKrmInherent.objects.get(pk=kwargs["pk"])
         except EvaluationKrmInherent.DoesNotExist:
+            raise Http404
+
+        if (
+            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_view_risk_test_residual(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            rt = RiskTestResidual.objects.get(pk=kwargs["pk"])
+        except RiskTestResidual.DoesNotExist:
+            raise Http404
+
+        if (
+            request.user.is_superuser
+            or request.user == rt.evaluator
+            or rt.evaluation.company in request.user.companies_admin.all()
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
+
+
+def user_can_view_evaluation_residual(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            evaluation = EvaluationKrmResidual.objects.get(pk=kwargs["pk"])
+        except EvaluationKrmResidual.DoesNotExist:
             raise Http404
 
         if (

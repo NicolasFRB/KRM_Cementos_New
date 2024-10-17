@@ -1,3 +1,4 @@
+
 """Main URLs module."""
 
 from django.conf import settings
@@ -23,13 +24,36 @@ from krm.process.api import (
     SubProcessViewSet,
 )
 
-from krm.risks.api.views import RiskCompanyApiView
+from krm.risks.api.views import (
+    RiskCompanyApiView,
+    RiskCompanyResidualApiView,
+)
+
+from krm.controls.api.views import ControlCompanyApiView
 
 from krm.companies.api import (
     CompanyViewSet,
 )
 
-from krm.evaluations_krm.api import RiskTestInherentExpertApiView
+from krm.evaluations_krm.api import (
+    RiskTestInherentExpertApiView,
+    RiskTestResidualEvaluatorApiView,
+    RiskCompanyResidualAdminApiView
+)
+
+from krm.questionnaires.api import (
+    QuestionnaireViewSet,
+    QuestionViewSet,
+    QuestionTestApiView,
+    ScopeViewSet,
+)
+
+from krm.users.api import (
+    UserViewSet,
+)
+
+from krm.configuration.models import Configuration
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -39,6 +63,10 @@ router.register(r'process', ProcessViewSet)
 router.register(r'subprocesses', SubProcessViewSet)
 router.register(r'domain-risks', DomainRiskViewSet)
 router.register(r'companies', CompanyViewSet)
+router.register(r'questionnaires', QuestionnaireViewSet)
+router.register(r'questions', QuestionViewSet)
+router.register(r'scopes', ScopeViewSet)
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
@@ -46,9 +74,21 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/riskscompany/',
          RiskCompanyApiView.as_view()),
+    path('api/riskscompanyresidual/',
+         RiskCompanyResidualApiView.as_view()),
     path('api/risktestinherentexpert/',
          RiskTestInherentExpertApiView.as_view()
-         )
+         ),
+    path('api/risktestresidualevaluator/',
+         RiskTestResidualEvaluatorApiView.as_view()
+         ),
+    path('api/riskcompanyresidualadmin/',
+         RiskCompanyResidualAdminApiView.as_view()
+         ),
+    path('api/controlscompany/',
+         ControlCompanyApiView.as_view()),
+    path('api/questiontest/',
+         QuestionTestApiView.as_view()),
 ]
 
 urlpatterns += i18n_patterns(
@@ -117,6 +157,22 @@ urlpatterns += i18n_patterns(
          include(('krm.evaluations_krm.urls.evaluation_krm_urls', 'evaluations_krm'),
                  namespace='evaluations_krm')
          ),
+    path('questionnaires/',
+         include(('krm.questionnaires.urls.questionnaire_urls', 'questionnaires'),
+                 namespace='questionnaires')
+         ),
+    path('questionnaires/scopes/',
+         include(('krm.questionnaires.urls.scope_urls', 'scopes'),
+                 namespace='scopes')
+         ),
+    path('questionnaires/questions/',
+         include(('krm.questionnaires.urls.question_urls', 'questions'),
+                 namespace='questions')
+         ),
+    path('questionnaires/evaluations/',
+         include(('krm.questionnaires.urls.evaluation_questionnaire_urls', 'evaluation_questionnaires'),
+                 namespace='evaluation_questionnaires')
+         ),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
@@ -126,7 +182,11 @@ if 'debug_toolbar' in settings.INSTALLED_APPS and settings.DEBUG:
         path('__debug__/', include(debug_toolbar.urls)),
     ]
 
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += [
+        path('rosetta/', include('rosetta.urls'))
+    ]
 
-admin.site.index_title = _('KRM Tool')
-admin.site.site_header = _('KRM Tool')
-admin.site.site_title = _('KRM Tool')
+admin.site.index_title = "Compliance Tool"
+admin.site.site_header = "Compliance Tool"
+admin.site.site_title = "Compliance Tool"

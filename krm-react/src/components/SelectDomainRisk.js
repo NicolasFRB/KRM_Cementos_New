@@ -1,8 +1,9 @@
 import configService from "../services/config.js";
 import React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-function SelectDomainRisk({selectedDomainRisks, setSelectedDomainRisks}) {
+function SelectDomainRisk({ selectedDomainRisks, setSelectedDomainRisks }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [domainRisks, setDomainRisks] = useState([]);
@@ -14,6 +15,8 @@ function SelectDomainRisk({selectedDomainRisks, setSelectedDomainRisks}) {
       setSelectedDomainRisks(selectedDomainRisks.concat([pk]));
     }
   };
+
+  const [t] = useTranslation("global");
 
   useEffect(() => {
     fetch(`${configService.apiGetDomainRisks}`)
@@ -35,18 +38,18 @@ function SelectDomainRisk({selectedDomainRisks, setSelectedDomainRisks}) {
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
-    return <div>Cargando dominios de riesgo...</div>;
+    return <div>{t('risks.loading-domain-risks')}...</div>;
   } else {
     return (
       <div>
         {isLoaded && (
           <>
-            <h5 className="mb-6">Seleccione Dominios de Riesgo</h5>
+            <h5 className="mb-6">{t('risks.select-domain-risk')}</h5>
             {domainRisks.map((value, index) => {
               return <p key={value.pk}>
-                  <label className="form-check form-check-inline form-check-solid me-5">
-                    <input onChange={() => handleOnChange(value.pk)} className="form-check-input" name="process" type="checkbox" value={value.pk} />
-                    <span className="fw-semibold ps-2 fs-6">{value.name}</span>
+                <label className="form-check form-check-inline form-check-solid me-5">
+                  <input onChange={() => handleOnChange(value.pk)} className="form-check-input" name="process" type="checkbox" value={value.pk} />
+                  <span className="fw-semibold ps-2 fs-6">{value.name}</span>
                 </label>
               </p>
             })}

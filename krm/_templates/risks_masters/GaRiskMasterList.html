@@ -34,27 +34,41 @@
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center" width="15%">{% trans 'REF' %}</th>
           <th width="30%">{% trans 'Nombre' %}</th>
-          <th width="5%">{% trans 'Descripción' %}</th>
+          <th>{% trans 'Descripción' %}</th>
           <th>{% trans 'Dominio de Riesgo' %}</th>
-          <th class="text-center">{% trans 'Nº de Riesgos (N2)' %}</th>
           <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
         </tr>
       </thead>
       <tbody>
           {% for risk in risks_masters %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ risk.ref }}</td>
             <td class="align-middle">{{ risk.name|striptags|safe|truncatechars:200 }}</td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description }}"></i></td>
-            <td class="text-center align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.domain_risk.name }}">{{ risk.domain_risk.ref }}</a></span></td>
-            <td class="text-center align-middle"><span class="badge badge-info">{{ risk.risks.count }}</span></td>
             <td class="align-middle">
-              {% for r1 in risk.risks.all %}
-                <div style="margin: 5px;">
-                <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ risk.description|striptags|truncatechars:100 }}
                 </div>
-              {% endfor %}
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.domain_risk.name }}">{{ risk.domain_risk.ref }}</a></span></td>
+            <td class="align-middle">
+              <div id = 'box' class="text-center">
+                <div style="cursor: pointer" onclick="toggle_item(this)">
+                    <span class="badge badge-info" style="">{{ risk.risks.count }}</span>
+                </div>
+                <div id = "box-container">
+                  {% for r1 in risk.risks.all %}                                              
+                    <a href="{% url 'risks:ga_risk_detail' r1.pk %}">
+                    <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ r1.name }}" id = "box-child">{{ r1.ref }}
+                    </a>                                               
+                  {% endfor %}
+                </div>                                             
+              </div>                                             
             </td>
           </tr>
           {% endfor %}

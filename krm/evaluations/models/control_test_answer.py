@@ -45,7 +45,7 @@ class ControlTestAnswer(AuditModel):
 
     description = models.TextField(
         verbose_name=_(
-            "Descripción de la realización o supervisión del control"),
+            "Comentarios de la realización o supervisión del control"),
         help_text=_(
             "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
         ),

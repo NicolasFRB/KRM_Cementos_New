@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 
 from django.conf import settings
+from krm.configuration.models import Configuration
 
 
 def get_menu_urls(request, pk=None):
@@ -31,6 +32,12 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('users:ga_user_list'),
         reverse_lazy('users:ga_user_create'),
     ]
+
+    ca_users_urls = [
+        reverse_lazy('users:ca_user_list'),
+        reverse_lazy('users:ca_user_create'),
+    ]
+
     process_urls = [
         reverse_lazy('process:ga_process_list'),
         reverse_lazy('process:ga_process_create'),
@@ -44,17 +51,39 @@ def get_menu_urls(request, pk=None):
         reverse_lazy('evaluations:ga_evaluation_create'),
     ]
     evaluations_krm_urls = [
-        reverse_lazy('evaluations_krm:ga_evaluation_krm_list'),
+        reverse_lazy('evaluations_krm:ga_evaluation_inherent_list'),
         reverse_lazy('evaluations_krm:ga_evaluation_inherent_create'),
+        reverse_lazy('evaluations_krm:ga_evaluation_residual_list'),
+        reverse_lazy('evaluations_krm:ga_evaluation_residual_create'),
     ]
     ca_evaluations_urls = [
         reverse_lazy('evaluations:ca_evaluation_list'),
         reverse_lazy('evaluations:ca_evaluation_create'),
     ]
-    ca_evaluations_inherent_urls = [
+    ca_evaluations_krm_urls = [
         reverse_lazy('evaluations_krm:ca_evaluation_inherent_list'),
         reverse_lazy('evaluations_krm:ca_evaluation_inherent_create'),
+        reverse_lazy('evaluations_krm:ca_evaluation_residual_list'),
+        reverse_lazy('evaluations_krm:ca_evaluation_residual_create'),
     ]
+
+    questionnaires_urls = [
+        reverse_lazy('questionnaires:ga_questionnaire_list'),
+        reverse_lazy('questionnaires:ga_questionnaire_create'),
+        reverse_lazy('questionnaires:ga_questionnaire_import'),
+    ]
+
+    questions_urls = [
+        reverse_lazy('questions:ga_question_list'),
+    ]
+
+    evaluation_questionnaires_urls = [
+        reverse_lazy(
+            'evaluation_questionnaires:ga_evaluation_questionnaire_create'),
+        reverse_lazy(
+            'evaluation_questionnaires:ga_evaluation_questionnaire_list'),
+    ]
+
     if pk is not None:
         domain_risks_urls = domain_risks_urls + [
             reverse_lazy(
@@ -142,6 +171,22 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             )
         ]
+
+        ca_users_urls = ca_users_urls + [
+            reverse_lazy(
+                'users:ca_user_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'users:ca_user_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'users:ca_user_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+        
         process_urls = process_urls + [
             reverse_lazy(
                 'process:ga_process_detail',
@@ -199,17 +244,62 @@ def get_menu_urls(request, pk=None):
             )
         ]
 
-        evaluations_urls_ = evaluations_urls + [
+        evaluations_krm_urls = evaluations_krm_urls + [
             reverse_lazy(
-                'evaluations:ga_evaluation_detail',
+                'evaluations_krm:ga_evaluation_krm_inherent_detail',
                 kwargs={'pk': pk}
             ),
             reverse_lazy(
-                'evaluations:ga_evaluation_update',
+                'evaluations_krm:ga_evaluation_krm_residual_detail',
+                kwargs={'pk': pk}
+            ),
+        ]
+
+        evaluation_questionnaires_urls = evaluation_questionnaires_urls + [
+            reverse_lazy(
+                'evaluation_questionnaires:ga_evaluation_questionnaire_detail',
+                kwargs={'pk': pk}
+            ),
+        ]
+
+        questionnaires_urls = questionnaires_urls + [
+            reverse_lazy(
+                'questionnaires:ga_questionnaire_detail',
                 kwargs={'pk': pk}
             ),
             reverse_lazy(
-                'evaluations:ga_evaluation_delete',
+                'questionnaires:ga_questionnaire_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'questionnaires:ga_questionnaire_delete',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'scopes:ga_scope_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'scopes:ga_scope_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'scopes:ga_scope_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+
+        questions_urls = questions_urls + [
+            reverse_lazy(
+                'questions:ga_question_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'questions:ga_question_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'questions:ga_question_delete',
                 kwargs={'pk': pk}
             )
         ]
@@ -226,11 +316,19 @@ def get_menu_urls(request, pk=None):
         'CONTROLS_URLS': controls_urls,
         'COMPANIES_URLS': companies_urls,
         'USERS_URLS': users_urls,
+        'CA_USERS_URLS': ca_users_urls,
         'PROCESS_URLS': process_urls,
         'SUBPROCESS_URLS': sub_process_urls,
         'EVALUATIONS_URLS': evaluations_urls,
         'EVALUATIONS_KRM_URLS': evaluations_krm_urls,
-        'CA_EVALUATIONS_INHERENT_URLS': ca_evaluations_inherent_urls,
+        'CA_EVALUATIONS_KRM_URLS': ca_evaluations_krm_urls,
         'CA_EVALUATIONS_URLS': ca_evaluations_urls,
-        'KRM_ACTIVATE': KRM_ACTIVATE
+        'KRM_ACTIVATE': KRM_ACTIVATE,
+        'DEV': settings.DEV,
+        'DEVJS': settings.DEVJS,
+        'BRAND': settings.BRAND,
+        'QUESTIONNAIRES_URLS': questionnaires_urls,
+        'QUESTIONS_URLS': questions_urls,
+        'EVALUATIONS_QUESTIONNAIRES_URLS': evaluation_questionnaires_urls,
+        'CONFIGURATION': Configuration.objects.get(pk=1)
     }

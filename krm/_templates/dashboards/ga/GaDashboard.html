@@ -6,20 +6,294 @@
 
 {% include '_includes/Messages.html' %}
 
+<script src="{% static 'js/apexcharts.js' %}"></script>
+<script src="{% static 'js/chart.js' %}"></script>
+
+<style>
+  /* FAKEBOARD */
+  span.select2-selection__choice__display {
+    font-size:11px !important;
+  }
+  span.select2-selection__rendered {
+    font-size:11px !important;
+  }
+  /* FAKEBOARD */
+</style>
+
+<div style="display:flex;">
+  <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-10 mb-5 mb-xl-10" style="width: 20%; background-color: #00bab3;margin-left: 10px; margin-right: 10px;">
+      <!--begin::Header-->
+      <div class="card-header pt-5">
+        <!--begin::Title-->
+        <div class="card-title d-flex flex-column">
+          <!--begin::Amount-->
+          <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">20</span>
+          <!--end::Amount-->
+          <!--begin::Subtitle-->
+          <span class="text-white opacity-75 pt-1 fw-semibold fs-6">Compañías</span>
+          <!--end::Subtitle-->
+        </div>
+        <!--end::Title-->
+      </div>
+      <!--end::Header-->
+      <!--begin::Card body-->
+      <div class="card-body d-flex align-items-end pt-0">
+        <!--begin::Progress-->
+        <div class="d-flex align-items-center flex-column mt-3 w-100">
+          <div class="fw-bold fs-6 text-white opacity-75 w-100 mt-auto mb-2">
+            <div><span>93 usuarios</span> </div>
+            <div><span>3 admins</span></div>
+          </div>
+          <div class="h-8px mx-3 w-100 bg-white bg-opacity-50 rounded">
+            <div class="bg-primary rounded h-8px" role="progressbar" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        <!--end::Progress-->
+      </div>
+    <!--end::Card body-->
+    </div>
+  <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-50 mb-5 mb-xl-10" style="width: 20%; background-color: #00bab3;margin-left: 10px; margin-right: 10px;">
+    <!--begin::Header-->
+    <div class="card-header pt-5">
+      <!--begin::Title-->
+      <div class="card-title d-flex flex-column">
+        <!--begin::Amount-->
+        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">2</span>
+        <!--end::Amount-->
+        <!--begin::Subtitle-->
+        <span class="text-white opacity-75 pt-1 fw-semibold fs-6">Dominios de riesgo</span>
+        <!--end::Subtitle-->
+      </div>
+      <!--end::Title-->
+    </div>
+    <!--end::Header-->
+    <!--begin::Card body-->
+    <div class="card-body d-flex align-items-end pt-0">
+      <!--begin::Progress-->
+      <div class="d-flex align-items-center flex-column mt-3 w-100">
+        <div class="d-flex justify-content-between fw-bold fs-6 text-white opacity-75 w-100 mt-auto mb-2">
+          <span>186 riesgos</span>
+        </div>
+        <div class="h-8px mx-3 w-100 bg-white bg-opacity-50 rounded">
+          <div class="bg-primary rounded h-8px" role="progressbar" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <!--end::Progress-->
+    </div>
+  <!--end::Card body-->
+  </div>
+  <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-50 mb-5 mb-xl-10" style="width: 20%; background-color: #00bab3;margin-left: 10px; margin-right: 10px;">
+    <!--begin::Header-->
+    <div class="card-header pt-5">
+      <!--begin::Title-->
+      <div class="card-title d-flex flex-column">
+        <!--begin::Amount-->
+        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">92</span>
+        <!--end::Amount-->
+        <!--begin::Subtitle-->
+        <span class="text-white opacity-75 pt-1 fw-semibold fs-6">Controles</span>
+        <!--end::Subtitle-->
+      </div>
+      <!--end::Title-->
+    </div>
+    <!--end::Header-->
+    <!--begin::Card body-->
+    <div class="card-body d-flex align-items-end pt-0">
+      <!--begin::Progress-->
+      <div class="d-flex align-items-center flex-column mt-3 w-100">
+        <div class="d-flex justify-content-between fw-bold fs-6 text-white opacity-75 w-100 mt-auto mb-2">
+          <span>47 Key controls</span>
+          <span>51%</span>
+        </div>
+        <div class="h-8px mx-3 w-100 bg-white bg-opacity-50 rounded">
+          <div class="bg-white rounded h-8px" role="progressbar" style="width: 51%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <!--end::Progress-->
+    </div>
+  <!--end::Card body-->
+  </div>
+
+  <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-50 mb-5 mb-xl-10" style="width: 20%; background-color: #00bab3;margin-left: 10px; margin-right: 10px;">
+    <div class="card-header pt-5">
+      <!--begin::Title-->
+      <div class="card-title d-flex flex-column">
+        <!--begin::Amount-->
+        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">2022</span>
+        <!--end::Amount-->
+        <!--begin::Subtitle-->
+        <span class="text-white opacity-75 pt-1 fw-semibold fs-6">Última evaluación</span>
+        <!--end::Subtitle-->
+      </div>
+      <!--end::Title-->
+    </div>
+    <!--end::Header-->
+    <!--begin::Card body-->
+    <div class="card-body d-flex align-items-end pt-0">
+      <!--begin::Progress-->
+      <div class="d-flex align-items-center flex-column mt-3 w-100">
+        <div class="d-flex justify-content-between fw-bold fs-6 text-white opacity-75 w-100 mt-auto mb-2">
+          <span>Mitigación</span>
+          <span>67%</span>
+        </div>
+        <div class="h-8px mx-3 w-100 bg-white bg-opacity-50 rounded">
+          <div class="bg-white rounded h-8px" role="progressbar" style="width: 72%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <!--end::Progress-->
+    </div>
+  <!--end::Card body-->
+  </div>
+  <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-50 mb-5 mb-xl-10" style="width: 20%; background-color: #00bab3;margin-left: 10px; margin-right: 10px;">
+    <!--begin::Header-->
+    <div class="card-header pt-5">
+      <!--begin::Title-->
+      <div class="card-title d-flex flex-column">
+        <!--begin::Amount-->
+        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2"><i class="bi bi-arrow-down fs-2x" style="color:white"></i>12%</span>
+        <span class="text-white opacity-75 pt-1 fw-semibold fs-6">residual</span>
+        <!--end::Amount-->
+        <!--begin::Subtitle-->
+        <!--end::Subtitle-->
+      </div>
+      <!--end::Title-->
+    </div>
+    <!--end::Header-->
+    <!--begin::Card body-->
+    <div class="card-body d-flex align-items-end pt-0" style= "margin: -8px;">
+      <div id="evaluation_change" style= "margin-bottom: -26%;"></div>
+    </div>
+  <!--end::Card body-->
+  </div>
+</div>
+
 <!--begin::Container-->
   <div class="card">
-    <!--begin::Card header-->
-    <div class="card-header">
-      <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
-      <!--end::Card header-->
-    </div>
-    <!--end::Card header-->
     <!--begin::Card body-->
     <div class="card-body">
       <div class="row mb-8">
-        <p>Por definir</p>
+        <div class="col-xl-6">
+          <div class="row mb-8">
+            <div class="col-xl-7">
+              <div class="row mb-8">
+                <div style="font-size:11px;">Inherente/Residual</div>
+                <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-allow-clear="true" multiple="multiple">
+                  <option selected value="1">Inherente</option>
+                  <option value="2">Residual</option>
+                </select>
+              </div>
+              <div class="row mb-8">
+                <div style="font-size:11px;">Nivel de consolidación</div>
+                <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-allow-clear="true">
+                  <option selected value="1">Tipo de concesión</option>
+                  <option value="1">Riesgos Maestros (N1)</option>
+                  <option value="2">Riesgos N2</option>
+                </select>
+              </div>
+              <div class="row mb-8">
+                <div style="font-size:11px;">Dominios de Riesgo</div>
+                <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-allow-clear="true" multiple="multiple">
+                  <option selected value="1">MPDD</option>
+                  <option value="1">SCIIF</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xl-5">
+              <div class="row mb-8">
+                <div style="font-size:11px;">Evaluación</div>
+                  <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-allow-clear="true">
+                    <option selected value="1">Último disponible</option>
+                    <option value="1">2022</option>
+                    <option value="2">2021</option>
+                    <option value="2">2020</option>
+                  </select>
+              </div>
+              <div class="row mb-8">
+                <div style="font-size:11px;">Periodo</div>
+                  <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-allow-clear="true">
+                    <option value="1">S1</option>
+                    <option value="2">S2</option>
+                  </select>
+              </div>
+              <div class="row mb-8">
+                <div style="font-size:11px;">Color</div>
+                <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-allow-clear="true">
+                  <option selected value="1">Dominio de Riesgo</option>
+                  <option value="1">Riesgos Maestros (N1)</option>
+                  <option value="2">Riesgos N2</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-8">
+            <div class="form-floating" style="margin-top:-5%;">
+              <div style="font-size:11px;">Activos</div>
+              <select class="form-select form-select-solid" data-close-on-select="false" data-allow-clear="true" multiple="multiple" id="kt_docs_select2_country">
+                    <option data-kt-select2-country="../../../static/media/flags/portugal.svg">A23</option>
+                    <option data-kt-select2-country="../../../static/media/flags/spain.svg">ACEGA</option>
+                    <option data-kt-select2-country="../../../static/media/flags/portugal.svg">AEXXI</option>
+                    <option data-kt-select2-country="../../../static/media/flags/costa-rica.svg">AUSOL</option>
+                    <option data-kt-select2-country="../../../static/media/flags/spain.svg">CDM</option>
+                    <option selected data-kt-select2-country="../../../static/media/flags/spain.svg">CORP</option>
+                    <option data-kt-select2-country="../../../static/media/flags/chile.svg">COSTARAUCO</option>
+                    <option data-kt-select2-country="../../../static/media/flags/ireland.svg">JL</option>
+                    <option data-kt-select2-country="../../../static/media/flags/ireland.svg">M50</option>
+                    <option data-kt-select2-country="../../../static/media/flags/spain.svg">MDB</option>
+                    <option data-kt-select2-country="../../../static/media/flags/spain.svg">MDS</option>
+                    <option data-kt-select2-country="../../../static/media/flags/portugal.svg">OPM_PT</option>
+                    <option data-kt-select2-country="../../../static/media/flags/united-states.svg">OPV_US</option>
+                    <option data-kt-select2-country="../../../static/media/flags/united-states.svg">POC</option>
+                    <option data-kt-select2-country="../../../static/media/flags/spain.svg">RDP</option>
+                    <option data-kt-select2-country="../../../static/media/flags/chile.svg">SCADA</option>
+                    <option data-kt-select2-country="../../../static/media/flags/chile.svg">SCADI</option>
+                    <option data-kt-select2-country="../../../static/media/flags/spain.svg">TDP</option>
+              </select>
+              <label for="kt_docs_select2_country"></label>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div id="myChart"></div>
+          <!-- {{graph|safe}} -->
+        </div>
       </div>
+
+      <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+        <thead>
+          <tr class="fw-semibold fs-6">
+            <th class="text-center">{% trans 'Tipo de concesión' %}</th>
+            <th class="text-center">{% trans 'Ref' %}</th>
+            <th class="text-center">{% trans 'Riesgo' %}</th>
+            <th class="text-center">{% trans 'Probabilidad' %}</th>
+            <th class="text-center">{% trans 'Impacto' %}</th>
+            <th class="text-center">{% trans 'Severidad' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i,r in df.iterrows %}
+          <tr>
+            <td class="text-center align-middle">
+              {{ r.tipo }}
+            </td>
+            <td class="text-center align-middle">
+              {{ r.ref }}
+            </td>
+            <td class="align-middle">
+              {{ r.info }}
+            </td>
+            <td class="text-center align-middle">
+              {{ r.y }}
+            </td>
+            <td class="text-center align-middle">
+              {{ r.x }}
+            </td>
+            <td class="text-center align-middle">
+              {{ r.severidad }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
     <!--end::Card body-->
     <!--begin::Card footer-->
@@ -29,5 +303,397 @@
     <!--end::Card footer-->
   </div>
 <!--end::Container-->
+<script>
+  var options = {
+  chart: {
+    height: 100,
+    type: "line",
+    stacked: false,
+    toolbar: {
+        show: false,
+      },
+  },
+
+  grid:{
+    show:false,
+  },
+
+  colors: ["#FFFFFF"],
+  series: [
+    {
+      name: "A",
+      data: [4.1,4.7,4.3,3.9]
+    },
+  ],
+  stroke: {
+    curve: 'smooth',
+  },
+  plotOptions: {
+    bar: {
+      columnWidth: "0%"
+    }
+  },
+
+    xaxis: {
+      categories: ['2021', '2021', '2022', '2022'],
+      show: false,
+      labels: {
+        show:false,
+      },
+      axisBorder: {
+          show: false,
+      },
+      axisTicks: {
+          show: false,
+      },
+    },
+  yaxis: {
+      show: false,
+      min: 3.8,
+      max: 5,
+      axisBorder: {
+          show: false,
+      },
+      axisTicks: {
+          show: false,
+      },
+    },
+    dataLabels: {
+      enabled: true,
+      offsetY: -5,
+      style: {
+        fontSize: '7px',
+        fontFamily: 'Helvetica, Inter, sans-serif',
+        colors: [function(opts) { return '#FFFFFF' }],
+      },
+      background:{
+        enabled: false,
+      },
+      formatter: function(val,opt) {return opt.w.globals.categoryLabels[opt.dataPointIndex];},
+    },
+  tooltip: {
+    shared: false,
+    intersect: true,
+    x: {
+      show: false
+    }
+  },
+  legend: {
+    enabled: false,
+    horizontalAlign: "left",
+    offsetX: 40
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#evaluation_change"), options);
+
+chart.render();
+</script>
+<script>
+var datasets = {
+  classic:
+  [{name:"Financiero",data:[{ref:'FI.1',x:3.2,y:1.4,product:'Liquidez',info:'Problemas de liquidez para hacer frente a las obligaciones suscritas',site:'name'},{ref:'FI.2',x:2.5,y:1.2,product:'Crédito',info:'Riesgos de crédito con Clientes y contrapartes',site:'name'},{ref:'FI.3',x:3,y:3.3,product:'Mercado financiero',info:'Tipos de interés, acceso a financiación, aumento del endeudamiento',site:'name'},{ref:'FI.4',x:1,y:2.3,product:'Garantía bancaria',info:'Riesgo de pérdida de garantía bancaria',site:'name'},{ref:'FI.5',x:1.3,y:2.4,product:'Condiciones de seguros',info:'Endurecimiento de las condiciones de contratación de seguros',site:'name'},]},{name:"Operacional",data:[{ref:'OP.1',x:1.3,y:1.6,product:'Personal',info:'Bajo desempeño, cualificación inadecuada, accidentes laborales',site:'name'},{ref:'OP.2',x:1.9,y:1.2,product:'Procesos internos',info:'Controles de calidad insuficientes, selección de proveedores inadecuada, fallos en lógistica, errores en el estudio de forecasting',site:'name'},{ref:'OP.3',x:2.34,y:3.4,product:'Sistemas de Información',info:'Obsolescencia tecnológica, errores en la gestión de cambios, errores de operación y mantenimiento',site:'name'},{ref:'OP.4',x:1,y:1.4,product:'Acontecimientos externos',info:'Amenazas derivadas del cambio climático, daños en activos físicos, ataques cibernéticos',site:'name'},]},{name:"Cumplimiento",data:[{ref:'CU.1',x:3.3,y:1.3,product:'Legislación',info:'Incumplimiento de la legislación vigente',site:'name'},{ref:'CU.2',x:2.5,y:.7,product:'Contratos',info:'Incumplimiento de contratos',site:'name'},{ref:'CU.3',x:2.34,y:3.4,product:'Ética y fraude',info:'Incumplimiento del código ético y de políticas internas y procedimientos',site:'name'},]},{name:"Estratégico",data:[{ref:'ES.1',x:2.5,y:2.8,product:'Riesgos geopolíticos',info:'Dependencia del contexto político y tensiones internacionales',site:'name'},{ref:'ES.2',x:2.2,y:1.1,product:'Marco regulatorio',info:'Estabilidad del marco regulatorio',site:'name'},{ref:'ES.3',x:2.34,y:3.4,product:'Crecimiento',info:'Pérdida de confianza en la entidad, problemas de acceso a capital, alta dependencia de proveedores, caída de la demanda',site:'name'},{ref:'ES.4',x:3.24,y:3.4,product:'Competencia',info:'Falta de competencia y desposicionamiento en el mercado',site:'name'},]},],
+  gvi:
+  [{name: 'Autopista', data: [{ref: 'USA-R07', x: 4, y: 3, info: 'Third-party screening and due diligence'}, {ref: 'USA-R05', x: 3, y: 3, info: 'Liability arising from employees '}, {ref: 'GRU-R11', x: 3.23, y: 2, info: 'Financiación ilegal de partidos políticos'}, {ref: 'GRU-R28', x: 2.66, y: 2.33, info: 'Malversación'}, {ref: 'GRU-R02', x: 3.11, y: 1.94, info: 'Corrupción en los negocios'}]}, {name: 'Corporación', data: [{ref: 'GRU-R01', x: 4, y: 3, info: 'Cohecho'}, {ref: 'GRU-R03', x: 4, y: 3, info: 'Tráfico de Influencias'}, {ref: 'GRU-R05', x: 4, y: 3, info: 'Estafa'}, {ref: 'GRU-R28', x: 4, y: 3, info: 'Malversación'}, {ref: 'GRU-R07', x: 4, y: 2, info: 'Mercado y Consumidores'}, {ref: 'GRU-R11', x: 4, y: 2, info: 'Financiación ilegal de partidos políticos'}, {ref: 'GRU-R02', x: 2.5, y: 2.5, info: 'Corrupción en los negocios'}, {ref: 'GRU-R04', x: 2, y: 3, info: 'Descubrimiento y revelación de secretos'}]}, {name: 'Ferrocarril', data: [{ref: 'GRU-R14', x: 4, y: 4, info: 'Falsificación de tarjetas de crédito, débito y cheques de viaje'}, {ref: 'GRU-R01', x: 4, y: 3, info: 'Cohecho'}, {ref: 'GRU-R03', x: 4, y: 3, info: 'Tráfico de Influencias'}, {ref: 'GRU-R11', x: 4, y: 3, info: 'Financiación ilegal de partidos pol ticos'}, {ref: 'GRU-R28', x: 4, y: 3, info: 'Malversación'}]}, {name: 'Innovación', data: [{ref: 'GRU-R18', x: 3.66, y: 3, info: 'Propiedad Industrial e Intelectual'}, {ref: 'GRU-R02', x: 3.75, y: 2.5, info: 'Corrupción en los negocios'}, {ref: 'USA-R05', x: 3, y: 3, info: 'Liability arising from employees '}, {ref: 'GRU-R04', x: 3.4, y: 2.6, info: 'Descubrimiento y revelación de secretos'}, {ref: 'GRU-R10', x: 3.75, y: 2.25, info: 'Blanqueo de capitales'}]}]
+}
+var lightgtrey = '#bdbbb3'
+var options = {
+  chart: {
+    height: 320,
+    width: "100%",
+    type: "scatter",
+    zoom: {
+            enabled: false,
+            type: 'xy'
+          },
+  },
+  colors:['#F44336', '#00bab3', '#9C27B0', '#FFBF00'],
+  yaxis: {
+      show: true,
+      showAlways: true,
+      showForNullSeries: true,
+      seriesName: undefined,
+      opposite: false,
+      reversed: false,
+      logarithmic: false,
+      logBase: 10,
+      tickAmount: 5,
+      min: 0,
+      max: 5,
+      forceNiceScale: false,
+      floating: false,
+      decimalsInFloat: undefined,
+      labels: {
+          show: true,
+          align: 'right',
+          minWidth: 0,
+          maxWidth: 160,
+          formatter: function(val) {
+            return val.toFixed(0);
+          },
+          style: {
+              colors: lightgtrey,
+              fontSize: '11px',
+              fontFamily: 'Helvetica, Inter, sans-serif',
+              fontWeight: 400,
+              cssClass: 'apexcharts-yaxis-label',
+          },
+          offsetX: 0,
+          offsetY: 0,
+          rotate: 0,
+      },
+      axisBorder: {
+          show: false,
+          color: lightgtrey,
+          offsetX: 0,
+          offsetY: 0
+      },
+      axisTicks: {
+          show: false,
+          borderType: 'solid',
+          color: lightgtrey,
+          width: 6,
+          offsetX: 0,
+          offsetY: 0
+      },
+      title: {
+          text: 'Probabilidad',
+          rotate: -90,
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+              color: lightgtrey,
+              fontSize: '10px',
+              fontFamily: 'Helvetica, Inter, sans-serif',
+              fontWeight: 100,
+              cssClass: 'apexcharts-yaxis-title',
+          },
+      },
+
+      crosshairs: {
+          show: true,
+          position: 'back',
+          stroke: {
+              color: '#b6b6b6',
+              width: 1,
+              dashArray: 0,
+          },
+      },
+      tooltip: {
+          enabled: false,
+          formatter: undefined,
+          offsetY: 0,
+          style: {
+            fontSize: 0,
+            fontFamily: 0,
+          },
+      },
+
+  },
+  xaxis: {
+      type: 'numeric',
+      categories: [],
+      tickAmount: 5,
+      tickPlacement: 'between',
+      min: 0,
+      max: 5,
+      range: undefined,
+      floating: false,
+      decimalsInFloat: undefined,
+      overwriteCategories: undefined,
+      position: 'bottom',
+      labels: {
+          show: true,
+          rotate: 0,
+          rotateAlways: false,
+          hideOverlappingLabels: true,
+          showDuplicates: false,
+          trim: false,
+          minHeight: undefined,
+          maxHeight: 120,
+          style: {
+              colors: lightgtrey,
+              fontSize: '11px',
+              fontFamily: 'Helvetica, Inter, sans-serif',
+              fontWeight: 400,
+              cssClass: 'apexcharts-xaxis-label',
+          },
+          offsetX: 0,
+          offsetY: 0,
+          format: undefined,
+          formatter: function(val) {
+            return val.toFixed(0);
+          },
+
+          datetimeUTC: true,
+          datetimeFormatter: {
+              year: 'yyyy',
+              month: "MMM 'yy",
+              day: 'dd MMM',
+              hour: 'HH:mm',
+          },
+      },
+      group: {
+        groups: [],
+        style: {
+          colors: lightgtrey,
+          fontSize: '11px',
+          fontWeight: 400,
+          fontFamily: undefined,
+          cssClass: ''
+        }
+      },
+      axisBorder: {
+          show: false,
+          color: lightgtrey,
+          height: 1,
+          width: '100%',
+          offsetX: 0,
+          offsetY: 0
+      },
+      axisTicks: {
+          show: false,
+          borderType: 'solid',
+          color: lightgtrey,
+          height: 6,
+          offsetX: 0,
+          offsetY: 0
+      },
+
+      title: {
+        text: 'Impacto',
+          rotate: 0,
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+              color: lightgtrey,
+              fontSize: '10px',
+              fontFamily: 'Helvetica, Inter, sans-serif',
+              fontWeight: 100,
+              cssClass: 'apexcharts-yaxis-title',
+          },
+      },
+
+      crosshairs: {
+          show: true,
+          width: 1,
+          position: 'back',
+          opacity: 0.9,
+          stroke: {
+              color: '#b6b6b6',
+              width: 0,
+              dashArray: 0,
+          },
+          fill: {
+              type: 'solid',
+              color: '#B1B9C4',
+              gradient: {
+                  colorFrom: '#D8E3F0',
+                  colorTo: '#BED1E6',
+                  stops: [0, 100],
+                  opacityFrom: 0.4,
+                  opacityTo: 0.5,
+              },
+          },
+          dropShadow: {
+              enabled: false,
+              top: 0,
+              left: 0,
+              blur: 1,
+              opacity: 0.4,
+          },
+      },
+      tooltip: {
+          enabled: true,
+          formatter: undefined,
+          offsetY: 0,
+          style: {
+            fontSize: 0,
+            fontFamily: 0,
+          },
+      },
+  },
+  grid: {
+      show: true,      // you can either change hear to disable all grids
+      strokeDashArray: 4,
+      position: 'back',
+      xaxis: {
+        lines: {
+          show: false  //or just here to disable only x axis grids
+         }
+       },
+      yaxis: {
+        lines: {
+          show: true  //or just here to disable only y axis
+         }
+       },
+      row: {
+
+        opacity: 0.6
+      },
+      column: {
+
+        opacity: 0.6
+      },
+    },
+
+  series: datasets['gvi'],
+
+  tooltip: {
+    custom: function({series, seriesIndex, dataPointIndex, w}) {
+      var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+
+      return '<div style="margin:10px;">' +
+      '<br>' +
+      '<b>'+data.ref+'</b>' + '<br>' +
+
+        '<span style="max-width:200px;word-wrap: break-word;">'+data.info+'</span>'+
+
+      '<ul>' +
+      '<li><b>Probabilidad</b>: ' + data.x.toString() + '</li>' +
+      '<li><b>Impacto</b>: ' + data.y.toString() + '</li>' +
+      '</ul>'
+      +'</div>';
+    }
+  },
+  dataLabels: {
+            enabled: true,
+            offsetY: 12,
+            style: {
+              fontSize: '9px',
+              fontFamily: 'Helvetica, Inter, sans-serif',
+              fontWeight: 'bold',
+              colors: [function(opts) { return '#333' }],
+            },
+            background:{
+              enabled: false,
+            },
+
+            formatter: function(value, { seriesIndex, dataPointIndex, w }) {
+            return w.config.series[seriesIndex].data[dataPointIndex].ref;
+      },
+  },
+  markers: {
+    size: 15,
+    shape: "circle",
+    },
+    legend: {
+      show:true,
+      position:'top',
+      fontSize: '10px',
+      fontFamily: 'Helvetica, Inter, sans-serif',
+      fontWeight: 400,
+    }
+  };
+
+        var chart = new ApexCharts(document.querySelector("#myChart"), options);
+        chart.render();
+</script>
+<style>
+  .apexcharts-tooltip {
+  white-space: pre-wrap !important;
+  max-width: 200px;
+}
+</style>
 
 {% endblock content %}

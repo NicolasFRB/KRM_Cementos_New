@@ -1,0 +1,58 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center">{% trans 'Acción' %}</th>
+          <th>{% trans 'REF' %}</th>
+          <th>{% trans 'Nombre' %}</th>
+          <th class="text-center">{% trans 'Alcances' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for question in questions %}
+          <tr>
+            <td class="text-center align-middle"><a href="{% url 'questions:ga_question_detail' question.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle">{{ question.ref }}</td>
+            <td>{{ question.title }}</td>
+            <td class="text-center">
+              <i class="bi bi-file-earmark-text fs-2x text-default" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% for scope in question.scopes.all %}{{ scope }}{% if not forloop.last %};&nbsp {% endif %}{% endfor %}"></i>
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'questions:ga_question_create' %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-plus-lg"></i>
+      {% trans 'Nuevo' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+<!--end::Container-->
+
+{% endblock content %}

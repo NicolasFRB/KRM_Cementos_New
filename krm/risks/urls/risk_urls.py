@@ -6,7 +6,7 @@ from krm.risks.views import (
     GaRiskCreateView,
     GaRiskDeleteView,
     GaRiskDetailView,
-    GaRiskUpdateView
+    GaRiskUpdateView,
 )
 
 urlpatterns = [

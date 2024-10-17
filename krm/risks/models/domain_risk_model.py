@@ -39,7 +39,7 @@ class DomainRisk(AuditModel):
         super().save(*args, **kwargs)
 
         from krm.companies.models import Company
-        from krm.companies.models import CompanyDomainRiskExperts
+        from krm.companies.models import CompanyDomainRiskExperts, CompanyDomainRiskEvaluator
         for domain_risk in DomainRisk.objects.all():
             for company in Company.objects.all():
                 if CompanyDomainRiskExperts.objects.filter(company=company, domain_risk=domain_risk).count() == 0:
@@ -47,3 +47,19 @@ class DomainRisk(AuditModel):
                         company=company,
                         domain_risk=domain_risk
                     )
+                if CompanyDomainRiskEvaluator.objects.filter(company=company, domain_risk=domain_risk).count() == 0:
+                    CompanyDomainRiskEvaluator.objects.create(
+                        company=company,
+                        domain_risk=domain_risk
+                    )
+
+    @property
+    def control_objects(self):
+        controls = []
+        for r1 in self.risks.all():
+            for r2 in r1.risks.all():
+                for c in r2.controls.all():
+                    if c not in controls:
+                        controls.append(c)
+        
+        return controls

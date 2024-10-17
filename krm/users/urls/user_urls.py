@@ -17,6 +17,10 @@ from krm.users.views import (
     GaUserUpdateView,
     GaUserDeleteView,
     GaUserDetailView,
+    GaUserImportView,
+    CaUserDetailView,
+    CaUserListView,
+    CaUserUpdateView
 )
 
 
@@ -70,5 +74,24 @@ urlpatterns = [
         'create/',
         GaUserCreateView.as_view(),
         name='ga_user_create'
+    ),
+    path(
+        "import_users/",
+        GaUserImportView.as_view(), name="ga_import_users"
+    ),
+    path(
+        'ca-detail/<pk>/',
+        CaUserDetailView.as_view(),
+        name='ca_user_detail'
+    ),
+    path(
+        '',
+        CaUserListView.as_view(),
+        name='ca_user_list'
+    ),
+    path(
+        'ca-update/<pk>/',
+        CaUserUpdateView.as_view(),
+        name='ca_user_update'
     ),
 ]

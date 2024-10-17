@@ -1,9 +1,10 @@
+import json
+import uuid
+import xlwt
+
+
 from django.shortcuts import render
 from django.conf import settings
-
-import re
-
-# Create your views here.
 from django.shortcuts import render
 
 from django.views.generic import (
@@ -26,7 +27,7 @@ from django.http import HttpResponse
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload
+from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload, EvaluationNotificationForm
 from krm.evaluations.models import ControlTest
 
 from krm.metronic.__init__ import KTLayout
@@ -78,6 +79,41 @@ class GaEvaluationListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+
+        ev_pending = Evaluation.objects.filter(status__in=["SI", "EP"])
+        ev_finished = Evaluation.objects.filter(status="FI")
+
+        for ev in ev_pending:
+            ev.ncontrols_test_by_state_si = ev.ncontrols_test_by_state(
+                "SI")
+            ev.ncontrols_test_by_state_wo = ev.ncontrols_test_by_state(
+                "WO")
+            ev.ncontrols_test_by_state_ws = ev.ncontrols_test_by_state(
+                "WS")
+            ev.ncontrols_test_by_state_wa = ev.ncontrols_test_by_state(
+                "WA")
+            ev.ncontrols_test_by_state_fi = ev.ncontrols_test_by_state(
+                "FI")
+
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
+
+        for ev in ev_finished:
+            ev.ncontrols_test_by_state_si = ev.ncontrols_test_by_state(
+                "SI")
+            ev.ncontrols_test_by_state_wo = ev.ncontrols_test_by_state(
+                "WO")
+            ev.ncontrols_test_by_state_ws = ev.ncontrols_test_by_state(
+                "WS")
+            ev.ncontrols_test_by_state_wa = ev.ncontrols_test_by_state(
+                "WA")
+            ev.ncontrols_test_by_state_fi = ev.ncontrols_test_by_state(
+                "FI")
+
+            ev.domain_risks = ev.get_domain_risk_in_evaluation()
+
+        context['evaluations_pending'] = ev_pending
+        context['evaluations_finished'] = ev_finished
+
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
@@ -112,6 +148,29 @@ class GaEvaluationDetailView(FormView):
                 'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
+
+        context['evaluation'].ncontrols_test_by_state_si = context['evaluation'].ncontrols_test_by_state(
+            "SI")
+        context['evaluation'].ncontrols_test_by_state_wo = context['evaluation'].ncontrols_test_by_state(
+            "WO")
+        context['evaluation'].ncontrols_test_by_state_ws = context['evaluation'].ncontrols_test_by_state(
+            "WS")
+        context['evaluation'].ncontrols_test_by_state_wa = context['evaluation'].ncontrols_test_by_state(
+            "WA")
+        context['evaluation'].ncontrols_test_by_state_fi = context['evaluation'].ncontrols_test_by_state(
+            "FI")
+
+        context['evaluation'].ncontrols_test_by_result_se = context['evaluation'].ncontrols_test_by_result(
+            "SE")
+        context['evaluation'].ncontrols_test_by_result_ef = context['evaluation'].ncontrols_test_by_result(
+            "EF")
+        context['evaluation'].ncontrols_test_by_result_ne = context['evaluation'].ncontrols_test_by_result(
+            "NE")
+        context['evaluation'].ncontrols_test_by_result_na = context['evaluation'].ncontrols_test_by_result(
+            "NA")
+
+        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -129,7 +188,7 @@ class GaEvaluationDetailView(FormView):
                 ct.save()
                 if ct.control_test_owner not in users_notificated:
                     users_notificated.append(ct.control_test_owner)
-                    ct.send_notification()
+                    ct.send_notification('Initial notification')
 
             messages.add_message(
                 self.request,
@@ -138,6 +197,7 @@ class GaEvaluationDetailView(FormView):
             )
         elif action == 'f':
             evaluation.status = "FI"
+            evaluation.admin_supervisor = self.request.user
             evaluation.save()
             evaluation.control_tests.update(
                 status='FI'
@@ -159,7 +219,7 @@ class GaEvaluationDetailView(FormView):
                 filename
             )
 
-            # wb = xlwt.Workbook(encoding="utf-8")
+            wb = xlwt.Workbook(encoding="utf-8")
             ws = wb.add_sheet("Controls")
 
             # Sheet header, first row
@@ -236,7 +296,7 @@ class GaEvaluationDetailView(FormView):
                 "PRESENTATION",  # 18
                 "ACCURACY",  # 19
                 "FRAUD",  # 20
-                "DOMINIOS DE RIESGO",
+                "DOMINIOS DE RIESGO",  # 21
                 "TEST DE CONTROL ID",  # 22
                 "TEST DE CONTROL STATUS",  # 23
                 "CONTROL OWNER",  # 24
@@ -245,13 +305,17 @@ class GaEvaluationDetailView(FormView):
                 "CONTROL OWNER FECHA RESPUESTA",  # 27
                 "CONTROL OWNER ADJUNTO",  # 28
                 "ADJUNTO LINK",  # 29
-                "RESULTADO\nEF (efectivo)\nNE (no efectivo)",  # 30
+                "RESULTADO\nEF (efectivo)\nNE (no efectivo)\nNA (No aplica en el periodo certificado)",  # 30
                 "PLAN DE REMEDIACIÓN TEXTO",  # 31
                 "PLAN DE REMEDIACIÓN FECHA",  # 32
-                "CONTROL SUPERVISOR",  # 33
-                "CONTROL SUPERVISOR EMPRESAS",  # 34
-                "CONTROL SUPERVISOR RESPUESTA",  # 35
-                "CONTROL SUPERVISOR FECHA RESPUESTA",  # 36
+                "PLAN DE REMEDIACIÓN LINK",  # 33
+                "CONTROL SUPERVISOR",  # 34
+                "CONTROL SUPERVISOR EMPRESAS",  # 35
+                "CONTROL SUPERVISOR RESPUESTA",  # 36
+                "CONTROL SUPERVISOR FECHA RESPUESTA",  # 37
+                "CONTROL ADMIN",  # 38
+                "CONTROL ADMIN RESPUESTA",  # 39
+                "CONTROL ADMIN FECHA RESPUESTA",  # 40
             ]
 
             for col_num in range(len(columns)):
@@ -382,7 +446,7 @@ class GaEvaluationDetailView(FormView):
 
                 domain_risks_text = ''
                 for risk in ct.control.risks.all():
-                    domain_risks_text += f'{risk.domain_risk.ref} - {risk.domain_risk.name}\n'
+                    domain_risks_text += f'{risk.risk_master.domain_risk.ref} - {risk.risk_master.domain_risk.name}\n'
                 ws.write(
                     row_num,
                     21,
@@ -420,6 +484,10 @@ class GaEvaluationDetailView(FormView):
                             answer = ct.answers.filter(
                                 user=ct.control_test_owner
                             ).order_by("-created")[1]
+                        else: 
+                            answer = ct.answers.filter(
+                                user=ct.control_test_owner
+                            ).order_by("-created")[0]
                     else:
                         answer = (
                             ct.answers.filter(user=ct.control_test_owner)
@@ -483,9 +551,21 @@ class GaEvaluationDetailView(FormView):
                         font_style_body,
                     )  # 32
 
+                    if remediation_plan.attachment:
+                        resp_attach = settings.SITE_URL + "/media/" + remediation_plan.attachment.name
+                        ws.write(
+                            row_num,
+                            33,
+                            xlwt.Formula(
+                                'HYPERLINK("%s";"Enlace al documento")'
+                                % resp_attach
+                            ),
+                            font_style_body,
+                        )  # 33
+
                 ws.write(
-                    row_num, 33, ct.control_test_supervisor.email, font_style_body
-                )  # 33
+                    row_num, 34, ct.control_test_supervisor.email, font_style_body
+                )  # 34
 
                 # Buscamos las compañías del control supervisor, solo aqueyas que sean del grupo empresarial al que pertenece
                 # la compañía sobre la que se ha lanzado el test de proceso
@@ -494,8 +574,8 @@ class GaEvaluationDetailView(FormView):
                     cs_company_str = "{}{}\n".format(
                         cs_company_str, cs_company.name
                     )
-                ws.write(row_num, 34, cs_company_str,
-                         font_style_body_wrap)  # 34
+                ws.write(row_num, 35, cs_company_str,
+                         font_style_body_wrap)  # 35
 
                 # Buscamos la última respuesta del control supervisor
                 if ct.answers.filter(user=ct.control_test_supervisor).count() > 0:
@@ -506,18 +586,43 @@ class GaEvaluationDetailView(FormView):
                     )
                     ws.write(
                         row_num,
-                        35,
+                        36,
                         answer.description.replace("<br>", "\n")
                         .replace("<p>", "")
                         .replace("</p>", "\n"),
                         font_style_body_wrap,
-                    )  # 35
+                    )  # 36
                     ws.write(
                         row_num,
-                        36,
+                        37,
                         answer.created.strftime("%d/%m/%Y, %H:%M:%S"),
-                        font_style_body,
-                    )  # 36
+                        font_style_body
+                    )  # 37
+
+                if ct.answers.last() is not None:
+                    if ct.answers.last().user.is_superuser:
+                        last_admin_answer = ct.answers.last()
+
+                        ws.write(
+                            row_num,
+                            38,
+                            last_admin_answer.user.email,
+                            font_style_body_wrap
+                        )  # 38
+                        ws.write(
+                            row_num,
+                            39,
+                            last_admin_answer.description.replace(
+                                "<br>", "\n"),
+                            font_style_body_wrap
+                        )  # 39
+                        ws.write(
+                            row_num,
+                            40,
+                            last_admin_answer.created.strftime(
+                                "%d/%m/%Y, %H:%M:%S"),
+                            font_style_body_wrap
+                        )  # 40
 
             wb.save(response)
 
@@ -608,7 +713,7 @@ class GaEvaluationCreateView(FormView):
         ]
         context['page_title'] = _('Nueva Evaluación')
         context['breadcrums'] = breadcrums
-
+        context['js_template'] = ['js/custom/datatables.js']
         return context
 
     def get_success_url(self):
@@ -621,38 +726,166 @@ class GaEvaluationCreateView(FormView):
         controls_created = 0
         evaluations_created = 0
 
-        companies = Company.objects.filter(
-            pk__in=(form.cleaned_data["companies"]))
-        controls = Control.objects.filter(
-            pk__in=(form.cleaned_data["controls"]))
+        controls_companies = json.loads(
+            form.cleaned_data["controls_companies_to_evaluate"])
 
-        for company in companies:
-            evaluation = Evaluation.objects.create(
-                ref=f'{form.cleaned_data["ref"]} - {company.name}',
-                company=company,
-                description=form.cleaned_data["description"],
-                date_begin=form.cleaned_data["date_begin"],
-                date_intermediate=form.cleaned_data["date_intermediate"],
-                date_end=form.cleaned_data["date_end"],
-                certification_year=form.cleaned_data["certification_year"],
-                certification_period=form.cleaned_data["certification_period"],
-                allow_self_autosupervision=form.cleaned_data[
-                    "allow_self_autosupervision"
-                ],
-            )
+        for cc in controls_companies:
+            if len(cc['cs']) > 0:
 
-            # Para cada evaluación hay que crear los test controls de los controles que se han pasado
-            for control in controls:
-                if company.pk in control.companies:
-                    control_test = ControlTest.objects.create(
-                        evaluation=evaluation,
-                        control=control,
-                        date_begin=form.cleaned_data["date_begin"]
-                    )
+                company = Company.objects.get(pk=cc['c'])
+                if Evaluation.objects.filter(
+                    ref=f'{form.cleaned_data["ref"]} - {company.name}'
+                ).count() > 0:
+                    ref = f'{form.cleaned_data["ref"]} - {company.name} - {uuid.uuid4().hex}'
+                else:
+                    ref = f'{form.cleaned_data["ref"]} - {company.name}'
 
-                    controls_created += 1
+                evaluation = Evaluation.objects.create(
+                    ref=ref,
+                    company=company,
+                    description=form.cleaned_data["description"],
+                    date_begin=form.cleaned_data["date_begin"],
+                    date_intermediate=form.cleaned_data["date_intermediate"],
+                    date_end=form.cleaned_data["date_end"],
+                    certification_year=form.cleaned_data["certification_year"],
+                    certification_period=form.cleaned_data["certification_period"],
+                    allow_self_autosupervision=form.cleaned_data[
+                        "allow_self_autosupervision"
+                    ],
+                )
 
-            evaluations_created += 1
+                # Ahora en este array nos llegará también el control owner y el control supervisor
+
+                # [
+                #     {
+                #         "pk": 976,
+                #         "ownersSelected": [
+                #             {
+                #                 "pk": 98,
+                #                 "email": "39@39.com",
+                #                 "full_name": "Mario Ar"
+                #             },
+                #             {
+                #                 "pk": 106,
+                #                 "email": "bienvenidosaez@baetica.com",
+                #                 "full_name": "Bienvenido Sáez Muelas"
+                #             },
+                #             {
+                #                 "pk": 107,
+                #                 "email": "ru@baetica.com",
+                #                 "full_name": "ru@baetica.com "
+                #             }
+                #         ],
+                #         "supervisorsSelected": [
+                #             {
+                #                 "pk": 105,
+                #                 "email": "mrevuelta.deca@gmail.com",
+                #                 "full_name": "asd asd"
+                #             }
+                #         ]
+                #     }
+                # ]
+
+                for control in cc['csData']:
+                    control_owner = None
+                    control_supervisor = None
+
+                    control_object = Control.objects.get(pk=control['pk'])
+
+                    # Si el número de supervisores es menor que el número de owners, me quedo con el primer supervisor e itero por los owners
+                    # if len(control['supervisorsSelected']) < len(control['ownersSelected']) or len(control['supervisorsSelected']) > len(control['ownersSelected']):
+                    if len(control['supervisorsSelected']) < len(control['ownersSelected']) or (len(control['supervisorsSelected']) > len(control['ownersSelected']) and len(control['ownersSelected']) > 0):
+                        control_supervisor = None
+                        if len(control['supervisorsSelected']) > 0:
+                            control_supervisor = control['supervisorsSelected'][0]['pk']
+                        for owner in control['ownersSelected']:
+                            control_owner = owner['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=User.objects.get(
+                                    pk=control_owner) if control_owner != None else None,
+                                control_test_supervisor=User.objects.get(
+                                    pk=control_supervisor) if control_supervisor != None else None
+                            )
+                            controls_created += 1
+
+                    # Si el número de supervisores es igual que el número de owners, itero por los owners y supervisores
+                    elif len(control['supervisorsSelected']) > 0 and len(control['supervisorsSelected']) == len(control['ownersSelected']):
+                        for i, owner in enumerate(control['ownersSelected']):
+                            control_owner = owner['pk']
+                            control_supervisor = control['supervisorsSelected'][i]['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=User.objects.get(
+                                    pk=control_owner),
+                                control_test_supervisor=User.objects.get(
+                                    pk=control_supervisor)
+                            )
+                            controls_created += 1
+
+                    # Si el número de supervisores es 0 y el número de owners es 0
+                    elif len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) == 0:
+                        control_test = ControlTest.objects.create(
+                            evaluation=evaluation,
+                            control=control_object,
+                            date_begin=form.cleaned_data["date_begin"],
+                            control_test_owner=None,
+                            control_test_supervisor=None
+                        )
+                        controls_created += 1
+
+                    # Si el número de supervisores es 0 y el número de owners es mayor que 0
+                    elif len(control['supervisorsSelected']) == 0 and len(control['ownersSelected']) > 0:
+                        for i, owner in enumerate(control['ownersSelected']):
+                            control_owner = owner['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=User.objects.get(
+                                    pk=control_owner),
+                                control_test_supervisor=None
+                            )
+                            controls_created += 1
+
+                    # Si el número de owners es 1 y supervisors es mayor que owners
+                    elif len(control['supervisorsSelected']) > len(control['ownersSelected']) and len(control['ownersSelected']) == 1:
+                        # Itero por los supervisores y creo un test de control para cada uno con el mismo owner
+                        for i, supervisor in enumerate(control['supervisorsSelected']):
+                            control_supervisor = supervisor['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=User.objects.get(
+                                    pk=control['ownersSelected'][0]['pk']),
+                                control_test_supervisor=User.objects.get(
+                                    pk=control_supervisor)
+                            )
+                            controls_created += 1
+
+                    # Si el número de supervisores es mayor que 0 y el número de owners es 0
+                    elif len(control['supervisorsSelected']) > 0 and len(control['ownersSelected']) == 0:
+                        for i, supervisor in enumerate(control['supervisorsSelected']):
+                            control_supervisor = supervisor['pk']
+                            control_test = ControlTest.objects.create(
+                                evaluation=evaluation,
+                                control=control_object,
+                                date_begin=form.cleaned_data["date_begin"],
+                                control_test_owner=None,
+                                control_test_supervisor=User.objects.get(
+                                    pk=control_supervisor),
+                            )
+                            controls_created += 1
+
+                    else:
+                        pass
+
+                evaluations_created += 1
 
         messages.add_message(
             self.request,
@@ -889,4 +1122,74 @@ class EvaluationAssignImport(FormView):
     def get_success_url(self):
         return reverse_lazy(
             "evaluations:ga_evaluation_detail", kwargs={"pk": self.evaluation.pk}
+        )
+
+
+@method_decorator([is_global_admin, ], name='dispatch')
+class GaEvaluationNotificationView(DetailView, FormView):
+    template_name = 'evaluations/GaEvaluationNotifications.html'
+    model = Evaluation
+    context_object_name = 'evaluation'
+    form_class = EvaluationNotificationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.evaluation = get_object_or_404(
+            Evaluation, pk=self.kwargs.get("pk"))
+        return super(GaEvaluationNotificationView, self).dispatch(
+            request, request, *args, **kwargs
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Evaluaciones KRC'), 'url': reverse(
+                'evaluations:ga_evaluation_list')},
+            {'title': self.object.ref, 'url': reverse(
+                "evaluations:ga_evaluation_detail", kwargs={'pk': self.object.pk})}
+        ]
+        context['page_title'] = f"{_('Notificaciones de Controles')} : {self.object.ref}"
+        context['breadcrums'] = breadcrums
+
+        context['evaluation'].evaluators_notifications_co = context['evaluation'].get_evaluators_for_notifications_by_role(
+            "WO")
+        context['evaluation'].evaluators_notifications_cs = context['evaluation'].get_evaluators_for_notifications_by_role(
+            "WS")
+
+        context['js_template'] = ['js/custom/datatables.js']
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        ct_selected_co = request.POST.getlist('notify_pk_co')
+        ct_selected_cs = request.POST.getlist('notify_pk_cs')
+
+        from krm.evaluations.models import ControlTest
+
+        if ct_selected_co:
+            for pk in ct_selected_co:
+                ct = ControlTest.objects.filter(pk=int(pk)).first()
+                ct.send_notification('Reminder')
+
+            messages.add_message(
+                self.request, messages.SUCCESS, _(
+                    "Enviadas notificaciones a %d usuarios!" % len(ct_selected_co))
+            )
+
+        if ct_selected_cs:
+            for pk in ct_selected_cs:
+                ct = ControlTest.objects.filter(pk=int(pk)).first()
+                ct.send_notification('Reminder')
+
+            messages.add_message(
+                self.request, messages.SUCCESS, _(
+                    "Enviadas notificaciones a %d usuarios!" % len(ct_selected_cs))
+            )
+
+        return HttpResponseRedirect(
+            reverse_lazy(
+                "evaluations:ga_evaluation_detail",
+                kwargs={'pk': self.evaluation.pk}
+            )
         )

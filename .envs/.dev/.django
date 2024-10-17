@@ -1,9 +1,16 @@
+# LOCAL
 KRM_DJANGO_DEBUG=True
 KRM_DJANGO_DEV=True
+KRM_DJANGO_DEVJS=False
+KRM_DEBUG_TOOLBAR=True
+# KRM_BRAND='globalvia'
+KRM_BRAND=''
+KRM_DEBUG_TOOLBAR=False
 KRM_DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 KRM_DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
-# KRM_SITE_URL='http://app.krmtool.com'
 KRM_SITE_URL='http://localhost:8000'
+# KRM_SITE_URL='https://gvi.compliancetool.net'
+#KRM_SITE_URL='http://localhost:8000'
 
 KRM_ACTIVATE=True
 
@@ -16,3 +23,21 @@ CELERY_FLOWER_PASSWORD=admin
 AUTH0_CLIENT_ID=1Dk3p7qRl4ETYA9emXHwooqES1wuVN5S
 AUTH0_CLIENT_SECRET=Hs-F46aKi3a-4NDz0aS9LgJtBSGAadpSngPNb0TbLqOGoHyLejo00OHg2_wYFzOV
 AUTH0_DOMAIN=dev-njl8nr7c8xdkfs74.us.auth0.com
+
+# GLOBALVÍA
+# KRM_DJANGO_DEBUG=True
+# KRM_DJANGO_DEV=True
+# KRM_DJANGO_DEVJS=False
+# KRM_BRAND='globalvia'
+# KRM_DEBUG_TOOLBAR=False
+# KRM_DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+# KRM_DJANGO_SECRET_KEY=PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
+# KRM_SITE_URL='https://gvi.compliancetool.net'
+
+# KRM_ACTIVATE=True
+
+# CELERY_BROKER_URL=redis://:V78jXv!qcm@redis:6379/0
+
+# CELERY_FLOWER_USER=admin
+# CELERY_FLOWER_PASSWORD=aV6OGW54brOr
+CELERY_FLOWER_PASSWORD=aV6OGW54brOr

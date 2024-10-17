@@ -2,14 +2,18 @@
 
 <p>
   {% blocktrans with recovery_url=recovery_url %}
+  <strong>{{ notif_type }}</strong><br /><br />
   Hola {{ user_email }},<br><br>
 
-  Dispone de controles pendientes de revisar dentro de la plataforma <strong>KRM Tool</strong> correspondientes a la Autoevaluación del Proceso de <strong>{{ evaluation_ref }}</strong> que tendrá lugar en el periodo desde el <strong>{{ evaluation_date_begin }}</strong> hasta el <strong>{{ evaluation_date_intermediate }}</strong>.<br><br>
+  Dispone de {{ ncontrols_pending }} evaluaciones de controles pendientes de supervisar en la plataforma <strong>{{ app_name }}</strong>, correspondientes a <strong>{{ evaluation_ref }}</strong>. El periodo a evaluar es {{ certification_year }}{{ certification_period }}. Por favor, complete la evaluación antes del {{ evaluation_date_end }}.
 
-  Acceda desde <a href="{{ site_url }}">esta url</a> con sus datos de acceso para poder revisarlos.<br><br>
+  Puede acceder a la plataforma desde <a href="{{ site_url }}">esta url</a> con sus credenciales.<br><br>
 
-  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href="{{ recovery_url }}">esta url</a> indicando su correo electrónico.<br><br>
+  Si no recuerda tu contraseña, puede recuperarla accediendo a <a href="{{ recovery_url }}">esta url</a> e indicando su correo electrónico.<br><br>
 
-  Gracias.
+  Ante cualquier duda, puede ponerse en contacto a través del siguiente correo: <a href="mailto:{{ MAIN_EMAIL }}"></a>{{ MAIN_EMAIL }}<br><br>
+
+  Muchas gracias por su colaboración.<br><br>
+
   {% endblocktrans %}
 </p>

@@ -1,0 +1,11 @@
+# Sacyr
+KRM_EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
+KRM_EMAIL_FROM='KRM Tool <cstool@sacyr.com>'
+KRM_EMAIL_DEV_TO='bienvenidosaez@baetica.com'
+KRM_EMAIL_HOST='smtp.sacyr.com'
+KRM_EMAIL_PORT='25'
+KRM_EMAIL_USE_TLS='False'
+KRM_EMAIL_USE_SSL='False'
+KRM_EMAIL_HOST_USER=
+KRM_EMAIL_HOST_PASSWORD=
+KRM_EMAIL_BCC=''

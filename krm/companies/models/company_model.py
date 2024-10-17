@@ -1,9 +1,3 @@
-"""Booking model."""
-import os
-import hashlib
-import random
-from tabnanny import verbose
-
 # Django
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -80,11 +74,18 @@ class Company(AuditModel):
         blank=True
     )
 
-    controls = models.ManyToManyField(
-        'controls.Control',
-        verbose_name=_('Controles asociados'),
+    # controls = models.ManyToManyField(
+    #     'controls.Control',
+    #     verbose_name=_('Controles asociados'),
+    #     blank=True,
+    #     related_name='companies'
+    # )
+
+    evaluators = models.ManyToManyField(
+        'users.User',
+        verbose_name=_('Evaluadores de Cuestionarios'),
         blank=True,
-        related_name='companies'
+        related_name='questionnaires_evaluators'
     )
 
     def __str__(self):
@@ -119,15 +120,18 @@ class Company(AuditModel):
 
     @property
     def companies_in_scope_as_list(self):
-        if self.companies_in_scope: return self.companies_in_scope.split(';')
-        else: return ''
+        if self.companies_in_scope:
+            return self.companies_in_scope.split(';')
+        else:
+            return ''
 
     def save(self, *args, **kwargs):
         self.ref = self.ref.upper()
         super().save(*args, **kwargs)
 
-        from krm.companies.models import CompanyDomainRiskExperts, CompanyDomainRiskEvaluator
+        from krm.companies.models import CompanyDomainRiskExperts, CompanyDomainRiskEvaluator, CompanyControls
         from krm.risks.models import DomainRisk, Risk, RiskCompany
+        from krm.controls.models import Control
 
         for domain_risk in DomainRisk.objects.all():
             if CompanyDomainRiskExperts.objects.filter(company=self, domain_risk=domain_risk).count() == 0:
@@ -146,4 +150,18 @@ class Company(AuditModel):
                     company=self,
                     risk=risk
                 )
-    
+
+        for control in Control.objects.all():
+            if CompanyControls.objects.filter(company=self, control=control).count() == 0:
+                CompanyControls.objects.create(
+                    company=self,
+                    control=control
+                )
+
+    @property
+    def get_controls_active(self):
+        return self.company_controls.filter(active=True, control__block=False)
+
+    @property
+    def get_controls_inactive(self):
+        return self.company_controls.filter(active=False, control__block=False)

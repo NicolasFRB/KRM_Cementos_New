@@ -106,7 +106,7 @@
       <tbody>
           {% for subprocess in process.sub_processes.all %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'subprocess:ga_sub_process_detail' subprocess.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'subprocess:ga_sub_process_detail' subprocess.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ subprocess.ref }}</td>
             <td class="align-middle">{{ subprocess.name }}</td>
             <td class="align-middle">{{ subprocess.description|striptags|safe|truncatechars:200 }}</td>

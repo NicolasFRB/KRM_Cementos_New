@@ -4,15 +4,15 @@
 
 {% block js_footer %}
 <script>
-function copy2clipboard(ele_id, notify_id) {
-  // Get the text field
-  var copyText = document.getElementById(ele_id);
-  var copyNotify = document.getElementById(notify_id);
-  navigator.clipboard.writeText(copyText.textContent);
-  copyNotify.style.display = 'inline-block'
-  setTimeout(function(){copyNotify.style.display = 'none';}, 2000);
+  function copy2clipboard(ele_id, notify_id) {
+    // Get the text field
+    var copyText = document.getElementById(ele_id);
+    var copyNotify = document.getElementById(notify_id);
+    navigator.clipboard.writeText(copyText.textContent);
+    copyNotify.style.display = 'inline-block'
+    setTimeout(function () { copyNotify.style.display = 'none'; }, 2000);
 
-}
+  }
 </script>
 {% endblock js_footer %}
 
@@ -26,7 +26,8 @@ function copy2clipboard(ele_id, notify_id) {
   <div class="card-header">
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{% trans 'Datos del Usuario' %}</div>
-    <div id= "copy_notify" class="alert alert-primary" role="alert" style="display:none; margin-top:20px;margin-bottom:20px;">
+    <div id="copy_notify" class="alert alert-primary" role="alert"
+      style="display:none; margin-top:20px;margin-bottom:20px;">
       <i class="bi bi-clipboard fs-1x"></i>
       {% trans 'Copied!' %}
     </div>
@@ -42,7 +43,8 @@ function copy2clipboard(ele_id, notify_id) {
             <div class="row mb-8">
               <!--begin::Col-->
               <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span>
+                </div>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
@@ -67,6 +69,21 @@ function copy2clipboard(ele_id, notify_id) {
               </div>
               <!--end::Col-->
             </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-5">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Cargo' %}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-7">
+                <div class="fs-6">
+                  <span>{{ user.position }}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
           </fieldset>
         </div>
         <div class="col col-md-6">
@@ -74,14 +91,17 @@ function copy2clipboard(ele_id, notify_id) {
             <div class="row mb-8">
               <!--begin::Col-->
               <div class="col-xl-5">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Email' %}</span></div>
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Email' %}</span>
+                </div>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
               <div class="col-xl-7">
                 <div class="fs-6">
                   <span class="badge badge-success text-wrap" id="user_email" style="display: inline-block">{{ user.email|default_if_none:"" }}</span>
-                  <a style="cursor: pointer" onclick="copy2clipboard('user_email','copy_notify')"><i class="bi bi-clipboard fs-1x" style="display: inline-block; position: absolute; right:5% !important;"></i></a>
+                  <a style="cursor: pointer" onclick="copy2clipboard('user_email','copy_notify')"><i
+                      class="bi bi-clipboard fs-1x"
+                      style="display: inline-block; position: absolute; right:5% !important;"></i></a>
                 </div>
               </div>
               <!--end::Col-->
@@ -100,6 +120,34 @@ function copy2clipboard(ele_id, notify_id) {
               </div>
               <!--end::Col-->
             </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-5">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Última acción' %}</span></div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-7">
+                <div class="fs-6">
+                  <span>{{ user.actions_log.last }}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-5">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Idioma de notificaciones' %}</span></div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-7">
+                <div class="fs-6">
+                  <span>{{ user.get_notification_language_display }}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
           </fieldset>
         </div>
       </div>
@@ -111,11 +159,10 @@ function copy2clipboard(ele_id, notify_id) {
     <a href="{% url 'users:ga_user_update' user.pk %}" class="btn btn-sm btn-primary">
       <i class="bi bi-pencil"></i>
       {% trans 'Editar' %}</a>
-    <a href="{% url 'users:ga_user_delete' user.pk %}" class="btn btn-sm btn-danger ms-2">
+    <!-- <a href="{% url 'users:ga_user_delete' user.pk %}" class="btn btn-sm btn-danger ms-2">
       <i class="bi bi-trash"></i>
-      {% trans 'Eliminar' %}</a>
-      <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i
-            class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+      {% trans 'Eliminar' %}</a> -->
+    <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
   </div>
   <!--end::Card footer-->
 </div>
@@ -141,31 +188,34 @@ function copy2clipboard(ele_id, notify_id) {
             </tr>
           </thead>
           <tbody>
-              {% for company in user.companies.all %}
-              <tr>
-                <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-                <td class="text-center align-middle">{{ company.ref }}</td>
-                <td class="align-middle">{{ company.name }}</td>
-                <td class="text-center align-middle">
-                  <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{company.country.name}}">
-                    <img class="w-20px h-20px rounded-circle me-3" src="{{company.country.flag}}">
-                  </span>
-                </td>
-                <td class="text-center align-middle">{{ company.type_company }}</td>
-                <td class="align-middle">
-                  {% for c in company.companies_in_scope_as_list %}
-                    <span class="badge badge-info">{{ c }}</span><br>
-                  {% endfor %}   
-                </td>
-                <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span></td>
-              </tr>
-              {% endfor %}
+            {% for company in user.companies.all %}
+            <tr>
+              <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i
+                    class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+              <td class="text-center align-middle">{{ company.ref }}</td>
+              <td class="align-middle">{{ company.name }}</td>
+              <td class="text-center align-middle">
+                <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                  title="{{company.country.name}}">
+                  <img class="w-20px h-20px rounded-circle me-3" src="{{company.country.flag}}">
+                </span>
+              </td>
+              <td class="text-center align-middle">{{ company.type_company }}</td>
+              <td class="align-middle">
+                {% for c in company.companies_in_scope_as_list %}
+                <span class="badge badge-info">{{ c }}</span><br>
+                {% endfor %}
+              </td>
+              <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span>
+              </td>
+            </tr>
+            {% endfor %}
           </tbody>
         </table>
         {% else %}
-          <div class="alert alert-primary" role="alert">
-            {% trans 'No pertenece a ninguna compañía' %}
-          </div>
+        <div class="alert alert-primary" role="alert">
+          {% trans 'No pertenece a ninguna compañía' %}
+        </div>
         {% endif %}
       </div>
     </div>
@@ -193,31 +243,34 @@ function copy2clipboard(ele_id, notify_id) {
             </tr>
           </thead>
           <tbody>
-              {% for company in user.companies_admin.all %}
-              <tr>
-                <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
-                <td class="text-center align-middle">{{ company.ref }}</td>
-                <td class="align-middle">{{ company.name }}</td>
-                <td class="text-center align-middle">
-                  <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{company.country.name}}">
-                    <img class="w-20px h-20px rounded-circle me-3" src="{{company.country.flag}}">
-                  </span>
-                </td>
-                <td class="text-center align-middle">{{ company.type_company }}</td>
-                <td class="align-middle">
-                  {% for c in company.companies_in_scope_as_list %}
-                    <span class="badge badge-info">{{ c }}</span><br>
-                  {% endfor %}   
-                </td>
-                <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span></td>
-              </tr>
-              {% endfor %}
+            {% for company in user.companies_admin.all %}
+            <tr>
+              <td class="text-center align-middle"><a href="{% url 'companies:ga_company_detail' company.pk %}"><i
+                    class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+              <td class="text-center align-middle">{{ company.ref }}</td>
+              <td class="align-middle">{{ company.name }}</td>
+              <td class="text-center align-middle">
+                <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                  title="{{company.country.name}}">
+                  <img class="w-20px h-20px rounded-circle me-3" src="{{company.country.flag}}">
+                </span>
+              </td>
+              <td class="text-center align-middle">{{ company.type_company }}</td>
+              <td class="align-middle">
+                {% for c in company.companies_in_scope_as_list %}
+                <span class="badge badge-info">{{ c }}</span><br>
+                {% endfor %}
+              </td>
+              <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span>
+              </td>
+            </tr>
+            {% endfor %}
           </tbody>
         </table>
         {% else %}
-          <div class="alert alert-primary" role="alert">
-            {% trans 'No administra ninguna compañía' %}
-          </div>
+        <div class="alert alert-primary" role="alert">
+          {% trans 'No administra ninguna compañía' %}
+        </div>
         {% endif %}
       </div>
     </div>
@@ -226,7 +279,7 @@ function copy2clipboard(ele_id, notify_id) {
 
 <div class="card mb-8">
   <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Registro de acciones' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Registro de acciones' %}</div>
   </div>
   <div class="card-body">
     <div class="row">
@@ -238,9 +291,9 @@ function copy2clipboard(ele_id, notify_id) {
           {% endfor %}
         </ul>
         {% else %}
-          <div class="alert alert-primary" role="alert">
-            {% trans 'Sin acciones hasta el momento' %}
-          </div>
+        <div class="alert alert-primary" role="alert">
+          {% trans 'Sin acciones hasta el momento' %}
+        </div>
         {% endif %}
       </div>
     </div>

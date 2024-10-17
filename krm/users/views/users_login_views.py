@@ -266,6 +266,7 @@ def callback_view(r):
     if user_identity is None:
         return HttpResponseRedirect(reverse("auth:logout")) #to denied login
 
+    # print(user_identity)
     user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress')][0]
     user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'http://schemas.auth0.com/nickname')][0]
     user_real_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('name', 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name')][0]
@@ -372,6 +373,11 @@ def logout_view(request):
 #     template_name = 'users/login/UserLogin.html'
 #     form_class = LoginForm
 
+# @method_decorator(decorators, name='dispatch')
+# class LoginView(FormView):
+#     template_name = 'users/login/UserLogin.html'
+#     form_class = LoginForm
+
 #     def get_context_data(self, **kwargs):
 #         context = super().get_context_data(**kwargs)
 #         context = KTLayout.init(context)
@@ -389,6 +395,7 @@ def logout_view(request):
 #                 request, request,
 #                 *args, **kwargs
 #             )
+
 
 #     def form_valid(self, form):
 #         usuario = form.cleaned_data.get('username')
@@ -448,8 +455,6 @@ class TypeYourPassword(FormView):
         return context
 
     def get_initial(self):
-        user = get_object_or_404(
-            User, remember_key=self.kwargs.get('remember_key'))
         return {
             'remember_key': self.kwargs.get('remember_key')
         }
@@ -457,10 +462,15 @@ class TypeYourPassword(FormView):
     def dispatch(self, request, *args, **kwargs):
         logout(request)
         remember_key = kwargs['remember_key']
-        try:
+        if User.objects.filter(remember_key=remember_key).count() == 0:
+            self.user = None
+            messages.add_message(
+                self.request, messages.ERROR,
+                _('Enlace caducado, vuelva a solicitar recordar contraseña'))
+
+            return HttpResponseRedirect(reverse_lazy('auth:remember_password_form'))
+        else:
             self.user = User.objects.get(remember_key=remember_key)
-        except User.DoesNotExist:
-            raise Http404
         return super(TypeYourPassword, self).dispatch(
             request, request, *args, **kwargs)
 

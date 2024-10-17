@@ -7,6 +7,8 @@ from django.utils.html import strip_tags
 from ckeditor.fields import RichTextField
 
 from krm.utils.models import AuditModel
+from krm.risks.models import DomainRisk
+from krm.users.models import User
 
 
 def year_choices():
@@ -89,6 +91,14 @@ class Evaluation(AuditModel):
         default=False,
     )
 
+    admin_supervisor = models.ForeignKey(
+        'users.User',
+        verbose_name=_('Administrador que ha supervisado la evaluación'),
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.ref
 
@@ -102,6 +112,137 @@ class Evaluation(AuditModel):
             if ct.control_test_supervisor is None or ct.control_test_owner is None:
                 return False
         return True
+    
+    def get_all_control_test_in_evaluation(self):
+        return self.control_tests.all()
+
+    # RETURN number of ctrls by state in evaluation
+    # OPTIONAL ARG: Filter by user
+    def ncontrols_test_by_state(self, status, user=None, rol=None):
+
+        if user and rol:
+            if rol == 'control_test_owner':
+                return self.control_tests.filter(
+                    status=status,
+                    control_test_owner=user,
+                ).distinct().count()
+
+            elif rol == 'control_test_supervisor':
+                return self.control_tests.filter(
+                    status=status,
+                    control_test_supervisor=user,
+                ).distinct().count()
+
+        else:
+            return self.control_tests.filter(
+                status=status,
+            ).distinct().count()
+
+    # RETURN number of ctrl by result in evaluation
+    # OPTIONAL ARG: Filter by user
+    def ncontrols_test_by_result(self, result, user=None, rol=None):
+
+        if user and rol:
+            if rol == 'control_test_owner':
+                return self.control_tests.filter(
+                    result=result,
+                    control_test_owner=user,
+                ).distinct().count()
+
+            elif rol == 'control_test_supervisor':
+                return self.control_tests.filter(
+                    result=result,
+                    control_test_supervisor=user,
+                ).distinct().count()
+
+        else:
+            return self.control_tests.filter(
+                result=result,
+            ).distinct().count()
+
+    def get_domain_risk_in_evaluation(self):
+
+        domain_risks_pks, already_checked = [], []
+        for ct in self.control_tests.all():
+            for r in ct.control.risks.all():
+
+                if r.pk not in already_checked:
+                    domain_pk = r.risk_master.domain_risk.pk
+                    if domain_pk not in domain_risks_pks:
+                        domain_risks_pks.append(domain_pk)
+                    already_checked.append(r.pk)
+
+        return DomainRisk.objects.filter(id__in=domain_risks_pks)
+
+    # RETURN users by state of ctrl in evaluation
+    def get_users_by_ct_state(self, status = None):
+
+        if status == "WO":
+            experts_id = set([rt.control_test_owner.pk for rt in self.control_tests.filter(
+            status=status)])
+
+        elif status == "WS":
+            experts_id = set([rt.control_test_supervisor.pk for rt in self.control_tests.filter(
+            status=status)])
+
+        return User.objects.filter(id__in=experts_id)
+
+    # GET EVALUATORS FOR NOTIFICATIONS TABLE BY STATE
+    def get_evaluators_for_notifications_by_role(self, status):
+
+        evaluators_all = self.get_users_by_ct_state(status)
+        evaluators = []
+        ev_pk_found = {}
+
+        notif_subtype_map = {
+            'WO': 'COwner',
+            'WS': 'CSupervisor',
+        }
+
+        role_map = {
+            'WO': 'control_test_owner',
+            'WS': 'control_test_supervisor',
+        }
+
+        for evaluator in evaluators_all:
+            
+            notifications = [[n.action_description, n.created] for n in evaluator.actions_log.all() if self.ref in n.action_description and notif_subtype_map[status] in n.action_description]
+
+            if evaluator.pk not in ev_pk_found:
+                ev_pk_found[evaluator.pk] = len(evaluators)
+                evaluators.append({
+                    'qt_pk': -1,
+                    'evaluator_pk': evaluator.pk,
+                    'evaluator_email': evaluator.email,
+                    'objects_pending': 0,
+                    'objects_delivered': 0,
+                    'notifications': notifications,
+                    })
+
+            evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] += self.ncontrols_test_by_state(status, evaluator, role_map[status])
+
+            if status == "WO":
+                evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.ncontrols_test_by_state('WS', evaluator, role_map[status])
+
+            evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.ncontrols_test_by_state('WA', evaluator, role_map[status])
+            evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.ncontrols_test_by_state('FI', evaluator, role_map[status])
+
+            if evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] > 0 and status == "WO":
+                evaluators[ev_pk_found[evaluator.pk]]['qt_pk'] = self.control_tests.filter(
+                    evaluation__ref = self.ref,
+                    status=status,
+                    control_test_owner=evaluator,
+                    ).first().pk
+
+            if evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] > 0 and status == "WS":
+                evaluators[ev_pk_found[evaluator.pk]]['qt_pk'] = self.control_tests.filter(
+                    evaluation__ref = self.ref,
+                    status=status,
+                    control_test_supervisor=evaluator,
+                    ).first().pk
+
+        return evaluators
+
     # def generate_control_tests(self, only_key_control=False):
     #     from krc.process.models import Control
     #     from krc.process_test.models import ControlTest

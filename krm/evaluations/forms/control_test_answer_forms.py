@@ -14,6 +14,7 @@ class ControlTestAnswerCreateForm(ModelForm):
         ("", _("-")),
         ("EF", _("Efectivo")),
         ("NE", _("No efectivo")),
+        ("NA", _("No aplica en el periodo certificado")),
     )
     control_result = forms.ChoiceField(
         required=True, choices=CONTROL_RESULT_CHOICES, label=_("Resultado del control")
@@ -90,6 +91,7 @@ class ControlTestAnswerOwnerCreateForm(ModelForm):
         ("", _("-")),
         ("EF", _("Efectivo")),
         ("NE", _("No efectivo")),
+        ("NA", _("No aplica en el periodo certificado")),
     )
     control_result = forms.ChoiceField(
         required=True,
@@ -119,7 +121,11 @@ class ControlTestAnswerOwnerCreateForm(ModelForm):
 
     def clean_description(self):
         description = self.cleaned_data.get("description")
-        if len(description) < 5000:
+        if len(description) == 0:
+            raise forms.ValidationError("Campo obligatorio")        
+        elif len(description) < 3:
+            raise forms.ValidationError("Debe proporcionar información suficiente para finalizar la evaluación")
+        elif len(description) < 5000:
             return description
         else:
             raise forms.ValidationError("Muy largo")
@@ -135,6 +141,9 @@ class ControlTestAnswerSupervisorCreateForm(ModelForm):
         model = ControlTestAnswer
         fields = [
             "description",
+            "attachment_1",
+            "attachment_2",
+            "attachment_3"
         ]
 
     def __init__(self, *args, **kwargs):
@@ -155,3 +164,7 @@ class ControlTestAnswerSupervisorCreateForm(ModelForm):
             if len(description) < 20:
                 raise forms.ValidationError(
                     _('Debe especificar la información necesaria que necesita del Control Owner'))
+        else:
+            if len(description) < 3:
+                raise forms.ValidationError(
+                _('Debe proporcionar información suficiente para finalizar la evaluación'))

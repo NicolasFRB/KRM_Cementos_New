@@ -6,16 +6,52 @@
 <html lang="{{ LANGUAGE_CODE }}" {% printHtmlAttributes 'html' %}>
     <!--begin::Head-->
     <head>
-        <title>{% block title %}{% endblock title %}KRM Tool</title>
+        <title>{% block title %}{% endblock title %}{{ CONFIGURATION.app_name }}</title>
         <meta charset="utf-8"/>
         <meta name="description" content=""/>
         <meta name="keywords" content=""/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>      
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="article" />
         <meta property="og:title" content="" />
         <link rel="canonical" href=""/>
-        <link rel="shortcut icon" href="{% includeFavicon %}"/>
+
+        {% if BRAND == 'globalvia' %}
+            <link rel="apple-touch-icon" sizes="57x57" href="{% static 'apple-icon-57x57-globalvia.png' %}">
+            <link rel="apple-touch-icon" sizes="60x60" href="{% static 'apple-icon-60x60-globalvia.png' %}">
+            <link rel="apple-touch-icon" sizes="72x72" href="{% static 'apple-icon-72x72-globalvia.png' %}">
+            <link rel="apple-touch-icon" sizes="76x76" href="{% static 'apple-icon-76x76-globalvia.png' %}">
+            <link rel="apple-touch-icon" sizes="114x114" href="{% static 'apple-icon-114x114-globalvia.png' %}">
+            <link rel="apple-touch-icon" sizes="120x120" href="{% static 'apple-icon-120x120-globalvia.png' %}">
+            <link rel="apple-touch-icon" sizes="144x144" href="{% static 'apple-icon-144x144-globalvia.png' %}">
+            <link rel="apple-touch-icon" sizes="152x152" href="{% static 'apple-icon-152x152-globalvia.png' %}">
+            <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-icon-180x180-globalvia.png' %}">
+            <link rel="icon" type="image/png" sizes="192x192" href="{% static 'android-icon-192x192-globalvia.png' %}">
+            <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32-globalvia.png' %}">
+            <link rel="icon" type="image/png" sizes="96x96" href="{% static 'favicon-96x96-globalvia.png' %}">
+            <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16-globalvia.png' %}">
+            <meta name="msapplication-TileColor" content="#ffffff">
+            <meta name="msapplication-TileImage" content="{% static 'ms-icon-144x144-globalvia.png' %}">
+            <meta name="theme-color" content="#ffffff">
+        {% else %}
+            <link rel="apple-touch-icon" sizes="57x57" href="{% static 'apple-icon-57x57-base.png' %}">
+            <link rel="apple-touch-icon" sizes="60x60" href="{% static 'apple-icon-60x60-base.png' %}">
+            <link rel="apple-touch-icon" sizes="72x72" href="{% static 'apple-icon-72x72-base.png' %}">
+            <link rel="apple-touch-icon" sizes="76x76" href="{% static 'apple-icon-76x76-base.png' %}">
+            <link rel="apple-touch-icon" sizes="114x114" href="{% static 'apple-icon-114x114-base.png' %}">
+            <link rel="apple-touch-icon" sizes="120x120" href="{% static 'apple-icon-120x120-base.png' %}">
+            <link rel="apple-touch-icon" sizes="144x144" href="{% static 'apple-icon-144x144-base.png' %}">
+            <link rel="apple-touch-icon" sizes="152x152" href="{% static 'apple-icon-152x152-base.png' %}">
+            <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-icon-180x180-base.png' %}">
+            <link rel="icon" type="image/png" sizes="192x192" href="{% static 'android-icon-192x192-base.png' %}">
+            <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32-base.png' %}">
+            <link rel="icon" type="image/png" sizes="96x96" href="{% static 'favicon-96x96-base.png' %}">
+            <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16-base.png' %}">
+            <meta name="msapplication-TileColor" content="#ffffff">
+            <meta name="msapplication-TileImage" content="{% static 'ms-icon-144x144-base.png' %}">
+            <meta name="theme-color" content="#ffffff">
+        {% endif %}
+
 
         {% block css %}
         <!--begin::Fonts-->
@@ -43,9 +79,65 @@
         {% endfor %}
         <!--end::Global Stylesheets-->
         <style>
+
+          form .form-group label {
+            color: red;
+            --bs-badge-padding-x: 0.5rem;
+            --bs-badge-padding-y: 0.325rem;
+            --bs-badge-font-size: 0.85rem;
+            --bs-badge-font-weight: 600;
+            --bs-badge-color: #ffffff;
+            --bs-badge-border-radius: 0.425rem;
+            --bs-badge-color: var(--kt-badge-color);
+            display: inline-flex;
+            align-items: center;
+            padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+            font-size: var(--bs-badge-font-size);
+            font-weight: var(--bs-badge-font-weight);
+            line-height: 1;
+            color: var(--bs-badge-color);
+            text-align: center;
+            vertical-align: baseline;
+            border-radius: var(--bs-badge-border-radius, 0);
+            white-space: normal !important;
+            color: var(--kt-secondary-inverse);
+            background-color: var(--kt-secondary);
+            margin-bottom: 10px;
+          }
           .django-ckeditor-widget {
             width: 100%;
           }
+          .tooltip-inner {
+            text-align: left;
+            max-width: 450px;
+          }
+          #box-container{
+            display: none;
+            flex-direction: column;
+            flex-wrap: wrap;
+            padding: 5px;
+            height: 100%;
+            resize: vertical;
+            gap: 5px;
+          }
+          #box-child{
+            display: grid;
+            margin: 3px;
+          }
+
+          .card {
+            margin-top: 10px;
+            margin-bottom: 10px;
+          }
+          /* FAKEBOARD */
+          span.select2-selection__choice__display {
+            font-size:11px !important;
+           }
+           span.select2-selection__rendered {
+            font-size:11px !important;
+           }
+           /* FAKEBOARD */
+
         </style>
         {% endblock css %}
 
@@ -98,7 +190,7 @@
         {% block js_footer %}
 
         {% endblock js_footer %}
-        
+
         <script>
           jQuery(document).ready(function() {
             $('.backHistory').on('click', function(e){
@@ -107,6 +199,39 @@
               return false;
             });
           });
+
+          function toggle_item(clicked) {
+            $(clicked).siblings().fadeToggle().css('margin-bottom:5px;');
+          }
+
+
+
+          // FAKEBOARD
+          // Format options
+          var optionFormat = function(item) {
+              if ( !item.id ) {
+                  return item.text;
+              }
+
+              var span = document.createElement('span');
+              var imgUrl = item.element.getAttribute('data-kt-select2-country');
+              var template = '';
+
+              template += '<img src="' + imgUrl + '" class="rounded-circle h-20px me-2" alt="image"/>';
+              template += item.text;
+
+              span.innerHTML = template;
+
+              return $(span);
+          }
+
+          // Init Select2 --- more info: https://select2.org/
+          $('#kt_docs_select2_country').select2({
+              templateSelection: optionFormat,
+              templateResult: optionFormat
+          });
+
+
         </script>
 
     <div id="pk" data-pk="{{ request.user.pk }}" style="display: none;"></div>

@@ -1,0 +1,87 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-2">
+          <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'REF' %}</span></div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ question.ref }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-2">
+          <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{{ question.title }}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-2">
+          <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Alcances' %}</span></div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            {% for scope in question.scopes.all %}
+              <span class="badge badge-secondary text-wrap mb-3">{{ scope }}</span> {% if not forloop.last %} {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+    <a href="{% url 'questions:ga_question_update' question.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-pencil"></i>
+      {% trans 'Editar' %}</a>
+    <a href="{% url 'questions:ga_question_delete' question.pk %}" class="btn btn-sm btn-danger ms-2">
+      <i class="bi bi-trash"></i>
+      {% trans 'Eliminar' %}</a>
+      <a href="#" class="btn btn-sm btn-secondary ms-2 backHistory"><i
+            class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
+  <!--end::Card footer-->
+</div>
+<!--end::Container-->
+
+{% endblock content %}

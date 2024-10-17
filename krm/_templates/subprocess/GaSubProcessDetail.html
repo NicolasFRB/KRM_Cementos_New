@@ -112,11 +112,12 @@
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
-          <th class="text-center">{% trans 'Objetivo' %}</th>
           <th class="text-center">{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Evidencia' %}</th>
           <th class="text-center">{% trans 'Frecuencia' %}</th>
           <th class="text-center">{% trans 'Tipo' %}</th>
           <th class="text-center">{% trans 'Automático' %}</th>
+          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
           <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
           <th class="text-center">{% trans 'Subprocesos' %}</th>
         </tr>
@@ -124,28 +125,64 @@
       <tbody>
           {% for control in subprocess.controls.all %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-eye-fill fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'controls:ga_control_detail' control.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="text-center align-middle">{{ control.ref }}</td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.name }}"></i></td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description }}"></i></td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ control.description|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">
+              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
+            </td>
             <td class="text-center align-middle">{{ control.control_frequency }}</td>
             <td class="text-center align-middle">{{ control.control_type }}</td>
             <td class="text-center align-middle">{{ control.automation }}</td>
-            <td class="align-middle">
-              {% for r1 in control.risks.all %}
-                <div style="margin: 5px;">
-                  <a href="{% url 'risks:ga_risk_detail' r1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ r1.name }}">{{ r1.ref }}</span></a>
+            <td class="align-middle" >
+              <div id = 'box' class="text-center">
+                <div style="cursor: pointer" onclick="toggle_item(this)">
+                    <span class="badge badge-info" style="">{{ control.domain_risks_objects|length }}</span>
                 </div>
-              {% endfor %}
+                <div id = "box-container">
+                  {% for domain_risk in control.domain_risks_objects %}                                              
+                    <a href="{% url 'domain_risks:ga_domain_risk_detail' domain_risk.pk %}">
+                      <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ domain_risk.name }}" id = "box-child">{{ domain_risk.ref }}</span>
+                    </a>                                               
+                  {% endfor %}
+                </div>
+              </div>
             </td>
             <td class="align-middle">
-              {% for s1 in control.sub_processes.all %}
-                <div style="margin: 5px;">
-                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ s1.name }}">{{ s1.ref }}</span></a>
+              <div id = 'box' class="text-center">
+                <div style="cursor: pointer" onclick="toggle_item(this)">
+                    <span class="badge badge-info" style="">{{ control.risks.count }}</span>
                 </div>
-              {% endfor %}
+                <div id = "box-container">
+                  {% for r1 in control.risks.all %}                                              
+                    <a href="{% url 'risks:ga_risk_detail' r1.pk %}">
+                    <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ r1.name }}" id = "box-child">{{ r1.ref }}
+                    </a>                                               
+                  {% endfor %}
+                </div>                                             
+              </div>                                             
             </td>
-            
+            <td class="align-middle">
+              <div id = 'box' class="text-center">
+                <div style="cursor: pointer" onclick="toggle_item(this)">
+                    <span class="badge badge-info" style="">{{ control.sub_processes.count }}</span>
+                </div>
+                <div id = "box-container">
+                {% for s1 in control.sub_processes.all %}                                              
+                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>                                                                       
+                {% endfor %}
+                </div>                                             
+              </div>                                             
+            </td>        
           </tr>
           {% endfor %}
       </tbody>

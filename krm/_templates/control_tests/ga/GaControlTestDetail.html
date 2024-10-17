@@ -1,0 +1,191 @@
+{% extends 'layout/default.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+
+<script>
+  $(document).ready(function () {
+    ClassicEditor
+      .create(
+        document.querySelector('#cta_description'),
+        {
+          language: {
+            // The UI will be English.
+            ui: 'es',
+
+            // But the content will be edited in Arabic.
+            content: 'es'
+          }
+        }
+      )
+      .then(editor => {
+        const wordCountPlugin = editor.plugins.get('WordCount');
+        const wordCountWrapper = document.getElementById('word-count');
+        wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+      })
+      .catch(error => {
+      });
+  
+    $(".datepicker").flatpickr({
+          "locale": "es",
+          dateFormat: "d/m/Y",
+    });
+  });
+</script>
+<script>
+  // fin_btn = document.getElementById('finalizado');
+
+  // fin_btn.onclick = function (event) {
+  //   result_widget = document.getElementById('id_control_result');
+  //   alert(result_widget.val());
+  //   if ('{{form.control_result.result}}' == ''){
+  //     alert('Sin completar');
+  //     event.preventDefault();
+  //   }
+  // }
+  $(document).ready(function () {
+
+    $('#finalizado').click(function (event) {
+        // Get the selected value
+        var result_widget = $('#id_control_result').val();
+        var description_widget = $('#word-count').children(0).children(1).text();
+        var char_count = description_widget.split(': ').pop()
+        
+        if (result_widget == '' || char_count == '0') {
+          event.preventDefault();
+          $('#exampleModal').modal('show');
+        }
+        
+    });
+});
+</script>
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+{% include '_includes/FormErrors.html' %}
+
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% trans 'Respuesta incompleta' %}</h5>
+      </div>
+      <div class="modal-body">
+        {% trans 'Quedan campos pendientes de completar. Por favor, revise su respuesta' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if control_test.remediation_plan_needed %}
+  <div class="row mt-2 mb-2">
+    <div class="col-sm">
+      <div class="alert alert-warning ">
+        {% trans 'Debe establecerse un plan de remediación, en la parte inferior podrá rellenarlo si es el Control Owner' %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<div class="card mb-8">
+  <div class="card-body">
+    {% include '_includes/control_test/_control_test_info_head.html' with control_test=control_test %}
+  </div>
+  <!--end::Card body-->
+</div>
+
+
+<div class="card mb-8">
+  <div class="card-header" >
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'RESPUESTAS' %}</div>
+    <div class="col-xl-3">
+      <div style="margin-top:15px;">
+      <h5 style="float: right ; font-size: 14px;">{% trans 'RESULTADO ACTUAL:&emsp;' %}<span style="float:right; font-size: 14px;" class="badge badge-{% if control_test.result == 'EF' %}success{% else %}danger{% endif %} text-wrap">{{ control_test.get_result_display }}</span></h5></div>
+    </div>
+  </div> 
+  <div class="card-body">
+    {% if control_test.answers.count > 0 %}
+      {% for answer in control_test.answers.all %}
+        {% include '_includes/control_test/ga/_control_test_answer.html' %}
+        {% if not forloop.last %}
+          <div class="separator my-10"></div>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <p class="fs-6 fw-semibold">
+        {% trans 'Todavía no hay respuestas para este test de control' %}
+      </p>
+    {% endif %}
+
+    {% if control_test.remediation_plans.all.count > 0 %}
+      <div class="separator my-10"></div>
+
+      <h5 class="mb-8">{% trans 'PLANES DE REMEDIACIÓN' %}</h5>
+      {% for rm in control_test.remediation_plans.all %}
+        {% include '_includes/remediation_plan/ga/_remediation_plan.html' with rm=rm %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% if control_test.status != 'FI' %}
+  <div class="card">
+    <div class="card-header">
+      <!--begin::Card header-->
+      <div class="card-title fs-3 fw-bold">{% trans 'Administración del Control' %}</div>
+      <!--end::Card header-->
+    </div>
+
+    <form method="post" enctype='multipart/form-data' novalidate>
+      {% csrf_token %}
+      <div class="card-body">
+        {% include '_includes/FormErrors.html' %}
+        <div class="row mb-3">
+          <div class="col-12 col-md-8">
+          <div class="row mb-5">
+          <div class="col-md-6">
+            {{ form.control_status|as_crispy_field }}
+          </div>
+          <div class="col-md-6">
+            {{ form.control_result|as_crispy_field }}
+          </div>
+          </div>
+          <div class="col-md-12">
+            {{ form.description|as_crispy_field }}
+            <div id="word-count"></div>
+          </div>
+          </div>
+          <div class="col-6 col-md-4">
+            {% if BRAND != 'globalvia'  %}
+            <div class="mb-8">
+              {{ form.attachment_1|as_crispy_field }}
+            </div>
+            <div class="mb-8">
+              {{ form.attachment_2|as_crispy_field }}
+            </div>
+            <div class="mb-8">
+              {{ form.attachment_3|as_crispy_field }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary" id="finalizado"><i class="bi bi-hdd"></i> {% trans 'Finalizar revisión del control' %}</button>
+        <button class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button>
+      </div>
+    </form>
+  </div>
+{% endif %}
+
+{% endblock content %}

@@ -1,10 +1,13 @@
 import configService from "../services/config.js";
 import React from "react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function SelectCompanies({ selectedCompanies, setSelectedCompanies, companies, setCompanies }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const [t] = useTranslation("global");
 
   const handleOnChange = (pk) => {
     if (selectedCompanies.includes(pk)) {
@@ -12,6 +15,16 @@ function SelectCompanies({ selectedCompanies, setSelectedCompanies, companies, s
     } else {
       setSelectedCompanies(selectedCompanies.concat([pk]));
     }
+  };
+
+  const selectAll = () => {
+    setSelectedCompanies(companies.map(company => {
+      return company.pk;
+    }));
+  };
+
+  const unSelectAll = () => {
+    setSelectedCompanies([]);
   };
 
   useEffect(() => {
@@ -29,23 +42,42 @@ function SelectCompanies({ selectedCompanies, setSelectedCompanies, companies, s
       );
   }, [setCompanies]);
 
+  useEffect(() => {
+    if (companies.length) {
+      window.CustomDatatables.initEvalCompanies();
+    }
+  }, [companies])
+
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
-    return <div>Cargando compañías...</div>;
+    return <div>{t('selectcompanies.loading-companies')}...</div>;
   } else {
     return (
       <div>
         {isLoaded && (
           <>
-            {companies.map((value, index) => {
-              return <p key={value.pk}>
-                <label className="form-check form-check-inline form-check-solid me-5">
-                  <input onChange={() => handleOnChange(value.pk)} className="form-check-input" name="process" type="checkbox" value={value.pk} />
-                  <span className="fw-semibold ps-2 fs-6">{value.name}</span>
-                </label>
-              </p>
-            })}
+            <table className="table table-striped customDatatable" id="evalcompanies">
+              <thead>
+                <tr>
+                  <th className="text-center">
+                    <span onClick={() => selectAll()} className="me-5"><i className="bi bi-clipboard-check"></i></span>
+                    <span onClick={() => unSelectAll()}><i className="bi bi-clipboard"></i></span>
+                  </th>
+                  <th className="fw-semibold">{t('selectcompanies.name')}</th>
+                  <th className="fw-semibold">VAT</th>
+                </tr>
+              </thead>
+              <tbody>
+                {companies.map((company, index) => {
+                  return <tr key={company.pk}>
+                    <td className="text-center"><input onChange={() => handleOnChange(company.pk)} className="form-check-input" name="process" type="checkbox" value={company.pk} checked={selectedCompanies.includes(company.pk)} /></td>
+                    <td className="fw-semibold"><label>{company.name}</label></td>
+                    <td>{company.vat}</td>
+                  </tr>
+                })}
+              </tbody>
+            </table>
             <input type="hidden" name="companies" value={selectedCompanies} />
           </>
         )}

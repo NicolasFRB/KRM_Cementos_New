@@ -1,11 +1,18 @@
 version: "3"
 
+volumes:
+  krm_local_postgres_data: {}
+  krm_local_postgres_data_backups: {}
+
 services:
   django: &django
     build:
       context: .
       dockerfile: ./compose/dev/django/Dockerfile
     image: krm_dev_django
+    depends_on:
+      - postgres
+      - redis
     volumes:
       - .:/app
     env_file:
@@ -21,7 +28,6 @@ services:
     <<: *django
     image: krm_local_celeryworker
     depends_on:
-      - redis
       - django
     ports: []
     command: /start-celeryworker
@@ -30,13 +36,15 @@ services:
     <<: *django
     image: krm_local_celerybeat
     depends_on:
-      - redis
+      - django
     ports: []
     command: /start-celerybeat
 
   flower:
     <<: *django
     image: krm_local_flower
+    depends_on:
+      - django
     ports:
       - "5555:5555"
     command: /start-flower
@@ -48,5 +56,14 @@ services:
       - ./compose/dev/redis/redis.conf:/usr/local/etc/redis/redis.conf
     expose:
       - "6379"
-    # ports:
-    #   - "6379:6379"
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/dev/postgres/Dockerfile
+    image: krm_local_postgres
+    volumes:
+      - krm_local_postgres_data:/var/lib/postgresql/data
+      - krm_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.dev/.postgres

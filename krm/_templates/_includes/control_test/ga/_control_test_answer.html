@@ -2,31 +2,83 @@
 
 <div class="c-control-test-answer">
   <div class="row">
-    <div class="col-12 col-md-6">
-      <p><span class="fs-6 fw-semibold">{% trans 'FECHA' %}: </span> {{ answer.created }}</p>
-      <p><span class="fs-6 fw-semibold">{% trans 'USUARIO' %}: </span> {{ answer.user }}</p>
-      <p><span class="fs-6 fw-semibold">{% trans 'EVIDENCIA 1' %}: </span>
-      {% if answer.attachment_1 %}
-        <a target="blank" href="{{ MEDIA_URL }}{{ answer.attachment_1 }}"> {% trans 'Descargar adjunto 1' %}</a>
-      {% else %}
-        {% trans 'No se ha adjuntado ningún fichero para el adjunto 1' %}
-      {% endif %}</p>
-      <p><span class="fs-6 fw-semibold">{% trans 'EVIDENCIA 2' %}: </span>
-      {% if answer.attachment_2 %}
-        <a target="blank" href="{{ MEDIA_URL }}{{ answer.attachment_2 }}"> {% trans 'Descargar adjunto 2' %}</a>
-      {% else %}
-        {% trans 'No se ha adjuntado ningún fichero para el adjunto 2' %}
-      {% endif %}</p>
-      <p><span class="fs-6 fw-semibold">{% trans 'EVIDENCIA 3' %}: </span>
-      {% if answer.attachment_3 %}
-        <a target="blank" href="{{ MEDIA_URL }}{{ answer.attachment_3 }}"> {% trans 'Descargar adjunto 3' %}</a>
-      {% else %}
-        {% trans 'No se ha adjuntado ningún fichero para el adjunto 3' %}
-      {% endif %}</p>
+    <div class="col col-md-7">
+      <div class="row mb-8">
+        <!-- begin::Col -->
+        <div class="col-xl-4">
+          <div class="fs-6 fw-semibold">
+            <span class="badge badge-secondary text-wrap">{% trans 'Usuario' %}</span>
+          </div>
+        </div>
+        <!-- end::Col -->
+        <!-- begin::Col -->
+        <div class="col-xl-8">
+          <div class="fs-6">
+            <span>{{ answer.user }}</span>
+          </div>
+        </div>
+        <!-- end::Col -->
+      </div>
+      <div class="row mb-8">
+        <div class="col-xl-4">
+          <div class="fs-6 fw-semibold">
+            <span class="badge badge-secondary text-wrap">{% trans 'Comentario' %}</span>
+          </div>
+        </div>
+        <!-- end::Col -->
+        <!-- begin::Col -->
+        <div class="col-xl-8">
+          <div class="fs-6">{{ answer.description|safe }}</div>
+        </div>
+      </div>
     </div>
-    <div class="col-12 col-md-6">
-      <p><span class="fs-6 fw-semibold">{% trans 'DESCRIPCIÓN' %}: </span> </p>
-      {{ answer.description|safe }}
+    <div class="col col-md-5">
+      <div class="row mb-8">
+        <!-- begin::Col -->
+        <div class="col-xl-4">
+          <div class="fs-6 fw-semibold">
+            <span class="badge badge-secondary text-wrap">{% trans 'Fecha' %}</span>
+          </div>
+        </div>
+        <!-- end::Col -->
+        <!-- begin::Col -->
+        <div class="col-xl-8">
+          <div class="fs-6">
+            <span>{{ answer.created }}</span>
+          </div>
+        </div>
+        <!-- end::Col -->
+      </div>
+      <div class="row mb-8">
+        <!-- begin::Col -->
+        <div class="col-xl-5">
+          <div class="fs-6 fw-semibold">
+            <span class="badge badge-secondary text-wrap">{% trans 'Evidencia' %}</span>
+          </div>
+        </div>
+        <!-- end::Col -->
+        <!-- begin::Col -->
+        <div class="col-xl-7">
+          <div class="attachment__item">
+            {% if answer.attachment_1 %}
+
+              <a target="blank" download href="{{ answer.attachment_1.url }}">{% trans 'Adjunto 1' %}</a>
+               - <a data-attachment="1" data-pk="{{ answer.pk }}" href="{% url "control_tests:delete_attachment" answer.pk 1 %}" class="js-attachment__delete">{% trans 'Eliminar adjunto' %}</a>
+            {% endif %}
+          </div>
+          <div class="attachment__item">
+            {% if answer.attachment_2 %}
+              <a target="blank" download href="{{ answer.attachment_2.url }}">{% trans 'Adjunto 2' %}</a> - <a data-attachment="2" data-pk="{{ answer.pk }}" href="{% url "control_tests:delete_attachment" answer.pk 2  %}" class="js-attachment__delete">{% trans 'Eliminar adjunto' %}</a>
+            {% endif %}
+          </div>
+          <div class="attachment__item">
+            {% if answer.attachment_3 %}
+              <a target="blank" download href="{{ answer.attachment_3.url }}">{% trans 'Adjunto 3' %}</a> - <a data-attachment="4" data-pk="{{ answer.pk }}" href="{% url "control_tests:delete_attachment" answer.pk 3  %}" class="js-attachment__delete">{% trans 'Eliminar adjunto' %}</a>
+            {% endif %}
+          </div>
+        </div>
+        <!-- end::Col -->
+      </div>
     </div>
   </div>
 </div>

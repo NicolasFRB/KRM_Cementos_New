@@ -1,8 +1,3 @@
-"""Booking model."""
-import os
-import hashlib
-import random
-
 # Django
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -15,7 +10,8 @@ class CompanyDomainRiskEvaluator(AuditModel):
 
     company = models.ForeignKey(
         'companies.Company',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='domain_risk_evaluators'
     )
 
     domain_risk = models.ForeignKey(

@@ -28,15 +28,18 @@
               <div class="col mb-4">
                 {{ form.app_name|as_crispy_field }}
               </div>
-              <div class="col">
+              <div class="col mb-4">
                 {{ form.main_email|as_crispy_field }}
+              </div>
+              <div class="col">
+                {{ form.enable_emails|as_crispy_field }}
               </div>
             </div>
           </div>
         </div>
       </div>
       <!--end::Body-->
-        
+
       <div class="card-footer py-6">
         <button type="submit" class="btn btn-sm btn-primary">{% trans 'Guardar' %}</button>
         <a href="{% url 'configuration:configuration_detail' %}" class="btn btn-sm btn-light btn-active-light-primary ms-2">{% trans 'Cancelar' %}</a>

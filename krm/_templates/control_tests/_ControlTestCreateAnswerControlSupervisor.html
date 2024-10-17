@@ -112,14 +112,12 @@
           <div class="kt-space-20"></div>
 
           {% if control_test.remediation_plans.all.count > 0 %}
-          <h5>{% trans 'PLANES DE REMEDIACIÓN' %}</h5>
+          <h5>{% trans 'PLAN DE REMEDIACIÓN' %}</h5>
           <div class="kt-space-20"></div>
-          {% for rm in control_test.remediation_plans.all %}
-          {% include 'includes/remediation_plan/ga/_remediation_plan.html' with rm=rm %}
+          {% include 'includes/remediation_plan/ga/_remediation_plan.html' with rm=control_test.remediation_plans.first %}
           <div class="kt-space-20"></div>
           <div class="kt-separator kt-separator--space-sm  kt-separator--border-dashed"></div>
           <div class="kt-space-20"></div>
-          {% endfor %}
           {% endif %}
 
           {% if control_test.status == 'WS' and request.user == control_test.control_test_supervisor and control_test.result != 'FI' %}
@@ -135,10 +133,22 @@
                 <strong>{% trans 'Si necesita más información para poder marcar el control como Completado, marque la siguiente casilla. Esto le devolverá el control al responsable de cumplimentarlo para que pueda aportar más información. Utilice el campo de texto anterior para requerir la información necesaria.' %}</strong>
               </p>
               {{ form.more_information|as_crispy_field }}
+              <div class="col-12 col-xl-5 mb-4">
+                {% if BRAND == 'globalvia'  %}
+                <div class="mb-8">
+                    {{ form.attachment_1|as_crispy_field }}
+                </div>
+                <div class="mb-8">
+                  {{ form.attachment_2|as_crispy_field }}
+                </div>
+                <div class="mb-8">
+                  {{ form.attachment_3|as_crispy_field }}
+                </div>
+                {% endif %}
+              </div>
               <p class="kt-font-danger kt-font-bold error-empty-textarea">
                 {% trans 'Es necesario especificar la información que necesita utilizando caja de texto de arriba' %}
               </p>
-
               <div class="form-row">
                 <div class="col-12  col-md-6">
                   <button type="submit" class="btn btn-sm btn-primary mr-3">{% trans 'Revisión completada' %}</button>

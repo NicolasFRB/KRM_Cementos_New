@@ -1,0 +1,85 @@
+version: "3"
+
+volumes:
+  krm_sacyr_local_postgres_data: {}
+  krm_sacyr_local_postgres_data_backups: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/sacyr/django/Dockerfile
+    image: krm_sacyr_django
+    depends_on:
+      - sacyr_postgres
+      - redis
+    volumes:
+      - .:/app
+      - ./krm-media:/krm-media
+    env_file:
+      - ./.envs/.sacyr/.django
+      - ./.envs/.sacyr/.postgres
+      - ./.envs/.sacyr/.email
+      - ./.envs/.sacyr/.ubuntu
+    ports:
+      - "8000:8000"
+    command: /start
+
+  celeryworker:
+    <<: *django
+    image: krm_sacyr_local_celeryworker
+    depends_on:
+      - django
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: krm_sacyr_local_celerybeat
+    depends_on:
+      - django
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: krm_sacyr_local_flower
+    depends_on:
+      - django
+    ports:
+      - "5555:5555"
+    command: /start-flower
+
+  redis:
+    image: 'redis:alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./compose/sacyr/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - "6379"
+
+  sacyr_postgres:
+    build:
+      context: .
+      dockerfile: ./compose/sacyr/postgres/Dockerfile
+    image: krm_sacyr_local_postgres
+    volumes:
+      - krm_sacyr_local_postgres_data:/var/lib/postgresql/data
+      - krm_sacyr_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.sacyr/.postgres
+
+  # nginx:
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/sacyr/nginx/Dockerfile
+  #   image: krm_sacyr_nginx
+  #   depends_on:
+  #     - django
+  #   volumes:
+  #     - ./krm-media:/krm-media
+  #   ports:
+  #     - "444:80"
+  #     # - "0.0.0.0:443:444"
+  #   env_file:
+  #     - ./.envs/.sacyr/.nginx

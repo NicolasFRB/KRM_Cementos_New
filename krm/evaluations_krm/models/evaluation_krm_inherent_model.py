@@ -7,6 +7,8 @@ from django.utils.html import strip_tags
 from ckeditor.fields import RichTextField
 
 from krm.utils.models import AuditModel
+from krm.users.models import User
+from krm.risks.models import DomainRisk
 
 
 def year_choices():
@@ -75,9 +77,89 @@ class EvaluationKrmInherent(AuditModel):
         default="EP",
     )
 
+    admin_supervisor = models.ForeignKey(
+        'users.User',
+        verbose_name=_('Administrador que ha supervisado la evaluación'),
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.ref
 
     class Meta:
         verbose_name = _("Evaluación Inherente KRM")
         verbose_name_plural = _("Evaluaciones Inherentes KRM")
+
+    # RETURN number of risks by state in evaluation
+    # OPTIONAL ARG: Filter by user
+    def nrisk_test_inherents_by_state(self, status, user=None):
+
+        if user:
+            return self.risk_test_inherents.filter(
+                status=status,
+                expert=user,
+            ).distinct().count()
+        else:
+            return self.risk_test_inherents.filter(
+                status=status,
+            ).distinct().count()
+
+    # RETURN experts by state of risks in evaluation
+    def get_experts_by_rit_state(self, status = None):
+
+        if status:
+            experts_id = set([rt.expert.pk for rt in self.risk_test_inherents.filter(
+            status=status)])
+        else:
+            experts_id = set([rt.expert.pk for rt in self.risk_test_inherents.all()])
+
+        return User.objects.filter(id__in=experts_id)
+
+    # RETURN domain_risks in evaluation
+    def get_domain_risk_in_evaluation(self):
+
+        domain_risks_pks = []
+        for rt in self.risk_test_inherents.all():
+            domain_pk = rt.risk.risk.risk_master.domain_risk.pk
+
+            if domain_pk not in domain_risks_pks:
+                domain_risks_pks.append(domain_pk)
+
+        return DomainRisk.objects.filter(id__in=domain_risks_pks)
+
+    # GET EVALUATORS FOR NOTIFICATIONS TABLE BY STATE
+    def get_evaluators_for_notifications(self):
+
+        evaluators_all_states = self.get_experts_by_rit_state()
+        evaluators = []
+        ev_pk_found = {}
+
+        for evaluator in evaluators_all_states:
+            
+            notifications = [[n.action_description, n.created] for n in evaluator.actions_log.all() if self.ref in n.action_description]
+
+            if evaluator.pk not in ev_pk_found:
+                ev_pk_found[evaluator.pk] = len(evaluators)
+                evaluators.append({
+                    'qt_pk': -1,
+                    'evaluator_pk': evaluator.pk,
+                    'evaluator_email': evaluator.email,
+                    'objects_pending': 0,
+                    'objects_delivered': 0,
+                    'notifications': notifications,
+                    })
+
+            evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] += self.nrisk_test_inherents_by_state(1, evaluator)
+            evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.nrisk_test_inherents_by_state(2, evaluator)
+            evaluators[ev_pk_found[evaluator.pk]]['objects_delivered'] += self.nrisk_test_inherents_by_state(3, evaluator)
+
+            if evaluators[ev_pk_found[evaluator.pk]]['objects_pending'] > 0:
+                evaluators[ev_pk_found[evaluator.pk]]['qt_pk'] = self.risk_test_inherents.filter(
+                    evaluation__ref = self.ref,
+                    status=1,
+                    expert=evaluator,
+                    ).first().pk
+
+        return evaluators

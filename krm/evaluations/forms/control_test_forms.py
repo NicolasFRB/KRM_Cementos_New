@@ -2,12 +2,27 @@ from cProfile import label
 from django.contrib.postgres.forms import SimpleArrayField
 from django import forms
 from django.forms import ModelForm
+from krm.evaluations.models import ControlTestAnswer
 from django.utils.translation import gettext_lazy as _
 
 from django.core.validators import FileExtensionValidator
+from krm.evaluations.validators import validate_file_size
 
 from krm.evaluations.models import ControlTest
 
+def update_filename(instance, filename):
+    path = "control_test_answer/"
+    name = filename.replace(" ", "_").lower()
+    name = slugify(name)
+    format = (
+        path
+        + str(instance.control_test.pk)
+        + "_"
+        + urllib.parse.quote(name)
+        + Path(filename).suffix
+    )
+
+    return format
 
 class ControlTestAssignForm(ModelForm):
 
@@ -137,6 +152,7 @@ class ControlTestCaForm(ModelForm):
         ("", _("-")),
         ("EF", _("Efectivo")),
         ("NE", _("No efectivo")),
+        ("NA", _("No aplica en el periodo certificado")),
     )
     control_result = forms.ChoiceField(
         required=True,
@@ -145,7 +161,7 @@ class ControlTestCaForm(ModelForm):
     )
     CONTROL_STATUS_CHOICES = (
         ("WO", _("Enviar de nuevo al Control Owner")),
-        ("WS", _("Enviar de neuvo al Control Supervisor")),
+        ("WS", _("Enviar de nuevo al Control Supervisor")),
         ("WA", _("Por revisar por el Control Administrator")),
         ("FI", _("Finalizado")),
         ("RE", _("Reiniciar respuestas y devolver al Control Owner"))
@@ -164,8 +180,12 @@ class ControlTestCaForm(ModelForm):
     )
 
     class Meta:
-        model = ControlTest
+        model = ControlTestAnswer
         fields = [
+            "description",
+            "attachment_1",
+            "attachment_2",
+            "attachment_3"
         ]
 
     def __init__(self, *args, **kwargs):
@@ -175,8 +195,105 @@ class ControlTestCaForm(ModelForm):
         self.fields["control_status"].widget.attrs["class"] = "form-select"
         self.fields["description"].widget.attrs["id"] = "cta_description"
 
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        if len(description) == 0:
+            raise forms.ValidationError("Campo obligatorio")        
+        elif len(description) < 3:
+            raise forms.ValidationError("Debe proporcionar información suficiente para finalizar la evaluación")
+        elif len(description) < 5000:
+            return description
+        else:
+            raise forms.ValidationError("Muy largo")
+
     def clean(self):
         cleaned_data = super().clean()
         if cleaned_data.get("status") == self.instance.status:
+            raise forms.ValidationError(
+                _('Debe establecer un nuevo estado del control para finalizar la revisión del control test'))
+
+
+class ControlTestGaForm(ModelForm):
+
+    CONTROL_RESULT_CHOICES = (
+        ("", _("-")),
+        ("EF", _("Efectivo")),
+        ("NE", _("No efectivo")),
+        ("NA", _("No aplica en el periodo certificado")),
+    )
+    control_result = forms.ChoiceField(
+        required=True,
+        choices=CONTROL_RESULT_CHOICES,
+        label=_("Resultado del control")
+    )
+    CONTROL_STATUS_CHOICES = (
+        ("WO", _("Enviar de nuevo al Control Owner")),
+        ("WS", _("Enviar de nuevo al Control Supervisor")),
+        ("WA", _("Por revisar por el Control Administrator")),
+        ("FI", _("Finalizado")),
+        ("RE", _("Reiniciar respuestas y devolver al Control Owner"))
+
+    )
+    control_status = forms.ChoiceField(
+        required=True,
+        choices=CONTROL_STATUS_CHOICES,
+        label=_("Estado del control")
+    )
+    description = forms.CharField(
+        widget=forms.Textarea,
+        label=_("Descripción del seguimiento del control"),
+        max_length=10000,
+        required=False
+    )
+
+    attachment_1 = forms.FileField(
+        label=_("Archivo adjunto 1"),
+        help_text=_("Tamaño máximo de archivo de 50MB"),
+        validators=[validate_file_size],
+        required = False
+    )
+
+    attachment_2 = forms.FileField(
+        label=_("Archivo adjunto 2"),
+        help_text=_("Tamaño máximo de archivo de 50MB"),
+        validators=[validate_file_size],
+        required = False
+    )
+
+    attachment_3 = forms.FileField(
+        label=_("Archivo adjunto 3"),
+        help_text=_("Tamaño máximo de archivo de 50MB"),
+        validators=[validate_file_size],
+        required = False
+    )
+
+    class Meta:
+        model = ControlTest
+        fields = [
+        ]
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["control_result"].widget.attrs["class"] = "form-select"
+        self.fields["control_status"].widget.attrs["class"] = "form-select"
+        self.fields["description"].widget.attrs["id"] = "cta_description"
+
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        if len(description) == 0:
+            raise forms.ValidationError("Campo obligatorio")        
+        elif len(description) < 3:
+            raise forms.ValidationError("Debe proporcionar información suficiente para finalizar la evaluación")
+        elif len(description) < 5000:
+            return description
+        else:
+            raise forms.ValidationError("Muy largo")
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.fields["control_status"] == self.instance.status:
             raise forms.ValidationError(
                 _('Debe establecer un nuevo estado del control para finalizar la revisión del control test'))

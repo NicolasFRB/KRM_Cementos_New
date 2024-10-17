@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<p>
+  {% blocktrans with recovery_url=recovery_url %}
+  <strong>{{ notif_type }}</strong><br /><br />
+  Hola {{ user_email }},<br><br>
+
+  Dispone de tests de riesgo residual pendientes de valorar dentro de la plataforma <strong>{{ app_name }}</strong> correspondientes a la Evaluación <strong>{{ evaluation_ref }}</strong> que tendrá lugar en el periodo desde el <strong>{{ evaluation_date_begin }}</strong> hasta el <strong>{{ evaluation_date_end }}</strong>.<br><br>
+
+  El periodo a evaluar es {{ certification_year }}{{ certification_period }}. Por favor, completa la evaluación antes del {{ evaluation_date_end }}.
+
+  Acceda desde <a href="{{ site_url }}">esta url</a> con sus datos de acceso para poder completarlos.<br><br>
+
+  Si no recuerda sus credenciales, puede recuperar su contraseña desde <a href="{{ recovery_url }}">esta url</a> indicando su correo electrónico.<br><br>
+
+  Gracias.
+  {% endblocktrans %}
+</p>

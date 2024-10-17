@@ -7,6 +7,7 @@ from krm.evaluations.views import (
     GaEvaluationDetailView,
     GaEvaluationUpdateView,
     GaEvaluationDeleteView,
+    GaEvaluationNotificationView,
     EvaluationAssignImport,
 
     CaEvaluationListView,
@@ -14,7 +15,11 @@ from krm.evaluations.views import (
     CaEvaluationDetailView,
     CaEvaluationUpdateView,
     CaEvaluationDeleteView,
-    CaEvaluationAssignImport
+    CaEvaluationAssignImport,
+    CaEvaluationNotificationView,
+
+    AuEvaluationListView,
+    AuEvaluationDetailView
 )
 
 urlpatterns = [
@@ -42,6 +47,11 @@ urlpatterns = [
         'create/',
         GaEvaluationCreateView.as_view(),
         name='ga_evaluation_create'
+    ),
+    path(
+        'notifications/<pk>/',
+        GaEvaluationNotificationView.as_view(),
+        name='ga_evaluation_notifications'
     ),
     path(
         "assign-control-import/<pk>/",
@@ -78,5 +88,22 @@ urlpatterns = [
         "ca/assign-control-import/<pk>/",
         CaEvaluationAssignImport.as_view(),
         name="ca_evaluation_import_assign_control",
+    ),
+
+    path(
+        'auditor/evaluations-krc/',
+        AuEvaluationListView.as_view(),
+        name='au_evaluation_list'
+    ),
+    path(
+        'auditor/evaluations-krc/<pk>/',
+        AuEvaluationDetailView.as_view(),
+        name='au_evaluation_detail'
+    ),
+
+    path(
+        'ca/notifications/<pk>/',
+        CaEvaluationNotificationView.as_view(),
+        name='ca_evaluation_notifications'
     ),
 ]

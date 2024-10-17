@@ -4,7 +4,7 @@
 <head>
   <meta name="viewport" content="width=device-width">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>KRM Tool</title>
+  <title>{{ CONFIGURATION.app_name }}</title>
   <style>
     /* -------------------------------------
           GLOBAL RESETS
@@ -380,9 +380,11 @@
                   style="border-collapse: separate;mso-table-lspace: 0pt;mso-table-rspace: 0pt;width: 100%;">
                   <tr>
                     <td style="text-align: center;font-family: sans-serif;font-size: 14px;vertical-align: top;">
-                      <img class="" width="150"
-                        style="width: 150px;height: auto;display: inline-block;margin-left: auto;margin-right: auto;border: none;-ms-interpolation-mode: bicubic;max-width: 100%;"
-                        src="https://tprmtool.s3.eu-central-1.amazonaws.com/logo_tprm_email.png" alt="KRM Tool">
+                      {% if BRAND == 'globalvia' %}
+                          <img class="" width="150" style="width: 150px;height: auto;display: inline-block;margin-left: auto;margin-right: auto;border: none;-ms-interpolation-mode: bicubic;max-width: 100%;" src="https://tprmtool.s3.eu-central-1.amazonaws.com/logo_globalvia_email.png" alt="{{ app_name }}">
+                      {% else %}
+                          <img class="" width="150" style="width: 150px;height: auto;display: inline-block;margin-left: auto;margin-right: auto;border: none;-ms-interpolation-mode: bicubic;max-width: 100%;" src="https://tprmtool.s3.eu-central-1.amazonaws.com/logo_krm_email.png" alt="{{ app_name }}">
+                      {% endif %}
                     </td>
                   </tr>
                   <tr>
@@ -394,21 +396,6 @@
                   <tr>
                     <td style="font-family: sans-serif;font-size: 14px;vertical-align: top;">
                       {{ content }}
-                      <!-- <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                          <tbody>
-                            <tr>
-                              <td align="left">
-                                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                  <tbody>
-                                    <tr>
-                                      <td> <a href="http://htmlemail.io" target="_blank">Call To Action</a> </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table> -->
                     </td>
                   </tr>
                   <tr>
@@ -430,7 +417,7 @@
               <tr>
                 <td class="content-block"
                   style="font-family: sans-serif;font-size: 12px;vertical-align: top;padding-bottom: 10px;padding-top: 10px;color: #999999;text-align: center;">
-                  <span class="apple-link" style="color: #999999;font-size: 12px;text-align: center;">KRM Tool</span>
+                  <span class="apple-link" style="color: #999999;font-size: 12px;text-align: center;">{{ CONFIGURATION.app_name }}</span>
                 </td>
               </tr>
             </table>

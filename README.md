@@ -4,3 +4,11 @@
 ![Docker](https://img.shields.io/badge/docker-blue.svg)
 
 Proyecto base Django 4.0 y React JS Dockerizado
+
+
+Contar las líneas de código escritas
+find . -type d -name node_modules -prune -o -type d -name migrations -prune -o -type d -name partials -prune -o -type d -name layout -prune -o -type d -name static -prune -o -type d -name assets -prune -o -name '*.html' -o -name '*.py' -o -name '*.js' | xargs wc -l
+
+
+# Regenerar cadenas de traducción
+docker-compose -f dev.yml run --rm django python manage.py makemessages --locale en
