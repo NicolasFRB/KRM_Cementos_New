@@ -157,6 +157,10 @@ urlpatterns += i18n_patterns(
          include(('krm.evaluations_krm.urls.evaluation_krm_urls', 'evaluations_krm'),
                  namespace='evaluations_krm')
          ),
+    path('remediation-plans/',
+         include(('krm.remediation_plans.remediation_plan_urls', 'remediation_plans'),
+                 namespace='remediation_plans')
+         ),
     path('questionnaires/',
          include(('krm.questionnaires.urls.questionnaire_urls', 'questionnaires'),
                  namespace='questionnaires')

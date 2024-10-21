@@ -237,7 +237,7 @@ def delete_attachment(request, pk_answer, pk_attachment):
 
     # Ahora comprobamos que el usuario es el control supervisor, control owner o administrador
     answer = get_object_or_404(ControlTestAnswer, pk=pk_answer)
-    if request.user == answer.control_test.control_test_supervisor or request.user == answer.control_test.control_test_owner or request.user.is_global_admin:
+    if request.user == answer.control_test.control_test_supervisor or request.user == answer.control_test.control_test_owner or request.user.is_superuser:
         if pk_attachment == '1':
             answer.attachment_1.delete()
             answer.attachment_1 = None
@@ -250,8 +250,22 @@ def delete_attachment(request, pk_answer, pk_attachment):
 
         answer.save()
 
+        # Creamos un mensaje de Evidencia eliminada correctamente
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _("Evidencia eliminada correctamente"),
+        )
+
+        url_to_return =  reverse_lazy(
+            "control_tests:control_test_detail",
+            kwargs={"pk": answer.control_test.pk},
+        )
+
+        return HttpResponseRedirect(url_to_return)
+
         # Devolvemos un status 200
-        return HttpResponse(status=200)
+        # return HttpResponse(status=200)
     else:
         # Devolvemos un status 403
         return HttpResponse(status=403)

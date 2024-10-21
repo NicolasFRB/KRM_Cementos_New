@@ -9,6 +9,11 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.utils import translation
 
+from krm.remediation_plans.models import RemediationPlan
+
+# Import Q
+from django.db.models import Q
+
 import hashlib
 from random import choice
 
@@ -116,6 +121,22 @@ class User(AbstractUser):
     def controls_test_administrator_finished(self):
         from krm.evaluations.models import ControlTest
         return ControlTest.objects.filter(status="FI", evaluation__company__in=self.companies_admin.all())
+
+    def remediaton_plans_supervisor_pending(self):
+        return self.rp_supervisor.filter(status="EP")
+
+    def remediaton_plans_responsible_pending(self):
+        return self.rp_responsible.filter(status="EP")
+
+    def get_pending_remediaton_plans(self):
+        return RemediationPlan.objects.filter(
+            Q(responsible=self) | Q(supervisor=self) | Q(additional_users=self)
+        ).filter(status="EP").distinct()
+
+    def get_finished_remediaton_plans(self):
+        return RemediationPlan.objects.filter(
+            Q(responsible=self) | Q(supervisor=self) | Q(additional_users=self)
+        ).filter(status="CO")
 
     # Risk Test Inherent
 

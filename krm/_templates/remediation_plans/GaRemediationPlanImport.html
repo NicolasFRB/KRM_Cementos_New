@@ -1,0 +1,57 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            {% include '_includes/FormErrors.html' %}
+          </div>
+          <div class="col-12 mb-4">
+              <legend>{% trans 'Instrucciones' %}</legend>
+              <ol>
+                <li><strong><a href="{% static 'files/import_questionnaire.xlsx' %}">{% trans 'Descarga la plantilla de importación de cuestionarios' %}</a></strong></li>
+                <li>{% trans 'Rellenar la plantilla de importación sin modificar el orden de las columnas' %}</li>
+                <li>{% trans 'Adjuntar el archivo' %}</li>
+                <li>{% trans 'Comprobar los posibles mensajes de error' %}</li>
+                <li>{% trans 'Si no hay errores se le comunicará el resultado de la importación' %}</li>
+              </ol>
+          </div>
+          <div class="col-12">
+            {{ form.questionnaire_file|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Importar' %}</button>
+        <a href="{% url 'questionnaires:ga_questionnaire_list' %}"
+          class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+{% endblock content %}

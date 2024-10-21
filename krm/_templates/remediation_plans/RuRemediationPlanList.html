@@ -1,0 +1,100 @@
+{% extends 'layout/default.html' %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Planes de remediación de los que somos supervisores' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% include '_includes/remediation_plan/ru/_remediation_plan_table.html' with remediation_plans=rp_supervisor %}
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+
+  </div>
+  <!--end::Card footer-->
+</div>
+<!--end::Container-->
+
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Planes de remediación de los que somos responsables' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% include '_includes/remediation_plan/ru/_remediation_plan_table.html' with remediation_plans=rp_responsible %}
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+
+  </div>
+  <!--end::Card footer-->
+</div>
+<!--end::Container-->
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Otros planes de remediación' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% include '_includes/remediation_plan/ru/_remediation_plan_table.html' with remediation_plans=rp_others %}
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+
+  </div>
+  <!--end::Card footer-->
+</div>
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'Planes de remediación finalizados' %}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% include '_includes/remediation_plan/ru/_remediation_plan_table.html' with remediation_plans=rp_finished %}
+  </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6">
+
+  </div>
+  <!--end::Card footer-->
+</div>
+<!--end::Container-->
+{% endblock content %}

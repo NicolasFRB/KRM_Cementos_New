@@ -1,0 +1,241 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+  <!--begin::Card body-->
+  <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'ID' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.pk }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.date_begin }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha fin' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.date_end }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Estado' %}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-8">
+              <div class="fs-6" style="display:flex;">
+              {% if remediation_plan.status == "EP" %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                    title="{{remediation_plan.get_status_display}}"></i></div>
+                <div>{{ remediation_plan.get_status_display }}</div>
+                {% elif remediation_plan.status == "FI" %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                    title="{{remediation_plan.get_status_display}}"></i></div>
+                <div>{{ remediation_plan.get_status_display }}</div>
+                {% else %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                    title="{{remediation_plan.get_status_display}}"></i></div>
+                <div>{{ remediation_plan.get_status_display }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Responsable' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.responsible }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Supervisor' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.supervisor }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Usuarios adicionales' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>
+                  {% for user in remediation_plan.additional_users.all %}
+                    {{ user }}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.description }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+  {% if request.user == remediation_plan.supervisor or request.user.is_admin  %}
+    <div class="card-footer py-6">
+      <a href="{% url 'remediation_plans:ga_remediation_plan_update' remediation_plan.pk %}" class="btn btn-sm btn-primary">
+        <i class="bi bi-pencil"></i>
+        {% trans 'Editar' %}</a>
+      <a href="{% url 'remediation_plans:ga_remediation_plan_delete' remediation_plan.pk %}" class="btn btn-sm btn-danger ms-2">
+        <i class="bi bi-trash"></i>
+        {% trans 'Eliminar' %}</a>
+        <a href="{% url 'remediation_plans:ga_remediation_plan_list' %}" class="btn btn-sm btn-secondary ms-2"><i
+              class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+    </div>
+  {% endif %}
+</div>
+
+<div class="card mb-8">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">Respuestas</div>
+  </div>
+
+  <div class="card-body">
+    <div class="kt-section">
+      <div class="kt-space-20"></div>
+      {% if remediation_plan.answers.count > 0 %}
+        {% for answer in remediation_plan.answers.all %}
+          {% include '_includes/remediation_plan/ga/_remediation_plan_answer.html' %}
+          {% if not forloop.last %}
+            <div class="kt-space-20"></div>
+            <div class="separator my-10"></div>
+            <div class="kt-space-20"></div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <p class="kt-font-info kt-font-bold">
+          {% trans 'Todavía no hay respuestas para este plan de remediación' %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+  <!-- Si el plan de remediación está in progress, mostramos formulario -->
+  {% if remediation_plan.status == "EP" %}
+    {% comment %}
+      Ahora tenemos que ver si el plan de remediación debe rellenarlo el usuario supervisor o el responsable y quien lo está viendo y dependiendo de eso mostraremos o no el campo de usaurio siguiente
+    {% endcomment %}
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title fs-3 fw-bold">Nueva respuesta</div>
+      </div>
+
+      <div class="card-body">
+
+        <form method="post" class="kt-form kt-form--label-right" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="kt-section__body">
+            {% include '_includes/FormErrors.html' %}
+            <div class="row mb-8">
+              <div class="col-12 col-md-6">
+                {{ form.description|as_crispy_field }}
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="row">
+                  <div class="col-12 col-md-6 mb-7 ">
+                    {{ form.status|as_crispy_field }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-6 mb-7 ">
+                    {{ form.next_to_reply|as_crispy_field }}
+                  </div>
+                  <div class="col-12 mb-7">
+                    <div class="form-group">
+                      <label>{% trans 'Fichero adjunto de evidencias del plan de remediación' %}</label>
+                      <div></div>
+                      <div class="custom-file">
+                        {{ form.attachment_1 }}
+                        <label class="custom-file-label" style="text-align: left;" for="customFile">{% trans 'Selecciona un fichero' %}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12  col-md-6">
+                <button type="submit" class="btn btn-sm btn-primary me-3">{% trans 'Guardar respuesta' %}</button>
+                <button class="btn btn-sm btn-secondary backHistory">{% trans 'Cancelar' %}</button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  {% endif %}
+{% endblock content %}

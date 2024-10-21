@@ -84,6 +84,11 @@ def get_menu_urls(request, pk=None):
             'evaluation_questionnaires:ga_evaluation_questionnaire_list'),
     ]
 
+    remediation_plan_urls = [
+        reverse_lazy('remediation_plans:ga_remediation_plan_list'),
+        reverse_lazy('remediation_plans:ga_remediation_plan_create'),
+    ]
+
     if pk is not None:
         domain_risks_urls = domain_risks_urls + [
             reverse_lazy(
@@ -186,7 +191,7 @@ def get_menu_urls(request, pk=None):
                 kwargs={'pk': pk}
             )
         ]
-        
+
         process_urls = process_urls + [
             reverse_lazy(
                 'process:ga_process_detail',
@@ -304,6 +309,21 @@ def get_menu_urls(request, pk=None):
             )
         ]
 
+        remediation_plan_urls = remediation_plan_urls + [
+            reverse_lazy(
+                'remediation_plan:ga_remediation_plan_detail',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'remediation_plan:ga_remediation_plan_update',
+                kwargs={'pk': pk}
+            ),
+            reverse_lazy(
+                'remediation_plan:ga_remediation_plan_delete',
+                kwargs={'pk': pk}
+            )
+        ]
+
     if settings.KRM_ACTIVATE:
         KRM_ACTIVATE = True
     else:
@@ -330,5 +350,6 @@ def get_menu_urls(request, pk=None):
         'QUESTIONNAIRES_URLS': questionnaires_urls,
         'QUESTIONS_URLS': questions_urls,
         'EVALUATIONS_QUESTIONNAIRES_URLS': evaluation_questionnaires_urls,
+        'REMEDIATION_PLAN_URLS': remediation_plan_urls,
         'CONFIGURATION': Configuration.objects.get(pk=1)
     }

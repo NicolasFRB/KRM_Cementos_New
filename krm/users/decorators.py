@@ -25,6 +25,8 @@ from krm.risks.models import (
     RiskCompany
 )
 
+from krm.remediation_plans.models import RemediationPlan
+
 
 class is_global_admin(object):
 
@@ -131,6 +133,23 @@ def user_can_view_evaluation(function):
 
     return wrap
 
+
+def user_can_view_remediation_plan(function):
+    def wrap(request, *args, **kwargs):
+        try:
+            remediation_plan = RemediationPlan.objects.get(pk=kwargs["pk"])
+        except RemediationPlan.DoesNotExist:
+            raise Http404
+
+        if (
+            remediation_plan.responsible == request.user or
+            remediation_plan.supervisor == request.user or
+            request.user.is_superuser or request.user.is_auditor
+        ):
+            return function(request, *args, **kwargs)
+        raise PermissionDenied
+
+    return wrap
 
 def user_can_edit_domain_risk_expert(function):
     def wrap(request, *args, **kwargs):

@@ -18,6 +18,8 @@
 {% url 'evaluations_krm:ca_evaluation_residual_list' as ca_evaluation_residual_list %}
 {% url 'evaluation_questionnaires:ga_evaluation_questionnaire_create' as ga_evaluation_questionnaire_create %}
 {% url 'evaluation_questionnaires:ga_evaluation_questionnaire_list' as ga_evaluation_questionnaire_list %}
+{% url 'remediation_plans:ga_remediation_plan_list' as ga_remediation_plan_list %}
+{% url 'remediation_plans:ga_remediation_plan_create' as ga_remediation_plan_create %}
 
 <!--begin::sidebar menu-->
 <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
@@ -354,7 +356,7 @@
             </div>
             <!--end:Menu item-->
 
-            <!--begin:Menu item-->
+            <!--CUESTIONARIOS-->
             <div data-kt-menu-trigger="click"
                 class="menu-item menu-accordion {% if request.path in EVALUATIONS_QUESTIONNAIRES_URLS %}show{% endif %}">
                 <!--begin:Menu link-->
@@ -396,7 +398,54 @@
                 </div>
                 <!--end:Menu sub-->
             </div>
-            <!--end:Menu item-->
+            <!--CUESTIONARIOS-->
+
+
+            <!-- PLANES DE REMEDIACIÓN -->
+            <div data-kt-menu-trigger="click"
+                class="menu-item menu-accordion {% if request.path in REMEDIATION_PLAN_URLS %}show{% endif %}">
+                <!--begin:Menu link-->
+                <span class="menu-link">
+                    <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
+                    <span class="menu-title">{% trans 'Planes de Remediación' %}</span>
+                    <span class="menu-arrow"></span>
+                </span>
+                <!--end:Menu link-->
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-accordion">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+
+                        <a class="menu-link {% if request.path == ga_remediation_plan_list %}active{% endif %}"
+                            href="{% url 'remediation_plans:ga_remediation_plan_list' %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">{% trans 'Planes de Remediación' %}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {% if request.path == ga_remediation_plan_create %}active{% endif %}"
+                            href="{% url 'remediation_plans:ga_remediation_plan_create' %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">{% trans 'Crear Plan' %}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <!--end:Menu sub-->
+            </div>
+            <!-- PLANES DE REMEDIACIÓN -->
+
+
             {% endif %}
 
             <div class="menu-item">
@@ -624,7 +673,6 @@
             </div>
 
             <div class="menu-item">
-                <!--begin:Menu link-->
                 <a class="menu-link" href="{% url 'control_tests:ru_control_test_supervisor_list' %}">
                     <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
                     <span class="menu-title">{% trans 'Supervisar Controles' %}
@@ -633,8 +681,18 @@
                         {% endif %}
                     </span>
                 </a>
-                <!--end:Menu link-->
             </div>
+
+            <div class="menu-item">
+              <a class="menu-link" href="{% url 'remediation_plans:ru_remediation_plan_list' %}">
+                  <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
+                  <span class="menu-title">{% trans 'Planes de Remediación' %}
+                      {% if request.user.get_pending_remediaton_plans.count > 0 %}
+                      &nbsp;&nbsp;<span class="badge badge-primary">{{request.user.get_pending_remediaton_plans.count }}</span>
+                      {% endif %}
+                  </span>
+              </a>
+          </div>
             {% if KRM_ACTIVATE %}
             <!--begin:Menu item-->
             <div class="menu-item">
