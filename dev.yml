@@ -10,11 +10,11 @@ services:
       context: .
       dockerfile: ./compose/dev/django/Dockerfile
     image: krm_dev_django
-    depends_on:
-      - postgres
-      - redis
+    # depends_on:
+      # - postgres
+      # - redis
     volumes:
-      - .:/app
+      - C://Proyectos/krm-kpmg:/data
     env_file:
       - ./.envs/.dev/.django
       - ./.envs/.dev/.postgres
@@ -49,21 +49,21 @@ services:
       - "5555:5555"
     command: /start-flower
 
-  redis:
-    image: 'redis:alpine'
-    command: redis-server /usr/local/etc/redis/redis.conf
-    volumes:
-      - ./compose/dev/redis/redis.conf:/usr/local/etc/redis/redis.conf
-    expose:
-      - "6379"
+  # redis:
+  #   image: 'redis:alpine'
+  #   command: redis-server /usr/local/etc/redis/redis.conf
+  #   volumes:
+  #     - ./compose/dev/redis/redis.conf:/usr/local/etc/redis/redis.conf
+  #   expose:
+  #     - "6379"
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./compose/dev/postgres/Dockerfile
-    image: krm_local_postgres
-    volumes:
-      - krm_local_postgres_data:/var/lib/postgresql/data
-      - krm_local_postgres_data_backups:/backups
-    env_file:
-      - ./.envs/.dev/.postgres
+  # postgres:
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/dev/postgres/Dockerfile
+  #   image: krm_local_postgres
+  #   volumes:
+  #     - krm_local_postgres_data:/var/lib/postgresql/data
+  #     - krm_local_postgres_data_backups:/backups
+  #   env_file:
+  #     - ./.envs/.dev/.postgres

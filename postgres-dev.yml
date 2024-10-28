@@ -1,0 +1,20 @@
+version: "3"
+
+volumes:
+  krm_local_postgres_data: {}
+  krm_local_postgres_data_backups: {}
+
+services:
+  postgres: &postgres
+    container_name: postgres_local
+    build:
+      context: .
+      dockerfile: ./compose/dev/postgres/Dockerfile
+    image: krm_local_postgres
+    volumes:
+      - krm_local_postgres_data:/var/lib/postgresql/data
+      - krm_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.dev/.postgres
+    ports:
+    - "5432:5432"

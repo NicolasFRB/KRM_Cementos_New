@@ -1,0 +1,14 @@
+{{- if .Values.configmaps.create -}}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "artifact.name" . }}-configmap
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include "artifact.name" . }}
+    deploymentVersion: {{ .Chart.Version }}
+data:
+  {{- range $key, $value := .Values.configmaps.values }}
+  {{ $key | upper }}: {{ $value | quote }}
+  {{- end }}
+{{- end -}}

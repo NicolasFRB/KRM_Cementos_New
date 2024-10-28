@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path("krm")
 
-DEV = env.bool('KRM_DJANGO_DEV')
+DEV = True # env.bool('KRM_DJANGO_DEV')
 DEVJS = env.bool('KRM_DJANGO_DEVJS')
 BRAND = env.str('KRM_BRAND')
 KRM_DEBUG_TOOLBAR = env.bool('KRM_DEBUG_TOOLBAR', False)
@@ -465,6 +465,7 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
+    'http://localhost:53660', # pruebas kubernetes
     'http://localhost:3000',
     'http://app.krmtool.com',
     'https://app.krmtool.com',
@@ -487,6 +488,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 ALLOWED_HOSTS = [
     'http://localhost:8000',
+    'http://localhost:53660', # pruebas kubernetes
     'http://localhost:3000',
     'http://app.krmtool.com',
     'https://app.krmtool.com',

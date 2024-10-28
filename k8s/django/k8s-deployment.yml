@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: krm-kpmg-deploy
+  namespace: krm-kpmg
+spec:
+  selector:
+    matchLabels:
+      app: krm-kpmg-application
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: krm-kpmg-application
+    spec:
+      volumes:
+        - name: staticfiles
+          persistentVolumeClaim:
+            claimName: staticfiles-pvc
+      containers:
+        - image: krm_dev_django:latest
+          name: krm-kpmg-container
+          imagePullPolicy: Never
+          command: ["/bin/bash", "-c"]
+          args:
+          - |
+            set -o errexit
+            set -o pipefail
+            set -o nounset
+            python manage.py migrate
+            python manage.py runserver 0.0.0.0:8000
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: "/data"
+              name: staticfiles
+          env:
+            - name: KRM_DJANGO_DEBUG
+              value: 'True'
+            - name: KRM_DJANGO_DEV
+              value: 'True'
+            - name: KRM_DJANGO_DEVJS
+              value: 'False'
+            - name: KRM_BRAND
+              value: ''
+            - name: KRM_DEBUG_TOOLBAR
+              value: 'False'
+            - name: KRM_DJANGO_EMAIL_BACKEND
+              value: django.core.mail.backends.smtp.EmailBackend
+            - name: KRM_DJANGO_SECRET_KEY
+              value: PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH
+            - name: KRM_SITE_URL
+              value: 'http://localhost:8000'
+            - name: KRM_ACTIVATE
+              value: 'True'
+            - name: CELERY_BROKER_URL
+              value: redis://:V78jXv!qcm@redis:6379/0
+            - name: CELERY_FLOWER_USER
+              value: admin
+            - name: AUTH0_CLIENT_ID
+              value: 1Dk3p7qRl4ETYA9emXHwooqES1wuVN5S
+            - name: AUTH0_CLIENT_SECRET
+              value: Hs-F46aKi3a-4NDz0aS9LgJtBSGAadpSngPNb0TbLqOGoHyLejo00OHg2_wYFzOV
+            - name: AUTH0_DOMAIN
+              value: dev-njl8nr7c8xdkfs74.us.auth0.com
+            - name: CELERY_FLOWER_PASSWORD
+              value: aV6OGW54brOr
+            - name: KRM_EMAIL_BACKEND
+              value: "django.core.mail.backends.smtp.EmailBackend"
+            - name: KRM_EMAIL_FROM
+              value: 'Compliance Tool <info@krctool.com>'
+            - name: KRM_EMAIL_DEV_TO
+              value: 'bienvenidosaez@baetica.com'
+            - name: KRM_EMAIL_HOST
+              value: 'smtp.dondominio.com'
+            - name: KRM_EMAIL_PORT
+              value: '587'
+            - name: KRM_EMAIL_USE_TLS
+              value: 'True'
+            - name: KRM_EMAIL_HOST_USER
+              value: 'info@krctool.com'
+            - name: KRM_EMAIL_HOST_PASSWORD
+              value: 'eY95CDEwYanSCq@'
+            - name: KRM_EMAIL_BCC
+              value: 'Baetica Digital <it@baeticadigital.com>'
+            - name: KRM_POSTGRES_HOST
+              value: postgres-service
+            - name: KRM_POSTGRES_PORT
+              value: '5432'
+            - name: KRM_POSTGRES_DB
+              value: krm
+            - name: KRM_POSTGRES_USER
+              value: sBLRWyyPsInwHftmHAWmYJURGWBGFpLs
+            - name: KRM_POSTGRES_PASSWORD
+              value: tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL
+            - name: DATABASE_URL
+              value: postgres://sBLRWyyPsInwHftmHAWmYJURGWBGFpLs:tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL@postgres-service:5432/krm
+            - name: POSTGRES_HOST
+              value: postgres
+            - name: POSTGRES_PORT
+              value: '5432'
+            - name: POSTGRES_DB
+              value: krm
+            - name: POSTGRES_USER
+              value: sBLRWyyPsInwHftmHAWmYJURGWBGFpLs
+            - name: POSTGRES_PASSWORD
+              value: tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL
+            - name: TZ
+              value: Europe/Madrid
+            - name: DEBIAN_FRONTEND
+              value: noninteractive
+          envFrom:
+            - configMapRef:
+                name: configmap-django
+            - configMapRef:
+                name: configmap-email
+            - configMapRef:
+                name: configmap-postgres
+            - configMapRef:
+                name: configmap-ubuntu
+

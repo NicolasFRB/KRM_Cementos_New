@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-secret-credentials
+  namespace: krm-kpmg
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: krm
+  POSTGRES_USER: sBLRWyyPsInwHftmHAWmYJURGWBGFpLs
+  POSTGRES_PASSWORD: tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL
