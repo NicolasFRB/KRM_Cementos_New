@@ -130,8 +130,9 @@ class User(AbstractUser):
 
     def get_pending_remediaton_plans(self):
         return RemediationPlan.objects.filter(
-            Q(responsible=self) | Q(supervisor=self) | Q(additional_users=self)
-        ).filter(status="EP").distinct()
+            Q(responsible=self, next_to_reply='WR') |
+            Q(supervisor=self, next_to_reply='WS')
+        ).filter(status="EP")
 
     def get_finished_remediaton_plans(self):
         return RemediationPlan.objects.filter(

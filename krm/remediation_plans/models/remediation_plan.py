@@ -1,6 +1,13 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from django.utils import translation
+from django.urls import reverse
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.utils import translation
+
 # Utilities
 from krm.utils.models import AuditModel
 
@@ -95,3 +102,66 @@ class RemediationPlan(AuditModel):
     class Meta:
         verbose_name = _("Plan de remediación")
         verbose_name_plural = _("Planes de remediación")
+
+
+    def finish(self):
+        self.status = "CO"
+        self.next_to_reply = "FI"
+        self.save()
+        return self.status
+
+
+    def sent_notification(self):
+        from krm.configuration.models import Configuration
+
+        if self.next_to_reply == "FI":
+            return
+
+        # Calculamos a quien debemos avisar
+        if self.next_to_reply == "WR":
+            user = self.responsible
+        elif self.next_to_reply == "WS":
+            user = self.supervisor
+        else:
+            user = None
+
+        configuration = Configuration.objects.first()
+        translation.activate(
+            user.notification_language)
+
+        context = {
+            "site_url": settings.SITE_URL,
+            "app_name": configuration.app_name,
+        }
+        body_html = render_to_string(
+            "emails/remediation_plan/remediation_plan_supervisor.html",
+            context,
+        )
+        context = {
+            "content": body_html,
+            "preheader": _("Plamn de remediación pendiente"),
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
+            "MAIN_EMAIL": configuration.main_email,
+            "site_url": settings.SITE_URL,
+            "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
+        }
+
+        body_html = render_to_string("emails/base-inline.html", context)
+        from_email = settings.EMAIL_FROM
+        if settings.EMAIL_BCC:
+            bcc = settings.EMAIL_BCC
+        else:
+            bcc = ""
+
+        subject, from_email, to = (
+            _("{} - Plan de remediación pendiente".format(configuration.app_name)),
+            from_email,
+            user.email,
+        )
+        msg = EmailMultiAlternatives(
+            subject, body_html, from_email, [to], [bcc])
+        msg.content_subtype = "html"
+
+        if configuration.enable_emails:
+            msg.send(fail_silently=False)

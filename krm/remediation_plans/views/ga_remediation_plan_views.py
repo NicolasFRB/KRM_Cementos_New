@@ -21,6 +21,9 @@ from django.views.generic import (
 # Importar hidden field
 from django import forms
 
+# timezone
+from django.utils import timezone
+
 from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
@@ -71,6 +74,14 @@ class GaRemediationPlanListView(ListView):
             },
         ]
 
+        remediation_plan_in_progress = RemediationPlan.objects.filter(status='EP')
+        remediation_plan_in_expired = remediation_plan_in_progress.filter(date_end__lt=timezone.now())
+        remediation_plan_completed = RemediationPlan.objects.filter(status='CO')
+
+        context['remediation_plan_in_progress'] = remediation_plan_in_progress
+        context['remediation_plan_in_expired'] = remediation_plan_in_expired
+        context['remediation_plan_completed'] = remediation_plan_completed
+
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
@@ -88,14 +99,14 @@ class GaRemediationPlanDetailView(CreateView):
 
         return super().dispatch(request, *args, **kwargs)
 
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class=None)
+    # def get_form(self, form_class=None):
+    #     form = super().get_form(form_class=None)
 
-        # El campo next_to_reply solo se muestra si el usuario es el supervisor del plan o superusuario
-        if self.request.user == self.remediation_plan.responsible and self.request.user != self.remediation_plan.supervisor:
-          form.fields['next_to_reply'].widget = forms.HiddenInput()
+    #     # El campo next_to_reply solo se muestra si el usuario es el supervisor del plan o superusuario
+    #     if self.request.user == self.remediation_plan.responsible and self.request.user != self.remediation_plan.supervisor:
+    #       form.fields['next_to_reply'].widget = forms.HiddenInput()
 
-        return form
+    #     return form
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -112,14 +123,15 @@ class GaRemediationPlanDetailView(CreateView):
 
         # solo mostramos el botón de editar si es el supervisor del plan o superusuario
         if self.request.user == self.remediation_plan.supervisor or self.request.user.is_admin:
-          context['actions'] = [
-              {
-                  'title': _('Editar'),
-                  'url': reverse('remediation_plans:ga_remediation_plan_update', kwargs={'pk': self.remediation_plan.pk}),
-                  'primary': True,
-                  'icon': '<i class="bi bi-pencil"></i>'
-              },
-          ]
+          if self.remediation_plan.status == 'EP':
+            context['actions'] = [
+                {
+                    'title': _('Editar'),
+                    'url': reverse('remediation_plans:ga_remediation_plan_update', kwargs={'pk': self.remediation_plan.pk}),
+                    'primary': True,
+                    'icon': '<i class="bi bi-pencil"></i>'
+                },
+            ]
 
         context['js_template'] = ['js/custom/datatables.js']
 
@@ -128,29 +140,24 @@ class GaRemediationPlanDetailView(CreateView):
     def form_valid(self, form):
         form.instance.remediation_plan = self.remediation_plan
         form.instance.user = self.request.user
+        form.instance.status = 'EP'
+        form.instance.next_to_reply = 'WR'
+
         form.save()
 
-        # Si el usuario es administrador global, o el usuario supervisor del plan de remediación, ponemos el plan como completado si el estado propuesto es Completado
-        if self.request.user.is_superuser or self.request.user == self.remediation_plan.supervisor:
-            if form.instance.status == 'CO':
-                self.remediation_plan.status = 'CO'
-                self.remediation_plan.next_to_reply = 'FI'
-                self.remediation_plan.save()
+        self.remediation_plan.next_to_reply = form.instance.next_to_reply
+        self.remediation_plan.status = form.instance.status
+        self.remediation_plan.save()
 
-                form.instance.next_to_reply = 'FI'
-                form.save()
+        self.remediation_plan.sent_notification()
 
-        else:
-          # Si no, es que es un usaurio responsable, por lo que únicamente tenemos que cambiar es next_to_reply al responsable
-          form.instance.next_to_reply = 'WR'
-          form.save()
-          self.remediation_plan.next_to_reply = 'WS'
-          self.remediation_plan.save()
+        # Añadir mensaje de plan de remediación respondido correctamente
+        messages.success(self.request, _('Respuesta añadida al Plan de remediación correctamente'))
 
         return super().form_valid(form)
 
     def get_success_url(self):
-      return reverse_lazy('remediation_plans:ga_remediation_plan_detail', kwargs={'pk': self.remediation_plan.pk})
+      return reverse_lazy('remediation_plans:ga_remediation_plan_list')
 
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
@@ -177,9 +184,20 @@ class GaRemediationPlanCreateView(CreateView):
 
     def get_success_url(self):
 
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            _('Plan de Remediación creado correctamente')
+        )
+
+        # Enviar notificación
+        self.object.sent_notification()
+
         return reverse_lazy(
             'remediation_plans:ga_remediation_plan_list'
         )
+
+
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaRemediationPlanUpdateView(UpdateView):
@@ -247,7 +265,6 @@ class GaRemediationPlanDeleteView(DeleteView):
         return _(
             '<span class="kt-font-bold">¿Seguro que desea eliminar la Plan de Remediación y los datos asociados?: </span> {0}? <span class="kt-font-bold">Se borrarán todos los datos asociados al mismo.</span>'
         ).format(str(self.object.pk))
-
 
 
 def delete_attachment(request, pk_remediation_plan, pk_attachment):

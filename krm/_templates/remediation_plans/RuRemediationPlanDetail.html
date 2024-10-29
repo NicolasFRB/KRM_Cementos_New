@@ -23,9 +23,12 @@
         }else{
           $('#id_next_to_reply').val('').trigger('change');
           $('#id_next_to_reply option[value="FI"]').prop('disabled', true).trigger('change');
+          // $('#id_next_to_reply option[value="FI"]').prop('disabled', true);
         }
       });
     }
+
+
   });
 </script>
 
@@ -219,11 +222,55 @@
 </div>
 
 
-  <!-- Si el plan de remediación está in progress, mostramos formulario -->
-  {% if remediation_plan.status == "EP" %}
-    {% comment %}
-      Ahora tenemos que ver si el plan de remediación debe rellenarlo el usuario supervisor o el responsable y quien lo está viendo y dependiendo de eso mostraremos o no el campo de usaurio siguiente
-    {% endcomment %}
+  <!-- Si el usuario es el responsable mostramos un formalario -->
+  {% if remediation_plan.next_to_reply == "WR" and request.user == remediation_plan.responsible  %}
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title fs-3 fw-bold">Nueva respuesta</div>
+      </div>
+
+      <div class="card-body">
+
+        <form method="post" class="kt-form kt-form--label-right" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="kt-section__body">
+            {% include '_includes/FormErrors.html' %}
+            <div class="row mb-8">
+              <div class="col-12 col-md-6">
+                {{ form.description|as_crispy_field }}
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="row">
+                  <div class="col-12 col-md-6 mb-7 ">
+                    {{ form.status|as_crispy_field }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 mb-7">
+                    <div class="form-group">
+                      <label>{% trans 'Fichero adjunto de evidencias del plan de remediación' %}</label>
+                      <div></div>
+                      <div class="custom-file">
+                        {{ form.attachment_1 }}
+                        <label class="custom-file-label" style="text-align: left;" for="customFile">{% trans 'Selecciona un fichero' %}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12  col-md-6">
+                <button type="submit" class="btn btn-sm btn-primary me-3">{% trans 'Guardar respuesta' %}</button>
+                <button class="btn btn-sm btn-secondary backHistory">{% trans 'Cancelar' %}</button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  {% elif remediation_plan.next_to_reply == "WS" and request.user == remediation_plan.supervisor %}
     <div class="card">
       <div class="card-header">
         <div class="card-title fs-3 fw-bold">Nueva respuesta</div>

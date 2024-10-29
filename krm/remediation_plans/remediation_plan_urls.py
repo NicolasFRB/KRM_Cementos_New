@@ -51,4 +51,10 @@ urlpatterns = [
         RuRemediationPlanListView.as_view(),
         name='ru_remediation_plan_list'
     ),
+
+    path(
+        'ru/detail/<pk>',
+        RuRemediationPlanDetailView.as_view(),
+        name='ru_remediation_plan_detail'
+    ),
 ]

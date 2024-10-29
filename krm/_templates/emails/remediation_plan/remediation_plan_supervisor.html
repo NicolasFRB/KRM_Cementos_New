@@ -1,0 +1,19 @@
+{% load i18n %}
+
+<p>
+  {% blocktrans with recovery_url=recovery_url %}
+  <strong>{{ notif_type }}</strong><br /><br />
+  Hola {{ user_email }},<br><br>
+
+  Dispone de un plan de remediación pendiente de su atención en la plataforma <strong>{{ app_name }}</strong>.
+
+  Puede acceder a la plataforma desde <a href="{{ site_url }}">esta url</a> con sus credenciales.<br><br>
+
+  Si no recuerda su contraseña, puedes recuperarla accediendo a <a href="{{ recovery_url }}">esta url</a> e indicando su correo electrónico.<br><br>
+
+  Ante cualquier duda, puede ponerse en contacto a través del siguiente correo: <a href="mailto:{{ MAIN_EMAIL }}"></a>{{ MAIN_EMAIL }}<br><br>
+
+  Muchas gracias por su colaboración.<br><br>
+
+  {% endblocktrans %}
+</p>

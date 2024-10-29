@@ -28,6 +28,68 @@ class RemediationPlanAnswerCreateForm(ModelForm):
                 "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
             )
         }
-        self.fields["status"].widget.attrs["class"] = "form-select"
-        self.fields["next_to_reply"].widget.attrs["class"] = "form-select"
         self.fields["description"].widget.attrs["required"] = "required"
+
+        self.fields["next_to_reply"].widget.attrs["class"] = "form-select"
+        self.fields["next_to_reply"].choices = [("", "Seleccionar")] + list(self.fields["next_to_reply"].choices)[0:]
+        self.fields["next_to_reply"].initial = ""
+
+        self.fields["status"].widget.attrs["class"] = "form-select"
+        self.fields["status"].choices = [("", "Seleccionar")] + list(self.fields["status"].choices)[0:]
+        self.fields["status"].initial = ""
+
+
+
+class RuSupervisorRemediationPlanAnswerCreateForm(ModelForm):
+    class Meta:
+        model = RemediationPlanAnswer
+        fields = [
+            "status",
+            "next_to_reply",
+            "description",
+            "attachment_1",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(RuSupervisorRemediationPlanAnswerCreateForm, self).__init__(*args, **kwargs)
+
+        self.fields["description"].error_messages = {
+            "max_length": _(
+                "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
+            )
+        }
+        self.fields["description"].widget.attrs["required"] = "required"
+
+        self.fields["next_to_reply"].widget.attrs["class"] = "form-select"
+        self.fields["next_to_reply"].choices = [("", "Seleccionar")] + list(self.fields["next_to_reply"].choices)[0:]
+        self.fields["next_to_reply"].initial = ""
+
+        self.fields["status"].widget.attrs["class"] = "form-select"
+        self.fields["status"].choices = [("", "Seleccionar")] + list(self.fields["status"].choices)[0:]
+        self.fields["status"].initial = ""
+
+
+class RuResponsibleRemediationPlanAnswerCreateForm(ModelForm):
+    class Meta:
+        model = RemediationPlanAnswer
+        fields = [
+            "status",
+            "description",
+            "attachment_1",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(RuResponsibleRemediationPlanAnswerCreateForm, self).__init__(*args, **kwargs)
+
+        self.fields["description"].error_messages = {
+            "max_length": _(
+                "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
+            )
+        }
+        self.fields["description"].widget.attrs["required"] = "required"
+
+        self.fields["status"].widget.attrs["class"] = "form-select"
+        self.fields["status"].choices = [("", "Seleccionar")] + list(self.fields["status"].choices)[0:]
+        self.fields["status"].initial = ""

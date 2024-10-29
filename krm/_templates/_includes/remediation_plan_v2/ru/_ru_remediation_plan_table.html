@@ -1,0 +1,39 @@
+{% load i18n %}
+{% trans "Sin asignar" as without_set %}
+
+{% if remediation_plans.count > 0 %}
+  <table id="domain_risk_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+    <thead>
+      <tr class="fw-semibold fs-6">
+        <th class="text-center">{% trans 'Acción' %}</th>
+        <th>{% trans 'REF' %}</th>
+        <th>{% trans 'Fecha inicio' %}</th>
+        <th>{% trans 'Fecha fin' %}</th>
+        <th>{% trans 'Estado' %}</th>
+        <th>{% trans '¿Quien debe responder?' %}</th>
+        <th>{% trans 'Responsable' %}</th>
+        <th>{% trans 'Supervisor' %}</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for remediation_plan in remediation_plans %}
+        <tr>
+          <td class="align-middle text-center"><a href="{% url 'remediation_plans:ru_remediation_plan_detail' remediation_plan.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+          <td class="align-middle">{{ remediation_plan.pk }}</td>
+          <td class="align-middle" data-order="{{ remediation_plan.date_begin|date:"Ymd" }}">{{ remediation_plan.date_begin|date:"d/m/Y" }}</td>
+          <td class="align-middle" data-order="{{ remediation_plan.date_end|date:"Ymd" }}">{{ remediation_plan.date_end|date:"d/m/Y" }}</td>
+          <td class="align-middle">{{ remediation_plan.get_status_display }}</td>
+          <td class="align-middle">{{ remediation_plan.get_next_to_reply_display }}</td>
+          <td class="align-middle">{{ remediation_plan.responsible }}</td>
+          <td class="align-middle">{{ remediation_plan.supervisor }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+
+  <div class="alert alert-primary" role="alert">
+    {% trans 'Sin planes de remediación' %}
+  </div>
+
+{% endif %}

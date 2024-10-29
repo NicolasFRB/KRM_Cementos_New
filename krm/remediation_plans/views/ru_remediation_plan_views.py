@@ -2,7 +2,8 @@ import json
 import uuid
 import xlwt
 
-
+# import forms
+from django import forms
 from django.shortcuts import render
 from django.conf import settings
 from django.shortcuts import render
@@ -39,7 +40,7 @@ from krm.users.decorators import is_global_admin, user_can_view_remediation_plan
 
 from krm.remediation_plans.forms import RemediationPlanCreateForm, RemediationPlanUpdateForm
 from krm.remediation_plans.models import RemediationPlanAnswer
-from krm.remediation_plans.forms import RemediationPlanAnswerCreateForm
+from krm.remediation_plans.forms import RemediationPlanAnswerCreateForm, RuSupervisorRemediationPlanAnswerCreateForm, RuResponsibleRemediationPlanAnswerCreateForm
 
 @method_decorator([login_required, ], name='dispatch')
 class RuRemediationPlanListView(ListView):
@@ -58,14 +59,6 @@ class RuRemediationPlanListView(ListView):
         ]
         context['page_title'] = _('Planes de remediación')
         context['breadcrums'] = breadcrums
-        # context['actions'] = [
-        #     {
-        #         'title': _('Nuevo'),
-        #         'url': reverse('remediation_plans:ga_remediation_plan_create'),
-        #         'primary': True,
-        #         'icon': '<i class="bi bi-plus-lg"></i>'
-        #     },
-        # ]
 
         context['js_template'] = ['js/custom/datatables.js']
 
@@ -81,21 +74,8 @@ class RuRemediationPlanListView(ListView):
 class RuRemediationPlanDetailView(CreateView):
     template_name = 'remediation_plans/RuRemediationPlanDetail.html'
     model = RemediationPlanAnswer
-    # context_object_name = 'remediation_plan'
-    form_class = RemediationPlanAnswerCreateForm
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class=None)
-        import ipdb; ipdb.set_trace()
-        if not self.request.user.is_admin:
-            form.fields['status'].widget = forms.HiddenInput()
-
-        return form
-
 
     def dispatch(self, request, *args, **kwargs):
-        import ipdb; ipdb.set_trace()
-
         remediation_plan = get_object_or_404(RemediationPlan, pk=self.kwargs.get("pk"))
         self.remediation_plan = remediation_plan
         return super().dispatch(request, *args, **kwargs)
@@ -113,14 +93,6 @@ class RuRemediationPlanDetailView(CreateView):
         context['page_title'] = f"{_('Plan de Remediación')} : {self.remediation_plan.pk}"
         context['breadcrums'] = breadcrums
         context['remediation_plan'] = self.remediation_plan
-        context['actions'] = [
-            {
-                'title': _('Editar'),
-                'url': reverse('remediation_plans:ga_remediation_plan_update', kwargs={'pk': self.remediation_plan.pk}),
-                'primary': True,
-                'icon': '<i class="bi bi-pencil"></i>'
-            },
-        ]
 
         context['js_template'] = ['js/custom/datatables.js']
 
@@ -132,24 +104,30 @@ class RuRemediationPlanDetailView(CreateView):
         form.instance.user = self.request.user
         form.save()
 
-        # Si el usuario es administrador global, o el usuario supervisor del plan de remediación, ponemos el plan como completado si el estado propuesto es Completado
-        if self.request.user.is_superuser or self.request.user == self.remediation_plan.supervisor:
-            if form.instance.status == 'CO':
-                self.remediation_plan.status = 'CO'
-                self.remediation_plan.next_to_reply = 'FI'
-                self.remediation_plan.save()
+        # Si el plan está pendiente de respuesta del Responsable y el usado es el responsable
+        if self.request.user == self.remediation_plan.responsible and self.remediation_plan.next_to_reply == 'WR':
+            self.remediation_plan.next_to_reply = 'WS'
+        elif self.request.user == self.remediation_plan.supervisor:
+            self.remediation_plan.next_to_reply = form.instance.next_to_reply
+            self.remediation_plan.status = form.instance.status
 
-                form.instance.next_to_reply = 'FI'
-                form.save()
+        self.remediation_plan.save()
+        self.remediation_plan.sent_notification()
 
-        else:
-          # Si no, es que es un usaurio responsable, por lo que únicamente tenemos que cambiar es next_to_reply al responsable
-          form.instance.next_to_reply = 'WR'
-          form.save()
-          self.remediation_plan.next_to_reply = 'WS'
-          self.remediation_plan.save()
+        # Añadir mensaje de plan de remediación respondido correctamente
+        messages.success(self.request, _('Respuesta añadida al Plan de remediación correctamente'))
 
         return super().form_valid(form)
 
+
     def get_success_url(self):
-      return reverse_lazy('remediation_plans:ga_remediation_plan_detail', kwargs={'pk': self.remediation_plan.pk})
+      return reverse_lazy('remediation_plans:ru_remediation_plan_list')
+
+
+    def get_form_class(self):
+        if self.remediation_plan.next_to_reply == "WR" and self.request.user == self.remediation_plan.responsible:
+            return RuResponsibleRemediationPlanAnswerCreateForm
+        elif self.remediation_plan.next_to_reply == "WS" and self.request.user == self.remediation_plan.supervisor:
+            return RuSupervisorRemediationPlanAnswerCreateForm
+        else:
+            return RemediationPlanAnswerCreateForm
