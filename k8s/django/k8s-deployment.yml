@@ -13,10 +13,10 @@ spec:
       labels:
         app: krm-kpmg-application
     spec:
-      volumes:
-        - name: staticfiles
-          persistentVolumeClaim:
-            claimName: staticfiles-pvc
+      # volumes:
+      #   - name: staticfiles
+      #     persistentVolumeClaim:
+      #       claimName: staticfiles-pvc
       containers:
         - image: krm_dev_django:latest
           name: krm-kpmg-container
@@ -31,9 +31,9 @@ spec:
             python manage.py runserver 0.0.0.0:8000
           ports:
             - containerPort: 8000
-          volumeMounts:
-            - mountPath: "/data"
-              name: staticfiles
+          # volumeMounts:
+          #   - mountPath: "/data"
+          #     name: staticfiles
           env:
             - name: KRM_DJANGO_DEBUG
               value: 'True'
@@ -84,7 +84,7 @@ spec:
             - name: KRM_EMAIL_BCC
               value: 'Baetica Digital <it@baeticadigital.com>'
             - name: KRM_POSTGRES_HOST
-              value: postgres-service
+              value: postgresdb
             - name: KRM_POSTGRES_PORT
               value: '5432'
             - name: KRM_POSTGRES_DB
@@ -96,7 +96,7 @@ spec:
             - name: DATABASE_URL
               value: postgres://sBLRWyyPsInwHftmHAWmYJURGWBGFpLs:tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL@postgres-service:5432/krm
             - name: POSTGRES_HOST
-              value: postgres
+              value: postgresdb
             - name: POSTGRES_PORT
               value: '5432'
             - name: POSTGRES_DB
@@ -109,13 +109,5 @@ spec:
               value: Europe/Madrid
             - name: DEBIAN_FRONTEND
               value: noninteractive
-          envFrom:
-            - configMapRef:
-                name: configmap-django
-            - configMapRef:
-                name: configmap-email
-            - configMapRef:
-                name: configmap-postgres
-            - configMapRef:
-                name: configmap-ubuntu
+
 

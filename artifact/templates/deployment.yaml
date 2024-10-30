@@ -47,6 +47,14 @@ spec:
               containerPort: {{ .Values.container.port }}
               protocol: TCP
           imagePullPolicy: {{ .Values.container.image.pullPolicy }}
+          command: ["/bin/bash", "-c"]
+          args:
+          - |
+            set -o errexit
+            set -o pipefail
+            set -o nounset
+            python manage.py migrate
+            python manage.py runserver 0.0.0.0:8000
           {{- if .Values.volumes.create }}
           volumeMounts:
             - name: {{ .Values.volumes.list.volumeName }}
