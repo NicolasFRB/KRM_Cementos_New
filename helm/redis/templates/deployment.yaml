@@ -28,9 +28,8 @@ spec:
 
       {{- if .Values.volumes.create }}
       volumes:
-        - name: {{ .Values.volumes.list.volumeName }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.volumes.list.claimName }}
+        - name: redis-resources-pv
+          size: 10Mi
       {{- end }}
       containers:
         - resources:
@@ -47,14 +46,8 @@ spec:
               containerPort: {{ .Values.container.port }}
               protocol: TCP
           imagePullPolicy: {{ .Values.container.image.pullPolicy }}
-          command: ["/bin/bash", "-c"]
-          args:
-          - |
-            set -o errexit
-            set -o pipefail
-            set -o nounset
-            python manage.py migrate
-            python manage.py runserver 0.0.0.0:8000
+          command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
           {{- if .Values.volumes.create }}
           volumeMounts:
             - name: {{ .Values.volumes.list.volumeName }}

@@ -69,6 +69,8 @@ router.register(r'scopes', ScopeViewSet)
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
+     path(r'ht/', include('health_check.urls')),
+
     path('i18n/', include('django.conf.urls.i18n')),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),

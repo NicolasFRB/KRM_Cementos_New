@@ -63,6 +63,9 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'rest_framework',
     'rosetta',
+    'health_check',                             # required
+    'health_check.db',                          # stock Django health checkers
+
 ]
 
 LOCAL_APPS = [
@@ -542,3 +545,12 @@ SAML2_AUTH = {
     'USE_JWT': False, # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
     'FRONTEND_URL': 'https://myfrontendclient.com', # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
 }
+
+HEALTH_CHECK = {
+        # .....
+        "SUBSETS": {
+            "startup-probe": ["MigrationsHealthCheck", "DatabaseBackend"],
+            "liveness-probe": ["DatabaseBackend"]        
+        },
+        # .....
+    }

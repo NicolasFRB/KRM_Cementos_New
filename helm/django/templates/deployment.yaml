@@ -1,0 +1,94 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ include "artifact.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include "artifact.name" . }}
+    deployment: {{ include "artifact.name" . }}
+    version: {{ .Values.appVersion }}
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  replicas: {{ .Values.container.replicaCount }}
+  selector:
+    matchLabels:
+      deployment: {{ include "artifact.name" . }}
+      app: {{ include "artifact.name" . }}
+  template:
+    metadata:
+      name: {{ include "artifact.name" . }}
+      labels:
+        app: {{ include "artifact.name" . }}
+        deployment: {{ include "artifact.name" . }}
+    spec:
+
+      {{- if .Values.volumes.create }}
+      volumes:
+        - name: {{ .Values.volumes.list.volumeName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.volumes.list.claimName }}
+      {{- end }}
+      containers:
+        - resources:
+            limits:
+              cpu: {{ .Values.container.resources.limits.cpu }}
+              memory: {{ .Values.container.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.container.resources.requests.cpu }}
+              memory: {{ .Values.container.resources.requests.memory }}
+          terminationMessagePath: /dev/termination-log
+          name: {{ include "artifact.name" . }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.container.port }}
+              protocol: TCP
+          imagePullPolicy: {{ .Values.container.image.pullPolicy }}
+          command: ["/bin/bash", "-c"]
+          args:
+          - |
+            set -o errexit
+            set -o pipefail
+            set -o nounset
+            python manage.py migrate
+            python manage.py runserver 0.0.0.0:8000
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.container.probes.ready.path }}
+              port: {{ .Values.container.probes.port }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.container.probes.ready.initialDelaySeconds }}
+            periodSeconds: {{ .Values.container.probes.ready.periodSeconds }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.container.probes.live.path }}
+              port: {{ .Values.container.probes.port }}
+              scheme: HTTP
+            periodSeconds: {{ .Values.container.probes.live.periodSeconds }}
+            timeoutSeconds: {{ .Values.container.probes.live.timeoutSeconds }}
+          {{- if .Values.volumes.create }}
+          volumeMounts:
+            - name: {{ .Values.volumes.list.volumeName }}
+              mountPath: {{ .Values.volumes.list.mounts.mountPath }}
+              subPath: {{ .Values.volumes.list.mounts.subPath }}
+          {{- end }}
+          terminationMessagePolicy: File
+          envFrom:
+            {{- if .Values.configmaps.create }}
+            - configMapRef:
+                name: {{ include "artifact.name" . }}-configmap
+            {{- end }}
+            {{- if .Values.secrets.create }}
+            - secretRef:
+                name: {{ include "artifact.name" . }}-secrets
+            {{- end }}
+          image: >-
+            {{ .Values.images.eciRulesEngine.imageName }}:{{ .Values.appVersion }}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

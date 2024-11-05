@@ -20,18 +20,18 @@ container:
     pullPolicy: IfNotPresent #Always
   deployment:
     strategy: Rolling
-  # probes:
-  #   port: 8000
-  #   ready:
-  #     path: /api
-  #     initialDelaySeconds: 120
-  #     periodSeconds: 10
-  #     timeoutSeconds: 5
-  #   live:
-  #     path: /api
-  #     initialDelaySeconds: 120
-  #     periodSeconds: 10
-  #     timeoutSeconds: 5
+  probes:
+    port: 8000
+    ready:
+      path: /ht/startup-probe/
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 5
+    live:
+      path: /ht/liveness-probe/
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 5
 
 # Service svc
 service:
@@ -81,7 +81,7 @@ configmaps:
     POSTGRES_DB: krm
     POSTGRES_USER: "sBLRWyyPsInwHftmHAWmYJURGWBGFpLs"
     POSTGRES_PASSWORD: "tuXL3XSF8O7tsGrcGHoMos4tVNtL3tnrRshSCZokGnIfk4ArDyzaa297k2WgQPSL"
-    TZ: "Europe/Madrid"
+    TZ: Europe/Madrid
     DEBIAN_FRONTEND: noninteractive
 
 # Secrets
