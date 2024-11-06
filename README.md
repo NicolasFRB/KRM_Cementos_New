@@ -12,3 +12,4 @@ find . -type d -name node_modules -prune -o -type d -name migrations -prune -o -
 
 # Regenerar cadenas de traducción
 docker-compose -f dev.yml run --rm django python manage.py makemessages --locale en
+docker-compose -f dev.yml run --rm django python manage.py compilemessages --locale en
