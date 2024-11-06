@@ -42,7 +42,7 @@ from krm.remediation_plans.models import RemediationPlan
 
 from krm.users.models import User
 
-from krm.users.decorators import is_global_admin, user_can_view_remediation_plan
+from krm.users.decorators import is_global_admin, user_can_view_remediation_plan, is_company_admin
 
 from krm.remediation_plans.forms import RemediationPlanCreateForm, RemediationPlanUpdateForm
 from krm.remediation_plans.models import RemediationPlanAnswer
@@ -52,7 +52,7 @@ from krm.companies.models import Company
 from krm.controls.models import Control
 
 
-@method_decorator([login_required, is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class GaRemediationPlanListView(ListView):
     model = RemediationPlan
     template_name = 'remediation_plans/GaRemediationPlanList.html'
@@ -78,9 +78,16 @@ class GaRemediationPlanListView(ListView):
             },
         ]
 
-        remediation_plan_in_progress = RemediationPlan.objects.filter(status='EP')
-        remediation_plan_in_expired = remediation_plan_in_progress.filter(date_end__lt=timezone.now())
-        remediation_plan_completed = RemediationPlan.objects.filter(status='CO')
+        # Si no es superusuario, mostramos los planes de la compañía que administra el usuario
+        if not self.request.user.is_superuser:
+            remediation_plan_in_progress = RemediationPlan.objects.filter(company__in=self.request.user.companies_admin.all(), status='EP')
+            remediation_plan_in_expired = remediation_plan_in_progress.filter(date_end__lt=timezone.now())
+            remediation_plan_completed = RemediationPlan.objects.filter(company__in=self.request.user.companies_admin.all(), status='CO')
+
+        else:
+            remediation_plan_in_progress = RemediationPlan.objects.filter(status='EP')
+            remediation_plan_in_expired = remediation_plan_in_progress.filter(date_end__lt=timezone.now())
+            remediation_plan_completed = RemediationPlan.objects.filter(status='CO')
 
         context['remediation_plan_in_progress'] = remediation_plan_in_progress
         context['remediation_plan_in_expired'] = remediation_plan_in_expired
@@ -175,7 +182,7 @@ class GaRemediationPlanDetailView(CreateView):
       return reverse_lazy('remediation_plans:ga_remediation_plan_list')
 
 
-@method_decorator([login_required, is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class GaRemediationPlanCreateSelectCompanyView(FormView):
     form_class = RemediationPlanCreateSelectCompany
     model = RemediationPlan
@@ -208,8 +215,22 @@ class GaRemediationPlanCreateSelectCompanyView(FormView):
     def get_success_url(self):
         return reverse_lazy('remediation_plans:ga_remediation_plan_create', kwargs={'company_pk': self.company.pk})
 
+    def get_form(self, form_class=None):
+        form_class = super().get_form(form_class=None)
 
-@method_decorator([login_required, is_global_admin, ], name='dispatch')
+        # Si el usuario es superusuario, mostramos todas las compañías
+        if self.request.user.is_superuser:
+            companies = Company.objects.all()
+        else:
+            # Si no es superusuario, mostramos las compañías que administra
+            companies = self.request.user.companies_admin.all()
+
+        form_class.fields["company"].choices = [(c.pk, c.name) for c in companies]
+        form_class.fields["company"].choices = [("", _("-"))] + form_class.fields["company"].choices
+        return form_class
+
+
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class GaRemediationPlanCreateView(CreateView):
     form_class = RemediationPlanCreateForm
     model = RemediationPlan
@@ -226,6 +247,7 @@ class GaRemediationPlanCreateView(CreateView):
 
 
     def get_form(self, form_class=None):
+
         # Quiero filtrar los usuarios por la compañía seleccionada
         form_class = super().get_form(form_class=None)
 
@@ -240,7 +262,7 @@ class GaRemediationPlanCreateView(CreateView):
 
         form_class.fields["additional_users"].queryset = users
 
-        form_class.fields["company"].initial = self.company.pk
+        # form_class.fields["company"].initial = self.company.pk
 
         # Filtramos los controles únicamente por los que estén activos para la empresa
         company_controls = self.company.company_controls.filter(active=True).values_list('control', flat=True)
@@ -280,8 +302,13 @@ class GaRemediationPlanCreateView(CreateView):
         )
 
 
+    def form_valid(self, form):
+        form.instance.company = self.company
+        return super().form_valid(form)
 
-@method_decorator([login_required, is_global_admin, ], name='dispatch')
+
+
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class GaRemediationPlanUpdateView(UpdateView):
     form_class = RemediationPlanUpdateForm
     model = RemediationPlan
@@ -315,7 +342,7 @@ class GaRemediationPlanUpdateView(UpdateView):
         )
 
 
-@method_decorator([login_required, is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class GaRemediationPlanDeleteView(DeleteView):
     model = RemediationPlan
     template_name = "_includes/_base_confirm_delete.html"

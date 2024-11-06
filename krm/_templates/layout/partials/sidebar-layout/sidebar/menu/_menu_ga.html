@@ -613,6 +613,49 @@
                     </div>
                     <!--end:Menu item-->
                 {% endif %}
+            <!-- PLANES DE REMEDIACIÓN -->
+            <div data-kt-menu-trigger="click"
+                class="menu-item menu-accordion {% if request.path in REMEDIATION_PLAN_URLS %}show{% endif %}">
+                <!--begin:Menu link-->
+                <span class="menu-link">
+                    <span class="menu-icon">{% getSvgIcon 'duotune/general/gen055.svg' 'svg-icon svg-icon-2' %}</span>
+                    <span class="menu-title">{% trans 'Planes de Remediación' %}</span>
+                    <span class="menu-arrow"></span>
+                </span>
+                <!--end:Menu link-->
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-accordion">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+
+                        <a class="menu-link {% if request.path == ga_remediation_plan_list %}active{% endif %}"
+                            href="{% url 'remediation_plans:ga_remediation_plan_list' %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">{% trans 'Planes de Remediación' %}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {% if request.path == ga_remediation_plan_create_select_company %}active{% endif %}"
+                            href="{% url 'remediation_plans:ga_remediation_plan_create_select_company' %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">{% trans 'Crear Plan' %}</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <!--end:Menu sub-->
+            </div>
+            <!-- PLANES DE REMEDIACIÓN -->
 
             {% endif %}
 
@@ -694,7 +737,7 @@
                       {% endif %}
                   </span>
               </a>
-          </div>
+            </div>
             {% if KRM_ACTIVATE %}
             <!--begin:Menu item-->
             <div class="menu-item">

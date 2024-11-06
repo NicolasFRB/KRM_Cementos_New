@@ -144,7 +144,8 @@ def user_can_view_remediation_plan(function):
         if (
             remediation_plan.responsible == request.user or
             remediation_plan.supervisor == request.user or
-            request.user.is_superuser or request.user.is_auditor
+            request.user.is_superuser or request.user.is_auditor or
+            remediation_plan.company in request.user.companies_admin.all()
         ):
             return function(request, *args, **kwargs)
         raise PermissionDenied

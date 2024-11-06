@@ -10,7 +10,7 @@ class RemediationPlanCreateForm(ModelForm):
     class Meta:
         model = RemediationPlan
         fields = '__all__'
-        exclude = ["status", "next_to_reply"]
+        exclude = ["status", "next_to_reply", "company"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,6 +55,8 @@ class RemediationPlanUpdateForm(ModelForm):
     class Meta:
         model = RemediationPlan
         fields = '__all__'
+        exclude = ["company" ]
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -89,7 +91,7 @@ class RuRemediationPlanCreateForm(ModelForm):
     class Meta:
         model = RemediationPlan
         fields = '__all__'
-        exclude = ["status", "next_to_reply", "responsible", "supervisor", ]
+        exclude = ["status", "next_to_reply", "responsible", "supervisor", "company" ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -116,11 +118,11 @@ class RemediationPlanCreateSelectCompany(forms.Form):
         ),
     )
 
-    def __init__(self, *args, **kwargs):
-        super(RemediationPlanCreateSelectCompany, self).__init__(*args, **kwargs)
-        # self.fields["company"].choices = kwargs.get("companies", [])
-        # self.fields["company"].initial = kwargs.get("company", None)
-        # Quiero llenar el campo company con todas las compañias de la base de datos
-        self.fields["company"].choices = [(c.pk, c.name) for c in Company.objects.all()]
-        # Añadir una opción vacía al principio
-        self.fields["company"].choices = [("", _("-"))] + self.fields["company"].choices
+    # def __init__(self, *args, **kwargs):
+    #     super(RemediationPlanCreateSelectCompany, self).__init__(*args, **kwargs)
+    #     # self.fields["company"].choices = kwargs.get("companies", [])
+    #     # self.fields["company"].initial = kwargs.get("company", None)
+    #     # Quiero llenar el campo company con todas las compañias de la base de datos
+    #     self.fields["company"].choices = [(c.pk, c.name) for c in Company.objects.all()]
+    #     # Añadir una opción vacía al principio
+    #     self.fields["company"].choices = [("", _("-"))] + self.fields["company"].choices
