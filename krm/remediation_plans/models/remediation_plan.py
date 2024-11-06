@@ -65,13 +65,11 @@ class RemediationPlan(AuditModel):
         default="EP",
     )
 
-    control = models.ForeignKey(
+    control = models.ManyToManyField(
         'controls.Control',
-        verbose_name=_('Control'),
-        on_delete=models.CASCADE,
+        verbose_name=_('Controles'),
         related_name='rp_control',
-        blank=True,
-        null=True
+        blank=True
     )
 
     control_test = models.ForeignKey(
@@ -94,6 +92,13 @@ class RemediationPlan(AuditModel):
         max_length=2,
         choices=REMEDIATION_PLAN_STATUS_CHOICES,
         default="WR",
+    )
+
+    company = models.ForeignKey(
+      'companies.Company',
+      verbose_name=_('Compañía'),
+      on_delete=models.CASCADE,
+      related_name='remediation_plans',
     )
 
     def __str__(self):
@@ -132,6 +137,13 @@ class RemediationPlan(AuditModel):
         context = {
             "site_url": settings.SITE_URL,
             "app_name": configuration.app_name,
+            "preheader": _("Plan de remediación pendiente"),
+            "BRAND": settings.BRAND,
+            "app_name": configuration.app_name,
+            "user_email": user.email,
+            "MAIN_EMAIL": configuration.main_email,
+            "site_url": settings.SITE_URL,
+            "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
         }
         body_html = render_to_string(
             "emails/remediation_plan/remediation_plan_supervisor.html",
@@ -139,9 +151,10 @@ class RemediationPlan(AuditModel):
         )
         context = {
             "content": body_html,
-            "preheader": _("Plamn de remediación pendiente"),
+            "preheader": _("Plan de remediación pendiente"),
             "BRAND": settings.BRAND,
             "app_name": configuration.app_name,
+            "user_email": user.email,
             "MAIN_EMAIL": configuration.main_email,
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
