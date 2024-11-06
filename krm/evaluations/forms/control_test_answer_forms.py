@@ -48,27 +48,6 @@ class ControlTestAnswerCreateForm(ModelForm):
         }
         self.fields["control_result"].widget.attrs["class"] = "form-select"
 
-    # def clean_description(self):
-    #     import ipdb
-
-    #     ipdb.set_trace()
-    #     description = self.cleaned_data.get("description")
-    #     if len(description) < 5000:
-    #         return description
-    #     else:
-    #         raise forms.ValidationError("Muy largo")
-
-    # def clean(self):
-    #     cleaned_data = super(ControlTestAnswerCreateForm, self).clean()
-    #     import ipdb
-
-    #     ipdb.set_trace()
-    #     if not self.cleaned_data.get("description"):
-    #         self.add_error(
-    #             "description", "Please specify time at address if less than 3 years."
-    #         )
-    #     return cleaned_data
-
 
 class ControlTestAnswerUpdateForm(ModelForm):
     class Meta:
@@ -79,12 +58,6 @@ class ControlTestAnswerUpdateForm(ModelForm):
             "attachment_2",
             "attachment_3"
         ]
-
-    # def __init__(self, *args, **kwargs):
-    #     super(ControlTestAnswerUpdateForm, self).__init__(*args, **kwargs)
-    #     self.fields["description"].widget.attrs.update(
-    #         {"class": "my-summernote"})
-
 
 class ControlTestAnswerOwnerCreateForm(ModelForm):
     CONTROL_RESULT_CHOICES = (
@@ -122,7 +95,7 @@ class ControlTestAnswerOwnerCreateForm(ModelForm):
     def clean_description(self):
         description = self.cleaned_data.get("description")
         if len(description) == 0:
-            raise forms.ValidationError("Campo obligatorio")        
+            raise forms.ValidationError("Campo obligatorio")
         elif len(description) < 3:
             raise forms.ValidationError("Debe proporcionar información suficiente para finalizar la evaluación")
         elif len(description) < 5000:

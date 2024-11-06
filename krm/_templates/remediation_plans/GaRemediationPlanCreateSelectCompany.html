@@ -1,0 +1,112 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+
+{% if DEVJS %}
+  <script defer src="http://localhost:3000/static/js/bundle.js"></script>
+{% else %}
+  <script defer src="{% static 'main.react.js' %}"></script>
+{% endif %}
+
+<script>
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      $(".datepicker").flatpickr({
+        "locale": "es",
+        dateFormat: "d/m/Y",
+      });
+    {% else %}
+      $(".datepicker").flatpickr({
+            "locale": "en",
+            dateFormat: "Y-m-d",
+      });
+    {% endif %}
+</script>
+
+<script>
+  // $(document).ready(function () {
+
+  //   $('#id_status').select2();
+  //   $('#id_next_to_reply').select2();
+
+  //   $('#id_status').on('change', function() {
+  //     if ($(this).val() === 'CO') {
+  //       $('#id_next_to_reply').val('FI').trigger('change').prop('disabled', true);
+  //       // quiero ocultar #div_id_next_to_reply
+  //       $('#div_id_next_to_reply').hide();
+  //     }else{
+  //       $('#id_next_to_reply').val('').trigger('change').prop('disabled', false);
+  //       // quiero mostrar #div_id_next_to_reply
+  //       $('#div_id_next_to_reply').show();
+  //     }
+  //   });
+  // });
+</script>
+
+{% endblock js_footer %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+  <form method="post" class="kt-form kt-form--label-right">
+    {% csrf_token %}
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          {% include '_includes/FormErrors.html' %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="stepper stepper-pills stepper-column row align-items-start">
+          <!--begin::Aside-->
+          <div class="flex-row-fluid col col-12 col-xl-10">
+            <div class="row">
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <fieldset>
+                      <legend>Compañía</legend>
+                      <div class="row">
+                        <div class="mb-4 col-12 col-md-6">
+                          {{ form.company|as_crispy_field }}
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--end::Content-->
+        </div>
+      </div>
+    </div>
+    <!--end::Body-->
+
+    <div class="card-footer py-6">
+      <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Siguiente' %}</button>
+
+      <a href="{% url 'remediation_plans:ga_remediation_plan_list' %}"
+        class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</a>
+    </div>
+  </form>
+
+
+</div>
+
+<!--end::Container-->
+
+{% endblock content %}

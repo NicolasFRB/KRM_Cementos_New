@@ -20,6 +20,7 @@
 {% url 'evaluation_questionnaires:ga_evaluation_questionnaire_list' as ga_evaluation_questionnaire_list %}
 {% url 'remediation_plans:ga_remediation_plan_list' as ga_remediation_plan_list %}
 {% url 'remediation_plans:ga_remediation_plan_create' as ga_remediation_plan_create %}
+{% url 'remediation_plans:ga_remediation_plan_create_select_company' as ga_remediation_plan_create_select_company %}
 
 <!--begin::sidebar menu-->
 <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
@@ -430,8 +431,8 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link {% if request.path == ga_remediation_plan_create %}active{% endif %}"
-                            href="{% url 'remediation_plans:ga_remediation_plan_create' %}">
+                        <a class="menu-link {% if request.path == ga_remediation_plan_create_select_company %}active{% endif %}"
+                            href="{% url 'remediation_plans:ga_remediation_plan_create_select_company' %}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>

@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from krm.remediation_plans.views import (
     GaRemediationPlanListView,
     GaRemediationPlanCreateView,
+    GaRemediationPlanCreateSelectCompanyView,
     GaRemediationPlanDeleteView,
     GaRemediationPlanDetailView,
     GaRemediationPlanUpdateView,
@@ -36,16 +37,20 @@ urlpatterns = [
         name='ga_remediation_plan_update'
     ),
     path(
-        'create/',
+        'create/select-company/',
+        GaRemediationPlanCreateSelectCompanyView.as_view(),
+        name='ga_remediation_plan_create_select_company'
+    ),
+    path(
+        'create/<company_pk>/',
         GaRemediationPlanCreateView.as_view(),
         name='ga_remediation_plan_create'
     ),
-    path(
-        "delete-attachment/<pk_remediation_plan>/<pk_attachment>/",
-        delete_attachment,
-        name='delete_attachment'
-    ),
-
+    # path(
+    #     "delete-attachment/<pk_remediation_plan>/<pk_attachment>/",
+    #     delete_attachment,
+    #     name='delete_attachment'
+    # ),
     path(
         'ru/list/',
         RuRemediationPlanListView.as_view(),

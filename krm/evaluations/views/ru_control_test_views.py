@@ -33,9 +33,13 @@ from krm.evaluations.forms import (
     ControlTestAnswerCreateForm,
     ControlTestAnswerSupervisorCreateForm,
     ControlTestAnswerOwnerCreateForm,
-    RemediationPlanCreateForm,
     ControlTestCaForm
 )
+
+from krm.remediation_plans.forms import RuRemediationPlanCreateForm
+from krm.remediation_plans.models import RemediationPlan
+
+from krm.users.models import User
 
 from krm.users.decorators import (
     is_global_admin,
@@ -45,8 +49,7 @@ from krm.users.decorators import (
 
 from krm.evaluations.models import (
     ControlTest,
-    ControlTestAnswer,
-    RemediationPlan
+    ControlTestAnswer
 )
 
 
@@ -201,11 +204,13 @@ class RuControlTestDetail(CreateView):
         }
 
 
+
 @method_decorator((login_required, user_can_view_control_test), name="dispatch")
 class RuRemediationPlanCreate(CreateView):
     template_name = 'control_tests/ga/ControlTestDetail.html'
     model = RemediationPlan
-    form_class = RemediationPlanCreateForm
+    # form_class = RemediationPlanCreateForm
+    form_class = RuRemediationPlanCreateForm
 
     def dispatch(self, request, *args, **kwargs):
         control_test = get_object_or_404(ControlTest, pk=self.kwargs.get("pk"))
@@ -214,6 +219,15 @@ class RuRemediationPlanCreate(CreateView):
         if not control_test.remediation_plan_needed:
             return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail", kwargs={"pk": control_test.pk}))
         return super().dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+        form_class = super().get_form(form_class=None)
+        users = User.objects.filter(
+            companies__in=(self.control_test.evaluation.company,),
+            is_active=True
+        )
+        form_class.fields["additional_users"].queryset = users
+        return form_class
 
     def get_context_data(self, **kwargs):
         from datetime import date
@@ -233,7 +247,16 @@ class RuRemediationPlanCreate(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.control_test = self.control_test
+
+        form.instance.responsible = self.control_test.control_test_owner
+        form.instance.supervisor = self.control_test.control_test_supervisor
+        form.instance.status = 'EP'
+        form.instance.next_to_reply = 'WR'
+        form.instance.control_test = self.control_test
+        form.instance.company = self.control_test.evaluation.company
+
         self.remediation_plan = form.save()
+        self.remediation_plan.sent_notification()
 
         self.control_test.status = 'WS'
         self.control_test.remediation_plan_needed = False
@@ -260,11 +283,71 @@ class RuRemediationPlanCreate(CreateView):
 
         return reverse_lazy("control_tests:ru_control_test_owner_list")
 
+
+# @method_decorator((login_required, user_can_view_control_test), name="dispatch")
+# class RuRemediationPlanCreate(CreateView):
+#     template_name = 'control_tests/ga/ControlTestDetail.html'
+#     model = RemediationPlan
+#     form_class = RemediationPlanCreateForm
+
+#     def dispatch(self, request, *args, **kwargs):
+#         control_test = get_object_or_404(ControlTest, pk=self.kwargs.get("pk"))
+#         self.control_test = control_test
+
+#         if not control_test.remediation_plan_needed:
+#             return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail", kwargs={"pk": control_test.pk}))
+#         return super().dispatch(request, *args, **kwargs)
+
+#     def get_context_data(self, **kwargs):
+#         from datetime import date
+#         context = super().get_context_data(**kwargs)
+#         context = KTLayout.init(context)
+
+#         breadcrums = [
+#             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+#             {'title': _('Control Test')},
+#             {'title': _('Nuevo Plan de Remediación')},
+#         ]
+#         context['page_title'] = f"{_('Nuevo Plan de Remediación para el Control Test')} : {self.control_test.identifier}"
+#         context['breadcrums'] = breadcrums
+#         context['control_test'] = self.control_test
+#         return context
+
+#     def form_valid(self, form):
+#         form.instance.user = self.request.user
+#         form.instance.control_test = self.control_test
+#         self.remediation_plan = form.save()
+
+#         self.control_test.status = 'WS'
+#         self.control_test.remediation_plan_needed = False
+
+#         # Apuntamos en el diario del usuario la acción
+#         self.request.user.add_action(
+#             "Plan de Remediación establecido para el Control Test: %s" % str(
+#                 self.control_test.identifier)
+#         )
+
+#         # Ahora para mandar las notificaciones comprobamos a quien corresponde
+#         self.control_test.save()
+#         self.control_test.send_notification('Notification')
+
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+
+#         messages.add_message(
+#             self.request,
+#             messages.SUCCESS,
+#             _("Plan de remediación establecido correctamente"),
+#         )
+
+#         return reverse_lazy("control_tests:ru_control_test_owner_list")
+
 @method_decorator((login_required), name="dispatch")
 class RuRemediationPlanUpdate(UpdateView):
     template_name = 'control_tests/ga/ControlTestDetailUpdate.html'
     model = RemediationPlan
-    form_class = RemediationPlanCreateForm
+    form_class = RuRemediationPlanCreateForm
 
     def dispatch(self, request, *args, **kwargs):
         remediation_plan = get_object_or_404(RemediationPlan, pk=self.kwargs.get("pk"))

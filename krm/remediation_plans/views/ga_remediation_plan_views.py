@@ -46,7 +46,11 @@ from krm.users.decorators import is_global_admin, user_can_view_remediation_plan
 
 from krm.remediation_plans.forms import RemediationPlanCreateForm, RemediationPlanUpdateForm
 from krm.remediation_plans.models import RemediationPlanAnswer
-from krm.remediation_plans.forms import RemediationPlanAnswerCreateForm
+from krm.remediation_plans.forms import RemediationPlanAnswerCreateForm, RemediationPlanCreateSelectCompany
+
+from krm.companies.models import Company
+from krm.controls.models import Control
+
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaRemediationPlanListView(ListView):
@@ -68,7 +72,7 @@ class GaRemediationPlanListView(ListView):
         context['actions'] = [
             {
                 'title': _('Nuevo'),
-                'url': reverse('remediation_plans:ga_remediation_plan_create'),
+                'url': reverse('remediation_plans:ga_remediation_plan_create_select_company'),
                 'primary': True,
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
@@ -137,6 +141,17 @@ class GaRemediationPlanDetailView(CreateView):
 
         return context
 
+    def post(self, request, *args, **kwargs):
+        # Si viene el parámetro action="notificar" enviamos la notificación
+        if self.request.POST.get('action') == 'notificar':
+            self.remediation_plan.sent_notification()
+            messages.success(self.request, _('Notificación enviada correctamente'))
+            # Redirigimos a la misma vista
+            return HttpResponseRedirect(reverse('remediation_plans:ga_remediation_plan_detail', kwargs={'pk': self.remediation_plan.pk}))
+        else:
+            return super().post(request, *args, **kwargs)
+
+
     def form_valid(self, form):
         form.instance.remediation_plan = self.remediation_plan
         form.instance.user = self.request.user
@@ -161,10 +176,10 @@ class GaRemediationPlanDetailView(CreateView):
 
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
-class GaRemediationPlanCreateView(CreateView):
-    form_class = RemediationPlanCreateForm
+class GaRemediationPlanCreateSelectCompanyView(FormView):
+    form_class = RemediationPlanCreateSelectCompany
     model = RemediationPlan
-    template_name = 'remediation_plans/GaRemediationPlanCreate.html'
+    template_name = 'remediation_plans/GaRemediationPlanCreateSelectCompany.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -175,7 +190,74 @@ class GaRemediationPlanCreateView(CreateView):
             {'title': _('Planes de Remediación'), 'url': reverse(
                 'remediation_plans:ga_remediation_plan_list')},
             {'title': _('Nuevo'), 'url': reverse(
-                'remediation_plans:ga_remediation_plan_create')},
+                'remediation_plans:ga_remediation_plan_create_select_company')},
+        ]
+        context['page_title'] = _('Nueva Plan de Remediación')
+        context['breadcrums'] = breadcrums
+        context['js_template'] = ['js/custom/datatables.js']
+        return context
+
+
+    def form_valid(self, form):
+        # Cogemos el id de la compañaía desde el formulario
+        company_id = form.cleaned_data['company']
+        self.company = get_object_or_404(Company, pk=company_id)
+        return super().form_valid(form)
+
+
+    def get_success_url(self):
+        return reverse_lazy('remediation_plans:ga_remediation_plan_create', kwargs={'company_pk': self.company.pk})
+
+
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
+class GaRemediationPlanCreateView(CreateView):
+    form_class = RemediationPlanCreateForm
+    model = RemediationPlan
+    template_name = 'remediation_plans/GaRemediationPlanCreate.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.kwargs.get("company_pk"):
+            company = get_object_or_404(Company, pk=self.kwargs.get("company_pk"))
+            self.company = company
+        else:
+            # Redireccionamos a la vista anterior
+            return HttpResponseRedirect(reverse('remediation_plans:ga_remediation_plan_create_select_company'))
+        return super().dispatch(request, *args, **kwargs)
+
+
+    def get_form(self, form_class=None):
+        # Quiero filtrar los usuarios por la compañía seleccionada
+        form_class = super().get_form(form_class=None)
+
+        users = User.objects.filter(
+            companies__in=(self.company,),
+            is_active=True
+        )
+
+        form_class.fields["responsible"].queryset = users
+
+        form_class.fields["supervisor"].queryset = users
+
+        form_class.fields["additional_users"].queryset = users
+
+        form_class.fields["company"].initial = self.company.pk
+
+        # Filtramos los controles únicamente por los que estén activos para la empresa
+        company_controls = self.company.company_controls.filter(active=True).values_list('control', flat=True)
+        form_class.fields["control"].queryset = Control.objects.filter(id__in=company_controls)
+
+        return form_class
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Planes de Remediación'), 'url': reverse(
+                'remediation_plans:ga_remediation_plan_list')},
+            {'title': _('Nuevo'), 'url': reverse(
+                'remediation_plans:ga_remediation_plan_create_select_company')},
         ]
         context['page_title'] = _('Nueva Plan de Remediación')
         context['breadcrums'] = breadcrums
