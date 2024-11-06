@@ -8,26 +8,26 @@
 
 <script>
   $(document).ready(function () {
-    ClassicEditor
-      .create(
-        document.querySelector('#cta_description'),
-        {
-          language: {
-            // The UI will be English.
-            ui: 'es',
+    // ClassicEditor
+    //   .create(
+    //     document.querySelector('#cta_description'),
+    //     {
+    //       language: {
+    //         // The UI will be English.
+    //         ui: 'es',
 
-            // But the content will be edited in Arabic.
-            content: 'es'
-          }
-        }
-      )
-      .then(editor => {
-        const wordCountPlugin = editor.plugins.get('WordCount');
-        const wordCountWrapper = document.getElementById('word-count');
-        wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-      })
-      .catch(error => {
-      });
+    //         // But the content will be edited in Arabic.
+    //         content: 'es'
+    //       }
+    //     }
+    //   )
+    //   .then(editor => {
+    //     const wordCountPlugin = editor.plugins.get('WordCount');
+    //     const wordCountWrapper = document.getElementById('word-count');
+    //     wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+    //   })
+    //   .catch(error => {
+    //   });
 
     $(".datepicker").flatpickr({
           "locale": "es",

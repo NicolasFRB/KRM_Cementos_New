@@ -8,27 +8,27 @@
 
 <script>
   $(document).ready(function () {
-    ClassicEditor
-      .create(
-        document.querySelector('#cta_description'),
-        {
-          language: {
-            // The UI will be English.
-            ui: 'es',
+    // ClassicEditor
+    //   .create(
+    //     document.querySelector('#cta_description'),
+    //     {
+    //       language: {
+    //         // The UI will be English.
+    //         ui: 'es',
 
-            // But the content will be edited in Arabic.
-            content: 'es'
-          }
-        }
-      )
-      .then(editor => {
-        const wordCountPlugin = editor.plugins.get('WordCount');
-        const wordCountWrapper = document.getElementById('word-count');
-        wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-      })
-      .catch(error => {
-      });
-    
+    //         // But the content will be edited in Arabic.
+    //         content: 'es'
+    //       }
+    //     }
+    //   )
+    //   .then(editor => {
+    //     const wordCountPlugin = editor.plugins.get('WordCount');
+    //     const wordCountWrapper = document.getElementById('word-count');
+    //     wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+    //   })
+    //   .catch(error => {
+    //   });
+
       {% get_current_language as LANGUAGE_CODE %}
     {% if LANGUAGE_CODE == 'es' %}
       $(".datepicker").flatpickr({
@@ -204,7 +204,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="card-footer py-6">
               <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
               <button
@@ -248,13 +248,13 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="card-footer py-6">
               <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Testeo finalizado' %}</button>
               <!-- <button
               class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button> -->
             </div>
-            
+
           </form>
         {% endif %}
       </div>

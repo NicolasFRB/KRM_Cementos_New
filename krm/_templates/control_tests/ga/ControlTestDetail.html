@@ -8,39 +8,39 @@
 
 <script>
   $(document).ready(function () {
-    ClassicEditor
-      .create(
-        document.querySelector('#cta_description'),
-        {
-          language: {
-            // The UI will be English.
-            ui: 'es',
+    // ClassicEditor
+    //   .create(
+    //     document.querySelector('#cta_description'),
+    //     {
+    //       language: {
+    //         // The UI will be English.
+    //         ui: 'es',
 
-            // But the content will be edited in Arabic.
-            content: 'es'
-          }
-        }
-      )
-      .then(editor => {
-        const wordCountPlugin = editor.plugins.get('WordCount');
-        const wordCountWrapper = document.getElementById('word-count');
-        wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-      })
-      .catch(error => {
-      });
+    //         // But the content will be edited in Arabic.
+    //         content: 'es'
+    //       }
+    //     }
+    //   )
+    //   .then(editor => {
+    //     const wordCountPlugin = editor.plugins.get('WordCount');
+    //     const wordCountWrapper = document.getElementById('word-count');
+    //     wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+    //   })
+    //   .catch(error => {
+    //   });
 
-      {% get_current_language as LANGUAGE_CODE %}
-    {% if LANGUAGE_CODE == 'es' %}
-      $(".datepicker").flatpickr({
-        "locale": "es",
-        dateFormat: "d/m/Y",
-      });
-    {% else %}
-      $(".datepicker").flatpickr({
-            "locale": "en",
-            dateFormat: "Y-m-d",
-      });
-    {% endif %}
+    //   {% get_current_language as LANGUAGE_CODE %}
+    // {% if LANGUAGE_CODE == 'es' %}
+    //   $(".datepicker").flatpickr({
+    //     "locale": "es",
+    //     dateFormat: "d/m/Y",
+    //   });
+    // {% else %}
+    //   $(".datepicker").flatpickr({
+    //         "locale": "en",
+    //         dateFormat: "Y-m-d",
+    //   });
+    // {% endif %}
 
   });
 </script>
@@ -238,17 +238,20 @@
               <div class="row mb-4">
                 {% include '_includes/FormErrors.html' %}
                 <div class="col-12 col-xl-5 mb-4">
+                  <legend class="mb-8">{% trans 'Datos del plan de remediación' %}</legend>
                   <div class="mb-8 col-8">
-                    <legend>{% trans 'Datos del plan de remediación' %}</legend>
+                    {{ form.date_begin|as_crispy_field }}
+                  </div>
+                  <div class="mb-8 col-8">
                     {{ form.date_end|as_crispy_field }}
                   </div>
-                  <div class="mb-8">
-                      {{ form.attachment|as_crispy_field }}
+                  <div class="mb-8 col-8">
+                    {{ form.additional_users|as_crispy_field }}
                   </div>
                 </div>
                 <div class="col-12 col-xl-7 mb-4">
                   <fieldset>
-                    <legend>{% trans 'Comentario' %}</legend>
+                    <legend>{% trans 'Descripción del Plan de Remediación' %}</legend>
                     {{ form.description|as_crispy_field }}
                     <div id="word-count"></div>
                   </fieldset>
