@@ -1,6 +1,0 @@
-apiVersion: v2
-description: A Helm chart for Openshift deployment in ECI
-name: krm-kpmg-deployment # nombre del componente
-type: application
-version: 1.0.1
-timeout: 30
