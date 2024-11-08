@@ -1,0 +1,240 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: eci-service-template
+  annotations:
+    description: Template for ECI services in OCP
+    tags: app,java
+    iconClass: icon-openshift
+    openshift.io/provider-display-name: Red Hat, Inc.
+    openshift.io/support-url: https://access.redhat.com
+objects:
+- kind: Service
+  apiVersion: v1
+  spec:
+    ports:
+    - name: web
+      port: 8000
+      targetPort: 8000
+    selector:
+      deploymentConfig: ${APPLICATION_NAME}
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+    annotations:
+      description: The web server's http port.
+- kind: Route
+  apiVersion: v1
+  id: "${APPLICATION_NAME}-https"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      route-type: ${ROUTE_TYPE}
+    annotations:
+      description: Route for application's https service.
+  spec:
+    host: "${APPLICATION_NAME}.${DNS_ENVIRONMENT}"
+    to:
+      name: ${APPLICATION_NAME}
+    port:
+      targetPort: "web"
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Allow
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+  spec:
+    triggers: []
+    strategy:
+      type: ${DEPLOYMENT_STRATEGY}
+      rollingParams:
+        updatePeriodSeconds: "${{ROLLING_UPDATE_PERIOD}}"
+        intervalSeconds: "${{ROLLING_INTERVAL}}"
+        timeoutSeconds: "${{DEPLOYMENT_TIMEOUT}}"
+        maxSurge: "${{ROLLING_MAX_SURGE}}"
+        maxUnavailable: "${{ROLLING_MAX_UNAVAILABLE}}"
+      recreateParams:
+        timeoutSeconds: "${{DEPLOYMENT_TIMEOUT}}"
+    replicas: "${{REPLICA_COUNT}}"
+    selector:
+      deploymentConfig: ${APPLICATION_NAME}
+    template:
+      metadata:
+        name: ${APPLICATION_NAME}
+        labels:
+          deploymentConfig: ${APPLICATION_NAME}
+          app: ${APPLICATION_NAME}
+      spec:
+        terminationGracePeriodSeconds: 60
+        containers:
+        - name: ${APPLICATION_NAME}
+          image: ${QUAY_URL}/${ECISERVICE}:${VERSION}
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: 8000
+            protocol: TCP
+          env:
+          - name: "ECISERVICE"
+            value: ${ECISERVICE}
+          - name: "CFGMAN_TOKEN"
+            value: ${CFGMAN_TOKEN}
+          - name: "CFG_MNG_ENDPOINT"
+            value: ${CFG_MNG_ENDPOINT}
+          - name: "ECIENVIRONMENT"
+            value: ${ENVIRONMENT}
+          - name: "ROOM"
+            valueFrom:
+              configMapKeyRef:
+                name: project-config
+                key: room
+          - name: "HTTP_PROXY"
+            valueFrom:
+              configMapKeyRef:
+                name: project-config
+                key: http_proxy
+          - name: "HTTPS_PROXY"
+            valueFrom:
+              configMapKeyRef:
+                name: project-config
+                key: https_proxy
+          - name: "NO_PROXY"
+            valueFrom:
+              configMapKeyRef:
+                name: project-config
+                key: no_proxy
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          volumeMounts:
+          - name: appdynamics-volume
+            mountPath: /var/lib/appdynamics
+            subPath: 4.5.10
+          - name: resources-volume
+            mountPath: /eci/jks
+            subPath: eci
+          - name: resources-volume
+            mountPath: /eci/jwt
+            subPath: wso2/${ENVIRONMENT}/eci/jwt
+          readinessProbe:
+            httpGet:
+              path: ${READINESS_HEALTH_ENDPOINT}
+              port: 8000
+            initialDelaySeconds: "${{PROBE_DELAY}}"
+            timeoutSeconds: "${{PROBE_TIMEOUT}}"
+          livenessProbe:
+            httpGet:
+              path: ${LIVENESS_HEALTH_ENDPOINT}
+              port: 8000
+            periodSeconds: "${{PROBE_PERIOD}}"
+            initialDelaySeconds: "${{PROBE_DELAY}}"
+            timeoutSeconds: "${{PROBE_TIMEOUT}}"
+        volumes:
+        - name: appdynamics-volume
+          persistentVolumeClaim:
+            claimName: appdynamics-claim
+        - name: resources-volume
+          persistentVolumeClaim:
+            claimName: resources-claim
+parameters:
+- name: APPLICATION_NAME
+  description: "The name for the application."
+  required: true
+- name: VERSION
+  description: "Application version to deploy."
+  value: 1.0.1.0-SNAPSHOT
+  required: true
+- name: ENVIRONMENT
+  description: "Envrionment to deploy."
+  required: true
+- name: ROUTE_TYPE
+  description: "Type of route to publish (internal/external)"
+  value: internal
+- name: DNS_ENVIRONMENT
+  description: "Custom domain for service routes."
+  required: true
+- name: DEPLOYMENT_STRATEGY
+  description: "Deployment strategy to use. Values: Recreate, Rolling."
+  value: "Rolling"
+  required: true
+- name: DEPLOYMENT_TIMEOUT
+  description: "The time (in seconds) to wait for a scaling event before automatically rolling back to the previous complete deployment."
+  value: "600"
+  required: true
+- name: ROLLING_UPDATE_PERIOD
+  description: "The time to wait between individual Pod updates in seconds."
+  value: "1"
+- name: ROLLING_INTERVAL
+  description: "The time to wait between polling the deployment status after update in seconds."
+  value: "1"
+- name: ROLLING_MAX_SURGE
+  description: "The maximum number of Pods that can be scheduled above the original number of Pods expressed in percentage or number of replicas."
+  value: "25%"
+- name: ROLLING_MAX_UNAVAILABLE
+  description: "The maximum number of Pods that can be unavailable during the update expressed in percentage or number of replicas."
+  value: "20%"
+- name: REPLICA_COUNT
+  description: "Number of replicas to run."
+  value: "1"
+  required: true
+- name: QUAY_URL
+  description: URL of the Quay registry to use.
+  value: https://quay.pre.eci.geci
+  required: true
+- name: "ECISERVICE"
+  description: "ECI service ID, expressed in the format <APPLICATION>/<SERVICE>"
+  value: "web-genfirmas/cess-genfirmas"
+- name: "CFGMAN_TOKEN"
+  description: "Token to access Config Manager."
+  required: true
+- name: "CFG_MNG_ENDPOINT"
+  value: "http://configmanager.eci.geci:8080"
+  required: true
+- name: CPU_REQUEST
+  description: "Minimum amount of CPU that the container may consume. Unit (m) has to be included."
+  value: "600m"
+  required: true
+- name: CPU_LIMIT
+  description: "Maximum amount of CPU that the container may consume. Unit (m) has to be included."
+  value: "1000m"
+  required: true
+- name: MEMORY_REQUEST
+  description: "Minimum amount of memory that the container may consume. Unit (Mi, Gi) has to be included."
+  value: "512Mi"
+  required: true
+- name: MEMORY_LIMIT
+  description: "Maximum amount of memory that the container may consume. Unit (Mi, Gi) has to be included."
+  value: "800Mi"
+  required: true
+- name: READINESS_HEALTH_ENDPOINT
+  description: "Endpoint to use by the probes for readiness healthcheck."
+  value: "/health"
+  required: true
+- name: LIVENESS_HEALTH_ENDPOINT
+  description: "Endpoint to use by the probes for liveness healthcheck."
+  value: "/health"
+  required: true
+- name: PROBE_DELAY
+  description: "Delay to start probing for service health."
+  value: "60"
+  required: true
+- name: PROBE_PERIOD
+  description: "Liveness probe period."
+  value: "10"
+  required: true
+- name: PROBE_TIMEOUT
+  description: "Probes timeout."
+  value: "2"
+  required: true
+labels:
+  template: eci-service-template
