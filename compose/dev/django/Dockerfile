@@ -1,4 +1,4 @@
-FROM python:3.9-bullseye
+FROM quay.pre.eci.geci/ocp-base-images/eci-python-39-rhel8
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
