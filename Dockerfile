@@ -4,8 +4,6 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
 RUN yum -y update \
-  # dependencies for building Python packages
-  && yum -y groupinstall "Development Tools" \
   # psycopg2 dependencies
   && yum -y install postgresql-devel tree \
   # Translations dependencies
