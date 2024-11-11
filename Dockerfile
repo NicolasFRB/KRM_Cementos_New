@@ -3,6 +3,9 @@ FROM quay.pre.eci.geci/ocp-base-images/eci-python-39-rhel8
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
+# Asegurarse de que los siguientes comandos se ejecuten como root
+USER root
+
 RUN yum -y update \
   # psycopg2 dependencies
   && yum -y install postgresql-devel tree \
