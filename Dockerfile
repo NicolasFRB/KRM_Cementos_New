@@ -3,19 +3,19 @@ FROM quay.pre.eci.geci/ocp-base-images/eci-python-39-rhel8
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN apt-get update \
+RUN yum -y update \
   # dependencies for building Python packages
-  && apt-get install -y build-essential \
+  && yum -y groupinstall "Development Tools" \
   # psycopg2 dependencies
-  && apt-get install -y libpq-dev tree \
+  && yum -y install postgresql-devel tree \
   # Translations dependencies
-  && apt-get install -y gettext \
-  && apt-get install -y telnet \
-  && apt-get install -y xmlsec1 \
-  && apt-get install -y iputils-ping \
+  && yum -y install gettext \
+  && yum -y install telnet \
+  && yum -y install xmlsec1 \
+  && yum -y install iputils \
   # cleaning up unused files
-  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-  && rm -rf /var/lib/apt/lists/*
+  && yum clean all \
+  && rm -rf /var/cache/yum
 
 ENV PYTHONUNBUFFERED 1
 ENV TZ=Europe/Madrid
