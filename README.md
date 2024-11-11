@@ -3,7 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/django-eth-events.svg)](https://badge.fury.io/py/django-eth-events)
 ![Docker](https://img.shields.io/badge/docker-blue.svg)
 
-Proyecto base Django 4.0 y React JS Dockerizado
+Proyecto base Django 4.0 y React JS Dockerizado Test
 
 
 Contar las líneas de código escritas
