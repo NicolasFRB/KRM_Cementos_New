@@ -2,7 +2,7 @@
 
   <parent>
     <groupId>es.eci.fdos</groupId>
-    <artifactId>krm-tool</artifactId>
+    <artifactId>eci-pom</artifactId>
     <version>1.0.0</version>
   </parent>
 
