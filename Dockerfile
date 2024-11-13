@@ -1,4 +1,4 @@
-FROM quay.pre.eci.geci/ocp-base-images/eci-python-39-rhel8
+FROM quay.pre.eci.geci/ocp-base-images/eci-python-311-rhel9
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
