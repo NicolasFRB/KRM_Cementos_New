@@ -15,7 +15,7 @@ RUN yum -y update && \
     yum -y install telnet && \
     yum -y install xmlsec1 && \
     yum -y install iputils && \
-    yum -y install python3-tk && \
+    yum -y install python3-tkinter.x86_64 && \
     # Limpieza de archivos no utilizados
     yum clean all && \
     rm -rf /var/cache/yum
