@@ -8,14 +8,8 @@ USER root
 
 # Actualizar paquetes e instalar dependencias
 RUN yum -y update && \
-    # Dependencias de psycopg2
-    yum -y install postgresql-devel tree && \
-    # Dependencias de traducciones
-    yum -y install gettext && \
-    yum -y install telnet && \
-    yum -y install xmlsec1 && \
-    yum -y install iputils && \
-    yum -y install python3-tkinter.x86_64 && \
+    # Dependencias de psycopg2 y herramientas de PostgreSQL
+    yum -y install postgresql-devel postgresql gettext telnet xmlsec1 iputils python3-tkinter.x86_64 tree && \
     # Limpieza de archivos no utilizados
     yum clean all && \
     rm -rf /var/cache/yum
@@ -59,6 +53,10 @@ COPY ./compose/dev/django/celery/flower/start /start-flower
 RUN sed -i 's/\r$//' /start-flower && \
     chmod +x /start-flower
 
+# Copiar el script de inicialización de la base de datos
+COPY init_db.sh /usr/local/bin/init_db.sh
+RUN chmod +x /usr/local/bin/init_db.sh
+
 # Establecer el directorio de trabajo
 WORKDIR /data
 
@@ -68,5 +66,5 @@ COPY . .
 # Cambiar al usuario 'django' por seguridad
 USER django
 
-ENTRYPOINT ["/entrypoint"]
-
+# Modificar el ENTRYPOINT para ejecutar el script de inicialización y luego el entrypoint original
+ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/init_db.sh && /entrypoint"]
