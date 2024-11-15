@@ -64,7 +64,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rosetta',
     'health_check',                             # required
-    'health_check.db',                          # stock Django health checkers
+    # 'health_check.db',                          # stock Django health checkers
 
 ]
 
@@ -549,8 +549,8 @@ SAML2_AUTH = {
 HEALTH_CHECK = {
         # .....
         "SUBSETS": {
-            "startup-probe": ["MigrationsHealthCheck", "DatabaseBackend"],
-            "liveness-probe": ["DatabaseBackend"]        
+            "startup-probe": ["MigrationsHealthCheck", "KrmToolSimpleCheck"],
+            "liveness-probe": ["KrmToolSimpleCheck"]        
         },
         # .....
     }

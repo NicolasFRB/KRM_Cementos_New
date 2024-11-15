@@ -10,6 +10,8 @@ from django.conf.urls.i18n import i18n_patterns
 from django.utils.translation import gettext_lazy as _
 from rest_framework import routers
 
+from krm.base.healthchecks import simpleHealthCheck
+
 from krm.users.views import (
     DashboardView,
 )
@@ -69,28 +71,30 @@ router.register(r'scopes', ScopeViewSet)
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
-     path(r'ht/', include('health_check.urls')),
+     # path(r'ht/', include('health_check.urls')),
+     path('liveness-probe/', simpleHealthCheck),
+     path('startup-probe/', simpleHealthCheck),
 
-    path('i18n/', include('django.conf.urls.i18n')),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api/riskscompany/',
-         RiskCompanyApiView.as_view()),
-    path('api/riskscompanyresidual/',
-         RiskCompanyResidualApiView.as_view()),
-    path('api/risktestinherentexpert/',
-         RiskTestInherentExpertApiView.as_view()
-         ),
-    path('api/risktestresidualevaluator/',
-         RiskTestResidualEvaluatorApiView.as_view()
-         ),
-    path('api/riskcompanyresidualadmin/',
-         RiskCompanyResidualAdminApiView.as_view()
-         ),
-    path('api/controlscompany/',
-         ControlCompanyApiView.as_view()),
-    path('api/questiontest/',
-         QuestionTestApiView.as_view()),
+     path('i18n/', include('django.conf.urls.i18n')),
+     path('api/', include(router.urls)),
+     path('api-auth/', include('rest_framework.urls')),
+     path('api/riskscompany/',
+          RiskCompanyApiView.as_view()),
+     path('api/riskscompanyresidual/',
+          RiskCompanyResidualApiView.as_view()),
+     path('api/risktestinherentexpert/',
+          RiskTestInherentExpertApiView.as_view()
+          ),
+     path('api/risktestresidualevaluator/',
+          RiskTestResidualEvaluatorApiView.as_view()
+          ),
+     path('api/riskcompanyresidualadmin/',
+          RiskCompanyResidualAdminApiView.as_view()
+          ),
+     path('api/controlscompany/',
+          ControlCompanyApiView.as_view()),
+     path('api/questiontest/',
+          QuestionTestApiView.as_view()),
 ]
 
 urlpatterns += i18n_patterns(
