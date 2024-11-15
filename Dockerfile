@@ -67,4 +67,4 @@ COPY . .
 USER django
 
 # Modificar el ENTRYPOINT para ejecutar el script de inicialización y luego el entrypoint original
-ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/init_db.sh && /entrypoint"]
+ENTRYPOINT ["/bin/sh", "-c", "/init_db.sh && /entrypoint"]
