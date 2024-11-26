@@ -518,7 +518,7 @@ AUTH0_CLIENT_SECRET = env.str("AUTH0_CLIENT_SECRET")
 SAML2_AUTH = {
     # Metadata is required, choose either remote url or local file path
     'METADATA_AUTO_CONF_URL': '[The auto(dynamic) metadata configuration URL of SAML2]',
-    'METADATA_LOCAL_FILE_PATH': 'dev-njl8nr7c8xdkfs74_us_auth0_com-metadata.xml',
+    'METADATA_LOCAL_FILE_PATH': 'dev-metadata.xml',
 
     # Optional settings below
     'DEFAULT_NEXT_URL': 'en/dashboard',  # Custom target redirect URL after the user get logged in. Default to /admin if not set. This setting will be overwritten if you have parameter ?next= specificed in the login URL.
@@ -539,11 +539,11 @@ SAML2_AUTH = {
         'CREATE_USER': 'path.to.your.new.user.hook.method',
         'BEFORE_LOGIN': 'path.to.your.login.hook.method',
     },
-    'ASSERTION_URL': 'http://localhost:8000', # Custom URL to validate incoming SAML requests against
-    'ENTITY_ID': 'http://localhost:8000/en/auth/callback/', # Populates the Issuer element in authn request
+    'ASSERTION_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Custom URL to validate incoming SAML requests against
+    'ENTITY_ID': 'https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/', # Populates the Issuer element in authn request
     'NAME_ID_FORMAT': None, # Sets the Format property of authn NameIDPolicy element
     'USE_JWT': False, # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
-    'FRONTEND_URL': 'https://myfrontendclient.com', # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
+    'FRONTEND_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
 }
 
 HEALTH_CHECK = {
