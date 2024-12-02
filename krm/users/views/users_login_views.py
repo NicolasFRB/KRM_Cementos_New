@@ -106,39 +106,39 @@ class DashboardView(RedirectView):
 
 # # Login
 def login_view(r):
-    try:
-        import urlparse as _urlparse
-        from urllib import unquote
-    except:
-        import urllib.parse as _urlparse
-        from urllib.parse import unquote
-    next_url = r.GET.get('next', _default_next_url())
+    # try:
+    #     import urlparse as _urlparse
+    #     from urllib import unquote
+    # except:
+    #     import urllib.parse as _urlparse
+    #     from urllib.parse import unquote
+    # next_url = r.GET.get('next', _default_next_url())
 
-    try:
-        if 'next=' in unquote(next_url):
-            next_url = _urlparse.parse_qs(_urlparse.urlparse(unquote(next_url)).query)['next'][0]
-    except:
-        next_url = r.GET.get('next', _default_next_url())
+    # try:
+    #     if 'next=' in unquote(next_url):
+    #         next_url = _urlparse.parse_qs(_urlparse.urlparse(unquote(next_url)).query)['next'][0]
+    # except:
+    #     next_url = r.GET.get('next', _default_next_url())
 
-    # Only permit signin requests where the next_url is a safe URL
-    url_ok = url_has_allowed_host_and_scheme(next_url, None)
+    # # Only permit signin requests where the next_url is a safe URL
+    # url_ok = url_has_allowed_host_and_scheme(next_url, None)
 
-    if not url_ok:
-        return HttpResponseRedirect(reverse()) # to reverse
+    # if not url_ok:
+    #     return HttpResponseRedirect(reverse()) # to reverse
 
-    r.session['login_next_url'] = next_url
+    # r.session['login_next_url'] = next_url
 
-    saml_client = _get_saml_client(get_current_domain(r))
-    _, info = saml_client.prepare_for_authenticate()
+    # saml_client = _get_saml_client(get_current_domain(r))
+    # _, info = saml_client.prepare_for_authenticate()
 
-    redirect_url = None
+    # redirect_url = None
 
-    for key, value in info['headers']:
-        if key == 'Location':
-            redirect_url = value
-            break
+    # for key, value in info['headers']:
+    #     if key == 'Location':
+    #         redirect_url = value
+    #         break
 
-    return HttpResponseRedirect(redirect_url)
+    return HttpResponseRedirect("https://identity-services.uat.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/")
 
 
     # return oauth.auth0.authorize_redirect(
@@ -358,15 +358,17 @@ def callback_view(r):
 def logout_view(request):
     request.session.clear()
 
+# https://identity-services.uat.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/
     return HttpResponseRedirect(
-        f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
-        + urllib.parse.urlencode(
-            {
-                "returnTo": request.build_absolute_uri(reverse("users:dashboard")),
-                "client_id": settings.AUTH0_CLIENT_ID,
-            },
-            quote_via=urllib.parse.quote_plus,
-        ),
+        "https://identity-services.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/&slo=true&returnTo=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/logout"
+        # f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
+        # + urllib.parse.urlencode(
+        #     {
+        #         "returnTo": request.build_absolute_uri(reverse("users:dashboard")),
+        #         "client_id": settings.AUTH0_CLIENT_ID,
+        #     },
+        #     quote_via=urllib.parse.quote_plus,
+        # ),
     )
 
 # @method_decorator(decorators, name='dispatch')
