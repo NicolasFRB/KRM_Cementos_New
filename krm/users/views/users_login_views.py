@@ -261,10 +261,12 @@ def callback_view(r):
     authn_response = saml_client.parse_authn_request_response(
         resp, entity.BINDING_HTTP_REDIRECT)
     if authn_response is None:
+        print("Auth Response equals None")
         return HttpResponseRedirect(reverse("auth:logout")) #to denied login
 
     user_identity = authn_response.get_identity()
     if user_identity is None:
+        print("UserIdentity equals None")
         return HttpResponseRedirect(reverse("auth:logout")) #to denied login
 
     # print(user_identity)
@@ -281,6 +283,7 @@ def callback_view(r):
         # if settings.SAML2_AUTH.get('TRIGGER', {}).get('BEFORE_LOGIN', None):
         #     import_string(settings.SAML2_AUTH['TRIGGER']['BEFORE_LOGIN'])(user_identity)
     except User.DoesNotExist:
+        print("User does not exist")
         new_user_should_be_created = settings.SAML2_AUTH.get('CREATE_USER', True)
         if new_user_should_be_created: 
             target_user = _create_new_user(user_name, user_email, user_real_name)
