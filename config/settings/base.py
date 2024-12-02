@@ -539,7 +539,7 @@ SAML2_AUTH = {
         'CREATE_USER': 'path.to.your.new.user.hook.method',
         'BEFORE_LOGIN': 'path.to.your.login.hook.method',
     },
-    'ASSERTION_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Custom URL to validate incoming SAML requests against
+    'ASSERTION_URL': 'https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/', # Custom URL to validate incoming SAML requests against
     'ENTITY_ID': 'https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/', # Populates the Issuer element in authn request
     'NAME_ID_FORMAT': None, # Sets the Format property of authn NameIDPolicy element
     'USE_JWT': False, # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
