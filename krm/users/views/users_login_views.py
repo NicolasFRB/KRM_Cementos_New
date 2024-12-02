@@ -357,10 +357,10 @@ def callback_view(r):
     
 def logout_view(request):
     request.session.clear()
-
+# https://identity-services.uat.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/&slo=true&returnTo=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/logout
 # https://identity-services.uat.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/
     return HttpResponseRedirect(
-        "https://identity-services.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/&slo=true&returnTo=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/logout"
+        "https://identity-services.uat.elcorteingles.es/samlsso?slo=true"
         # f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
         # + urllib.parse.urlencode(
         #     {
