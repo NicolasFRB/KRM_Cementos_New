@@ -171,18 +171,18 @@ def login_view(r):
 #     raise Exception('We got a URL reverse issue: %s. This is a known issue but please still submit a ticket at https://github.com/fangli/django-saml2-auth/issues/new' % str(objs))
 
 def _get_metadata():
-    if 'METADATA_LOCAL_FILE_PATH' in settings.SAML2_AUTH:
+    # if 'METADATA_LOCAL_FILE_PATH' in settings.SAML2_AUTH:
         return {
             'local': [settings.SAML2_AUTH['METADATA_LOCAL_FILE_PATH']]
         }
-    else:
-        return {
-            'remote': [
-                {
-                    "url": settings.SAML2_AUTH['METADATA_AUTO_CONF_URL'],
-                },
-            ]
-        }
+    # else:
+    #     return {
+    #         'remote': [
+    #             {
+    #                 "url": settings.SAML2_AUTH['METADATA_AUTO_CONF_URL'],
+    #             },
+    #         ]
+    #     }
 
 def get_current_domain(r):
     if 'ASSERTION_URL' in settings.SAML2_AUTH:
