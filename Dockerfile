@@ -9,6 +9,10 @@ USER root
 # Actualizar paquetes e instalar dependencias
 RUN yum -y update && \
     # Dependencias de psycopg2 y herramientas de PostgreSQL
+    rpm -ivh xmlsec1-*.rpm && \
+    rpm -ivh xmlsec1-openssl-*.rpm && \
+    rpm -ivh xmlsec1-devel-*.rpm && \
+    rpm -ivh xmlsec1-openssl-devel-*.rpm && \
     yum -y install postgresql-devel postgresql gettext telnet xmlsec1 libxml2-devel xmlsec1-devel xmlsec1-openssl-devel iputils python3-tkinter.x86_64 tree  && \
     # Limpieza de archivos no utilizados
     yum clean all && \
