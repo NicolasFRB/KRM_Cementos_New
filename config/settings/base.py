@@ -514,15 +514,17 @@ AUTH0_DOMAIN = env.str("AUTH0_DOMAIN")
 AUTH0_CLIENT_ID = env.str("AUTH0_CLIENT_ID")
 AUTH0_CLIENT_SECRET = env.str("AUTH0_CLIENT_SECRET")
 
+
+
 # SAML2
 SAML2_AUTH = {
     # Metadata is required, choose either remote url or local file path
-    'METADATA_AUTO_CONF_URL': '[The auto(dynamic) metadata configuration URL of SAML2]',
-    'METADATA_LOCAL_FILE_PATH': 'dev-metadata.xml',
+    # 'METADATA_AUTO_CONF_URL': '[The auto(dynamic) metadata configuration URL of SAML2]',
+    'METADATA_LOCAL_FILE_PATH': os.path.join( BASE_DIR, 'dev-metadata.xml'),
 
     # Optional settings below
     'DEFAULT_NEXT_URL': '/en/auth/callback/',  # Custom target redirect URL after the user get logged in. Default to /admin if not set. This setting will be overwritten if you have parameter ?next= specificed in the login URL.
-    'CREATE_USER': 'FALSE', # Create a new Django user when a new user logs in. Defaults to True.
+    'CREATE_USER': False, # Create a new Django user when a new user logs in. Defaults to True.
     'NEW_USER_PROFILE': {
         'USER_GROUPS': [],  # The default group name when a new user logs in
         'ACTIVE_STATUS': True,  # The default active status for new users
@@ -535,10 +537,10 @@ SAML2_AUTH = {
         'name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
         # 'last_name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
     },
-    'TRIGGER': {
-        'CREATE_USER': 'path.to.your.new.user.hook.method',
-        'BEFORE_LOGIN': 'path.to.your.login.hook.method',
-    },
+    # 'TRIGGER': {
+    #     'CREATE_USER': 'path.to.your.new.user.hook.method',
+    #     'BEFORE_LOGIN': 'path.to.your.login.hook.method',
+    # },
     'ASSERTION_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Custom URL to validate incoming SAML requests against
     'ENTITY_ID': 'idp-wso2.wso2.uat.marathon.mesos', # Populates the Issuer element in authn request
     'NAME_ID_FORMAT': None, # Sets the Format property of authn NameIDPolicy element

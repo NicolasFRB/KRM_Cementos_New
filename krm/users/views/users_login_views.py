@@ -257,7 +257,6 @@ def callback_view(r):
     if not resp:
         return HttpResponseRedirect(reverse("auth:logout")) #to denied login
 
-    time.sleep(10)
     authn_response = saml_client.parse_authn_request_response(
         resp, entity.BINDING_HTTP_POST)
     if authn_response is None:
