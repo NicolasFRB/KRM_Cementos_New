@@ -546,6 +546,8 @@ SAML2_AUTH = {
     'NAME_ID_FORMAT': None, # Sets the Format property of authn NameIDPolicy element
     'USE_JWT': False, # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
     'FRONTEND_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
+    'XMLSEC_BINARY': '/usr/bin/xmlsec1',  # Ajusta esta ruta
+ 
 }
 
 HEALTH_CHECK = {

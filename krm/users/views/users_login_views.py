@@ -217,6 +217,7 @@ def _get_saml_client(domain):
     metadata = _get_metadata()
 
     saml_settings = {
+        'xmlsec_binary': '/usr/bin/xmlsec1',  # Asegúrate de que esta ruta es correcta
         'metadata': metadata,
         'service': {
             'sp': {
@@ -229,8 +230,8 @@ def _get_saml_client(domain):
                 'allow_unsolicited': True,
                 'authn_requests_signed': False,
                 'logout_requests_signed': True,
-                'want_assertions_signed': False,
-                'want_response_signed': False,
+                'want_assertions_signed': True,
+                'want_response_signed': True,
             },
         },
     }
