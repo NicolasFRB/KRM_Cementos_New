@@ -35,11 +35,10 @@ RUN cd /tmp/rpms && \
     curl -O https://www.rpmfind.net/linux/centos-stream/9-stream/BaseOS/x86_64/os/Packages/libxml2-2.9.13-2.el9.x86_64.rpm && \
     curl -O https://www.rpmfind.net/linux/mageia/distrib/8/x86_64/media/core/release/libxml2-python3-2.9.10-7.mga8.x86_64.rpm && \
     curl -O https://vault.centos.org/centos/8/PowerTools/x86_64/os/Packages/xmlsec1-devel-1.2.25-4.el8.x86_64.rpm && \
-    curl -O https://vault.centos.org/centos/8/PowerTools/x86_64/os/Packages/xmlsec1-openssl-devel-1.2.25-4.el8.x86_64.rpm && \
-    rpm -Uvh *.rpm --nodeps --force
+    curl -O https://vault.centos.org/centos/8/PowerTools/x86_64/os/Packages/xmlsec1-openssl-devel-1.2.25-4.el8.x86_64.rpm 
 
 # Instalar los RPMs descargados
-# RUN rpm -Uvh /tmp/rpms/*.rpm --nodeps --force
+RUN rpm -Uvh /tmp/rpms/*.rpm --nodeps --force
 
 # Actualizar paquetes e instalar dependencias
 RUN yum -y install postgresql-devel postgresql gettext telnet iputils python3-tkinter.x86_64 tree  && \
