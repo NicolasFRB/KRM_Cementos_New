@@ -24,7 +24,7 @@ RUN cd /tmp/rpms && \
     curl -O http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/libxml2-devel-2.9.7-9.el8.x86_64.rpm && \
     curl -O http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/libxml2-2.9.7-9.el8.x86_64.rpm && \
     curl -O http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/libxml2-python3-2.9.7-9.el8.x86_64.rpm && \
-    rpm -Uvh /tmp/rpms/*.rpm --nodeps --force
+    rpm -Uvh *.rpm --nodeps --force
 
 # Actualizar paquetes e instalar dependencias
 RUN yum -y install postgresql-devel postgresql gettext telnet xmlsec1 iputils python3-tkinter.x86_64 tree  && \
