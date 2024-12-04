@@ -542,7 +542,7 @@ SAML2_AUTH = {
     #     'BEFORE_LOGIN': 'path.to.your.login.hook.method',
     # },
     'ASSERTION_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Custom URL to validate incoming SAML requests against
-    'ENTITY_ID': 'idp-wso2.wso2.uat.marathon.mesos', # Populates the Issuer element in authn request
+    'ENTITY_ID': 'https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/', # Populates the Issuer element in authn request
     'NAME_ID_FORMAT': None, # Sets the Format property of authn NameIDPolicy element
     'USE_JWT': False, # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
     'FRONTEND_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
