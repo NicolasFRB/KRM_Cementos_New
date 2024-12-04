@@ -270,9 +270,9 @@ def callback_view(r):
         return HttpResponseRedirect(reverse("auth:logout")) #to denied login
 
     # print(user_identity)
-    user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress')][0]
-    user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'http://schemas.auth0.com/nickname')][0]
-    user_real_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('name', 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name')][0]
+    user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'email')][0]
+    user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'username')][0]
+    user_real_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('name', 'username')][0]
     # user_last_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('last_name', 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname')][0]
 
     target_user = None

@@ -532,9 +532,9 @@ SAML2_AUTH = {
         'SUPERUSER_STATUS': False,  # The superuser status for new users
     },
     'ATTRIBUTES_MAP': {  # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
-        'email': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
-        'username': 'http://schemas.auth0.com/nickname',
-        'name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
+        'email': 'email',
+        'username': 'username',
+        'name': 'username',
         # 'last_name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
     },
     # 'TRIGGER': {
