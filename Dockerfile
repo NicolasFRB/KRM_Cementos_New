@@ -28,11 +28,13 @@ RUN mkdir /tmp/rpms
 
 # Descargar los RPMs necesarios desde un repositorio público
 # Nota: Es importante verificar la compatibilidad y seguridad de los paquetes descargados.
+
+# Probando a no utilizarlos ya que al parecer ya existen
+# curl -O https://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/libxml2-devel-2.9.13-2.el9.x86_64.rpm && \
+# curl -O https://www.rpmfind.net/linux/centos-stream/9-stream/BaseOS/x86_64/os/Packages/libxml2-2.9.13-2.el9.x86_64.rpm && \
 RUN cd /tmp/rpms && \
     curl -O https://www.rpmfind.net/linux/almalinux/8.10/AppStream/x86_64/os/Packages/xmlsec1-1.2.25-4.el8.x86_64.rpm && \
     curl -O https://www.rpmfind.net/linux/almalinux/8.10/AppStream/x86_64/os/Packages/xmlsec1-openssl-1.2.25-4.el8.x86_64.rpm && \
-    curl -O https://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/libxml2-devel-2.9.13-2.el9.x86_64.rpm && \
-    curl -O https://www.rpmfind.net/linux/centos-stream/9-stream/BaseOS/x86_64/os/Packages/libxml2-2.9.13-2.el9.x86_64.rpm && \
     curl -O https://www.rpmfind.net/linux/mageia/distrib/8/x86_64/media/core/release/libxml2-python3-2.9.10-7.mga8.x86_64.rpm && \
     curl -O https://vault.centos.org/centos/8/PowerTools/x86_64/os/Packages/xmlsec1-devel-1.2.25-4.el8.x86_64.rpm && \
     curl -O https://vault.centos.org/centos/8/PowerTools/x86_64/os/Packages/xmlsec1-openssl-devel-1.2.25-4.el8.x86_64.rpm 
