@@ -43,9 +43,9 @@ RUN cd /tmp/rpms && \
 RUN rpm -Uvh /tmp/rpms/*.rpm --nodeps --force
 
 # Actualizar paquetes e instalar dependencias
-# RUN yum -y install postgresql-devel postgresql gettext telnet iputils python3-tkinter.x86_64 tree  && \
-#     yum clean all && \
-#     rm -rf /var/cache/yum
+RUN yum -y install postgresql-devel postgresql gettext telnet iputils python3-tkinter.x86_64 tree  && \
+    yum clean all && \
+    rm -rf /var/cache/yum
 
 # Configurar zona horaria
 ENV TZ=Europe/Madrid
