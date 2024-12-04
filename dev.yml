@@ -8,13 +8,13 @@ services:
   django: &django
     build:
       context: .
-      dockerfile: ./compose/dev/django/Dockerfile
+      dockerfile: ./Dockerfile
     image: krm_dev_django
     # depends_on:
       # - postgres
       # - redis
-    volumes:
-      - C://Proyectos/krm-kpmg:/data
+    # volumes:
+    #   - C://Users/nicolasfernandorodri/OneDrive - KPMG/Desktop/krm-kpmg:/data
     env_file:
       - ./.envs/.dev/.django
       - ./.envs/.dev/.postgres

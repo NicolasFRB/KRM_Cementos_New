@@ -269,7 +269,7 @@ def callback_view(r):
         print("UserIdentity equals None")
         return HttpResponseRedirect(reverse("auth:logout")) #to denied login
 
-    # print(user_identity)
+    print(user_identity)
     user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'email')][0]
     user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'username')][0]
     user_real_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('name', 'username')][0]

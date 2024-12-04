@@ -21,19 +21,19 @@ from krm.users.views import (
 
 urlpatterns = [
     path(
-        'login/',
+        'login',
         # LoginView.as_view(),
         login_view,
         name='login'
     ),
     path(
-        'logout/',
+        'logout',
         # LogoutView.as_view(),
         logout_view,
         name='logout'
     ),
     path(
-        'callback/', 
+        'callback', 
         # CallbackView.as_view(), 
         callback_view,
         name='callback'
