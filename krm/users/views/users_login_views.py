@@ -270,7 +270,7 @@ def callback_view(r):
         return HttpResponseRedirect(reverse("auth:logout")) #to denied login
 
     print(user_identity)
-    user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'email')][0]
+    # user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'email')][0]
     user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'username')][0]
     user_real_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('name', 'username')][0]
     # user_last_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('last_name', 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname')][0]
@@ -279,14 +279,14 @@ def callback_view(r):
     is_new_user = False
 
     try:
-        target_user = User.objects.get(username=user_email)
+        target_user = User.objects.get(username=user_name)
         # if settings.SAML2_AUTH.get('TRIGGER', {}).get('BEFORE_LOGIN', None):
         #     import_string(settings.SAML2_AUTH['TRIGGER']['BEFORE_LOGIN'])(user_identity)
     except User.DoesNotExist:
         print("User does not exist")
         new_user_should_be_created = settings.SAML2_AUTH.get('CREATE_USER', True)
         if new_user_should_be_created: 
-            target_user = _create_new_user(user_name, user_email, user_real_name)
+            target_user = _create_new_user(user_name, "", user_real_name)
             # if settings.SAML2_AUTH.get('TRIGGER', {}).get('CREATE_USER', None):
             #     import_string(settings.SAML2_AUTH['TRIGGER']['CREATE_USER'])(user_identity)
             is_new_user = True
