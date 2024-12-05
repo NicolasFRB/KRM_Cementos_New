@@ -286,7 +286,7 @@ def callback_view(r):
         print("User does not exist")
         new_user_should_be_created = settings.SAML2_AUTH.get('CREATE_USER', True)
         if new_user_should_be_created: 
-            target_user = _create_new_user(user_name, "", user_real_name)
+            target_user = _create_new_user(user_name, user_name +" @nomail.com", user_real_name)
             # if settings.SAML2_AUTH.get('TRIGGER', {}).get('CREATE_USER', None):
             #     import_string(settings.SAML2_AUTH['TRIGGER']['CREATE_USER'])(user_identity)
             is_new_user = True
