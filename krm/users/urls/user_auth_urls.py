@@ -6,8 +6,13 @@ from django.urls import include, path, re_path
 from django.views.decorators.csrf import csrf_exempt
 
 from krm.users.views import (
-    LoginView,
+    # LoginView,
+    login_view,
+    # LogoutView,
     logout_view,
+    # CallbackView,
+    callback_view,
+    # logout_view,
     RememberPassword,
     TypeYourPassword,
     RememberEmailSended,
@@ -17,13 +22,21 @@ from krm.users.views import (
 urlpatterns = [
     path(
         'login/',
-        LoginView.as_view(),
+        # LoginView.as_view(),
+        login_view,
         name='login'
     ),
     path(
         'logout/',
+        # LogoutView.as_view(),
         logout_view,
         name='logout'
+    ),
+    path(
+        'callback/', 
+        # CallbackView.as_view(), 
+        callback_view,
+        name='callback'
     ),
     path(
         'reset-password/',

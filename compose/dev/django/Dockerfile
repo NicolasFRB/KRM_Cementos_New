@@ -1,10 +1,33 @@
-FROM bienvenidosaez/krm_django_base_dev:latest
+FROM quay.pre.eci.geci/ocp-base-images/eci-python-39-rhel8
 
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+RUN apt-get update \
+  # dependencies for building Python packages
+  && apt-get install -y build-essential \
+  # psycopg2 dependencies
+  && apt-get install -y libpq-dev tree \
+  # Translations dependencies
+  && apt-get install -y gettext \
+  && apt-get install -y telnet \
+  && apt-get install -y xmlsec1 \
+  && apt-get install -y iputils-ping \
+  # cleaning up unused files
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV PYTHONUNBUFFERED 1
+ENV TZ=Europe/Madrid
+
+RUN addgroup django \
+  && useradd -g django django
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
 RUN pip install -r /requirements/dev.txt
+
+
 
 COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r//' /entrypoint
@@ -26,6 +49,8 @@ COPY ./compose/dev/django/celery/flower/start /start-flower
 RUN sed -i 's/\r//' /start-flower
 RUN chmod +x /start-flower
 
-WORKDIR /app
+WORKDIR /data
+
+COPY . .
 
 ENTRYPOINT ["/entrypoint"]

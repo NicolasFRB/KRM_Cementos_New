@@ -14,7 +14,7 @@ services:
       - sacyr_postgres
       - redis
     volumes:
-      - .:/app
+      - .:/data
       - ./krm-media:/krm-media
     env_file:
       - ./.envs/.sacyr/.django

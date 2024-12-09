@@ -21,13 +21,21 @@ import sys
 import psycopg2
 
 try:
-    psycopg2.connect(
+    conn = psycopg2.connect(
         dbname="${KRM_POSTGRES_DB}",
         user="${KRM_POSTGRES_USER}",
         password="${KRM_POSTGRES_PASSWORD}",
         host="${KRM_POSTGRES_HOST}",
         port="${KRM_POSTGRES_PORT}",
     )
+
+    cur = conn.cursor()
+
+    # cur.execute('INSERT INTO "configuration_configuration" ("id", "app_name", "main_email", "enable_emails") VALUES (1, 'KRM KPMG', 'nicolasfernandorodri@kpmg.es', 'true') ON CONFLICT DO NOTHING;')
+
+    conn.commit()
+    cur.close()
+    conn.close()
 except psycopg2.OperationalError:
     sys.exit(-1)
 sys.exit(0)

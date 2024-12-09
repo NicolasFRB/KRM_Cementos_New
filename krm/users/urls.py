@@ -8,7 +8,10 @@ from django.views.decorators.csrf import csrf_exempt
 from krm.users.views import (
     DashboardView,
     LoginView,
-    logout_view,
+    LogoutView,
+    CallbackView,
+    DashboardView,
+    # logout_view,
     RememberPassword,
     TypeYourPassword,
     RememberEmailSended,
@@ -43,8 +46,14 @@ urlpatterns = [
     # ),
     path(
         'logout/',
-        logout_view,
+        # logout_view,
+        LogoutView.as_view(),
         name='logout'
+    ),
+    path(
+        'callback/', 
+        CallbackView.as_view(),
+        name='callback'
     ),
     path(
         'users/',

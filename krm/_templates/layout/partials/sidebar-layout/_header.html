@@ -14,7 +14,11 @@
 		<!--begin::Mobile logo-->
 		<div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
 			<a href="/" class="d-lg-none">
-				<img alt="Logo" src="{% static 'media/logos/krm-logo-globalvia.svg' %}" class="h-30px" />
+        {% if BRAND == 'globalvia' %}
+				  <img alt="Logo" src="{% static 'media/logos/krm-logo-globalvia.svg' %}" class="h-30px" />
+        {% else %}
+          <img alt="Logo" src="{% static 'media/logos/krm-logo-mini.svg' %}" class="h-30px" />
+        {% endif %}
 			</a>
 		</div>
 		<!--end::Mobile logo-->

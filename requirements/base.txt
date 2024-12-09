@@ -1,17 +1,49 @@
+# oracledb ~= 1.3.2
+
+psycopg2==2.9.3 --no-binary psycopg2
+Django==4.1.3
+# django-environ==0.9.0
+django-extensions==3.2.0
+
+django-health-check~=3.18.3
+# Excel
+xlrd==2.0.1
+xlwt==1.3.0
+
+# Redis
+redis~=4.3.4
+django-redis==5.2.0
+celery==5.2.7
+flower==1.2.0
+tornado==5.1.1
+
+
+xlsxwriter==3.0.3
+openpyxl==3.0.10
+
 django-crispy-forms==1.14.0
 # django-easy-select2==1.5.7
-django_extensions==3.1.5
+# django_extensions==3.1.5
 
 requests==2.28.1
 django_countries==7.3.2
 django-ckeditor==6.5.0
 
+django-environ == 0.11.2 
 # DRF
 djangorestframework==3.13.1
 markdown==3.4.1
 django-filter==22.1
 django-cors-headers==3.13.0
 # pandas==1.5.1
+
+xmlsec ~= 1.3.14
+django-rest-auth ~= 0.9.5
+pysaml2>=7.4.2
+authlib ~= 1.0
+python-dotenv ~= 0.19
+# Quitar
+# pyopenssl ~= 17.2.0
 
 django-rosetta==0.9.8
 

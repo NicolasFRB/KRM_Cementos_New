@@ -210,7 +210,7 @@ class User(AbstractUser):
         return self.controls_test_owner_pending().count() + self.controls_test_supervisor_pending().count() + self.risk_test_inherent_expert_pending().count() + self.risk_test_residual_evaluator_pending().count() + self.question_test_pending().count()
 
     def save(self, *args, **kwargs):
-        self.username = self.email
+        # self.username = self.email
         if not self.remember_key:
             self.remember_key = md5_generate()
         super(User, self).save(*args, **kwargs)

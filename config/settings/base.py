@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path("krm")
 
-DEV = env.bool('KRM_DJANGO_DEV')
+DEV = True # env.bool('KRM_DJANGO_DEV')
 DEVJS = env.bool('KRM_DJANGO_DEVJS')
 BRAND = env.str('KRM_BRAND')
 KRM_DEBUG_TOOLBAR = env.bool('KRM_DEBUG_TOOLBAR', False)
@@ -23,6 +23,8 @@ SECRET_KEY = '9mgu=0t7adojsh2zgkfn2kw(a!@ob(t^3f6ebch3_q7(2=yn)v'
 DEBUG = env.bool("KRM_DJANGO_DEBUG")
 
 ALLOWED_HOSTS = []
+
+# APPEND_SLASH=False
 
 # Language and timezone
 TIME_ZONE = "Europe/Madrid"
@@ -63,6 +65,9 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'rest_framework',
     'rosetta',
+    'health_check',                             # required
+    # 'health_check.db',                          # stock Django health checkers
+
 ]
 
 LOCAL_APPS = [
@@ -466,6 +471,7 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
+    'http://localhost:53660', # pruebas kubernetes
     'http://localhost:3000',
     'http://app.krmtool.com',
     'https://app.krmtool.com',
@@ -488,6 +494,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 ALLOWED_HOSTS = [
     'http://localhost:8000',
+    'http://localhost:53660', # pruebas kubernetes
     'http://localhost:3000',
     'http://app.krmtool.com',
     'https://app.krmtool.com',
@@ -503,3 +510,54 @@ ALLOWED_HOSTS = [
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 KRM_ACTIVATE = env.bool("KRM_ACTIVATE")
+
+
+# Load Auth0 application settings into memory
+AUTH0_DOMAIN = env.str("AUTH0_DOMAIN")
+AUTH0_CLIENT_ID = env.str("AUTH0_CLIENT_ID")
+AUTH0_CLIENT_SECRET = env.str("AUTH0_CLIENT_SECRET")
+
+
+
+# SAML2
+SAML2_AUTH = {
+    # Metadata is required, choose either remote url or local file path
+    # 'METADATA_AUTO_CONF_URL': '[The auto(dynamic) metadata configuration URL of SAML2]',
+    'METADATA_LOCAL_FILE_PATH': os.path.join( BASE_DIR, 'dev-metadata.xml'),
+
+    # Optional settings below
+    'DEFAULT_NEXT_URL': '/en/auth/callback/',  # Custom target redirect URL after the user get logged in. Default to /admin if not set. This setting will be overwritten if you have parameter ?next= specificed in the login URL.
+    'CREATE_USER': True, # Create a new Django user when a new user logs in. Defaults to True.
+    'NEW_USER_PROFILE': {
+        'USER_GROUPS': [],  # The default group name when a new user logs in
+        'ACTIVE_STATUS': True,  # The default active status for new users
+        'STAFF_STATUS': True,  # The staff status for new users
+        'SUPERUSER_STATUS': False,  # The superuser status for new users
+    },
+    'ATTRIBUTES_MAP': {  # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
+        'email': 'email',
+        'username': 'username',
+        'name': 'username',
+        # 'last_name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
+    },
+    # 'TRIGGER': {
+    #     'CREATE_USER': 'path.to.your.new.user.hook.method',
+    #     'BEFORE_LOGIN': 'path.to.your.login.hook.method',
+    # },
+    'ASSERTION_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Custom URL to validate incoming SAML requests against
+    'ENTITY_ID': 'https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/', # Populates the Issuer element in authn request
+    'NAME_ID_FORMAT': None, # Sets the Format property of authn NameIDPolicy element
+    'USE_JWT': False, # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
+    'FRONTEND_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
+    'XMLSEC_BINARY': '/usr/bin/xmlsec1',  # Ajusta esta ruta
+ 
+}
+
+HEALTH_CHECK = {
+        # .....
+        "SUBSETS": {
+            "startup-probe": ["MigrationsHealthCheck", "KrmToolSimpleCheck"],
+            "liveness-probe": ["KrmToolSimpleCheck"]        
+        },
+        # .....
+    }

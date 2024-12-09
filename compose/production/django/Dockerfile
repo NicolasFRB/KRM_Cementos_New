@@ -16,12 +16,12 @@ RUN chmod +x /start
 
 #RUN python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords');"
 
-COPY . /app
+COPY . /data
 
-RUN chown -R django /app
+RUN chown -R django /data
 
 USER django
 
-WORKDIR /app
+WORKDIR /data
 
 ENTRYPOINT ["/entrypoint"]

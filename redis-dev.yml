@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  redis: &redis
+    image: 'redis:alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./compose/dev/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - "6379"
+
+  # postgres:
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/dev/postgres/Dockerfile
+  #   image: krm_local_postgres
+  #   volumes:
+  #     - krm_local_postgres_data:/var/lib/postgresql/data
+  #     - krm_local_postgres_data_backups:/backups
+  #   env_file:
+  #     - ./.envs/.dev/.postgres

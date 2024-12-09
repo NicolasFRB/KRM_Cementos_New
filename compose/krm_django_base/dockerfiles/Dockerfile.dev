@@ -11,6 +11,7 @@ RUN apt-get update \
   # Translations dependencies
   && apt-get install -y gettext \
   && apt-get install -y telnet \
+  && apt-get install -y xmlsec1 \
   && apt-get install -y iputils-ping \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
