@@ -1,12 +1,11 @@
-let base = "";
-if (window.location.hostname.indexOf("localhost") > -1) {
-  base = "http://localhost:8000";
-} else if (window.location.hostname.indexOf("compliance.ofisat.net") > -1) {
-  base = "https://compliance.ofisat.net";
-} else if (window.location.hostname.indexOf("test.compliancetool.net") > -1) {
-  base = "https://test.compliancetool.net";
-} else {
-  base = "https://gvi.compliancetool.net/";
+let base = "https://krm-tool-uat.des-onprem1.eci.geci";
+
+if (window.location.hostname.indexOf("krm-tool-uat") > -1) {
+  base = "https://krm-tool-uat.des-onprem1.eci.geci";
+} else if (window.location.hostname.indexOf("krm-tool-nft") > -1) {
+  base = "https://krm-tool-nft.pre-onprem1.eci.geci";
+} else if (window.location.hostname.indexOf("krm-tool.pro") > -1) {
+  base = "https://krm-tool.pro-onprem1.eci.geci";
 }
 
 const baseUrlApi = `${base}/api/`;
