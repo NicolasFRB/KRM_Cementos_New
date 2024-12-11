@@ -1,5 +1,5 @@
-from celery import shared_task
-from krm.celery import app as celery_app
+# from celery import shared_task
+# from krm.celery import app as celery_app
 import datetime
 
 # import the logging library
@@ -12,7 +12,7 @@ from krm.evaluations.models import ControlTest
 logger = logging.getLogger(__name__)
 
 
-@celery_app.task
+# @celery_app.task
 def control_test_send_notification_control_owner(ct_pk, notif_type):
     logger.info(
         "Comienzo de envío de mail de notificación para control owner para el control test: {}".format(ct_pk))
@@ -25,7 +25,7 @@ def control_test_send_notification_control_owner(ct_pk, notif_type):
     ct.sent_notification_control_owner(notif_type)
 
 
-@celery_app.task
+# @celery_app.task
 def control_test_send_notification_control_supervisor(ct_pk, notif_type):
     logger.info(
         "Comienzo de envío de mail de notificación para control supervisor para el control test: {}".format(ct_pk))

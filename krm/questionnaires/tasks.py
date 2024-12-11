@@ -1,5 +1,5 @@
-from celery import shared_task
-from krm.celery import app as celery_app
+# from celery import shared_task
+# from krm.celery import app as celery_app
 import datetime
 
 # import the logging library
@@ -13,7 +13,7 @@ from krm.questionnaires.models import QuestionTest
 logger = logging.getLogger(__name__)
 
 
-@celery_app.task
+# @celery_app.task
 def question_test_send_notification(qt_pk, notif_type):
     logger.info(
         "Comienzo de envío de mail de notificación para el usuario para completar cuestionarios del test de pregunta: {}".format(qt_pk))
