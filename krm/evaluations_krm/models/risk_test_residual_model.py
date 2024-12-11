@@ -93,7 +93,8 @@ class RiskTestResidual(AuditModel):
         from krm.evaluations_krm.tasks import (
             risk_test_send_notification_evaluator,
         )
-        risk_test_send_notification_evaluator.delay(self.pk, notif_type)
+        # risk_test_send_notification_evaluator.delay(self.pk, notif_type)
+        risk_test_send_notification_evaluator(self.pk, notif_type)
 
     def send_email_notification_evaluator(self, notif_type):
         from krm.configuration.models import Configuration

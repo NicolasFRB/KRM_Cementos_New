@@ -183,7 +183,8 @@ class GaEvaluationQuestionnaireCreateView(FormView):
 
         from krm.questionnaires.tasks import question_test_send_notification
         for qt in question_test_to_notify:
-            question_test_send_notification.delay(qt.pk, 'Initial Notification')
+            # question_test_send_notification.delay(qt.pk, 'Initial Notification')
+            question_test_send_notification(qt.pk, 'Initial Notification')
 
         messages.add_message(
             self.request,
@@ -444,7 +445,8 @@ class GaEvaluationQuestionnaireNotificationsView(DetailView, FormView):
 
         for pk in question_test_selected:
             qt = QuestionTest.objects.filter(pk = int(pk)).first()
-            question_test_send_notification.delay(qt.pk, 'Reminder')
+            # question_test_send_notification.delay(qt.pk, 'Reminder')
+            question_test_send_notification(qt.pk, 'Reminder')
 
         messages.add_message(
             self.request, messages.SUCCESS, _(
