@@ -4,7 +4,8 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
-<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+<!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script> -->
+<script src="{% static 'js/flatpickr_es.js' %}"></script>
 
 <script>
   $(document).ready(function () {
