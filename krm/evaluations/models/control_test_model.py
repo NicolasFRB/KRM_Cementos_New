@@ -211,7 +211,14 @@ class ControlTest(AuditModel):
             _("[%s] Envío de email de Controles pendientes de completar (COwner) (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
-            print( json.dumps(msg))
+            print("SUBJECT: ")
+            print(subject)
+            print("FROM: ")
+            print(from_email)
+            print("TO: ")
+            print(to)
+            print("HTML: ")
+            print(str.__str__(body_html))
             msg.send(fail_silently=False)
 
     def sent_notification_control_supervisor(self, notif_type):
@@ -270,5 +277,12 @@ class ControlTest(AuditModel):
         self.control_test_supervisor.add_action(
             _("[%s] Envío de email de Controles pendientes de supervisar (CSupervisor) (%s)" % (notif_type.upper(), self.evaluation.ref)))
         if configuration.enable_emails:
-            print(json.dumps(msg))
+            print("SUBJECT: ")
+            print(subject)
+            print("FROM: ")
+            print(from_email)
+            print("TO: ")
+            print(to)
+            print("HTML: ")
+            print(str.__str__(body_html))
             msg.send(fail_silently=False)
