@@ -1,6 +1,7 @@
 """ControlTest model."""
 
 import random
+import json 
 
 # Django
 from django.db import models
@@ -210,7 +211,7 @@ class ControlTest(AuditModel):
             _("[%s] Envío de email de Controles pendientes de completar (COwner) (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
-            print(msg)
+            print( json.dumps(msg))
             msg.send(fail_silently=False)
 
     def sent_notification_control_supervisor(self, notif_type):
@@ -269,5 +270,5 @@ class ControlTest(AuditModel):
         self.control_test_supervisor.add_action(
             _("[%s] Envío de email de Controles pendientes de supervisar (CSupervisor) (%s)" % (notif_type.upper(), self.evaluation.ref)))
         if configuration.enable_emails:
-            print(msg)
+            print(json.dumps(msg))
             msg.send(fail_silently=False)
