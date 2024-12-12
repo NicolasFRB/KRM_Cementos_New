@@ -188,8 +188,8 @@ class RiskTestInherent(AuditModel):
         from krm.evaluations_krm.tasks import (
             risk_test_send_notification_expert,
         )
-        # risk_test_send_notification_expert.delay(self.pk, notif_type)
-        risk_test_send_notification_expert(self.pk, notif_type)
+        risk_test_send_notification_expert.delay(self.pk, notif_type)
+        # risk_test_send_notification_expert(self.pk, notif_type)
 
     def sent_email_notification_expert(self, notif_type):
         from krm.configuration.models import Configuration

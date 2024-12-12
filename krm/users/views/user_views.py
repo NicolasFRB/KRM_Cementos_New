@@ -562,8 +562,8 @@ class GaUserImportView(FormView):
                 u.companies.add(company_obj)
 
             if c['welcome_email'] == 'Y':
-                # send_welcome_email.delay(u.pk)
-                send_welcome_email(u.pk)
+                send_welcome_email.delay(u.pk)
+                # send_welcome_email(u.pk)
 
         messages.add_message(
             self.request,

@@ -1,5 +1,5 @@
-# from celery import shared_task
-# from krm.celery import app as celery_app
+from celery import shared_task
+from krm.celery import app as celery_app
 import datetime
 
 # import the logging library
@@ -12,7 +12,7 @@ from krm.users.models import User
 logger = logging.getLogger(__name__)
 
 
-# @celery_app.task
+@celery_app.task
 def send_welcome_email(user_pk):
     """ Tarea que se encargará de enviar un email de bienvenida a KRC Tool """
 
@@ -47,7 +47,7 @@ def send_welcome_email(user_pk):
 #     user.send_email_remember_password()
 
 
-# @celery_app.task
+@celery_app.task
 def send_questionnaire_email(user_pk):
     """ Tarea que se encargará de enviar un email comunicar que tiene cuestionarios por completar """
 
