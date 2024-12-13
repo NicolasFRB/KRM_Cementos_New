@@ -147,12 +147,12 @@ class ControlTest(AuditModel):
             return
 
         if self.status == "WO":
-            control_test_send_notification_control_owner.delay(self.pk, notif_type)
-            # control_test_send_notification_control_owner(self.pk, notif_type)
+            # control_test_send_notification_control_owner.delay(self.pk, notif_type)
+            control_test_send_notification_control_owner(self.pk, notif_type)
 
         elif self.status == "WS":
-            control_test_send_notification_control_supervisor.delay(self.pk, notif_type)
-            # control_test_send_notification_control_supervisor(self.pk, notif_type)
+            # control_test_send_notification_control_supervisor.delay(self.pk, notif_type)
+            control_test_send_notification_control_supervisor(self.pk, notif_type)
 
     def sent_notification_control_owner(self, notif_type):
         from krm.configuration.models import Configuration
