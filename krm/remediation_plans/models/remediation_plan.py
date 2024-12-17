@@ -110,9 +110,10 @@ class RemediationPlan(AuditModel):
 
 
     def finish(self):
+
         self.status = "CO"
         self.next_to_reply = "FI"
-        self.save()
+        super().save()
         return self.status
 
 
