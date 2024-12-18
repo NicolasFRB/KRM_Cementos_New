@@ -1,25 +1,28 @@
 (function (global, factory) {
 
-    if (typeof exports === 'object' && typeof module !== 'undefined'){ 
-        factory(exports);
-    } else if (typeof define === 'function' && define.amd) {
-        define(['exports'], factory);
-    } else if (global = typeof globalThis !== 'undefined') {
-        globalThis;
-    }else {
-        global || self, factory(global.es = {});
+    if (typeof exports === 'object' && typeof module !== 'undefined') {
+        factory(exports)
     }
+    else if (typeof define === 'function' && define.amd) {
+        define(['exports'], factory)
 
+    } else {
+        if ( typeof globalThis !== 'undefined') {
+            global = globalThis;
+        } else {
+            global = global || self, factory(global.es = {});
+        }
+    }
 }(this, (function (exports) { 'use strict';
 
-  var fp;
-  if(typeof window !== "undefined" && window.flatpickr !== undefined){
-    fp = window.flatpickr; 
-  } else {
-    fp = {
-        l10ns: {},
-    };
-  }
+    var fp;
+    if (typeof window !== "undefined" && window.flatpickr) {
+        fp = window.flatpickr;
+    } else {
+        fp = {
+            l10ns: {},
+        };
+    }
   var Spanish = {
       weekdays: {
           shorthand: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
