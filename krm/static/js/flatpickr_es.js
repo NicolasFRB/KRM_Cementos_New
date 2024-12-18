@@ -1,10 +1,10 @@
 (function (global, factory) {
 
     if (typeof exports === 'object' && typeof module !== 'undefined') {
-        factory(exports)
+        factory(exports);
     }
     else if (typeof define === 'function' && define.amd) {
-        define(['exports'], factory)
+        define(['exports'], factory);
 
     } else {
         if ( typeof globalThis !== 'undefined') {
