@@ -520,7 +520,7 @@ AUTH0_DOMAIN = env.str("AUTH0_DOMAIN")
 AUTH0_CLIENT_ID = env.str("AUTH0_CLIENT_ID")
 AUTH0_CLIENT_SECRET = env.str("AUTH0_CLIENT_SECRET")
 
-
+KRM_SITE_URL = env.str("KRM_SITE_URL")
 
 # SAML2
 SAML2_AUTH = {
@@ -547,11 +547,11 @@ SAML2_AUTH = {
     #     'CREATE_USER': 'path.to.your.new.user.hook.method',
     #     'BEFORE_LOGIN': 'path.to.your.login.hook.method',
     # },
-    'ASSERTION_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Custom URL to validate incoming SAML requests against
-    'ENTITY_ID': 'https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/', # Populates the Issuer element in authn request
+    'ASSERTION_URL': 'https://' + KRM_SITE_URL, # Custom URL to validate incoming SAML requests against
+    'ENTITY_ID': 'https://' + KRM_SITE_URL + '/en/auth/callback/', # Populates the Issuer element in authn request
     'NAME_ID_FORMAT': None, # Sets the Format property of authn NameIDPolicy element
     'USE_JWT': False, # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
-    'FRONTEND_URL': 'https://krm-tool-uat.des-onprem1.eci.geci', # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
+    'FRONTEND_URL': 'https://' + KRM_SITE_URL, # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
     'XMLSEC_BINARY': '/usr/bin/xmlsec1',  # Ajusta esta ruta
  
 }
