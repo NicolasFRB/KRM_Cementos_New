@@ -525,12 +525,13 @@ AUTH0_CLIENT_SECRET = env.str("AUTH0_CLIENT_SECRET")
 
 KRM_SITE_URL = env.str("KRM_SITE_URL")
 KRM_IDENTITY_SERVICE = env.str("KRM_IDENTITY_SERVICE")
+KRM_WSO_METADATA = env.str("KRM_WSO_METADATA")
 
 # SAML2
 SAML2_AUTH = {
     # Metadata is required, choose either remote url or local file path
     # 'METADATA_AUTO_CONF_URL': '[The auto(dynamic) metadata configuration URL of SAML2]',
-    'METADATA_LOCAL_FILE_PATH': os.path.join( BASE_DIR, 'dev-metadata.xml'),
+    'METADATA_LOCAL_FILE_PATH': os.path.join( BASE_DIR, KRM_WSO_METADATA),
 
     # Optional settings below
     'DEFAULT_NEXT_URL': '/en/auth/callback/',  # Custom target redirect URL after the user get logged in. Default to /admin if not set. This setting will be overwritten if you have parameter ?next= specificed in the login URL.
