@@ -524,6 +524,7 @@ AUTH0_CLIENT_ID = env.str("AUTH0_CLIENT_ID")
 AUTH0_CLIENT_SECRET = env.str("AUTH0_CLIENT_SECRET")
 
 KRM_SITE_URL = env.str("KRM_SITE_URL")
+KRM_IDENTITY_SERVICE = env.str("KRM_IDENTITY_SERVICE")
 
 # SAML2
 SAML2_AUTH = {
@@ -556,7 +557,7 @@ SAML2_AUTH = {
     'USE_JWT': False, # Set this to True if you are running a Single Page Application (SPA) with Django Rest Framework (DRF), and are using JWT authentication to authorize client users
     'FRONTEND_URL': 'https://' + KRM_SITE_URL, # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
     'XMLSEC_BINARY': '/usr/bin/xmlsec1',  # Ajusta esta ruta
- 
+    'IDENTITY_SERVICE': 'https://' + KRM_IDENTITY_SERVICE
 }
 
 HEALTH_CHECK = {

@@ -138,7 +138,7 @@ def login_view(r):
     #         redirect_url = value
     #         break
 
-    return HttpResponseRedirect("https://identity-services.uat.elcorteingles.es/samlsso?spEntityID="+settings.SAML2_AUTH['ASSERTION_URL']+"/en/auth/callback/")
+    return HttpResponseRedirect( settings.SAML2_AUTH['IDENTITY_SERVICE'] + "/samlsso?spEntityID=" + settings.SAML2_AUTH['ASSERTION_URL'] + "/en/auth/callback/")
 
 
     # return oauth.auth0.authorize_redirect(
