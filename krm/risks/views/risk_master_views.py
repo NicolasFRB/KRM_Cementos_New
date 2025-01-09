@@ -194,7 +194,7 @@ class GaRiskMasterDeleteView(DeleteView):
             self.request, messages.SUCCESS, _(
                 "Riesgo Maestro eliminado correctamente")
         )
-        return reverse_lazy("risks_masters:ga_risk_list")
+        return reverse_lazy("risks_masters:ga_risk_master_list")
 
     def get_confirm_text_message(self):
         return _(

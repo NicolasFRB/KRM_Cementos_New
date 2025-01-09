@@ -6771,7 +6771,7 @@ msgstr ""
 #: krm/users/views/user_views.py:356
 #, python-format
 msgid "Se han creado %s usuarios para la compañía"
-msgstr "% users have been created for the company"
+msgstr "%s users have been created for the company"
 
 #: krm/users/views/users_login_views.py:110
 msgid "Usuario no válido"
