@@ -567,8 +567,11 @@ class GaUserImportView(FormView):
 
         messages.add_message(
             self.request,
-            messages.SUCCESS, (
-                _(u'Se han creado %s usuarios para la compañía') % str(len(users_to_create)))
+            messages.SUCCESS, 
+            (
+                _(u'Se han creado %s usuarios para la compañía') % str(
+                    len(users_to_create))
+            )
         )
 
         return super(GaUserImportView, self).form_valid(form)
