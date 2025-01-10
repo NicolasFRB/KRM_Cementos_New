@@ -30,7 +30,7 @@
     //   .catch(error => {
     //   });
 
-      {% get_current_language as LANGUAGE_CODE %}
+    {% get_current_language as LANGUAGE_CODE %}
     {% if LANGUAGE_CODE == 'es' %}
       $(".datepicker").flatpickr({
         "locale": "es",
@@ -38,8 +38,8 @@
       });
     {% else %}
       $(".datepicker").flatpickr({
-            "locale": "en",
-            dateFormat: "Y-m-d",
+        "locale": "en",
+        dateFormat: "Y-m-d",
       });
     {% endif %}
 

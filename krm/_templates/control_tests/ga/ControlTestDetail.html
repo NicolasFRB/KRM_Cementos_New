@@ -6,45 +6,6 @@
 {% block js_footer %}
 <!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script> -->
 <script src="{% static 'js/flatpickr_es.js' %}"></script>
-
-<script>
-  $(document).ready(function () {
-    // ClassicEditor
-    //   .create(
-    //     document.querySelector('#cta_description'),
-    //     {
-    //       language: {
-    //         // The UI will be English.
-    //         ui: 'es',
-
-    //         // But the content will be edited in Arabic.
-    //         content: 'es'
-    //       }
-    //     }
-    //   )
-    //   .then(editor => {
-    //     const wordCountPlugin = editor.plugins.get('WordCount');
-    //     const wordCountWrapper = document.getElementById('word-count');
-    //     wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-    //   })
-    //   .catch(error => {
-    //   });
-
-    //   {% get_current_language as LANGUAGE_CODE %}
-    // {% if LANGUAGE_CODE == 'es' %}
-    //   $(".datepicker").flatpickr({
-    //     "locale": "es",
-    //     dateFormat: "d/m/Y",
-    //   });
-    // {% else %}
-    //   $(".datepicker").flatpickr({
-    //         "locale": "en",
-    //         dateFormat: "Y-m-d",
-    //   });
-    // {% endif %}
-
-  });
-</script>
 <script>
   // fin_btn = document.getElementById('finalizado');
 
@@ -68,6 +29,19 @@
           $('#exampleModal').modal('show');
         }
     });
+
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      $(".datepicker").flatpickr({
+        "locale": "es",
+        dateFormat: "d/m/Y",
+      });
+    {% else %}
+      $(".datepicker").flatpickr({
+        "locale": "en",
+        dateFormat: "Y-m-d",
+      });
+    {% endif %}
   });
 </script>
 
