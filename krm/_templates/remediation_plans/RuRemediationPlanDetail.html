@@ -30,21 +30,21 @@
         }
       });
     }
+
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      $(".datepicker").flatpickr({
+        "locale": "es",
+        dateFormat: "d/m/Y",
+      });
+    {% else %}
+      $(".datepicker").flatpickr({
+            "locale": "en",
+            dateFormat: "Y-m-d",
+      });
+    {% endif %}
+
   });
-</script>
-<script>
-  {% get_current_language as LANGUAGE_CODE %}
-  {% if LANGUAGE_CODE == 'es' %}
-    $(".datepicker").flatpickr({
-      "locale": "es",
-      dateFormat: "d/m/Y" 
-    })
-  {% else %}
-    $(".datepicker").flatpickr({
-      "locale": "en",
-      dateFormat: "Y-m-d" 
-    })
-  {% endif %}
 </script>
 
 {% endblock js_footer %}
