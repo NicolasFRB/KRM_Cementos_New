@@ -551,6 +551,7 @@ class GaUserImportView(FormView):
                 last_name=c['last_name'],
                 email=c['email'],
                 notification_language=c['notification_language'],
+                username=c['username']
             )
 
             u.add_action('User created')
