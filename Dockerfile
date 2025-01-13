@@ -96,7 +96,7 @@ WORKDIR /data
 # Copiar el resto del código de la aplicación
 COPY . .
 RUN chmod -R 755 **/locale/en
-RUN chmod -R 755 **/krm-media
+# RUN chmod -R 755 **/krm-media
 
 # Cambiar al usuario 'django' por seguridad
 USER django
