@@ -341,14 +341,14 @@ class GaCompanyImportView(FormView):
                 except:
                     cell_value = None
                 company['cp'] = cell_value
-                if row[7].value is not None:
+                if row[6].value is not None:
                     company['country'] = str(row[6].value).upper()
                 else:
                     company['country'] = None
                 company['email'] = str(
-                    row[8].value).lower().replace(' ', '')
-                company['type_company'] = str(row[9].value)
-                company['companies_in_scope'] = str(row[10].value)
+                    row[7].value).lower().replace(' ', '')
+                company['type_company'] = str(row[8].value)
+                company['companies_in_scope'] = str(row[9].value)
 
                 # Tenemos que comprobar que el email esté bien formado
                 if company['email'] != '':

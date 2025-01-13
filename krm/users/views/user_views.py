@@ -458,6 +458,7 @@ class GaUserImportView(FormView):
                 user['companies'] = [x.strip()
                                      for x in str(row[5].value).split(',')]
                 user['notification_language'] = str(row[6].value).strip()
+                user['username'] = str(row[7].value).strip()
 
                 # Tenemos que comprobar que el email esté bien formado
                 if not re.match(

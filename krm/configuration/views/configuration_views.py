@@ -526,7 +526,7 @@ class GaImportView(FormView):
                 control['assert_completeness'] = row[13].value
                 control['assert_valuation'] = row[14].value
                 control['assert_rights'] = row[15].value
-                control['assert_disclosure'] = row[16].value
+                control['assert_disclosure'] = row[16].value 
                 control['assert_accurancy'] = row[17].value
                 control['assert_froud'] = row[18].value
                 control['is_elc'] = row[19].value
