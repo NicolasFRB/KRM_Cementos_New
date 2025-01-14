@@ -546,22 +546,16 @@ class GaUserImportView(FormView):
         # Vamos a crear cosas =)
         from krm.users.tasks import send_welcome_email
         for c in users_to_create:
-            u = User.objects.create(
+            u = self._create_new_user(
                 first_name=c['first_name'],
                 last_name=c['last_name'],
                 email=c['email'],
+                password=c['password'],
                 notification_language=c['notification_language'],
                 username=c['username']
             )
 
-            u.add_action('User created')
-
-            if c['password'] != '':
-                u.set_password(c['password'])
-
-            for comp in c['companies']:
-                company_obj = Company.objects.filter(ref=comp).first()
-                u.companies.add(company_obj)
+            u.add_action('User created')            
 
             if c['welcome_email'] == 'Y':
                 # send_welcome_email.delay(u.pk)
@@ -581,3 +575,18 @@ class GaUserImportView(FormView):
     def get_success_url(self):
 
         return reverse_lazy("users:ga_import_users")
+    def _create_new_user(username, email, first_name, last_name, password, notification_language, companies):
+        user = User.objects.create_user(username, email)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.notification_language = notification_language
+        
+        if password != '':
+            user.set_password(password)
+
+        for comp in companies:
+            company_obj = Company.objects.filter(ref=comp).first()
+            user.companies.add(company_obj)
+
+        user.save()
+        return user

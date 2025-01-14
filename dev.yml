@@ -8,10 +8,10 @@ services:
   django: &django
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile_local
     image: krm_dev_django
-    # depends_on:
-      # - postgres
+    depends_on:
+      - postgres
       # - redis
     # volumes:
     #   - C://Users/nicolasfernandorodri/OneDrive - KPMG/Desktop/krm-kpmg:/data
@@ -57,13 +57,13 @@ services:
   #   expose:
   #     - "6379"
 
-  # postgres:
-  #   build:
-  #     context: .
-  #     dockerfile: ./compose/dev/postgres/Dockerfile
-  #   image: krm_local_postgres
-  #   volumes:
-  #     - krm_local_postgres_data:/var/lib/postgresql/data
-  #     - krm_local_postgres_data_backups:/backups
-  #   env_file:
-  #     - ./.envs/.dev/.postgres
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/dev/postgres/Dockerfile
+    image: krm_local_postgres
+    volumes:
+      - krm_local_postgres_data:/var/lib/postgresql/data
+      - krm_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.dev/.postgres
