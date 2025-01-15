@@ -547,13 +547,13 @@ class GaUserImportView(FormView):
         from krm.users.tasks import send_welcome_email
         for c in users_to_create:
             u = self.create_new_user(
-                username=c['username'],
-                email=c['email'],
-                first_name=c['first_name'],
-                last_name=c['last_name'],
-                password=c['password'],
-                notification_language=c['notification_language'],
-                companies=c['companies'],
+                c['username'],
+                c['email'],
+                c['first_name'],
+                c['last_name'],
+                c['password'],
+                c['notification_language'],
+                c['companies'],
             )
 
             u.add_action('User created')            
