@@ -568,7 +568,7 @@ class GaUserImportView(FormView):
     def get_success_url(self):
         return reverse_lazy("users:ga_import_users")
     
-    def create_new_user( newUser ):
+    def create_new_user( newUser:list ):
 
         user = User.objects.create_user(newUser["username"], newUser["email"])
         user.first_name = newUser["first_name"]
