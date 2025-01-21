@@ -46,11 +46,11 @@ urlpatterns = [
         GaRemediationPlanCreateView.as_view(),
         name='ga_remediation_plan_create'
     ),
-    # path(
-    #     "delete-attachment/<pk_remediation_plan>/<pk_attachment>/",
-    #     delete_attachment,
-    #     name='delete_attachment'
-    # ),
+    path(
+        "delete-attachment/<pk_remediation_plan>/<pk_attachment>/",
+        delete_attachment,
+        name='delete_attachment'
+    ),
     path(
         'ru/list/',
         RuRemediationPlanListView.as_view(),
