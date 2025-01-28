@@ -41,6 +41,8 @@ from krm.users.decorators import (
     is_auditor
 )
 
+from krm.evaluations.forms import EvaluationFilterForm
+
 
 @method_decorator([login_required, is_auditor], name='dispatch')
 class AuEvaluationListView(ListView):
@@ -61,8 +63,18 @@ class AuEvaluationListView(ListView):
         context['breadcrums'] = breadcrums
         context['actions'] = []
 
+        domain_risk_audit = self.request.user.audit_domain_risk.all()
+
         ev_pending = Evaluation.objects.filter(status__in=["SI", "EP"])
+        # De estas solo nos quedamos con las que tienen riesgos de dominio que el auditor puede auditar
+        for e in ev_pending:
+            if e.get_domain_risk_in_evaluation().filter(pk__in=domain_risk_audit).count() == 0:
+                ev_pending = ev_pending.exclude(pk=e.pk)
         ev_finished = Evaluation.objects.filter(status="FI")
+        # De estas solo nos quedamos con las que tienen riesgos de dominio que el auditor puede auditar
+        for e in ev_finished:
+            if e.get_domain_risk_in_evaluation().filter(pk__in=domain_risk_audit).count() == 0:
+                ev_finished = ev_finished.exclude(pk=e.pk)
 
         for ev in ev_pending:
             ev.ncontrols_test_by_state_si = ev.ncontrols_test_by_state(
@@ -94,6 +106,27 @@ class AuEvaluationListView(ListView):
 
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
+
+        context['evaluation_filter_form'] = EvaluationFilterForm()
+
+        posible_values_certification_period_pending = [
+            (evaluation.certification_period_with_year,
+             evaluation.certification_period_with_year)
+            for evaluation in ev_pending
+        ]
+
+        posible_values_certification_period_finished = [
+            (evaluation.certification_period_with_year,
+             evaluation.certification_period_with_year)
+            for evaluation in ev_finished
+        ]
+
+        # quiero juntar los dos arrays posible_values_certification_period_pending y posible_values_certification_period_finished en uno solo y quitar duplicados
+        posible_values_certification_period = posible_values_certification_period_pending + posible_values_certification_period_finished
+        posible_values_certification_period = list(set(posible_values_certification_period))
+
+        context['evaluation_filter_form'].fields['certification_period'].choices = posible_values_certification_period
+        context['evaluation_filter_form'].fields['domain_risk'].choices = [(dr.ref, dr.ref) for dr in domain_risk_audit]
 
         context['js_template'] = ['js/custom/datatables.js']
 

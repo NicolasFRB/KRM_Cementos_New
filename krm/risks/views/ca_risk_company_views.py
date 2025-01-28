@@ -32,7 +32,7 @@ from krm.risks.forms import RiskCompanyUpdateForm
 from krm.risks.models import RiskCompany
 
 
-@method_decorator([is_company_admin, ], name='dispatch')
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class CaRiskCompanyUpdateView(UpdateView):
     form_class = RiskCompanyUpdateForm
     model = RiskCompany

@@ -91,7 +91,7 @@ class GaDomainRiskDetailView(DetailView):
         return context
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaDomainRiskCreateView(CreateView):
     form_class = DomainRiskCreateForm
     model = DomainRisk

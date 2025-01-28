@@ -13,8 +13,9 @@ services:
     depends_on:
       - postgres
       # - redis
-    # volumes:
-    #   - C://Users/nicolasfernandorodri/OneDrive - KPMG/Desktop/krm-kpmg:/data
+    volumes:
+      # - ./krm-media:/krm-media
+
     env_file:
       - ./.envs/.dev/.django
       - ./.envs/.dev/.postgres
@@ -23,6 +24,17 @@ services:
     ports:
       - "8000:8000"
     command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/dev/postgres/Dockerfile
+    image: krm_local_postgres
+    volumes:
+      - krm_local_postgres_data:/var/lib/postgresql/data
+      - krm_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.dev/.postgres
 
   # celeryworker:
   #   <<: *django
@@ -57,13 +69,4 @@ services:
   #   expose:
   #     - "6379"
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./compose/dev/postgres/Dockerfile
-    image: krm_local_postgres
-    volumes:
-      - krm_local_postgres_data:/var/lib/postgresql/data
-      - krm_local_postgres_data_backups:/backups
-    env_file:
-      - ./.envs/.dev/.postgres
+

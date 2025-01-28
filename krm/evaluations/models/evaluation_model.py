@@ -99,6 +99,14 @@ class Evaluation(AuditModel):
         null=True
     )
 
+    notification_text = models.TextField(
+        _("Texto personalizado de notificación"),
+        help_text=_("Este texto aparecerá en el correo de notificación de nueva evaluación"),
+        max_length=5000,
+        null=True,
+        blank=True
+    )
+
     def __str__(self):
         return self.ref
 
@@ -107,12 +115,27 @@ class Evaluation(AuditModel):
         verbose_name_plural = _("Evaluaciones KRC")
 
     @property
+    def certification_period_with_year(self):
+        if self.certification_period and self.certification_year:
+            return f"{self.certification_period} - {self.certification_year}"
+        elif self.certification_period:
+            return self.certification_period
+        elif self.certification_year:
+            return self.certification_year
+        return ""
+
+    @property
     def is_completed_assing(self):
         for ct in self.control_tests.all():
             if ct.control_test_supervisor is None or ct.control_test_owner is None:
                 return False
         return True
-    
+
+    def delete_notification_text(self):
+        if self.notification_text:
+            self.notification_text = None
+            self.save()
+
     def get_all_control_test_in_evaluation(self):
         return self.control_tests.all()
 
@@ -205,7 +228,7 @@ class Evaluation(AuditModel):
         }
 
         for evaluator in evaluators_all:
-            
+
             notifications = [[n.action_description, n.created] for n in evaluator.actions_log.all() if self.ref in n.action_description and notif_subtype_map[status] in n.action_description]
 
             if evaluator.pk not in ev_pk_found:

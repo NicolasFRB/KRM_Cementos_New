@@ -46,7 +46,7 @@
 {% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
-  <script defer src="{% static 'main.react.js' %}"></script>
+  <script defer src="{% static 'main.react.js' %}?v=20241219"></script>
 {% endif %}
 
 {% endblock js_footer %}
@@ -117,9 +117,12 @@
                   </div>
                 </div>
               </div>
-              <div class="mb-4 col-12">
+              <div class="mb-4 col-12 col-md-6">
                 {{ form.description|as_crispy_field }}
                 <div id="word-count"></div>
+              </div>
+              <div class="mb-4 col-12 col-md-6">
+                {{ form.notification_text|as_crispy_field }}
               </div>
             </div>
             <div class="separator my-10"></div>

@@ -104,7 +104,7 @@ class ControlTest(AuditModel):
     def identifier(self):
         return str(self.control.ref).zfill(4)
         # return str(self.process_test.identifier) + '-' + str(self.control.ref).zfill(4)
-    
+
     def has_attachment(self):
         l1 = list(self.answers.exclude(attachment_1__exact='').exclude(attachment_1__isnull=True).values_list("attachment_1", flat=True))
         l2 = list(self.answers.exclude(attachment_2__exact='').exclude(attachment_2__isnull=True).values_list("attachment_2", flat=True))
@@ -113,7 +113,7 @@ class ControlTest(AuditModel):
 
     def get_all_subprocesses(self):
         return list(self.control.sub_processes.values_list("ref", flat=True).exclude(ref__exact=''))
-    
+
     def get_all_risks(self):
         return list(self.control.risks.values_list("ref", flat=True).exclude(ref__exact=''))
 
@@ -166,6 +166,9 @@ class ControlTest(AuditModel):
             period = " (%s)" % self.evaluation.certification_period
         else:
             period = ""
+
+        custom_text = None
+
         context = {
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
@@ -179,6 +182,7 @@ class ControlTest(AuditModel):
             "app_name": configuration.app_name,
             "notif_type": notif_type,
             "MAIN_EMAIL": configuration.main_email,
+            "notification_text": self.evaluation.notification_text
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_owner.html", context
@@ -246,6 +250,7 @@ class ControlTest(AuditModel):
             "app_name": configuration.app_name,
             "notif_type": notif_type,
             "MAIN_EMAIL": configuration.main_email,
+            "notification_text": self.evaluation.notification_text
         }
         body_html = render_to_string(
             "emails/control_test/control_test_notification_control_supervisor.html",

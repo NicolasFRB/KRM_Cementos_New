@@ -36,7 +36,7 @@ from krm.users.decorators import (
 )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaCompanyDomainRiskEvaluatorUpdateView(UpdateView):
     form_class = CompanyDomainRiskEvaluatorsForm
     model = CompanyDomainRiskEvaluator

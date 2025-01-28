@@ -14,7 +14,8 @@ services:
       - postgres
       - redis
     volumes:
-      - .:/data
+      # - .:/data
+      - ./krm-media:/krm-media
     env_file:
       - ./.envs/.test/.django
       - ./.envs/.test/.postgres

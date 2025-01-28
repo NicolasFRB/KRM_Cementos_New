@@ -28,9 +28,10 @@ from krm.companies.forms import CompanyDomainRiskExpertsForm
 from krm.companies.models import CompanyDomainRiskExperts
 
 from krm.users.decorators import is_global_admin
+from django.contrib.auth.decorators import login_required
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyDomainRiskExpertsUpdateView(UpdateView):
     form_class = CompanyDomainRiskExpertsForm
     model = CompanyDomainRiskExperts

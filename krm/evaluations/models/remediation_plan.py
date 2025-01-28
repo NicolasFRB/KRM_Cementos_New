@@ -28,50 +28,50 @@ def update_filename(instance, filename):
     return format
 
 
-class RemediationPlan(AuditModel):
-    """RemediationPlan model.
-    Modelo que usaremos para representar un plan de remediación para un test de control no efectivo
-    """
+# class RemediationPlan(AuditModel):
+#     """RemediationPlan model.
+#     Modelo que usaremos para representar un plan de remediación para un test de control no efectivo
+#     """
 
-    control_test = models.ForeignKey(
-        "evaluations.ControlTest",
-        related_name="remediation_plans",
-        on_delete=models.CASCADE,
-    )
+#     control_test = models.ForeignKey(
+#         "evaluations.ControlTest",
+#         related_name="remediation_plans",
+#         on_delete=models.CASCADE,
+#     )
 
-    description = models.TextField(
-        _("Descripción del plan de remediación"), max_length=10000
-    )
+#     description = models.TextField(
+#         _("Descripción del plan de remediación"), max_length=10000
+#     )
 
-    date_end = models.DateField(
-        verbose_name=_(u"Fecha de vencimiento del Plan de Remediación"),
-    )
+#     date_end = models.DateField(
+#         verbose_name=_(u"Fecha de vencimiento del Plan de Remediación"),
+#     )
 
-    attachment = models.FileField(
-        verbose_name=_("Archivo adjunto"),
-        upload_to=update_filename,
-        blank=True,
-        null=True,
-    )
+#     attachment = models.FileField(
+#         verbose_name=_("Archivo adjunto"),
+#         upload_to=update_filename,
+#         blank=True,
+#         null=True,
+#     )
 
-    user = models.ForeignKey(
-        "users.User",
-        verbose_name=_("Creador del Plan de Remediación"),
-        related_name="remediaton_plans",
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-    )
+#     user = models.ForeignKey(
+#         "users.User",
+#         verbose_name=_("Creador del Plan de Remediación"),
+#         related_name="remediaton_plans",
+#         blank=True,
+#         null=True,
+#         on_delete=models.CASCADE,
+#     )
 
-    STATUS_CHOICES = (
-        ("AC", _("Activo")),
-        ("VE", _("Vencido")),
-    )
+#     STATUS_CHOICES = (
+#         ("AC", _("Activo")),
+#         ("VE", _("Vencido")),
+#     )
 
-    status = models.CharField(
-        _("Estado"), max_length=2, choices=STATUS_CHOICES, default="AC"
-    )
+#     status = models.CharField(
+#         _("Estado"), max_length=2, choices=STATUS_CHOICES, default="AC"
+#     )
 
-    class Meta:
-        verbose_name = _("Plan de remediación")
-        verbose_name_plural = _("Planes de remediación")
+#     class Meta:
+#         verbose_name = _("Plan de remediación")
+#         verbose_name_plural = _("Planes de remediación")

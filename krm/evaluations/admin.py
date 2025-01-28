@@ -7,7 +7,7 @@ from krm.evaluations.models import (
     Evaluation,
     ControlTest,
     ControlTestAnswer,
-    RemediationPlan
+    # RemediationPlan
 )
 
 
@@ -32,8 +32,8 @@ class ControlTestAnswerAdmin(admin.ModelAdmin):
     list_filter = ('control_test__evaluation',)
 
 
-@admin.register(RemediationPlan)
-class RemediationPlanAdmin(admin.ModelAdmin):
-    model = RemediationPlan
-    list_display = ('control_test', 'created', 'modified')
-    readonly_fields = ('created', 'modified')
+# @admin.register(RemediationPlan)
+# class RemediationPlanAdmin(admin.ModelAdmin):
+#     model = RemediationPlan
+#     list_display = ('control_test', 'created', 'modified')
+#     readonly_fields = ('created', 'modified')

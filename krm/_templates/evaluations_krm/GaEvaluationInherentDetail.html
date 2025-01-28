@@ -649,8 +649,12 @@ function color_severity_dynamic(val, id){
 
     <a href="{% url 'evaluations_krm:ga_evaluation_inherent_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
 
-    <a href="{% url 'evaluations_krm:ga_evaluation_inherent_complete' evaluation.pk %}" class="btn btn-sm btn-primary me-2">
+    {% if evaluation.status != 'FI' %}
+
+      <a href="{% url 'evaluations_krm:ga_evaluation_inherent_complete' evaluation.pk %}" class="btn btn-sm btn-primary me-2">
       {% trans 'Completar evaluación (Admin)' %}</a>
+
+    {% endif %}
 
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       {% include '_includes/FormErrors.html' %}

@@ -48,9 +48,7 @@ class RemediationPlan(AuditModel):
 
     description = models.TextField(
         verbose_name=_("Descripción"),
-        max_length=10000,
-        blank=True,
-        null=True
+        max_length=10000
     )
 
     STATUS_CHOICES = (
@@ -108,6 +106,18 @@ class RemediationPlan(AuditModel):
         verbose_name = _("Plan de remediación")
         verbose_name_plural = _("Planes de remediación")
 
+    def get_domain_risks(self):
+        domain_risks = []
+        for control in self.control.all():
+            for risk in control.risks.all():
+                if risk.risk_master.domain_risk.pk not in domain_risks:
+                    domain_risks.append(risk.risk_master.domain_risk.pk)
+        if self.control_test:
+            for risk in self.control_test.control.risks.all():
+                if risk.risk_master.domain_risk.pk not in domain_risks:
+                    domain_risks.append(risk.risk_master.domain_risk.pk)
+        return domain_risks
+
 
     def finish(self):
 
@@ -117,7 +127,7 @@ class RemediationPlan(AuditModel):
         return self.status
 
 
-    def sent_notification(self):
+    def sent_notification(self, custom_message=None):
         from krm.configuration.models import Configuration
 
         if self.next_to_reply == "FI":
@@ -145,6 +155,7 @@ class RemediationPlan(AuditModel):
             "MAIN_EMAIL": configuration.main_email,
             "site_url": settings.SITE_URL,
             "recovery_url": settings.SITE_URL + reverse("auth:remember_password_form"),
+            "custom_message": custom_message,
         }
         body_html = render_to_string(
             "emails/remediation_plan/remediation_plan_supervisor.html",

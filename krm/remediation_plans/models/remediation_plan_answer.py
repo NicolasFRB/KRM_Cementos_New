@@ -46,9 +46,7 @@ class RemediationPlanAnswer(AuditModel):
         help_text=_(
             "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
         ),
-        max_length=10000,
-        null=True,
-        blank=True,
+        max_length=10000
     )
 
     user = models.ForeignKey(

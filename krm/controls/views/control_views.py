@@ -37,13 +37,15 @@ from krm.companies.models import Company, CompanyControls
 
 from krm.users.decorators import is_global_admin
 
+from django.contrib.auth.decorators import login_required
+
 from krm.controls.forms import (
     ControlImportForm,
     DownloadControlsActionForm
         )
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaControlListView(ListView,FormView):
     model = Control
     template_name = 'controls/GaControlList.html'
@@ -134,6 +136,7 @@ class GaControlListView(ListView,FormView):
                     "CONTROL OWNER",  # 10
                     "CONTROL SUPERVISOR",  # 11
                     "ALCANCE",  # 12
+                    "DOMINIOS DE RIESGO" # 13
                     ]
 
                 for col_num in range(len(columns)):
@@ -212,13 +215,23 @@ class GaControlListView(ListView,FormView):
                             row_num, 12, comp_cont.control.get_scope_display(), font_style_body
                         )  # 12
 
+                        domain_risks = ''
+                        for dr in comp_cont.control.domain_risks_objects:
+                            if domain_risks == '':
+                                domain_risks += dr.name
+                            else:
+                                domain_risks += ',' + dr.name
+                        ws.write(
+                            row_num, 13, domain_risks, font_style_body
+                        )  # 13
+
             wb.save(response)
             return response
 
         return super().form_valid(form)
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaControlDetailView(DetailView):
     model = Control
     template_name = 'controls/GaControlDetail.html'
@@ -247,19 +260,19 @@ class GaControlDetailView(DetailView):
         return context
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaControlCreateView(CreateView):
     form_class = ControlCreateForm
     model = Control
     template_name = 'controls/GaControlCreate.html'
 
     def get_initial(self):
-        if 'domain_Control' in self.kwargs:
+        if 'risk' in self.kwargs:
             risk = get_object_or_404(
                 Risk, pk=self.kwargs.get('risk')
             )
             return {
-                'risk': risk
+                'risks': risk
             }
         else:
             return {}
@@ -292,7 +305,7 @@ class GaControlCreateView(CreateView):
         )
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaControlUpdateView(UpdateView):
     form_class = ControlCreateForm
     model = Control
@@ -385,7 +398,7 @@ class GaControlUpdateView(UpdateView):
         )
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaControlDeleteView(DeleteView):
     model = Control
     template_name = "_includes/_base_confirm_delete.html"
@@ -418,7 +431,7 @@ class GaControlDeleteView(DeleteView):
         ).format(str(self.object))
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaControlImport(FormView):
     template_name = "process/ga/GaControlImport.html"
     form_class = ControlImportForm

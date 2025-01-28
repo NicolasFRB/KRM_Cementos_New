@@ -41,8 +41,11 @@ from krm.users.decorators import (
     user_can_edit_company
 )
 
+#importar login_required
+from django.contrib.auth.decorators import login_required
 
-@method_decorator([is_company_admin, ], name='dispatch')
+
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class CaCompanyListView(ListView):
     model = Company
     template_name = 'companies/CaCompanyList.html'
@@ -66,7 +69,7 @@ class CaCompanyListView(ListView):
         return self.request.user.companies_admin.all()
 
 
-@method_decorator([user_can_edit_company, ], name='dispatch')
+@method_decorator([login_required, user_can_edit_company, ], name='dispatch')
 class CaCompanyDetailView(DetailView):
     model = Company
     template_name = 'companies/CaCompanyDetail.html'
@@ -88,7 +91,7 @@ class CaCompanyDetailView(DetailView):
         return context
 
 
-@method_decorator([user_can_edit_company, ], name='dispatch')
+@method_decorator([login_required, user_can_edit_company, ], name='dispatch')
 class CaCompanyUpdateView(UpdateView):
     form_class = CompanyCreateForm
     model = Company
@@ -123,7 +126,7 @@ class CaCompanyUpdateView(UpdateView):
         )
 
 
-@method_decorator([is_company_admin, ], name='dispatch')
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class CaCompanyRiskKrmSelectView(FormView):
     form_class = CompanyKrmRiskSelectForm
     template_name = 'companies/CaCompanyRiskKrmSelect.html'
@@ -178,7 +181,7 @@ class CaCompanyRiskKrmSelectView(FormView):
     def post(self, request, *args, **kwargs):
         risk_company_selected = request.POST.get('selectedPKs')
         risk_company_selected = risk_company_selected.split(',')
-        
+
         self.company.krm_risks.filter(
             pk__in=risk_company_selected).update(active=True)
         self.company.krm_risks.exclude(

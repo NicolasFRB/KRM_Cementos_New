@@ -31,7 +31,7 @@ from krm.risks.api.views import (
     RiskCompanyResidualApiView,
 )
 
-from krm.controls.api.views import ControlCompanyApiView
+from krm.controls.api.views import ControlCompanyApiView, ControlPeriodicityApiView
 
 from krm.companies.api import (
     CompanyViewSet,
@@ -98,7 +98,8 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
-
+    path('api/controlperiodicity/',
+         ControlPeriodicityApiView.as_view()),
     path(
         '',
         DashboardView.as_view(),

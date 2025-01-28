@@ -90,6 +90,22 @@ class ControlTestAnswer(AuditModel):
         null=True,
     )
 
+    CONTROL_RESULT_CHOICES = (
+        ("EF", _("Efectivo")),
+        ("SE", _("Sin establecer")),
+        ("NE", _("No efectivo")),
+        ("NA", _("No aplica en el periodo certificado")),
+    )
+
+    result = models.CharField(
+        _("Resultado propuesto"),
+        max_length=2,
+        choices=CONTROL_RESULT_CHOICES,
+        default="SE",
+        null = True,
+        blank = True
+    )
+
     def __str__(self):
         return str(self.pk)
 
@@ -104,3 +120,27 @@ class ControlTestAnswer(AuditModel):
     @property
     def description_safe(self):
         return str(strip_tags(self.description))
+
+    @property
+    def can_be_updated(self):
+        from krm.configuration.models import Configuration
+        # Si la configuración no permite actualizar respuestas devolvemos que no
+        if Configuration.objects.get(pk=1).enable_delete_files_ct is False:
+            return False
+        # Si el control test está finalizado devolvemos que no
+        if self.control_test.status == "FI":
+            return False
+        # Si la evaluación está finalizada devolvemos que no
+        if self.control_test.evaluation.status == "FI":
+            return False
+        # Si no es la última respuesta para ese interlocutor, devolvemos que no
+        if ControlTestAnswer.objects.filter(
+            control_test=self.control_test,
+            user=self.user
+        ).order_by('-created').first() != self:
+            return False
+
+        # Si el control_Test no está esperando respuesta de ese usuario concreto
+
+
+        return True

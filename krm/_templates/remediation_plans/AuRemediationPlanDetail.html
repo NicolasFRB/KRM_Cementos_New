@@ -1,0 +1,224 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+  <!--begin::Card body-->
+  <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'ID' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.pk }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.company }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha de inicio' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.date_begin }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Fecha fin' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.date_end }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <!--begin::Col-->
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Estado' %}</span>
+              </div>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-8">
+              <div class="fs-6" style="display:flex;">
+              {% if remediation_plan.status == "EP" %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-success" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                    title="{{remediation_plan.get_status_display}}"></i></div>
+                <div>{{ remediation_plan.get_status_display }}</div>
+                {% elif remediation_plan.status == "FI" %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                    title="{{remediation_plan.get_status_display}}"></i></div>
+                <div>{{ remediation_plan.get_status_display }}</div>
+                {% else %}
+                <div style="margin-top:-7px;"><i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                    title="{{remediation_plan.get_status_display}}"></i></div>
+                <div>{{ remediation_plan.get_status_display }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans '¿Quién debe responder?' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.get_next_to_reply_display }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Responsable' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.responsible }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Supervisor' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.supervisor }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Usuarios adicionales' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>
+                  {% for user in remediation_plan.additional_users.all %}
+                    {{ user }}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% if remediation_plan.control.count %}
+            <div class="row mb-8">
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Controles asociados' %}</span></div>
+              </div>
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  {% for control in remediation_plan.control.all %}
+                    <span>
+                      {{ control }}
+                    </span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          {% if remediation_plan.control_test %}
+            <div class="row mb-8">
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Control Test Asociado' %}</span></div>
+              </div>
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  <span>
+                    {{ remediation_plan.control_test }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="row mb-8">
+            <div class="col-xl-4">
+              <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
+            </div>
+            <div class="col-xl-8">
+              <div class="fs-6">
+                <span>{{ remediation_plan.description }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>
+
+<div class="card mb-8">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">Respuestas</div>
+  </div>
+
+  <div class="card-body">
+    <div class="kt-section">
+      <div class="kt-space-20"></div>
+      {% if remediation_plan.answers.count > 0 %}
+        {% for answer in remediation_plan.answers.all %}
+          {% include '_includes/remediation_plan/ga/_remediation_plan_answer.html' %}
+          {% if not forloop.last %}
+            <div class="kt-space-20"></div>
+            <div class="separator my-10"></div>
+            <div class="kt-space-20"></div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <p class="kt-font-info kt-font-bold">
+          {% trans 'Todavía no hay respuestas para este plan de remediación' %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

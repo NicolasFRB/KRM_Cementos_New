@@ -134,7 +134,7 @@ class ControlTestDetail(FormView):
 
         if form.cleaned_data["control_status"] == 'RE':
             self.control_test.status = 'WO'
-            self.control_test.result = 'SE'
+            # self.control_test.result = 'SE' # cambio solicitado el 29 de noviembre de 2024
             self.control_test.answers.all().delete()
         else:
             self.control_test.status = form.cleaned_data["control_status"]
@@ -147,12 +147,15 @@ class ControlTestDetail(FormView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
+        self.control_test.evaluation.delete_notification_text()
+
         self.control_test.send_notification('Notification')
 
         description = form.cleaned_data["description"]
         attachment_1 = form.cleaned_data["attachment_1"]
         attachment_2 = form.cleaned_data["attachment_2"]
         attachment_3 = form.cleaned_data["attachment_3"]
+        result = form.cleaned_data["control_result"]
         if description:
             ControlTestAnswer.objects.create(
                 control_test=self.control_test,
@@ -161,6 +164,7 @@ class ControlTestDetail(FormView):
                 attachment_2 = attachment_2,
                 attachment_3 = attachment_3,
                 user=self.request.user,
+                result=result
             )
 
         return super().form_valid(form)
@@ -215,6 +219,7 @@ class ControlTestUpdate(UpdateView):
     def form_valid(self, form):
         send_notification = form.cleaned_data["send_notification"]
         if send_notification:
+            self.object.evaluation.delete_notification_text()
             self.object.send_notification('Notification')
         return super().form_valid(form)
 

@@ -42,7 +42,7 @@ class UserCreateForm(forms.ModelForm):
             'companies',
             'companies_admin',
             'notification_language',
-            'is_auditor'
+            'audit_domain_risk'
         )
 
     def __init__(self, *args, **kwargs):
@@ -53,6 +53,8 @@ class UserCreateForm(forms.ModelForm):
         self.fields["companies"].widget.attrs["data-control"] = "select2"
         self.fields["companies_admin"].widget.attrs["class"] = "form-select"
         self.fields["companies_admin"].widget.attrs["data-control"] = "select2"
+        self.fields["audit_domain_risk"].widget.attrs["class"] = "form-select"
+        self.fields["audit_domain_risk"].widget.attrs["data-control"] = "select2"
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -115,7 +117,7 @@ class UserUpdateForm(forms.ModelForm):
             'is_superuser',
             'notification_language',
             'is_active',
-            'is_auditor'
+            'audit_domain_risk'
         )
 
     def __init__(self, *args, **kwargs):
@@ -125,6 +127,8 @@ class UserUpdateForm(forms.ModelForm):
         self.fields["companies"].widget.attrs["data-control"] = "select2"
         self.fields["companies_admin"].widget.attrs["class"] = "form-select"
         self.fields["companies_admin"].widget.attrs["data-control"] = "select2"
+        self.fields["audit_domain_risk"].widget.attrs["class"] = "form-select"
+        self.fields["audit_domain_risk"].widget.attrs["data-control"] = "select2"
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -164,7 +168,8 @@ class CaUserUpdateForm(forms.ModelForm):
             'companies_admin',
             'is_superuser',
             'notification_language',
-            'is_active'
+            'is_active',
+            'audit_domain_risk'
         )
 
     def __init__(self, *args, **kwargs):
@@ -176,6 +181,8 @@ class CaUserUpdateForm(forms.ModelForm):
         self.fields["companies_admin"].widget.attrs["class"] = "form-select"
         self.fields["companies_admin"].widget.attrs["data-control"] = "select2"
         self.fields["companies_admin"].disabled = True
+        self.fields["audit_domain_risk"].widget.attrs["class"] = "form-select"
+        self.fields["audit_domain_risk"].widget.attrs["data-control"] = "select2"
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -215,7 +222,7 @@ class UserAdminCreateForm(forms.ModelForm):
             'is_active',
             'notification_language',
             'is_superuser',
-            'is_auditor'
+            'audit_domain_risk'
         )
 
     def clean_password2(self):
@@ -298,6 +305,13 @@ class UserAdmin(BaseUserAdmin):
                 ),
             )
         }),
+        (u'Dominios de Riesgo que audita', {
+            'fields': (
+                (
+                    'audit_domain_risk',
+                ),
+            )
+        }),
         ('Claves de recuperación y login', {
             'fields': (
                 'remember_key',
@@ -308,7 +322,6 @@ class UserAdmin(BaseUserAdmin):
                 'is_active',
                 'is_staff',
                 'is_superuser',
-                'is_auditor',
                 'groups',
                 # 'user_permissions'
             ),
@@ -320,7 +333,8 @@ class UserAdmin(BaseUserAdmin):
         # 'user_permissions',
         'groups',
         'companies',
-        'companies_admin'
+        'companies_admin',
+        'audit_domain_risk'
     )
 
 class UsersActionForm(forms.Form):

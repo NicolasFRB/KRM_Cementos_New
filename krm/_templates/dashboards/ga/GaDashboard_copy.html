@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block js_footer %} 
+{% block js_footer %}
 <script>
   {% get_current_language as LANGUAGE_CODE %}
   {% if LANGUAGE_CODE == 'es' %}
@@ -19,7 +19,7 @@
   {% endif %}
 
   $(document).ready(function(){
-    
+
     $('.filterable .filters input').keyup(function(e){
         /* Ignore tab key */
         var code = e.keyCode || e.which;
@@ -130,7 +130,7 @@
         opacity: 0.8
       },
       legend: {
-        position: "top", 
+        position: "top",
       },
       responsive: [{
         breakpoint: 480,
@@ -149,12 +149,12 @@
   function ct_subprocesses (id){
     var keys = [];
     var series = [];
-    
+
     Object.entries(subprocesses).forEach(([key, value]) => {
       var dict = [];
       var data_dict = [];
       keys.push(key);
-      
+
       value = value.map(str => str.replace('[', ''));
       value = value.map(str => str.replace(']', ''));
       value = value.map(str => str.replace(new RegExp("\'", 'g'), ""));
@@ -179,7 +179,7 @@
     });
 
     var options = {
-      series: series, 
+      series: series,
       legend: {
         position: "top",
         show: true
@@ -219,7 +219,7 @@
     var keys = [];
     var values = [];
     var series = [];
-    
+
     Object.entries(dict).forEach(([key, value]) => {
       keys.push(key);
       values = [];
@@ -315,8 +315,8 @@
     var values = [];
     var series = [];
 
-    console.log(dict);
-    
+    // console.log(dict);
+
     Object.entries(dict).forEach(([key, value]) => {
       keys.push(key);
       values = [];
@@ -329,7 +329,7 @@
       });
     });
 
-    console.log(series);
+    // console.log(series);
 
     var options = {
         series: series,
@@ -416,7 +416,7 @@
     var control = {};
     var risk = {};
     var aux = {};
-    
+
     Object.entries(risks).forEach(([key, value]) => {
 
       if (!Object.keys(eval).includes(key)){
@@ -435,7 +435,7 @@
           if (!Object.keys(control).includes(key3)){
             control[key3] = Object.keys(control).length + 1;
           }
-          
+
           value3 = value3.replace("[", "");
           value3 = value3.replace("]", "");
           value3 = value3.replace(new RegExp("\'", 'g'), "");
@@ -454,7 +454,7 @@
     });
 
     var options = {
-      series: series, 
+      series: series,
       legend: {
         position: "top",
         show: true,
@@ -500,10 +500,10 @@
           var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
 
           return '<div style="margin:10px;">' +
-          '<div style="font-size: 11px;">'+ '<b>' + 'Control: ' + '</b>' 
+          '<div style="font-size: 11px;">'+ '<b>' + 'Control: ' + '</b>'
           + Object.keys(control).filter(key => control[key] === data[1])+
           '</div>' +
-          '<div style="font-size: 11px;">'+ '<b>' + 'Riesgo: ' + '</b>' 
+          '<div style="font-size: 11px;">'+ '<b>' + 'Riesgo: ' + '</b>'
           + Object.keys(risk).filter(key => risk[key] === data[0])+
           '</div>';
         },
@@ -576,7 +576,7 @@
 <div class="card">
   <div class="card-header">
     <div class="card-title fs-3 fw-bold">{% trans 'Charts' %}</div>
-  </div> 
+  </div>
   <div class="card-body">
     <div class="row mb-4">
       <div class="col-xl-6">
@@ -595,7 +595,7 @@
         <div id="chart-2"></div>
       </div>
     </div>
-    
+
     <div class="row mb-4">
       <div class="col-xl-6">
         <div id="chart-3"></div>
@@ -612,7 +612,7 @@
     </div> -->
 
     {% for e in evaluations %}
-      <script>  
+      <script>
         var frequencies = {"Bajo demanda": 0, "Constante": 0, "Diario": 0, "Semanal": 0, "Quincenal": 0, "Mensual": 0, "Bimensual": 0, "Trimestral": 0, "Cuatrimestral": 0, "Semestral": 0, "Anual": 0, "Bienal": 0, "Trienal": 0, "Quinquenal": 0};
         var ct_types = {"Preventivo": 0, "Detectivo": 0};
         var key_controls = {"Key": 0, "Non-key": 0};
@@ -740,11 +740,11 @@
         }
       </script>
       {% endfor %}
-      <script> 
-        frequency_evaluation["{{e}}"] =  frequencies; 
+      <script>
+        frequency_evaluation["{{e}}"] =  frequencies;
 
-        control_type_evaluation["Preventivo"]["{{e}}"] = ct_types['Preventivo']; 
-        control_type_evaluation["Detectivo"]["{{e}}"] = ct_types['Detectivo']; 
+        control_type_evaluation["Preventivo"]["{{e}}"] = ct_types['Preventivo'];
+        control_type_evaluation["Detectivo"]["{{e}}"] = ct_types['Detectivo'];
 
         key_controls_evaluation["Key"]["{{e}}"] = key_controls["Key"];
         key_controls_evaluation["Non-key"]["{{e}}"] = key_controls["Non-key"];
@@ -765,7 +765,7 @@
       var l_status = ["Sin iniciar", ["En espera de respuesta", "del Control Owner"], ["En espera de respuesta", "del Control Supervisor"], ["En espera de respuesta", "del Control Administrator"], "Finalizado"];
       var l_frequencies = ["Bajo demanda", "Constante", "Diario", "Semanal", "Quincenal", "Mensual", "Bimensual", "Trimestral", "Cuatrimestral", "Semestral", "Anual", "Bienal", "Trienal", "Quinquenal"];
       // var l_result = ["Efectivo", "Sin establecer", "No efectivo", "N/A"];
-      
+
       evidence_percentage("chart-1");
       ct_frequency("chart-2", frequency_evaluation, l_frequencies, 'Control Tests Frequency per evaluation');
       ct_control_type("chart-3", control_type_evaluation, evals, "Control Test Types per evaluation");
@@ -798,7 +798,7 @@
         <form method="POST" class="kt-form kt-form--label-right" novalidate style="padding: 15px;">
           {% csrf_token %}
           <input type="hidden" name="action" value="download">
-          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>Download results</button> 
+          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>Download results</button>
         </form>
       </div>
     </div>

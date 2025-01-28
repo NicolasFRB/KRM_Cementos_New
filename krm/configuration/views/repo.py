@@ -44,7 +44,13 @@ from krm.evaluations_krm.models import (
     EvaluationKrmInherent, RiskTestInherent
 )
 
-@method_decorator([login_required, ], name='dispatch')
+from krm.users.decorators import (
+    is_global_admin,
+    user_can_edit_company,
+    user_can_edit_domain_risk_evaluator
+)
+
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class ConfigurationDetailView(DetailView):
     model = Configuration
     template_name = 'configuration/ConfigurationDetail.html'
@@ -65,7 +71,7 @@ class ConfigurationDetailView(DetailView):
         return Configuration.objects.first()
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class ConfigurationUpdateView(UpdateView):
     form_class = ConfigurationUpdateForm
     model = Configuration
@@ -100,7 +106,7 @@ class ConfigurationUpdateView(UpdateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaImportEvalView(FormView):
     template_name = 'configuration/GaImportEval.html'
     form_class = ImportForm
@@ -135,7 +141,7 @@ class GaImportEvalView(FormView):
             ev_inherent = {}
             if row[0].value is None:
                 break
-            
+
             ev_inherent['ref'] = row[0].value
             ev_inherent['company'] = row[1].value.strip().replace(' ', '').upper()
             ev_inherent['description'] = row[2].value
@@ -194,7 +200,7 @@ class GaImportEvalView(FormView):
             risk_inherent = {}
             if row[0].value is None:
                 break
-            
+
             risk_inherent['evaluation'] = row[0].value
             risk_inherent['risk'] = row[1].value
             risk_inherent['expert'] = row[2].value
@@ -232,7 +238,7 @@ class GaImportEvalView(FormView):
                 description=dr['description'],
                 description_admin=dr['description_admin']
             )
-            
+
             rti_object.save()
             dr_created += 1
 
@@ -255,7 +261,7 @@ class GaImportEvalView(FormView):
 
         return reverse_lazy("configuration:ga_import_eval")
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaImportView(FormView):
     template_name = 'configuration/GaImport.html'
     form_class = ImportForm
@@ -477,13 +483,13 @@ class GaImportView(FormView):
         control_to_create = []
         nrow = 0
         rows = control_sheet.rows
-        
+
         for row in rows:
-           
+
             if nrow < 1:
                 nrow += 1
                 continue
-            
+
             control = {}
 
             # if row[0].value is None:
@@ -563,7 +569,7 @@ class GaImportView(FormView):
                         ),
                     )
                     return super(GaImportView, self).form_invalid(form)
-            
+
             nrow += 1
             control_to_create.append(control)
             print(control)
@@ -646,12 +652,12 @@ class GaImportView(FormView):
             # risk_company_error = False
             # if r['risk_ref'] not in r_n2:
             #     risk_company_error = 'En la hoja de riesgo compañía hay una REF de riesgo que no existe en la hoja Risk N2: %s' % r['risk_ref']
-                
-            # if risk_company_error:    
+
+            # if risk_company_error:
             if Risk.objects.filter(ref=r['risk_ref']).count() == 0:
                 risk_company_error = 'En la hoja de riesgo compañía hay una REF de riesgo que no existe: %s' % r['risk_ref']
-                
-            # if risk_company_error: 
+
+            # if risk_company_error:
                 messages.add_message(
                     self.request,
                     messages.ERROR,
@@ -733,7 +739,7 @@ class GaImportView(FormView):
         print("Ctrls", len(control_to_create))
         print("RiskCompany", len(risk_company_to_create))
         print("CtrlCompany", len(control_company_to_create))
-       
+
         # Vamos a crear cosas
         dr_created, n = 0, len(domain_risk_to_create)
         for i,dr in enumerate(domain_risk_to_create):

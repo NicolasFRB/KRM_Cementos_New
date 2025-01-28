@@ -11,6 +11,7 @@
       '#control_description',
       '#control_name',
       '#control_testing_procedure',
+      '#control_evidence'
     ]
     textAreas.forEach(createCkEditor);
 
@@ -92,6 +93,9 @@
               <div class="mb-4 col-md-3 col-12">
                 {{ form.control_frequency|as_crispy_field }}
               </div>
+              <div class="mb-4 col-md-3 col-12">
+                {{ form.scope|as_crispy_field }}
+              </div>
             </div>
 
             <div class="separator my-10"></div>
@@ -157,7 +161,7 @@
           </div>
         </div>
       </div>
-    
+
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
         <a href="{% url 'controls:ga_control_detail' object.pk %}"

@@ -16,7 +16,8 @@
     "select-control": "Selecciona al menos un control para poder lanzar la evaluación",
     "form-incomplete": "Falta algún dato imprescindible en el formulario",
     "no-company": "No se ha seleccionado ninguna empresa",
-    "no-controls": "No se ha seleccionado ningún control a evaluar"
+    "no-controls": "No se ha seleccionado ningún control a evaluar",
+    "periodicity" : "Periodicidad"
   },
   "krmInherent": {
     "data-required": "Falta algún dato imprescindible en el formulario",
@@ -29,7 +30,7 @@
     "step-4": "Paso 4: Resumen del lanzamiento",
     "calc-risk-tests": "Calcular los Tests de riesgo que se lanzarán",
     "evaluation": "Evaluación",
-    "risk-test-inherent": "Tests de Riesgo Inherente que se lanzarán",
+    "risk-test-inherent": "Tests de Riesgo que se lanzarán",
     "name": "NOMBRE",
     "expert": "EXPERTO ASIGNADO",
     "no-posible-launch-without-expert": "No es posible lanzar este test sin tener asignado previamente un experto para ese dominio de riesgo",
@@ -78,7 +79,7 @@
     "calc-tests": "Calcular los Tests de riesgo que se lanzarán",
     "loading": "Calculando",
     "evaluation": "Evaluación",
-    "tests-inherent-to-launch": "Tests de Riesgo Inherente que se lanzarán",
+    "tests-inherent-to-launch": "Tests de riesgo que se lanzarán",
     "name": "NOMBRE",
     "evaluate": "¿EVALUADO?",
     "expert-severity": "SEV. EXPERTO",

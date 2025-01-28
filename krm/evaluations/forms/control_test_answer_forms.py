@@ -41,11 +41,11 @@ class ControlTestAnswerCreateForm(ModelForm):
         self.fields["attachment_3"].widget.attrs.update(
             {"class": "custom-file-input", "id": "customFile3"}
         )
-        self.fields["description"].error_messages = {
-            "max_length": _(
-                "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 10000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
-            )
-        }
+        # self.fields["description"].error_messages = {
+        #     "max_length": _(
+        #         "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 10000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
+        #     )
+        # }
         self.fields["control_result"].widget.attrs["class"] = "form-select"
 
 
@@ -84,11 +84,13 @@ class ControlTestAnswerOwnerCreateForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ControlTestAnswerOwnerCreateForm, self).__init__(*args, **kwargs)
         self.fields["description"].widget.attrs["id"] = "cta_description"
-        self.fields["description"].error_messages = {
-            "max_length": _(
-                "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 10000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
-            )
-        }
+        # Hacerlo obligatorio
+        self.fields["description"].required = True
+        # self.fields["description"].error_messages = {
+        #     "max_length": _(
+        #         "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 10000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
+        #     )
+        # }
         self.fields["control_result"].widget.attrs["class"] = "form-select"
         self.fields["control_result"].widget.attrs["data-control"] = "select2"
 
@@ -123,21 +125,23 @@ class ControlTestAnswerSupervisorCreateForm(ModelForm):
         super(ControlTestAnswerSupervisorCreateForm,
               self).__init__(*args, **kwargs)
         self.fields["description"].widget.attrs["id"] = "cta_description"
-        self.fields["description"].error_messages = {
-            "max_length": _(
-                "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 10000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
-            )
-        }
+        # self.fields["description"].error_messages = {
+        #     "max_length": _(
+        #         "Longitud de la descripción demasiado larga. En caso de estar pegando desde el portapapales asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia. Caracteres introducidos %(show_value)d."
+        #     )
+        # }
+        # Marcar description como requerido
+        self.fields["description"].required = True
 
-    def clean(self):
-        cleaned_data = super().clean()
-        description = cleaned_data.get("description")
-        more_information = cleaned_data.get("more_information")
-        if more_information:
-            if len(description) < 20:
-                raise forms.ValidationError(
-                    _('Debe especificar la información necesaria que necesita del Control Owner'))
-        else:
-            if len(description) < 3:
-                raise forms.ValidationError(
-                _('Debe proporcionar información suficiente para finalizar la evaluación'))
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     description = cleaned_data.get("description")
+    #     more_information = cleaned_data.get("more_information")
+    #     if more_information:
+    #         if len(description) < 20:
+    #             raise forms.ValidationError(
+    #                 _('Debe especificar la información necesaria que necesita del Control Owner'))
+    #     else:
+    #         if len(description) < 3:
+    #             raise forms.ValidationError(
+    #             _('Debe proporcionar información suficiente para finalizar la evaluación'))

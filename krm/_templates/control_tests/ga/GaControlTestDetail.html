@@ -4,8 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
-<!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script> -->
-<script src="{% static 'js/flatpickr_es.js' %}"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 
 <script>
   $(document).ready(function () {
@@ -29,7 +28,7 @@
       })
       .catch(error => {
       });
-  
+
     $(".datepicker").flatpickr({
           "locale": "es",
           dateFormat: "d/m/Y",
@@ -54,12 +53,12 @@
         var result_widget = $('#id_control_result').val();
         var description_widget = $('#word-count').children(0).children(1).text();
         var char_count = description_widget.split(': ').pop()
-        
+
         if (result_widget == '' || char_count == '0') {
           event.preventDefault();
           $('#exampleModal').modal('show');
         }
-        
+
     });
 });
 </script>
@@ -113,7 +112,7 @@
       <div style="margin-top:15px;">
       <h5 style="float: right ; font-size: 14px;">{% trans 'RESULTADO ACTUAL:&emsp;' %}<span style="float:right; font-size: 14px;" class="badge badge-{% if control_test.result == 'EF' %}success{% else %}danger{% endif %} text-wrap">{{ control_test.get_result_display }}</span></h5></div>
     </div>
-  </div> 
+  </div>
   <div class="card-body">
     {% if control_test.answers.count > 0 %}
       {% for answer in control_test.answers.all %}

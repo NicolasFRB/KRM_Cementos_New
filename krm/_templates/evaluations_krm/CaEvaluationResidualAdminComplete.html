@@ -9,7 +9,7 @@
 {% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
-  <script defer src="{% static 'main.react.js' %}"></script>
+  <script defer src="{% static 'main.react.js' %}?v=20241219"></script>
 {% endif %}
 
 
@@ -198,9 +198,9 @@
           <div class="col-xl-7">
             <div class="fs-6">
               {% for dom in evaluation.domain_risks %}
-                
+
                   <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
-                
+
               {% endfor %}
             </div>
           </div>
@@ -338,7 +338,7 @@
               </fieldset>
             </div>
             <div class="col-xl-1">
-            </div>            
+            </div>
             <div class="col-xl-6">
               <div class="row">
                 <div class="col-xl-8">
@@ -474,8 +474,8 @@
                                       <span class="badge badge-info" style="">{{ control.domain_risks_objects|length }}</span>
                                   </div>
                                   <div id = "box-container">
-                                    {% for domain_risk in control.domain_risks_objects %}                                              
-                                      <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ domain_risk.name }}" id = "box-child">{{ domain_risk.ref }}</span>                          
+                                    {% for domain_risk in control.domain_risks_objects %}
+                                      <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ domain_risk.name }}" id = "box-child">{{ domain_risk.ref }}</span>
                                     {% endfor %}
                                   </div>
                                 </div>
@@ -606,16 +606,16 @@
                 <td class="text-center align-middle">
                   <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ control.testing_procedure|striptags }}" style="margin-right:5px;"></i>
                 </td>
-                <td class="text-center align-middle">{{ control.control_frequency }}</td>       
-                <td class="text-center align-middle">{{ control.is_elc|yesno:_("Yes, No") }}</td>       
+                <td class="text-center align-middle">{{ control.control_frequency }}</td>
+                <td class="text-center align-middle">{{ control.is_elc|yesno:_("Yes, No") }}</td>
                 <td class="text-center align-middle">
                   <div id = 'box' class="text-center">
                     <div style="cursor: pointer" onclick="toggle_item(this)">
                         <span class="badge badge-info" style="">{{ control.domain_risks_objects|length }}</span>
                     </div>
                     <div id = "box-container">
-                      {% for domain_risk in control.domain_risks_objects %}                                              
-                        <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ domain_risk.name }}" id = "box-child">{{ domain_risk.ref }}</span>                          
+                      {% for domain_risk in control.domain_risks_objects %}
+                        <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ domain_risk.name }}" id = "box-child">{{ domain_risk.ref }}</span>
                       {% endfor %}
                     </div>
                   </div>
@@ -659,14 +659,14 @@
                 </div>
                 <!--end::Wrapper-->
               </div>
-    
+
               <div class="form-check form-check-custom form-check-solid mb-10">
                 <input class="form-check-input" type="checkbox" value="1" id="clone" name="clone" />
                 <label class="form-check-label" for="clone">
                   {% trans 'Usar la valoración dada por los evaluadores para los riesgos no completados' %}
                 </label>
               </div>
-    
+
               <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap"
                 data-kt-indicator="off">
                 <span class="indicator-label">{% trans 'Finalizar evaluación' %}</span>

@@ -30,7 +30,13 @@ from krm.risks.forms import RiskMasterCreateForm
 from krm.risks.models import RiskMaster, DomainRisk
 from django.db.models import Count
 
-@method_decorator([login_required, ], name='dispatch')
+from krm.users.decorators import (
+    is_global_admin,
+    user_can_edit_company,
+    user_can_edit_domain_risk_evaluator
+)
+
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaRiskMasterListView(ListView):
     model = RiskMaster
     template_name = 'risks_masters/GaRiskMasterList.html'
@@ -60,7 +66,7 @@ class GaRiskMasterListView(ListView):
         return context
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaRiskMasterDetailView(DetailView):
     model = RiskMaster
     template_name = 'risks_masters/GaRiskMasterDetail.html'
@@ -89,7 +95,7 @@ class GaRiskMasterDetailView(DetailView):
         return context
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaRiskMasterCreateView(CreateView):
     form_class = RiskMasterCreateForm
     model = RiskMaster
@@ -134,7 +140,7 @@ class GaRiskMasterCreateView(CreateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaRiskMasterUpdateView(UpdateView):
     form_class = RiskMasterCreateForm
     model = RiskMaster
@@ -168,7 +174,7 @@ class GaRiskMasterUpdateView(UpdateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaRiskMasterDeleteView(DeleteView):
     model = RiskMaster
     template_name = "_includes/_base_confirm_delete.html"

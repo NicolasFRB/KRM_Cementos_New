@@ -1,0 +1,44 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<div class="card mb-8">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Planes de remediación en progreso' %}</div>
+  </div>
+  <div class="card-body">
+    {% include '_includes/remediation_plan_v2/au/_au_remediation_plan_table.html' with remediation_plans=remediation_plan_in_progress %}
+  </div>
+</div>
+
+
+<div class="card mb-8">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Planes de remediación vencidos' %}</div>
+  </div>
+  <div class="card-body">
+    {% include '_includes/remediation_plan_v2/au/_au_remediation_plan_table.html' with remediation_plans=remediation_plan_expired %}
+  </div>
+</div>
+
+
+<div class="card mb-8">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Planes de remediación finalizados' %}</div>
+  </div>
+  <div class="card-body">
+    {% include '_includes/remediation_plan_v2/au/_au_remediation_plan_table.html' with remediation_plans=remediation_plan_completed %}
+  </div>
+</div>
+
+
+
+{% endblock content %}

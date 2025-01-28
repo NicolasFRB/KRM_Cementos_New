@@ -11,7 +11,10 @@ from krm.remediation_plans.views import (
     delete_attachment,
 
     RuRemediationPlanListView,
-    RuRemediationPlanDetailView
+    RuRemediationPlanDetailView,
+
+    AuRemediationPlanListView,
+    AuRemediationPlanDetailView
 )
 
 
@@ -61,5 +64,17 @@ urlpatterns = [
         'ru/detail/<pk>',
         RuRemediationPlanDetailView.as_view(),
         name='ru_remediation_plan_detail'
+    ),
+
+    path(
+        'au/list/',
+        AuRemediationPlanListView.as_view(),
+        name='au_remediation_plan_list'
+    ),
+
+    path(
+        'au/detail/<pk>',
+        AuRemediationPlanDetailView.as_view(),
+        name='au_remediation_plan_detail'
     ),
 ]

@@ -4,6 +4,9 @@ from io import BytesIO
 
 import re
 
+#import login_required
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
@@ -45,7 +48,7 @@ from krm.risks.models import (
 from krm.users.decorators import is_global_admin
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyListView(ListView):
     model = Company
     template_name = 'companies/GaCompanyList.html'
@@ -79,7 +82,7 @@ class GaCompanyListView(ListView):
         return context
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyDetailView(DetailView):
     model = Company
     template_name = 'companies/GaCompanyDetail.html'
@@ -108,7 +111,7 @@ class GaCompanyDetailView(DetailView):
         return context
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyCreateView(CreateView):
     form_class = CompanyCreateForm
     model = Company
@@ -144,7 +147,7 @@ class GaCompanyCreateView(CreateView):
         )
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyUpdateView(UpdateView):
     form_class = CompanyCreateForm
     model = Company
@@ -184,7 +187,7 @@ class GaCompanyUpdateView(UpdateView):
         )
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyDeleteView(DeleteView):
     model = Company
     template_name = "_includes/_base_confirm_delete.html"
@@ -217,7 +220,7 @@ class GaCompanyDeleteView(DeleteView):
         ).format(str(self.object))
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyRiskKrmSelectView(FormView):
     form_class = CompanyKrmRiskSelectForm
     template_name = 'companies/GaCompanyRiskKrmSelect.html'
@@ -272,7 +275,7 @@ class GaCompanyRiskKrmSelectView(FormView):
     def post(self, request, *args, **kwargs):
         risk_company_selected = request.POST.get('selectedPKs')
         risk_company_selected = risk_company_selected.split(',')
-        
+
         self.company.krm_risks.filter(
             pk__in=risk_company_selected).update(active=True)
         self.company.krm_risks.exclude(
@@ -290,7 +293,7 @@ class GaCompanyRiskKrmSelectView(FormView):
             )
         )
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyImportView(FormView):
     template_name = 'companies/GaCompanyImport.html'
     form_class = CompanyImportForm

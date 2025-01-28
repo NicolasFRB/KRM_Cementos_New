@@ -28,9 +28,11 @@ class EvaluationCreateForm(ModelForm):
             'date_intermediate',
             'date_end',
             'description',
+            'notification_text',
             'certification_year',
             'certification_period',
-            'allow_self_autosupervision'
+            'allow_self_autosupervision',
+            'notification_text'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -58,6 +60,7 @@ class EvaluationUpdateForm(ModelForm):
             'date_intermediate',
             'date_end',
             'description',
+            'notification_text',
             'certification_year',
             'certification_period',
             'allow_self_autosupervision'
@@ -121,9 +124,16 @@ class EvaluationAssignImportForm(forms.Form):
 
 
 class EvaluationNotificationForm(forms.Form):
-
+    notification_text = forms.CharField(
+        label=_('Texto personalizado de notificación'),
+        max_length=5000,
+        widget=forms.Textarea(attrs={'rows': 4}),
+        required=False
+    )
     notification_pk = SimpleArrayField(forms.CharField(
-        max_length=1000),  label=_('Notificar'))
+        max_length=1000),
+        label=_('Notificar')
+    )
 
 class EvaluationDashboardForm(forms.Form):
 
@@ -138,7 +148,7 @@ class EvaluationDashboardForm(forms.Form):
         required=False,
         queryset=Evaluation.objects.all(),
     )
-    
+
     company = forms.ModelMultipleChoiceField(
         label=_("Companies"),
         required=False,
@@ -162,7 +172,7 @@ class EvaluationDashboardForm(forms.Form):
         required=False,
         choices=year_choices(),
     )
-    
+
     certification_period = forms.ModelMultipleChoiceField(
         label=_("Certification period"),
         required=False,
@@ -209,3 +219,45 @@ class EvaluationDashboardForm(forms.Form):
         self.fields["process_status"].widget.attrs["data-control"] = "select2"
         self.fields["control_status"].widget.attrs["class"] = "form-select"
         self.fields["control_status"].widget.attrs["data-control"] = "select2"
+
+
+
+from krm.risks.models import DomainRisk
+from krm.evaluations.models import Evaluation
+class EvaluationFilterForm(forms.Form):
+
+    domain_risk = forms.ModelMultipleChoiceField(
+        label=_("Dominio de riesgo"),
+        required=False,
+        queryset=DomainRisk.objects.all().values_list("ref", flat=True).distinct(),
+    )
+
+
+    certification_period = forms.ModelMultipleChoiceField(
+        label=_("Periodo de certificación"),
+        required=False,
+        # choices=[],
+        queryset=Evaluation.objects.filter()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        posible_values = [
+            (evaluation.certification_period_with_year,
+             evaluation.certification_period_with_year)
+            for evaluation in Evaluation.objects.all().order_by("certification_year")
+        ]
+
+        # Quitar duplicados
+        posible_values = list(set(posible_values))
+
+        # Configurar las opciones dinámicas para certification_period
+        self.fields["certification_period"].choices = posible_values
+
+        # Agregar clases y atributos personalizados a los widgets
+        self.fields["domain_risk"].widget.attrs["class"] = "form-select"
+        self.fields["domain_risk"].widget.attrs["data-control"] = "select2"
+
+        self.fields["certification_period"].widget.attrs["class"] = "form-select"
+        self.fields["certification_period"].widget.attrs["data-control"] = "select2"

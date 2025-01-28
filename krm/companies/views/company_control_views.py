@@ -29,9 +29,12 @@ from krm.companies.models import Company, CompanyControls
 from krm.companies.forms import ControlCompanyUpdateForm
 
 
-from krm.users.decorators import is_global_admin
+from krm.users.decorators import is_global_admin, is_company_admin
+# import login required decorator
+from django.contrib.auth.decorators import login_required
 
 
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaCompanyControlUpdate(UpdateView):
     form_class = ControlCompanyUpdateForm
     model = CompanyControls
@@ -79,6 +82,7 @@ class GaCompanyControlUpdate(UpdateView):
         form_class.fields["control_test_supervisors"].queryset = users
         return form_class
 
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
 class CaCompanyControlUpdate(UpdateView):
     form_class = ControlCompanyUpdateForm
     model = CompanyControls

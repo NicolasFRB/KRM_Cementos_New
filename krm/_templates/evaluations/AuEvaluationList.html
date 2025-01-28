@@ -1,8 +1,38 @@
 {% extends layout %}
 
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block js_footer %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', ()=>{
+    let selectDomainRisk = document.querySelector('#id_domain_risk');
+    let selectCertificationPeriod = document.querySelector('#id_certification_period');
+
+    function updateDataTables(){
+      let tablePending = $('#evaluation_pending').DataTable();
+      let tableFinished = $('#evaluation_finished').DataTable();
+
+      let domainRisksSelected = $('#id_domain_risk').val();
+      let certificationPeriodSelected = $('#id_certification_period').val();
+
+      tablePending.column(6).search(domainRisksSelected.join('|'), true, false).draw();
+      tableFinished.column(6).search(domainRisksSelected.join('|'), true, false).draw();
+
+      tablePending.column(3).search(certificationPeriodSelected.join('|'), true, false).draw();
+      tableFinished.column(3).search(certificationPeriodSelected.join('|'), true, false).draw();
+    }
+
+    $('#id_domain_risk').on('change', function (e) {
+      updateDataTables();
+    });
+
+    $('#id_certification_period').on('change', function (e) {
+      updateDataTables();
+    });
+})
+</script>
 
 {% endblock js_footer %}
 
@@ -94,6 +124,22 @@
   }
 </script>
 
+<div class="card">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Filtrado de evaluaciones' %}</div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-md-3">
+        {{ evaluation_filter_form.domain_risk|as_crispy_field }}
+      </div>
+      <div class="col-12 col-md-3">
+        {{ evaluation_filter_form.certification_period|as_crispy_field }}
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--begin::Container-->
 <div class="card">
   <!--begin::Card header-->
@@ -106,7 +152,7 @@
   <!--begin::Card body-->
   <div class="card-body">
     {% if evaluations_pending.count %}
-    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+    <table id="evaluation_pending" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
@@ -138,7 +184,7 @@
               </div>
             </div>
           </td>
-          <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+          <td class="text-center align-middle">{{ evaluation.certification_period_with_year }}</td>
           <td class="text-center align-middle">
             <div>{{ evaluation.date_begin|date:'d/m/Y' }}</div>
             <div>{{ evaluation.date_end|date:'d/m/Y' }}</div>
@@ -216,7 +262,7 @@
   <!--begin::Card body-->
   <div class="card-body">
     {% if evaluations_finished.count %}
-    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+    <table id="evaluation_finished" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
@@ -233,7 +279,7 @@
       <tbody>
         {% for evaluation in evaluations_finished %}
         <tr>
-          <td class="text-center align-middle"><a href="{% url 'evaluations:au_evaluation_detail' evaluation.pk %}"><i
+          <td class="text-center align-middle"><a href="{% url 'evaluations:ga_evaluation_detail' evaluation.pk %}"><i
                 class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
           <td class="align-middle">{{ evaluation.ref }}</td>
           <td class="align-middle">
@@ -248,7 +294,7 @@
               </div>
             </div>
           </td>
-          <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+          <td class="text-center align-middle">{{ evaluation.certification_period_with_year }}</td>
           <td class="text-center align-middle">
             <div>{{ evaluation.date_begin|date:'d/m/Y' }}</div>
             <div>{{ evaluation.date_end|date:'d/m/Y' }}</div>
@@ -258,8 +304,10 @@
               title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
           <td class="text-center align-middle">
             {% for dom in evaluation.domain_risks %}
+            <a href="{% url 'domain_risks:ga_domain_risk_detail' dom.pk %}">
               <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                 data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+            </a>
             {% endfor %}
           </td>
           <td class="text-center align-middle">
@@ -267,39 +315,22 @@
               <span class="badge badge-info">{{ evaluation.control_tests.count }}</span>
             </div>
             <div>
-              <canvas id="pie-ep-{{ forloop.counter }}"></canvas>
-              <script>
-                load_chart('pie-ep-{{ forloop.counter }}', '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
-              </script>
+              <canvas id="pie-fi-{{ forloop.counter }}"></canvas>
             </div>
           </td>
+          <script>
+            load_chart('pie-fi-{{ forloop.counter }}', '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
+          </script>
           <td class="text-center align-middle">
             {% if evaluation.status == "FI" %}
-            <i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
+            <i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% elif evaluation.status == "EP" %}
             <i class="bi bi-dot fs-3x text-success" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% else %}
-            <i class="bi bi-dot fs-3x text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+            <i class="bi bi-dot fs-3x text-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-            {% endif %}
-          </td>
-          <td>
-            <div>
-              <canvas id="pie-fi-{{ forloop.counter }}"></canvas>
-              <script>
-                load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.ncontrols_test_by_state_si}}','{{evaluation.ncontrols_test_by_state_wo}}','{{evaluation.ncontrols_test_by_state_ws}}','{{evaluation.ncontrols_test_by_state_wa}}','{{evaluation.ncontrols_test_by_state_fi}}');
-              </script>
-            </div>
-          </td>
-          <td class="text-center align-middle">
-            {% if evaluation.status == "SI" %}
-              <i class="bi bi-dot fs-3x text-secondary"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-            {% elif evaluation.status == "EP" %}
-              <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-            {% else %}
-              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
             {% endif %}
           </td>
         </tr>

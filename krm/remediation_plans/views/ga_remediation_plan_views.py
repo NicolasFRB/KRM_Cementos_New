@@ -79,18 +79,43 @@ class GaRemediationPlanListView(ListView):
         ]
 
         # Si no es superusuario, mostramos los planes de la compañía que administra el usuario
-        if not self.request.user.is_superuser:
-            remediation_plan_in_progress = RemediationPlan.objects.filter(company__in=self.request.user.companies_admin.all(), status='EP')
-            remediation_plan_in_expired = remediation_plan_in_progress.filter(date_end__lt=timezone.now())
-            remediation_plan_completed = RemediationPlan.objects.filter(company__in=self.request.user.companies_admin.all(), status='CO')
+        # if not self.request.user.is_superuser:
+        #     remediation_plan_in_progress = RemediationPlan.objects.filter(
+        #         company__in=self.request.user.companies_admin.all(),
+        #         date_end__gte=timezone.now(),
+        #         status='EP'
+        #     )
+        #     remediation_plan_expired = RemediationPlan.objects.filter(
+        #         company__in=self.request.user.companies_admin.all(),
+        #         date_end__lt=timezone.now(),
+        #         status='EP'
+        #     )
+        #     remediation_plan_completed = RemediationPlan.objects.filter(
+        #         company__in=self.request.user.companies_admin.all(),
+        #         status='CO'
+        #     )
 
-        else:
-            remediation_plan_in_progress = RemediationPlan.objects.filter(status='EP')
-            remediation_plan_in_expired = remediation_plan_in_progress.filter(date_end__lt=timezone.now())
-            remediation_plan_completed = RemediationPlan.objects.filter(status='CO')
+        # Si es superusuario, mostramos todos los planes
+        remediation_plan_in_progress = RemediationPlan.objects.filter(
+            date_end__gte=timezone.now(),
+            status='EP'
+        )
+        remediation_plan_expired = RemediationPlan.objects.filter(
+            date_end__lt=timezone.now(),
+            status='EP'
+        )
+        remediation_plan_completed = RemediationPlan.objects.filter(
+            status='CO',
+        )
+
+        if not self.request.user.is_superuser and self.request.user.is_company_admin:
+            # Si es administrador de compañía, filtraremos únicamente los planes de su compañía
+            remediation_plan_in_progress = remediation_plan_in_progress.filter(company__in=self.request.user.companies_admin.all())
+            remediation_plan_expired = remediation_plan_expired.filter(company__in=self.request.user.companies_admin.all())
+            remediation_plan_completed = remediation_plan_completed.filter(company__in=self.request.user.companies_admin.all())
 
         context['remediation_plan_in_progress'] = remediation_plan_in_progress
-        context['remediation_plan_in_expired'] = remediation_plan_in_expired
+        context['remediation_plan_expired'] = remediation_plan_expired
         context['remediation_plan_completed'] = remediation_plan_completed
 
         context['js_template'] = ['js/custom/datatables.js']
@@ -132,18 +157,6 @@ class GaRemediationPlanDetailView(CreateView):
         context['breadcrums'] = breadcrums
         context['remediation_plan'] = self.remediation_plan
 
-        # solo mostramos el botón de editar si es el supervisor del plan o superusuario
-        if self.request.user == self.remediation_plan.supervisor or self.request.user.is_admin:
-          if self.remediation_plan.status == 'EP':
-            context['actions'] = [
-                {
-                    'title': _('Editar'),
-                    'url': reverse('remediation_plans:ga_remediation_plan_update', kwargs={'pk': self.remediation_plan.pk}),
-                    'primary': True,
-                    'icon': '<i class="bi bi-pencil"></i>'
-                },
-            ]
-
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -151,7 +164,10 @@ class GaRemediationPlanDetailView(CreateView):
     def post(self, request, *args, **kwargs):
         # Si viene el parámetro action="notificar" enviamos la notificación
         if self.request.POST.get('action') == 'notificar':
-            self.remediation_plan.sent_notification()
+            custom_message = None
+            if self.request.POST.get('custom_message'):
+                custom_message = self.request.POST.get('custom_message')
+            self.remediation_plan.sent_notification(custom_message)
             messages.success(self.request, _('Notificación enviada correctamente'))
             # Redirigimos a la misma vista
             return HttpResponseRedirect(reverse('remediation_plans:ga_remediation_plan_detail', kwargs={'pk': self.remediation_plan.pk}))
@@ -162,8 +178,6 @@ class GaRemediationPlanDetailView(CreateView):
     def form_valid(self, form):
         form.instance.remediation_plan = self.remediation_plan
         form.instance.user = self.request.user
-        form.instance.status = 'EP'
-        form.instance.next_to_reply = 'WR'
 
         form.save()
 
@@ -340,6 +354,33 @@ class GaRemediationPlanUpdateView(UpdateView):
             'remediation_plans:ga_remediation_plan_detail',
             kwargs={"pk": self.object.pk},
         )
+
+
+
+    def get_form(self, form_class=None):
+
+        # Quiero filtrar los usuarios por la compañía seleccionada
+        form_class = super().get_form(form_class=None)
+
+        users = User.objects.filter(
+            companies__in=(self.object.company,),
+            is_active=True
+        )
+
+        form_class.fields["responsible"].queryset = users
+
+        form_class.fields["supervisor"].queryset = users
+
+        form_class.fields["additional_users"].queryset = users
+
+        # form_class.fields["company"].initial = self.company.pk
+
+        # Filtramos los controles únicamente por los que estén activos para la empresa
+        company_controls = self.object.company.company_controls.filter(active=True).values_list('control', flat=True)
+        form_class.fields["control"].queryset = Control.objects.filter(id__in=company_controls)
+
+        return form_class
+
 
 
 @method_decorator([login_required, is_company_admin, ], name='dispatch')

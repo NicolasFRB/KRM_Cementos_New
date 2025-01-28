@@ -174,6 +174,36 @@
               </div>
             </div>
           </div>
+          {% if remediation_plan.control.count %}
+            <div class="row mb-8">
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Controles asociados' %}</span></div>
+              </div>
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  {% for control in remediation_plan.control.all %}
+                    <span>
+                      {{ control }}
+                    </span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          {% if remediation_plan.control_test %}
+            <div class="row mb-8">
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Control Test Asociado' %}</span></div>
+              </div>
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  <span>
+                    {{ remediation_plan.control_test }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          {% endif %}
         </div>
         <div class="col-12 col-md-6">
           <div class="row mb-8">
@@ -191,28 +221,23 @@
 
   </div>
 
-  {% if request.user == remediation_plan.supervisor or request.user.is_admin  %}
   <div class="card-footer py-6">
-        {% if remediation_plan.status == "EP" %}
-          <a href="{% url 'remediation_plans:ga_remediation_plan_update' remediation_plan.pk %}" class="btn btn-sm btn-primary">
-            <i class="bi bi-pencil"></i>
-            {% trans 'Editar' %}</a>
-            <a href="{% url 'remediation_plans:ga_remediation_plan_delete' remediation_plan.pk %}" class="btn btn-sm btn-danger ms-2">
+    {% if request.user.is_admin  %}
+        <a href="{% url 'remediation_plans:ga_remediation_plan_delete' remediation_plan.pk %}" class="btn btn-sm btn-danger ms-2">
               <i class="bi bi-trash"></i>
               {% trans 'Eliminar' %}</a>
-        {% endif %}
-        <a href="{% url 'remediation_plans:ga_remediation_plan_list' %}" class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+    {% endif %}
 
-        <div style="float:right">
-          <form method="post" class="kt-form kt-form--label-right" novalidate>
-            {% include '_includes/FormErrors.html' %}
-            {% csrf_token %}
-            <input type="hidden" name="action" value="notificar">
-            <button class="btn btn-sm btn-primary me-2" style="margin-left: 5px;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificar' %}</button>
-          </form>
-        </div>
+    <a href="{% url 'remediation_plans:ga_remediation_plan_list' %}" class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+        {% if remediation_plan.status == "EP" %}
+          <div style="float:right">
+            <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <i class="bi bi-clipboard-check"></i>
+              {% trans 'Notificar' %}
+            </button>
+          </div>
+        {% endif %}
   </div>
-  {% endif %}
 </div>
 
 <div class="card mb-8">
@@ -297,4 +322,40 @@
       </div>
     </div>
   {% endif %}
+
+
+<!-- Modal-->
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% trans 'Envío de notificaciones' %}</h5>
+      </div>
+      <form method="post" class="kt-form kt-form--label-right" novalidate>
+        <div class="modal-body">
+          <p><strong>{% trans '¿Desea enviar una notificación de recordatorio?' %}</strong></p>
+
+            {% include '_includes/FormErrors.html' %}
+            {% csrf_token %}
+            <input type="hidden" name="action" value="notificar">
+            <div id="div_id_notification_text" class="form-group">
+              <label for="id_notification_text" class="">{% trans 'Texto personalizado de notificación' %}</label>
+              <div>
+                <textarea name="custom_message" cols="40" rows="4" maxlength="5000" class="textarea form-control" id="id_custom_message"></textarea>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Cancelar</button>
+
+          <button type="submit" class="btn btn-primary">
+            {% trans 'Enviar notificaciones' %}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</form>
+<!-- Modal-->
 {% endblock content %}

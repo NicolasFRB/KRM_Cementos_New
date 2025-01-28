@@ -34,6 +34,12 @@ from krm.evaluations_krm.views import (
     RuEvaluationRiskResidualList,
     RuEvaluationRiskResidualComplete,
     RuEvaluationRiskResidualDetail,
+
+    AuEvaluationInherentListView,
+    AuEvaluationInherentDetailView,
+
+    AuEvaluationResidualDetailView,
+    AuEvaluationResidualListView
 )
 
 urlpatterns = [
@@ -176,5 +182,29 @@ urlpatterns = [
         'ru/residual/detail/<pk>/',
         RuEvaluationRiskResidualDetail.as_view(),
         name='ru_evaluation_krm_residual_detail'
+    ),
+
+    path(
+        'au/inherent/',
+        AuEvaluationInherentListView.as_view(),
+        name='au_evaluation_inherent_list'
+    ),
+
+    path(
+        'au/inherent/detail/<pk>/',
+        AuEvaluationInherentDetailView.as_view(),
+        name='au_evaluation_inherent_detail'
+    ),
+
+    path(
+        'au/residual/',
+        AuEvaluationResidualListView.as_view(),
+        name='au_evaluation_residual_list'
+    ),
+
+    path(
+        'au/residual/detail/<pk>/',
+        AuEvaluationResidualDetailView.as_view(),
+        name='au_evaluation_residual_detail'
     ),
 ]

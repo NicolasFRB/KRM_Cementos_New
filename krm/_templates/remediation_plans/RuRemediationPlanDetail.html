@@ -47,6 +47,21 @@
   });
 </script>
 
+<script>
+  {% get_current_language as LANGUAGE_CODE %}
+  {% if LANGUAGE_CODE == 'es' %}
+    $(".datepicker").flatpickr({
+      "locale": "es",
+      dateFormat: "d/m/Y",
+    });
+  {% else %}
+    $(".datepicker").flatpickr({
+          "locale": "en",
+          dateFormat: "Y-m-d",
+    });
+  {% endif %}
+</script>
+
 {% endblock js_footer %}
 
 {% block content %}
@@ -189,6 +204,38 @@
               </div>
             </div>
           </div>
+
+          {% if remediation_plan.control.count %}
+            <div class="row mb-8">
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Controles asociados' %}</span></div>
+              </div>
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  {% for control in remediation_plan.control.all %}
+                    <span>
+                      {{ control }}
+                    </span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if remediation_plan.control_test %}
+            <div class="row mb-8">
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Control Test Asociado' %}</span></div>
+              </div>
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  <span>
+                    {{ remediation_plan.control_test }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          {% endif %}
         </div>
         <div class="col-12 col-md-6">
           <div class="row mb-8">
@@ -206,19 +253,16 @@
 
   </div>
 
-  {% if request.user == remediation_plan.supervisor or request.user.is_admin  %}
-    <div class="card-footer py-6">
-      {% if remediation_plan.status == "EP" %}
-          <a href="{% url 'remediation_plans:ga_remediation_plan_update' remediation_plan.pk %}" class="btn btn-sm btn-primary">
-            <i class="bi bi-pencil"></i>
-            {% trans 'Editar' %}</a>
-          <a href="{% url 'remediation_plans:ga_remediation_plan_delete' remediation_plan.pk %}" class="btn btn-sm btn-danger ms-2">
-            <i class="bi bi-trash"></i>
-            {% trans 'Eliminar' %}</a>
+  <div class="card-footer py-6">
+      {% if request.user.is_admin  %}
+        {% if remediation_plan.status == "EP" %}
+            <a href="{% url 'remediation_plans:ga_remediation_plan_delete' remediation_plan.pk %}" class="btn btn-sm btn-danger ms-2">
+              <i class="bi bi-trash"></i>
+              {% trans 'Eliminar' %}</a>
+        {% endif %}
       {% endif %}
-      <a href="{% url 'remediation_plans:ga_remediation_plan_list' %}" class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
-    </div>
-  {% endif %}
+      <a href="{% url 'remediation_plans:ru_remediation_plan_list' %}" class="btn btn-sm btn-secondary ms-2"><i class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
 </div>
 
 <div class="card mb-8">
@@ -249,53 +293,55 @@
 
 
   <!-- Si el usuario es el responsable mostramos un formalario -->
-  {% if remediation_plan.next_to_reply == "WR" and request.user == remediation_plan.responsible  %}
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title fs-3 fw-bold">Nueva respuesta</div>
-      </div>
+  {% if remediation_plan.next_to_reply == "WR" %}
+    {% if request.user == remediation_plan.responsible or request.user in remediation_plan.additional_users.all  %}
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title fs-3 fw-bold">Nueva respuesta</div>
+        </div>
 
-      <div class="card-body">
+        <div class="card-body">
 
-        <form method="post" class="kt-form kt-form--label-right" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="kt-section__body">
-            {% include '_includes/FormErrors.html' %}
-            <div class="row mb-8">
-              <div class="col-12 col-md-6">
-                {{ form.description|as_crispy_field }}
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="row">
-                  <div class="col-12 col-md-6 mb-7 ">
-                    {{ form.status|as_crispy_field }}
-                  </div>
+          <form method="post" class="kt-form kt-form--label-right" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="kt-section__body">
+              {% include '_includes/FormErrors.html' %}
+              <div class="row mb-8">
+                <div class="col-12 col-md-6">
+                  {{ form.description|as_crispy_field }}
                 </div>
-                <div class="row">
-                  <div class="col-12 mb-7">
-                    <div class="form-group">
-                      <label>{% trans 'Fichero adjunto de evidencias del plan de remediación' %}</label>
-                      <div></div>
-                      <div class="custom-file">
-                        {{ form.attachment_1 }}
-                        <label class="custom-file-label" style="text-align: left;" for="customFile">{% trans 'Selecciona un fichero' %}</label>
+                <div class="col-12 col-md-6">
+                  <div class="row">
+                    <div class="col-12 col-md-6 mb-7 ">
+                      {{ form.status|as_crispy_field }}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 mb-7">
+                      <div class="form-group">
+                        <label>{% trans 'Fichero adjunto de evidencias del plan de remediación' %}</label>
+                        <div></div>
+                        <div class="custom-file">
+                          {{ form.attachment_1 }}
+                          <label class="custom-file-label" style="text-align: left;" for="customFile">{% trans 'Selecciona un fichero' %}</label>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-12  col-md-6">
-                <button type="submit" class="btn btn-sm btn-primary me-3">{% trans 'Guardar respuesta' %}</button>
-                <button class="btn btn-sm btn-secondary backHistory">{% trans 'Cancelar' %}</button>
+              <div class="row">
+                <div class="col-12  col-md-6">
+                  <button type="submit" class="btn btn-sm btn-primary me-3">{% trans 'Guardar respuesta' %}</button>
+                  <button class="btn btn-sm btn-secondary backHistory">{% trans 'Cancelar' %}</button>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
 
+        </div>
       </div>
-    </div>
+    {% endif %}
   {% elif remediation_plan.next_to_reply == "WS" and request.user == remediation_plan.supervisor %}
     <div class="card">
       <div class="card-header">

@@ -21,6 +21,21 @@ class Configuration(SingletonModel):
         default=False
     )
 
+    enable_delete_files_ct = models.BooleanField(
+        verbose_name=_('Habilitar eliminación de archivos en los Tests de Control'),
+        default=False
+    )
+
+    enable_questionnaires = models.BooleanField(
+        verbose_name=_('Habilitar apartado de cuestionarios'),
+        default=False
+    )
+
+    control_without_risk = models.BooleanField(
+        verbose_name=_('Obligar a que al crear un control se asocie a un riesgo'),
+        default=False
+    )
+
     def __str__(self):
         return self.app_name
 

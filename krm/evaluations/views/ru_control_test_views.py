@@ -25,6 +25,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from krm.evaluations.forms.evaluation_forms import EvaluationAssignImportForm, EvaluationDownload, EvaluationActionForm, EvaluationTemplateAssignDownload
 from krm.evaluations.models.control_test_model import ControlTest
+from krm.evaluations.forms import ControlTestAnswerUpdateForm
 
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
@@ -52,6 +53,8 @@ from krm.evaluations.models import (
     ControlTestAnswer
 )
 
+from krm.configuration.models import Configuration
+
 
 @method_decorator((login_required, user_can_view_control_test), name="dispatch")
 class RuControlTestDetail(CreateView):
@@ -62,10 +65,10 @@ class RuControlTestDetail(CreateView):
         control_test = get_object_or_404(ControlTest, pk=self.kwargs.get("pk"))
         self.control_test = control_test
 
-        if control_test.remediation_plan_needed and self.request.user == control_test.control_test_owner and control_test.remediation_plans.count() == 0:
+        if control_test.remediation_plan_needed and self.request.user == control_test.control_test_owner:
             return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail_create_remediation_plan", kwargs={"pk": control_test.pk}))
-        elif control_test.remediation_plan_needed and self.request.user == control_test.control_test_owner and control_test.remediation_plans.count() > 0:
-            return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail_update_remediation_plan", kwargs={"pk":control_test.remediation_plans.first().pk}))
+        # elif control_test.remediation_plan_needed and self.request.user == control_test.control_test_owner and control_test.remediation_plans.count() > 0:
+        #     return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail_update_remediation_plan", kwargs={"pk":control_test.remediation_plans.first().pk}))
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_class(self):
@@ -99,6 +102,21 @@ class RuControlTestDetail(CreateView):
         context['control'] = self.control_test.control
         context['control_test_risks_company'] = self.control_test.get_control_test_risks_company()
         context['control_test_subprocess'] = self.control_test.get_control_test_subprocess()
+
+        # # Las respuestas, como debemos mostrar si se pueden editar o no, lo hacemos aquí
+        # control_test_answers = []
+        # for cta in self.control_test.answers.all():
+        #     import ipdb; ipdb.set_trace()
+        #     # Primero tenemos que ver que sea la última respuesta de el usuari que estamos ahora mismo
+        #     last_answer_user = self.control_test.answers.filter(user=self.request.user).last()
+        #     if cta == last_answer_user and cta.can_be_updated:
+        #         cta.can_be_modified = True
+        #     else:
+        #         cta.can_be_modified = False
+        #     control_test_answers.append(cta)
+
+        # context['control_test_answers'] = control_test_answers
+
         if self.control_test.evaluation.company in self.request.user.companies_admin.all():
             context['ca'] = True
         return context
@@ -106,6 +124,10 @@ class RuControlTestDetail(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.control_test = self.control_test
+        if "control_result" in form.cleaned_data:
+            form.instance.result = form.cleaned_data["control_result"]
+        else:
+            form.instance.result = self.control_test.result
         self.answer = form.save()
 
         # Ha respondido el control test owner
@@ -124,7 +146,7 @@ class RuControlTestDetail(CreateView):
             if "more_information" in form.cleaned_data:
                 if form.cleaned_data["more_information"] == True:
                     self.control_test.status = "WO"
-                    self.control_test.result = "SE"
+                    # self.control_test.result = "SE"
                 else:
                     self.control_test.status = "WA"
 
@@ -140,6 +162,8 @@ class RuControlTestDetail(CreateView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
+        self.control_test.evaluation.delete_notification_text()
+
         self.control_test.send_notification('Notification')
 
         return super().form_valid(form)
@@ -172,7 +196,7 @@ class RuControlTestDetail(CreateView):
                     return reverse_lazy("control_tests:ru_control_test_owner_list")
 
         if self.request.user == self.control_test.control_test_supervisor:
-            if self.control_test.status == "WO" and self.control_test.result == "SE":
+            if self.control_test.status == "WO":
                 messages.add_message(
                     self.request, messages.SUCCESS, _(
                         "Enviado a Control Owner")
@@ -202,6 +226,51 @@ class RuControlTestDetail(CreateView):
             'status': control_test.status,
             'result': control_test.result
         }
+
+@method_decorator((login_required), name="dispatch")
+class RuControlTestAnswerUpdate(UpdateView):
+    template_name = 'control_tests/ru/RuControlTestAnswerUpdate.html'
+    model = ControlTestAnswer
+    form_class = ControlTestAnswerUpdateForm
+
+    def dispatch(self, request, *args, **kwargs):
+        control_test_answer = get_object_or_404(ControlTestAnswer, pk=self.kwargs.get("pk"))
+        self.control_test_answer = control_test_answer
+        self.control_test = self.control_test_answer.control_test
+
+        # Si el usuario no es el dueño de la respuesta redireccionamos al control_test_detail
+        if self.request.user != self.control_test_answer.user:
+            return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail", kwargs={"pk": self.control_test.pk}))
+
+        # Si no está pertida la modificación de respuesta redireccionamos al control_test_detail
+        if not Configuration.objects.get(pk=1).enable_delete_files_ct:
+            return HttpResponseRedirect(reverse("control_tests:ru_control_test_detail", kwargs={"pk": self.control_test.pk}))
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Control Test')},
+            {'title': _('Editar Respuesta')},
+        ]
+        context['page_title'] = f"{_('Editar Respuesta para el Control Test')} : {self.control_test.identifier}"
+        context['breadcrums'] = breadcrums
+        context['control_test'] = self.control_test
+
+        return context
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            _("Respuesta actualizada correctamente"),
+        )
+
+        return reverse_lazy("control_tests:ru_control_test_detail", kwargs={"pk": self.control_test.pk})
+
 
 
 
@@ -269,6 +338,8 @@ class RuRemediationPlanCreate(CreateView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
+        self.control_test.evaluation.delete_notification_text()
+
         self.control_test.send_notification('Notification')
 
         return super().form_valid(form)
@@ -390,6 +461,7 @@ class RuRemediationPlanUpdate(UpdateView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
+        self.control_test.evaluation.delete_notification_text()
         self.control_test.send_notification('Notification')
 
         return super().form_valid(form)

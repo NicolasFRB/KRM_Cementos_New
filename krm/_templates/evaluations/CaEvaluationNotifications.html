@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% trans "Sin asignar" as without_set %}
+{% load crispy_forms_tags %}
 
 {% block js_footer %}
 
@@ -9,8 +10,8 @@
   $(document).ready(function () {
     $('#notification_table_co').dataTable({
       "bInfo": false, //Dont display info e.g. "Showing 1 to 4 of 4 entries"
-      "paging": false,//Dont want paging                
-      "bPaginate": false,//Dont want paging 
+      "paging": false,//Dont want paging
+      "bPaginate": false,//Dont want paging
       "bDestroy": true,
     });
   });
@@ -18,14 +19,14 @@
   $(document).ready(function () {
     $('#notification_table_cs').dataTable({
       "bInfo": false, //Dont display info e.g. "Showing 1 to 4 of 4 entries"
-      "paging": false,//Dont want paging                
-      "bPaginate": false,//Dont want paging 
+      "paging": false,//Dont want paging
+      "bPaginate": false,//Dont want paging
       "bDestroy": true,
     });
   });
 
   function update_popup(chk, user, list_id){
-    
+
     if (chk.checked == true) {
       var ul = document.getElementById(list_id);
       var li = document.createElement("li");
@@ -69,7 +70,7 @@
             <th>{% trans 'Usuario' %}</th>
             <th class="text-center align-middle">{% trans 'Controles completados' %}</th>
             <th class="text-center align-middle">{% trans 'Controles pendientes de completar' %}</th>
-            <th class="text-center align-middle">{% trans 'Notificación' %}</th>                   
+            <th class="text-center align-middle">{% trans 'Notificación' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -108,12 +109,17 @@
     <div class="card-footer py-6" style="display:flex;">
 
       {% if evaluation.status == "EP" %}
-
-      <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        <i class="bi bi-clipboard-check"></i>
-        {% trans 'Notificar usuarios (COwner)' %}
-      </button>
-
+        <div class="row">
+          <div class="col-12 mb-4">
+            {{ form.notification_text|as_crispy_field }}
+          </div>
+          <div class="col-12">
+            <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <i class="bi bi-clipboard-check"></i>
+              {% trans 'Notificar usuarios (COwner)' %}
+            </button>
+          </div>
+        </div>
       {% endif %}
     </div>
   <!--end::Card footer-->
@@ -135,7 +141,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Cancelar</button>
-        
+
         <button type="submit" class="btn btn-primary">
           {% trans 'Enviar notificaciones' %}
         </button>
@@ -167,7 +173,7 @@
             <th class="align-middle">{% trans 'Usuario' %}</th>
             <th class="text-center align-middle">{% trans 'Controles supervisados' %}</th>
             <th class="text-center align-middle">{% trans 'Controles pendientes de supervisar' %}</th>
-            <th class="text-center align-middle">{% trans 'Notificación' %}</th>     
+            <th class="text-center align-middle">{% trans 'Notificación' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -206,12 +212,17 @@
     <div class="card-footer py-6" style="display:flex;">
 
       {% if evaluation.status == "EP" %}
-
-      <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-        <i class="bi bi-clipboard-check"></i>
-        {% trans 'Notificar usuarios (CSupervisor)' %}
-      </button>
-
+        <div class="row">
+          <div class="col-12 mb-4">
+            {{ form.notification_text|as_crispy_field }}
+          </div>
+          <div class="col-12">
+            <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+              <i class="bi bi-clipboard-check"></i>
+              {% trans 'Notificar usuarios (CSupervisor)' %}
+            </button>
+          </div>
+        </div>
       {% endif %}
     </div>
   <!--end::Card footer-->
@@ -233,7 +244,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Cancelar</button>
-        
+
         <button type="submit" class="btn btn-primary">
           {% trans 'Enviar notificaciones' %}
         </button>

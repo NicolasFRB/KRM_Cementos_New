@@ -16,7 +16,8 @@
     "select-control": "Select at least one control to launch the evaluation",
     "form-incomplete": "Some essential information is missing from the form.",
     "no-company": "No company has been selected",
-    "no-controls": "No control has been selected for evaluation"
+    "no-controls": "No control has been selected for evaluation",
+    "periodicity" : "Periodicity"
   },
   "krmInherent": {
     "data-required": "Some essential information is missing from the form",
@@ -52,7 +53,7 @@
     "calc-tests": "Calculate risk tests to be performed",
     "loading": "Calculating",
     "evaluation": "Evaluation",
-    "tests-inherent-to-launch": "Inherent Risk Tests to be launched",
+    "tests-inherent-to-launch": "Risk Tests to be launched",
     "name": "NAME",
     "evaluate": "EVALUATED?",
     "expert-severity": "SEV. EXPERT",

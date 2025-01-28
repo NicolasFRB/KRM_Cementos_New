@@ -38,6 +38,11 @@ class ControlCreateForm(ModelForm):
         self.fields["assert_accurancy"].widget.attrs["class"] = "form-select"
         self.fields["assert_froud"].widget.attrs["class"] = "form-select"
 
+        from krm.configuration.models import Configuration
+        configuration = Configuration.objects.first()
+        if configuration.control_without_risk:
+            self.fields["risks"].required = True
+
 
 class ControlImportForm(ModelForm):
     controls_file = forms.FileField(

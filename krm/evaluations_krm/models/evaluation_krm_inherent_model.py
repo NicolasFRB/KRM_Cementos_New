@@ -137,7 +137,7 @@ class EvaluationKrmInherent(AuditModel):
         ev_pk_found = {}
 
         for evaluator in evaluators_all_states:
-            
+
             notifications = [[n.action_description, n.created] for n in evaluator.actions_log.all() if self.ref in n.action_description]
 
             if evaluator.pk not in ev_pk_found:

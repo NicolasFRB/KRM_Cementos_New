@@ -43,10 +43,12 @@ from krm.users.decorators import (
     is_company_admin,
 )
 
+from django.contrib.auth.decorators import login_required
+
 from django.http import HttpResponse
 
 
-@method_decorator([is_global_admin], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaUserListView(ListView):
     template_name = 'users/GaUserList.html'
     model = User
@@ -152,26 +154,26 @@ class GaUserListView(ListView):
                 ws.write(
                     row_num, 1, u.position, font_style_body
                 )  # 1
-                ws.write(row_num, 2, u.email, font_style_body)  
-                ws.write(row_num, 3, u.is_active, font_style_body)  
-                ws.write(row_num, 4, u.is_admin, font_style_body)  
-                
+                ws.write(row_num, 2, u.email, font_style_body)
+                ws.write(row_num, 3, u.is_active, font_style_body)
+                ws.write(row_num, 4, u.is_admin, font_style_body)
+
                 last_login = u.last_login
 
                 if last_login != None:
                     ws.write(row_num, 5, last_login.strftime("%d/%m/%Y %H:%M:%S"))
                 else:
-                    ws.write(row_num, 5, '', font_style_body)    
-                # ws.write(row_num, 5, u.last_login, font_style_body)  
-                
+                    ws.write(row_num, 5, '', font_style_body)
+                # ws.write(row_num, 5, u.last_login, font_style_body)
+
                 last_action_log = str(u.actions_log.last())
 
                 if last_action_log != 'None':
                     ws.write(row_num, 6, last_action_log, font_style_body)
                 else:
-                    ws.write(row_num, 6, '', font_style_body)                
-                
-                ws.write(row_num, 7, u.notification_language, font_style_body)  
+                    ws.write(row_num, 6, '', font_style_body)
+
+                ws.write(row_num, 7, u.notification_language, font_style_body)
                 companies = ''
                 for company in u.companies.all():
                     companies += f'{company.name}\n'
@@ -180,7 +182,7 @@ class GaUserListView(ListView):
                     8,
                     companies,
                     font_style_body_wrap,
-                ) 
+                )
                 companies_admin = ''
                 for company in u.companies_admin.all():
                     companies_admin += f'{company.name}\n'
@@ -189,13 +191,13 @@ class GaUserListView(ListView):
                     9,
                     companies_admin,
                     font_style_body_wrap,
-                ) 
+                )
 
             wb.save(response)
             return response
         return redirect('users:ga_user_list')
-    
-@method_decorator([is_company_admin], name='dispatch')
+
+@method_decorator([login_required, is_company_admin], name='dispatch')
 class CaUserListView(ListView):
     template_name = 'users/CaUserList.html'
     model = User
@@ -223,7 +225,7 @@ class CaUserListView(ListView):
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
-@method_decorator([is_global_admin], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaUserDetailView(DetailView):
     template_name = 'users/GaUserDetail.html'
     model = User
@@ -250,8 +252,8 @@ class GaUserDetailView(DetailView):
         ]
 
         return context
-    
-@method_decorator([is_company_admin], name='dispatch')
+
+@method_decorator([login_required, is_company_admin], name='dispatch')
 class CaUserDetailView(DetailView):
     template_name = 'users/CaUserDetail.html'
     model = User
@@ -279,7 +281,7 @@ class CaUserDetailView(DetailView):
         return context
 
 
-@method_decorator([is_global_admin], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaUserCreateView(CreateView):
     template_name = 'users/GaUserCreate.html'
     model = User
@@ -312,7 +314,7 @@ class GaUserCreateView(CreateView):
         )
 
 
-@method_decorator((is_global_admin), name='dispatch')
+@method_decorator((login_required, is_global_admin), name='dispatch')
 class GaUserUpdateView(UpdateView):
     template_name = 'users/GaUserUpdate.html'
     model = User
@@ -345,7 +347,7 @@ class GaUserUpdateView(UpdateView):
             kwargs={'pk': self.object.pk}
         )
 
-@method_decorator((is_company_admin), name='dispatch')
+@method_decorator((login_required, is_company_admin), name='dispatch')
 class CaUserUpdateView(UpdateView):
     template_name = 'users/CaUserUpdate.html'
     model = User
@@ -378,7 +380,7 @@ class CaUserUpdateView(UpdateView):
             kwargs={'pk': self.object.pk}
         )
 
-@method_decorator((is_global_admin), name='dispatch')
+@method_decorator((login_required, is_global_admin), name='dispatch')
 class GaUserDeleteView(DeleteView):
     model = User
     template_name = "_includes/_base_confirm_delete.html"
@@ -413,7 +415,7 @@ class GaUserDeleteView(DeleteView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_company_admin], name='dispatch')
 class GaUserImportView(FormView):
     template_name = 'users/GaUserImport.html'
     form_class = ImportForm

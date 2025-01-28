@@ -11,6 +11,7 @@
       '#control_description',
       '#control_name',
       '#control_testing_procedure',
+      '#control_evidence'
     ]
     textAreas.forEach(createCkEditor);
 
@@ -50,7 +51,7 @@
   </div>
   <!--end::Card header-->
 
-    <form method="post" class="kt-form kt-form--label-right" novalidate>
+    <form method="post" class="kt-form kt-form--label-right">
       {% csrf_token %}
       <div class="card-body">
         <div class="row">
@@ -92,6 +93,9 @@
               <div class="mb-4 col-md-3 col-12">
                 {{ form.control_frequency|as_crispy_field }}
               </div>
+              <div class="mb-4 col-md-3 col-12">
+                {{ form.scope|as_crispy_field }}
+              </div>
             </div>
 
             <div class="separator my-10"></div>
@@ -110,6 +114,12 @@
               <div class="col-12 mb-4">
                 <div class="mb-4">
                   {{ form.testing_procedure|as_crispy_field }}
+                </div>
+              </div>
+              <div class="separator my-10"></div>
+              <div class="col-12 mb-4">
+                <div class="mb-4">
+                  {{ form.evidence|as_crispy_field }}
                 </div>
               </div>
             </div>
@@ -146,7 +156,7 @@
           </div>
         </div>
       </div>
-    
+
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
         <a href="{% url 'controls:ga_control_list' %}"

@@ -8,6 +8,24 @@ from ckeditor.fields import RichTextField
 from krm.utils.models import AuditModel
 
 
+FREQUENCY_CONTROL_CHOICES = (
+    ("BD", _("Bajo demanda")),
+    ("CO", _("Constante")),
+    ("DI", _("Diario")),
+    ("1W", _("Semanal")),
+    ("2W", _("Quincenal")),
+    ("1M", _("Mensual")),
+    ("2M", _("Bimensual")),
+    ("3T", _("Trimestral")),
+    ("4T", _("Cuatrimestral")),
+    ("6M", _("Semestral")),
+    ("1Y", _("Anual")),
+    ("2Y", _("Bienal")),
+    ("3Y", _("Trienal")),
+    ("4Y", _("Cuatrienal")),
+    ("5Y", _("Quinquenal"))
+)
+
 class Control(AuditModel):
     """Control model.
     Modelo que usaremos para representar un control para un riesgo asociado
@@ -80,23 +98,6 @@ class Control(AuditModel):
         _("Automatización del control"),
         max_length=2,
         choices=AUTOMATION_CONTROL_CHOICES,
-    )
-
-    FREQUENCY_CONTROL_CHOICES = (
-        ("BD", _("Bajo demanda")),
-        ("CO", _("Constante")),
-        ("DI", _("Diario")),
-        ("1W", _("Semanal")),
-        ("2W", _("Quincenal")),
-        ("1M", _("Mensual")),
-        ("2M", _("Bimensual")),
-        ("3T", _("Trimestral")),
-        ("4T", _("Cuatrimestral")),
-        ("6M", _("Semestral")),
-        ("1Y", _("Anual")),
-        ("2Y", _("Bienal")),
-        ("3Y", _("Trienal")),
-        ("5Y", _("Quinquenal"))
     )
 
     systems = models.CharField(

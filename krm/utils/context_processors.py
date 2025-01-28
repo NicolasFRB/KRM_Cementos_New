@@ -86,7 +86,7 @@ def get_menu_urls(request, pk=None):
 
     remediation_plan_urls = [
         reverse_lazy('remediation_plans:ga_remediation_plan_list'),
-        reverse_lazy('remediation_plans:ga_remediation_plan_create'),
+        reverse_lazy('remediation_plans:ga_remediation_plan_create_select_company'),
     ]
 
     if pk is not None:
@@ -311,17 +311,18 @@ def get_menu_urls(request, pk=None):
 
         remediation_plan_urls = remediation_plan_urls + [
             reverse_lazy(
-                'remediation_plan:ga_remediation_plan_detail',
+                'remediation_plans:ga_remediation_plan_detail',
                 kwargs={'pk': pk}
             ),
             reverse_lazy(
-                'remediation_plan:ga_remediation_plan_update',
+                'remediation_plans:ga_remediation_plan_update',
                 kwargs={'pk': pk}
             ),
             reverse_lazy(
-                'remediation_plan:ga_remediation_plan_delete',
+                'remediation_plans:ga_remediation_plan_delete',
                 kwargs={'pk': pk}
-            )
+            ),
+            reverse_lazy('remediation_plans:ga_remediation_plan_create', kwargs={'company_pk': pk})
         ]
 
     if settings.KRM_ACTIVATE:

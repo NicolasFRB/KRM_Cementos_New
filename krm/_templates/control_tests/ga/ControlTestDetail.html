@@ -4,32 +4,10 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
-<!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script> -->
-<script src="{% static 'js/flatpickr_es.js' %}"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+
 <script>
-  // fin_btn = document.getElementById('finalizado');
-
-  // fin_btn.onclick = function (event) {
-  //   result_widget = document.getElementById('id_control_result');
-  //   alert(result_widget.val());
-  //   if ('{{form.control_result.result}}' == ''){
-  //     alert('Sin completar');
-  //     event.preventDefault();
-  //   }
-  // }
   $(document).ready(function () {
-    $('#finalizado').click(function (event) {
-        // Get the selected value
-        var result_widget = $('#id_control_result').val();
-        var description_widget = $('#word-count').children(0).children(1).text();
-        var char_count = description_widget.split(': ').pop()
-
-        if (result_widget == '' || char_count == '0') {
-          event.preventDefault();
-          $('#exampleModal').modal('show');
-        }
-    });
-
     {% get_current_language as LANGUAGE_CODE %}
     {% if LANGUAGE_CODE == 'es' %}
       $(".datepicker").flatpickr({
@@ -38,37 +16,28 @@
       });
     {% else %}
       $(".datepicker").flatpickr({
-        "locale": "en",
-        dateFormat: "Y-m-d",
+            "locale": "en",
+            dateFormat: "Y-m-d",
       });
     {% endif %}
   });
 </script>
-
 <script>
-  let deleteLinks = document.querySelectorAll('.js-attachment__delete');
-  if(deleteLinks.length){
-    for (let link of deleteLinks){
-      console.log(link);
-      link.addEventListener('click', (e)=>{
-        e.preventDefault();
-        if(window.confirm("{% trans '¿Seguro que desea eliminar la evidencia?' %}")){
-          let url = e.target.href;
-          fetch(url).then(response => {
-            debugger;
-            if(response.ok){
-              link.parentElement.remove();
-            }else{
-              console.log('No se elimina el adjunto');
-            }
-          });
-        }else{
-          console.log('No se elimina el adjunto');
-        }
-      });
-    }
-  }
+  // $(document).ready(function () {
+  //   $('#finalizado').click(function (event) {
+  //       // Get the selected value
+  //       var result_widget = $('#id_control_result').val();
+  //       var description_widget = $('#word-count').children(0).children(1).text();
+  //       var char_count = description_widget.split(': ').pop()
+
+  //       if (result_widget == '' || char_count == '0') {
+  //         event.preventDefault();
+  //         $('#exampleModal').modal('show');
+  //       }
+  //   });
+  // });
 </script>
+
 {% endblock js_footer %}
 
 {% block content %}
@@ -185,7 +154,6 @@
                 <div class="mb-8 col-12">
                   <legend>{% trans 'Comentario' %}</legend>
                   {{ form.description|as_crispy_field }}
-                  <div id="word-count"></div>
                 </div>
               </div>
             </div>
@@ -207,7 +175,7 @@
             <div class="card-title fs-3 fw-bold">{% trans 'NUEVO PLAN DE REMEDIACIÓN' %}</div>
             <!--end::Card header-->
           </div>
-          <form method="post" enctype='multipart/form-data' novalidate>
+          <form method="post" enctype="multipart/form-data" validate>
             {% csrf_token %}
             <div class="card-body">
               <div class="row mb-4">
@@ -228,7 +196,6 @@
                   <fieldset>
                     <legend>{% trans 'Descripción del Plan de Remediación' %}</legend>
                     {{ form.description|as_crispy_field }}
-                    <div id="word-count"></div>
                   </fieldset>
                 </div>
               </div>
@@ -246,7 +213,7 @@
             <div class="card-title fs-3 fw-bold">{% trans 'NUEVA RESPUESTA' %}</div>
             <!--end::Card header-->
           </div>
-          <form method="post" enctype='multipart/form-data' novalidate>
+          <form method="post" enctype='multipart/form-data'>
             {% csrf_token %}
             <div class="card-body">
 
@@ -288,8 +255,6 @@
 
             <div class="card-footer py-6">
               <button class="btn btn-sm btn-primary" id="finalizado"><i class="bi bi-hdd"></i> {% trans 'Testeo finalizado' %}</button>
-              <!-- <button
-              class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button> -->
             </div>
 
           </form>

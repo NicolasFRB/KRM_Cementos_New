@@ -56,7 +56,7 @@ class GaRiskListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
-        
+
         context['js_template'] = ['js/custom/datatables.js']
         return context
 
@@ -178,7 +178,7 @@ class GaRiskDeleteView(DeleteView):
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Riesgos (N2)'), 'url': reverse(
-                'risks:ga_risk_list')},
+                'risks_masters:ga_risk_master_list')},
             {'title': _('Eliminar')},
         ]
         context['page_title'] = _(
@@ -192,7 +192,7 @@ class GaRiskDeleteView(DeleteView):
             self.request, messages.SUCCESS, _(
                 "Riesgo (N2) eliminado correctamente")
         )
-        return reverse_lazy("risks:ga_risk_list")
+        return reverse_lazy("risks_masters:ga_risk_master_list")
 
     def get_confirm_text_message(self):
         return _(

@@ -110,6 +110,10 @@ class RuRemediationPlanDetailView(CreateView):
         elif self.request.user == self.remediation_plan.supervisor:
             self.remediation_plan.next_to_reply = form.instance.next_to_reply
             self.remediation_plan.status = form.instance.status
+        else:
+            # Si entra aquí es que el que ha respondido es un additional_user
+            self.remediation_plan.next_to_reply = 'WS'
+
 
         self.remediation_plan.save()
         self.remediation_plan.sent_notification()
@@ -125,7 +129,7 @@ class RuRemediationPlanDetailView(CreateView):
 
 
     def get_form_class(self):
-        if self.remediation_plan.next_to_reply == "WR" and self.request.user == self.remediation_plan.responsible:
+        if self.remediation_plan.next_to_reply == "WR" and (self.request.user == self.remediation_plan.responsible or self.request.user in self.remediation_plan.additional_users.all()):
             return RuResponsibleRemediationPlanAnswerCreateForm
         elif self.remediation_plan.next_to_reply == "WS" and self.request.user == self.remediation_plan.supervisor:
             return RuSupervisorRemediationPlanAnswerCreateForm

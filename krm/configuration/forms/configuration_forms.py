@@ -12,6 +12,9 @@ class ConfigurationUpdateForm(ModelForm):
             'app_name',
             'main_email',
             'enable_emails',
+            'enable_delete_files_ct',
+            'enable_questionnaires',
+            'control_without_risk'
         ]
 
 

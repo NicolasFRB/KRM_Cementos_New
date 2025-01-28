@@ -9,7 +9,7 @@
 {% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
-  <script defer src="{% static 'main.react.js' %}"></script>
+  <script defer src="{% static 'main.react.js' %}?v=20241219"></script>
 {% endif %}
 
 
@@ -314,7 +314,7 @@
                   </fieldset>
                 </div>
                 <div class="col-xl-6">
-                  <fieldset>  
+                  <fieldset>
                     <div class="row mb-8">
                       <!--begin::Col-->
                       <div class="col-xl-4">
@@ -336,11 +336,11 @@
                     </div>
                   </fieldset>
                 </div>
-                <div class="col-xl-12"> 
+                <div class="col-xl-12">
                   <div class="row mb-8">
                     <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
-                    <div>{{ rt.risk.description|safe }}</div> 
-                  </div>          
+                    <div>{{ rt.risk.description|safe }}</div>
+                  </div>
                   <div class="row mb-8">
                     <div class="col col-xl-6">
                         <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span></div>
@@ -369,9 +369,9 @@
             <!--begin::Card footer-->
             <div class="card-footer py-6">
               <div class="risk_test_inherent" data-risktestpk="{{ rt.pk }}"
-              data-impact-continuity="{{ rt.impact_continuity_level_expert}}" 
-              data-impact-economic="{{ rt.impact_economic_level_expert}}" 
-              data-impact-branding="{{ rt.impact_branding_level_expert}}" 
+              data-impact-continuity="{{ rt.impact_continuity_level_expert}}"
+              data-impact-economic="{{ rt.impact_economic_level_expert}}"
+              data-impact-branding="{{ rt.impact_branding_level_expert}}"
               data-probability="{{ rt.probability_level_expert }}"
               data-description="{{ rt.description|default_if_none:'' }}" ></div>
             </div>

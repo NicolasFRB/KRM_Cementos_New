@@ -34,6 +34,7 @@
           <th>{% trans 'Superusuario' %}</th>
           <th>{% trans 'Compañía/as que administra' %}</th>
           <th>{% trans 'Último inicio de sesión' %}</th>
+          <th>{% trans 'Última acción' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -58,7 +59,8 @@
                   {% if not forloop.last %}<br>{% endif %}
               {% endfor %}
             </td>
-            <td>{{ user.last_login|default_if_none:"No ha iniciado sesión todavía" }}</td>
+            <td data-order="{{ user.last_login|date:"Ymd H:i" }}">{{ user.last_login|default_if_none:"No ha iniciado sesión todavía" }}</td>
+            <td data-order="{{ user.actions_log.last.created|date:"Ymd H:i" }}">{{ user.actions_log.last.created|default_if_none:"No ha realizado ninguna acción" }}</td>
           </tr>
           {% endfor %}
       </tbody>

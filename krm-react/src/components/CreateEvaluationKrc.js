@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import SelectCompanies from "./SelectCompanies.js";
 import SelectProcess from "./SelectProcess.js";
 import SelectDomainRisk from "./SelectDomainRisk.js";
+import SelectPeriodicity from "./SelectPeriodicity.js";
 import SelectControlsCompanyKrc from "./SelectControlsCompanyKrc.js";
 import EvaluationCreateSteps from "./EvaluationCreateSteps.js";
 
@@ -13,6 +14,7 @@ let $ = window.$;
 function CreateEvaluationKrc(props) {
   // const [selectedControls, setSelectedControls] = useState([]);
   const [selectedDomainRisks, setSelectedDomainRisks] = useState([]);
+  const [selectedPeriodicity, setSelectedPeriodicity] = useState([]);
   const [selectedProcesses, setSelectedProcesses] = useState([]);
   // const [selectedRisks, setSelectedRisks] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
@@ -92,13 +94,13 @@ function CreateEvaluationKrc(props) {
         )
         }
         <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
-          <div className="col col-12 col-md-4">
+          <div className="col col-12 col-md-3">
             <SelectDomainRisk selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
           </div>
-          <div className="col col-12 col-md-4">
+          <div className="col col-12 col-md-3">
             <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
           </div>
-          <div className="col col-12 col-md-4">
+          <div className="col col-12 col-md-3">
             {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}
             <h5 className="mb-6">{t('krc.risk-types')}</h5>
             <p>
@@ -112,6 +114,10 @@ function CreateEvaluationKrc(props) {
               </label>
             </p>
           </div>
+          <div className="col col-12 col-md-3">
+            <h5 className="mb-6">{t('krc.periodicity')}</h5>
+            <SelectPeriodicity selectedPeriodicity={selectedPeriodicity} setSelectedPeriodicity={setSelectedPeriodicity} />
+          </div>
         </div>
         <div className="separator my-10"></div>
         <div className="col-12">
@@ -119,6 +125,7 @@ function CreateEvaluationKrc(props) {
           <SelectControlsCompanyKrc
             selectedDomainRisks={selectedDomainRisks}
             selectedProcesses={selectedProcesses}
+            selectedPeriodicity={selectedPeriodicity}
             // selectedRisks={selectedRisks}
             selectedCompanies={selectedCompanies}
             controlsToEvaluate={controlsToEvaluate}

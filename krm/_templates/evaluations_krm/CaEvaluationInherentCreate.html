@@ -46,7 +46,7 @@
 {% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
-  <script defer src="{% static 'main.react.js' %}"></script>
+  <script defer src="{% static 'main.react.js' %}?v=20241219"></script>
 {% endif %}
 
 {% endblock js_footer %}
@@ -126,7 +126,7 @@
       </div>
     </div>
     <!--end::Body-->
-  
+
     <div class="card-footer py-6">
       <!-- <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button> -->
       <a href="{% url 'evaluations:ca_evaluation_list' %}"

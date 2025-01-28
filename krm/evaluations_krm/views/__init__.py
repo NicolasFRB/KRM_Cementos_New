@@ -6,3 +6,6 @@ from .ru_risk_test_residual_views import *
 
 from .ga_evaluation_inherent_views import *
 from .ga_evaluation_residual_views import *
+
+from .au_evaluation_inherent_views import *
+from .au_evaluation_residual_views import *

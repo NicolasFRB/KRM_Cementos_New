@@ -15,6 +15,8 @@ from krm.process.models import SubProcess
 from krm.companies.api import CompanySerializer, CompanyControlSerializer
 from krm.controls.api import ControlSerializer
 
+from krm.controls.models import FREQUENCY_CONTROL_CHOICES
+
 
 class ControlCompanyApiView(APIView):
     """
@@ -34,6 +36,7 @@ class ControlCompanyApiView(APIView):
         company_pks = []
         domain_risk_pks = []
         process_pks = []
+        control_frequency = []
         # risk_pks = []
         key_control = False
         elc = False
@@ -44,6 +47,9 @@ class ControlCompanyApiView(APIView):
         if 'domain_risk_pks' in request.GET:
             if request.GET['domain_risk_pks']:
                 domain_risk_pks = request.GET['domain_risk_pks'].split(',')
+        if 'control_frequency' in request.GET:
+            if request.GET['control_frequency']:
+                control_frequency = request.GET['control_frequency'].split(',')
         if 'process_pks' in request.GET:
             if request.GET['process_pks']:
                 process_pks = request.GET['process_pks'].split(',')
@@ -86,6 +92,11 @@ class ControlCompanyApiView(APIView):
                     control__key_control=True
                 )
 
+            if control_frequency:
+                control_list = control_list.filter(
+                    control__control_frequency__in=control_frequency
+                )
+
             if elc:
                 # Si está marcado hay que añadirle todos los controles ELC que tenga la compañía cumpla o no los filtros anteriories
                 control_list_elc = c.company_controls.filter(
@@ -101,3 +112,23 @@ class ControlCompanyApiView(APIView):
             data.append(data_item)
 
         return Response(data)
+
+
+class ControlPeriodicityApiView(APIView):
+    """
+       Devuelve:
+       - Las opciones disponibles de frecuencia de control
+    """
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    from krm.controls.models import FREQUENCY_CONTROL_CHOICES
+
+    def get(self, request):
+        from django.utils.translation import activate
+        # Si la url contiene la cadena '/en/' se activa el idioma inglés
+        if '/en/' in request.path:
+            activate('en')
+        else:
+            activate('es')
+        return Response(FREQUENCY_CONTROL_CHOICES)

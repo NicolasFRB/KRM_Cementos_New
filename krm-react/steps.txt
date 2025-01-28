@@ -1,0 +1,8 @@
+0. Configurar la url base en el fichero krm-react/src/services/config.js y cambiar la variable de entorno KRM_DJANGO_DEVJS a False para que coja el fichero del bundle en las plantillas. Esa variable está en el fichero de variables de entorno que se llama .django
+1. Entrar en la carpeta krm-react
+2. ejecutar nvm use para configurar
+3. npm i
+4. npm run build => te genera el build del bundle y solo necesitas dos ficheros
+krm-react/build/static/js/main.xxxx.js
+krm-react/build/static/js/main.xxxx.js.map
+5. Esos dos ficheros hay que renombrarlos a main.react.js y main.react.js.map y moverlos a krm/static sobreescribiendo los existentes

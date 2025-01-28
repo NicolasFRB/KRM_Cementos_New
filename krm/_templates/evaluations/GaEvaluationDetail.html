@@ -1,6 +1,5 @@
 {% extends layout %}
 
-
 {% load i18n %}
 {% trans "Sin asignar" as without_set %}
 
@@ -380,6 +379,21 @@
           <div class="col-xl-7">
             <div class="fs-6">
               {{ evaluation.admin_supervisor|default_if_none:"" }}
+            </div>
+          </div>
+          <!--end::Col-->
+        </div>
+        <div class="row mb-8">
+          <!--begin::Col-->
+          <div class="col-xl-5">
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span>
+            </div>
+          </div>
+          <!--end::Col-->
+          <!--begin::Col-->
+          <div class="col-xl-7">
+            <div class="fs-6">
+              {{ evaluation.description|default_if_none:"" }}
             </div>
           </div>
           <!--end::Col-->

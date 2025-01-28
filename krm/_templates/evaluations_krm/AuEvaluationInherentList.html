@@ -1,0 +1,286 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block js_footer %}
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+<script src="{% static 'js/chart.js' %}"></script>
+<style>
+  canvas{
+    width:50px !important;
+    height:50px !important;
+    padding: 0;
+    margin: auto;
+  }
+
+canvas#race{position:relative; z-index:100;}
+
+.badge.badge-success.n1 {
+  margin: 5px;
+  background-color: #ed9f7b !important;
+}
+.badge.badge-success.n2 {
+  margin: 5px;
+  background-color: #e6d68e !important;
+}
+.badge.badge-success.n3 {
+  margin: 5px;
+  background-color: #a6ed9d !important;
+}
+
+</style>
+<script>
+  function load_chart(id, n_pending, n_delivered, n_finished) {
+
+    const data = {
+      labels: ['Pending', 'Delivered', 'Finished'],
+      datasets: [
+        {
+          label: '',
+          data: [n_pending, n_delivered, n_finished],
+          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
+        }
+      ]
+    };
+    const config = {
+      type: 'pie',
+      data: data,
+      fill: {
+          type: 'gradient',
+        },
+      options: {
+        animation : {
+          duration: 5000,
+        },
+        responsive: true,
+        plugins: {
+          legend: {
+            display:false,
+          },
+          title: {
+            display: false,
+          },
+          tooltip: {
+            displayColors: false,
+            callbacks: {
+              label: function(tooltipItem) {
+                return tooltipItem.parsed;
+              }
+            },
+          },
+        },
+        },
+    };
+    const myChart = new Chart(document.querySelector('#'+id), config);
+  }
+</script>
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }} en progreso</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluations_pending.count %}
+    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center">{% trans 'Acción' %}</th>
+          <th>{% trans 'REF' %}</th>
+          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center">{% trans 'Fechas evaluación' %}</th>
+          <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
+          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Nº Evaluadores' %}</th>
+          <th class="text-center">{% trans 'Estado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for evaluation in evaluations_pending %}
+          <tr>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:au_evaluation_inherent_detail' evaluation.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+            <td class="align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
+            <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                      title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
+            <td class="text-center align-middle">
+              {% for dom in evaluation.domain_risks %}
+
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+
+              {% endfor %}
+            </td>
+            <td class="text-center align-middle">
+              <div>
+                <span class="badge badge-info">{{ evaluation.risk_test_inherents.count }}</span>
+              </div>
+              <div>
+                <canvas id="pie-ep-{{ forloop.counter }}"></canvas>
+              </div>
+            </td>
+            <script>
+              load_chart('pie-ep-{{ forloop.counter }}','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}');
+            </script>
+            <td class="text-center align-middle">
+              <div>
+                <span class="badge badge-info">{{ evaluation.total_experts }}</span>
+              </div>
+              <div>
+                <canvas id="pie-ep-evs-{{ forloop.counter }}"></canvas>
+              </div>
+            </td>
+            <script>
+              load_chart('pie-ep-evs-{{ forloop.counter }}','{{evaluation.experts_pending.count}}','{{evaluation.experts_delivered.count}}','{{evaluation.experts_finished.count}}');
+            </script>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    <div style="float: right;display: flex; margin-right: 15px !important;">
+      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
+      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
+    </div>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen evaluaciones de riesgo inherente en proceso' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }} finalizadas</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% if evaluations_finished.count %}
+    <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      <thead>
+        <tr class="fw-semibold fs-6">
+          <th class="text-center">{% trans 'Acción' %}</th>
+          <th>{% trans 'REF' %}</th>
+          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center">{% trans 'Fechas evaluación' %}</th>
+          <th class="text-center">{% trans 'Compañía' %}</th>
+          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Nº Evaluadores' %}</th>
+          <th class="text-center">{% trans 'Estado' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for evaluation in evaluations_finished %}
+          <tr>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ca_evaluation_inherent_detail' evaluation.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+            <td class="align-middle">{{ evaluation.ref }}</td>
+            <td class="align-middle">
+              <div style="display:flex;">
+                <div style="width:90%">
+                  {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
+                </div>
+                <div style="width:10%">
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                </div>
+              </div>
+            </td>
+            <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
+            <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
+            <td class="text-center align-middle"><span class="badge badge-info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                      title="{{ evaluation.company.name|striptags }}">{{ evaluation.company.ref }}</span></td>
+            <td class="text-center align-middle">
+              {% for dom in evaluation.domain_risks %}
+
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ dom.name }}">{{ dom.ref }}</span>
+
+              {% endfor %}
+            </td>
+            <td class="text-center align-middle">
+              <div>
+                <span class="badge badge-info">{{ evaluation.risk_test_inherents.count }}</span>
+              </div>
+              <div>
+                <canvas id="pie-fi-{{ forloop.counter }}"></canvas>
+              </div>
+            </td>
+            <script>
+              load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}');
+            </script>
+            <td class="text-center align-middle">
+              <div>
+                <span class="badge badge-info">{{ evaluation.total_experts }}</span>
+              </div>
+              <div>
+                <canvas id="pie-fi-evs-{{ forloop.counter }}"></canvas>
+              </div>
+            </td>
+            <script>
+              load_chart('pie-fi-evs-{{ forloop.counter }}','{{evaluation.experts_pending.count}}','{{evaluation.experts_delivered.count}}','{{evaluation.experts_finished.count}}');
+            </script>
+            <td class="text-center align-middle">
+              {% if evaluation.status == "EP" %}
+                <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% else %}
+              <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    <div style="float: right;display: flex; margin-right: 15px !important;">
+      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
+      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+      <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
+    </div>
+    {% else %}
+    <div class="row mt-2 mb-2">
+      <div class="col-sm">
+        <div class="alert alert-primary">{% trans 'No existen evaluaciones de riesgo inherente finalizadas' %}.</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!--end::Card body-->
+</div>
+
+{% endblock content %}

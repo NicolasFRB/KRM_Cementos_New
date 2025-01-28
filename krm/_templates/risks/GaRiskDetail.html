@@ -41,7 +41,7 @@
             <!--end::Col-->
           </div>
           <div class="row mb-8">
-  
+
             <!--begin::Col-->
             <div class="col-xl-5">
               <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
@@ -72,7 +72,7 @@
         </fieldset>
       </div>
       <div class="col-xl-6">
-        <fieldset>  
+        <fieldset>
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
@@ -198,13 +198,13 @@
                     <span class="badge badge-info" style="">{{ control.risks.count }}</span>
                 </div>
                 <div id = "box-container">
-                  {% for r1 in control.risks.all %}                                              
+                  {% for r1 in control.risks.all %}
                     <a href="{% url 'risks:ga_risk_detail' r1.pk %}">
                     <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ r1.name }}" id = "box-child">{{ r1.ref }}
-                    </a>                                               
+                    </a>
                   {% endfor %}
-                </div>                                             
-              </div>                                             
+                </div>
+              </div>
             </td>
             <td class="align-middle">
               <div id = 'box' class="text-center">
@@ -212,12 +212,12 @@
                     <span class="badge badge-info" style="">{{ control.sub_processes.count }}</span>
                 </div>
                 <div id = "box-container">
-                {% for s1 in control.sub_processes.all %}                                              
-                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>                                                                       
+                {% for s1 in control.sub_processes.all %}
+                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>
                 {% endfor %}
-                </div>                                             
-              </div>                                             
-            </td>             
+                </div>
+              </div>
+            </td>
           </tr>
         {% endfor %}
       </tbody>
@@ -234,7 +234,7 @@
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'risks:ga_risk_create' risk.pk %}" class="btn btn-sm btn-primary">
+    <a href="{% url 'controls:ga_control_create' risk.pk %}" class="btn btn-sm btn-primary">
       <i class="bi bi-plus-lg"></i>
       {% trans 'Añadir' %}</a>
   </div>

@@ -9,6 +9,7 @@ function SelectControlsCompanyKrc(
     selectedDomainRisks,
     selectedProcesses,
     selectedCompanies,
+    selectedPeriodicity,
     // selectedRisks,
     keyControl,
     elc,
@@ -90,7 +91,8 @@ function SelectControlsCompanyKrc(
         elc: elc,
         key_control: keyControl,
         process_pks: selectedProcesses,
-        domain_risk_pks: selectedDomainRisks
+        domain_risk_pks: selectedDomainRisks,
+        control_frequency: selectedPeriodicity,
       };
 
       var url = new URL(configService.apiGetControlCompany);
@@ -163,11 +165,23 @@ function SelectControlsCompanyKrc(
       if (controlToEvaluate.c === companyPk) {
         for (let i = 0; i < controlsCompany.length; i++) {
           if (controlsCompany[i].c.pk === companyPk) {
-            controlToEvaluate.cs = controlsCompany[i].cs.map((cc) => {
-              return cc.pk;
-            })
+
+            for (let j = 0; j < controlsCompany[i].cs.length; j++) {
+              selectControlCompanyToEvaluate(companyPk, controlsCompany[i].cs[j].control.pk)
+            }
+
+            // controlToEvaluate.cs = controlsCompany[i].cs.map((cc) => {
+            //   selectControlCompanyToEvaluate(companyPk, cc.pk)
+
+            //   // return cc.pk;
+            // })
           }
         }
+        // controlToEvaluate.cs = controlsCompany.filter(controlCompany => controlCompany.c.pk === companyPk)[0].cs.map((cc) => {
+        //   return cc.control.pk;
+        // });
+
+        // selectControlCompanyToEvaluate(companyPk company_control.control.pk)
         return controlToEvaluate;
       } else {
         return controlToEvaluate
@@ -180,6 +194,7 @@ function SelectControlsCompanyKrc(
     let newControlsToEvaluate = controlsToEvaluate.map((controlToEvaluate) => {
       if (controlToEvaluate.c === companyPk) {
         controlToEvaluate.cs = [];
+        controlToEvaluate.csData = [];
         return controlToEvaluate;
       } else {
         return controlToEvaluate
@@ -201,7 +216,8 @@ function SelectControlsCompanyKrc(
 
   useEffect(() => {
     window.CustomDatatables.destroy();
-    window.CustomDatatables.init();
+    // window.CustomDatatables.init();
+    window.CustomDatatables.initEvalKrc();
   }, [controlsCompany]);
 
   if (error) {
@@ -222,12 +238,11 @@ function SelectControlsCompanyKrc(
                 <h4>{t('selectcontrols.evaluations-for')} {company.c.name}</h4>
                 <h5>{t('selectcontrols.control-to-launch')}</h5>
                 {company.cs.length > 0 && (
-                  <table className="table table-striped customDatatable">
+                  <table className="table table-striped" id="riskkrc">
                     <thead>
                       <tr>
                         <th className="text-center">
-                          <span onClick={() => selectAll(company.c.pk)} className="me-5"><i className="bi bi-clipboard-check"></i></span>
-                          <span onClick={() => unSelectAll(company.c.pk)}><i className="bi bi-clipboard"></i></span>
+                          <span onClick={() => selectAll(company.c.pk)} className=""><i className="bi bi-clipboard-check"></i></span>
                         </th>
                         <th className="fw-semibold">REF</th>
                         <th className="fw-semibold" width="30%">{t('general.description')}</th>

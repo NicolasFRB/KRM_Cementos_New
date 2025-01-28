@@ -87,10 +87,25 @@ class User(AbstractUser):
         verbose_name=_("Idioma de notificaciones"),
     )
 
-    is_auditor = models.BooleanField(
-        default=False,
-        verbose_name=_("¿Es auditor?"),
+    # is_auditor = models.BooleanField(
+    #     default=False,
+    #     verbose_name=_("¿Es auditor?"),
+    # )
+
+    audit_domain_risk = models.ManyToManyField(
+        'risks.DomainRisk',
+        related_name="auditors",
+        verbose_name=_("Dominios de Riesgo que audita"),
+        blank=True,
     )
+
+    @property
+    def is_regular_user(self):
+        return self.companies.count() > 0
+
+    @property
+    def is_auditor(self):
+        return self.audit_domain_risk.count() > 0
 
     @property
     def full_name(self):

@@ -145,9 +145,15 @@ def user_can_view_remediation_plan(function):
             remediation_plan.responsible == request.user or
             remediation_plan.supervisor == request.user or
             request.user.is_superuser or request.user.is_auditor or
+            request.user in remediation_plan.additional_users.all() or
             remediation_plan.company in request.user.companies_admin.all()
         ):
             return function(request, *args, **kwargs)
+
+        # Ahora vamos a ver si alguno de los dominios de riesgo del plan de remediación está en los dominios de riesgo del auditor
+        for domain_risk in remediation_plan.get_domain_risks():
+            if domain_risk in request.user.audit_domain_risk.all():
+                return function(request, *args, **kwargs)
         raise PermissionDenied
 
     return wrap
@@ -226,7 +232,9 @@ def user_can_view_evaluation_inherent(function):
             raise Http404
 
         if (
-            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
+            evaluation.company in request.user.companies_admin.all() or
+            request.user.is_superuser or
+            evaluation.get_domain_risk_in_evaluation().filter(pk__in=request.user.audit_domain_risk.all()).count() > 0
         ):
             return function(request, *args, **kwargs)
         raise PermissionDenied
@@ -260,7 +268,9 @@ def user_can_view_evaluation_residual(function):
             raise Http404
 
         if (
-            evaluation.company in request.user.companies_admin.all() or request.user.is_superuser
+            evaluation.company in request.user.companies_admin.all() or
+            request.user.is_superuser or
+            evaluation.get_domain_risk_in_evaluation().filter(pk__in=request.user.audit_domain_risk.all()).count() > 0
         ):
             return function(request, *args, **kwargs)
         raise PermissionDenied

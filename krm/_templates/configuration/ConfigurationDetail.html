@@ -67,6 +67,51 @@
         </div>
         <!--end::Col-->
       </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Habilitar eliminación de archivos en los Tests de Control' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{% if object.enable_delete_files_ct %}{% trans 'Sí' %}{%else %}{% trans 'No' %}{% endif %}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Habilitar el módulo de cuestionarios' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{% if object.enable_questionnaires %}{% trans 'Sí' %}{%else %}{% trans 'No' %}{% endif %}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">{% trans 'Obligar a que al crear un control se asocie a un riesgo' %}</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span>{% if object.control_without_risk %}{% trans 'Sí' %}{%else %}{% trans 'No' %}{% endif %}</span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
     </div>
     <!--end::Body-->
 

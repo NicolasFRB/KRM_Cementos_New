@@ -5,6 +5,15 @@
   Hola {{ user_email }},<br /><br />
 
   Dispone de un plan de remediación pendiente de su atención en la plataforma <strong>{{ app_name }}</strong>.
+  {% endblocktrans %}
+</p>
+
+{% if custom_message %}
+  <p>{{ custom_message }}</p>
+{% endif %}
+
+<p>
+{% blocktrans with recovery_url=recovery_url %}
 
   Puede acceder a la plataforma desde <a href="{{ site_url }}">esta url</a> con sus credenciales.<br><br>
 

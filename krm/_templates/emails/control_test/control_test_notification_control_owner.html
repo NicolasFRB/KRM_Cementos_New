@@ -6,10 +6,18 @@
   Hola {{ user_email }},<br><br>
 
   Dispone de {{ ncontrols_pending }} evaluaciones de controles pendientes de completar en la plataforma <strong>{{ app_name }}</strong>, correspondientes a <strong>{{ evaluation_ref }}</strong>. El periodo a evaluar es {{ certification_year }}{{ certification_period }}. Por favor, complete la evaluación antes del {{ evaluation_date_intermediate }}.
+  {% endblocktrans %}
+</p>
 
+  {% if notification_text %}
+    <p>{{ notification_text }}</p>
+  {% endif %}
+
+<p>
+  {% blocktrans with recovery_url=recovery_url %}
   Puede acceder a la plataforma desde <a href="{{ site_url }}">esta url</a> con sus credenciales.<br><br>
 
-  Si no recuerda su contraseña, puedes recuperarla accediendo a <a href="{{ recovery_url }}">esta url</a> e indicando su correo electrónico.<br><br>
+  Si no recuerda su contraseña, puede recuperarla accediendo a <a href="{{ recovery_url }}">esta url</a> e indicando su correo electrónico.<br><br>
 
   Ante cualquier duda, puede ponerse en contacto a través del siguiente correo: <a href="mailto:{{ MAIN_EMAIL }}"></a>{{ MAIN_EMAIL }}<br><br>
 

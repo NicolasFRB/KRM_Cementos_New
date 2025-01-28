@@ -27,6 +27,8 @@ class ControlSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    control_frequency_text = serializers.SerializerMethodField()
+
     class Meta:
         model = Control
         fields = [
@@ -38,12 +40,15 @@ class ControlSerializer(serializers.ModelSerializer):
             'sub_processes',
             'domain_risks',
             'processes',
+            'control_frequency_text',
             'companies',
             'key_control',
             'is_elc'
         ]
         read_only_fields = [f.name for f in Control._meta.get_fields()]
 
+    def get_control_frequency_text(self, obj):
+        return [obj.control_frequency, obj.get_control_frequency_display()]
 
 class ControlViewSet(viewsets.ModelViewSet):
     queryset = Control.objects.all()

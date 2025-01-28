@@ -44,7 +44,13 @@ from krm.evaluations_krm.models import (
     EvaluationKrmInherent, RiskTestInherent
 )
 
-@method_decorator([login_required, ], name='dispatch')
+from krm.users.decorators import (
+    is_global_admin,
+    user_can_edit_company,
+    user_can_edit_domain_risk_evaluator
+)
+
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class ConfigurationDetailView(DetailView):
     model = Configuration
     template_name = 'configuration/ConfigurationDetail.html'
@@ -65,7 +71,7 @@ class ConfigurationDetailView(DetailView):
         return Configuration.objects.first()
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class ConfigurationUpdateView(UpdateView):
     form_class = ConfigurationUpdateForm
     model = Configuration
@@ -100,7 +106,7 @@ class ConfigurationUpdateView(UpdateView):
         )
 
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaImportEvalView(FormView):
     template_name = 'configuration/GaImportEval.html'
     form_class = ImportForm
@@ -135,7 +141,7 @@ class GaImportEvalView(FormView):
             ev_inherent = {}
             if row[0].value is None:
                 break
-            
+
             ev_inherent['ref'] = row[0].value
             ev_inherent['company'] = row[1].value.strip().replace(' ', '').upper()
             ev_inherent['description'] = row[2].value
@@ -196,7 +202,7 @@ class GaImportEvalView(FormView):
             risk_inherent = {}
             if row[0].value is None:
                 break
-            
+
             risk_inherent['evaluation'] = row[0].value
             risk_inherent['risk'] = row[1].value
             risk_inherent['expert'] = row[2].value
@@ -234,7 +240,7 @@ class GaImportEvalView(FormView):
                 description=dr['description'],
                 description_admin=dr['description_admin']
             )
-            
+
             rti_object.save()
             dr_created += 1
 
@@ -257,7 +263,7 @@ class GaImportEvalView(FormView):
 
         return reverse_lazy("configuration:ga_import_eval")
 
-@method_decorator([login_required, ], name='dispatch')
+@method_decorator([login_required, is_global_admin], name='dispatch')
 class GaImportView(FormView):
     template_name = 'configuration/GaImport.html'
     form_class = ImportForm
@@ -305,7 +311,7 @@ class GaImportView(FormView):
         exist = False
         if master_DBreference.objects.filter(ref=elem[master]).count() > 0:
             exist = True
-        else: 
+        else:
         # Si no existe buscamos si está en la hora de dominios de riesgo a crear
             if elems_to_create is not None:
                 for dr in elems_to_create:
@@ -329,7 +335,7 @@ class GaImportView(FormView):
             for user in control_company[user_type]:
                 owner = User.objects.get(email=user)
                 company = Company.objects.get(ref=control_company['company_ref'])
-                
+
                 if company not in owner.companies.all():
                     self.errors_found += 1
                     messages.add_message(
@@ -378,21 +384,21 @@ class GaImportView(FormView):
 
                 self.checkExcelRep("dominios de riesgo", domain_risk, domain_risk_to_create, form, i, "ref")
                 self.checkDB("dominios de riesgo", domain_risk, DomainRisk, form, "ref")
-                
+
                 domain_risk_to_create.append(domain_risk)
-        
+
         # Riesgos Maestros
         risk_master_sheet = wb['Risk Master N1']
         risk_master_to_create = []
         rows = risk_master_sheet.rows
-        
+
         for i, row in enumerate(rows):
             if not i == 0:
                 risk_master = {}
-                
+
                 if row[0].value is None:
                     break # mostrar el error
-                
+
                 risk_master['domain_risk_ref'] = row[0].value.strip().replace(' ', '').upper()
                 risk_master['ref'] = row[1].value.strip().replace(' ', '').upper()
                 risk_master['name'] = row[2].value
@@ -415,7 +421,7 @@ class GaImportView(FormView):
 
                 if row[0].value is None:
                     break # mensaje de error
-                
+
                 risk['risk_master_ref'] = row[0].value.strip().replace(' ',
                                                                     '').upper()
                 risk['ref'] = row[1].value.strip().replace(' ', '').upper()
@@ -429,7 +435,7 @@ class GaImportView(FormView):
                 risk['krm_main_events'] = row[9].value
                 risk['krm_exposed_staff'] = row[10].value
                 risk['krm_main_elements'] = row[11].value
-                
+
                 if risk['impact_inherent'] not in range(1, 6) or risk['impact_residual'] not in range(1, 6) or risk['probability_inherent'] not in range(1, 6) or risk['probability_residual'] not in range(1, 6):
                     self.errors_found += 1
                     messages.add_message(
@@ -464,7 +470,7 @@ class GaImportView(FormView):
 
                 self.checkExcelRep("procesos de controles", process, process_to_create, form, i, "ref")
                 self.checkDB("procesos de controles", process, Process, form, "ref")
-                
+
                 process_to_create.append(process)
 
         #Subprocesos
@@ -493,14 +499,14 @@ class GaImportView(FormView):
         control_sheet = wb['Controls']
         control_to_create = []
         rows = control_sheet.rows
-        
+
         for i, row in enumerate(rows):
             if not i == 0:
                 control = {}
 
                 # si no hay id de control, se dejan de crear
                 if row[2].value is None:
-                    break 
+                    break
 
                 if row[0].value is not None:
                     control['risk_refs'] = row[0].value.replace(' ', '').upper().split(',')
@@ -511,7 +517,7 @@ class GaImportView(FormView):
                     control['sub_process_refs'] = row[1].value.replace(' ', '').upper().split(',')
                 else:
                     control['sub_process_refs'] = []
-                
+
                 control['ref'] = row[2].value.strip().upper()
                 control['name'] = row[3].value
                 control['description'] = row[4].value
@@ -568,7 +574,7 @@ class GaImportView(FormView):
                         ),
                     )
                     return super(GaImportView, self).form_invalid(form)
-                
+
                 if control['scope'] not in ('S','G','C'):
                     self.errors_found += 1
                     messages.add_message(
@@ -584,7 +590,7 @@ class GaImportView(FormView):
                 self.checkExcelRep("controles", control, control_to_create, form, i, "ref")
 
                 control_to_create.append(control)
-                
+
 
                 # print('Ctrls to create', len(control_to_create), control_to_create)
 
@@ -648,14 +654,14 @@ class GaImportView(FormView):
                 risk_company['krm_exposed_staff'] = row[6].value
                 risk_company['krm_main_elements'] = row[7].value
 
-                
+
                 self.checkMaster("riesgos compañía", "riesgo", risk_company, risk_to_create, Risk, "risk_ref", form)
                 self.checkDB("riesgos compañía", risk_company, Risk, form, "risk_ref")
-                
+
                 # self.checkDB("riesgos compañía", risk_company, Company, form, "company_ref")
 
                 risk_company_to_create.append(risk_company)
-    
+
         # Control-Compañías
         control_company_sheet = wb['ControlCompany']
         control_company_to_create = []
@@ -675,19 +681,19 @@ class GaImportView(FormView):
                     control_company['control_owners'] = [x for x in row[2].value.strip().replace(' ', '').split(',') if '@' in x]
                 else:
                     control_company['control_owners'] = None
-                
+
                 if row[3].value is not None:
                     control_company['control_supervisors'] = [x for x in row[3].value.strip().replace(' ', '').split(',') if '@' in x]
                 else:
                     control_company['control_supervisors'] = None
 
                 # self.checkDB("control compañía", control_company, Company, form, "company_ref")
-                
+
                 self.checkMaster("Control company", "control", control_company, control_to_create, Control, "control_ref", form)
                 self.checkMaster("Control company", "compañia", control_company, None, Company, "company_ref", form)
                 self.check_user_in_company(control_company,'control_owners',form)
                 self.check_user_in_company(control_company,'control_supervisors',form)
-                
+
                 control_company_to_create.append(control_company)
 
         # print("All checks went good, loading in DB")
@@ -697,7 +703,7 @@ class GaImportView(FormView):
         # print("Ctrls", len(control_to_create))
         # print("RiskCompany", len(risk_company_to_create))
         # print("CtrlCompany", len(control_company_to_create))
-       
+
         # Vamos a crear cosas
         if self.errors_found == 0:
             dr_created, n = 0, len(domain_risk_to_create)
@@ -878,7 +884,7 @@ class GaImportView(FormView):
                         company=comp,
                         control=control
                     )
-                        
+
             for i,cc in enumerate(control_company_to_create):
                 cont_comp = CompanyControls.objects.get(company = Company.objects.get(ref=cc['company_ref']), control = Control.objects.get(ref=cc['control_ref']))
                 cont_comp.active = True
@@ -887,8 +893,8 @@ class GaImportView(FormView):
                 if cc['control_owners'] is not None:
                     for owner in cc['control_owners']:
                         owner_to_add = User.objects.get(email=owner)
-                        cont_comp.control_test_owners.add(owner_to_add)                
-                
+                        cont_comp.control_test_owners.add(owner_to_add)
+
                 if cc['control_supervisors'] is not None:
                     for supervisor in cc['control_supervisors']:
                         supervisor_to_add = User.objects.get(email=supervisor)
@@ -896,7 +902,7 @@ class GaImportView(FormView):
 
                 cont_comp.save()
 
-                            
+
             if control_company_created > 0:
                 messages.add_message(
                     self.request,

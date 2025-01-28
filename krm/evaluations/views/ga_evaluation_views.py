@@ -53,6 +53,8 @@ from krm.users.decorators import is_global_admin, user_can_view_evaluation
 
 from krm.utils.utils import clean_html
 
+from krm.evaluations.forms import EvaluationFilterForm
+
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaEvaluationListView(ListView):
@@ -113,6 +115,8 @@ class GaEvaluationListView(ListView):
 
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
+
+        context['evaluation_filter_form'] = EvaluationFilterForm()
 
         context['js_template'] = ['js/custom/datatables.js']
         return context
@@ -484,7 +488,7 @@ class GaEvaluationDetailView(FormView):
                             answer = ct.answers.filter(
                                 user=ct.control_test_owner
                             ).order_by("-created")[1]
-                        else: 
+                        else:
                             answer = ct.answers.filter(
                                 user=ct.control_test_owner
                             ).order_by("-created")[0]
@@ -536,8 +540,8 @@ class GaEvaluationDetailView(FormView):
                     row_num, 30, ct.get_result_display(), font_style_body
                 )  # 30
 
-                if ct.remediation_plans.count() > 0:
-                    remediation_plan = ct.remediation_plans.order_by(
+                if ct.rp_control_test.count() > 0:
+                    remediation_plan = ct.rp_control_test.order_by(
                         "created"
                     ).first()
                     ws.write(
@@ -551,17 +555,17 @@ class GaEvaluationDetailView(FormView):
                         font_style_body,
                     )  # 32
 
-                    if remediation_plan.attachment:
-                        resp_attach = settings.SITE_URL + "/media/" + remediation_plan.attachment.name
-                        ws.write(
-                            row_num,
-                            33,
-                            xlwt.Formula(
-                                'HYPERLINK("%s";"Enlace al documento")'
-                                % resp_attach
-                            ),
-                            font_style_body,
-                        )  # 33
+                    # if remediation_plan.attachment:
+                    #     resp_attach = settings.SITE_URL + "/media/" + remediation_plan.attachment.name
+                    #     ws.write(
+                    #         row_num,
+                    #         33,
+                    #         xlwt.Formula(
+                    #             'HYPERLINK("%s";"Enlace al documento")'
+                    #             % resp_attach
+                    #         ),
+                    #         font_style_body,
+                    #     )  # 33
 
                 ws.write(
                     row_num, 34, ct.control_test_supervisor.email, font_style_body
@@ -739,11 +743,11 @@ class GaEvaluationCreateView(FormView):
                     ref = f'{form.cleaned_data["ref"]} - {company.name} - {uuid.uuid4().hex}'
                 else:
                     ref = f'{form.cleaned_data["ref"]} - {company.name}'
-
                 evaluation = Evaluation.objects.create(
                     ref=ref,
                     company=company,
                     description=form.cleaned_data["description"],
+                    notification_text=form.cleaned_data["notification_text"],
                     date_begin=form.cleaned_data["date_begin"],
                     date_intermediate=form.cleaned_data["date_intermediate"],
                     date_end=form.cleaned_data["date_end"],
@@ -1125,7 +1129,7 @@ class EvaluationAssignImport(FormView):
         )
 
 
-@method_decorator([is_global_admin, ], name='dispatch')
+@method_decorator([login_required, is_global_admin, ], name='dispatch')
 class GaEvaluationNotificationView(DetailView, FormView):
     template_name = 'evaluations/GaEvaluationNotifications.html'
     model = Evaluation
@@ -1164,6 +1168,10 @@ class GaEvaluationNotificationView(DetailView, FormView):
     def post(self, request, *args, **kwargs):
         ct_selected_co = request.POST.getlist('notify_pk_co')
         ct_selected_cs = request.POST.getlist('notify_pk_cs')
+        notification_text = request.POST.get('notification_text')
+
+        self.evaluation.notification_text = notification_text
+        self.evaluation.save()
 
         from krm.evaluations.models import ControlTest
 

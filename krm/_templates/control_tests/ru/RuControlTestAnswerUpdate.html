@@ -1,0 +1,137 @@
+{% extends 'layout/default.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+
+<script>
+  $(document).ready(function () {
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      $(".datepicker").flatpickr({
+        "locale": "es",
+        dateFormat: "d/m/Y",
+      });
+    {% else %}
+      $(".datepicker").flatpickr({
+            "locale": "en",
+            dateFormat: "Y-m-d",
+      });
+    {% endif %}
+  });
+</script>
+<script>
+
+  $(document).ready(function () {
+    $('#finalizado').click(function (event) {
+        // Get the selected value
+        var result_widget = $('#id_control_result').val();
+        var description_widget = $('#word-count').children(0).children(1).text();
+        var char_count = description_widget.split(': ').pop()
+
+        if (result_widget == '' || char_count == '0') {
+          event.preventDefault();
+          $('#exampleModal').modal('show');
+        }
+    });
+
+    // Selecciona los elementos que tengan un atributo id que comience por div_id_attachment
+    let divsWithAttachments = document.querySelectorAll('[id^="div_id_attachment"]');
+    for (let divsWithAttachment of divsWithAttachments){
+      let aField = divsWithAttachment.querySelector('a');
+      if(aField){
+        let fileName = aField.textContent;
+        aField.textContent = "{% trans 'Descargar' %}";
+        aField.dataset.bsPlacement = "top";
+        aField.dataset.bsToggle = "tooltip";
+        aField.dataset.bsCustomClass = "custom-tooltip";
+        aField.title = fileName;
+      }
+    }
+
+    // Llamamos a los constructores de los tooltips
+    window.KTApp.createInstances()
+  });
+</script>
+
+{% endblock js_footer %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+{% include '_includes/FormErrors.html' %}
+
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% trans 'Respuesta incompleta' %}</h5>
+      </div>
+      <div class="modal-body">
+        {% trans 'Quedan campos pendientes de completar. Por favor, revise su respuesta' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light-primary font-weight-bold" data-bs-dismiss="modal">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--begin::Container-->
+<div class="card mb-8">
+  <!--begin::Card header-->
+
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div class="card-body">
+    {% include '_includes/control_test/_control_test_info_head.html' with control_test=control_test %}
+  </div>
+  <!--end::Card body-->
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{% trans 'EDITAR RESPUESTA' %}</div>
+    <!--end::Card header-->
+  </div>
+
+  <form method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="card-body">
+      {% include '_includes/FormErrors.html' %}
+      <div class="row mb-4">
+        <div class="col-12 col-xl-10 mb-4">
+          <div class="col-12 col-xl-5 mb-4">
+            {% if BRAND != 'globalvia'  %}
+            <div class="mb-8">
+                {{ form.attachment_1|as_crispy_field }}
+            </div>
+            <div class="mb-8">
+              {{ form.attachment_2|as_crispy_field }}
+            </div>
+            <div class="mb-8">
+              {{ form.attachment_3|as_crispy_field }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="mb-8 col-12">
+            <legend>{% trans 'Comentario' %}</legend>
+            {{ form.description|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer py-6">
+      <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
+      <button
+      class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Cancelar' %}</button>
+    </div>
+  </form>
+</div>
+<!--end::Container-->
+
+{% endblock content %}

@@ -57,6 +57,8 @@ from krm.users.decorators import (
 
 from krm.utils.utils import clean_html
 
+from krm.evaluations.forms import EvaluationFilterForm
+
 
 @method_decorator([login_required, is_company_admin], name='dispatch')
 class CaEvaluationListView(ListView):
@@ -117,9 +119,30 @@ class CaEvaluationListView(ListView):
         context['evaluations_pending'] = ev_pending
         context['evaluations_finished'] = ev_finished
 
+        context['evaluation_filter_form'] = EvaluationFilterForm()
+
+        posible_values_certification_period = [
+            (evaluation.certification_period_with_year,
+             evaluation.certification_period_with_year)
+            for evaluation in Evaluation.objects.filter(company__in=self.request.user.companies_admin.all()).order_by("certification_year")
+        ]
+
+        # Quitar duplicados
+        posible_values_certification_period = list(set(posible_values_certification_period))
+
+        context['evaluation_filter_form'].fields['certification_period'].choices = posible_values_certification_period
+
+        domain_risks = []
+        for evaluation in Evaluation.objects.filter(company__in=self.request.user.companies_admin.all()):
+            for dr in evaluation.get_domain_risk_in_evaluation():
+                if dr not in domain_risks:
+                    domain_risks.append(dr)
+        domain_risk = [[dr.ref, dr.ref] for dr in domain_risks]
+        context['evaluation_filter_form'].fields['domain_risk'].choices = domain_risk
+
         context['js_template'] = ['js/custom/datatables.js']
         return context
-    
+
     def get_queryset(self):
         return Evaluation.objects.filter(company__in=self.request.user.companies_admin.all())
 
@@ -489,7 +512,7 @@ class CaEvaluationDetailView(FormView):
                             answer = ct.answers.filter(
                                 user=ct.control_test_owner
                             ).order_by("-created")[1]
-                        else: 
+                        else:
                             answer = ct.answers.filter(
                                 user=ct.control_test_owner
                             ).order_by("-created")[0]
@@ -541,8 +564,8 @@ class CaEvaluationDetailView(FormView):
                     row_num, 30, ct.get_result_display(), font_style_body
                 )  # 30
 
-                if ct.remediation_plans.count() > 0:
-                    remediation_plan = ct.remediation_plans.order_by(
+                if ct.rp_control_test.count() > 0:
+                    remediation_plan = ct.rp_control_test.order_by(
                         "created"
                     ).first()
                     ws.write(
@@ -556,17 +579,44 @@ class CaEvaluationDetailView(FormView):
                         font_style_body,
                     )  # 32
 
-                    if remediation_plan.attachment:
-                        resp_attach = settings.SITE_URL + "/media/" + remediation_plan.attachment.name
-                        ws.write(
-                            row_num,
-                            33,
-                            xlwt.Formula(
-                                'HYPERLINK("%s";"Enlace al documento")'
-                                % resp_attach
-                            ),
-                            font_style_body,
-                        )  # 33
+                    # if remediation_plan.attachment:
+                    #     resp_attach = settings.SITE_URL + "/media/" + remediation_plan.attachment.name
+                    #     ws.write(
+                    #         row_num,
+                    #         33,
+                    #         xlwt.Formula(
+                    #             'HYPERLINK("%s";"Enlace al documento")'
+                    #             % resp_attach
+                    #         ),
+                    #         font_style_body,
+                    #     )  # 33
+
+                # if ct.remediation_plans.count() > 0:
+                #     remediation_plan = ct.remediation_plans.order_by(
+                #         "created"
+                #     ).first()
+                #     ws.write(
+                #         row_num, 31, remediation_plan.description, font_style_body
+                #     )  # 31
+                #     ws.write(
+                #         row_num,
+                #         32,
+                #         remediation_plan.date_end.strftime(
+                #             "%d/%m/%Y, %H:%M:%S"),
+                #         font_style_body,
+                #     )  # 32
+
+                #     if remediation_plan.attachment:
+                #         resp_attach = settings.SITE_URL + "/media/" + remediation_plan.attachment.name
+                #         ws.write(
+                #             row_num,
+                #             33,
+                #             xlwt.Formula(
+                #                 'HYPERLINK("%s";"Enlace al documento")'
+                #                 % resp_attach
+                #             ),
+                #             font_style_body,
+                #         )  # 33
 
                 ws.write(
                     row_num, 34, ct.control_test_supervisor.email, font_style_body
@@ -757,6 +807,7 @@ class CaEvaluationCreateView(FormView):
                     allow_self_autosupervision=form.cleaned_data[
                         "allow_self_autosupervision"
                     ],
+                    notification_text=form.cleaned_data["notification_text"]
                 )
 
                 # Ahora en este array nos llegará también el control owner y el control supervisor
@@ -1168,6 +1219,10 @@ class CaEvaluationNotificationView(DetailView, FormView):
     def post(self, request, *args, **kwargs):
         ct_selected_co = request.POST.getlist('notify_pk_co')
         ct_selected_cs = request.POST.getlist('notify_pk_cs')
+        notification_text = request.POST.get('notification_text')
+
+        self.evaluation.notification_text = notification_text
+        self.evaluation.save()
 
         from krm.evaluations.models import ControlTest
 

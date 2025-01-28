@@ -9,7 +9,7 @@
 {% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
-  <script defer src="{% static 'main.react.js' %}"></script>
+  <script defer src="{% static 'main.react.js' %}?v=20241219"></script>
 {% endif %}
 
 
@@ -249,7 +249,7 @@
                   {{ piece }}{% if not forloop.last %}<br><br>{% endif %}
                 {% endfor %}
               </div>
-            </button>   
+            </button>
           </div>
           <!--end::Card header-->
           <div id="kt_accordion_1_body_{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_{{ forloop.counter }}" data-bs-parent="#kt_accordion_2">

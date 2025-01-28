@@ -17,6 +17,8 @@ from krm.evaluations.views import (
 
     AuControlTestDetail,
 
+    RuControlTestAnswerUpdate,
+
     delete_attachment
 )
 
@@ -67,6 +69,12 @@ urlpatterns = [
         "ru/control-test-detail/update-remediation-plan/<pk>/",
         RuRemediationPlanUpdate.as_view(),
         name="ru_control_test_detail_update_remediation_plan",
+    ),
+
+    path(
+        "ru/control-test-answer-update/<pk>/",
+        RuControlTestAnswerUpdate.as_view(),
+        name="ru_control_test_answer_update",
     ),
 
     path(

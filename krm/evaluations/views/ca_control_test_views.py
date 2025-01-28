@@ -155,7 +155,7 @@ class CaControlTestDetail(FormView):
 
         if form.cleaned_data["control_status"] == 'RE':
             self.control_test.status = 'WO'
-            self.control_test.result = 'SE'
+            # self.control_test.result = 'SE'
             self.control_test.answers.all().delete()
         else:
             self.control_test.status = form.cleaned_data["control_status"]
@@ -168,6 +168,8 @@ class CaControlTestDetail(FormView):
 
         # Ahora para mandar las notificaciones comprobamos a quien corresponde
         self.control_test.save()
+        self.control_test.evaluation.delete_notification_text()
+
         self.control_test.send_notification('Notification')
 
         description = form.cleaned_data["description"]
@@ -176,6 +178,7 @@ class CaControlTestDetail(FormView):
                 control_test=self.control_test,
                 description=description,
                 user=self.request.user,
+                result=form.cleaned_data["control_result"],
             )
 
         return super().form_valid(form)

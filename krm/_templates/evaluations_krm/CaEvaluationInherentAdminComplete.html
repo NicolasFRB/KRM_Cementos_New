@@ -9,7 +9,7 @@
 {% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
-  <script defer src="{% static 'main.react.js' %}"></script>
+  <script defer src="{% static 'main.react.js' %}?v=20241219"></script>
 {% endif %}
 
 
@@ -20,7 +20,7 @@
         let errorFound = false;
         $('#buttonSend').attr('data-kt-indicator', 'on');
         $('.card').removeClass('danger');
-  
+
         if (!errorFound) {
           $("input[name^='probability-']").each(function(index){
             if ($(this).val() == 5){
@@ -36,7 +36,7 @@
             }
           });
         }
-  
+
         if (!errorFound) {
           $("input[name^='impact-']").each(function (index) {
             if ($(this).val() == 5) {
@@ -52,7 +52,7 @@
             }
           });
         }
-  
+
         if (!errorFound) {
           $("textarea[name^='descriptionAdmin-']").each(function (index) {
             if ($(this).val() == '') {
@@ -317,7 +317,7 @@
                   </fieldset>
                 </div>
                 <div class="col-xl-6">
-                  <fieldset>  
+                  <fieldset>
                     <div class="row mb-8">
                       <!--begin::Col-->
                       <div class="col-xl-4">
@@ -342,8 +342,8 @@
                 <div class="col-xl-12">
                   <div class="row mb-8">
                     <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción' %}</span></div>
-                    <div>{{ rt.risk.description|safe }}</div> 
-                  </div>             
+                    <div>{{ rt.risk.description|safe }}</div>
+                  </div>
                   <div class="row mb-8">
                     <div class="col col-xl-6">
                         <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Principales elementos' %}</span></div>
@@ -445,7 +445,7 @@
                           </div>
                         </div>
                       </div>
-                      
+
                       <div class="mb-5">
                         <h5 class="mb-7">Impacto en imagen</h5>
                         <div class="row">
@@ -566,7 +566,7 @@
                   {% trans 'Usar la valoración dada por los expertos para los riesgos no completados' %}
                 </label>
               </div>
-              
+
               <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
                 <span class="indicator-label">{% trans 'Finalizar evaluación' %}</span>
                 <span class="indicator-progress">

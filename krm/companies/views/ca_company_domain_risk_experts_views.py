@@ -32,9 +32,10 @@ from krm.users.decorators import (
     user_can_edit_company,
     user_can_edit_domain_risk_expert
 )
+from django.contrib.auth.decorators import login_required
 
 
-@method_decorator([user_can_edit_domain_risk_expert, ], name='dispatch')
+@method_decorator([login_required, user_can_edit_domain_risk_expert, ], name='dispatch')
 class CaCompanyDomainRiskExpertsUpdateView(UpdateView):
     form_class = CompanyDomainRiskExpertsForm
     model = CompanyDomainRiskExperts
