@@ -102,6 +102,9 @@ class Control(AuditModel):
 
     systems = models.CharField(
         _("Sistemas"), max_length=140, blank=True, null=True)
+    
+    plant = models.CharField(
+        _("Planta"), max_length=140, blank=True, null=True)
 
     control_frequency = models.CharField(
         _("Frecuencia del control"), max_length=2, choices=FREQUENCY_CONTROL_CHOICES
@@ -162,6 +165,7 @@ class Control(AuditModel):
         ("C", _("Corporativo")),
         ("G", _("Grupo")),
         ("D", _("Division")),
+        ("P", _("Planta")),
     )
 
     scope = models.CharField(

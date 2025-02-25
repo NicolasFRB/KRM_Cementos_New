@@ -28,6 +28,7 @@ class Migration(migrations.Migration):
                 ('control_type', models.CharField(choices=[('P', 'Preventivo'), ('D', 'Detectivo')], max_length=2, verbose_name='Tipo de control')),
                 ('automation', models.CharField(choices=[('M', 'Manual'), ('A', 'Automático'), ('S', 'Semiautomático')], max_length=2, verbose_name='Automatización del control')),
                 ('systems', models.CharField(blank=True, max_length=140, null=True, verbose_name='Sistemas')),
+                ('plant', models.CharField(blank=True, max_length=140, null=True, verbose_name='Planta')),
                 ('control_frequency', models.CharField(choices=[('CO', 'Constante'), ('BD', 'Bajo demanda'), ('DI', 'Diario'), ('1W', 'Semanal'), ('2W', 'Quincenal'), ('1M', 'Mensual'),('2M', 'Bimensual'),('3T', 'Trimestral'), ('6M', 'Semestral'), ('1Y', 'Anual'), ('2Y', 'Bienal'), ('3Y', 'Trienal')], max_length=2, verbose_name='Frecuencia del control')),
                 ('is_gap', models.CharField(choices=[('-', 'No aplica'), ('Y', 'Sí'), ('N', 'No')], default='-', max_length=1, verbose_name='GAP')),
                 ('assert_existence', models.CharField(choices=[('-', 'No aplica'), ('Y', 'Sí'), ('N', 'No')], default='-', max_length=1, verbose_name='Existency')),
