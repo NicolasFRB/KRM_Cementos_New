@@ -13,7 +13,7 @@ services:
     depends_on:
       - postgres
       # - redis
-    volumes:
+    # volumes:
       # - ./krm-media:/krm-media
 
     env_file:
@@ -35,6 +35,8 @@ services:
       - krm_local_postgres_data_backups:/backups
     env_file:
       - ./.envs/.dev/.postgres
+    ports:
+      - "5432:5432"
 
   # celeryworker:
   #   <<: *django
