@@ -64,17 +64,18 @@ decorators = [
     never_cache,
 ]
 
-# oauth = OAuth()
+if (settings.DEBUG_LOGIN):
+    oauth = OAuth()
 
-# oauth.register(
-#     "auth0",
-#     client_id="1Dk3p7qRl4ETYA9emXHwooqES1wuVN5S",
-#     client_secret="Hs-F46aKi3a-4NDz0aS9LgJtBSGAadpSngPNb0TbLqOGoHyLejo00OHg2_wYFzOV",
-#     client_kwargs={
-#         "scope": "openid profile email",
-#     },
-#     server_metadata_url=f"https://dev-njl8nr7c8xdkfs74.us.auth0.com/.well-known/openid-configuration",
-# )
+    oauth.register(
+        "auth0",
+        client_id="1Dk3p7qRl4ETYA9emXHwooqES1wuVN5S",
+        client_secret="Hs-F46aKi3a-4NDz0aS9LgJtBSGAadpSngPNb0TbLqOGoHyLejo00OHg2_wYFzOV",
+        client_kwargs={
+            "scope": "openid profile email",
+        },
+        server_metadata_url=f"https://dev-njl8nr7c8xdkfs74.us.auth0.com/.well-known/openid-configuration",
+    )
 
 @method_decorator(login_required, name='dispatch')
 class DashboardView(RedirectView):
@@ -106,6 +107,7 @@ class DashboardView(RedirectView):
 
 # # Login
 def login_view(r):
+
     # try:
     #     import urlparse as _urlparse
     #     from urllib import unquote
@@ -138,12 +140,19 @@ def login_view(r):
     #         redirect_url = value
     #         break
 
-    return HttpResponseRedirect( settings.SAML2_AUTH['IDENTITY_SERVICE'] + "/samlsso?spEntityID=" + settings.SAML2_AUTH['ASSERTION_URL'] + "/en/auth/callback/")
+    if (settings.DEBUG_LOGIN):
+        #AUTH0 Login
+
+        return oauth.auth0.authorize_redirect(
+            r, r.build_absolute_uri(reverse("auth:callback"))
+        )
+    else:
+        # SAML2 SSO Login
+
+        return HttpResponseRedirect( settings.SAML2_AUTH['IDENTITY_SERVICE'] + "/samlsso?spEntityID=" + settings.SAML2_AUTH['ASSERTION_URL'] + "/en/auth/callback/")
 
 
-    # return oauth.auth0.authorize_redirect(
-    #     request, request.build_absolute_uri(reverse("auth:callback"))
-    # )
+#
 
 # class CallbackView(RedirectView):
 
@@ -251,95 +260,116 @@ def _get_saml_client(domain):
 
 @csrf_exempt
 def callback_view(r):
-    saml_client = _get_saml_client(get_current_domain(r))
-    resp = r.POST.get('SAMLResponse', None)
-    next_url = r.session.get('login_next_url', _default_next_url())
 
-    if not resp:
-        return HttpResponseRedirect(reverse("auth:logout")) #to denied login
+    if (settings.DEBUG_LOGIN):
 
-    authn_response = saml_client.parse_authn_request_response(
-        resp, entity.BINDING_HTTP_POST)
-    if authn_response is None:
-        print("Auth Response equals None")
-        return HttpResponseRedirect(reverse("auth:logout")) #to denied login
+        #AUTH0 Login
+    
+        token = oauth.auth0.authorize_access_token(r)
+        
+        user = authenticate(username=token['userinfo']['nickname'], password=token['access_token'])
+        r.session["user"] = user
+        print("TOKEN")
+        print(token)
+        print("step1", user)
+        if user is not None:
+            print("step2")
+            from django.utils import translation
+            translation.activate('es')
+            login(r, user)
+            return HttpResponseRedirect(
+                reverse('users:dashboard')
+            )
 
-    user_identity = authn_response.get_identity()
-    if user_identity is None:
-        print("UserIdentity equals None")
-        return HttpResponseRedirect(reverse("auth:logout")) #to denied login
-
-    print(user_identity)
-    # user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'email')][0]
-    user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'username')][0]
-    user_real_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('name', 'username')][0]
-    user_email = user_name.strip() + "@nomail.com"
-    # user_last_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('last_name', 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname')][0]
-
-    target_user = None
-    is_new_user = False
-
-    try:
-        target_user = User.objects.get(username=user_name)
-        # if settings.SAML2_AUTH.get('TRIGGER', {}).get('BEFORE_LOGIN', None):
-        #     import_string(settings.SAML2_AUTH['TRIGGER']['BEFORE_LOGIN'])(user_identity)
-    except User.DoesNotExist:
-        print("User does not exist")
-        new_user_should_be_created = settings.SAML2_AUTH.get('CREATE_USER', True)
-        if new_user_should_be_created: 
-            target_user = _create_new_user(user_name, user_email, user_real_name)
-            # if settings.SAML2_AUTH.get('TRIGGER', {}).get('CREATE_USER', None):
-            #     import_string(settings.SAML2_AUTH['TRIGGER']['CREATE_USER'])(user_identity)
-            is_new_user = True
         else:
-            return HttpResponseRedirect(reverse("auth:logout")) # to denied
+            target_user = _create_new_user(token['userinfo']['nickname'], token['userinfo']['email'], token['userinfo']['name'])
 
-    r.session.flush()
-
-    if target_user.is_active:
-        target_user.backend = 'django.contrib.auth.backends.ModelBackend'
-        login(r, target_user)
-    else:
-        return HttpResponseRedirect(reverse("auth:logout")) # to denied 
-
-    if settings.SAML2_AUTH.get('USE_JWT') is True:
-        # We use JWT auth send token to frontend
-        jwt_token = jwt_encode(target_user)
-        query = '?uid={}&token={}'.format(target_user.id, jwt_token)
-
-        frontend_url = settings.SAML2_AUTH.get(
-            'FRONTEND_URL', next_url)
-
-        return HttpResponseRedirect(frontend_url+query)
-
-    if is_new_user:
-        # try:
-        return HttpResponseRedirect(reverse("users:dashboard"))
-        # except TemplateDoesNotExist:
-        #     return HttpResponseRedirect(next_url)
-    else:
-        return HttpResponseRedirect(reverse("users:dashboard"))
+            if target_user.is_active:
+                target_user.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(r, target_user)
+                return HttpResponseRedirect(
+                    reverse('users:dashboard')
+                )
+            else:
+                print("step3")
+                messages.add_message(r, messages.ERROR, _('Usuario no válido'))
+                return HttpResponseRedirect(reverse("auth:logout")) # to denied 
+                
     
-    # token = oauth.auth0.authorize_access_token(request)
-    
-    # user = authenticate(username=token['userinfo']['nickname'], password=token['access_token'])
-    # request.session["user"] = user
-    # print("TOKEN")
-    # print(token)
-    # print("step1", user)
-    # if user is not None:
-    #     print("step2")
-    #     from django.utils import translation
-    #     translation.activate('es')
-    #     login(request, user)
-    #     return HttpResponseRedirect(
-    #         reverse('users:dashboard')
-    #     )
+    else:
+        
+        #SSO Login
 
-    # else:
-    #     print("step3")
-    #     messages.add_message(request, messages.ERROR, _('Usuario no válido'))
-    #     return HttpResponseRedirect(reverse('auth:logout'))
+        saml_client = _get_saml_client(get_current_domain(r))
+        resp = r.POST.get('SAMLResponse', None)
+        next_url = r.session.get('login_next_url', _default_next_url())
+
+        if not resp:
+            return HttpResponseRedirect(reverse("auth:logout")) #to denied login
+
+        authn_response = saml_client.parse_authn_request_response(
+            resp, entity.BINDING_HTTP_POST)
+        if authn_response is None:
+            print("Auth Response equals None")
+            return HttpResponseRedirect(reverse("auth:logout")) #to denied login
+
+        user_identity = authn_response.get_identity()
+        if user_identity is None:
+            print("UserIdentity equals None")
+            return HttpResponseRedirect(reverse("auth:logout")) #to denied login
+
+        print(user_identity)
+        # user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'email')][0]
+        user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'username')][0]
+        user_real_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('name', 'username')][0]
+        user_email = user_name.strip() + "@nomail.com"
+        # user_last_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('last_name', 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname')][0]
+
+        target_user = None
+        is_new_user = False
+
+        try:
+            target_user = User.objects.get(username=user_name)
+            # if settings.SAML2_AUTH.get('TRIGGER', {}).get('BEFORE_LOGIN', None):
+            #     import_string(settings.SAML2_AUTH['TRIGGER']['BEFORE_LOGIN'])(user_identity)
+        except User.DoesNotExist:
+            print("User does not exist")
+            new_user_should_be_created = settings.SAML2_AUTH.get('CREATE_USER', True)
+            if new_user_should_be_created: 
+                target_user = _create_new_user(user_name, user_email, user_real_name)
+                # if settings.SAML2_AUTH.get('TRIGGER', {}).get('CREATE_USER', None):
+                #     import_string(settings.SAML2_AUTH['TRIGGER']['CREATE_USER'])(user_identity)
+                is_new_user = True
+            else:
+                return HttpResponseRedirect(reverse("auth:logout")) # to denied
+
+        r.session.flush()
+
+        if target_user.is_active:
+            target_user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(r, target_user)
+        else:
+            return HttpResponseRedirect(reverse("auth:logout")) # to denied 
+
+        if settings.SAML2_AUTH.get('USE_JWT') is True:
+            # We use JWT auth send token to frontend
+            jwt_token = jwt_encode(target_user)
+            query = '?uid={}&token={}'.format(target_user.id, jwt_token)
+
+            frontend_url = settings.SAML2_AUTH.get(
+                'FRONTEND_URL', next_url)
+
+            return HttpResponseRedirect(frontend_url+query)
+
+        if is_new_user:
+            # try:
+            return HttpResponseRedirect(reverse("users:dashboard"))
+            # except TemplateDoesNotExist:
+            #     return HttpResponseRedirect(next_url)
+        else:
+            return HttpResponseRedirect(reverse("users:dashboard"))
+    
+    
 
 
 
@@ -363,17 +393,23 @@ def logout_view(request):
     request.session.clear()
 # https://identity-services.uat.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/&slo=true&returnTo=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/logout
 # https://identity-services.uat.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/
-    return HttpResponseRedirect(
-        "https://identity-services.uat.elcorteingles.es/samlsso?slo=true"
-        # f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
-        # + urllib.parse.urlencode(
-        #     {
-        #         "returnTo": request.build_absolute_uri(reverse("users:dashboard")),
-        #         "client_id": settings.AUTH0_CLIENT_ID,
-        #     },
-        #     quote_via=urllib.parse.quote_plus,
-        # ),
-    )
+    
+    if (settings.DEBUG_LOGIN):
+        return HttpResponseRedirect(
+            f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
+            + urllib.parse.urlencode(
+                {
+                    "returnTo": request.build_absolute_uri(reverse("users:dashboard")),
+                    "client_id": settings.AUTH0_CLIENT_ID,
+                },
+                quote_via=urllib.parse.quote_plus,
+            ),
+        )
+    else:
+        return HttpResponseRedirect(
+            "https://identity-services.uat.elcorteingles.es/samlsso?slo=true"
+        )
+    
 
 # @method_decorator(decorators, name='dispatch')
 # class LoginView(FormView):
