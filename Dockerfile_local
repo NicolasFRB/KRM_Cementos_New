@@ -50,4 +50,7 @@ RUN chmod +x /start-flower
 
 WORKDIR /app
 
+COPY . .
+RUN chmod -R 755 **/locale/en
+
 ENTRYPOINT ["/entrypoint"]
