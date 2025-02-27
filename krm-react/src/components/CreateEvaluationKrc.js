@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import SelectCompanies from "./SelectCompanies.js";
 import SelectProcess from "./SelectProcess.js";
+import SelectPlant from "./SelectPlant.js";
 import SelectDomainRisk from "./SelectDomainRisk.js";
 import SelectPeriodicity from "./SelectPeriodicity.js";
 import SelectControlsCompanyKrc from "./SelectControlsCompanyKrc.js";
@@ -16,6 +17,7 @@ function CreateEvaluationKrc(props) {
   const [selectedDomainRisks, setSelectedDomainRisks] = useState([]);
   const [selectedPeriodicity, setSelectedPeriodicity] = useState([]);
   const [selectedProcesses, setSelectedProcesses] = useState([]);
+  const [selectedPlants, setSelectedPlants] = useState([]);
   // const [selectedRisks, setSelectedRisks] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -94,13 +96,16 @@ function CreateEvaluationKrc(props) {
         )
         }
         <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
-          <div className="col col-12 col-md-3">
+          <div className="col col-12 col-md-2">
             <SelectDomainRisk selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
           </div>
           <div className="col col-12 col-md-3">
             <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
           </div>
           <div className="col col-12 col-md-3">
+            <SelectPlant selectedPlants={selectedPlants} setSelectedPlants={setSelectedPlants} />
+          </div>
+          <div className="col col-12 col-md-2">
             {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}
             <h5 className="mb-6">{t('krc.risk-types')}</h5>
             <p>
@@ -114,7 +119,7 @@ function CreateEvaluationKrc(props) {
               </label>
             </p>
           </div>
-          <div className="col col-12 col-md-3">
+          <div className="col col-12 col-md-2">
             <h5 className="mb-6">{t('krc.periodicity')}</h5>
             <SelectPeriodicity selectedPeriodicity={selectedPeriodicity} setSelectedPeriodicity={setSelectedPeriodicity} />
           </div>
@@ -125,6 +130,7 @@ function CreateEvaluationKrc(props) {
           <SelectControlsCompanyKrc
             selectedDomainRisks={selectedDomainRisks}
             selectedProcesses={selectedProcesses}
+            selectedPlants={selectedPlants}
             selectedPeriodicity={selectedPeriodicity}
             // selectedRisks={selectedRisks}
             selectedCompanies={selectedCompanies}
