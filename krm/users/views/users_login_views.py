@@ -282,14 +282,24 @@ def callback_view(r):
             )
 
         else:
-            target_user = _create_new_user(token['userinfo']['nickname'], token['userinfo']['email'], token['userinfo']['name'])
+
+            try:
+                target_user = User.objects.get(username=token['userinfo']['nickname'])
+                # if settings.SAML2_AUTH.get('TRIGGER', {}).get('BEFORE_LOGIN', None):
+                #     import_string(settings.SAML2_AUTH['TRIGGER']['BEFORE_LOGIN'])(user_identity)
+            except User.DoesNotExist:
+                new_user_should_be_created = True
+
+                if new_user_should_be_created: 
+                    target_user = _create_new_user(token['userinfo']['nickname'], token['userinfo']['email'], token['userinfo']['name'])
+                    is_new_user = True
+                else:
+                    return HttpResponseRedirect(reverse("auth:logout")) # to denied
 
             if target_user.is_active:
                 target_user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(r, target_user)
-                return HttpResponseRedirect(
-                    reverse('users:dashboard')
-                )
+                return HttpResponseRedirect(reverse('users:dashboard'))
             else:
                 print("step3")
                 messages.add_message(r, messages.ERROR, _('Usuario no válido'))
