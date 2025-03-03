@@ -36,6 +36,7 @@ class ControlCompanyApiView(APIView):
         company_pks = []
         domain_risk_pks = []
         process_pks = []
+        plants = []
         control_frequency = []
         # risk_pks = []
         key_control = False
@@ -53,6 +54,9 @@ class ControlCompanyApiView(APIView):
         if 'process_pks' in request.GET:
             if request.GET['process_pks']:
                 process_pks = request.GET['process_pks'].split(',')
+        if 'plants' in request.GET:
+            if request.GET['plants']:
+                plants = request.GET['plants'].split(',')
         if 'key_control' in request.GET:
             if request.GET['key_control'] == 'true':
                 key_control = True
@@ -85,6 +89,11 @@ class ControlCompanyApiView(APIView):
 
                 control_list = control_list.filter(
                     control__sub_processes__in=sub_processes
+                )
+            
+            if plants:
+                control_list = control_list.filter(
+                    control__plant__in=plants
                 )
 
             if key_control:
