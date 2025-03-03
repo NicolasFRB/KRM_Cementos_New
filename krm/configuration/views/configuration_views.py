@@ -538,6 +538,7 @@ class GaImportView(FormView):
                 control['is_elc'] = row[19].value
                 control['evidence'] = row[20].value
                 control['scope'] = row[21].value
+                control['plant'] = row[22].value
 
                 if control['automation'] == '':
                     self.errors_found += 1
@@ -582,6 +583,18 @@ class GaImportView(FormView):
                         messages.ERROR,
                         (
                             _('En la hoja de controles no ha establecido un valor correcto para el alcance en la fila %s')
+                            % (i)
+                        ),
+                    )
+                    return super(GaImportView, self).form_invalid(form)
+                
+                if control['plant'] == '':
+                    self.errors_found += 1
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        (
+                            _('En la hoja de controles no ha establecido valor para Planta en la fila %s')
                             % (i)
                         ),
                     )
@@ -836,6 +849,7 @@ class GaImportView(FormView):
                     control_type=r['control_type'],
                     automation=r['automation'],
                     systems=r['systems'],
+                    plant=r['plant'],
                     control_frequency=r['control_frequency'],
                     is_gap=r['is_gap'],
                     assert_existence=r['assert_existence'],
