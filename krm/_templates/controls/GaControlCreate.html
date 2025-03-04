@@ -4,6 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
   $(document).ready(function () {
 
@@ -34,6 +35,14 @@
         .catch(error => {
         });
     }
+
+    $("#id_scope").on('change', function() {
+      if(this.value.trim().toUpperCase() == "P") {
+        $("#id_plant").prop("disabled", false)
+      } else {
+        $("#id_plant").prop("disabled", true)
+      }
+    })
   });
 
 </script>

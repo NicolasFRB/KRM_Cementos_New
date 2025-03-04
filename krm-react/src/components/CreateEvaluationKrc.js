@@ -4,11 +4,12 @@ import { useTranslation } from "react-i18next";
 
 import SelectCompanies from "./SelectCompanies.js";
 import SelectProcess from "./SelectProcess.js";
-import SelectPlant from "./SelectPlant.js";
 import SelectDomainRisk from "./SelectDomainRisk.js";
 import SelectPeriodicity from "./SelectPeriodicity.js";
 import SelectControlsCompanyKrc from "./SelectControlsCompanyKrc.js";
 import EvaluationCreateSteps from "./EvaluationCreateSteps.js";
+import SelectScopes from "./SelectScopes.js";
+import SelectControlScopes from "./SelectControlScopes.js";
 
 let $ = window.$;
 
@@ -17,7 +18,7 @@ function CreateEvaluationKrc(props) {
   const [selectedDomainRisks, setSelectedDomainRisks] = useState([]);
   const [selectedPeriodicity, setSelectedPeriodicity] = useState([]);
   const [selectedProcesses, setSelectedProcesses] = useState([]);
-  const [selectedPlants, setSelectedPlants] = useState([]);
+  const [selectedScopes, setSelectedScopes] = useState([]);
   // const [selectedRisks, setSelectedRisks] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -96,14 +97,15 @@ function CreateEvaluationKrc(props) {
         )
         }
         <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
-          <div className="col col-12 col-md-2">
+          <div className="col col-12 col-md-3">
             <SelectDomainRisk selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
           </div>
           <div className="col col-12 col-md-3">
             <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
           </div>
-          <div className="col col-12 col-md-3">
-            <SelectPlant selectedPlants={selectedPlants} setSelectedPlants={setSelectedPlants} />
+          <div className="col col-12 col-md-2">
+            {/* Hay que obtener las scopes a traves de algun endpoint */}
+            <SelectControlScopes selectedScopes={selectedScopes} setSelectedScopes={setSelectedScopes} /> 
           </div>
           <div className="col col-12 col-md-2">
             {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}
@@ -130,7 +132,7 @@ function CreateEvaluationKrc(props) {
           <SelectControlsCompanyKrc
             selectedDomainRisks={selectedDomainRisks}
             selectedProcesses={selectedProcesses}
-            selectedPlants={selectedPlants}
+            selectedScopes={selectedScopes}
             selectedPeriodicity={selectedPeriodicity}
             // selectedRisks={selectedRisks}
             selectedCompanies={selectedCompanies}

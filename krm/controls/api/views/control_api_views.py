@@ -16,7 +16,7 @@ from krm.companies.api import CompanySerializer, CompanyControlSerializer
 from krm.controls.api import ControlSerializer
 
 from krm.controls.models import FREQUENCY_CONTROL_CHOICES
-
+from krm.controls.models import SCOPE_CHOICES
 
 class ControlCompanyApiView(APIView):
     """
@@ -36,7 +36,7 @@ class ControlCompanyApiView(APIView):
         company_pks = []
         domain_risk_pks = []
         process_pks = []
-        plants = []
+        scopes = []
         control_frequency = []
         # risk_pks = []
         key_control = False
@@ -54,9 +54,9 @@ class ControlCompanyApiView(APIView):
         if 'process_pks' in request.GET:
             if request.GET['process_pks']:
                 process_pks = request.GET['process_pks'].split(',')
-        if 'plants' in request.GET:
-            if request.GET['plants']:
-                plants = request.GET['plants'].split(',')
+        if 'scopes' in request.GET:
+            if request.GET['scopes']:
+                scopes = request.GET['scopes'].split(',')
         if 'key_control' in request.GET:
             if request.GET['key_control'] == 'true':
                 key_control = True
@@ -91,9 +91,9 @@ class ControlCompanyApiView(APIView):
                     control__sub_processes__in=sub_processes
                 )
             
-            if plants:
+            if scopes:
                 control_list = control_list.filter(
-                    control__plant__in=plants
+                    control__scope__in=scopes
                 )
 
             if key_control:
@@ -141,3 +141,19 @@ class ControlPeriodicityApiView(APIView):
         else:
             activate('es')
         return Response(FREQUENCY_CONTROL_CHOICES)
+
+class ControlScopesApiView(APIView):
+
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    from krm.controls.models import SCOPE_CHOICES
+
+    def get(self, request):
+        from django.utils.translation import activate
+        # Si la url contiene la cadena '/en/' se activa el idioma inglés
+        if '/en/' in request.path:
+            activate('en')
+        else:
+            activate('es')
+        return Response(SCOPE_CHOICES)

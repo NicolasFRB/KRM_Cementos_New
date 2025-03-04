@@ -14,7 +14,7 @@ const user = window.$('#pk').data('pk');
 
 const configService = {
   apiGetProcesses: `${baseUrlApi}process/`,
-  apiGetPlants: `${baseUrlApi}plants/`,
+  // apiGetPlants: `${baseUrlApi}plants/`,
   apiGetRisks: `${baseUrlApi}risks/`,
   apiGetDomainRisks: `${baseUrlApi}domain-risks/`,
   apiGetControls: `${baseUrlApi}controls/`,
@@ -30,6 +30,7 @@ const configService = {
   apiGetUsers: `${baseUrlApi}users/`,
   apiSendQuestionTest: `${baseUrlApi}questiontest/`,
   apiGetControlPeriodicity: `${base}/es/api/controlperiodicity/`,
+  apiGetScopes: `${base}/es/api/controlScopes/`,
 };
 
 export default configService;

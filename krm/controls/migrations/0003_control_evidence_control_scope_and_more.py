@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='control',
             name='scope',
-            field=models.CharField(blank=True, choices=[('S', 'Sociedad'), ('C', 'Corporativo'), ('G', 'Grupo')], max_length=1, null=True, verbose_name='Alcance'),
+            field=models.CharField(blank=True, choices=[('G', 'Grupo'), ('G', 'Planta')], max_length=1, null=True, verbose_name='Alcance'),
         ),
         migrations.AlterField(
             model_name='control',

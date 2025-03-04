@@ -8,7 +8,7 @@ function SelectControlsCompanyKrc(
   {
     selectedDomainRisks,
     selectedProcesses,
-    selectedPlants,
+    selectedScopes,
     selectedCompanies,
     selectedPeriodicity,
     // selectedRisks,
@@ -92,7 +92,7 @@ function SelectControlsCompanyKrc(
         elc: elc,
         key_control: keyControl,
         process_pks: selectedProcesses,
-        plants: selectedPlants,
+        scopes: selectedScopes,
         domain_risk_pks: selectedDomainRisks,
         control_frequency: selectedPeriodicity,
       };
