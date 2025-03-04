@@ -30,6 +30,7 @@ const configService = {
   apiGetUsers: `${baseUrlApi}users/`,
   apiSendQuestionTest: `${baseUrlApi}questiontest/`,
   apiGetControlPeriodicity: `${base}/es/api/controlperiodicity/`,
+  apiGetScopes: `${base}/es/api/controlScopes/`,
 };
 
 export default configService;

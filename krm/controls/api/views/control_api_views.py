@@ -16,7 +16,7 @@ from krm.companies.api import CompanySerializer, CompanyControlSerializer
 from krm.controls.api import ControlSerializer
 
 from krm.controls.models import FREQUENCY_CONTROL_CHOICES
-
+from krm.controls.models import SCOPE_CHOICES
 
 class ControlCompanyApiView(APIView):
     """
@@ -93,7 +93,7 @@ class ControlCompanyApiView(APIView):
             
             if scopes:
                 control_list = control_list.filter(
-                    control__plant__in=plants
+                    control__scope__in=scopes
                 )
 
             if key_control:
@@ -141,3 +141,19 @@ class ControlPeriodicityApiView(APIView):
         else:
             activate('es')
         return Response(FREQUENCY_CONTROL_CHOICES)
+
+class ControlScopesApiView(APIView):
+
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    from krm.controls.models import SCOPE_CHOICES
+
+    def get(self, request):
+        from django.utils.translation import activate
+        # Si la url contiene la cadena '/en/' se activa el idioma inglés
+        if '/en/' in request.path:
+            activate('en')
+        else:
+            activate('es')
+        return Response(SCOPE_CHOICES)

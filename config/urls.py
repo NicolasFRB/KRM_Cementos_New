@@ -31,7 +31,7 @@ from krm.risks.api.views import (
     RiskCompanyResidualApiView,
 )
 
-from krm.controls.api.views import ControlCompanyApiView, ControlPeriodicityApiView
+from krm.controls.api.views import ControlCompanyApiView, ControlPeriodicityApiView, ControlScopesApiView
 
 from krm.companies.api import (
     CompanyViewSet,
@@ -78,7 +78,6 @@ urlpatterns = [
      path('i18n/', include('django.conf.urls.i18n')),
      path('api/', include(router.urls)),
      path('api-auth/', include('rest_framework.urls')),
-     
      path('api/riskscompany/',
           RiskCompanyApiView.as_view()),
      path('api/riskscompanyresidual/',
@@ -99,6 +98,8 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
+     path('api/controlScopes/',
+          ControlScopesApiView.as_view()),
     path('api/controlperiodicity/',
          ControlPeriodicityApiView.as_view()),
     path(

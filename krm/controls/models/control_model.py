@@ -26,6 +26,11 @@ FREQUENCY_CONTROL_CHOICES = (
     ("5Y", _("Quinquenal"))
 )
 
+SCOPE_CHOICES = (
+    ("G", _("Grupo")),
+    ("P", _("Planta")),
+)
+
 class Control(AuditModel):
     """Control model.
     Modelo que usaremos para representar un control para un riesgo asociado
@@ -158,11 +163,6 @@ class Control(AuditModel):
         max_length=10000,
         null=True,
         blank=True
-    )
-
-    SCOPE_CHOICES = (
-        ("G", _("Grupo")),
-        ("P", _("Planta")),
     )
 
     scope = models.CharField(

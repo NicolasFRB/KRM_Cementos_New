@@ -92,7 +92,7 @@ function SelectControlsCompanyKrc(
         elc: elc,
         key_control: keyControl,
         process_pks: selectedProcesses,
-        scopes: selectedscopes,
+        scopes: selectedScopes,
         domain_risk_pks: selectedDomainRisks,
         control_frequency: selectedPeriodicity,
       };
