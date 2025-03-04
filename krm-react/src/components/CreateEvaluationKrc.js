@@ -97,13 +97,13 @@ function CreateEvaluationKrc(props) {
         )
         }
         <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
-          <div className="col col-12 col-md-2">
+          <div className="col col-12 col-md-3">
             <SelectDomainRisk selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
           </div>
           <div className="col col-12 col-md-3">
             <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
           </div>
-          <div className="col col-12 col-md-3">
+          <div className="col col-12 col-md-2">
             {/* Hay que obtener las scopes a traves de algun endpoint */}
             <SelectControlScopes selectedScopes={selectedScopes} setSelectedScopes={setSelectedScopes} /> 
           </div>
