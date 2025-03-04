@@ -50,10 +50,6 @@ from krm.questionnaires.api import (
     ScopeViewSet,
 )
 
-from krm.plants.api import (
-    PlantApiView
-)
-
 from krm.users.api import (
     UserViewSet,
 )
@@ -82,8 +78,7 @@ urlpatterns = [
      path('i18n/', include('django.conf.urls.i18n')),
      path('api/', include(router.urls)),
      path('api-auth/', include('rest_framework.urls')),
-     path('api/plants/',
-          PlantApiView.as_view()),
+     
      path('api/riskscompany/',
           RiskCompanyApiView.as_view()),
      path('api/riskscompanyresidual/',

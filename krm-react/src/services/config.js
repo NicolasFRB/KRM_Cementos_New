@@ -14,7 +14,7 @@ const user = window.$('#pk').data('pk');
 
 const configService = {
   apiGetProcesses: `${baseUrlApi}process/`,
-  apiGetPlants: `${baseUrlApi}plants/`,
+  // apiGetPlants: `${baseUrlApi}plants/`,
   apiGetRisks: `${baseUrlApi}risks/`,
   apiGetDomainRisks: `${baseUrlApi}domain-risks/`,
   apiGetControls: `${baseUrlApi}controls/`,

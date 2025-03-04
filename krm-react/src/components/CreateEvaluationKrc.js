@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import SelectCompanies from "./SelectCompanies.js";
 import SelectProcess from "./SelectProcess.js";
-import SelectPlant from "./SelectPlant.js";
+import SelectScope from "./SelectScope.js";
 import SelectDomainRisk from "./SelectDomainRisk.js";
 import SelectPeriodicity from "./SelectPeriodicity.js";
 import SelectControlsCompanyKrc from "./SelectControlsCompanyKrc.js";
@@ -17,7 +17,7 @@ function CreateEvaluationKrc(props) {
   const [selectedDomainRisks, setSelectedDomainRisks] = useState([]);
   const [selectedPeriodicity, setSelectedPeriodicity] = useState([]);
   const [selectedProcesses, setSelectedProcesses] = useState([]);
-  const [selectedPlants, setSelectedPlants] = useState([]);
+  const [selectedScopes, setSelectedScopes] = useState([]);
   // const [selectedRisks, setSelectedRisks] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -103,7 +103,7 @@ function CreateEvaluationKrc(props) {
             <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
           </div>
           <div className="col col-12 col-md-3">
-            <SelectPlant selectedPlants={selectedPlants} setSelectedPlants={setSelectedPlants} />
+            <SelectScope selectedScopes={selectedScopes} setSelectedScopes={setSelectedScopes} />
           </div>
           <div className="col col-12 col-md-2">
             {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}
@@ -130,7 +130,7 @@ function CreateEvaluationKrc(props) {
           <SelectControlsCompanyKrc
             selectedDomainRisks={selectedDomainRisks}
             selectedProcesses={selectedProcesses}
-            selectedPlants={selectedPlants}
+            selectedScopes={selectedScopes}
             selectedPeriodicity={selectedPeriodicity}
             // selectedRisks={selectedRisks}
             selectedCompanies={selectedCompanies}

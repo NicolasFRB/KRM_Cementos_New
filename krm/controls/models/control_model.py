@@ -161,10 +161,7 @@ class Control(AuditModel):
     )
 
     SCOPE_CHOICES = (
-        ("S", _("Sociedad")),
-        ("C", _("Corporativo")),
         ("G", _("Grupo")),
-        ("D", _("Division")),
         ("P", _("Planta")),
     )
 
