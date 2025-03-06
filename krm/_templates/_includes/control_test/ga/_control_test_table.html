@@ -90,11 +90,14 @@
             {% elif ct.result == "EF" %}
             <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EF</span>
+            {% elif ct.result == "EFR" %}
+              <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
+                data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EFR</span>
             {% elif ct.result == "NE" %}
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NE</span>
             {% elif ct.result == "NA" %}
-            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
+            <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NA</span>
             {% endif %}
           </td>

@@ -177,10 +177,9 @@
 
   function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined") {
 
-    var arglen = arguments.length;
     let data;
 
-    if (arglen == 7) {
+    if (title== 'Controles por estado') {
       data = {
         labels: ['Not started', 'Waiting Control Owner', 'Waiting Control Supervisor', 'Waiting Administrator', 'Finalized'],
         datasets: [
@@ -194,12 +193,12 @@
 
     } else {
       data = {
-        labels: ['Not started', 'Effective', 'Not effective', "N/A"],
+        labels: ['Not started', 'Effective', 'Effective with recommendations', 'Not effective', "N/A"],
         datasets: [
           {
             label: '',
             data: [arg1, arg2, arg3, arg4],
-            backgroundColor: ["#d4d0c7", "#a6ed9d", "#ed9f7b", "#e6d68e"],
+            backgroundColor: ["#d4d0c7", "#a6ed9d", "#e6d68e", "#ed9f7b", "#7dedf5"],
           }
         ]
       };
@@ -481,7 +480,7 @@
           </div>
         </div>
         <script>
-          load_chart('pie-main2', 'Controles por efectividad', '{{evaluation.ncontrols_test_by_result_se}}', '{{evaluation.ncontrols_test_by_result_ef}}', '{{evaluation.ncontrols_test_by_result_ne}}', '{{evaluation.ncontrols_test_by_result_na}}');
+          load_chart('pie-main2', 'Controles por efectividad', '{{evaluation.ncontrols_test_by_result_se}}', '{{evaluation.ncontrols_test_by_result_ef}}', '{{evaluation.ncontrols_test_by_result_efr}}', '{{evaluation.ncontrols_test_by_result_ne}}', '{{evaluation.ncontrols_test_by_result_na}}');
         </script>
         <div class="row mb-8">
           <div
@@ -490,9 +489,11 @@
               data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
             <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{% trans 'Effective' %}">EF</span>
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Effective with recommendations' %}">EFR</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip" title="{% trans 'Not effective' %}">NE</span>
-            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
+            <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-custom-class="custom-tooltip" title="{% trans 'N/A' %}">NA</span>
           </div>
         </div>
@@ -641,10 +642,12 @@
                 <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NS</span>
               {% elif ct.result == "EF" %}
                 <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EF</span>
+              {% elif ct.result == "EFR" %}
+                <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">EFR</span>
               {% elif ct.result == "NE" %}
                 <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NE</span>
               {% elif ct.result == "NA" %}
-              <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NA</span>
+              <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans ct.get_result_display %}">NA</span>
               {% endif %}
             </td>
           </tr>

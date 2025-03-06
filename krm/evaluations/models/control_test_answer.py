@@ -92,6 +92,7 @@ class ControlTestAnswer(AuditModel):
 
     CONTROL_RESULT_CHOICES = (
         ("EF", _("Efectivo")),
+        ("EFR", _("Efectivo con recomendación")),
         ("SE", _("Sin establecer")),
         ("NE", _("No efectivo")),
         ("NA", _("No aplica en el periodo certificado")),
@@ -99,7 +100,7 @@ class ControlTestAnswer(AuditModel):
 
     result = models.CharField(
         _("Resultado propuesto"),
-        max_length=2,
+        max_length=3,
         choices=CONTROL_RESULT_CHOICES,
         default="SE",
         null = True,

@@ -192,6 +192,8 @@ class CaEvaluationDetailView(FormView):
             "SE")
         context['evaluation'].ncontrols_test_by_result_ef = context['evaluation'].ncontrols_test_by_result(
             "EF")
+        context['evaluation'].ncontrols_test_by_result_efr= context['evaluation'].ncontrols_test_by_result(
+            "EFR")
         context['evaluation'].ncontrols_test_by_result_ne = context['evaluation'].ncontrols_test_by_result(
             "NE")
         context['evaluation'].ncontrols_test_by_result_na = context['evaluation'].ncontrols_test_by_result(

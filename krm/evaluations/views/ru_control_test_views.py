@@ -135,7 +135,7 @@ class RuControlTestDetail(CreateView):
             control_result = form.cleaned_data["control_result"]
 
             self.control_test.result = control_result
-            if self.control_test.result == "NE":
+            if self.control_test.result == "NE" or self.control_test.result== "EFR":
                 self.control_test.status = "WO"
                 self.control_test.remediation_plan_needed = True
             else:

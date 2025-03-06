@@ -69,8 +69,8 @@ if (settings.DEBUG_LOGIN):
 
     oauth.register(
         "auth0",
-        client_id="1Dk3p7qRl4ETYA9emXHwooqES1wuVN5S",
-        client_secret="Hs-F46aKi3a-4NDz0aS9LgJtBSGAadpSngPNb0TbLqOGoHyLejo00OHg2_wYFzOV",
+        client_id= settings.AUTH0_CLIENT_ID,
+        client_secret= settings.AUTH0_CLIENT_SECRET,
         client_kwargs={
             "scope": "openid profile email",
         },
@@ -160,7 +160,7 @@ def login_view(r):
 #         token = oauth.auth0.authorize_access_token(self.request)
 #         self.request.session["user"] = token
 #         return HttpResponseRedirect(self.request.build_absolute_uri(reverse("users:dashboard")))
-    
+
 
 # CALLBACK DEPENDENCIES BEGIN
 # def get_reverse(objs):
@@ -264,9 +264,9 @@ def callback_view(r):
     if (settings.DEBUG_LOGIN):
 
         #AUTH0 Login
-    
+
         token = oauth.auth0.authorize_access_token(r)
-        
+
         user = authenticate(username=token['userinfo']['nickname'], password=token['access_token'])
         r.session["user"] = user
         print("TOKEN")
@@ -303,11 +303,11 @@ def callback_view(r):
             else:
                 print("step3")
                 messages.add_message(r, messages.ERROR, _('Usuario no válido'))
-                return HttpResponseRedirect(reverse("auth:logout")) # to denied 
-                
-    
+                return HttpResponseRedirect(reverse("auth:logout")) # to denied
+
+
     else:
-        
+
         #SSO Login
 
         saml_client = _get_saml_client(get_current_domain(r))
@@ -345,7 +345,7 @@ def callback_view(r):
         except User.DoesNotExist:
             print("User does not exist")
             new_user_should_be_created = settings.SAML2_AUTH.get('CREATE_USER', True)
-            if new_user_should_be_created: 
+            if new_user_should_be_created:
                 target_user = _create_new_user(user_name, user_email, user_real_name)
                 # if settings.SAML2_AUTH.get('TRIGGER', {}).get('CREATE_USER', None):
                 #     import_string(settings.SAML2_AUTH['TRIGGER']['CREATE_USER'])(user_identity)
@@ -359,7 +359,7 @@ def callback_view(r):
             target_user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(r, target_user)
         else:
-            return HttpResponseRedirect(reverse("auth:logout")) # to denied 
+            return HttpResponseRedirect(reverse("auth:logout")) # to denied
 
         if settings.SAML2_AUTH.get('USE_JWT') is True:
             # We use JWT auth send token to frontend
@@ -378,8 +378,8 @@ def callback_view(r):
             #     return HttpResponseRedirect(next_url)
         else:
             return HttpResponseRedirect(reverse("users:dashboard"))
-    
-    
+
+
 
 
 
@@ -398,12 +398,12 @@ def callback_view(r):
 #                     quote_via=urllib.parse.quote_plus,
 #                 )
 #         )
-    
+
 def logout_view(request):
     request.session.clear()
 # https://identity-services.uat.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/&slo=true&returnTo=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/logout
 # https://identity-services.uat.elcorteingles.es/samlsso?spEntityID=https://krm-tool-uat.des-onprem1.eci.geci/en/auth/callback/
-    
+
     if (settings.DEBUG_LOGIN):
         return HttpResponseRedirect(
             f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
@@ -419,7 +419,7 @@ def logout_view(request):
         return HttpResponseRedirect(
             "https://identity-services.uat.elcorteingles.es/samlsso?slo=true"
         )
-    
+
 
 # @method_decorator(decorators, name='dispatch')
 # class LoginView(FormView):
@@ -552,7 +552,7 @@ class RememberEmailSended(TemplateView):
         return context
 
 
-# @login_required   
+# @login_required
 # def logout_view(request):
 #     logout(request)
 #     return HttpResponseRedirect(reverse('auth:login'))
