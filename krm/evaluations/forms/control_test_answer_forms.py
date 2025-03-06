@@ -13,6 +13,7 @@ class ControlTestAnswerCreateForm(ModelForm):
     CONTROL_RESULT_CHOICES = (
         ("", _("-")),
         ("EF", _("Efectivo")),
+        ("EFR", _("Efectivo con recomendación")),
         ("NE", _("No efectivo")),
         ("NA", _("No aplica en el periodo certificado")),
     )
@@ -63,6 +64,7 @@ class ControlTestAnswerOwnerCreateForm(ModelForm):
     CONTROL_RESULT_CHOICES = (
         ("", _("-")),
         ("EF", _("Efectivo")),
+        ("EFR", _("Efectivo con recomendación")),
         ("NE", _("No efectivo")),
         ("NA", _("No aplica en el periodo certificado")),
     )

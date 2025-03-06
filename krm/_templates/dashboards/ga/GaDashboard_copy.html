@@ -69,7 +69,7 @@
   var control_type_evaluation = {'Preventivo': {}, 'Detectivo': {}};
   var key_controls_evaluation = {"Key": {}, "Non-key": {}};
   var ct_status_evaluation = {};
-  var ct_result_evaluation = {"Efectivo": {}, "Sin establecer": {}, "No efectivo": {}, "N/A": {}};
+  var ct_result_evaluation = {"Efectivo": {}, "Sin establecer": {}, "Efectivo con recomendación": {}, "No efectivo": {}, "N/A": {}};
   var subprocesses = {};
   var risks = {};
 
@@ -356,6 +356,7 @@
           fontFamily: undefined
         }
       },
+        colors: ['#02e397', '#bdbac1', '#ffaa1e', '#e85065', '#0090ff'],
         responsive: [{
           breakpoint: 480,
           options: {
@@ -617,7 +618,7 @@
         var ct_types = {"Preventivo": 0, "Detectivo": 0};
         var key_controls = {"Key": 0, "Non-key": 0};
         var ct_status = {"Sin iniciar": 0, "En espera de respuesta del Control Owner": 0, "En espera de respuesta del Control Supervisor": 0, "En espera de respuesta del Control Administrator": 0, "Finalizado": 0};
-        var ct_result = {"Efectivo": 0, "Sin establecer": 0, "No efectivo": 0, "N/A": 0};
+        var ct_result = {"Efectivo": 0, "Sin establecer": 0, "Efectivo con recomendación": 0, "No efectivo": 0, "N/A": 0};
       </script>
       {% for ct in e.get_all_control_test_in_evaluation %}
       <script>
@@ -712,6 +713,9 @@
           case "NE":
             ct_result["No efectivo"] += 1;
             break;
+          case "EFR":
+            ct_result["Efectivo con recomendación"]+=1;
+            break;
           case "NA":
             ct_result["N/A"] += 1;
             break;
@@ -754,6 +758,7 @@
         ct_result_evaluation["Efectivo"]["{{e}}"] = ct_result["Efectivo"];
         ct_result_evaluation["Sin establecer"]["{{e}}"] = ct_result["Sin establecer"];
         ct_result_evaluation["No efectivo"]["{{e}}"] = ct_result["No efectivo"];
+        ct_result_evaluation["Efectivo con recomendación"]["{{e}}"]= ct_result["Efectivo con recomendación"]
         ct_result_evaluation["N/A"]["{{e}}"] = ct_result["N/A"];
 
         evals.push("{{e}}");

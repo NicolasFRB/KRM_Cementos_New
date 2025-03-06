@@ -1,7 +1,7 @@
 """ControlTest model."""
 
 import random
-import json 
+import json
 
 # Django
 from django.db import models
@@ -77,13 +77,14 @@ class ControlTest(AuditModel):
     CONTROL_RESULT_CHOICES = (
         ("EF", _("Efectivo")),
         ("SE", _("Sin establecer")),
+        ("EFR", _("Efectivo con recomendación")),
         ("NE", _("No efectivo")),
         ("NA", _("No aplica en el periodo certificado")),
     )
 
     result = models.CharField(
         _("Resultado del test de control"),
-        max_length=2,
+        max_length=3,
         choices=CONTROL_RESULT_CHOICES,
         default="SE",
     )
