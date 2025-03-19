@@ -16,6 +16,8 @@ const configService = {
   apiGetProcesses: `${baseUrlApi}process/`,
   // apiGetPlants: `${baseUrlApi}plants/`,
   apiGetRisks: `${baseUrlApi}risks/`,
+  apiGetRisksDomainRisks: `${baseUrlApi}risksdomainrisks/`,
+  apiGetDomainRisksCompany: `${baseUrlApi}domainriskscompany/`,
   apiGetDomainRisks: `${baseUrlApi}domain-risks/`,
   apiGetControls: `${baseUrlApi}controls/`,
   apiGetCompanies: `${baseUrlApi}companies?user=${user}`,

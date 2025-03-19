@@ -7,6 +7,7 @@ import configService from "../services/config.js";
 import SelectCompanies from "./SelectCompanies.js";
 import SelectRisk from "./SelectRiskInherentKrm.js";
 import EvaluationKrmInherentCreateSteps from "./EvaluationKrmInherentCreateSteps.js";
+import SelectDomainRiskKrmInherent from "./SelectDomainRiskKrmInherent.js";
 
 let $ = window.$;
 
@@ -17,6 +18,7 @@ function CreateEvaluationKrmInherent(props) {
 
   const [riskCompaniesLoading, setRiskCompaniesLoading] = useState(false);
   const [selectedRisks, setSelectedRisks] = useState([]);
+  const [selectedDomainRisks, setSelectedDomainRisks] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [riskCompanies, setRiskCompanies] = useState([]);
   const [companies, setCompanies] = useState([])
@@ -149,6 +151,7 @@ function CreateEvaluationKrmInherent(props) {
     setRiskCompaniesLoading(true);
     setRiskCompaniesToEvaluate([]);
 
+    console.log("Selected Risks", selectedRisks)
     const params = {
       company_pks: selectedCompanies,
       risk_pks: selectedRisks
@@ -202,6 +205,8 @@ function CreateEvaluationKrmInherent(props) {
           </div>
           <div className="separator my-10"></div>
         </div>
+
+
         <div className="col-12">
           <h3 className="mb-5">{t('krmInherent.step-3')}</h3>
         </div>
@@ -212,13 +217,33 @@ function CreateEvaluationKrmInherent(props) {
         )
         }
         <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
-          <div className="col col-12">
-            <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} />
+          <div className="col col-12 col-md-3">
+            <SelectDomainRiskKrmInherent selectedCompanies={selectedCompanies} selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
           </div>
         </div>
+
+
+        <div className="separator my-10"></div>
+
+
+        <div className="col-12">
+          <h3 className="mb-5">{t('krmInherent.step-4')}</h3>
+        </div>
+        {selectedCompanies.length === 0 && (
+          <>
+            <div className="alert alert-primary">{t('krmInherent.select-company')}</div>
+          </>
+        )
+        }
+        <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
+          <div className="col col-12">
+            <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} selectedDomainRisks={selectedDomainRisks} selectedCompanies={selectedCompanies} />
+          </div>
+        </div>
+        
         <div className="separator my-10"></div>
         <div className="col-12" id="launch">
-          <h3 className="mb-5">{t('krmInherent.step-4')}</h3>
+          <h3 className="mb-5">{t('krmInherent.step-5')}</h3>
           {selectedRisks.length > 0 && (
             <>
               <div className="mt-5 mb-15">

@@ -29,6 +29,8 @@ from krm.process.api import (
 from krm.risks.api.views import (
     RiskCompanyApiView,
     RiskCompanyResidualApiView,
+    DomainRiskCompanyApiView,
+    RiskDomainRiskApiView
 )
 
 from krm.controls.api.views import ControlCompanyApiView, ControlPeriodicityApiView, ControlScopesApiView
@@ -80,6 +82,10 @@ urlpatterns = [
      path('api-auth/', include('rest_framework.urls')),
      path('api/riskscompany/',
           RiskCompanyApiView.as_view()),
+     path('api/risksdomainrisks/',
+          RiskDomainRiskApiView.as_view()),
+     path('api/domainriskscompany/',
+          DomainRiskCompanyApiView.as_view()),
      path('api/riskscompanyresidual/',
           RiskCompanyResidualApiView.as_view()),
      path('api/risktestinherentexpert/',
