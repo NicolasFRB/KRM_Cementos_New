@@ -77,6 +77,24 @@ class RiskCompany(AuditModel):
         null=True
     )
 
+    evaluator = models.ForeignKey(
+        'users.User',
+        verbose_name=_('Evaluador asignado'),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='evaluator_risks'
+    )
+
+    expert = models.ForeignKey(
+        'users.User',
+        verbose_name=_('Experto asignado'),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='expert_risks'
+    )
+
     def __str__(self):
         return self.name
 
@@ -89,6 +107,7 @@ class RiskCompany(AuditModel):
     def risk_ref(self):
         return self.risk.ref
 
+# Modificar, ya que ya no funciona con esa relacion
     @property
     def expert_assign(self):
         from krm.companies.models import CompanyDomainRiskExperts
@@ -110,6 +129,7 @@ class RiskCompany(AuditModel):
         if evaluator.evaluator:
             return evaluator.evaluator.email
         return False
+
 
     @property
     def expert_pk(self):

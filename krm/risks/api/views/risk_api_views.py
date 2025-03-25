@@ -15,6 +15,10 @@ from krm.risks.models import (
     Risk,
     RiskCompany
 )
+from krm.users.models import (
+    User
+)
+
 from krm.evaluations_krm.models import (
     EvaluationKrmInherent,
     RiskTestInherent
@@ -22,6 +26,8 @@ from krm.evaluations_krm.models import (
 from krm.companies.api import CompanySerializer
 from krm.risks.api import RiskSerializer
 from krm.risks.models import RiskCompany
+
+from krm.users.api import UserSerializer
 
 
 class RiskDomainRiskApiView(APIView):
@@ -99,7 +105,18 @@ class RiskCompanyApiView(APIView):
             for krm_risk in c.krm_risks.filter(risk__pk__in=(risk_pks), active=True).order_by('risk__ref'):
                 # Por algun motivo los riesgos de la segunda compañia no aparecen
                 print(krm_risk.risk.name) 
-                data_item['risks'].append(RiskSerializer(krm_risk).data)
+                risk = RiskCompanySerializer(krm_risk).data
+
+                if risk["expert"]:
+                    risk["expert_data"] = UserSerializer(User.objects.get(pk=risk["expert"])).data
+                
+                if risk["evaluator"]:
+                    print("EVALUATOR EVALUATOR EVALUATOR EVALUATOR")
+                    print(risk["evaluator"])
+                    print(UserSerializer(User.objects.filter(pk=(risk["evaluator"]))).data)
+                    risk["evaluator_data"] = UserSerializer(User.objects.get(pk=risk["evaluator"])).data
+
+                data_item['risks'].append(risk)
 
             data.append(data_item)
 

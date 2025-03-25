@@ -9,6 +9,8 @@ import SelectRisk from "./SelectRiskInherentKrm.js";
 import EvaluationKrmInherentCreateSteps from "./EvaluationKrmInherentCreateSteps.js";
 import SelectDomainRiskKrmInherent from "./SelectDomainRiskKrmInherent.js";
 
+import Select from 'react-select'
+
 let $ = window.$;
 
 function CreateEvaluationKrmInherent(props) {
@@ -290,13 +292,24 @@ function CreateEvaluationKrmInherent(props) {
                                 <td><label htmlFor={'ri' + risk.pk}>{risk.risk_ref}</label></td>
                                 <td><span className="fw-semibold ps-2 fs-6">{risk.name}</span></td>
                                 <td>
-                                  {risk.expert_assign && (
+                                  {risk.expert && (
                                     <span className="fw-semibold ps-2 fs-6">
-                                      {risk.expert_assign}
+                                      {risk.expert_data.email}
                                     </span>
                                   )}
-                                  {!risk.expert_assign && (
+                                  {!risk.expert && (
                                     <>
+                                      {/* <Select
+                                        onChange={(supervisors) => setSupervisors(supervisors, company.c.pk, company_control.control.pk)}
+                                        getOptionValue={(option) => `${option['pk']}`}
+                                        options={company.c.employees.map((employee) => {
+                                          return { pk: employee.pk, label: employee.email }
+                                        })}
+                                        isMulti
+                                        defaultValue={company_control.control_test_supervisors.map((owner) => {
+                                          return { pk: owner.pk, label: owner.email }
+                                        })} 
+                                      /> */}
                                       <span className="badge badge-danger">{t('krmInherent.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-primary">{t('krmInherent.assign')}</span></a>
                                     </>
                                   )}

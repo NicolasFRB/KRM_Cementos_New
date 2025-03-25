@@ -1,4 +1,8 @@
 from .company_views import *
+
+from .company_risk_experts_views import *
+from .company_risk_evaluators_views import *
+
 from .company_domain_risk_experts_views import *
 from .company_domain_risk_evaluators_views import *
 

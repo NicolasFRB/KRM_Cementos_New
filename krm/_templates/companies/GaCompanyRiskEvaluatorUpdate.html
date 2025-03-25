@@ -1,0 +1,81 @@
+{% extends 'layout/default.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<!--begin::Container-->
+<div class="card">
+  <!--begin::Card header-->
+  <div class="card-header" style="display:block;">
+    <!--begin::Card header-->
+    <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
+    <div class="card-subtitle mb-2 text-muted">En esta página es posible asignar evaluadores de Riesgo Residual para el Riesgo <span class="badge badge-primary text-wrap">{{ object.domain_risk }}</span> en la compañía <span class="badge badge-primary text-wrap">{{ object.company.name }}</span>.</div>
+    <!--end::Card header-->
+  </div>
+  <!--end::Card header-->
+
+    <form method="post" class="kt-form kt-form--label-right" novalidate>
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="row">
+          <div class="col col-md-12">
+            {% include '_includes/FormErrors.html' %}
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Compañía' %}</span></div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  <span>{{ object.company.name }}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Riesgo' %}</span></div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-8">
+                <div class="fs-6">
+                  <span>{{ object.risk }}</span>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+            <div class="row mb-8">
+              <!--begin::Col-->
+              <div class="col-xl-4">
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Evaluadores' %}</span></div>
+              </div>
+              <!--end::Col-->
+              <!--begin::Col-->
+              <div class="col-xl-8">
+                <div class="col col-12 col-xl-12 mb-4">
+                  {{ form.evaluator|as_crispy_field }}
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::Body-->
+    
+      <div class="card-footer py-6">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Asignar' %}</button>
+        <button class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Volver' %}</button>
+      </div>
+    </form>
+
+</div>
+<!--end::Container-->
+
+{% endblock content %}

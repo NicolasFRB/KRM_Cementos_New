@@ -1,4 +1,6 @@
 from .company_model import Company
 from .company_domain_risk_experts import CompanyDomainRiskExperts
 from .company_domain_risk_evaluator import CompanyDomainRiskEvaluator
+from .company_risk_experts import CompanyRiskExperts
+from .company_risk_evaluator import CompanyRiskEvaluator
 from .company_control import CompanyControls
