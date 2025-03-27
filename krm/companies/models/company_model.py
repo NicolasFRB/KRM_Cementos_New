@@ -113,6 +113,16 @@ class Company(AuditModel):
     def evaluators_domain_risk(self):
         from krm.companies.models import CompanyDomainRiskEvaluator
         return CompanyDomainRiskEvaluator.objects.filter(company=self)
+    
+    @property
+    def experts_risk(self):
+        from krm.companies.models import CompanyRiskExperts
+        return CompanyRiskExperts.objects.filter(company=self)
+
+    @property
+    def evaluators_risk(self):
+        from krm.companies.models import CompanyRiskEvaluator
+        return CompanyRiskEvaluator.objects.filter(company=self)
 
     @property
     def krm_risks_active(self):

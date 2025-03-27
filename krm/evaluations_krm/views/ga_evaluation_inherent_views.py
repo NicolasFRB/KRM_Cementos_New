@@ -49,6 +49,7 @@ from krm.evaluations_krm.forms import (
     EvaluationInherentNotificationForm,
 )
 
+from krm.users.models import User
 from krm.risks.models import RiskCompany
 
 from krm.evaluations_krm.models import RiskTestInherent
@@ -166,8 +167,24 @@ class GaEvaluationInherentCreateView(FormView):
         risk_companies = json.loads(form.cleaned_data["risk_companies"])
         for rc in risk_companies:
             company = Company.objects.get(pk=rc['company_pk'])
-            risks = RiskCompany.objects.filter(pk__in=(rc['risks']))
 
+            riskcompany_pks = [] 
+
+            for rc in rc['risks']:
+                riskcompany_pks.append(rc[0])
+                risk_company = RiskCompany.objects.get(pk=(rc[0]))
+                risk_company.expert = User.objects.get(
+                    pk=rc[1]
+                )
+                risk_company.save()
+                
+            risks = []
+            risks = RiskCompany.objects.filter(pk__in=(riskcompany_pks))
+                    
+
+            print("Risk Company")
+            print(rc)
+            
             if EvaluationKrmInherent.objects.filter(
                 ref=f'{form.cleaned_data["ref"]} - {company.name}',
             ).count() > 0:
@@ -189,14 +206,10 @@ class GaEvaluationInherentCreateView(FormView):
 
             # Para cada evaluación hay que crear los test controls de los controles que se han pasado
             for risk in risks:
-                company_expert = CompanyDomainRiskExperts.objects.get(
-                    company=company,
-                    domain_risk=risk.risk.risk_master.domain_risk
-                )
                 RiskTestInherent.objects.create(
                     evaluation=evaluation,
                     risk=risk,
-                    expert=company_expert.expert
+                    expert=risk.expert
                 )
 
                 risk_tests__created += 1

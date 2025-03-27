@@ -37,7 +37,7 @@ django-filter==22.1
 django-cors-headers==3.13.0
 # pandas==1.5.1
 
-xmlsec ~= 1.3.14
+xmlsec == 1.3.14
 django-rest-auth ~= 0.9.5
 pysaml2>=7.4.2
 authlib ~= 1.0

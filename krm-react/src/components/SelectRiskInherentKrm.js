@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-function SelectRisk({ selectedRisks, setSelectedRisks }) {
+function SelectRisk({ selectedRisks, setSelectedRisks, selectedDomainRisks, selectedCompanies }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [risks, setRisks] = useState([]);
@@ -29,11 +29,39 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
   };
 
   useEffect(() => {
-    fetch(`${configService.apiGetRisks}`)
+
+    if(!selectedCompanies.length ) return;
+    const params = {
+      company_pks: selectedCompanies,
+      domain_risk_pks: selectedDomainRisks,
+    };
+
+
+    var url = new URL(configService.apiGetRisksDomainRisks);
+    for (let k in params) {
+      url.searchParams.append(k, params[k]);
+    }
+
+    fetch(url)
       .then((res) => res.json())
       .then(
         (res) => {
-          setRisks(res.results.map(risk => {
+          
+          console.log("Filtered risks", res)
+
+          let riskSet = [];
+
+          res.forEach( r => {
+            r.risks.forEach(risk => {
+              if (!riskSet.find(r => r.pk === risk.pk)) {
+                riskSet.push(risk)
+              }
+            } )
+          })
+
+          console.log("Risks", Array.from(riskSet));
+
+          setRisks(Array.from(riskSet).map(risk => {
             return { ...risk, checked: false }
           }));
           setIsLoaded(true);
@@ -43,13 +71,15 @@ function SelectRisk({ selectedRisks, setSelectedRisks }) {
           setError(error);
         }
       );
-  }, []);
+  }, [selectedCompanies, selectedDomainRisks]);
 
+  // No es necesario reinicializar en realidad, ya que la tabla toma el idioma la priemra vez
   useEffect(() => {
     if (risks.length) {
-      window.CustomDatatables.initEvalRI();
+      window.CustomDatatables.initEvalRI(); //Error aqui
     }
-  }, [risks]);
+  }, []); 
+  // }, [risks]); 
 
   if (error) {
     return <div>Error: {error.message}</div>;
