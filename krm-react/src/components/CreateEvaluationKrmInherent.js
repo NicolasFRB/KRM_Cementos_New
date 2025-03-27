@@ -58,7 +58,7 @@ function CreateEvaluationKrmInherent(props) {
 
     newRiskCompanies.forEach(function (rc, i) {
       if (rc.company.pk === companyPk) {
-        let risksChecked = rc.risks.filter((risk) => risk.expert_assign);
+        let risksChecked = rc.risks.filter((risk) => risk.expert);
         if (risksChecked.length > 0) {
           newRiskCompaniesToEvaluate.push(
             {
@@ -119,7 +119,7 @@ function CreateEvaluationKrmInherent(props) {
       }
       c.risks.forEach(risk => {
         if (risk.checked) {
-          rs.risks.push(risk.pk);
+          rs.risks.push([risk.pk, risk.expert]);
         }
       });
       if (rs.risks.length > 0) {
@@ -189,6 +189,60 @@ function CreateEvaluationKrmInherent(props) {
           setRiskCompaniesLoading(false);
         }
       );
+  }
+
+  const selectExpert = (selected_riskCompany,selected_risk, selected_expert_data) => {
+    // console.log("Risk")
+    // console.log(riskCompany)
+    
+    // console.log("Expert")
+    // console.log(expert_data)
+
+    setRiskCompanies((riskCompanies) => 
+      riskCompanies.map((riskCompany) => {
+        console.log(riskCompany);
+        if(riskCompany.company.pk === selected_riskCompany.company.pk) 
+          return { ...riskCompany,
+            risks: riskCompany.risks.map( (risk) => {
+                if (risk.pk === selected_risk.pk) {
+                  console.log(risk);
+                  console.log({
+                    ...risk,  
+                    original_expert: risk.hasOwnProperty("original_expert")? risk.original_expert: risk.expert, 
+                    expert: selected_expert_data.pk, 
+                    expert_data: {
+                      pk:selected_expert_data.pk,
+                      email:selected_expert_data.label,
+                    },
+                    save_expert: selected_expert_data.pk != risk.expert
+                  });
+                  return {
+                    ...risk,  
+                    original_expert: risk.hasOwnProperty("original_expert")? risk.original_expert: risk.expert, 
+                    expert: selected_expert_data.pk, 
+                    expert_data: {
+                      pk:selected_expert_data.pk,
+                      email:selected_expert_data.label,
+                    },
+                    save_expert: selected_expert_data.pk != risk.expert
+                  };
+
+                }
+                else return risk;
+              })
+          }
+        else return riskCompany;
+      })
+    )
+
+    fetch(`${configService.apiSetExperts}` , {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(riskCompanies)
+    });
   }
 
   return (
@@ -282,10 +336,10 @@ function CreateEvaluationKrmInherent(props) {
                             {company.risks.map((risk, index) => {
                               return <tr key={index}>
                                 <td className="text-center">
-                                  {!risk.expert_assign && (
+                                  {!risk.expert && (
                                     <span className="badge badge-square badge-danger" data-bs-toggle="tooltip" data-bs-placement="top" title={t('krmInherent.no-posible-launch-without-expert')}></span>
                                   )}
-                                  {risk.expert_assign && (
+                                  {risk.expert && (
                                     <input id={'ri' + risk.pk} onChange={() => selectRiskCompanyToEvaluate(risk.pk)} className="form-check-input" name="risks" type="checkbox" value={risk.pk} checked={risk.checked} />
                                   )}
                                 </td>
@@ -293,24 +347,39 @@ function CreateEvaluationKrmInherent(props) {
                                 <td><span className="fw-semibold ps-2 fs-6">{risk.name}</span></td>
                                 <td>
                                   {risk.expert && (
-                                    <span className="fw-semibold ps-2 fs-6">
-                                      {risk.expert_data.email}
-                                    </span>
+                                    // <span className="fw-semibold ps-2 fs-6">
+                                    //   {risk.expert_data.email}
+                                    // </span>
+<>
+                                      <Select
+                                        onChange={(expert) => selectExpert(company, risk, expert)}
+                                        getOptionValue={(option) => `${option['pk']}`}
+                                        options={company.company.employees.map((employee) => {
+                                          // console.log(employee)
+                                          return { pk: employee.pk, label: employee.email }
+                                        })}
+                                        // isMulti
+                                        defaultValue={ risk?.expert_data ? {pk: risk.expert_data.pk, label: risk.expert_data.email}: null }  
+
+                                      />
+                                      {/* <span className="badge badge-danger">{t('krmInherent.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-primary">{t('krmInherent.assign')}</span></a> */}
+                                    </>
+
                                   )}
                                   {!risk.expert && (
                                     <>
-                                      {/* <Select
-                                        onChange={(supervisors) => setSupervisors(supervisors, company.c.pk, company_control.control.pk)}
+                                      <Select
+                                        onChange={(expert) => selectExpert(company, risk, expert)}
                                         getOptionValue={(option) => `${option['pk']}`}
-                                        options={company.c.employees.map((employee) => {
+                                        options={company.company.employees.map((employee) => {
+                                          // console.log(employee)
                                           return { pk: employee.pk, label: employee.email }
                                         })}
-                                        isMulti
-                                        defaultValue={company_control.control_test_supervisors.map((owner) => {
-                                          return { pk: owner.pk, label: owner.email }
-                                        })} 
-                                      /> */}
-                                      <span className="badge badge-danger">{t('krmInherent.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-primary">{t('krmInherent.assign')}</span></a>
+                                        // isMulti
+                                        defaultValue={ risk?.expert_data ? {pk: risk.expert_data.pk, label: risk.expert_data.email}: null }  
+
+                                      />
+                                      {/* <span className="badge badge-danger">{t('krmInherent.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-primary">{t('krmInherent.assign')}</span></a> */}
                                     </>
                                   )}
                                 </td>

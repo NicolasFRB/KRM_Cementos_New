@@ -29,6 +29,9 @@ from krm.risks.models import RiskCompany
 
 from krm.users.api import UserSerializer
 
+from django.http import HttpResponse
+
+
 
 class RiskDomainRiskApiView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -97,8 +100,14 @@ class RiskCompanyApiView(APIView):
 
         for c in Company.objects.filter(pk__in=(company_pks)):
             data_item = {}
+
             company = CompanySerializer(c)
             data_item['company'] = company.data
+            
+            # for employee in c.employees.all():
+            #     data_item['company']['employees'].append(UserSerializer(employee).data)
+                
+            
             data_item['risks'] = []
             
             
@@ -111,9 +120,6 @@ class RiskCompanyApiView(APIView):
                     risk["expert_data"] = UserSerializer(User.objects.get(pk=risk["expert"])).data
                 
                 if risk["evaluator"]:
-                    print("EVALUATOR EVALUATOR EVALUATOR EVALUATOR")
-                    print(risk["evaluator"])
-                    print(UserSerializer(User.objects.filter(pk=(risk["evaluator"]))).data)
                     risk["evaluator_data"] = UserSerializer(User.objects.get(pk=risk["evaluator"])).data
 
                 data_item['risks'].append(risk)
@@ -175,3 +181,24 @@ class RiskCompanyResidualApiView(APIView):
             data.append(data_item)
 
         return Response(data)
+
+class RiskCompanyExpertApiView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, *args, **kwargs):
+        company_risks = request.POST.get('company_risks')
+
+        print(company_risks)
+
+        # self.company.krm_risks.filter(
+        #     pk__in=risk_company_selected).update(active=True)
+        # self.company.krm_risks.exclude(
+        #     pk__in=risk_company_selected).update(active=False)
+
+        # messages.add_message(
+        #     self.request, messages.SUCCESS, _(
+        #         "Riesgos (N2) que aplican sobre %s actualizados correctamente" % self.company.name)
+        # )
+
+        return HttpResponse(status=200)

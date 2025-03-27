@@ -30,7 +30,8 @@ from krm.risks.api.views import (
     RiskCompanyApiView,
     RiskCompanyResidualApiView,
     DomainRiskCompanyApiView,
-    RiskDomainRiskApiView
+    RiskDomainRiskApiView,
+    RiskCompanyExpertApiView
 )
 
 from krm.controls.api.views import ControlCompanyApiView, ControlPeriodicityApiView, ControlScopesApiView
@@ -101,6 +102,8 @@ urlpatterns = [
           ControlCompanyApiView.as_view()),
      path('api/questiontest/',
           QuestionTestApiView.as_view()),
+     path('api/riskcompanyexperts/',
+          RiskCompanyExpertApiView.as_view()),
 ]
 
 urlpatterns += i18n_patterns(

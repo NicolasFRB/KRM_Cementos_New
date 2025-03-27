@@ -31,6 +31,8 @@ const configService = {
   apiGetQuestions: `${baseUrlApi}questions/`,
   apiGetUsers: `${baseUrlApi}users/`,
   apiSendQuestionTest: `${baseUrlApi}questiontest/`,
+  apiSetExperts: `${baseUrlApi}riskcompanyexperts/`,
+  
   apiGetControlPeriodicity: `${base}/es/api/controlperiodicity/`,
   apiGetScopes: `${base}/es/api/controlScopes/`,
 };
