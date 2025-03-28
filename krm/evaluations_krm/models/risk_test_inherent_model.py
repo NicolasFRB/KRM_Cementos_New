@@ -57,6 +57,15 @@ class RiskTestInherent(AuditModel):
         (5, _("Prácticamente cierto")),
     )
 
+    EVENT_SPEED_CHOICES= (
+        (0, _('Sin establecer')),
+        (1, _('Muy baja')),
+        (2, _('Baja')),
+        (3, _('Media')),
+        (4, _('Alta')),
+        (5, _('Muy alta')),
+    )
+
     impact_reputational_expert = models.PositiveSmallIntegerField(
         _('Nivel de Impacto Reputacional indicado por el Evaluador'),
         choices=IMPACT_CHOICES,
@@ -95,7 +104,7 @@ class RiskTestInherent(AuditModel):
 
     event_speed_level_expert = models.PositiveSmallIntegerField(
         _('Nivel de Velocidad de ocurrencia indicado por el Evaluador'),
-        choices=IMPACT_CHOICES,
+        choices=EVENT_SPEED_CHOICES,
         default=0
     )
 
@@ -119,7 +128,7 @@ class RiskTestInherent(AuditModel):
 
     event_speed_level_administrator= models.PositiveSmallIntegerField(
         _('Nivel de Velocidad de ocurrencia indicado por el Administrador'),
-        choices=IMPACT_CHOICES,
+        choices=EVENT_SPEED_CHOICES,
         default=0
     )
 
@@ -172,33 +181,47 @@ class RiskTestInherent(AuditModel):
     def severity_level_expert_qualitative(self):
         sev = self.severity_level_expert
         if sev == 0:
-            return 0
-        if sev <= 2:
-            return "Muy baja"
-        if sev <= 4:
-            return "Baja"
-        if sev <= 9:
+            return "Sin establecer"
+        elif 1 <= sev <= 4:
+            if self.severity_level_expert==4 and (self.impact_level_expert==1 or self.probability_level_expert==1):
+                return "Baja"
+            else:
+                return "Muy baja"
+        elif sev == 5:
             return "Media"
-        if sev <= 16:
+        elif sev == 6:
+            return "Baja"
+        elif 7<= sev <=12:
+            return "Media"
+        elif 13 <= sev <= 20:
             return "Alta"
-        if sev <= 25:
+        elif 21 <= sev <= 25:
             return "Muy alta"
+        else:
+            return "Severidad fuera del rango habitual"
 
     @property
     def severity_level_admin_qualitative(self):
         sev = self.severity_level_admin
         if sev == 0:
-            return 0
-        if sev <= 2:
-            return "Muy baja"
-        if sev <= 4:
-            return "Baja"
-        if sev <= 9:
+            return "Sin establecer"
+        elif 1 <= sev <= 4:
+            if self.severity_level_admin==4 and (self.impact_level_admin==1 or self.probability_level_admin==1):
+                return "Baja"
+            else:
+                return "Muy baja"
+        elif sev == 5:
             return "Media"
-        if sev <= 16:
+        elif sev == 6:
+            return "Baja"
+        elif 7<= sev <=12:
+            return "Media"
+        elif 13 <= sev <= 20:
             return "Alta"
-        if sev <= 25:
+        elif 21 <= sev <= 25:
             return "Muy alta"
+        else:
+            return "Severidad fuera del rango habitual"
 
     def __str__(self):
         return f'{self.evaluation.ref} - {self.risk.risk.name}'
