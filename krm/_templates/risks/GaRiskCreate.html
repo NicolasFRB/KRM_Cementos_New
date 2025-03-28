@@ -23,7 +23,7 @@
             language: {
               ui: 'es',
               content: 'es'
-            }        
+            }
           }
         )
         .then(editor => {
@@ -59,18 +59,22 @@
           </div>
           <div class="col-12 col-md-4 mb-4">
             <fieldset>
-              <!-- <legend>{% trans 'Datos del Riesgo' %}</legend> -->
-              <div class="mb-4">
-                {{ form.ref|as_crispy_field }}
-              </div>
-              <div class="mb-4">
-                {{ form.name|as_crispy_field }}
-              </div>
-              <div class="mb-4">
-                {{ form.risk_master|as_crispy_field }}
-              </div>
-            </fieldset>
+              {{ form.ref|as_crispy_field }}
+            <fieldset>
           </div>
+          <div class="col-12 col-md-4 mb-4">
+            <fieldset>
+              {{ form.name|as_crispy_field }}
+            <fieldset>
+          </div>
+          <div class="col-12 col-md-4 mb-4">
+            <fieldset>
+              {{ form.risk_master|as_crispy_field }}
+            <fieldset>
+          </div>
+        </div>
+
+        <div class="row">
           <div class="col-12 col-md-4 mb-4">
             <fieldset>
               <legend>Impacto</legend>
@@ -93,37 +97,56 @@
               </div>
             </fieldset>
           </div>
+          <div class="col-12 col-md-4 mb-4">
+            <fieldset>
+              <legend>Velocidad de ocurrencia</legend>
+              <div class="mb-4">
+                {{ form.event_speed|as_crispy_field }}
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="row">
           <div class="col-12 mb-4">
             <fieldset>
               {{ form.description|as_crispy_field }}
             </fieldset>
           </div>
-          {% if KRM_ACTIVATE %}
-            <div class="col-12 mb-4">
+        </div>
+        {% if KRM_ACTIVATE %}
+        <div class="row">
+          <div class="col-12 mb-4">
               <fieldset>
                 {{ form.krm_activity_affected|as_crispy_field }}
               </fieldset>
             </div>
-            <div class="col-12 mb-4">
-              <fieldset>
-                {{ form.krm_main_events|as_crispy_field }}
-              </fieldset>
-            </div>
-            <div class="col-12 mb-4">
-              <fieldset>
-                {{ form.krm_exposed_staff|as_crispy_field }}
-              </fieldset>
-            </div>
-            <div class="col-12 mb-4">
-              <fieldset>
-                {{ form.krm_main_elements|as_crispy_field }}
-              </fieldset>
-            </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-4">
+            <fieldset>
+              {{ form.krm_main_events|as_crispy_field }}
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-4">
+            <fieldset>
+              {{ form.krm_exposed_staff|as_crispy_field }}
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-4">
+            <fieldset>
+              {{ form.krm_main_elements|as_crispy_field }}
+            </fieldset>
+          </div>
           {% endif %}
         </div>
       </div>
       <!--end::Body-->
-    
+
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
         <a href="{% url 'risks:ga_risk_list' %}"

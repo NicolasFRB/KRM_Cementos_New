@@ -16,6 +16,7 @@ class RiskCreateForm(ModelForm):
             'impact_inherent',
             'probability_inherent',
             'impact_residual',
+            'event_speed',
             'probability_residual',
             'krm_activity_affected',
             'krm_main_events',
@@ -37,3 +38,4 @@ class RiskCreateForm(ModelForm):
         self.fields["probability_inherent"].widget.attrs["class"] = "form-select"
         self.fields["impact_residual"].widget.attrs["class"] = "form-select"
         self.fields["probability_residual"].widget.attrs["class"] = "form-select"
+        self.fields["event_speed"].widget.attrs["class"]= "form-select"

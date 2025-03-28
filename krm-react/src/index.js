@@ -47,19 +47,25 @@ let ruQuestionTestComplete = document.getElementsByClassName("question_test");
 for (let i = 0; i < risksTestInherent.length; i++) {
   let riskTestInherent = ReactDOM.createRoot(risksTestInherent.item(i));
   let pk = parseInt(risksTestInherent.item(i).getAttribute('data-risktestpk'));
-  let impactContinuity = parseInt(risksTestInherent.item(i).getAttribute('data-impact-continuity'));
-  let impactBranding = parseInt(risksTestInherent.item(i).getAttribute('data-impact-branding'));
+  let impactReputational = parseInt(risksTestInherent.item(i).getAttribute('data-impact-reputational'));
   let impactEconomic = parseInt(risksTestInherent.item(i).getAttribute('data-impact-economic'));
+  let impactRegulatory = parseInt(risksTestInherent.item(i).getAttribute('data-impact-regulatory'));
+  let impactObjectives = parseInt(risksTestInherent.item(i).getAttribute('data-impact-objectives'));
+  let impactDedication = parseInt(risksTestInherent.item(i).getAttribute('data-impact-dedication'));
   let probability = parseInt(risksTestInherent.item(i).getAttribute('data-probability'));
+  let eventSpeed = parseInt(risksTestInherent.item(i).getAttribute('data-event-speed'));
   let description = risksTestInherent.item(i).getAttribute('data-description');
   riskTestInherent.render(
     <I18nextProvider i18n={i18next}>
       <RuRiskTestInherent
         pk={pk}
-        initialImpactBranding={impactBranding}
-        initialImpactContinuity={impactContinuity}
+        initialImpactReputational={impactReputational}
         initialImpactEconomic={impactEconomic}
+        initialImpactRegulatory={impactRegulatory}
+        initialImpactObjectives={impactObjectives}
+        initialImpactDedication={impactDedication}
         initialProbability={probability}
+        initialEventSpeed={eventSpeed}
         initialDescription={description}
       />
     </I18nextProvider>
@@ -83,10 +89,16 @@ for (let i = 0; i < adminRisksTestInherent.length; i++) {
   let pk = parseInt(adminRisksTestInherent.item(i).getAttribute('data-risktestpk'));
   let impact = parseInt(adminRisksTestInherent.item(i).getAttribute('data-impact'));
   let probability = parseInt(adminRisksTestInherent.item(i).getAttribute('data-probability'));
+  let eventSpeed= parseInt(adminRisksTestInherent.item(i).getAttribute('data-event-speed'));
   let description = adminRisksTestInherent.item(i).getAttribute('data-description');
   riskTestInherent.render(
     <I18nextProvider i18n={i18next}>
-      <CaRiskTestInherent pk={pk} initialImpact={impact} initialProbability={probability} initialDescriptionAdmin={description} />
+      <CaRiskTestInherent
+        pk={pk}
+        initialImpact={impact}
+        initialProbability={probability}
+        initialEventSpeed={eventSpeed}
+        initialDescriptionAdmin={description} />
     </I18nextProvider>
   )
 }

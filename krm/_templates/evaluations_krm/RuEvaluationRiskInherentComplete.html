@@ -9,7 +9,7 @@
 {% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
-  <script defer src="{% static 'main.react.js' %}?v=20241219"></script>
+  <script defer src="{% static 'main.react.js' %}?v=20250327"></script>
 {% endif %}
 
 
@@ -22,7 +22,8 @@
 
       if(!errorFound){
         $("input[name^='probability-']").each(function(index){
-          if ($(this).val() == 5){
+          console.log("Validando probability:", $(this).attr("name"), $(this).prop("checked"));
+          if ($(this).val() == ''){
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -37,8 +38,9 @@
         });
       }
       if (!errorFound){
-        $("input[name^='impact-']").each(function (index) {
-          if ($(this).val() == 5) {
+        $("input[name^='impact-']").each(function(index) {
+          console.log("Validando impacto:", $(this).attr("name"), $(this).prop("checked"));
+          if ($(this).val() == '') {
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -52,7 +54,24 @@
         });
       }
       if (!errorFound) {
-        $("textarea[name^='description-']").each(function (index) {
+        $("input[name^='event-']").each(function(index) {
+          console.log("Validando evento:", $(this).attr("name"), $(this).prop("checked"));
+          if ($(this).val() == '') {
+            let parent = $(this).closest('div.card');
+            $(parent).addClass('danger');
+            $('html, body').animate({
+              scrollTop: $(parent).offset().top - 100
+            }, 1000);
+            $('#buttonSend').attr('data-kt-indicator', 'off');
+            errorFound = true;
+            e.preventDefault();
+            return false;
+          }
+        });
+      }
+      if (!errorFound) {
+        $("textarea[name^='description-']").each(function(index) {
+          console.log("Validando descripción:", $(this).attr("name"), $(this).val());
           if ($(this).val() == '') {
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
@@ -369,10 +388,13 @@
             <!--begin::Card footer-->
             <div class="card-footer py-6">
               <div class="risk_test_inherent" data-risktestpk="{{ rt.pk }}"
-              data-impact-continuity="{{ rt.impact_continuity_level_expert}}"
-              data-impact-economic="{{ rt.impact_economic_level_expert}}"
-              data-impact-branding="{{ rt.impact_branding_level_expert}}"
+              data-impact-reputational="{{ rt.impact_reputational_expert}}"
+              data-impact-economic="{{rt.impact_economic_expert}}"
+              data-impact-regulatory="{{rt.impact_regulatory_expert}}"
+              data-impact-objectives="{{ rt.impact_objectives_expert}}"
+              data-impact-dedication="{{rt.impact_dedication_expert}}"
               data-probability="{{ rt.probability_level_expert }}"
+              data-event-speed="{{rt.event_speed_level_expert}}"
               data-description="{{ rt.description|default_if_none:'' }}" ></div>
             </div>
             <!--end::Card footer-->

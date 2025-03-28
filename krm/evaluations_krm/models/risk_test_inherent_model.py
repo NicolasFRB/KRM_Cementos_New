@@ -39,54 +39,88 @@ class RiskTestInherent(AuditModel):
         on_delete=models.CASCADE,
     )
 
-    RISK_CHOICES = (
-        (1, _('No significativo')),
+    IMPACT_CHOICES = (
+        (0, _('Sin establecer')),
+        (1, _('Muy bajo')),
         (2, _('Bajo')),
-        (3, _('Alto')),
-        (4, _('Crítico')),
-        (5, _('Sin establecer')),
+        (3, _('Medio')),
+        (4, _('Alto')),
+        (5, _('Muy alto')),
     )
 
-    impact_economic_level_expert = models.PositiveSmallIntegerField(
-        _('Nivel de Impacto Económico indicado por el Experto del Dominio de Riesgo'),
-        choices=RISK_CHOICES,
-        default=5
+    PROBABILITY_CHOICES= (
+        (0, _('Sin establecer')),
+        (1, _("Remoto")),
+        (2, _("Posible")),
+        (3, _("Probable")),
+        (4, _("Muy probable")),
+        (5, _("Prácticamente cierto")),
     )
 
-    impact_continuity_level_expert = models.PositiveSmallIntegerField(
-        _('Nivel de Impacto en Continuidad indicado por el Experto del Dominio de Riesgo'),
-        choices=RISK_CHOICES,
-        default=5
+    impact_reputational_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto Reputacional indicado por el Evaluador'),
+        choices=IMPACT_CHOICES,
+        default=0
     )
 
-    impact_branding_level_expert = models.PositiveSmallIntegerField(
-        _('Nivel de Impacto en Imagen indicado por el Experto del Dominio de Riesgo'),
-        choices=RISK_CHOICES,
-        default=5
+    impact_economic_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto Económico indicado por el Evaluador'),
+        choices=IMPACT_CHOICES,
+        default=0
     )
 
-    impact_level_expert = models.PositiveSmallIntegerField(
-        _('Nivel de Impacto indicado por el Experto del Dominio de Riesgo'),
-        choices=RISK_CHOICES,
-        default=5
+    impact_regulatory_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto Regulatorio indicado por el Evaluador'),
+        choices=IMPACT_CHOICES,
+        default=0
+    )
+
+    impact_objectives_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto en los objetivos estratégicos por el Evaluador'),
+        choices=IMPACT_CHOICES,
+        default=0
+    )
+
+    impact_dedication_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Impacto en el tiempo de dedicación del Comité de Dirección indicado por el Evaluador'),
+        choices=IMPACT_CHOICES,
+        default=0
+    )
+
+    impact_level_expert= models.PositiveSmallIntegerField(
+        _('Nivel de Impacto indicado por el Evaluador'),
+        choices= IMPACT_CHOICES,
+        default=0
+    )
+
+    event_speed_level_expert = models.PositiveSmallIntegerField(
+        _('Nivel de Velocidad de ocurrencia indicado por el Evaluador'),
+        choices=IMPACT_CHOICES,
+        default=0
     )
 
     probability_level_expert = models.PositiveSmallIntegerField(
-        _('Nivel de Probabilidad indicado por el Experto del Dominio de Riesgo'),
-        choices=RISK_CHOICES,
-        default=5
+        _('Nivel de Probabilidad indicado por el Evaluador'),
+        choices=PROBABILITY_CHOICES,
+        default=0
     )
 
     impact_level_administrator = models.PositiveSmallIntegerField(
-        _('Nivel de Impacto indicado por el Administrador del Dominio de Riesgo'),
-        choices=RISK_CHOICES,
-        default=5
+        _('Nivel de Impacto indicado por el Administrador'),
+        choices=IMPACT_CHOICES,
+        default=0
     )
 
     probability_level_administrator = models.PositiveSmallIntegerField(
-        _('Nivel de Probabilidad indicado por el Administrador del Dominio de Riesgo'),
-        choices=RISK_CHOICES,
-        default=5
+        _('Nivel de Probabilidad indicado por el Administrador'),
+        choices=PROBABILITY_CHOICES,
+        default=0
+    )
+
+    event_speed_level_administrator= models.PositiveSmallIntegerField(
+        _('Nivel de Velocidad de ocurrencia indicado por el Administrador'),
+        choices=IMPACT_CHOICES,
+        default=0
     )
 
     STATUS_CHOICES = (
@@ -140,13 +174,15 @@ class RiskTestInherent(AuditModel):
         if sev == 0:
             return 0
         if sev <= 2:
-            return "No significativo"
-        if sev <= 5:
-            return "Bajo"
-        if sev <= 11:
-            return "Alto"
+            return "Muy baja"
+        if sev <= 4:
+            return "Baja"
+        if sev <= 9:
+            return "Media"
         if sev <= 16:
-            return "Crítico"
+            return "Alta"
+        if sev <= 25:
+            return "Muy alta"
 
     @property
     def severity_level_admin_qualitative(self):
@@ -154,13 +190,15 @@ class RiskTestInherent(AuditModel):
         if sev == 0:
             return 0
         if sev <= 2:
-            return "No significativo"
-        if sev <= 5:
-            return "Bajo"
-        if sev <= 11:
-            return "Alto"
+            return "Muy baja"
+        if sev <= 4:
+            return "Baja"
+        if sev <= 9:
+            return "Media"
         if sev <= 16:
-            return "Crítico"
+            return "Alta"
+        if sev <= 25:
+            return "Muy alta"
 
     def __str__(self):
         return f'{self.evaluation.ref} - {self.risk.risk.name}'
@@ -170,9 +208,11 @@ class RiskTestInherent(AuditModel):
         verbose_name_plural = _("Tests de Riesgo Inherente")
 
     def save(self, *args, **kwargs):
-        self.impact_level_expert = max(self.impact_branding_level_expert,
-                                       self.impact_continuity_level_expert,
-                                       self.impact_economic_level_expert
+        self.impact_level_expert = max(self.impact_reputational_expert,
+                                       self.impact_economic_expert,
+                                       self.impact_regulatory_expert,
+                                       self.impact_objectives_expert,
+                                       self.impact_dedication_expert
                                        )
         # Severity level expert
         if self.status >= 2:
