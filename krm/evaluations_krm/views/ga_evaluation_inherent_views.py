@@ -178,12 +178,7 @@ class GaEvaluationInherentCreateView(FormView):
                 )
                 risk_company.save()
                 
-            risks = []
             risks = RiskCompany.objects.filter(pk__in=(riskcompany_pks))
-                    
-
-            print("Risk Company")
-            print(rc)
             
             if EvaluationKrmInherent.objects.filter(
                 ref=f'{form.cleaned_data["ref"]} - {company.name}',

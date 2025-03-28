@@ -158,7 +158,7 @@ class RiskCompanyResidualApiView(APIView):
                 risk['evaluated'] = False
                 risk['latest_inherent_impact_level_admin'] = 0
                 risk['latest_inherent_probability_level_admin'] = 0
-                risk['domain_risk_evaluator'] = []
+                # risk['domain_risk_evaluator'] = []
 
                 if krm_risk in risks_evaluated:
                     risk['evaluated'] = True
@@ -169,12 +169,18 @@ class RiskCompanyResidualApiView(APIView):
                     risk['severity_level_expert_qualitative'] = last_evaluate_risk_inherent.severity_level_expert_qualitative
                     risk['severity_level_admin_qualitative'] = last_evaluate_risk_inherent.severity_level_admin_qualitative
 
-                company_domain_risk_evaluator = CompanyDomainRiskEvaluator.objects.get(
-                    company=c,
-                    domain_risk=krm_risk.risk.risk_master.domain_risk)
-                risk['company_domain_risk_evaluator'] = company_domain_risk_evaluator.pk
-                for evaluator in company_domain_risk_evaluator.evaluator.all():
-                    risk['domain_risk_evaluator'].append(evaluator.email)
+                if risk["expert"]:
+                    risk["expert_data"] = UserSerializer(User.objects.get(pk=risk["expert"])).data
+                
+                if risk["evaluator"]:
+                    risk["evaluator_data"] = UserSerializer(User.objects.get(pk=risk["evaluator"])).data
+
+                # company_domain_risk_evaluator = CompanyDomainRiskEvaluator.objects.get(
+                #     company=c,
+                #     domain_risk=krm_risk.risk.risk_master.domain_risk)
+                # risk['company_domain_risk_evaluator'] = company_domain_risk_evaluator.pk
+                # for evaluator in company_domain_risk_evaluator.evaluator.all():
+                #     risk['domain_risk_evaluator'].append(evaluator.email)
 
                 data_item['risks'].append(risk)
 
