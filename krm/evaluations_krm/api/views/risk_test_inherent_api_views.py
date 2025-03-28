@@ -21,7 +21,7 @@ class RiskTestInherentExpertApiView(APIView):
 
     def get(self, request):
         risk_test_pk = int(request.GET['pk'])
-
+        print("Request GET params:", request.GET)
         risk_test = get_object_or_404(
             RiskTestInherent,
             pk=risk_test_pk
@@ -33,20 +33,35 @@ class RiskTestInherentExpertApiView(APIView):
                 if probability != 0:
                     risk_test.probability_level_expert = probability
 
+            if 'impactReputational' in request.GET:
+                impact = int(request.GET['impactReputational'])
+                if impact != 0:
+                    risk_test.impact_reputational_expert = impact
+
             if 'impactEconomic' in request.GET:
                 impact = int(request.GET['impactEconomic'])
                 if impact != 0:
-                    risk_test.impact_economic_level_expert = impact
+                    risk_test.impact_economic_expert = impact
 
-            if 'impactContinuity' in request.GET:
-                impact = int(request.GET['impactContinuity'])
+            if 'impactRegulatory' in request.GET:
+                impact = int(request.GET['impactRegulatory'])
                 if impact != 0:
-                    risk_test.impact_continuity_level_expert = impact
+                    risk_test.impact_regulatory_expert = impact
 
-            if 'impactBranding' in request.GET:
-                impact = int(request.GET['impactBranding'])
+            if 'impactObjectives' in request.GET:
+                impact = int(request.GET['impactObjectives'])
                 if impact != 0:
-                    risk_test.impact_branding_level_expert = impact
+                    risk_test.impact_objectives_expert = impact
+
+            if 'impactDedication' in request.GET:
+                impact = int(request.GET['impactDedication'])
+                if impact != 0:
+                    risk_test.impact_dedication_expert = impact
+
+            if 'eventSpeed' in request.GET:
+                speed= int(request.GET['eventSpeed'])
+                if speed!=0:
+                    risk_test.event_speed_level_expert= speed
 
             if 'description' in request.GET:
                 description = request.GET['description']
@@ -64,6 +79,11 @@ class RiskTestInherentExpertApiView(APIView):
             if impact != 0:
                 risk_test.impact_level_administrator = impact
 
+        if 'adminEventSpeed' in request.GET:
+            speed= int(request.GET['adminEventSpeed'])
+            if speed!=0:
+                risk_test.event_speed_level_administrator= speed
+
         if 'descriptionAdmin' in request.GET:
             description_admin = request.GET['descriptionAdmin']
             risk_test.description_admin = description_admin
@@ -73,5 +93,6 @@ class RiskTestInherentExpertApiView(APIView):
         data = {
             'status': 'ok'
         }
+
 
         return Response(data)
