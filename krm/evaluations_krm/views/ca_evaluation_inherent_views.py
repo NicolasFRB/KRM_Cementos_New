@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.conf import settings
 import json
 import uuid
-import xlsxwriter 
+import xlsxwriter
 
 import re
 
@@ -423,11 +423,11 @@ class CaEvaluationInherentDetailView(FormView):
             worksheet.set_column(25, 26, 25)  # PROBABILITY_LEVEL_EXPERT_QUALITATIVE
 
             worksheet.set_column(26, 27, 70)  # ADMIN_SUPERVISOR
-            worksheet.set_column(27, 28, 25)  # JUSTIFICATION_ADMIN           
+            worksheet.set_column(27, 28, 25)  # JUSTIFICATION_ADMIN
             worksheet.set_column(28, 29, 25)  # SEVERITY_LEVEL_ADMIN
-            worksheet.set_column(29, 30, 25)  # SEVERITY_LEVEL_ADMIN_QUALITATIVE          
+            worksheet.set_column(29, 30, 25)  # SEVERITY_LEVEL_ADMIN_QUALITATIVE
             worksheet.set_column(30, 31, 25)  # IMPACT_LEVEL_ADMIN
-            worksheet.set_column(31, 32, 25)  # IMPACT_LEVEL_ADMIN_QUALITATIVE           
+            worksheet.set_column(31, 32, 25)  # IMPACT_LEVEL_ADMIN_QUALITATIVE
             worksheet.set_column(32, 33, 25)  # PROBABILITY_LEVEL_ADMIN
             worksheet.set_column(33, 34, 25)  # PROBABILITY_LEVEL_ADMIN_QUALITATIVE
 
@@ -435,7 +435,7 @@ class CaEvaluationInherentDetailView(FormView):
             domains = ""
 
             for rt in evaluation.risk_test_inherents.all():
-                #Evaluation 
+                #Evaluation
                 worksheet.write(row, 0, evaluation.ref, text_wrap)
                 worksheet.write(row, 1, evaluation.company.name, text_wrap)
                 worksheet.write(row, 2, evaluation.company.type_company, text_wrap)
@@ -479,9 +479,9 @@ class CaEvaluationInherentDetailView(FormView):
                 worksheet.write(row, 31, rt.get_impact_level_administrator_display(), text_wrap)
                 worksheet.write(row, 32, rt.probability_level_administrator, text_wrap)
                 worksheet.write(row, 33, rt.get_probability_level_administrator_display(), text_wrap)
-                
+
                 #worksheet.write(row, 2, evaluation.date_begin.strftime("%d/%m/%Y"))
-                
+
                 row += 1
             # Close the workbook before sending the data.
             workbook.close()
@@ -560,19 +560,14 @@ class CaEvaluationInherentAdminComplete(DetailView, FormView):
 
     def form_valid(self, form):
         evaluation = self.get_object()
-        # RiskTestInherent.objects.filter(
-        #     evaluation=evaluation
-        # ).update(
-        #     status=3
-        # )
         risk_inherents = RiskTestInherent.objects.filter(
             evaluation=evaluation
         )
         for ri in risk_inherents:
             ri.status = 3
-            if ri.probability_level_administrator == 5:
+            if ri.probability_level_administrator == 0:
                 ri.probability_level_administrator = ri.probability_level_expert
-            if ri.impact_level_administrator == 5:
+            if ri.impact_level_administrator == 0:
                 ri.impact_level_administrator = ri.impact_level_expert
             if ri.description_admin == '':
                 ri.description_admin = ri.description_expert
@@ -592,7 +587,7 @@ class CaEvaluationInherentAdminComplete(DetailView, FormView):
         return reverse_lazy(
             "evaluations_krm:ca_evaluation_inherent_list"
         )
-    
+
 @method_decorator([is_company_admin, ], name='dispatch')
 class CaEvaluationInherentNotificationsView(DetailView, FormView):
     template_name = 'evaluations_krm/CaEvaluationInherentNotifications.html'
@@ -628,7 +623,7 @@ class CaEvaluationInherentNotificationsView(DetailView, FormView):
 
     def post(self, request, *args, **kwargs):
         risk_test_selected = request.POST.getlist('notify_pk')
-        
+
         from krm.evaluations_krm.models import (
             RiskTestInherent,
         )

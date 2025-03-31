@@ -40,7 +40,7 @@ from krm.evaluations_krm.forms import (
 )
 
 from krm.evaluations.forms.evaluation_forms import (
-    EvaluationActionForm, 
+    EvaluationActionForm,
 )
 
 
@@ -70,9 +70,9 @@ class RuEvaluationRiskInherentList(TemplateView):
             ev.nrisk_test_inherents_delivered_user = ev.nrisk_test_inherents_by_state(2, self.request.user)
         for ev in ev_finished:
             ev.nrisk_test_inherents_finished_user = ev.nrisk_test_inherents_by_state(3, self.request.user)
-        
+
         eri_count_by_state_perc = {'FI': 0, 'EP': 0}
-        
+
         if ev_delivered.count() != 0 or ev_pending.count() != 0:
             eri_count_by_state_perc['FI'] = int(
                 100*ev_delivered.count()/(ev_delivered.count() + ev_pending.count()))
@@ -140,7 +140,7 @@ class RuEvaluationRiskInherentComplete(DetailView, FormView):
 
         messages.add_message(
             self.request, messages.SUCCESS, _(
-                "Evaluación enviada para validar correctamente")
+                "Valoración de tests de Riesgo Inherente enviada correctamente")
         )
 
         return reverse_lazy(
@@ -171,11 +171,11 @@ class RuEvaluationRiskInherentDetail(FormView):
         ]
         context['page_title'] = f"{_('Evaluación KRM Inherent')} : {self.evaluation.ref}"
         context['breadcrums'] = breadcrums
-        
+
         context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(1, user=self.request.user)
         context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2, user=self.request.user)
         context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(3, user=self.request.user)
-        
+
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
         # Serializar Evaluation no incluye sus hijos :(
         # Busco los hijos
@@ -183,10 +183,10 @@ class RuEvaluationRiskInherentDetail(FormView):
             evaluation = self.evaluation,
             expert = self.request.user,
             )
-        
+
         # Paso a dict para json
         context['rit_dict'] = [model_to_dict(m) for m in context['rit']]
-        
+
         # MODEL_TO_DICT not getting properties :(
         # Get .severity_level_expert
         # TBI for cuadratico :/
@@ -219,7 +219,7 @@ class RuEvaluationRiskInherentDetail(FormView):
             default=str,
             ensure_ascii=True,
             )
-        
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context

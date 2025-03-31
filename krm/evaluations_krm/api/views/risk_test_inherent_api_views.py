@@ -21,7 +21,6 @@ class RiskTestInherentExpertApiView(APIView):
 
     def get(self, request):
         risk_test_pk = int(request.GET['pk'])
-        print("Request GET params:", request.GET)
         risk_test = get_object_or_404(
             RiskTestInherent,
             pk=risk_test_pk
@@ -93,6 +92,5 @@ class RiskTestInherentExpertApiView(APIView):
         data = {
             'status': 'ok'
         }
-
 
         return Response(data)

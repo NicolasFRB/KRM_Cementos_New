@@ -231,19 +231,26 @@ class RiskTestInherent(AuditModel):
         verbose_name_plural = _("Tests de Riesgo Inherente")
 
     def save(self, *args, **kwargs):
+        """
+        Método de almacenamiento del test de riesgo inherente, el cual controla la actualización de
+        los parámetros que dependen de una transformación tras la aportación de datos del usuario.
+
+        La condición para el almacenamiento del impacto por parte del experto es que se haya aportado un valor a cada tipo de impacto.
+        Sucede de la misma manera con los valores para las severidades, impacto y probabilidad han de haberse actualizado con valores.
+        Este almacenamiento se ejecuta con el método save de un AuditModel, el cual guarda los valores para los atributos en la base de datos.
+
+        """
         self.impact_level_expert = max(self.impact_reputational_expert,
                                        self.impact_economic_expert,
                                        self.impact_regulatory_expert,
                                        self.impact_objectives_expert,
                                        self.impact_dedication_expert
-                                       )
-        # Severity level expert
-        if self.status >= 2:
-            self.severity_level_expert = self.impact_level_expert * self.probability_level_expert
+                                    )
 
-        if self.status >= 2:
-            self.severity_level_admin = self.impact_level_administrator * \
-                self.probability_level_administrator
+        #if self.status>=2:
+        self.severity_level_expert = self.impact_level_expert * self.probability_level_expert
+        #if self.status>=2:
+        self.severity_level_admin = self.impact_level_administrator * self.probability_level_administrator
 
         super().save(*args, **kwargs)
 
