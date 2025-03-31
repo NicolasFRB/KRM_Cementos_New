@@ -39,6 +39,7 @@ class Risk(AuditModel):
     )
 
     IMPACT_RISK_CHOICES = (
+        (0, _('Sin establecer')),
         (1, _("Muy bajo")),
         (2, _("Bajo")),
         (3, _("Medio")),
@@ -46,28 +47,42 @@ class Risk(AuditModel):
         (5, _("Muy alto")),
     )
 
+    PROBABILITY_RISK_CHOICES= (
+        (1, _("Remoto")),
+        (2, _("Posible")),
+        (3, _("Probable")),
+        (4, _("Muy probable")),
+        (5, _("Prácticamente cierto")),
+    )
+
     impact_inherent = models.PositiveIntegerField(
         _("Impacto inherente"),
         choices=IMPACT_RISK_CHOICES,
-        default=3
+        default=0
     )
 
     probability_inherent = models.PositiveIntegerField(
         _("Probabilidad inherente"),
-        choices=IMPACT_RISK_CHOICES,
+        choices=PROBABILITY_RISK_CHOICES,
         default=3
     )
 
     impact_residual = models.PositiveIntegerField(
         _("Impacto residual"),
         choices=IMPACT_RISK_CHOICES,
-        default=3
+        default=0
     )
 
     probability_residual = models.PositiveIntegerField(
         _("Probabilidad residual"),
+        choices=PROBABILITY_RISK_CHOICES,
+        default=0
+    )
+
+    event_speed= models.PositiveIntegerField(
+        _("Velocidad de ocurrencia"),
         choices=IMPACT_RISK_CHOICES,
-        default=3
+        default=0
     )
 
     krm_activity_affected = RichTextField(
