@@ -49,21 +49,33 @@
 
     var arrow_dot = document.querySelector("#"+id)
 
-    if (val == 0) {
+    arrow_dot.classList.remove(
+        'bi-x-circle-fill',
+        'bi-arrow-down-circle-fill',
+        'bi-arrow-down-right-circle-fill',
+        'bi-arrow-right-circle-fill',
+        'bi-arrow-up-right-circle-fill',
+        'bi-arrow-up-circle-fill'
+    );
+
+    if (val == 'Sin establecer') {
       arrow_dot.style.color = "#d9d3d2";
-      arrow_dot.classList.toggle('bi-x-circle-fill');
-    } else if (val <= 2) {
-      arrow_dot.style.color = "#7ee34f";
-      arrow_dot.classList.toggle('bi-arrow-down-circle-fill');
-    } else if (val <= 5) {
-      arrow_dot.style.color = "#cdd44c";
-      arrow_dot.classList.toggle('bi-arrow-down-right-circle-fill');
-    } else if (val <= 11) {
-      arrow_dot.style.color = "#c4aa43";
-      arrow_dot.classList.toggle('bi-arrow-up-right-circle-fill');
-    } else if (val <= 16) {
-      arrow_dot.style.color = "#d14c24";
-      arrow_dot.classList.toggle('bi-arrow-up-circle-fill');
+      arrow_dot.classList.add('bi-x-circle-fill');
+    } else if (val == 'Muy baja') {
+      arrow_dot.style.color = "#09ef0d";
+      arrow_dot.classList.add('bi-arrow-down-circle-fill');
+    } else if (val == 'Baja') {
+      arrow_dot.style.color = "#e8ee0b";
+      arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
+    } else if (val == 'Media') {
+      arrow_dot.style.color = "#fea227";
+      arrow_dot.classList.add('bi-arrow-right-circle-fill');
+    } else if (val == 'Alta') {
+      arrow_dot.style.color = "#ff6e56";
+      arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
+    } else if (val == 'Muy alta') {
+      arrow_dot.style.color = "#f10606";
+      arrow_dot.classList.add('bi-arrow-up-circle-fill');
     }
   }
 
@@ -259,8 +271,8 @@
     var p_exp_num = dt.$(".prob-expert-num");
     var p_exp_qual = dt.$(".prob-expert-qual");
 
-    var speed_exp_num= dt.$("speed-expert-num");
-    var speed_exp_qual= dt.$("speed-expert-qual");
+    var speed_exp_num= dt.$(".speed-expert-num");
+    var speed_exp_qual= dt.$(".speed-expert-qual");
 
     if (flexRadio_cualitativo) {
 
@@ -656,7 +668,7 @@
               </div>
             </td>
           </tr>
-          <script>color_severity("{{ rt.severity_level_expert }}", "sev-dot-{{ forloop.counter0 }}");</script>
+          <script>color_severity("{{ rt.severity_level_expert_qualitative }}", "sev-dot-{{ forloop.counter0 }}");</script>
           {% endfor %}
         </tbody>
       </table>

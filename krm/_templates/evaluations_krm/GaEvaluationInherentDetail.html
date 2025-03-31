@@ -53,47 +53,62 @@ function clean_specialchars(s) {
 
 function color_severity_dynamic(val, id){
 
-    var arrow_dot = $("#"+id);
+  var arrow_dot = $("#"+id);
 
-    if (val == 0) {
-      arrow_dot.css('color',"#d9d3d2");
-      arrow_dot.attr('class','bi-x-circle-fill');
-    } else if (val <= 2) {
-      arrow_dot.css('color',"#7ee34f");
-      arrow_dot.attr('class','bi-arrow-down-circle-fill');
-    } else if (val <= 5) {
-      arrow_dot.css('color',"#cdd44c");
-      arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
-    } else if (val <= 11) {
-      arrow_dot.css('color',"#c4aa43");
-      arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
-    } else if (val <= 16) {
-      arrow_dot.css('color',"#d14c24");
-      arrow_dot.attr('class','bi-arrow-up-circle-fill');
-    }
+  if (val == 'Sin establecer') {
+    arrow_dot.css('color',"#d9d3d2");
+    arrow_dot.attr('class','bi-x-circle-fill');
+  } else if (val == 'Muy baja') {
+    arrow_dot.css('color',"#09ef0d");
+    arrow_dot.attr('class','bi-arrow-down-circle-fill');
+  } else if (val == 'Baja') {
+    arrow_dot.css('color',"#e8ee0b");
+    arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
+  } else if (val == 'Media') {
+    arrow_dot.css('color',"#fea227");
+    arrow_dot.attr('class','bi-arrow-right-circle-fill');
+  } else if (val == 'Alta') {
+    arrow_dot.css('color',"#ff6e56");
+    arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
+  } else if (val == 'Muy alta') {
+    arrow_dot.css('color', "#f10606");
+    arrow_dot.attr('class', 'bi-arrow-up-circle-fill');
   }
+}
 
-  function color_severity(val, id){
+function color_severity(val, id){
 
-    var arrow_dot = document.querySelector("#"+id)
+  var arrow_dot = document.querySelector("#"+id)
 
-    if (val == 0) {
-      arrow_dot.style.color = "#d9d3d2";
-      arrow_dot.classList.toggle('bi-x-circle-fill');
-    } else if (val <= 2) {
-      arrow_dot.style.color = "#7ee34f";
-      arrow_dot.classList.toggle('bi-arrow-down-circle-fill');
-    } else if (val <= 5) {
-      arrow_dot.style.color = "#cdd44c";
-      arrow_dot.classList.toggle('bi-arrow-down-right-circle-fill');
-    } else if (val <= 11) {
-      arrow_dot.style.color = "#c4aa43";
-      arrow_dot.classList.toggle('bi-arrow-up-right-circle-fill');
-    } else if (val <= 16) {
-      arrow_dot.style.color = "#d14c24";
-      arrow_dot.classList.toggle('bi-arrow-up-circle-fill');
-    }
+  arrow_dot.classList.remove(
+    'bi-x-circle-fill',
+    'bi-arrow-down-circle-fill',
+    'bi-arrow-down-right-circle-fill',
+    'bi-arrow-right-circle-fill',
+    'bi-arrow-up-right-circle-fill',
+    'bi-arrow-up-circle-fill'
+  );
+
+  if (val == 'Sin establecer') {
+  arrow_dot.style.color = "#d9d3d2";
+  arrow_dot.classList.add('bi-x-circle-fill');
+  } else if (val == 'Muy baja') {
+  arrow_dot.style.color = "#09ef0d";
+  arrow_dot.classList.add('bi-arrow-down-circle-fill');
+  } else if (val == 'Baja') {
+  arrow_dot.style.color = "#e8ee0b";
+  arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
+  } else if (val == 'Media') {
+  arrow_dot.style.color = "#fea227";
+  arrow_dot.classList.add('bi-arrow-right-circle-fill');
+  } else if (val == 'Alta') {
+  arrow_dot.style.color = "#ff6e56";
+  arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
+  } else if (val == 'Muy alta') {
+  arrow_dot.style.color = "#f10606";
+  arrow_dot.classList.add('bi-arrow-up-circle-fill');
   }
+}
 
   function load_bar(id, rit) {
     r_impacto = [];
@@ -328,7 +343,7 @@ function color_severity_dynamic(val, id){
         speed_adm_qual[i].style.display = "none";
 
         $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
-        color_severity_dynamic(parseFloat(s_exp_num[i].innerHTML), "sev-dot-" + i);
+        color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
       }
 
     } else if (flexRadio_cuantitativo && flexRadio_experto) {
@@ -358,7 +373,7 @@ function color_severity_dynamic(val, id){
         speed_adm_qual[i].style.display = "none";
 
         $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
-        color_severity_dynamic(parseFloat(s_exp_num[i].innerHTML), "sev-dot-" + i);
+        color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
       }
 
     } else if (flexRadio_cualitativo && flexRadio_admin) {
@@ -388,7 +403,7 @@ function color_severity_dynamic(val, id){
         speed_adm_qual[i].style.display = "inline-block";
 
         $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
-        color_severity_dynamic(parseFloat(s_adm_num[i].innerHTML), "sev-dot-" + i);
+        color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
       }
 
     } else if (flexRadio_cuantitativo && flexRadio_admin) {
@@ -418,7 +433,7 @@ function color_severity_dynamic(val, id){
         speed_adm_qual[i].style.display = "none";
 
         $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
-        color_severity_dynamic(parseFloat(s_adm_num[i].innerHTML), "sev-dot-" + i);
+        color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
       }
   }
 }
@@ -831,7 +846,7 @@ function color_severity_dynamic(val, id){
               </div>
             </td>
           </tr>
-          <script>color_severity("{{ rt.severity_level_expert }}", "sev-dot-{{ forloop.counter0 }}");</script>
+          <script>color_severity("{{ rt.severity_level_expert_qualitative }}", "sev-dot-{{ forloop.counter0 }}");</script>
           {% endfor %}
         </tbody>
       </table>
