@@ -254,7 +254,7 @@ class RiskCompanyResidual(AuditModel):
 
     @property
     def severity_residual_evaluator(self):
-        return self.probability_level_result_evaluator * self.get_latest_impact_inherent
+        return 1 #self.probability_level_result_evaluator * self.get_latest_impact_inherent
 
     @property
     def severity_residual_evaluator_qualitative(self):
@@ -267,7 +267,7 @@ class RiskCompanyResidual(AuditModel):
 
     @property
     def severity_residual_admin(self):
-        return self.probability_level_result_admin * self.get_latest_impact_inherent
+        return 0 # self.probability_level_result_admin * self.get_latest_impact_inherent
 
     @property
     def severity_residual_admin_qualitative(self):

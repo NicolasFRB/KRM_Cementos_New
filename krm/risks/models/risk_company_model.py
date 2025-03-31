@@ -85,10 +85,10 @@ class RiskCompany(AuditModel):
         blank=True,
         related_name='evaluator_risks'
     )
-
+ 
     expert = models.ForeignKey(
         'users.User',
-        verbose_name=_('Experto asignado'),
+        verbose_name=_('Evaluador asignado'), # Para no cambiar todas las variables que hacen referencia a expert
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

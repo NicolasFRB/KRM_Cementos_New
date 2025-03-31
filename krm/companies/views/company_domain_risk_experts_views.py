@@ -47,9 +47,9 @@ class GaCompanyDomainRiskExpertsUpdateView(UpdateView):
                 'companies:ga_company_list')},
             {'title': self.object.company, 'url': reverse(
                 'companies:ga_company_detail', kwargs={'pk': self.object.company.pk})},
-            {'title': _('Asignar experto')},
+            {'title': _('Asignar evaluador')},
         ]
-        context['page_title'] = _('Asignar Experto de Riesgo Inherente (RI)')
+        context['page_title'] = _('Asignar Evaluador de Riesgo Inherente (RI)')
         context['breadcrums'] = breadcrums
 
         return context
