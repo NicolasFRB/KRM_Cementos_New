@@ -167,8 +167,8 @@ class GaEvaluationInherentCreateView(FormView):
         risk_companies = json.loads(form.cleaned_data["risk_companies"])
         for rc in risk_companies:
             company = Company.objects.get(pk=rc['company_pk'])
-
-            riskcompany_pks = [] 
+            print(rc)
+            riskcompany_pks = []
 
             for rc in rc['risks']:
                 riskcompany_pks.append(rc[0])
@@ -177,9 +177,9 @@ class GaEvaluationInherentCreateView(FormView):
                     pk=rc[1]
                 )
                 risk_company.save()
-                
+
             risks = RiskCompany.objects.filter(pk__in=(riskcompany_pks))
-            
+
             if EvaluationKrmInherent.objects.filter(
                 ref=f'{form.cleaned_data["ref"]} - {company.name}',
             ).count() > 0:
@@ -312,7 +312,7 @@ class GaEvaluationInherentDetailView(FormView):
             for k in context['rit_dict'][i].copy():
                 if k not in ['risk_ref', 'risk_name', 'expert', 'impact_level_expert', 'probability_level_expert', 'severity_level_expert']:
                     del context['rit_dict'][i][k]
-                    
+
         # Sort by severity for a nice plot
         context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (
             x['severity_level_expert'], x['risk_ref']), reverse=True)
@@ -330,7 +330,7 @@ class GaEvaluationInherentDetailView(FormView):
             default=str,
             ensure_ascii=True,
         )
-        
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -425,11 +425,11 @@ class GaEvaluationInherentDetailView(FormView):
             worksheet.set_column(25, 26, 25)  # PROBABILITY_LEVEL_EXPERT_QUALITATIVE
 
             worksheet.set_column(26, 27, 70)  # ADMIN_SUPERVISOR
-            worksheet.set_column(27, 28, 25)  # JUSTIFICATION_ADMIN           
+            worksheet.set_column(27, 28, 25)  # JUSTIFICATION_ADMIN
             worksheet.set_column(28, 29, 25)  # SEVERITY_LEVEL_ADMIN
-            worksheet.set_column(29, 30, 25)  # SEVERITY_LEVEL_ADMIN_QUALITATIVE          
+            worksheet.set_column(29, 30, 25)  # SEVERITY_LEVEL_ADMIN_QUALITATIVE
             worksheet.set_column(30, 31, 25)  # IMPACT_LEVEL_ADMIN
-            worksheet.set_column(31, 32, 25)  # IMPACT_LEVEL_ADMIN_QUALITATIVE           
+            worksheet.set_column(31, 32, 25)  # IMPACT_LEVEL_ADMIN_QUALITATIVE
             worksheet.set_column(32, 33, 25)  # PROBABILITY_LEVEL_ADMIN
             worksheet.set_column(33, 34, 25)  # PROBABILITY_LEVEL_ADMIN_QUALITATIVE
 
@@ -437,7 +437,7 @@ class GaEvaluationInherentDetailView(FormView):
             domains = ""
 
             for rt in evaluation.risk_test_inherents.all():
-                #Evaluation 
+                #Evaluation
                 worksheet.write(row, 0, evaluation.ref, text_wrap)
                 worksheet.write(row, 1, evaluation.company.name, text_wrap)
                 worksheet.write(row, 2, evaluation.company.type_company, text_wrap)
@@ -481,9 +481,9 @@ class GaEvaluationInherentDetailView(FormView):
                 worksheet.write(row, 31, rt.get_impact_level_administrator_display(), text_wrap)
                 worksheet.write(row, 32, rt.probability_level_administrator, text_wrap)
                 worksheet.write(row, 33, rt.get_probability_level_administrator_display(), text_wrap)
-                
+
                 #worksheet.write(row, 2, evaluation.date_begin.strftime("%d/%m/%Y"))
-                
+
                 row += 1
             # Close the workbook before sending the data.
             workbook.close()
@@ -562,19 +562,14 @@ class GaEvaluationInherentAdminComplete(DetailView, FormView):
 
     def form_valid(self, form):
         evaluation = self.get_object()
-        # RiskTestInherent.objects.filter(
-        #     evaluation=evaluation
-        # ).update(
-        #     status=3
-        # )
         risk_inherents = RiskTestInherent.objects.filter(
             evaluation=evaluation
         )
         for ri in risk_inherents:
             ri.status = 3
-            if ri.probability_level_administrator == 5:
+            if ri.probability_level_administrator == 0:
                 ri.probability_level_administrator = ri.probability_level_expert
-            if ri.impact_level_administrator == 5:
+            if ri.impact_level_administrator == 0:
                 ri.impact_level_administrator = ri.impact_level_expert
             if ri.description_admin == '':
                 ri.description_admin = ri.description_expert
@@ -630,7 +625,7 @@ class GaEvaluationInherentNotificationsView(DetailView, FormView):
 
     def post(self, request, *args, **kwargs):
         risk_test_selected = request.POST.getlist('notify_pk')
-        
+
         from krm.evaluations_krm.models import (
             RiskTestInherent,
         )

@@ -55,6 +55,15 @@ class Risk(AuditModel):
         (5, _("Prácticamente cierto")),
     )
 
+    EVENT_SPEED_RISK_CHOICES= (
+        (0, _('Sin establecer')),
+        (1, _("Muy baja")),
+        (2, _("Baja")),
+        (3, _("Media")),
+        (4, _("Alta")),
+        (5, _("Muy alta")),
+    )
+
     impact_inherent = models.PositiveIntegerField(
         _("Impacto inherente"),
         choices=IMPACT_RISK_CHOICES,
@@ -76,12 +85,12 @@ class Risk(AuditModel):
     probability_residual = models.PositiveIntegerField(
         _("Probabilidad residual"),
         choices=PROBABILITY_RISK_CHOICES,
-        default=0
+        default=3
     )
 
     event_speed= models.PositiveIntegerField(
         _("Velocidad de ocurrencia"),
-        choices=IMPACT_RISK_CHOICES,
+        choices=EVENT_SPEED_RISK_CHOICES,
         default=0
     )
 
