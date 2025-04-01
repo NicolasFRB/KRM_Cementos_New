@@ -34,6 +34,9 @@ from krm.evaluations_krm.models import (
     RiskTestResidual,
     RiskCompanyResidual
 )
+
+from krm.users.models import User
+
 from krm.companies.models import (
     CompanyDomainRiskEvaluator,
     Company
@@ -165,7 +168,18 @@ class GaEvaluationResidualCreateView(FormView):
         risk_companies = json.loads(form.cleaned_data["risk_companies"])
         for rc in risk_companies:
             company = Company.objects.get(pk=rc['company_pk'])
-            risks = RiskCompany.objects.filter(pk__in=(rc['risks']))
+
+            riskcompany_pks = [] 
+
+            for rc in rc['risks']:
+                riskcompany_pks.append(rc[0])
+                risk_company = RiskCompany.objects.get(pk=(rc[0]))
+                risk_company.evaluator = User.objects.get(
+                    pk=rc[1]
+                )
+                risk_company.save()
+
+            risks = RiskCompany.objects.filter(pk__in=(riskcompany_pks))
 
             if EvaluationKrmResidual.objects.filter(
                 ref=f'{form.cleaned_data["ref"]} - {company.name}',
@@ -188,21 +202,14 @@ class GaEvaluationResidualCreateView(FormView):
 
             # Para cada evaluación hay que crear los test controls de los controles que se han pasado
             for risk in risks:
-                domain_risk = risk.risk.risk_master.domain_risk
-                company_risk_evaluators = CompanyDomainRiskEvaluator.objects.get(
-                    company=company,
-                    domain_risk=domain_risk
+
+                RiskTestResidual.objects.create(
+                    evaluation=evaluation,
+                    risk=risk,
+                    evaluator=risk.evaluator
                 )
 
-                # Hay que crear un test de riesgo por cada evaluador
-                for evaluator in company_risk_evaluators.evaluator.all():
-                    RiskTestResidual.objects.create(
-                        evaluation=evaluation,
-                        risk=risk,
-                        evaluator=evaluator
-                    )
-
-                    risk_tests__created += 1
+                risk_tests__created += 1
 
             evaluations_created += 1
 
@@ -327,8 +334,9 @@ class GaEvaluationResidualDetailView(FormView):
             context['rcr_dict'][i]['probability_residual_admin'] = r1.probability_level_result_admin
             context['rcr_dict'][i]['nivel_de_control'] = r1.probability_level_residual_evaluator_aggregate_rounded
 
-        context['rcr_dict'] = sorted(
-            context['rcr_dict'], key=lambda x: (x['severity_inherent']+x['probability_residual_eval']), reverse=True)
+        context['rcr_dict'] = context['rcr_dict'] 
+        # sorted(
+        #     context['rcr_dict'], key=lambda x: (x['severity_inherent'] + x['probability_residual_eval']), reverse=True)
 
         for i, m in enumerate(context['rcr_dict']):
             for k in m:
@@ -658,8 +666,8 @@ class GaEvaluationResidualAdminComplete(DetailView, FormView):
             r.controls_attempt_to_mitigate = r.get_controls_attempt_to_mitigate()
             r.test_controls_attempt_to_mitigate = r.get_test_controls_attempt_to_mitigate()
 
-        context['risks_test_residual'] = sorted(
-            risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
+        context['risks_test_residual'] = risk_tests
+        # sorted( risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 

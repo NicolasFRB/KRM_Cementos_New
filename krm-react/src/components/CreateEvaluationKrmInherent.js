@@ -234,15 +234,6 @@ function CreateEvaluationKrmInherent(props) {
         else return riskCompany;
       })
     )
-
-    fetch(`${configService.apiSetExperts}` , {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(riskCompanies)
-    });
   }
 
   return (
@@ -289,8 +280,7 @@ function CreateEvaluationKrmInherent(props) {
           <>
             <div className="alert alert-primary">{t('krmInherent.select-company')}</div>
           </>
-        )
-        }
+        )}
         <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
           <div className="col col-12">
             <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} selectedDomainRisks={selectedDomainRisks} selectedCompanies={selectedCompanies} />
@@ -329,7 +319,7 @@ function CreateEvaluationKrmInherent(props) {
                               </th>
                               <th className="fw-semibold">REF</th>
                               <th className="fw-semibold">{t('krmInherent.name')}</th>
-                              <th className="fw-semibold">{t('krmInherent.expert')}</th>
+                              <th className="fw-semibold">{t('krmInherent.evaluator-assign')}</th>
                             </tr>
                           </thead>
                           <tbody>

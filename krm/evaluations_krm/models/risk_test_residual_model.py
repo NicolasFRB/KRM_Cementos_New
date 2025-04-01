@@ -153,7 +153,7 @@ class RiskTestResidual(AuditModel):
 
     @property
     def severity_residual_evaluator(self):
-        return self.probability_level_residual_evaluator * self.get_latest_impact_inherent
+        return 0 # self.probability_level_residual_evaluator * self.get_latest_impact_inherent
     
     @property
     def severity_residual_evaluator_qualitative(self):

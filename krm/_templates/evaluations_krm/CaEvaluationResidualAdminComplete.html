@@ -272,9 +272,9 @@
       <p>
         A continuación se presenta la ficha de evaluación de riesgo residual, mostrando riesgo a riesgo aquellos seleccionados para ser evaluados. Para cada riesgo se muestran los <b>elementos clave</b> del mismo, así como la <b>evaluación de riesgo inherente</b>. Esto es, el riesgo en ausencia de cualquier medida de control.
       </p>
-      <p>
+      <!-- <p>
         Para estimar el riesgo residual puede apoyarse en los <b>Controles</b> que aparecen especificamente como mitigantes del riesgo, además de la lista mostrada al final de esta página que contiene los controles <a href="#elc_href"><b>ELC (Entity Level Controls)</b></a>, que son comunes a todos los riesgos.
-      </p>
+      </p> -->
     </div>
   </div>
   <!--end::Card body-->
@@ -564,17 +564,14 @@
       </div>
     {% endfor %}
 
-    <a id="elc_href"></a>
+    <!-- ELCs -->
+    <!-- <a id="elc_href"></a>
     <div class="card mb-8">
-      <!--begin::Card header-->
       <div class="card-header">
-        <!--begin::Card header-->
         <div class="card-title fs-3 fw-bold">Entity Level Controls (ELC) - {{ evaluation.get_controls_elc.count }} controles</div>
         <a href="#elc_href_back" style="margin-top: 10px;">Volver arriba</a>
-        <!--end::Card header-->
       </div>
-      <!--end::Card header-->
-      <!--begin::Card body-->
+
       <div class="card-body">
         <div class="row">
         {% if evaluation.get_controls_elc %}
@@ -630,8 +627,7 @@
         {% endif %}
         </div>
       </div>
-      <!--end::Card body-->
-    </div>
+    </div> -->
 
     <div class="card">
       <!--begin::Card header-->

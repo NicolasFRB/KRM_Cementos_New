@@ -5,8 +5,12 @@ import { useTranslation } from "react-i18next";
 import configService from "../services/config.js";
 
 import SelectCompanies from "./SelectCompanies.js";
-import SelectRisk from "./SelectRiskResidualKrm.js";
+// import SelectRisk from "./SelectRiskResidualKrm.js";
+import SelectRisk from "./SelectRiskInherentKrm.js";
 import EvaluationKrmInherentCreateSteps from "./EvaluationKrmInherentCreateSteps.js";
+import SelectDomainRiskKrmInherent from "./SelectDomainRiskKrmInherent.js";
+
+import Select from 'react-select'
 
 let $ = window.$;
 
@@ -15,6 +19,8 @@ function CreateEvaluationKrmInherent(props) {
 
   const [riskCompaniesLoading, setRiskCompaniesLoading] = useState(false);
   const [selectedRisks, setSelectedRisks] = useState([]);
+  const [selectedDomainRisks, setSelectedDomainRisks] = useState([]);
+  
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [riskCompanies, setRiskCompanies] = useState([]);
   const [companies, setCompanies] = useState([])
@@ -115,7 +121,7 @@ function CreateEvaluationKrmInherent(props) {
       }
       c.risks.forEach(risk => {
         if (risk.checked) {
-          rs.risks.push(risk.pk);
+          rs.risks.push([risk.pk, risk.evaluator]);
         }
       });
       if (rs.risks.length > 0) {
@@ -186,6 +192,51 @@ function CreateEvaluationKrmInherent(props) {
       );
   }
 
+  const selectEvaluator = (selected_riskCompany,selected_risk, selected_evaluator_data) => {
+    // console.log("Risk")
+    // console.log(riskCompany)
+    
+    // console.log("Expert")
+    // console.log(expert_data)
+
+    setRiskCompanies((riskCompanies) => 
+      riskCompanies.map((riskCompany) => {
+        console.log(riskCompany);
+        if(riskCompany.company.pk === selected_riskCompany.company.pk) 
+          return { ...riskCompany,
+            risks: riskCompany.risks.map( (risk) => {
+                if (risk.pk === selected_risk.pk) {
+                  console.log(risk);
+                  console.log({
+                    ...risk,  
+                    original_evaluator: risk.hasOwnProperty("original_evaluator")? risk.original_evaluator: risk.evaluator, 
+                    evaluator: selected_evaluator_data.pk, 
+                    evaluator_data: {
+                      pk:selected_evaluator_data.pk,
+                      email:selected_evaluator_data.label,
+                    },
+                    save_evaluator: selected_evaluator_data.pk != risk.evaluator
+                  });
+                  return {
+                    ...risk,  
+                    original_evaluator: risk.hasOwnProperty("original_evaluator")? risk.original_evaluator: risk.evaluator, 
+                    evaluator: selected_evaluator_data.pk, 
+                    evaluator_data: {
+                      pk:selected_evaluator_data.pk,
+                      email:selected_evaluator_data.label,
+                    },
+                    save_evaluator: selected_evaluator_data.pk != risk.evaluator
+                  };
+
+                }
+                else return risk;
+              })
+          }
+        else return riskCompany;
+      })
+    )
+  }
+
   return (
     <div className="App">
       <div className="row">
@@ -199,10 +250,28 @@ function CreateEvaluationKrmInherent(props) {
           <div className={(formData.completed ? '' : 'd-none')}>
             <SelectCompanies selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} companies={companies} setCompanies={setCompanies} />
           </div>
-          <div className="separator my-10"></div>
         </div>
+        <div className="separator my-10"></div>
+
         <div className="col-12">
-          <h3 className="mb-5">{t('krmResidual.step-3')}</h3>
+          <h3 className="mb-5">{t('krmInherent.step-3')}</h3>
+        </div>
+        {selectedCompanies.length === 0 && (
+          <>
+            <div className="alert alert-primary">{t('krmInherent.select-company')}</div>
+          </>
+        )
+        }
+        <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
+          <div className="col col-12 col-md-3">
+            <SelectDomainRiskKrmInherent selectedCompanies={selectedCompanies} selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
+          </div>
+        </div>
+
+
+        <div className="separator my-10"></div>
+        <div className="col-12">
+          <h3 className="mb-5">{t('krmResidual.step-4')}</h3>
         </div>
         {selectedCompanies.length === 0 && (
           <>
@@ -212,12 +281,15 @@ function CreateEvaluationKrmInherent(props) {
         }
         <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
           <div className="col col-12">
-            <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} />
+            <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} selectedDomainRisks={selectedDomainRisks} selectedCompanies={selectedCompanies}  />
           </div>
         </div>
         <div className="separator my-10"></div>
+
+
+        <div className="separator my-10"></div>
         <div className="col-12" id="launch">
-          <h3 className="mb-5">{t('krmResidual.step-4')}</h3>
+          <h3 className="mb-5">{t('krmResidual.step-5')}</h3>
           {selectedRisks.length > 0 && (
             <>
               <div className="mt-5 mb-15">
@@ -249,7 +321,7 @@ function CreateEvaluationKrmInherent(props) {
                               <th className="fw-semibold">{t('krmResidual.name')}</th>
                               <th className="fw-semibold text-center">{t('krmResidual.evaluate')}</th>
                               <th className="fw-semibold text-center">{t('krmResidual.expert-severity')}</th>
-                              <th className="fw-semibold text-center">{t('krmInherent.severity-admin')}</th>
+                              <th className="fw-semibold text-center">{t('krmResidual.severity-admin')}</th>
                               <th className="fw-semibold">{t('krmResidual.evaluator-assign')}</th>
                             </tr>
                           </thead>
@@ -257,10 +329,10 @@ function CreateEvaluationKrmInherent(props) {
                             {company.risks.map((risk, index) => {
                               return <tr key={risk.pk}>
                                 <td className="text-center">
-                                  {(!risk.evaluated || risk.domain_risk_evaluator.length === 0) && (
+                                  {(!risk.evaluator) && (
                                     <span className="badge badge-square badge-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="No es posible lanzar este test sin tener asignado previamente un experto para ese dominio de riesgo"></span>
                                   )}
-                                  {risk.evaluated && risk.domain_risk_evaluator.length > 0 && (
+                                  {risk.evaluator && (
                                     <input id={'ri' + risk.pk} onChange={() => selectRiskCompanyToEvaluate(risk.pk)} className="form-check-input" name="risks" type="checkbox" value={risk.pk} checked={risk.checked} />
                                   )}
                                 </td>
@@ -281,16 +353,37 @@ function CreateEvaluationKrmInherent(props) {
                                   <span className="badge badge-secondary">{risk.severity_level_admin_qualitative}</span>
                                 </td>
                                 <td>
-                                  {risk.domain_risk_evaluator.map((evaluator, index) => {
-                                    return (
-                                      <div className="mb-1" key={index}>
-                                        <span className="badge badge-primary" >{evaluator}</span>
-                                      </div>
-                                    )
-                                  })}
-                                  {risk.domain_risk_evaluator.length === 0 && (
+                                  { risk.evaluator && (
                                     <>
-                                      <span className="badge badge-danger">{t('krmResidual.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-evaluator/${risk.company_domain_risk_evaluator}/`}><span className="badge badge-primary">{t('krmResidual.assign')}</span></a>
+                                      <Select
+                                        onChange={(evaluator) => selectEvaluator(company, risk, evaluator)}
+                                        getOptionValue={(option) => `${option['pk']}`}
+                                        options={company.company.employees.map((employee) => {
+                                          // console.log(employee)
+                                          return { pk: employee.pk, label: employee.email }
+                                        })}
+                                        // isMulti
+                                        defaultValue={ risk?.evaluator_data ? {pk: risk.evaluator_data.pk, label: risk.evaluator_data.email}: null }  
+
+                                      />
+                                    </>
+                                  )}
+                                  {!risk.evaluator && (
+                                    // <>
+                                    //   <span className="badge badge-danger">{t('krmResidual.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-evaluator/${risk.company_domain_risk_evaluator}/`}><span className="badge badge-primary">{t('krmResidual.assign')}</span></a>
+                                    // </>
+                                    <>
+                                      <Select
+                                        onChange={(evaluator) => selectEvaluator(company, risk, evaluator)}
+                                        getOptionValue={(option) => `${option['pk']}`}
+                                        options={company.company.employees.map((employee) => {
+                                          // console.log(employee)
+                                          return { pk: employee.pk, label: employee.email }
+                                        })}
+                                        // isMulti
+                                        defaultValue={ risk?.evaluator_data ? {pk: risk.evaluator_data.pk, label: risk.evaluator_data.email}: null }  
+
+                                      />
                                     </>
                                   )}
                                 </td>
