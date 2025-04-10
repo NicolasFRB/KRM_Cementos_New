@@ -44,172 +44,251 @@
   color: #a6ed9d !important;
 }
 
-#risk_eval_table tr > td:nth-child(7){
-  display:none
+#risk_eval_table tr > td:nth-child(n+9){
+  display: table-cell !important
 }
-#risk_eval_table tr > th:nth-child(7){
-  display:none
+#risk_eval_table tr > th:nth-child(n+9){
+  display: table-cell !important
 }
 
 </style>
 <script>
 
-  function load_bar(id, rit) {
-    r_prob = [];
-    rit.forEach(function(r) {
-      var r_p = {x: '', y: '', name: ''}
+function color_severity(val, id){
 
-      if (r.status < 2) {
-        r_p.x = r.risk_ref
-        r_p.y = 0
-        r_p.name = r.risk_name
+  var arrow_dot = document.querySelector("#"+id)
 
-      } else {
-        r_p.x = r.risk_ref
-        r_p.y = r.probability_level_residual_evaluator
-        r_p.name = r.risk_name
-      }
-      r_prob.push(r_p)
-    });
+  arrow_dot.classList.remove(
+    'bi-x-circle-fill',
+    'bi-arrow-down-circle-fill',
+    'bi-arrow-down-right-circle-fill',
+    'bi-arrow-right-circle-fill',
+    'bi-arrow-up-right-circle-fill',
+    'bi-arrow-up-circle-fill'
+  );
 
-    var options = {
-          series: [
-        {
-          name: 'Nivel de control',
-          data: r_prob
-        }
-      ],
-          chart: {
-            height: 250,
-            type: 'bar',
-            stacked: true,
-            toolbar: {
-              show:false,
-            }
-          },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            dataLabels: {
-              position: 'center', // top, center, bottom
-            },
-          }
-        },
-
-        dataLabels: {
-          enabled: true,
-          formatter: function (val) {
-            return val;
-          },
-          style: {
-            fontSize: '10px',
-            colors: ["#304758"]
-          }
-        },
-        tooltip:{
-          custom: function({series, seriesIndex, dataPointIndex, w}) {
-            var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-            markerColor = w.globals.markers.colors[seriesIndex];
-            return '<div style="margin:10px;">' +
-            '<br>' +
-            '<div style="font-size: 11px;">'+
-              '<b>'+data.x+'</b>'+
-            '</div>'+
-            '<div style="font-size: 11px;">'+
-              data.name+
-            '</div>'+
-            '<br>' +
-              '<div class="apexcharts-legend-series">' +
-                '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
-                '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
-              '</div>'
-            +'</div>';
-          },
-        },
-        xaxis: {
-          position: 'bottom',
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false
-          },
-          crosshairs: {
-            enabled:false,
-          },
-          tooltip: {
-            enabled: false,
-          }
-        },
-        yaxis: {
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: false,
-            formatter: function (val) {
-              return val;
-            }
-          }
-
-        },
-      };
-
-        var chart = new ApexCharts(document.querySelector("#"+id), options);
-        chart.render();
+  if (val == 'Sin establecer') {
+  arrow_dot.style.color = "#d9d3d2";
+  arrow_dot.classList.add('bi-x-circle-fill');
+  } else if (val == 'Muy baja') {
+  arrow_dot.style.color = "#09ef0d";
+  arrow_dot.classList.add('bi-arrow-down-circle-fill');
+  } else if (val == 'Baja') {
+  arrow_dot.style.color = "#e8ee0b";
+  arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
+  } else if (val == 'Media') {
+  arrow_dot.style.color = "#fea227";
+  arrow_dot.classList.add('bi-arrow-right-circle-fill');
+  } else if (val == 'Alta') {
+  arrow_dot.style.color = "#ff6e56";
+  arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
+  } else if (val == 'Muy alta') {
+  arrow_dot.style.color = "#f10606";
+  arrow_dot.classList.add('bi-arrow-up-circle-fill');
   }
+}
 
-  function load_chart(id, n_pending, n_delivered, n_finished) {
+function load_bar(id, rit) {
+  r_prob = [];
+  rit.forEach(function(r) {
+    var r_p = {x: '', y: '', name: ''}
 
-    const data = {
-      labels: ['Pending', 'Delivered', 'Finished'],
-      datasets: [
-        {
-          label: '',
-          data: [n_pending, n_delivered, n_finished],
-          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
-        }
-      ]
-    };
-    const config = {
-      type: 'pie',
-      data: data,
-      fill: {
-          type: 'gradient',
-        },
-      options: {
-        animation : {
-          duration: 5000,
-        },
-        responsive: true,
-        plugins: {
-          legend: {
-            display:false,
-          },
-          title: {
-            display: false,
-          },
-
-        },
-        },
-    };
-    const myChart = new Chart(document.querySelector('#'+id), config);
-  }
-
-  function swap_columns(id, datatable_id) {
-    var dt = $('#'+datatable_id).DataTable();
-    if (id == 'flexRadio_cualitativo') {
-      dt.column(5).visible(true);
-      dt.column(6).visible(false);
+    if (r.status < 2) {
+      r_p.x = r.risk_ref
+      r_p.y = 0
+      r_p.name = r.risk_name
 
     } else {
-      dt.column(5).visible(false);
-      dt.column(6).visible(true);
+      r_p.x = r.risk_ref
+      r_p.y = r.probability_level_residual_evaluator
+      r_p.name = r.risk_name
+    }
+    r_prob.push(r_p)
+  });
+
+  var options = {
+        series: [
+      {
+        name: 'Nivel de control',
+        data: r_prob
+      }
+    ],
+        chart: {
+          height: 250,
+          type: 'bar',
+          stacked: true,
+          toolbar: {
+            show:false,
+          }
+        },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          dataLabels: {
+            position: 'center', // top, center, bottom
+          },
+        }
+      },
+
+      dataLabels: {
+        enabled: true,
+        formatter: function (val) {
+          return val;
+        },
+        style: {
+          fontSize: '10px',
+          colors: ["#304758"]
+        }
+      },
+      tooltip:{
+        custom: function({series, seriesIndex, dataPointIndex, w}) {
+          var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+          markerColor = w.globals.markers.colors[seriesIndex];
+          return '<div style="margin:10px;">' +
+          '<br>' +
+          '<div style="font-size: 11px;">'+
+            '<b>'+data.x+'</b>'+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+            data.name+
+          '</div>'+
+          '<br>' +
+            '<div class="apexcharts-legend-series">' +
+              '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
+              '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
+            '</div>'
+          +'</div>';
+        },
+      },
+      xaxis: {
+        position: 'bottom',
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        crosshairs: {
+          enabled:false,
+        },
+        tooltip: {
+          enabled: false,
+        }
+      },
+      yaxis: {
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          show: false,
+          formatter: function (val) {
+            return val;
+          }
+        }
+
+      },
+    };
+
+      var chart = new ApexCharts(document.querySelector("#"+id), options);
+      chart.render();
+}
+
+function load_chart(id, n_pending, n_delivered, n_finished) {
+
+  const data = {
+    labels: ['Pending', 'Delivered', 'Finished'],
+    datasets: [
+      {
+        label: '',
+        data: [n_pending, n_delivered, n_finished],
+        backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
+      }
+    ]
+  };
+  const config = {
+    type: 'pie',
+    data: data,
+    fill: {
+        type: 'gradient',
+      },
+    options: {
+      animation : {
+        duration: 5000,
+      },
+      responsive: true,
+      plugins: {
+        legend: {
+          display:false,
+        },
+        title: {
+          display: false,
+        },
+
+      },
+      },
+  };
+  const myChart = new Chart(document.querySelector('#'+id), config);
+}
+
+function swap_columns(id, datatable_id) {
+  var flexRadio_cualitativo = $('#'+"flexRadio_cualitativo").is(':checked');
+  var flexRadio_cuantitativo = $('#'+"flexRadio_cuantitativo").is(':checked');
+
+  var dt = $('#risk_eval_table').DataTable();
+
+  var j_exp = dt.$(".justif-expert");
+
+  var s_exp_num = dt.$(".sev-expert-num");
+  var s_exp_qual = dt.$(".sev-expert-qual");
+
+  var i_exp_num = dt.$(".imp-expert-num");
+  var i_exp_qual = dt.$(".imp-expert-qual");
+
+  var p_exp_num = dt.$(".prob-expert-num");
+  var p_exp_qual = dt.$(".prob-expert-qual");
+
+  var speed_exp_num= dt.$(".speed-expert-num");
+  var speed_exp_qual= dt.$(".speed-expert-qual");
+
+  if (flexRadio_cualitativo) {
+
+    for(var i = 0; i < j_exp.length; i++) {
+
+      s_exp_num[i].style.display = "none";
+      s_exp_qual[i].style.display = "inline-block";
+
+      i_exp_num[i].style.display = "none";
+      i_exp_qual[i].style.display = "inline-block";
+
+      p_exp_num[i].style.display = "none";
+      p_exp_qual[i].style.display = "inline-block";
+
+      speed_exp_num[i].style.display = "none";
+      speed_exp_qual[i].style.display = "inline-block";
+    }
+
+  } else if (flexRadio_cuantitativo) {
+
+    for(var i = 0; i < j_exp.length; i++) {
+
+      s_exp_num[i].style.display = "inline-block";
+      s_exp_qual[i].style.display = "none";
+
+      i_exp_num[i].style.display = "inline-block";
+      i_exp_qual[i].style.display = "none";
+
+      p_exp_num[i].style.display = "inline-block";
+      p_exp_qual[i].style.display = "none";
+
+      speed_exp_num[i].style.display = "inline-block";
+      speed_exp_qual[i].style.display = "none";
+
     }
   }
+}
 </script>
 
 <!--begin::Container-->
@@ -417,33 +496,41 @@
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Test de Riesgo Residual de la Evaluación' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Tests de Riesgo Residual de la Evaluación' %}</div>
     <!--end::Card header-->
-    <div style="position:absolute; right: 25px; top: 10px;">
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cualitativo" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-          <label class="form-check-label" for="flexRadioDefault1">Cualitativo</label>
-      </div>
-      <div class="form-check" style="margin-top: 10px;">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
-          <label class="form-check-label" for="flexRadioDefault2">Cuantitativo</label>
+    <div style="display:flex;">
+      <div style="position:relative; right: 25px; top: 10px;">
+        <form>
+          <div class="form-check 2">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cualitativo" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
+              <label class="form-check-label" for="flexRadioDefault3">Cualitativo</label>
+          </div>
+          <div class="form-check 2" style="margin-top: 10px;">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
+              <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label>
+          </div>
+        </form>
       </div>
     </div>
   </div>
   <!--end::Card header-->
+
   <!--begin::Card body-->
   <div class="card-body">
     {% if rrt %}
       <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable" id="risk_eval_table">
         <thead>
           <tr>
-            <th></th>
-            <th>{% trans 'Riesgo' %}</th>
-            <th>{% trans 'Descripción' %}</th>
-            <th>{% trans 'Dominio de riesgo / Experto' %}</th>
-            <th>{% trans 'Justif. (Experto)' %}</th>
-            <th>{% trans 'Nivel de control (Evaluador)' %}</th>
-            <th>{% trans 'Nivel de control (Evaluador)' %}</th>
+            <th width= "5%" class="text-center">{% trans 'Estado' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Riesgo' %}</th>
+            <th width= "15%" class="text-center">{% trans 'Descripción del Riesgo N2' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Dominio del Riesgo N2' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Evaluador de R.Residual' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Justificación' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Velocidad de ocurrencia' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Impacto' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Probabilidad' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Severidad' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -451,36 +538,65 @@
           <tr>
             <td class="text-center align-middle">
               {% if rt.status == 1 %}
-                <span class="bi bi-dot fs-3x pending-color"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}"></span>
+                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">P</span>
               {% elif rt.status == 2 %}
-                <span class="bi bi-dot fs-3x delivered-color"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}"></span>
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>
               {% elif rt.status == 3 %}
-                <span class="bi bi-dot fs-3x finished-color"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}"></span>
+                <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
               {% endif %}
             </td>
+
             <td class="text-center align-middle">
               <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
             </td>
-            <td class="align-middle">
+
+            <td class="text-center align-middle">
               <div style="display:flex;">
                 <div style="width:90%">
-                  {{ rt.risk.krm_main_elements|striptags|truncatechars:100 }}
+                  {{ rt.risk.description|striptags|truncatechars:80 }}
                 </div>
                 <div style="width:10%">
-                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.krm_main_elements }}" style="margin-right:5px;"></i>
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.description }}" style="margin-right:5px;"></i>
                 </div>
               </div>
             </td>
+
             <td class="text-center align-middle">
-              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
-              <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} ({{ rt.evaluator.position }})" id = "box-child">{{ rt.evaluator.username_no_domain }}</span>
+              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
             </td>
+
             <td class="text-center align-middle">
-              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i>
+                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.expert.full_name }} ({{ rt.expert.position }})">{{ rt.expert.username_no_domain }}</span>
             </td>
-            <td class="text-center align-middle">{{ rt.get_probability_level_residual_evaluator_display }}</td>
-            <td class="text-center align-middle">{{ rt.probability_level_residual_evaluator }}</td>
+
+            <td class="text-center align-middle">
+              <span class="justif-expert"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_expert }}"></i></span>
+            </td>
+
+            <td class="text-center align-middle" data-order="{{ rt.event_speed_level_expert }}">
+              <span class="speed-expert-num" style="display:none;">{{ rt.event_speed_level_evaluator }}</span>
+              <span class="speed-expert-qual">{{ rt.get_event_speed_level_evaluator_display }}</span>
+            </td>
+
+            <td class="text-center align-middle" data-order="{{ rt.impact_level_expert }}">
+              <span class="imp-expert-num" style="display:none;">{{ rt.impact_level_evaluator }}</span>
+              <span class="imp-expert-qual">{{ rt.get_impact_level_evaluator_display }}</span>
+            </td>
+
+            <td class="text-center align-middle" data-order="{{ rt.probability_level_expert }}">
+              <span class="prob-expert-num" style="display:none;">{{ rt.probability_level_evaluator }}</span>
+              <span class="prob-expert-qual">{{ rt.get_probability_level_evaluator_display }}</span>
+            </td>
+
+            <td class="text-center align-middle" data-order="{{ rt.severity_level_expert }}" id="sev-row-{{ forloop.counter0 }}">
+              <div style="display:flex; gap:10px;">
+                <span><i class="bi bi-arrow-right-circle-fill" id = "sev-dot-{{ forloop.counter0 }}"></i></span>
+                <span class="sev-expert-num" style="display:none;">{{ rt.severity_level_evaluator }}</span>
+                <span class="sev-expert-qual">{{ rt.get_severity_evaluator_qualitative_display }}</span>
+              </div>
+            </td>
           </tr>
+          <script>color_severity("{{ rt.get_severity_evaluator_qualitative_display }}", "sev-dot-{{ forloop.counter0 }}");</script>
           {% endfor %}
         </tbody>
       </table>
@@ -493,6 +609,7 @@
     </div>
     {% endif %}
   </div>
+
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">

@@ -37,11 +37,11 @@
 }
 
 #risk_eval_table tr > td:nth-child(n+9){
-  display:none
+  display: table-cell !important;
 }
 
 #risk_eval_table tr > th:nth-child(n+9){
-  display:none
+  display: table-cell !important;
 }
 
 </style>
@@ -278,285 +278,342 @@ function color_severity_dynamic(val, id){
 
   var arrow_dot = $("#"+id);
 
-  if (val == 0) {
+  if (val == 'Sin establecer' || val == 'Not stablished') {
     arrow_dot.css('color',"#d9d3d2");
     arrow_dot.attr('class','bi-x-circle-fill');
-  } else if (val <= 2) {
-    arrow_dot.css('color',"#7ee34f");
+  } else if (val == 'Muy baja' || val == 'Very low') {
+    arrow_dot.css('color',"#09ef0d");
     arrow_dot.attr('class','bi-arrow-down-circle-fill');
-  } else if (val <= 5) {
-    arrow_dot.css('color',"#cdd44c");
+  } else if (val == 'Baja' || val == 'Low') {
+    arrow_dot.css('color',"#e8ee0b");
     arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
-  } else if (val <= 11) {
-    arrow_dot.css('color',"#c4aa43");
+  } else if (val == 'Media' || val == 'Medium') {
+    arrow_dot.css('color',"#fea227");
+    arrow_dot.attr('class','bi-arrow-right-circle-fill');
+  } else if (val == 'Alta' || val == 'High') {
+    arrow_dot.css('color',"#ff6e56");
     arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
-  } else if (val <= 16) {
-    arrow_dot.css('color',"#d14c24");
-    arrow_dot.attr('class','bi-arrow-up-circle-fill');
+  } else if (val == 'Muy alta' || val == 'Very high') {
+    arrow_dot.css('color', "#f10606");
+    arrow_dot.attr('class', 'bi-arrow-up-circle-fill');
   }
 }
 
 function color_severity(val, id){
 
-    var arrow_dot = document.querySelector("#"+id)
+  var arrow_dot = document.querySelector("#"+id)
 
-    if (val == 0) {
-      arrow_dot.style.color = "#d9d3d2";
-      arrow_dot.classList.toggle('bi-x-circle-fill');
-    } else if (val <= 2) {
-      arrow_dot.style.color = "#7ee34f";
-      arrow_dot.classList.toggle('bi-arrow-down-circle-fill');
-    } else if (val <= 5) {
-      arrow_dot.style.color = "#cdd44c";
-      arrow_dot.classList.toggle('bi-arrow-down-right-circle-fill');
-    } else if (val <= 11) {
-      arrow_dot.style.color = "#c4aa43";
-      arrow_dot.classList.toggle('bi-arrow-up-right-circle-fill');
-    } else if (val <= 16) {
-      arrow_dot.style.color = "#d14c24";
-      arrow_dot.classList.toggle('bi-arrow-up-circle-fill');
+  arrow_dot.classList.remove(
+    'bi-x-circle-fill',
+    'bi-arrow-down-circle-fill',
+    'bi-arrow-down-right-circle-fill',
+    'bi-arrow-right-circle-fill',
+    'bi-arrow-up-right-circle-fill',
+    'bi-arrow-up-circle-fill'
+  );
+
+  if (val == 'Sin establecer' || val =='Not stablished') {
+  arrow_dot.style.color = "#d9d3d2";
+  arrow_dot.classList.add('bi-x-circle-fill');
+  } else if (val == 'Muy baja' || val == 'Very low') {
+  arrow_dot.style.color = "#09ef0d";
+  arrow_dot.classList.add('bi-arrow-down-circle-fill');
+  } else if (val == 'Baja' || val == 'Low') {
+  arrow_dot.style.color = "#e8ee0b";
+  arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
+  } else if (val == 'Media' || val == 'Medium') {
+  arrow_dot.style.color = "#fea227";
+  arrow_dot.classList.add('bi-arrow-right-circle-fill');
+  } else if (val == 'Alta' || val == 'High') {
+  arrow_dot.style.color = "#ff6e56";
+  arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
+  } else if (val == 'Muy alta' || val == 'Very high') {
+  arrow_dot.style.color = "#f10606";
+  arrow_dot.classList.add('bi-arrow-up-circle-fill');
+  }
+}
+
+
+function swap_columns(id, datatable_id) {
+  var flexRadio_cualitativo = $('#'+"flexRadio_cualitativo").is(':checked');
+  var flexRadio_cuantitativo = $('#'+"flexRadio_cuantitativo").is(':checked');
+  var flexRadio_admin = $('#'+"flexRadio_admin").is(':checked');
+  var flexRadio_experto = $('#'+"flexRadio_experto").is(':checked');
+
+  var dt = $('#risk_eval_table').DataTable();
+
+  var j_exp = dt.$(".justif-expert");
+  var j_adm = dt.$(".justif-admin");
+
+  var s_exp_num = dt.$(".sev-expert-num");
+  var s_adm_num = dt.$(".sev-admin-num");
+  var s_exp_qual = dt.$(".sev-expert-qual");
+  var s_adm_qual = dt.$(".sev-admin-qual");
+
+  var i_exp_num = dt.$(".imp-expert-num");
+  var i_adm_num = dt.$(".imp-admin-num");
+  var i_exp_qual = dt.$(".imp-expert-qual");
+  var i_adm_qual = dt.$(".imp-admin-qual");
+
+  var p_exp_num = dt.$(".prob-expert-num");
+  var p_adm_num = dt.$(".prob-admin-num");
+  var p_exp_qual = dt.$(".prob-expert-qual");
+  var p_adm_qual = dt.$(".prob-admin-qual");
+
+  var speed_exp_num = dt.$(".speed-expert-num");
+  var speed_adm_num= dt.$(".speed-admin-num");
+  var speed_exp_qual= dt.$(".speed-expert-qual");
+  var speed_adm_qual= dt.$(".speed-admin-qual");
+
+  if (flexRadio_cualitativo && flexRadio_experto) {
+
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "inline-block";
+      j_adm[i].style.display = "none";
+
+      s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "none";
+      s_exp_qual[i].style.display = "inline-block";
+      s_adm_qual[i].style.display = "none";
+
+      i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "none";
+      i_exp_qual[i].style.display = "inline-block";
+      i_adm_qual[i].style.display = "none";
+
+      p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "none";
+      p_exp_qual[i].style.display = "inline-block";
+      p_adm_qual[i].style.display = "none";
+
+      speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "none";
+      speed_exp_qual[i].style.display = "inline-block";
+      speed_adm_qual[i].style.display = "none";
+
+      $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
+      color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
+    }
+
+  } else if (flexRadio_cuantitativo && flexRadio_experto) {
+
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "inline-block";
+      j_adm[i].style.display = "none";
+
+      s_exp_num[i].style.display = "inline-block";
+      s_adm_num[i].style.display = "none";
+      s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "none";
+
+      i_exp_num[i].style.display = "inline-block";
+      i_adm_num[i].style.display = "none";
+      i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "none";
+
+      p_exp_num[i].style.display = "inline-block";
+      p_adm_num[i].style.display = "none";
+      p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "none";
+
+      speed_exp_num[i].style.display = "inline-block";
+      speed_adm_num[i].style.display = "none";
+      speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "none";
+
+      $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
+      color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
+    }
+
+  } else if (flexRadio_cualitativo && flexRadio_admin) {
+
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "none";
+      j_adm[i].style.display = "inline-block";
+
+      s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "none";
+      s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "inline-block";
+
+      i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "none";
+      i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "inline-block";
+
+      p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "none";
+      p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "inline-block";
+
+      speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "none";
+      speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "inline-block";
+
+      $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
+      color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
+    }
+
+  } else if (flexRadio_cuantitativo && flexRadio_admin) {
+
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "none";
+      j_adm[i].style.display = "inline-block";
+
+      s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "inline-block";
+      s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "none";
+
+      i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "inline-block";
+      i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "none";
+
+      p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "inline-block";
+      p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "none";
+
+      speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "inline-block";
+      speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "none";
+
+      $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
+      color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
     }
   }
+}
 
-  function swap_columns(id, datatable_id) {
-      var flexRadio_cualitativo = $('#'+"flexRadio_cualitativo").is(':checked');
-      var flexRadio_cuantitativo = $('#'+"flexRadio_cuantitativo").is(':checked');
-      var flexRadio_admin = $('#'+"flexRadio_admin").is(':checked');
-      var flexRadio_experto = $('#'+"flexRadio_experto").is(':checked');
+function load_chart(id, n_pending, n_delivered, n_finished, title) {
 
-      var dt = $('#risk_eval_table_aggregates').DataTable();
+  const data = {
+    labels: ['Pending', 'Delivered', 'Finished'],
+    datasets: [
+      {
+        label: '',
+        data: [n_pending, n_delivered, n_finished],
+        backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
+      }
+    ]
+  };
+  const config = {
+    type: 'pie',
+    data: data,
+    fill: {
+        type: 'gradient',
+      },
+    options: {
+      animation : {
+        duration: 5000,
+      },
+      responsive: true,
+      plugins: {
+        legend: {
+          display:false,
+        },
+        title: {
+          display: true,
+          text: title,
+          font: {
+              size: 11,
+              family: 'Helvetica, Inter, sans-serif',
+          },
+        },
 
-      var s_adm_num = dt.$(".sev-adm-num");
-      var s_adm_qual = dt.$(".sev-adm-qual");
+      },
+    },
+  };
+  const myChart = new Chart(document.querySelector('#'+id), config);
+}
 
-      var nc_exp_num = dt.$(".nc-expert-num");
-      var nc_adm_num = dt.$(".nc-adm-num");
-      var nc_exp_qual = dt.$(".nc-expert-qual");
-      var nc_adm_qual = dt.$(".nc-adm-qual");
+function load_heat(id, rrt) {
+  var series_key_idx = {};
+  var series = [];
 
-      var sr_exp_num = dt.$(".sevr-expert-num");
-      var sr_adm_num = dt.$(".sevr-adm-num");
-      var sr_exp_qual = dt.$(".sevr-expert-qual");
-      var sr_adm_qual = dt.$(".sevr-adm-qual");
+  rrt.forEach(function(r) {
 
-      if (flexRadio_cualitativo && flexRadio_experto) {
-
-        for(var i = 0; i < s_adm_num.length; i++) {
-
-          s_adm_num[i].style.display = "none";
-          s_adm_qual[i].style.display = "inline-block";
-
-          nc_exp_num[i].style.display = "none";
-          nc_adm_num[i].style.display = "none";
-          nc_exp_qual[i].style.display = "inline-block";
-          nc_adm_qual[i].style.display = "none";
-
-          sr_exp_num[i].style.display = "none";
-          sr_adm_num[i].style.display = "none";
-          sr_exp_qual[i].style.display = "inline-block";
-          sr_adm_qual[i].style.display = "none";
-
-          $("#nc-row-" + i).attr( "data-order", nc_exp_num[i].innerHTML );
-          $("#sevr-row-" + i).attr( "data-order", sr_exp_num[i].innerHTML );
-          color_nc_dynamic(parseFloat(nc_exp_num[i].innerHTML), "nc-dot-" + i);
-          color_severity_dynamic(parseFloat(sr_exp_num[i].innerHTML), "sevr-dot-" + i);
-        }
-
-      } else if (flexRadio_cuantitativo && flexRadio_experto) {
-
-        for(var i = 0; i < s_adm_num.length; i++) {
-          s_adm_num[i].style.display = "inline-block";
-          s_adm_qual[i].style.display = "none";
-
-          nc_exp_num[i].style.display = "inline-block";
-          nc_adm_num[i].style.display = "none";
-          nc_exp_qual[i].style.display = "none";
-          nc_adm_qual[i].style.display = "none";
-
-          sr_exp_num[i].style.display = "inline-block";
-          sr_adm_num[i].style.display = "none";
-          sr_exp_qual[i].style.display = "none";
-          sr_adm_qual[i].style.display = "none";
-
-          $("#nc-row-" + i).attr( "data-order", nc_exp_num[i].innerHTML );
-          $("#sevr-row-" + i).attr( "data-order", sr_exp_num[i].innerHTML );
-          color_nc_dynamic(parseFloat(nc_exp_num[i].innerHTML), "nc-dot-" + i);
-          color_severity_dynamic(parseFloat(sr_exp_num[i].innerHTML), "sevr-dot-" + i);
-        }
-
-      } else if (flexRadio_cualitativo && flexRadio_admin) {
-
-        for(var i = 0; i < s_adm_num.length; i++) {
-          s_adm_num[i].style.display = "none";
-          s_adm_qual[i].style.display = "inline-block";
-
-          nc_exp_num[i].style.display = "none";
-          nc_adm_num[i].style.display = "none";
-          nc_exp_qual[i].style.display = "none";
-          nc_adm_qual[i].style.display = "inline-block";
-
-          sr_exp_num[i].style.display = "none";
-          sr_adm_num[i].style.display = "none";
-          sr_exp_qual[i].style.display = "none";
-          sr_adm_qual[i].style.display = "inline-block";
-
-          $("#nc-row-" + i).attr( "data-order", nc_adm_num[i].innerHTML );
-          $("#sevr-row-" + i).attr( "data-order", sr_adm_num[i].innerHTML );
-          color_nc_dynamic(parseFloat(nc_adm_num[i].innerHTML), "nc-dot-" + i);
-          color_severity_dynamic(parseFloat(sr_adm_num[i].innerHTML), "sevr-dot-" + i);
-        }
-
-      } else if (flexRadio_cuantitativo && flexRadio_admin) {
-
-        for(var i = 0; i < s_adm_num.length; i++) {
-          s_adm_num[i].style.display = "inline-block";
-          s_adm_qual[i].style.display = "none";
-
-          nc_exp_num[i].style.display = "none";
-          nc_adm_num[i].style.display = "inline-block";
-          nc_exp_qual[i].style.display = "none";
-          nc_adm_qual[i].style.display = "none";
-
-          sr_exp_num[i].style.display = "none";
-          sr_adm_num[i].style.display = "inline-block";
-          sr_exp_qual[i].style.display = "none";
-          sr_adm_qual[i].style.display = "none";
-
-          $("#nc-row-" + i).attr( "data-order", nc_adm_num[i].innerHTML );
-          $("#sevr-row-" + i).attr( "data-order", sr_adm_num[i].innerHTML );
-          color_nc_dynamic(parseFloat(nc_adm_num[i].innerHTML), "nc-dot-" + i);
-          color_severity_dynamic(parseFloat(sr_adm_num[i].innerHTML), "sevr-dot-" + i);
-        }
+    evaluator = r.evaluator;
+    if (!(evaluator in series_key_idx)) {
+      series_key_idx[evaluator] = Object.keys(series_key_idx).length;
+      series.push({
+        "name": evaluator,
+        "data": [],
+      });
     }
-  }
 
-  function load_chart(id, n_pending, n_delivered, n_finished, title) {
+    series[series_key_idx[evaluator]]["data"].push({'x': r.risk_ref, 'y': r.probability_level_residual_evaluator});
+  })
 
-    const data = {
-      labels: ['Pending', 'Delivered', 'Finished'],
-      datasets: [
-        {
-          label: '',
-          data: [n_pending, n_delivered, n_finished],
-          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
-        }
-      ]
-    };
-    const config = {
-      type: 'pie',
-      data: data,
-      fill: {
-          type: 'gradient',
-        },
-      options: {
-        animation : {
-          duration: 5000,
-        },
-        responsive: true,
-        plugins: {
-          legend: {
-            display:false,
+
+  var options = {
+    series: series,
+    chart: {
+    height: 120+40*series.length,
+    type: 'heatmap',
+  },
+  plotOptions: {
+    heatmap: {
+      shadeIntensity: 0.5,
+      radius: 0,
+      useFillColorAsStroke: true,
+      colorScale: {
+        ranges: [
+          {
+            from: 1,
+            to: 1,
+            name: 'Optimizado',
+            color: '#a6ed9d'
           },
-          title: {
-            display: true,
-            text: title,
-            font: {
-                size: 11,
-                family: 'Helvetica, Inter, sans-serif',
-            },
+          {
+            from: 2,
+            to: 2,
+            name: 'Aceptable',
+            color: '#7dedf5'
           },
-
-        },
-      },
-    };
-    const myChart = new Chart(document.querySelector('#'+id), config);
-  }
-
-  function load_heat(id, rrt) {
-    var series_key_idx = {};
-    var series = [];
-
-    rrt.forEach(function(r) {
-
-      evaluator = r.evaluator;
-      if (!(evaluator in series_key_idx)) {
-        series_key_idx[evaluator] = Object.keys(series_key_idx).length;
-        series.push({
-          "name": evaluator,
-          "data": [],
-        });
+          {
+            from: 3,
+            to: 3,
+            name: 'Inadecuado',
+            color: '#e6d68e'
+          },
+          {
+            from: 4,
+            to: 4,
+            name: 'No controlado',
+            color: '#ed9f7b'
+          },
+          {
+            from: 5,
+            to: 5,
+            name: 'N/A',
+            color: '#d4d0c7'
+          }
+        ]
       }
-
-      series[series_key_idx[evaluator]]["data"].push({'x': r.risk_ref, 'y': r.probability_level_residual_evaluator});
-    })
-
-
-    var options = {
-      series: series,
-      chart: {
-      height: 120+40*series.length,
-      type: 'heatmap',
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    width: 1
+  },
+  title: {
+    display: false,
+  },
+  legend: {
+    show: true,
+    showForSingleSeries: true,
     },
-    plotOptions: {
-      heatmap: {
-        shadeIntensity: 0.5,
-        radius: 0,
-        useFillColorAsStroke: true,
-        colorScale: {
-          ranges: [
-            {
-              from: 1,
-              to: 1,
-              name: 'Optimizado',
-              color: '#a6ed9d'
-            },
-            {
-              from: 2,
-              to: 2,
-              name: 'Aceptable',
-              color: '#7dedf5'
-            },
-            {
-              from: 3,
-              to: 3,
-              name: 'Inadecuado',
-              color: '#e6d68e'
-            },
-            {
-              from: 4,
-              to: 4,
-              name: 'No controlado',
-              color: '#ed9f7b'
-            },
-            {
-              from: 5,
-              to: 5,
-              name: 'N/A',
-              color: '#d4d0c7'
-            }
-          ]
-        }
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      width: 1
-    },
-    title: {
-      display: false,
-    },
-    legend: {
-      show: true,
-      showForSingleSeries: true,
-      },
-    };
+  };
 
-    var chart = new ApexCharts(document.querySelector("#"+id), options);
-    chart.render();
+  var chart = new ApexCharts(document.querySelector("#"+id), options);
+  chart.render();
 
-  }
+}
 
 </script>
 
@@ -785,44 +842,73 @@ function color_severity(val, id){
     </div>
   </div>
   <!--end::Card body-->
-  <!--begin::Card footer-->
+
   <div class="card-footer py-6" style="display:flex;">
-    <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+    <div class="d-flex gap-2 align-items-center">
+    <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary"><i
       class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
 
-    <a href="{% url 'evaluations_krm:ca_evaluation_residual_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
+    <a href="{% url 'evaluations_krm:ca_evaluation_residual_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
+
+    {% if evaluation.status != 'FI' %}
+
+      <a href="{% url 'evaluations_krm:ca_evaluation_residual_complete' evaluation.pk %}" class="btn btn-sm btn-primary">
+      {% trans 'Completar evaluación como Administrador' %}</a>
+
+    {% endif %}
 
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       {% include '_includes/FormErrors.html' %}
       {% csrf_token %}
       <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
       <input type="hidden" name="action" value="download">
-      <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
+      <button class="btn btn-sm btn-primary"><i class="bi bi-download"></i>{% trans 'Descargar Evaluación' %}</button>
     </form>
-
-    <form method="post" class="kt-form kt-form--label-right" novalidate>
-      {% include '_includes/FormErrors.html' %}
-      {% csrf_token %}
-        <input type="hidden" name="evaluation_pk" value="{{ evaluation.pk }}">
-        <input type="hidden" name="action" value="f">
-        <button class="btn btn-sm btn-primary me-2">{% trans 'Finalizar evaluación' %}</button>
-    </form>
+    </div>
   </div>
   <!--end::Card footer-->
 </div>
-
 <div class="card mb-8">
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{% trans 'Tests de Riesgo Residual de la Evaluación' %}</div>
     <!--end::Card header-->
+    <div style="display:flex;">
+      <div style="position:relative; margin-right: 5em; top: 10px;">
+        <form>
+          <div class="form-check 1">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_experto" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
+              <label class="form-check-label" for="flexRadioDefault1">Evaluador</label>
+          </div>
+          <div class="form-check 1" style="margin-top: 10px;">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
+              <label class="form-check-label" for="flexRadioDefault2">Administrador</label>
+          </div>
+        </form>
+      </div>
+      <div style="position:relative; right: 25px; top: 10px;">
+        <form>
+          <div class="form-check 2">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cualitativo" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
+              <label class="form-check-label" for="flexRadioDefault3">Cualitativo</label>
+          </div>
+          <div class="form-check 2" style="margin-top: 10px;">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
+              <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
   <!--end::Card header-->
+
   <!--begin::Card body-->
   <div class="card-body">
     {% if evaluation.risk_test_residuals.all %}
-      <div class="row">
+
+      <!--  Código donde insertábamos el gráfico 1 de Evaluaciones de Riesgo Residual
+        <div class="row">
         {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
           <div>
             <div id="heat-main"></div>
@@ -832,17 +918,21 @@ function color_severity(val, id){
               load_heat("heat-main", rrt);
           </script>
         {% endif %}
-      </div>
-      <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
+      </div> -->
+
+      <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable" id="risk_eval_table">
         <thead>
           <tr>
-            <th></th>
-            <th>{% trans 'Riesgo' %}</th>
-            <th>{% trans 'Descripción' %}</th>
-            <th>{% trans 'Dominio de riesgo / Evaluador' %}</th>
-            <th>{% trans 'Justif. (Evaluador)' %}</th>
-            <th>{% trans 'Nivel de control' %}</th>
-            <th>{% trans 'Sev. Inherente' %}</th>
+            <th width= "5%" class="text-center">{% trans 'Estado' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Riesgo' %}</th>
+            <th width= "15%" class="text-center">{% trans 'Descripción del Riesgo N2' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Dominio del Riesgo N2' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Evaluador de R.Residual' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Justificación' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Velocidad de ocurrencia' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Impacto' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Probabilidad' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Severidad' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -857,38 +947,78 @@ function color_severity(val, id){
                 <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
               {% endif %}
             </td>
+
             <td class="text-center align-middle">
-              <a href="{% url 'risks_company:ca_risk_company_update' rt.risk.pk %}">
-                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
+              <a href="{% url 'risks_company:ga_risk_company_update' rt.risk.pk %}">
+                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.risk.name }}">{{ rt.risk.risk.ref }}</span>
               </a>
             </td>
-            <td class="align-middle">
+
+            <td class="text-center align-middle">
               <div style="display:flex;">
                 <div style="width:90%">
-                  {{ rt.risk.krm_main_elements|striptags|truncatechars:100 }}
+                  {{ rt.risk.risk.description|striptags|truncatechars:80|safe }}
                 </div>
                 <div style="width:10%">
-                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.krm_main_elements }}" style="margin-right:5px;"></i>
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.risk.description|striptags|safe }}" style="margin-right:5px;"></i>
                 </div>
               </div>
             </td>
+
             <td class="text-center align-middle">
-              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}" id = "box-child">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
-              <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} ({{ rt.evaluator.position }})" id = "box-child">{{ rt.evaluator.username_no_domain }}</span>
+              <a href="{% url 'domain_risks:ga_domain_risk_detail' rt.risk.risk.risk_master.domain_risk.pk %}">
+                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
+              </a>
             </td>
+
             <td class="text-center align-middle">
-              <i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_evaluator }}"></i>
+                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} ({{ rt.evaluator.position }})">{{ rt.evaluator.username_no_domain }}</span>
             </td>
-            <td class="text-center align-middle">{{ rt.probability_level_residual_evaluator }}</td>
-            <td class="text-center align-middle">{{ rt.get_latest_severity_inherent }}</td>
+
+            <td class="text-center align-middle">
+              <span class="justif-expert"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_evaluator }}"></i></span>
+              <span class="justif-admin" style="display:none;"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_administrator }}"></i></span>
+            </td>
+
+            <td class="text-center align-middle" data-order="{{ rt.event_speed_level_evaluator }}">
+              <span class="speed-expert-num" style="display:none;">{{ rt.event_speed_level_evaluator }}</span>
+              <span class="speed-admin-num" style="display:none;">{{ rt.event_speed_level_administrator }}</span>
+              <span class="speed-expert-qual">{{ rt.get_event_speed_level_evaluator_display }}</span>
+              <span class="speed-admin-qual" style="display:none;">{{ rt.get_event_speed_level_administrator_display }}</span>
+            </td>
+
+            <td class="text-center align-middle" data-order="{{ rt.impact_level_evaluator }}">
+              <span class="imp-expert-num" style="display:none;">{{ rt.impact_level_evaluator }}</span>
+              <span class="imp-admin-num" style="display:none;">{{ rt.impact_level_administrator }}</span>
+              <span class="imp-expert-qual">{{ rt.get_impact_level_evaluator_display }}</span>
+              <span class="imp-admin-qual" style="display:none;">{{ rt.get_impact_level_administrator_display }}</span>
+            </td>
+
+            <td class="text-center align-middle" data-order="{{ rt.probability_level_evaluator }}">
+              <span class="prob-expert-num" style="display:none;">{{ rt.probability_level_evaluator }}</span>
+              <span class="prob-admin-num" style="display:none;">{{ rt.probability_level_administrator }}</span>
+              <span class="prob-expert-qual">{{ rt.get_probability_level_evaluator_display }}</span>
+              <span class="prob-admin-qual" style="display:none;">{{ rt.get_probability_level_administrator_display }}</span>
+            </td>
+
+            <td class="text-center align-middle" data-order="{{ rt.severity_level_evaluator }}" id="sev-row-{{ forloop.counter0 }}">
+              <div style="display:flex; gap:10px;">
+                <span><i class="bi bi-arrow-right-circle-fill" id = "sev-dot-{{ forloop.counter0 }}"></i></span>
+                <span class="sev-expert-num" style="display:none;">{{ rt.severity_level_evaluator }}</span>
+                <span class="sev-admin-num" style="display:none;">{{ rt.severity_level_administrator }}</span>
+                <span class="sev-expert-qual">{{ rt.get_severity_evaluator_qualitative_display }}</span>
+                <span class="sev-admin-qual" style="display:none;">{{ rt.get_severity_administrator_qualitative_display }}</span>
+              </div>
+            </td>
           </tr>
+          <script>color_severity("{{ rt.get_severity_level_evaluator_qualitative_display }}", "sev-dot-{{ forloop.counter0 }}");</script>
           {% endfor %}
         </tbody>
       </table>
     {% else %}
     <div class="row mt-2 mb-2">
       <div class="col-sm">
-        <div class="alert alert-primary">{% trans 'No existen tests de riesgo residual para esta Evaluación' %}.
+        <div class="alert alert-primary">{% trans 'No existen tests de riesgo residual en esta Evaluación' %}.
         </div>
       </div>
     </div>
@@ -897,162 +1027,11 @@ function color_severity(val, id){
   <!--end::Card body-->
   <!--begin::Card footer-->
   <div class="card-footer py-6">
-    <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
+    <a href="{% url 'evaluations_krm:ga_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
       <i class="bi bi-arrow-bar-left"></i>
       {% trans 'Volver' %}</a>
   </div>
   <!--end::Card footer-->
 </div>
 
-<div class="card">
-  <!--begin::Card header-->
-  <div class="card-header">
-    <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Valoración agregada de Riesgo Residual' %}</div>
-    <!--end::Card header-->
-  </div>
-  <!--end::Card header-->
-  <!--begin::Card body-->
-  <div class="card-body">
-    {% if evaluation.risk_company_residuals.all %}
-    <div class="row">
-      {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
-        <div>
-          <div id="bar-main"></div>
-        </div>
-        <script>
-            var rcr = JSON.parse(clean_specialchars("{{ rcr_json }}"));
-            load_bar("bar-main", rcr);
-        </script>
-      {% endif %}
-    </div>
-    <hr>
-    <div class="row" style="margin-bottom: 10px;">
-      <div class="col-xl-9">
-      </div>
-      <div class="col-xl-3">
-        <div style="display:flex;">
-          <div style="position:relative; margin-right: 5em; top: 10px;">
-            <form>
-              <div class="form-check 1">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_experto" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-                  <label class="form-check-label" for="flexRadioDefault1">Experto</label>
-              </div>
-              <div class="form-check 1" style="margin-top: 10px;">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
-                  <label class="form-check-label" for="flexRadioDefault2">Admin</label>
-              </div>
-            </form>
-          </div>
-          <div style="position:relative; right: 25px; top: 10px;">
-            <form>
-              <div class="form-check 2">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cualitativo" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-                  <label class="form-check-label" for="flexRadioDefault3">Cualitativo</label>
-              </div>
-              <div class="form-check 2" style="margin-top: 10px;">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
-                  <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable" id="risk_eval_table_aggregates">
-      <thead>
-        <tr>
-          <th>{% trans 'Riesgo' %}</th>
-          <th>{% trans 'Descripción' %}</th>
-          <th>{% trans 'Dominio de riesgo / Evaluadores' %}</th>
-          <th class="sev-header">{% trans 'Severidad inherente' %}</th>
-          <th class="nc-header">{% trans 'Nivel de control' %}</th>
-          <th class="sevr-header">{% trans 'Severidad residual' %}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for rt in evaluation.risk_company_residuals.all %}
-        <tr>
-          <td class="text-center align-middle">
-            <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk_company.name }}">{{ rt.risk_company.risk.ref }}</span>
-          </td>
-          <td class="align-middle">
-            <div style="display:flex;">
-              <div style="width:90%">
-                {{ rt.risk_company.risk.krm_main_elements|striptags|truncatechars:100 }}
-              </div>
-              <div style="width:10%">
-                <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk_company.risk.krm_main_elements }}" style="margin-right:5px;"></i>
-              </div>
-            </div>
-          </td>
-          <td class="text-center align-middle">
-            <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk_company.risk.risk_master.domain_risk.name }}">{{ rt.risk_company.risk.risk_master.domain_risk.ref }}</span>
-            <div id = 'box' class="text-center">
-              <div style="cursor: pointer" onclick="toggle_item(this)">
-                  <span class="badge badge-info" style="">{{ rt.risk_test_residuals_calculus|length }} / {{ rt.risk_test_residuals_all|length }}</span>
-              </div>
-              <div id = "box-container">
-                {% for rrt in rt.risk_test_residuals.all %}
-                  <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" data-html="true" title="{{ rrt.evaluator.full_name }} ({{ rrt.evaluator.position }}) - Nivel de control: {{ rrt.get_probability_level_residual_evaluator_display }} ({{ rrt.probability_level_residual_evaluator }}) - Justificación: {{ rrt.description_evaluator }}" id = "box-child">{{ rrt.evaluator.username_no_domain }}</span>
-                {% endfor %}
-              </div>
-            </div>
-          </td>
-          <td class="text-center align-middle" data-order="{{ rt.get_latest_severity_inherent }}" id="sev-row-{{ forloop.counter0 }}">
-            <div style="display:flex; gap:10px;">
-              <span><i class="bi bi-arrow-right-circle-fill" id = "sev-dot-{{ forloop.counter0 }}"></i></span>
-              <span class="sev-adm-num" style="display:none;">{{ rt.get_latest_severity_inherent }}</span>
-              <span class="sev-adm-qual">{{ rt.get_latest_severity_inherent_qualitative }}</span>
-            </div>
-          </td>
-          <td class="text-center align-middle" data-order="{{ rt.probability_level_residual_evaluator_aggregate }}" id="nc-row-{{ forloop.counter0 }}">
-            <div style="display:flex; gap:10px;">
-              <span><i class="bi bi-arrow-right-circle-fill" id = "nc-dot-{{ forloop.counter0 }}"></i></span>
-              <span class="nc-expert-num" style="display:none;">{{ rt.probability_level_residual_evaluator_aggregate_rounded }} ({{ rt.probability_level_residual_evaluator_aggregate }})</span>
-              <span class="nc-expert-qual">{{ rt.probability_residual_evaluator_qualitative }} ({{ rt.probability_level_residual_evaluator_aggregate }})</span>
-              <span class="nc-adm-num" style="display:none;">{{ rt.probability_level_residual_administrator }} ({{ rt.probability_level_residual_administrator }})</span>
-              <span class="nc-adm-qual" style="display:none;">{{ rt.get_probability_level_residual_administrator_display }} ({{ rt.probability_level_residual_administrator }})</span>
-            </div>
-          </td>
-          <td class="text-center align-middle" data-order="{{ rt.severity_residual_evaluator }}" id="sevr-row-{{ forloop.counter0 }}">
-            <div style="display:flex; gap:10px;">
-              <span><i class="bi bi-arrow-right-circle-fill" id = "sevr-dot-{{ forloop.counter0 }}"></i></span>
-              <span class="sevr-expert-num" style="display:none;">{{ rt.severity_residual_evaluator }}</span>
-              <span class="sevr-expert-qual">{{ rt.severity_residual_evaluator_qualitative }}</span>
-              <span class="sevr-adm-num" style="display:none;">{{ rt.severity_residual_admin }}</span>
-              <span class="sevr-adm-qual" style="display:none;">{{ rt.severity_residual_admin_qualitative }}</span>
-            </div>
-          </td>
-        </tr>
-        <script>color_severity("{{ rt.get_latest_severity_inherent }}", "sev-dot-{{ forloop.counter0 }}");</script>
-        <script>color_nc("{{ rt.probability_level_residual_evaluator_aggregate_rounded }}", "nc-dot-{{ forloop.counter0 }}");</script>
-        <script>color_severity("{{ rt.severity_residual_evaluator }}", "sevr-dot-{{ forloop.counter0 }}");</script>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <div class="row mt-2 mb-2">
-      <div class="col-sm">
-        <div class="alert alert-primary">{% trans 'No existen tests de riesgo residual para esta Evaluación' %}.
-        </div>
-      </div>
-    </div>
-    {% endif %}
-  </div>
-  <!--end::Card body-->
-  <!--begin::Card footer-->
-  <div class="card-footer py-6">
-    <a href="{% url 'evaluations_krm:ca_evaluation_residual_list' %}" class="btn btn-sm btn-secondary">
-      <i class="bi bi-arrow-bar-left"></i>
-      {% trans 'Volver' %}</a>
-    {% if evaluation.status == 'EP' %}
-    <a href="{% url 'evaluations_krm:ca_evaluation_residual_complete' evaluation.pk %}"
-      class="btn btn-sm btn-primary me-2">
-      {% trans 'Completar evaluación (Admin)' %}</a>
-    {% endif %}
-  </div>
-  <!--end::Card footer-->
-</div>
-<!--end::Container-->
 {% endblock content %}

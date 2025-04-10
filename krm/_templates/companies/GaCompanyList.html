@@ -26,16 +26,14 @@
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
-          <th>{% trans 'Nombre' %}</th>
+          <th class="text-center">{% trans 'Nombre' %}</th>
           <th class="text-center">{% trans 'País' %}</th>
           <th class="text-center">{% trans 'Tipo' %}</th>
           <th class="text-center">{% trans 'Número de usuarios' %}</th>
           <th class="text-center">{% trans 'Número de Riesgos (N2)' %}</th>
           <th class="text-center">{% trans 'Número de Controles' %}</th>
-          {% if KRM_ACTIVATE %}
-            <th class="text-center">{% trans 'Expertos de Dominio de Riesgo (RI)' %}</th>
-            <th class="text-center">{% trans 'Evaluadores de Riesgo (RR)' %}</th>
-          {% endif %}
+          <!-- <th class="text-center">{% trans 'Evaluadores de Riesgo (RI)' %}</th>
+          <th class="text-center">{% trans 'Evaluadores de Riesgo (RR)' %}</th> -->
         </tr>
       </thead>
       <tbody>
@@ -55,8 +53,7 @@
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.employees.count }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.krm_risks_active.count }}</span></td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ company.get_controls_active.count }}</span></td>
-            {% if KRM_ACTIVATE %}
-              <td class="text-center align-middle">
+              <!-- <td class="text-center align-middle">
                 {% for ced in company.experts_domain_risk %}
                   {% if not ced.expert %}
                     <a href="{% url 'companies:ga_company_assign_expert_update' ced.pk %}"><span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">{{ ced.domain_risk.ref }}</span></a>
@@ -77,8 +74,7 @@
                     <br>
                   {% endif %}
                 {% endfor %}
-              </td>
-            {% endif %}
+              </td> -->
           </tr>
           {% endfor %}
       </tbody>

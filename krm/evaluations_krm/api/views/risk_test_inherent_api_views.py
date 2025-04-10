@@ -64,7 +64,7 @@ class RiskTestInherentExpertApiView(APIView):
 
             if 'description' in request.GET:
                 description = request.GET['description']
-                risk_test.description = description
+                risk_test.description_expert = description
 
         # if risk_test.status == 2:
 
@@ -85,7 +85,7 @@ class RiskTestInherentExpertApiView(APIView):
 
         if 'descriptionAdmin' in request.GET:
             description_admin = request.GET['descriptionAdmin']
-            risk_test.description_admin = description_admin
+            risk_test.description_administrator = description_admin
 
         risk_test.save()
 

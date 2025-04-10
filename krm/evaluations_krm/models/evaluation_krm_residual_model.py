@@ -21,7 +21,8 @@ def current_year():
 
 
 class EvaluationKrmResidual(AuditModel):
-    """Evaluation de Riesgo Residual model.
+    """
+    Modelo para la Evaluación de Riesgo Residual.
     """
 
     ref = models.CharField(
@@ -94,36 +95,67 @@ class EvaluationKrmResidual(AuditModel):
         verbose_name_plural = _("Evaluaciones Residuals KRM")
 
     def nrisk_test_residuals_pending_user(self, user):
+        """
+        Método de la clase Evaluación de Riesgo Residual que nos devuelve el número de tests de riesgo residual
+        que se encuentran en espera del Evaluador de Riesgo y cuyo usuario evaluador es introducido como parámetro
+        de entrada.
+        """
         return self.risk_test_residuals.filter(
             status=1,
             evaluator=user,
         ).distinct().count()
 
     def nrisk_test_residuals_delivered_user(self, user):
+        """
+        Método de la clase Evaluación de Riesgo Residual que nos devuelve el número de tests de riesgo residual
+        que se encuentran en espera de supervisión por parte de un Administrador de compañía y cuyo usuario evaluador es
+        introducido como parámetro de entrada.
+        """
         return self.risk_test_residuals.filter(
             status=2,
             evaluator=user,
         ).distinct().count()
 
     def nrisk_test_residuals_finished_user(self, user):
+        """
+        Método de la clase Evaluación de Riesgo Residual que nos devuelve el número de tests de riesgo residual
+        que se encuentran ya finalizados (evaluados y supervisados) y cuyo usuario evaluador es introducido como parámetro de entrada.
+        """
         return self.risk_test_residuals.filter(
             status=3,
             evaluator=user,
         ).distinct().count()
 
-    def create_risk_company_residual(self):
-        from krm.evaluations_krm.models import RiskCompanyResidual
+    def nrisk_test_residuals_by_severity(self, qualitative, user= None):
+        """
+        Método de la clase Evaluación de Riesgo Residual que nos devuelve el número de tests de riesgo residual que poseen
+        una severidad cualitativa indicada por el evaluador introducida como parámetro qualitative. Además, para poder acceder únicamente a aquellos
+        datos que nos corresponde visualizar como usuario regular cuando somos evaluadores de riesgos, se puede
+        filtrar por evaluador.
+        """
+        if user:
+            return self.risk_test_residuals.filter(
+                severity_evaluator_qualitative= qualitative,
+                evaluator= user
+            ).distinct().count()
+        else:
+            return self.risk_test_residuals.filter(
+                severity_evaluator_qualitative= qualitative
+            ).distinct().count()
 
-        # Para cada test de riesgo residual comprobamos si ya existe el RiskCompanyResidual
-        for rt in self.risk_test_residuals.all():
-            if RiskCompanyResidual.objects.filter(
-                evaluation=self,
-                risk_company=rt.risk
-            ).count() == 0:
-                RiskCompanyResidual.objects.create(
-                    evaluation=self,
-                    risk_company=rt.risk
-                )
+    # def create_risk_company_residual(self): Este método era empleado para crear instancias de RisksCompanyResidual
+    #     from krm.evaluations_krm.models import RiskCompanyResidual
+
+    #     # Para cada test de riesgo residual comprobamos si ya existe el RiskCompanyResidual
+    #     for rt in self.risk_test_residuals.all():
+    #         if RiskCompanyResidual.objects.filter(
+    #             evaluation=self,
+    #             risk_company=rt.risk
+    #         ).count() == 0:
+    #             RiskCompanyResidual.objects.create(
+    #                 evaluation=self,
+    #                 risk_company=rt.risk
+    #             )
 
     # RETURN number of risks by state in evaluation
     # OPTIONAL ARG: Filter by user
@@ -180,7 +212,7 @@ class EvaluationKrmResidual(AuditModel):
         ev_pk_found = {}
 
         for evaluator in evaluators_all_states:
-            
+
             notifications = [[n.action_description, n.created] for n in evaluator.actions_log.all() if self.ref in n.action_description]
 
             if evaluator.pk not in ev_pk_found:

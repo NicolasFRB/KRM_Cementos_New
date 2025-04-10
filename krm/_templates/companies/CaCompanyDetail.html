@@ -268,7 +268,7 @@
 {% if KRM_ACTIVATE %}
     <div class="card mb-8">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Expertos de Dominios de Riesgo (RI) en la compañía' %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
+        <div class="card-title fs-3 fw-bold">{% trans 'Evaluadores de Riesgo (RI) de la compañía' %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -278,23 +278,23 @@
                 <tr class="fw-semibold fs-6">
                   <th class="text-center">{% trans 'Acción' %}</th>
                   <th>{% trans 'REF' %}</th>
-                  <th>{% trans 'Dominio de Riesgo' %}</th>
-                  <th>{% trans 'Experto asignado (RI)' %}</th>
+                  <th>{% trans 'Riesgo N2' %}</th>
+                  <th>{% trans 'Evaluador (RI) asignado' %}</th>
                 </tr>
               </thead>
               <tbody>
-                {% for ced in company.experts_domain_risk %}
+                {% for risk_company in company.krm_risks_active %}
                   <tr>
                     <td class="text-center">
-                      <a href="{% url 'companies:ca_company_assign_expert_update' ced.pk %}"><i class="bi bi-pencil-fill fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Asignar"></i></a>
+                      <a href="{% url 'companies:ca_company_assign_expert_update' risk_company.pk %}"><i class="bi bi-pencil-fill fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Asignar"></i></a>
                     </td>
-                    <td><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.domain_risk.name|striptags }}">{{ ced.domain_risk.ref }}</span></a></td>
-                    <td>{{ ced.domain_risk.name }}</td>
+                    <td><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.name|striptags }}">{{ risk_company.risk.ref }}</span></a></td>
+                    <td>{{ risk_company.risk.name }}</td>
                     <td>
-                      {% if not ced.expert %}
+                      {% if not risk_company.expert %}
                         <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">Sin asignar</span></a>
                       {% else %}
-                      <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.first_name }} {{ ced.last_name }} ({{ ced.position }})">{{ ced.expert }}</span></a>
+                      <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.expert.first_name }} {{ risk_company.expert.last_name }} ({{ risk_company.expert.position }})">{{ risk_company.expert }}</span></a>
                       {% endif %}
                     </td>
                   </tr>
@@ -308,7 +308,7 @@
 
     <div class="card mb-8">
       <div class="card-header">
-        <div class="card-title fs-3 fw-bold">{% trans 'Evaluadores de Dominios de Riesgo (RR) en la compañía'  %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
+        <div class="card-title fs-3 fw-bold">{% trans 'Evaluadores de Riesgo (RR) de la compañía'  %}&nbsp&nbsp<span class="badge badge-primary text-wrap">{{ company.name }}</span></div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -318,27 +318,24 @@
                 <tr class="fw-semibold fs-6">
                   <th class="text-center">{% trans 'Acción' %}</th>
                   <th>{% trans 'REF' %}</th>
-                  <th>{% trans 'Dominio de Riesgo' %}</th>
-                  <th>{% trans 'Evaluadores de Riesgo (RR)' %}</th>
+                  <th>{% trans 'Riesgo N2' %}</th>
+                  <th>{% trans 'Evaluador (RR) asignado' %}</th>
                 </tr>
               </thead>
               <tbody>
-                {% for ced in company.evaluators_domain_risk.all %}
+                {% for risk_company in company.krm_risks_active %}
                 <tr>
                   <td class="text-center align-middle">
-                      <a href="{% url 'companies:ca_company_assign_evaluator_update' ced.pk %}"><i
+                      <a href="{% url 'companies:ca_company_assign_evaluator_update' risk_company.pk %}"><i
                           class="bi bi-pencil-fill fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Asignar"></i></a>
                   </td>
-                  <td class="text-center align-middle"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ ced.domain_risk.name }}">{{ ced.domain_risk.ref }}</span></a></td>
-                  <td class="align-middle">{{ ced.domain_risk.name }}</td>
+                  <td class="text-center align-middle"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.name }}">{{ risk_company.risk.ref }}</span></a></td>
+                  <td class="align-middle">{{ risk_company.risk.name }}</td>
                   <td class="align-middle">
-                    {% if not ced.evaluator.count %}
+                    {% if not risk_company.evaluator %}
                       <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">Sin asignar</span></a>
                     {% else %}
-                      {% for evaluator in ced.evaluator.all %}
-                        <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluator.first_name }} {{ evaluator.last_name }} ({{ evaluator.position }})">{{ evaluator.email }}</span></a>
-                        {% if not forloop.last %}<br>{% endif %}
-                      {% endfor %}
+                      <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.evaluator.first_name }} {{ risk_company.evaluator.last_name }} ({{ risk_company.evaluator.position }})">{{ risk_company.evaluator }}</span></a>
                     {% endif %}
                   </td>
                 </tr>

@@ -23,7 +23,7 @@
 
         if (!errorFound) {
           $("input[name^='probability-']").each(function(index){
-            if ($(this).val() == 5){
+            if ($(this).val() == 0){
               let parent = $(this).closest('div.card');
               $(parent).addClass('danger');
               $('html, body').animate({
@@ -39,7 +39,7 @@
 
         if (!errorFound) {
           $("input[name^='impact-']").each(function (index) {
-            if ($(this).val() == 5) {
+            if ($(this).val() == 0) {
               let parent = $(this).closest('div.card');
               $(parent).addClass('danger');
               $('html, body').animate({
@@ -55,7 +55,7 @@
 
         if (!errorFound) {
           $("input[name^='event-']").each(function (index) {
-            if ($(this).val() == '') {
+            if ($(this).val() == 0) {
               let parent = $(this).closest('div.card');
               $(parent).addClass('danger');
               $('html, body').animate({
@@ -253,8 +253,6 @@
                 </div>
                 <!--end::Col-->
               </div>
-            </div>
-            <div class="col col-md-3">
               <div class="row mb-8">
                 <!--begin::Col-->
                 <div class="col-xl-5">
@@ -295,7 +293,7 @@
 {% if risks_test_inherent %}
     {% for rt in risks_test_inherent %}
     <div class="accordion" id="kt_accordion_2">
-      <div class="card  mb-5">
+      <div class="card mb-5">
         <div class="accordion-item">
           <!--begin::Card header-->
           <div class="card-header" id="kt_accordion_1_header_{{ forloop.counter }}" style="padding: inherit">
@@ -687,7 +685,7 @@
                       <div class="mb-5">
                         <h5 class="mb-7">Descripción de la valoración del Evaluador de Riesgo Inherente del Riesgo N2</h5>
                         <div class="row">
-                          <p>{{ rt.description|default_if_none:'Sin completar' }}</p>
+                          <p>{{ rt.description_expert|default_if_none:'No se ha aportado todavía valoración por parte del Evaluador' }}</p>
                         </div>
                       </div>
                     </div>
@@ -703,7 +701,7 @@
               data-impact="{{ rt.impact_level_administrator}}"
               data-probability="{{ rt.probability_level_administrator }}"
               data-event-speed="{{ rt.event_speed_level_administrator }}"
-              data-description="{{ rt.description_admin|default_if_none:'' }}"></div>
+              data-description="{{ rt.description_administrator|default_if_none:'' }}"></div>
             </div>
             <!--end::Card footer-->
           </div>
@@ -731,7 +729,7 @@
                   <!--begin::Content-->
                   <div class="fw-semibold">
                     <div class="fs-6">
-                      {% trans 'Si como supervisor deja algún riesgo sin valorar se tomarán en cuenta los valores dados por los expertos asociados a cada dominio de riesgo al que pertenece.' %}
+                      {% trans 'Si, como administrador de compañía, deja algún campo de algún riesgo sin valorar, se tomarán en cuenta los valores dados por los usuarios evaluadores.' %}
                     </div>
                   </div>
                   <!--end::Content-->
@@ -742,7 +740,7 @@
               <div class="form-check form-check-custom form-check-solid mb-10">
                 <input class="form-check-input" type="checkbox" value="1" id="clone" name="clone" />
                 <label class="form-check-label" for="clone">
-                  {% trans 'Usar la valoración dada por los expertos para los riesgos no completados' %}
+                  {% trans 'Usar la valoración dada por los evaluadores para los campos no completados' %}
                 </label>
               </div>
 

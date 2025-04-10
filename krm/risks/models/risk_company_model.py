@@ -9,8 +9,8 @@ from krm.utils.models import AuditModel
 
 
 class RiskCompany(AuditModel):
-    """Risk Company model.
-    Modelo para representar  for represent a Risk Master
+    """
+    Modelo para representar los Riesgos N2 asociados a compañías.
     """
 
     company = models.ForeignKey(
@@ -85,7 +85,7 @@ class RiskCompany(AuditModel):
         blank=True,
         related_name='evaluator_risks'
     )
- 
+
     expert = models.ForeignKey(
         'users.User',
         verbose_name=_('Evaluador asignado'), # Para no cambiar todas las variables que hacen referencia a expert

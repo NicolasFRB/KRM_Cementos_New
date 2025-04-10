@@ -145,8 +145,6 @@ class GaImportEvalView(FormView):
             ev_inherent['ref'] = row[0].value
             ev_inherent['company'] = row[1].value.strip().replace(' ', '').upper()
             ev_inherent['description'] = row[2].value
-            # d, m , y = row[3].value.split('/')
-            # ev_inherent['date_begin'] = datetime.datetime(int(y), int(m), int(d))
             ev_inherent['date_begin'] = row[3].value
             # d, m , y = row[4].value.split('/')
             # ev_inherent['date_end'] = datetime.datetime(int(y), int(m), int(d))
@@ -159,17 +157,17 @@ class GaImportEvalView(FormView):
             evaluation_krm_inherent_to_create.append(ev_inherent)
 
         dr_created, n = 0, len(evaluation_krm_inherent_to_create)
-        for i,dr in enumerate(evaluation_krm_inherent_to_create):
+        for i, dr in enumerate(evaluation_krm_inherent_to_create):
             #print("Ev_ %d/%d" % (i, n))
             EvaluationKrmInherent.objects.create(
                 ref=dr['ref'],
                 company=Company.objects.get(ref = dr['company']),
                 description=dr['description'],
-                date_begin=dr['date_begin'],
+                date_begin=dr['date_begin'], #ver cómo está configurado el tomar estos datos
                 date_end=dr['date_end'],
                 certification_year=int(dr['certification_year']),
                 certification_period=dr['certification_period'],
-                status="FI",
+                status="FI", #no se está tomando el status
                 admin_supervisor=User.objects.get(email = dr['admin_supervisor'])
                 # dr['status']
             )
@@ -207,38 +205,45 @@ class GaImportEvalView(FormView):
             risk_inherent['risk'] = row[1].value
             risk_inherent['expert'] = row[2].value
             risk_inherent['impact_economic_level_expert'] = row[3].value
-            risk_inherent['impact_continuity_level_expert'] = row[4].value
-            risk_inherent['impact_branding_level_expert'] = row[5].value
-            risk_inherent['impact_level_expert'] = row[6].value
-            risk_inherent['probability_level_expert'] = row[7].value
-            risk_inherent['impact_level_administrator'] = row[8].value
-            risk_inherent['probability_level_administrator'] = row[9].value
-            risk_inherent['status'] = row[10].value
-            risk_inherent['description'] = row[11].value
-            risk_inherent['description_admin'] = row[12].value
+            risk_inherent['impact_objectives_level_expert'] = row[4].value
+            risk_inherent['impact_reputational_level_expert'] = row[5].value
+            risk_inherent['impact_regulatory_level_expert'] = row[6].value
+            risk_inherent['impact_dedication_level_expert'] = row[7].value
+            risk_inherent['probability_level_expert'] = row[8].value
+            risk_inherent['event_speed_level_expert'] = row[9].value
+            risk_inherent['impact_level_administrator'] = row[10].value
+            risk_inherent['probability_level_administrator'] = row[11].value
+            risk_inherent['event_speed_level_administrator'] = row[12].value
+            #risk_inherent['status'] = row[10].value qué sentido tiene darle un valor propio al status?
+            risk_inherent['description_expert'] = row[13].value
+            risk_inherent['description_administrator'] = row[14].value
+            risk_inherent['status']= row[15].value
 
             risk_test_inherent_to_create.append(risk_inherent)
 
         dr_created, n = 0, len(risk_test_inherent_to_create)
-        for i,dr in enumerate(risk_test_inherent_to_create):
+        for i, dr in enumerate(risk_test_inherent_to_create):
             print("Ev_ %d/%d" % (i, n))
             rti_object = RiskTestInherent.objects.create(
                 evaluation=EvaluationKrmInherent.objects.get(ref = dr['evaluation']),
                 risk=RiskCompany.objects.get(
-                    company__ref=dr['evaluation'].strip().replace(' ', '').replace("Ev_", "").upper(),
+                    company__ref= dr['evaluation'].strip().replace(' ', '').replace("Ev_", "").upper(),
                     risk__ref=dr['risk']
                 ),
-                expert=User.objects.get(email = dr['expert']),
-                impact_economic_level_expert=int(dr['impact_economic_level_expert']),
-                impact_continuity_level_expert=int(dr['impact_continuity_level_expert']),
-                impact_branding_level_expert=int(dr['impact_branding_level_expert']),
-                impact_level_expert=int(dr['impact_level_expert']),
+                expert=User.objects.get(email = dr['expert']), #parece ser que el usuario hay que darlo a través de su mail
+                impact_economic_expert=int(dr['impact_economic_level_expert']),
+                impact_objectives_expert=int(dr['impact_objectives_level_expert']),
+                impact_reputational_expert=int(dr['impact_reputational_level_expert']),
+                impact_regulatory_expert=int(dr['impact_regulatory_level_expert']),
+                impact_dedication_expert=int(dr['impact_dedication_level_expert']),
                 probability_level_expert=int(dr['probability_level_expert']),
+                event_speed_level_expert=int(dr['event_speed_level_expert']),
                 impact_level_administrator=int(dr['impact_level_administrator']),
                 probability_level_administrator=int(dr['probability_level_administrator']),
+                event_speed_level_administrator=int(dr['event_speed_level_administrator']),
                 status=dr['status'],
-                description=dr['description'],
-                description_admin=dr['description_admin']
+                description_expert=dr['description_expert'],
+                description_administrator=dr['description_administrator']
             )
 
             rti_object.save()
@@ -422,8 +427,7 @@ class GaImportView(FormView):
                 if row[0].value is None:
                     break # mensaje de error
 
-                risk['risk_master_ref'] = row[0].value.strip().replace(' ',
-                                                                    '').upper()
+                risk['risk_master_ref'] = row[0].value.strip().replace(' ','').upper()
                 risk['ref'] = row[1].value.strip().replace(' ', '').upper()
                 risk['name'] = row[2].value
                 risk['description'] = row[3].value
@@ -431,18 +435,19 @@ class GaImportView(FormView):
                 risk['impact_residual'] = row[5].value
                 risk['probability_inherent'] = row[6].value
                 risk['probability_residual'] = row[7].value
-                risk['krm_activity_affected'] = row[8].value
-                risk['krm_main_events'] = row[9].value
-                risk['krm_exposed_staff'] = row[10].value
-                risk['krm_main_elements'] = row[11].value
+                risk['event_speed']= row[8].value
+                risk['krm_activity_affected'] = row[9].value
+                risk['krm_main_events'] = row[10].value
+                risk['krm_exposed_staff'] = row[11].value
+                risk['krm_main_elements'] = row[12].value
 
-                if risk['impact_inherent'] not in range(1, 6) or risk['impact_residual'] not in range(1, 6) or risk['probability_inherent'] not in range(1, 6) or risk['probability_residual'] not in range(1, 6):
+                if risk['impact_inherent'] not in range(1, 6) or risk['impact_residual'] not in range(1, 6) or risk['probability_inherent'] not in range(1, 6) or risk['probability_residual'] not in range(1, 6) or risk['event_speed_inherent'] not in range(1, 6) or risk['event_speed_residual'] not in range(1, 6):
                     self.errors_found += 1
                     messages.add_message(
                         self.request,
                         messages.ERROR,
                         (
-                            _('Impacto o probabilidad erróneos en la fila: %s')
+                            _('Impacto, probabilidad o velocidad de ocurrencia erróneos en la fila: %s')
                             % (i)
                         ),
                     )
@@ -532,7 +537,7 @@ class GaImportView(FormView):
                 control['assert_completeness'] = row[13].value
                 control['assert_valuation'] = row[14].value
                 control['assert_rights'] = row[15].value
-                control['assert_disclosure'] = row[16].value 
+                control['assert_disclosure'] = row[16].value
                 control['assert_accurancy'] = row[17].value
                 control['assert_froud'] = row[18].value
                 control['is_elc'] = row[19].value
@@ -587,7 +592,7 @@ class GaImportView(FormView):
                         ),
                     )
                     return super(GaImportView, self).form_invalid(form)
-                
+
                 if control['plant'] == '':
                     self.errors_found += 1
                     messages.add_message(

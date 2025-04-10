@@ -49,9 +49,9 @@ class GaCompanyRiskExpertsUpdateView(UpdateView):
                 'companies:ga_company_list')},
             {'title': self.object.company, 'url': reverse(
                 'companies:ga_company_detail', kwargs={'pk': self.object.company.pk})},
-            {'title': _('Asignar evaluador')},
+            {'title': _('Asignar Evaluador')},
         ]
-        context['page_title'] = _('Asignar Evaluador de Riesgo Inherente (RI)')
+        context['page_title'] = _('Asignar un Evaluador de Riesgo Inherente (RI)')
         context['breadcrums'] = breadcrums
 
         return context
@@ -61,7 +61,7 @@ class GaCompanyRiskExpertsUpdateView(UpdateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Experto asignado correctamente')
+            _('Evaluador asignado correctamente')
         )
         return reverse_lazy(
             'companies:ga_company_detail',

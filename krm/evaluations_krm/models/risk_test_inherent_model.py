@@ -134,8 +134,8 @@ class RiskTestInherent(AuditModel):
 
     STATUS_CHOICES = (
         (0, _('Sin iniciar')),
-        (1, _('Esperando al Experto de Dominio de Riesgo')),
-        (2, _('Esperando al Administrador')),
+        (1, _('Esperando al Evaluador de Riesgo Inherente')),
+        (2, _('Esperando al Administrador de compañía')),
         (3, _('Finalizado')),
     )
 
@@ -145,9 +145,9 @@ class RiskTestInherent(AuditModel):
         default=0
     )
 
-    description = models.TextField(
+    description_expert = models.TextField(
         verbose_name=_(
-            "Descripción de la evaluación por el Experto del Dominio de Riesgo asociado"),
+            "Descripción de la valoración del Evaluador"),
         help_text=_(
             "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
         ),
@@ -156,9 +156,9 @@ class RiskTestInherent(AuditModel):
         blank=True,
     )
 
-    description_admin = models.TextField(
+    description_administrator = models.TextField(
         verbose_name=_(
-            "Descripción de la evaluación por el Administrador de la Compañía Evaluada"),
+            "Descripción de la valoración del Administrador de compañía"),
         help_text=_(
             "En caso de estar pegando desde el portapapeles asegúrese que ha copiado solo texto. Si el tamaño del texto es mayor a 8000 caracteres considere incluirlo como una evidencia"
         ),
@@ -168,63 +168,97 @@ class RiskTestInherent(AuditModel):
     )
 
     severity_level_expert = models.IntegerField(
-        _('Nivel de severidad del experto'),
+        _('Nivel de severidad indicado por el Evaluador'),
         default=0
     )
 
-    severity_level_admin = models.IntegerField(
+    severity_level_administrator = models.IntegerField(
         _('Nivel de severidad del administrador'),
         default=0
     )
 
-    @property
-    def severity_level_expert_qualitative(self):
-        sev = self.severity_level_expert
-        if sev == 0:
-            return "Sin establecer"
-        elif 1 <= sev <= 4:
-            if self.severity_level_expert==4 and (self.impact_level_expert==1 or self.probability_level_expert==1):
-                return "Baja"
-            else:
-                return "Muy baja"
-        elif sev == 5:
-            return "Media"
-        elif sev == 6:
-            return "Baja"
-        elif 7<= sev <=12:
-            return "Media"
-        elif 13 <= sev <= 20:
-            return "Alta"
-        elif 21 <= sev <= 25:
-            return "Muy alta"
-        else:
-            return "Severidad fuera del rango habitual"
+    SEVERITY_CHOICES= (
+        ("SE", _('Sin establecer')),
+        ("MB", _('Muy baja')),
+        ("B", _('Baja')),
+        ("M", _('Media')),
+        ("A", _('Alta')),
+        ("MA", _('Muy alta'))
+    )
 
-    @property
-    def severity_level_admin_qualitative(self):
-        sev = self.severity_level_admin
-        if sev == 0:
-            return "Sin establecer"
-        elif 1 <= sev <= 4:
-            if self.severity_level_admin==4 and (self.impact_level_admin==1 or self.probability_level_admin==1):
-                return "Baja"
-            else:
-                return "Muy baja"
-        elif sev == 5:
-            return "Media"
-        elif sev == 6:
-            return "Baja"
-        elif 7<= sev <=12:
-            return "Media"
-        elif 13 <= sev <= 20:
-            return "Alta"
-        elif 21 <= sev <= 25:
-            return "Muy alta"
+    severity_expert_qualitative= models.CharField(
+        _("Severidad cualitativa indicada por el Evaluador"),
+        max_length=2,
+        choices= SEVERITY_CHOICES,
+        default="SE",
+    )
+
+    severity_administrator_qualitative= models.CharField(
+        _("Severidad cualitativa indicada por el Administrador"),
+        max_length=2,
+        choices= SEVERITY_CHOICES,
+        default="SE",
+    )
+
+    def qualitative_severity(self, language, role):
+        """
+        Método de la clase de test de riesgo residual que nos proporciona el valor cualitativo en la lengua introducida (español/inglés)
+        de la severidad proporcionada por el usuario con rol introducido (evaluador/supervisor).
+
+        Es por ello, que los valores "soportados" por esta función son los siguientes:
+            language: Cadena de texto "es" (español), "en" (inglés), "bd" (base de datos). Introducimos esta última opción para guardar los valores
+            correspondientes cuando se aporta valoración por parte del evaluador/administrador y se ha de calcular el valor cualitativo para guardarlo en las variables.
+            role: Cadena de texto "expert" (evaluador del riesgo), "administrator" (administrador de compañía).
+        En caso de que los valores introducidos como parámetros de entrada no se correspondan con ninguno de los anteriores, se devolverá None.
+        """
+        if role== 'evaluator':
+            severity = self.severity_level_expert
+        elif role== 'administrator':
+            severity= self.severity_level_administrator
         else:
-            return "Severidad fuera del rango habitual"
+            return None
+        if severity == 0:
+            value= ["Sin establecer", "Not stablished", "SE"]
+        elif 1 <= severity <= 4:
+            if self.severity_level_expert==4 and (self.impact_level_expert==1 or self.probability_level_expert==1):
+                value= ["Baja", "Low", "B"]
+            else:
+                value= ["Muy baja", "Very low", "MB"]
+        elif severity == 5:
+            value= ["Media", "Medium", "M"]
+        elif severity == 6:
+            value= ["Baja", "Low", "B"]
+        elif 7<= severity <=12:
+            value= ["Media", "Medium", "M"]
+        elif 13 <= severity <= 20:
+            value= ["Alta", "High", "A"]
+        elif 21 <= severity <= 25:
+            value= ["Muy alta", "Very high", "MA"]
+        if language== "es":
+            return value[0]
+        elif language== "en":
+            return value[1]
+        elif language=="bd":
+            return value[2]
+        else:
+            return None
 
     def __str__(self):
         return f'{self.evaluation.ref} - {self.risk.risk.name}'
+
+    def translation_values(self, value):
+        if value==0:
+            return "Not established"
+        elif value==1:
+            return "Very low"
+        elif value==2:
+            return "Low"
+        elif value== 3:
+            return "Medium"
+        elif value==4:
+            return "High"
+        elif value==5:
+            return "Very high"
 
     class Meta:
         verbose_name = _("Test de Riesgo Inherente")
@@ -235,10 +269,10 @@ class RiskTestInherent(AuditModel):
         Método de almacenamiento del test de riesgo inherente, el cual controla la actualización de
         los parámetros que dependen de una transformación tras la aportación de datos del usuario.
 
-        La condición para el almacenamiento del impacto por parte del experto es que se haya aportado un valor a cada tipo de impacto.
-        Sucede de la misma manera con los valores para las severidades, impacto y probabilidad han de haberse actualizado con valores.
         Este almacenamiento se ejecuta con el método save de un AuditModel, el cual guarda los valores para los atributos en la base de datos.
-
+        Anteriormente la condición del almacenamiento de estos datos dependía del estado del test de riesgo, actualmente este método
+        es llamado a través de ciertas vistas que controlan la valoración de un test de riesgo. De manera que cuando se aporta una valoración
+        se almacenan los atributos dependientes con este método.
         """
         self.impact_level_expert = max(self.impact_reputational_expert,
                                        self.impact_economic_expert,
@@ -246,11 +280,10 @@ class RiskTestInherent(AuditModel):
                                        self.impact_objectives_expert,
                                        self.impact_dedication_expert
                                     )
-
-        #if self.status>=2:
         self.severity_level_expert = self.impact_level_expert * self.probability_level_expert
-        #if self.status>=2:
-        self.severity_level_admin = self.impact_level_administrator * self.probability_level_administrator
+        self.severity_level_administrator = self.impact_level_administrator * self.probability_level_administrator
+        self.severity_expert_qualitative= self.qualitative_severity(language="bd", role="evaluator")
+        self.severity_administrator_qualitative= self.qualitative_severity(language="bd", role="administrator")
 
         super().save(*args, **kwargs)
 

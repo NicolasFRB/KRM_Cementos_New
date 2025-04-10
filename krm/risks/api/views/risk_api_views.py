@@ -31,8 +31,6 @@ from krm.users.api import UserSerializer
 
 from django.http import HttpResponse
 
-
-
 class RiskDomainRiskApiView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
@@ -52,17 +50,17 @@ class RiskDomainRiskApiView(APIView):
             data_item['risks'] = []
             all_risks = c.krm_risks_active.all()
 
-            print("DOmain risks pks")
+            print("Domain risks pks")
             print(domain_risk_pks)
 
             for risk in all_risks:
                 print(risk.risk.risk_master)
-                if len(domain_risk_pks) == 0 or str(risk.risk.risk_master.domain_risk.pk) in domain_risk_pks:            
+                if len(domain_risk_pks) == 0 or str(risk.risk.risk_master.domain_risk.pk) in domain_risk_pks:
                     data_item['risks'].append(RiskSerializer(risk.risk).data)
             data.append(data_item)
 
         return Response(data)
-    
+
 class DomainRiskCompanyApiView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
@@ -86,7 +84,7 @@ class DomainRiskCompanyApiView(APIView):
             data.append(data_item)
 
         return Response(data)
-    
+
 class RiskCompanyApiView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
@@ -103,22 +101,22 @@ class RiskCompanyApiView(APIView):
 
             company = CompanySerializer(c)
             data_item['company'] = company.data
-            
+
             # for employee in c.employees.all():
             #     data_item['company']['employees'].append(UserSerializer(employee).data)
-                
-            
+
+
             data_item['risks'] = []
-            
-            
+
+
             for krm_risk in c.krm_risks.filter(risk__pk__in=(risk_pks), active=True).order_by('risk__ref'):
                 # Por algun motivo los riesgos de la segunda compañia no aparecen
-                print(krm_risk.risk.name) 
+                print(krm_risk.risk.name)
                 risk = RiskCompanySerializer(krm_risk).data
 
                 if risk["expert"]:
                     risk["expert_data"] = UserSerializer(User.objects.get(pk=risk["expert"])).data
-                
+
                 if risk["evaluator"]:
                     risk["evaluator_data"] = UserSerializer(User.objects.get(pk=risk["evaluator"])).data
 
@@ -132,7 +130,8 @@ class RiskCompanyApiView(APIView):
 class RiskCompanyResidualApiView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    """ Función que recibe un listado de compañías y un listado de riesgos y devuelve el listado de riesgos compañías que le aplican a cada una y comprobando si se han lanzado test de riesgo inherente para alguna evaluación de su compañía"""
+    """ Clase que recibe un listado de compañías y un listado de riesgos y devuelve el listado de riesgos compañías que le aplican a cada una
+    y comprobando si se han lanzado test de riesgo inherente para alguna evaluación de su compañía"""
 
     def get(self, request):
         company_pks = request.GET['company_pks'].split(',')
@@ -166,12 +165,14 @@ class RiskCompanyResidualApiView(APIView):
                         status=3,
                         evaluation__status='FI'
                     ).order_by('evaluation__date_begin').first()
-                    risk['severity_level_expert_qualitative'] = last_evaluate_risk_inherent.severity_level_expert_qualitative
-                    risk['severity_level_admin_qualitative'] = last_evaluate_risk_inherent.severity_level_admin_qualitative
+                    print("Puedo acceder al parámetro")
+                    print(last_evaluate_risk_inherent.get_severity_expert_qualitative_display)
+                    risk['severity_evaluator_qualitative'] = last_evaluate_risk_inherent.get_severity_expert_qualitative_display()
+                    risk['severity_administrator_qualitative'] = last_evaluate_risk_inherent.get_severity_administrator_qualitative_display()
 
                 if risk["expert"]:
                     risk["expert_data"] = UserSerializer(User.objects.get(pk=risk["expert"])).data
-                
+
                 if risk["evaluator"]:
                     risk["evaluator_data"] = UserSerializer(User.objects.get(pk=risk["evaluator"])).data
 
@@ -191,11 +192,9 @@ class RiskCompanyResidualApiView(APIView):
 class RiskCompanyExpertApiView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, *args, **kwargs):
         company_risks = request.POST.get('company_risks')
-
-        print(company_risks)
 
         # self.company.krm_risks.filter(
         #     pk__in=risk_company_selected).update(active=True)

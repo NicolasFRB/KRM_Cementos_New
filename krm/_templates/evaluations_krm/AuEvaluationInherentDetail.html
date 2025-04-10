@@ -55,22 +55,22 @@ function color_severity_dynamic(val, id){
 
   var arrow_dot = $("#"+id);
 
-  if (val == 'Sin establecer') {
+  if (val == 'Sin establecer' || val == 'Not stablished') {
     arrow_dot.css('color',"#d9d3d2");
     arrow_dot.attr('class','bi-x-circle-fill');
-  } else if (val == 'Muy baja') {
+  } else if (val == 'Muy baja' || val == 'Very low') {
     arrow_dot.css('color',"#09ef0d");
     arrow_dot.attr('class','bi-arrow-down-circle-fill');
-  } else if (val == 'Baja') {
+  } else if (val == 'Baja' || val == 'Low') {
     arrow_dot.css('color',"#e8ee0b");
     arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
-  } else if (val == 'Media') {
+  } else if (val == 'Media' || val == 'Medium') {
     arrow_dot.css('color',"#fea227");
     arrow_dot.attr('class','bi-arrow-right-circle-fill');
-  } else if (val == 'Alta') {
+  } else if (val == 'Alta' || val == 'High') {
     arrow_dot.css('color',"#ff6e56");
     arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
-  } else if (val == 'Muy alta') {
+  } else if (val == 'Muy alta' || val == 'Very high') {
     arrow_dot.css('color', "#f10606");
     arrow_dot.attr('class', 'bi-arrow-up-circle-fill');
   }
@@ -89,22 +89,22 @@ function color_severity(val, id){
     'bi-arrow-up-circle-fill'
   );
 
-  if (val == 'Sin establecer') {
+  if (val == 'Sin establecer' || val =='Not stablished') {
   arrow_dot.style.color = "#d9d3d2";
   arrow_dot.classList.add('bi-x-circle-fill');
-  } else if (val == 'Muy baja') {
+  } else if (val == 'Muy baja' || val == 'Very low') {
   arrow_dot.style.color = "#09ef0d";
   arrow_dot.classList.add('bi-arrow-down-circle-fill');
-  } else if (val == 'Baja') {
+  } else if (val == 'Baja' || val == 'Low') {
   arrow_dot.style.color = "#e8ee0b";
   arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
-  } else if (val == 'Media') {
+  } else if (val == 'Media' || val == 'Medium') {
   arrow_dot.style.color = "#fea227";
   arrow_dot.classList.add('bi-arrow-right-circle-fill');
-  } else if (val == 'Alta') {
+  } else if (val == 'Alta' || val == 'High') {
   arrow_dot.style.color = "#ff6e56";
   arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
-  } else if (val == 'Muy alta') {
+  } else if (val == 'Muy alta' || val == 'Very high') {
   arrow_dot.style.color = "#f10606";
   arrow_dot.classList.add('bi-arrow-up-circle-fill');
   }
@@ -680,6 +680,13 @@ function color_severity(val, id){
       {% endif %}
     </div>
   </div>
+  <!--end::Card body-->
+  <!--begin::Card footer-->
+  <div class="card-footer py-6" style="display:flex;">
+    <a href="{% url 'evaluations_krm:au_evaluation_residual_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+      class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
+  </div>
+  <!--end::Card footer-->
 </div>
 
 <div class="card">
@@ -728,7 +735,7 @@ function color_severity(val, id){
             <th width= "10%" class="text-center">{% trans 'Riesgo' %}</th>
             <th width= "15%" class="text-center">{% trans 'Descripción del Riesgo N2' %}</th>
             <th width= "10%" class="text-center">{% trans 'Dominio del Riesgo N2' %}</th>
-            <th width= "10%" class="text-center">{% trans 'Evaluador del Riesgo N2' %}</th>
+            <th width= "10%" class="text-center">{% trans 'Evaluador de R.Inherente' %}</th>
             <th width= "10%" class="text-center">{% trans 'Justificación' %}</th>
             <th width= "10%" class="text-center">{% trans 'Velocidad de ocurrencia' %}</th>
             <th width= "10%" class="text-center">{% trans 'Impacto' %}</th>
@@ -750,9 +757,7 @@ function color_severity(val, id){
             </td>
 
             <td class="text-center align-middle">
-              <a href="{% url 'risks_company:ga_risk_company_update' rt.risk.pk %}">
-                <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
-              </a>
+              <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
             </td>
 
             <td class="text-center align-middle">
@@ -767,9 +772,7 @@ function color_severity(val, id){
             </td>
 
             <td class="text-center align-middle">
-              <a href="{% url 'domain_risks:ga_domain_risk_detail' rt.risk.risk.risk_master.domain_risk.pk %}">
-                <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
-              </a>
+              <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.risk.risk.risk_master.domain_risk.name }}">{{ rt.risk.risk.risk_master.domain_risk.ref }}</span>
             </td>
 
             <td class="text-center align-middle">
@@ -777,8 +780,8 @@ function color_severity(val, id){
             </td>
 
             <td class="text-center align-middle">
-              <span class="justif-expert"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description }}"></i></span>
-              <span class="justif-admin" style="display:none;"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_admin }}"></i></span>
+              <span class="justif-expert"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_expert }}"></i></span>
+              <span class="justif-admin" style="display:none;"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_administrator }}"></i></span>
             </td>
 
             <td class="text-center align-middle" data-order="{{ rt.event_speed_level_expert }}">
@@ -806,13 +809,13 @@ function color_severity(val, id){
               <div style="display:flex; gap:10px;">
                 <span><i class="bi bi-arrow-right-circle-fill" id = "sev-dot-{{ forloop.counter0 }}"></i></span>
                 <span class="sev-expert-num" style="display:none;">{{ rt.severity_level_expert }}</span>
-                <span class="sev-admin-num" style="display:none;">{{ rt.severity_level_admin }}</span>
-                <span class="sev-expert-qual">{{ rt.severity_level_expert_qualitative }}</span>
-                <span class="sev-admin-qual" style="display:none;">{{ rt.severity_level_admin_qualitative }}</span>
+                <span class="sev-admin-num" style="display:none;">{{ rt.severity_level_administrator }}</span>
+                <span class="sev-expert-qual">{{ rt.get_severity_expert_qualitative_display }}</span>
+                <span class="sev-admin-qual" style="display:none;">{{ rt.get_severity_administrator_qualitative_display }}</span>
               </div>
             </td>
           </tr>
-          <script>color_severity("{{ rt.severity_level_expert_qualitative }}", "sev-dot-{{ forloop.counter0 }}");</script>
+          <script>color_severity("{{ rt.get_severity_expert_qualitative_display }}", "sev-dot-{{ forloop.counter0 }}");</script>
           {% endfor %}
         </tbody>
       </table>

@@ -39,7 +39,7 @@ from krm.evaluations_krm.forms import (
 )
 
 from krm.evaluations.forms.evaluation_forms import (
-    EvaluationActionForm, 
+    EvaluationActionForm,
 )
 
 
@@ -72,9 +72,9 @@ class RuEvaluationRiskResidualList(TemplateView):
         for ev in ev_finished:
             ev.nrisk_test_residuals_finished_user = ev.nrisk_test_residuals_finished_user(
                 self.request.user)
-        
+
         eri_count_by_state_perc = {'FI': 0, 'EP': 0}
-        
+
         if ev_delivered.count() != 0 or ev_pending.count() != 0:
             eri_count_by_state_perc['FI'] = int(
                 100*ev_delivered.count()/(ev_delivered.count() + ev_pending.count()))
@@ -124,11 +124,8 @@ class RuEvaluationRiskResidualComplete(DetailView, FormView):
             status=1
         )
 
-        for r in risk_tests:
-            r.controls_attempt_to_mitigate = r.get_controls_attempt_to_mitigate()
-            r.test_controls_attempt_to_mitigate = r.get_test_controls_attempt_to_mitigate()
-
-        context['risks_test_residual'] = sorted(risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
+        context['risks_test_residual'] = risk_tests
+        #sorted(risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
@@ -150,7 +147,7 @@ class RuEvaluationRiskResidualComplete(DetailView, FormView):
 
         messages.add_message(
             self.request, messages.SUCCESS, _(
-                "Evaluación enviada para validar correctamente")
+                "Valoración de tests de Riesgo Residual enviada correctamente")
         )
 
         return reverse_lazy(
@@ -181,33 +178,33 @@ class RuEvaluationRiskResidualDetail(FormView):
         ]
         context['page_title'] = f"{_('Evaluación KRM Residual')} : {self.evaluation.ref}"
         context['breadcrums'] = breadcrums
-        
+
         context['evaluation'].nrisk_test_residuals_pending = context['evaluation'].nrisk_test_residuals_by_state(1, user=self.request.user)
         context['evaluation'].nrisk_test_residuals_delivered = context['evaluation'].nrisk_test_residuals_by_state(2, user=self.request.user)
         context['evaluation'].nrisk_test_residuals_finished = context['evaluation'].nrisk_test_residuals_by_state(3, user=self.request.user)
-        
+
         # Serializar Evaluation no incluye sus hijos :(
         # Busco los hijos
         context['rrt'] = RiskTestResidual.objects.filter(
             evaluation = self.evaluation,
             evaluator = self.request.user,
-            )
-        
+        )
+
         # Paso a dict para json
         context['rrt_dict'] = [model_to_dict(m) for m in context['rrt']]
-        
+
         # MODEL_TO_DICT not getting properties :(
         # Get .probability_level_residual_evaluator
         # TBI for cuadratico :/
         # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
-        for i,r1 in enumerate(context['rrt']):
+        for i, r1 in enumerate(context['rrt']):
             context['rrt_dict'][i]['risk_ref'] = r1.risk.risk.ref
             context['rrt_dict'][i]['risk_name'] = r1.risk.risk.name
             for r2 in context['rrt_dict']:
-                if r1.id == r2['id']: r2['probability_level_residual_evaluator'] = r1.probability_level_residual_evaluator
+                if r1.id == r2['id']: r2['probability_level_evaluator'] = r1.probability_level_evaluator
 
         # Sort by severity for a nice plot
-        context['rrt_dict'] = sorted(context['rrt_dict'], key= lambda x: (x['probability_level_residual_evaluator'], x['risk_ref']))
+        context['rrt_dict'] = sorted(context['rrt_dict'], key= lambda x: (x['probability_level_evaluator'], x['risk_ref']))
 
         # Errores de encoding caracteres portugueses y españoles
         for i,m in enumerate(context['rrt_dict']):
@@ -221,7 +218,7 @@ class RuEvaluationRiskResidualDetail(FormView):
             default=str,
             ensure_ascii=True,
             )
-        
+
         context['js_template'] = ['js/custom/datatables.js']
 
         return context

@@ -20,7 +20,8 @@ def current_year():
 
 
 class EvaluationKrmInherent(AuditModel):
-    """Evaluation de Riesgo Inherente model.
+    """
+    Modelo para la Evaluación de Riesgo Inherente.
     """
 
     ref = models.CharField(
@@ -87,10 +88,6 @@ class EvaluationKrmInherent(AuditModel):
 
     def __str__(self):
         return self.ref
-
-    class Meta:
-        verbose_name = _("Evaluación Inherente KRM")
-        verbose_name_plural = _("Evaluaciones Inherentes KRM")
 
     # RETURN number of risks by state in evaluation
     # OPTIONAL ARG: Filter by user
@@ -163,3 +160,7 @@ class EvaluationKrmInherent(AuditModel):
                     ).first().pk
 
         return evaluators
+
+    class Meta:
+        verbose_name = _("Evaluación Inherente KRM")
+        verbose_name_plural = _("Evaluaciones Inherentes KRM")

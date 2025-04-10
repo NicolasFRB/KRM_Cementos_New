@@ -50,6 +50,7 @@ from krm.evaluations_krm.models import (
 )
 
 from krm.risks.models import RiskCompany
+from krm.users.models import User
 
 from krm.evaluations_krm.models import RiskTestInherent
 from krm.companies.models import (
@@ -181,7 +182,17 @@ class CaEvaluationResidualCreateView(FormView):
         risk_companies = json.loads(form.cleaned_data["risk_companies"])
         for rc in risk_companies:
             company = Company.objects.get(pk=rc['company_pk'])
-            risks = RiskCompany.objects.filter(pk__in=(rc['risks']))
+
+            riskcompany_pks= []
+            for rc in rc['risks']:
+                riskcompany_pks.append(rc[0])
+                risk_company = RiskCompany.objects.get(pk=(rc[0]))
+                risk_company.evaluator = User.objects.get(
+                    pk=rc[1]
+                )
+                risk_company.save()
+
+            risks = RiskCompany.objects.filter(pk__in=(riskcompany_pks))
 
             if EvaluationKrmResidual.objects.filter(
                 ref=f'{form.cleaned_data["ref"]} - {company.name}',
@@ -202,23 +213,14 @@ class CaEvaluationResidualCreateView(FormView):
 
             evaluations.append(evaluation)
 
-            # Para cada evaluación hay que crear los test controls de los controles que se han pasado
             for risk in risks:
-                domain_risk = risk.risk.risk_master.domain_risk
-                company_risk_evaluators = CompanyDomainRiskEvaluator.objects.get(
-                    company=company,
-                    domain_risk=domain_risk
+                RiskTestResidual.objects.create(
+                    evaluation=evaluation,
+                    risk=risk,
+                    evaluator=risk.evaluator
                 )
 
-                # Hay que crear un test de riesgo por cada evaluador
-                for evaluator in company_risk_evaluators.evaluator.all():
-                    RiskTestResidual.objects.create(
-                        evaluation=evaluation,
-                        risk=risk,
-                        evaluator=evaluator
-                    )
-
-                    risk_tests__created += 1
+                risk_tests__created += 1
 
             evaluations_created += 1
 
@@ -232,8 +234,7 @@ class CaEvaluationResidualCreateView(FormView):
                         rt.send_notification_evaluator('Initial Notification')
                         users_notificated.append(rt.evaluator)
 
-                # Ahora para cada Evaluación vamos a crear los RiskCompanyResidual
-                e.create_risk_company_residual()
+                #e.create_risk_company_residual() Comentario usado para crear Riesgos de Compañía Residuales para cada evaluación
 
         messages.add_message(
             self.request,
@@ -273,7 +274,7 @@ class CaEvaluationResidualDetailView(FormView):
         ]
         context['page_title'] = f"{_('Evaluación de Riesgo Residual KRM')} : {self.evaluation.ref}"
         context['breadcrums'] = breadcrums
-        
+
         context['evaluation'].nrisk_test_residuals_pending = context['evaluation'].nrisk_test_residuals_by_state(
             1)
         context['evaluation'].nrisk_test_residuals_delivered = context['evaluation'].nrisk_test_residuals_by_state(
@@ -345,225 +346,139 @@ class CaEvaluationResidualDetailView(FormView):
             output = io.BytesIO()
 
             workbook = xlsxwriter.Workbook(output)
-            worksheet = workbook.add_worksheet()
+            worksheet = workbook.add_worksheet('Evaluation')
+            worksheet_2= workbook.add_worksheet('Residual risk tests')
 
-            # Add a bold format to use to highlight cells.
-            bold = workbook.add_format({'bold': True})
-            text_wrap = workbook.add_format({'text_wrap': True})
+            #Añadimos formatos de escritura
+            bold = workbook.add_format({'bold': True, 'text_wrap': True, 'align': 'center', 'valign': 'vcenter'})
+            italic= workbook.add_format({'italic': True})
+            text_wrap = workbook.add_format({'text_wrap': True, 'align': 'center', 'valign': 'vcenter'})
+            colors_format= [workbook.add_format({'color': '#d9d3d2'}), workbook.add_format({'color': '#09ef0d'}), workbook.add_format({'color': '#e8ee0b'}), workbook.add_format({'color': '#fea227'}), workbook.add_format({'color': '#ff6e56'}), workbook.add_format({'color': '#f10606'})]
 
-            columns = [
-                'Ev_REF',
-                'COMPANY',
-                'COMPANY_TYPE',
-                'DESCRIPTION',
-                'DATE_BEGIN',
-                'DATE_END',
-                'CERTIFICATION_YEAR',
-                'CERTIFICATION_PERIOD',
-                'Ev_STATUS',
-                'MAIN_ELEMENTS',
-                'MAIN_EVENTS',
-                'ACTIVITY_AFFECTED',
-                'EXPOSED_STAFF',
-                'DOMAIN_RISK',
-                'RR_REF_N1',
-                'RR_REF_N2',
-                'RR_NAME',
-                'RISK_DESCRIPTION',
-                'EXPERT_NAME',
-                'JUSTIFICATION_EXPERT',
-                'SEVERITY_LEVEL_EXPERT',
-                'SEVERITY_LEVEL_EXPERT_QUALITATIVE',
-                'IMPACT_LEVEL_EXPERT',
-                'IMPACT_LEVEL_EXPERT_QUALITATIVE',
-                'PROBABILITY_LEVEL_EXPERT',
-                'PROBABILITY_LEVEL_EXPERT_QUALITATIVE',
-                'ADMIN_SUPERVISOR',
-                'JUSTIFICATION_ADMIN',
-                'SEVERITY_LEVEL_ADMIN',
-                'SEVERITY_LEVEL_ADMIN_QUALITATIVE',
-                'IMPACT_LEVEL_ADMIN',
-                'IMPACT_LEVEL_ADMIN_QUALITATIVE',
-                'PROBABILITY_LEVEL_ADMIN',
-                'PROBABILITY_LEVEL_ADMIN_QUALITATIVE',
-                'EVALUATOR_NAMES',
-                'JUSTIFICATION_EVALUATORS',
-                'SEVERITY_LEVEL_EVALUATORS',
-                'SEVERITY_LEVEL_EVALUATORS_QUALITATIVE',
-                'SEVERITY_LEVEL_EVALUATORS_AGGREGATE',
-                'SEVERITY_LEVEL_EVALUATORS_AGGREGATE_QUALITATIVE',
-                'IMPACT_LEVEL_EVALUATORS',
-                'IMPACT_LEVEL_EVALUATORS_QUALITATIVE',
-                'Nivel de control por evaluador',
-                'Nivel de control por evaluador cualitativo',
-                'Nivel de control agregado',
-                'Nivel de control agregado redondeado',
-                'Nivel de control agregado redondeado cualitativo',
-                'ADMIN_SUPERVISOR',
-                'JUSTIFICATION_ADMIN',
-                'SEVERITY_LEVEL_ADMIN',
-                'SEVERITY_LEVEL_ADMIN_QUALITATIVE',
-                'IMPACT_LEVEL_ADMIN',
-                'IMPACT_LEVEL_ADMIN_QUALITATIVE',
-                'PROBABILITY_LEVEL_ADMIN',
-                'PROBABILITY_LEVEL_ADMIN_QUALITATIVE'
+            evaluation_columns = [
+                'Evaluation ID',
+                'Company (ID)',
+                'Company type',
+                'Evaluation description',
+                'Start date',
+                'End date',
+                'Certification year',
+                'Certification period',
+                'Evaluation status',
+                'Company administrator'
             ]
 
-            for index, col_name in enumerate(columns):
+            tests_columns=[
+                "Associated risk",
+                "Associated master risk",
+                "Associated risk domain",
+                "Risk's description",
+                "Risk's main elements",
+                "Risk's main events",
+                "Risk's affected activity",
+                "Risk's exposed staff",
+                "Latest inherent impact assessment",
+                "Latest inherent probability assessment",
+                "Latest inherent severity assessment",
+                "Latest inherent speed of ocurrence assessment",
+                "Lateste inherent assessment justification",
+                "Company risk evaluator",
+                "Evaluator's impact assessment",
+                "Evaluator's impact qualitative assessment",
+                "Evaluator's probability assessment",
+                "Evaluator's probability qualitative assessment",
+                "Evaluator's severity assesment",
+                "Evaluator's severity qualitative assesment",
+                "Evaluator's speed of ocurrence assessment",
+                "Evaluator's speed of ocurrence qualitative assessment",
+                "Evaluator's  justification",
+                "Administrator's impact assessment",
+                "Administrator's impact qualitative assessment",
+                "Administrator's probability assessment",
+                "Administrator's probability qualitative assessment",
+                "Administrator's severity assesment",
+                "Administrator's severity qualitative assesment",
+                "Administrator's speed of ocurrence assessment",
+                "Administrator's speed of ocurrence qualitative assessment",
+                "Administrator's  justification"
+            ]
+
+            for index, col_name in enumerate(evaluation_columns):
                 worksheet.write(0, index, col_name, bold)
 
-            #Ev
-            worksheet.set_column(0, 1, 25)    # Ev_REF
-            worksheet.set_column(1, 2, 25)    # COMPANY
-            worksheet.set_column(2, 3, 70)    # COMPANY_TYPE
-            worksheet.set_column(3, 4, 25)    # DESCRIPTION
-            worksheet.set_column(4, 5, 25)    # DATE_BEGIN
-            worksheet.set_column(5, 6, 25)    # DATE_END
-            worksheet.set_column(6, 7, 25)    # CERTIFICATION_YEAR
-            worksheet.set_column(7, 8, 25)    # CERTIFICATION_PERIOD
-            worksheet.set_column(8, 9, 70)    # Ev_STATUS
-            
-            worksheet.set_column(9, 10, 70)   # MAIN_ELEMENTS
-            worksheet.set_column(10, 11, 70)  # MAIN_EVENTS
-            worksheet.set_column(11, 12, 70)  # ACTIVITY_AFFECTED
-            worksheet.set_column(12, 13, 25)  # EXPOSED_STAFF
+            for index, col_name in enumerate(tests_columns):
+                worksheet_2.write(0, index, col_name, bold)
 
-            #RR/RI
-            worksheet.set_column(13, 14, 25)  # DOMAIN_RISK
-            worksheet.set_column(14, 15, 25)  # RR_REF_N1
-            worksheet.set_column(15, 16, 25)  # RR_REF_N2
-            worksheet.set_column(16, 17, 70)  # RR_NAME
-            worksheet.set_column(17, 18, 25)  # RISK_DESCRIPTION
+            #Evaluation's sheet column formats (NMB)
+            worksheet.set_column('A:B', 25, text_wrap)  #Evaluation ID, Company (ID) column's format
+            worksheet.set_column('C:C', 40, text_wrap) #Company type column format
+            worksheet.set_column('D:D', 80, text_wrap)
+            worksheet.set_column('E:J', 40, text_wrap)
 
-            #RI
-            worksheet.set_column(18, 19, 70)  # EXPERT_NAME
-            worksheet.set_column(19, 20, 25)  # JUSTIFICATION_EXPERT
-            worksheet.set_column(20, 21, 25)  # SEVERITY_LEVEL_EXPERT
-            worksheet.set_column(21, 22, 25)  # SEVERITY_LEVEL_EXPERT_QUALITATIVE
-            worksheet.set_column(22, 23, 25)  # IMPACT_LEVEL_EXPERT
-            worksheet.set_column(23, 24, 25)  # IMPACT_LEVEL_EXPERT_QUALITATIVE
-            worksheet.set_column(24, 25, 25)  # PROBABILITY_LEVEL_EXPERT
-            worksheet.set_column(25, 26, 25)  # PROBABILITY_LEVEL_EXPERT_QUALITATIVE
+            #Test's sheet column formats (NMB)
+            worksheet_2.set_column('A:C', 25, text_wrap)
+            worksheet_2.set_column('D:H', 60, text_wrap)
+            worksheet_2.set_column('I:L', 20, text_wrap)
+            worksheet_2.set_column('M:M', 50, text_wrap)
+            worksheet_2.set_column('N:N', 30, text_wrap)
+            worksheet_2.set_column('O:V', 20, text_wrap)
+            worksheet_2.set_column('W:W', 50, text_wrap)
+            worksheet_2.set_column('X:AE', 20, text_wrap)
+            worksheet_2.set_column('AF:AF', 50, text_wrap)
 
-            worksheet.set_column(26, 27, 70)  # ADMIN_SUPERVISOR
-            worksheet.set_column(27, 28, 25)  # JUSTIFICATION_ADMIN
-            worksheet.set_column(28, 29, 25)  # SEVERITY_LEVEL_ADMIN
-            worksheet.set_column(29, 30, 25)  # SEVERITY_LEVEL_ADMIN_QUALITATIVE
-            worksheet.set_column(30, 31, 25)  # IMPACT_LEVEL_ADMIN
-            worksheet.set_column(31, 32, 25)  # IMPACT_LEVEL_ADMIN_QUALITATIVE
-            worksheet.set_column(32, 33, 25)  # PROBABILITY_LEVEL_ADMIN
-            worksheet.set_column(33, 34, 25)  # PROBABILITY_LEVEL_ADMIN_QUALITATIVE
 
-            #RR
-            worksheet.set_column(34, 35, 70)  # EVALUATOR_NAMES
-            worksheet.set_column(35, 36, 25)  # JUSTIFICATION_EVALUATORS
-            worksheet.set_column(36, 37, 25)  # SEVERITY_LEVEL_EVALUATORS
-            worksheet.set_column(37, 38, 25)  # SEVERITY_LEVEL_EVALUATORS_QUALITATIVE
-            worksheet.set_column(38, 39, 25)  # SEVERITY_LEVEL_EVALUATORS_AGGREGATE
-            worksheet.set_column(39, 40, 25)  # SEVERITY_LEVEL_EVALUATORS_AGGREGATE_QUALITATIVE
-            worksheet.set_column(40, 41, 25)  # IMPACT_LEVEL_EVALUATORS
-            worksheet.set_column(41, 42, 25)  # IMPACT_LEVEL_EVALUATORS_QUALITATIVE 
-            worksheet.set_column(42, 43, 25)  # Nivel de control por evaluador - PROBABILITY_LEVEL_EVALUATORS
-            worksheet.set_column(43, 44, 25)  # Nivel de control por evaluador cualit. - PROBABILITY_LEVEL_EVALUATORS_QUALITATIVE   
-            worksheet.set_column(44, 45, 25)  # Nivel de control agregado - PROBABILITY_LEVEL_EVALUATORS_AGGREGATE
-            worksheet.set_column(45, 46, 25)  # Nivel de control agregado redondeado - PROBABILITY_LEVEL_EVALUATORS_AGGREGATE_ROUNDED
-            worksheet.set_column(46, 47, 25)  # Nivel de control agregado redondeado cualitativo - PROBABILITY_LEVEL_EVALUATORS_QUALITATIVE
-
-            worksheet.set_column(47, 48, 70)  # ADMIN_SUPERVISOR
-            worksheet.set_column(48, 49, 25)  # JUSTIFICATION_ADMIN
-            worksheet.set_column(49, 50, 25)  # SEVERITY_LEVEL_ADMIN
-            worksheet.set_column(50, 51, 25)  # SEVERITY_LEVEL_ADMIN_QUALITATIVE
-            worksheet.set_column(51, 52, 25)  # IMPACT_LEVEL_ADMIN
-            worksheet.set_column(52, 53, 25)  # IMPACT_LEVEL_ADMIN_QUALITATIVE    
-            worksheet.set_column(53, 54, 25)  # PROBABILITY_LEVEL_ADMIN
-            worksheet.set_column(54, 55, 25)  # PROBABILITY_LEVEL_ADMIN_QUALITATIVE
+            #Writing on the fisrt sheet:
+            worksheet.write(1, 0, evaluation.ref, text_wrap)
+            worksheet.write(1, 1, evaluation.company.name +' (' + evaluation.company.ref+')' , text_wrap)
+            worksheet.write(1, 2, evaluation.company.type_company if evaluation.company.type_company else "Not specified", text_wrap)
+            worksheet.write(1, 3, evaluation.description if evaluation.description else "Not specified", text_wrap)
+            worksheet.write(1, 4, evaluation.date_begin.strftime("%d/%m/%Y"), text_wrap)
+            worksheet.write(1, 5, evaluation.date_end.strftime("%d/%m/%Y"), text_wrap)
+            worksheet.write(1, 6, evaluation.certification_year, text_wrap)
+            worksheet.write(1, 7, evaluation.certification_period if evaluation.certification_period else "Not specified", text_wrap)
+            if evaluation.status== 'EP':
+                worksheet.write(1, 8, "In progress", text_wrap)
+            else:
+                worksheet.write(1, 8, "Completed", text_wrap)
+            worksheet.write(1, 9, evaluation.admin_supervisor.full_name if evaluation.admin_supervisor else "Awaiting evaluation", text_wrap)
 
             row = 1
-            domains = ""
 
-            for rr in evaluation.risk_company_residuals.all():
-                #Evaluation 
-                worksheet.write(row, 0, evaluation.ref, text_wrap)
-                worksheet.write(row, 1, evaluation.company.name, text_wrap)
-                worksheet.write(row, 2, evaluation.company.type_company, text_wrap)
-                worksheet.write(row, 3, evaluation.description, text_wrap)
-                worksheet.write(row, 4, evaluation.date_begin.strftime("%d/%m/%Y"))
-                worksheet.write(row, 5, evaluation.date_end.strftime("%d/%m/%Y"))
-                worksheet.write(row, 6, evaluation.certification_year)
-                worksheet.write(row, 7, evaluation.certification_period)
-                worksheet.write(row, 8, evaluation.status)
-
-                worksheet.write(row, 9, rr.get_latest_inherent.risk.krm_main_elements, text_wrap)
-                worksheet.write(row, 10, rr.get_latest_inherent.risk.krm_main_events, text_wrap)
-                worksheet.write(row, 11, rr.get_latest_inherent.risk.krm_activity_affected, text_wrap)
-                worksheet.write(row, 12, rr.get_latest_inherent.risk.krm_exposed_staff, text_wrap)
-
-                for dom in evaluation.get_domain_risk_in_evaluation():
-                    if dom.ref not in domains:
-                        domains += dom.ref
-                        # domains += ","
-                worksheet.write(row, 13, domains)
-                worksheet.write(row, 14, rr.get_latest_inherent.risk.risk.risk_master.ref, text_wrap)
-                worksheet.write(row, 15, rr.get_latest_inherent.risk.risk.ref, text_wrap)
-                worksheet.write(row, 16, rr.get_latest_inherent.risk.name, text_wrap)
-                worksheet.write(row, 17, rr.get_latest_inherent.risk.description, text_wrap)
-                
-                #Latest RI
-                worksheet.write(row, 18, rr.get_latest_inherent.expert.full_name, text_wrap)
-                worksheet.write(row, 19, rr.get_latest_inherent.description, text_wrap)
-                worksheet.write(row, 20, rr.get_latest_inherent.severity_level_expert, text_wrap)
-                worksheet.write(row, 21, rr.get_latest_inherent.severity_level_expert_qualitative, text_wrap)
-                worksheet.write(row, 22, rr.get_latest_inherent.impact_level_expert, text_wrap)
-                worksheet.write(row, 23, rr.get_latest_inherent.get_impact_level_expert_display(), text_wrap)
-                worksheet.write(row, 24, rr.get_latest_inherent.probability_level_expert, text_wrap)
-                worksheet.write(row, 25, rr.get_latest_inherent.get_probability_level_expert_display(), text_wrap)
-
-                if evaluation.admin_supervisor != None:
-                    worksheet.write(row, 26, evaluation.admin_supervisor.full_name)
-                worksheet.write(row, 27, rr.description_administrator, text_wrap)
-                worksheet.write(row, 28, rr.get_latest_inherent.severity_level_admin, text_wrap)
-                worksheet.write(row, 29, rr.get_latest_inherent.severity_level_admin_qualitative, text_wrap)
-                worksheet.write(row, 30, rr.get_latest_inherent.impact_level_administrator, text_wrap)
-                worksheet.write(row, 31, rr.get_latest_inherent.get_impact_level_administrator_display(), text_wrap)
-                worksheet.write(row, 32, rr.get_latest_inherent.probability_level_administrator, text_wrap)
-                worksheet.write(row, 33, rr.get_latest_inherent.get_probability_level_administrator_display(), text_wrap)
-                
-                #worksheet.write(row, 18, rr.risk_company.expert_assign, text_wrap)
-                rt_list = rr.risk_test_residuals.all()
-                evaluators, evaluators_descrp, severity_residual, severity_residual_qualitative, probability, probability_qualitative = [], [], [], [], [], []
-                for rt in rt_list:
-                    evaluators.append(rt.evaluator.full_name)
-                    evaluators_descrp.append(rt.description_evaluator)
-                    severity_residual.append(str(rt.severity_residual_evaluator))
-                    severity_residual_qualitative.append(rt.severity_residual_evaluator_qualitative)
-                    probability.append(str(rt.probability_level_residual_evaluator))
-                    probability_qualitative.append(rt.probability_level_residual_evaluator_qualitative)
-                
-                worksheet.write(row, 34, '\n'.join(evaluators), text_wrap)
-                worksheet.write(row, 35, '\n'.join(evaluators_descrp), text_wrap)
-                worksheet.write(row, 36, '\n'.join(severity_residual), text_wrap)
-                worksheet.write(row, 37, '\n'.join(severity_residual_qualitative), text_wrap)
-                worksheet.write(row, 38, rr.severity_residual_evaluator, text_wrap)
-                worksheet.write(row, 39, rr.severity_residual_evaluator_qualitative, text_wrap)
-                worksheet.write(row, 40, rr.get_latest_inherent.impact_level_expert, text_wrap)
-                worksheet.write(row, 41, rr.get_latest_inherent.get_impact_level_expert_display(), text_wrap)
-                worksheet.write(row, 42, '\n'.join(probability), text_wrap)
-                worksheet.write(row, 43, '\n'.join(probability_qualitative), text_wrap)
-                worksheet.write(row, 44, rr.probability_level_residual_evaluator_aggregate, text_wrap)
-                worksheet.write(row, 45, rr.probability_level_residual_evaluator_aggregate_rounded, text_wrap)
-                worksheet.write(row, 46, rr.probability_residual_evaluator_qualitative, text_wrap)
-                
-                if evaluation.admin_supervisor != None:
-                    worksheet.write(row, 47, evaluation.admin_supervisor.full_name)
-                worksheet.write(row, 48, rr.description_administrator, text_wrap)
-                worksheet.write(row, 49, rr.severity_residual_admin, text_wrap)
-                worksheet.write(row, 50, rr.severity_residual_admin_qualitative, text_wrap)
-                worksheet.write(row, 51, rr.get_latest_inherent.impact_level_administrator, text_wrap)
-                worksheet.write(row, 52, rr.get_latest_inherent.get_impact_level_administrator_display(), text_wrap)
-                worksheet.write(row, 53, rr.probability_level_residual_administrator, text_wrap)
-                worksheet.write(row, 54, rr.probability_residual_administrator_qualitative, text_wrap)
-
+            for rr in evaluation.risk_test_residuals.all():
+                worksheet_2.write(row, 0, rr.risk.risk.name + ' ('+ rr.risk.risk.ref + ')', text_wrap)
+                worksheet_2.write(row, 1, rr.risk.risk.risk_master.name + ' ('+ rr.risk.risk.risk_master.ref + ')', text_wrap)
+                worksheet_2.write(row, 2, rr.risk.risk.risk_master.domain_risk.name + ' ('+ rr.risk.risk.risk_master.domain_risk.ref + ')', text_wrap)
+                worksheet_2.write(row, 3, rr.risk.risk.description if rr.risk.risk.description else "Not specified", text_wrap)
+                worksheet_2.write(row, 4, rr.risk.risk.krm_main_elements if rr.risk.risk.krm_main_elements!= '' else "N/A", text_wrap)
+                worksheet_2.write(row, 5, rr.risk.risk.krm_main_events if  rr.risk.risk.krm_main_events!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 6, rr.risk.risk.krm_activity_affected if rr.risk.risk.krm_activity_affected!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 7, rr.risk.risk.krm_exposed_staff if rr.risk.risk.krm_exposed_staff!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 8, rr.get_latest_impact_inherent if rr.get_latest_impact_inherent else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 9, rr.get_latest_probability_inherent if rr.get_latest_probability_inherent else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 10, rr.get_latest_severity_inherent if rr.get_latest_severity_inherent else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 11, rr.get_latest_event_speed_inherent if rr.get_latest_event_speed_inherent else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 12, rr.get_latest_justification_inherent if rr.get_latest_justification_inherent else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 13, rr.risk.evaluator.full_name if rr.risk.evaluator else "Evaluator not assigned ", text_wrap)
+                worksheet_2.write(row, 14, rr.impact_level_evaluator if rr.impact_level_evaluator!=0 else "Awaiting evaluation", text_wrap)
+                worksheet_2.write(row, 15, rr.translation_values(rr.impact_level_evaluator), text_wrap)
+                worksheet_2.write(row, 16, rr.probability_level_evaluator if rr.probability_level_evaluator!=0 else "Awaiting evaluation", text_wrap)
+                worksheet_2.write(row, 17, rr.translation_values(rr.probability_level_evaluator), text_wrap)
+                worksheet_2.write(row, 18, rr.severity_level_evaluator if rr.severity_level_evaluator!=0 else "Awaiting evaluation", text_wrap)
+                worksheet_2.write(row, 19, rr.qualitative_severity("en", "evaluator"), text_wrap)
+                worksheet_2.write(row, 20, rr.event_speed_level_evaluator if rr.event_speed_level_evaluator!=0 else "Awaiting evaluation", text_wrap)
+                worksheet_2.write(row, 21, rr.translation_values(rr.event_speed_level_evaluator), text_wrap)
+                worksheet_2.write(row, 22, rr.description_evaluator if rr.description_evaluator!='' else "Awaiting evaluation", text_wrap)
+                worksheet_2.write(row, 23, rr.impact_level_administrator if rr.impact_level_administrator!=0 else "Awaiting supervision", text_wrap)
+                worksheet_2.write(row, 24, rr.translation_values(rr.impact_level_administrator), text_wrap)
+                worksheet_2.write(row, 25, rr.probability_level_administrator if rr.probability_level_administrator!=0 else "Awaiting supervision", text_wrap)
+                worksheet_2.write(row, 26, rr.translation_values(rr.probability_level_administrator), text_wrap)
+                worksheet_2.write(row, 27, rr.severity_level_administrator if rr.severity_level_administrator!=0 else "Awaiting supervision", text_wrap)
+                worksheet_2.write(row, 28, rr.qualitative_severity("en", "administrator"), text_wrap)
+                worksheet_2.write(row, 29, rr.event_speed_level_administrator if rr.event_speed_level_administrator!=0 else "Awaiting supervision", text_wrap)
+                worksheet_2.write(row, 30, rr.translation_values(rr.event_speed_level_administrator), text_wrap)
+                worksheet_2.write(row, 31, rr.description_administrator if rr.description_administrator else "Awaiting supervision", text_wrap)
                 row += 1
+
             # Close the workbook before sending the data.
             workbook.close()
 
@@ -578,35 +493,6 @@ class CaEvaluationResidualDetailView(FormView):
             response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
             return response
-
-        # if action == "i":
-        #     evaluation.status = "EP"
-        #     evaluation.save()
-        #     users_notificated = []
-        #     for ct in evaluation.control_tests.all():
-        #         ct.status = "WO"
-        #         ct.save()
-        #         if ct.control_test_owner not in users_notificated:
-        #             users_notificated.append(ct.control_test_owner)
-        #             ct.send_notification()
-
-        #     messages.add_message(
-        #         self.request,
-        #         messages.SUCCESS,
-        #         _("Evaluación iniciada correctamente"),
-        #     )
-        # elif action == 'f':
-        #     evaluation.status = "FI"
-        #     evaluation.save()
-        #     evaluation.control_tests.update(
-        #         status='FI'
-        #     )
-
-        #     messages.add_message(
-        #         self.request,
-        #         messages.SUCCESS,
-        #         _("Evaluación finalizada correctamente"),
-        #     )
 
         return super().form_valid(form)
 
@@ -625,6 +511,10 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
     form_class = EvaluationResidualCompleteForm
 
     def get_context_data(self, **kwargs):
+        """
+        Función que envía al template html al cual está relacionado esta vista información
+        de provecho para poder acceder a ella y visualizarla por pantalla.
+        """
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
 
@@ -632,55 +522,36 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones de Riesgo Residual')}
         ]
-        context['page_title'] = f"{_('Evaluación de Riesgos Residuals')} : {self.object.ref}"
+        context['page_title'] = f"{_('Evaluación de Riesgo Residual')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        # SIMPLIFICACION
-        # uso risk_test (nomenclatura), no son risk_test, son risk_company
-        risk_tests = self.object.risk_company_residuals.all()
-
-        for r in risk_tests:
-            r.controls_attempt_to_mitigate = r.get_controls_attempt_to_mitigate()
-            r.test_controls_attempt_to_mitigate = r.get_test_controls_attempt_to_mitigate()
-
-        context['risks_test_residual'] = sorted(
-            risk_tests, key=lambda t: t.get_latest_severity_inherent, reverse=True)
-
-        context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
-
-        context['js_template'] = ['js/custom/datatables.js']
+        context['tests']= self.object.risk_test_residuals.filter()
+        context['js_template'] = ['js/custom/datatables.js'] #es necesario enviar esto en el contexto?
 
         return context
 
     def form_valid(self, form):
+        """
+        Método para la validación de la valoración del administrador. Este método
+        completa los valores del administrador con los dados por el evaluador en el caso
+        de que el Administrador haya presionado el botón de "Usar la valoración dada por los evaluadores
+        para los riesgos no completados".
+        """
         evaluation = self.get_object()
-        RiskTestResidual.objects.filter(
+        risk_tests= RiskTestResidual.objects.filter(
             evaluation=evaluation
-        ).update(
-            status=3
         )
-
-        # Ahora para los que no ha completado el administrador de la compañía, debemos completar con los valores agregados que han dado los evaluadores
-
-        for rr in RiskTestResidual.objects.filter(evaluation=evaluation):
+        for rr in risk_tests:
             rr.status = 3
-            # Ahora buscamos el Risk Company Residual
-            rcr = RiskCompanyResidual.objects.get(
-                evaluation=evaluation,
-                risk_company=rr.risk
-            )
-
-            if rcr.probability_level_residual_administrator == 0:
-                if rcr.probability_level_residual_evaluator_aggregate_rounded == 0:
-                    rcr.probability_level_residual_administrator = 4
-                else:
-                    rcr.probability_level_residual_administrator = rcr.probability_level_residual_evaluator_aggregate_rounded
-            if rcr.description_administrator == '':
-                rcr.description_administrator = _('--Sin completar--')
-
-            rcr.save()
+            if rr.probability_level_administrator == 0:
+                rr.probability_level_administrator = rr.probability_level_evaluator
+            if rr.impact_level_administrator == 0:
+                rr.impact_level_administrator = rr.impact_level_evaluator
+            if rr.event_speed_level_administrator==0:
+                rr.event_speed_level_administrator = rr.event_speed_level_evaluator
+            if rr.description_administrator == '' or rr.description_administrator == None:
+                rr.description_administrator = rr.description_evaluator
             rr.save()
-
         evaluation.status = 'FI'
         evaluation.admin_supervisor = self.request.user
         evaluation.save()
@@ -690,7 +561,7 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
 
         messages.add_message(
             self.request, messages.SUCCESS, _(
-                "Evaluación supervisada correctamente")
+                "Evaluación supervisada correctamente como administrador de compañía")
         )
 
         return reverse_lazy(
@@ -732,7 +603,7 @@ class CaEvaluationResidualNotificationsView(DetailView, FormView):
 
     def post(self, request, *args, **kwargs):
         risk_test_selected = request.POST.getlist('notify_pk')
-        
+
         from krm.evaluations_krm.models import (
             RiskTestResidual,
         )

@@ -3,8 +3,6 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
 
 from django.views.generic import (
     FormView,
@@ -26,23 +24,23 @@ from django.utils.decorators import method_decorator
 from krm.metronic.__init__ import KTLayout
 from krm.metronic.libs.theme import KTTheme
 
-from krm.companies.forms import CompanyDomainRiskEvaluatorsForm, CompanyRiskEvaluatorsForm
+from krm.companies.forms import CompanyRiskEvaluatorsForm
 from krm.risks.models import RiskCompany
 
-#from krm.users.decorators import (
-    #is_global_admin,
-    #user_can_edit_company,
-    #user_can_edit_domain_risk_evaluator
-#)
-from krm.users.decorators import is_global_admin
+# from krm.users.decorators import (
+#     is_global_admin,
+#     user_can_edit_company,
+#     user_can_edit_domain_risk_evaluator
+# )
+from krm.users.decorators import is_company_admin
 from django.contrib.auth.decorators import login_required
 
 
-@method_decorator([login_required, is_global_admin], name='dispatch')
-class GaCompanyRiskEvaluatorUpdateView(UpdateView):
+@method_decorator([login_required, is_company_admin, ], name='dispatch')
+class CaCompanyRiskEvaluatorUpdateView(UpdateView):
     form_class = CompanyRiskEvaluatorsForm
     model = RiskCompany
-    template_name = 'companies/GaCompanyRiskEvaluatorUpdate.html'
+    template_name = 'companies/CaCompanyRiskEvaluatorUpdate.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,13 +49,12 @@ class GaCompanyRiskEvaluatorUpdateView(UpdateView):
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Compañías'), 'url': reverse(
-                'companies:ga_company_list')},
+                'companies:ca_company_list')},
             {'title': self.object.company, 'url': reverse(
-                'companies:ga_company_detail', kwargs={'pk': self.object.company.pk})},
-            {'title': _('Asignar evaluadores')},
+                'companies:ca_company_detail', kwargs={'pk': self.object.company.pk})},
+            {'title': _('Asignar Evaluador')},
         ]
-        context['page_title'] = _(
-            'Asignar Evaluadores de Riesgo Residual (RR)')
+        context['page_title'] = _('Asignar un Evaluador de Riesgo Residual')
         context['breadcrums'] = breadcrums
 
         return context
@@ -67,10 +64,10 @@ class GaCompanyRiskEvaluatorUpdateView(UpdateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Evaluadores asignados correctamente')
+            _('Evaluador (RR) asignado correctamente')
         )
         return reverse_lazy(
-            'companies:ga_company_detail',
+            'companies:ca_company_detail',
             kwargs={'pk': self.object.company.pk}
         )
 
