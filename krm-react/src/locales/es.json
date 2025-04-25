@@ -32,7 +32,8 @@
     "calc-risk-tests": "Calcular los Tests de riesgo que se lanzarán",
     "evaluation": "Evaluación",
     "risk-test-inherent": "Tests de Riesgo que se lanzarán",
-    "name": "NOMBRE",
+    "ref": "Referencia",
+    "name": "Nombre",
     "evaluator-assign": "EVALUADOR ASIGNADO",
     "no-posible-launch-without-expert": "No es posible lanzar este test sin tener asignado previamente un experto para ese dominio de riesgo",
     "without-assign": "Sin asignar",
@@ -127,22 +128,23 @@
   },
   "selectcompanies": {
     "loading-companies": "Cargando compañías",
-    "name": "NOMBRE"
+    "name": "Nombre"
   },
   "general": {
     "loading": "Cargando",
-    "description": "DESCRIPCIÓN",
+    "description": "Descripción",
     "yes": "Sí",
     "no": "No",
     "loading-scope": "Seleccione Alcance",
     "loading-process": "Seleccione Proceso",
     "loading-questionnaires": "Cargando cuestionarios",
-    "title": "TÍTULO",
-    "evaluators": "EVALUADOR/ES",
+    "title": "Título",
+    "evaluators": "Evaluador(es)",
     "select-risk": "Seleccione Riesgo",
     "loading-risks": "Cargando riesgos",
-    "name": "NOMBRE",
-    "risk-master": "RIESGO MAESTRO",
+    "name": "Nombre",
+    "ref": "Referencia",
+    "risk-master": "Riesgo Maestro",
     "n-a": "N/A"
   },
   "selectcontrols": {

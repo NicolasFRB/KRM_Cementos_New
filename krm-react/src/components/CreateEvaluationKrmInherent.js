@@ -33,10 +33,34 @@ function CreateEvaluationKrmInherent(props) {
     let newFormData = {};
     newFormData.ref = $('#e_ref').val();
     newFormData.date_begin = $('#e_date_begin').val();
-    newFormData.date_intermediate = $('#e_date_intermediate').val();
     newFormData.date_end = $('#e_date_end').val();
     newFormData.description = $('#e_description').val();
-    newFormData.completed = newFormData.ref !== '' && newFormData.date_begin !== '' && newFormData.date_intermediate !== '' && newFormData.date_end !== '';
+    $('#error-e-date-begin, #error-e-date-end').addClass('d-none');
+    const beginDate = new Date(newFormData.date_begin);
+    const endDate = new Date(newFormData.date_end);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const datesOk = !isNaN(beginDate) && !isNaN(endDate) && beginDate <= endDate && beginDate >= today;
+
+    if (beginDate> endDate) {
+      $('#error-e-date-end').text("La fecha de inicio no puede ser posterior a la fecha de fin.").removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_end').offset().top - 100
+      }, 1000);
+    } else if (beginDate< today) {
+      $('#error-e-date-begin').text("La fecha de inicio no puede ser previa al día actual.").removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_begin').offset().top - 100
+      }, 1000);
+    } else {
+      $('#error-e-date-begin, #error-e-date-end').text('').addClass('d-none');
+    }
+
+    newFormData.completed = newFormData.ref !== '' &&
+                            newFormData.date_begin !== '' &&
+                            newFormData.date_intermediate !== '' &&
+                            newFormData.date_end !== '' &&
+                            datesOk;
     setFormData(newFormData);
   }
 
@@ -194,22 +218,22 @@ function CreateEvaluationKrmInherent(props) {
   const selectExpert = (selected_riskCompany,selected_risk, selected_expert_data) => {
     // console.log("Risk")
     // console.log(riskCompany)
-    
+
     // console.log("Expert")
     // console.log(expert_data)
 
-    setRiskCompanies((riskCompanies) => 
+    setRiskCompanies((riskCompanies) =>
       riskCompanies.map((riskCompany) => {
         console.log(riskCompany);
-        if(riskCompany.company.pk === selected_riskCompany.company.pk) 
+        if(riskCompany.company.pk === selected_riskCompany.company.pk)
           return { ...riskCompany,
             risks: riskCompany.risks.map( (risk) => {
                 if (risk.pk === selected_risk.pk) {
                   console.log(risk);
                   console.log({
-                    ...risk,  
-                    original_expert: risk.hasOwnProperty("original_expert")? risk.original_expert: risk.expert, 
-                    expert: selected_expert_data.pk, 
+                    ...risk,
+                    original_expert: risk.hasOwnProperty("original_expert")? risk.original_expert: risk.expert,
+                    expert: selected_expert_data.pk,
                     expert_data: {
                       pk:selected_expert_data.pk,
                       email:selected_expert_data.label,
@@ -217,9 +241,9 @@ function CreateEvaluationKrmInherent(props) {
                     save_expert: selected_expert_data.pk != risk.expert
                   });
                   return {
-                    ...risk,  
-                    original_expert: risk.hasOwnProperty("original_expert")? risk.original_expert: risk.expert, 
-                    expert: selected_expert_data.pk, 
+                    ...risk,
+                    original_expert: risk.hasOwnProperty("original_expert")? risk.original_expert: risk.expert,
+                    expert: selected_expert_data.pk,
                     expert_data: {
                       pk:selected_expert_data.pk,
                       email:selected_expert_data.label,
@@ -245,51 +269,48 @@ function CreateEvaluationKrmInherent(props) {
             <>
               <div className="alert alert-primary">{t('krmInherent.data-incompleted')}</div>
             </>
-          )
-          }
+          )}
           <div className={(formData.completed ? '' : 'd-none')}>
             <SelectCompanies selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} companies={companies} setCompanies={setCompanies} />
           </div>
-          <div className="separator my-10"></div>
         </div>
+        <div className="separator my-10"></div>
 
 
         <div className="col-12">
           <h3 className="mb-5">{t('krmInherent.step-3')}</h3>
-        </div>
-        {selectedCompanies.length === 0 && (
-          <>
-            <div className="alert alert-primary">{t('krmInherent.select-company')}</div>
-          </>
-        )
-        }
-        <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
-          <div className="col col-12 col-md-3">
-            <SelectDomainRiskKrmInherent selectedCompanies={selectedCompanies} selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
+          {selectedCompanies.length === 0 && (
+            <>
+              <div className="alert alert-primary">{t('krmInherent.select-company')}</div>
+            </>
+          )
+          }
+          <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
+            <div className="col col-12 col-md-3">
+              <SelectDomainRiskKrmInherent selectedCompanies={selectedCompanies} selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
+            </div>
           </div>
         </div>
 
 
         <div className="separator my-10"></div>
-
-
         <div className="col-12">
-          <h3 className="mb-5">{t('krmInherent.step-4')}</h3>
-        </div>
-        {selectedCompanies.length === 0 && (
-          <>
-            <div className="alert alert-primary">{t('krmInherent.select-company')}</div>
-          </>
-        )}
-        <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
-          <div className="col col-12">
-            <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} selectedDomainRisks={selectedDomainRisks} selectedCompanies={selectedCompanies} />
+          <h3 className="mb-6">{t('krmInherent.step-4')}</h3>
+          {selectedCompanies.length === 0 && (
+            <>
+              <div className="alert alert-primary">{t('krmInherent.select-company')}</div>
+            </>
+          )}
+          <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
+            <div className="col col-12">
+              <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} selectedDomainRisks={selectedDomainRisks} selectedCompanies={selectedCompanies} />
+            </div>
           </div>
         </div>
-        
+
         <div className="separator my-10"></div>
         <div className="col-12" id="launch">
-          <h3 className="mb-5">{t('krmInherent.step-5')}</h3>
+          <h3 className="mb-6">{t('krmInherent.step-5')}</h3>
           {selectedRisks.length > 0 && (
             <>
               <div className="mt-5 mb-15">
@@ -297,7 +318,7 @@ function CreateEvaluationKrmInherent(props) {
                   <button onClick={updateControls} type="button" className="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator={riskCompaniesLoading ? 'on' : 'off'}>
                     <span className="indicator-label">{t('krmInherent.calc-risk-tests')}</span>
                     <span className="indicator-progress">
-                      Calculando...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
+                      {t('krmResidual.loading')}...<span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                     </span>
                   </button>
                 </p>
@@ -317,7 +338,7 @@ function CreateEvaluationKrmInherent(props) {
                                 <span onClick={() => selectAll(company.company.pk)} className="me-5"><i className="bi bi-clipboard-check"></i></span>
                                 <span onClick={() => unSelectAll(company.company.pk)}><i className="bi bi-clipboard"></i></span>
                               </th>
-                              <th className="fw-semibold">REF</th>
+                              <th className="fw-semibold">{t('krmInherent.ref')}</th>
                               <th className="fw-semibold">{t('krmInherent.name')}</th>
                               <th className="fw-semibold">{t('krmInherent.evaluator-assign')}</th>
                             </tr>
@@ -334,13 +355,10 @@ function CreateEvaluationKrmInherent(props) {
                                   )}
                                 </td>
                                 <td><label htmlFor={'ri' + risk.pk}>{risk.risk_ref}</label></td>
-                                <td><span className="fw-semibold ps-2 fs-6">{risk.name}</span></td>
+                                <td><span className="fw-semibold ps-2 fs-6">{risk.risk.name}</span></td>
                                 <td>
                                   {risk.expert && (
-                                    // <span className="fw-semibold ps-2 fs-6">
-                                    //   {risk.expert_data.email}
-                                    // </span>
-<>
+                                    <>
                                       <Select
                                         onChange={(expert) => selectExpert(company, risk, expert)}
                                         getOptionValue={(option) => `${option['pk']}`}
@@ -349,7 +367,7 @@ function CreateEvaluationKrmInherent(props) {
                                           return { pk: employee.pk, label: employee.email }
                                         })}
                                         // isMulti
-                                        defaultValue={ risk?.expert_data ? {pk: risk.expert_data.pk, label: risk.expert_data.email}: null }  
+                                        defaultValue={ risk?.expert_data ? {pk: risk.expert_data.pk, label: risk.expert_data.email}: null }
 
                                       />
                                       {/* <span className="badge badge-danger">{t('krmInherent.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-primary">{t('krmInherent.assign')}</span></a> */}
@@ -366,7 +384,7 @@ function CreateEvaluationKrmInherent(props) {
                                           return { pk: employee.pk, label: employee.email }
                                         })}
                                         // isMulti
-                                        defaultValue={ risk?.expert_data ? {pk: risk.expert_data.pk, label: risk.expert_data.email}: null }  
+                                        defaultValue={ risk?.expert_data ? {pk: risk.expert_data.pk, label: risk.expert_data.email}: null }
 
                                       />
                                       {/* <span className="badge badge-danger">{t('krmInherent.without-assign')}</span> <a rel="noreferrer" target="_blank" className="mb-3" href={`/${window.LANG}/companies/assign-expert/${risk.expert_pk}/`}><span className="badge badge-primary">{t('krmInherent.assign')}</span></a> */}

@@ -156,21 +156,18 @@ class AuEvaluationInherentDetailView(DetailView):
         context['page_title'] = f"{_('Evaluación de Riesgo Inherente KRM')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-
-        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(
-            1)
-        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(
-            2)
-        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(
-            3)
-
-        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(
-            1)
-        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(
-            2)
-        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(
-            3)
-
+        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(1)
+        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2)
+        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(3)
+        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(1)
+        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(2)
+        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(3)
+        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_inherents_by_severity('SE')
+        context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_inherents_by_severity('MB')
+        context['evaluation'].sev_low = context['evaluation'].nrisk_test_inherents_by_severity('B')
+        context['evaluation'].sev_medium = context['evaluation'].nrisk_test_inherents_by_severity('M')
+        context['evaluation'].sev_high = context['evaluation'].nrisk_test_inherents_by_severity('A')
+        context['evaluation'].sev_very_high = context['evaluation'].nrisk_test_inherents_by_severity('MA')
         context['evaluation'].total_experts = context['evaluation'].experts_pending.count(
         ) + context['evaluation'].experts_delivered.count() + context['evaluation'].experts_finished.count()
 

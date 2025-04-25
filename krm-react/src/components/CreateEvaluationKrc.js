@@ -44,7 +44,38 @@ function CreateEvaluationKrc(props) {
     newFormData.date_intermediate = $('#e_date_intermediate').val();
     newFormData.date_end = $('#e_date_end').val();
     newFormData.description = $('#e_description').val();
-    newFormData.completed = newFormData.ref !== '' && newFormData.date_begin !== '' && newFormData.date_intermediate !== '' && newFormData.date_end !== '';
+    $('#error-e-date-begin, #error-e-date-intermediate').addClass('d-none');
+    const beginDate = new Date(newFormData.date_begin);
+    const endDate = new Date(newFormData.date_end);
+    const intermediateDate = new Date(newFormData.date_intermediate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const datesOk = !isNaN(beginDate) && !isNaN(endDate) && !isNaN(intermediateDate) && beginDate >= today && beginDate <= intermediateDate && intermediateDate <= endDate;
+
+    if (intermediateDate< beginDate) {
+      $('#error-e-date-intermediate').text("La fecha límite no puede ser previa a la fecha de inicio.").removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_intermediate').offset().top - 100
+      }, 1000);
+    } else if (beginDate< today) {
+      $('#error-e-date-begin').text("La fecha de inicio no puede ser previa al día actual.").removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_begin').offset().top - 100
+      }, 1000);
+    } else if (endDate < intermediateDate) {
+      $('#error-e-date-intermediate').text("La fecha límite no puede ser posterior a la fecha de finalización.").removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_intermediate').offset().top - 100
+      }, 1000);
+    } else {
+      $('#error-e-date-begin, #error-e-date-intermediate').text('').addClass('d-none');
+    }
+
+    newFormData.completed = newFormData.ref !== '' &&
+                            newFormData.date_begin !== '' &&
+                            newFormData.date_intermediate !== '' &&
+                            newFormData.date_end !== '' &&
+                            datesOk;
     setFormData(newFormData);
   }
 
@@ -105,7 +136,7 @@ function CreateEvaluationKrc(props) {
           </div>
           <div className="col col-12 col-md-2">
             {/* Hay que obtener las scopes a traves de algun endpoint */}
-            <SelectControlScopes selectedScopes={selectedScopes} setSelectedScopes={setSelectedScopes} /> 
+            <SelectControlScopes selectedScopes={selectedScopes} setSelectedScopes={setSelectedScopes} />
           </div>
           <div className="col col-12 col-md-2">
             {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}

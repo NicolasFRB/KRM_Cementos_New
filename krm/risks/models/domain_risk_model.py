@@ -35,7 +35,7 @@ class DomainRisk(AuditModel):
         ordering = ["ref", "name"]
 
     def save(self, *args, **kwargs):
-        self.ref = self.ref.upper()
+        self.ref = self.ref
         super().save(*args, **kwargs)
 
         from krm.companies.models import Company
@@ -61,5 +61,5 @@ class DomainRisk(AuditModel):
                 for c in r2.controls.all():
                     if c not in controls:
                         controls.append(c)
-        
+
         return controls

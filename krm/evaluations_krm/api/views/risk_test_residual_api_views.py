@@ -88,6 +88,10 @@ class RiskTestResidualEvaluatorApiView(APIView):
             description_admin = request.GET['descriptionAdmin']
             risk_test.description_administrator = description_admin
 
+        print(risk_test.probability_level_administrator)
+        print(risk_test.impact_level_administrator)
+        print(risk_test.event_speed_level_administrator)
+        print(risk_test.description_administrator)
         risk_test.save()
 
         data = {

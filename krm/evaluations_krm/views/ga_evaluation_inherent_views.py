@@ -57,7 +57,7 @@ from krm.companies.models import CompanyDomainRiskExperts
 
 from krm.users.decorators import is_global_admin, user_can_view_evaluation
 
-from krm.utils.utils import clean_html
+from krm.utils.utils import clean_html, pluralize
 
 
 @method_decorator([login_required, is_global_admin, ], name='dispatch')
@@ -223,15 +223,9 @@ class GaEvaluationInherentCreateView(FormView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _("%s Evaluaciones creadas correctamente") % str(evaluations_created),
+            _(f"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')} y {pluralize(risk_tests__created, 'test')} de riesgo inherente correctamente"),
         )
 
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            _("%s Test de Riesgos creados correctamente") % str(
-                risk_tests__created),
-        )
         return super().form_valid(form)
 
 
@@ -267,68 +261,58 @@ class GaEvaluationInherentDetailView(FormView):
         #     },
         # ]
 
-        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(
-            1)
-        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(
-            2)
-        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(
-            3)
-
-        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(
-            1)
-        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(
-            2)
-        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(
-            3)
+        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(1)
+        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2)
+        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(3)
+        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(1)
+        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(2)
+        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(3)
+        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_inherents_by_severity('SE')
+        context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_inherents_by_severity('MB')
+        context['evaluation'].sev_low = context['evaluation'].nrisk_test_inherents_by_severity('B')
+        context['evaluation'].sev_medium = context['evaluation'].nrisk_test_inherents_by_severity('M')
+        context['evaluation'].sev_high = context['evaluation'].nrisk_test_inherents_by_severity('A')
+        context['evaluation'].sev_very_high = context['evaluation'].nrisk_test_inherents_by_severity('MA')
 
         context['evaluation'].total_experts = context['evaluation'].experts_pending.count(
         ) + context['evaluation'].experts_delivered.count() + context['evaluation'].experts_finished.count()
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
-        # Serializar Evaluation no incluye sus hijos :(
-        # Busco los hijos
         context['rit'] = RiskTestInherent.objects.filter(
             evaluation=self.evaluation)
 
-        # Paso a dict para json
-        context['rit_dict'] = [model_to_dict(m) for m in context['rit']]
+        context['rit_dict']= []
+        for risk_test in context['rit']:
+            information = {}
+            information['ref']= risk_test.risk.risk.ref
+            information['name']= risk_test.risk.risk.name
+            information['evaluator']= risk_test.expert.username_no_domain
+            information['impact_evaluator']= risk_test.impact_level_expert
+            information['probability_evaluator']= risk_test.probability_level_expert
+            information['severity_evaluator']= risk_test.severity_level_expert
+            information['administrator']= self.evaluation.admin_supervisor.username_no_domain if self.evaluation.admin_supervisor else ''
+            information['impact_administrator']= risk_test.impact_level_administrator
+            information['probability_administrator']= risk_test.probability_level_administrator
+            information['severity_administrator']= risk_test.severity_level_administrator
+            context['rit_dict'].append(information)
 
-        # MODEL_TO_DICT not getting properties :(
-        # Get .severity_level_expert
-        # TBI for cuadratico :/
-        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
-        for i, r1 in enumerate(context['rit']):
-            context['rit_dict'][i]['risk_ref'] = r1.risk.risk.ref
-            context['rit_dict'][i]['risk_name'] = r1.risk.risk.name
-            context['rit_dict'][i]['expert'] = r1.expert.username_no_domain
-            for r2 in context['rit_dict']:
-                if r1.id == r2['id']:
-                    r2['severity_level_expert'] = r1.severity_level_expert
-
-        # QUITAR RESTO DE ATTRIBUTES (solo dan problemas con el encoding)
-        for i, r1 in enumerate(context['rit']):
-            for k in context['rit_dict'][i].copy():
-                if k not in ['risk_ref', 'risk_name', 'expert', 'impact_level_expert', 'probability_level_expert', 'severity_level_expert']:
-                    del context['rit_dict'][i][k]
-
-        # Sort by severity for a nice plot
-        context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (
-            x['severity_level_expert'], x['risk_ref']), reverse=True)
+        context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (x['severity_evaluator'], x['ref']), reverse=True)
 
         # Errores de encoding caracteres portugueses y españoles
-        for i, m in enumerate(context['rit_dict']):
-            for k in m:
-                if type(context['rit_dict'][i][k]) == str:
-                    context['rit_dict'][i][k] = context['rit_dict'][i][k].encode(
-                        'utf-8').decode('utf-8')
+        # for i, m in enumerate(context['rit_dict']):
+        #     for k in m:
+        #         if type(context['rit_dict'][i][k]) == str:
+        #             context['rit_dict'][i][k] = context['rit_dict'][i][k].encode(
+        #                 'utf-8').decode('utf-8')
 
-        # JSON DUMP
         context['rit_json'] = json.dumps(
             context['rit_dict'],
             default=str,
             ensure_ascii=True,
         )
+
+        print(context['rit_json'])
 
         context['js_template'] = ['js/custom/datatables.js']
 
@@ -340,6 +324,7 @@ class GaEvaluationInherentDetailView(FormView):
 
         if action == 'download':
             import io
+            from django.utils.html import strip_tags
 
             filename = f'inherent_evaluation_{evaluation.ref}.xlsx'
 
@@ -426,7 +411,7 @@ class GaEvaluationInherentDetailView(FormView):
             worksheet.write(1, 0, evaluation.ref, text_wrap)
             worksheet.write(1, 1, evaluation.company.name +' (' + evaluation.company.ref+')' , text_wrap)
             worksheet.write(1, 2, evaluation.company.type_company if evaluation.company.type_company else "Not specified", text_wrap)
-            worksheet.write(1, 3, evaluation.description if evaluation.description else "Not specified", text_wrap)
+            worksheet.write(1, 3, strip_tags(evaluation.description) if evaluation.description else "Not specified", text_wrap)
             worksheet.write(1, 4, evaluation.date_begin.strftime("%d/%m/%Y"), text_wrap)
             worksheet.write(1, 5, evaluation.date_end.strftime("%d/%m/%Y"), text_wrap)
             worksheet.write(1, 6, evaluation.certification_year, text_wrap)
@@ -443,11 +428,11 @@ class GaEvaluationInherentDetailView(FormView):
                 worksheet_2.write(row, 0, rr.risk.risk.name + ' ('+ rr.risk.risk.ref + ')', text_wrap)
                 worksheet_2.write(row, 1, rr.risk.risk.risk_master.name + ' ('+ rr.risk.risk.risk_master.ref + ')', text_wrap)
                 worksheet_2.write(row, 2, rr.risk.risk.risk_master.domain_risk.name + ' ('+ rr.risk.risk.risk_master.domain_risk.ref + ')', text_wrap)
-                worksheet_2.write(row, 3, rr.risk.risk.description if rr.risk.risk.description else "Not specified", text_wrap)
-                worksheet_2.write(row, 4, rr.risk.risk.krm_main_elements if rr.risk.risk.krm_main_elements!= '' else "N/A", text_wrap)
-                worksheet_2.write(row, 5, rr.risk.risk.krm_main_events if  rr.risk.risk.krm_main_events!='' else "N/A", text_wrap)
-                worksheet_2.write(row, 6, rr.risk.risk.krm_activity_affected if rr.risk.risk.krm_activity_affected!='' else "N/A", text_wrap)
-                worksheet_2.write(row, 7, rr.risk.risk.krm_exposed_staff if rr.risk.risk.krm_exposed_staff!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 3, strip_tags(rr.risk.risk.description) if rr.risk.risk.description else "Not specified", text_wrap)
+                worksheet_2.write(row, 4, strip_tags(rr.risk.risk.krm_main_elements) if rr.risk.risk.krm_main_elements!= '' else "N/A", text_wrap)
+                worksheet_2.write(row, 5, strip_tags(rr.risk.risk.krm_main_events) if  rr.risk.risk.krm_main_events!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 6, strip_tags(rr.risk.risk.krm_activity_affected) if rr.risk.risk.krm_activity_affected!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 7, strip_tags(rr.risk.risk.krm_exposed_staff) if rr.risk.risk.krm_exposed_staff!='' else "N/A", text_wrap)
                 worksheet_2.write(row, 8, rr.risk.expert.full_name if rr.risk.evaluator else "Evaluator not assigned ", text_wrap)
                 worksheet_2.write(row, 9, rr.impact_level_expert if rr.impact_level_expert!=0 else "Awaiting evaluation", text_wrap)
                 worksheet_2.write(row, 10, rr.translation_values(rr.impact_level_expert), text_wrap)

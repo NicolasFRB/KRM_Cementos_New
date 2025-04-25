@@ -1,0 +1,693 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block js_footer %}
+
+<!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/es.js"></script>
+<script src="{% static 'js/flatpickr_es.js' %}"></script>
+
+<script>
+  {% get_current_language as LANGUAGE_CODE %}
+  {% if LANGUAGE_CODE == 'es' %}
+    $(".datepicker").flatpickr({
+      locale: "es",
+      dateFormat: "Y-m-d",        // formato interno (para .val())
+      altInput: true,             // lo que ve el usuario
+      altFormat: "d/m/Y",
+    });
+  {% else %}
+    $(".datepicker").flatpickr({
+          "locale": "en",
+          dateFormat: "Y-m-d",
+    });
+  {% endif %}
+
+  $(document).ready(function(){
+
+    $('.filterable .filters input').keyup(function(e){
+        /* Ignore tab key */
+        var code = e.keyCode || e.which;
+        if (code == '9') return;
+        /* Useful DOM data and selectors */
+        var $input = $(this),
+        inputContent = $input.val().toLowerCase(),
+        $panel = $input.parents('.filterable'),
+        column = $panel.find('.filters th').index($input.parents('th')),
+        $table = $panel.find('.table'),
+        $rows = $table.find('tbody tr');
+        /* Dirtiest filter function ever ;) */
+        var $filteredRows = $rows.filter(function(){
+            var value = $(this).find('td').eq(column).text().toLowerCase();
+            return value.indexOf(inputContent) === -1;
+        });
+        /* Clean previous no-result if exist */
+        $table.find('tbody .no-result').remove();
+        /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+        $rows.show();
+        $filteredRows.hide();
+        /* Prepend no-result row if all rows are filtered */
+        if ($filteredRows.length === $rows.length) {
+            $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="'+ $table.find('.filters th').length +'">No result found</td></tr>'));
+        }
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+<script src="{% static 'js/apexcharts.js' %}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script> -->
+
+<script>
+  var evaluations_inherent = [];
+  var evaluations_residual = [];
+  var inherent_status = {};
+  var residual_status = {};
+  var inherent_severity = {};
+  var residual_severity = {};
+  var inherent_tests = [];
+  var residual_tests = [];
+
+  function test_status(id, dict, names) {
+    var pending = [];
+    var evaluated = [];
+    var finished = [];
+    var stablished_width= 0;
+    var barHeight= 50;
+    let chartHeight= 0;
+
+    Object.entries(dict).forEach(([key, value]) => {
+      Object.entries(value).forEach(([key2, value2]) => {
+        if (key2 === "Awaiting Evaluator"){
+          pending.push(value2);
+        } else if ( key2 === "Awaiting Administrator"){
+          evaluated.push(value2);
+        } else {
+          finished.push(value2);
+        }
+      });
+    });
+
+    let chart_title;
+
+    if (id === "chart-1"){
+      chart_title= "Risk Test Inherent Status per Evaluation";
+      const minHeight= document.getElementById("chart-1-container").offsetHeight;
+      chartHeight = Math.max(barHeight*names.length, minHeight);
+    } else {
+      chart_title= "Risk Test Residual Status per Evaluation";
+      const minHeight= document.getElementById("chart-2-container").offsetHeight;
+      chartHeight = Math.max(barHeight*names.length, minHeight);
+    }
+
+    var options = {
+        series: [{
+          name: 'Awaiting Evaluator',
+          color: '#ed9f7b',
+          data: pending
+        }, {
+          name: 'Awaiting Administrator',
+          color: '#e6d68e',
+          data: evaluated
+        }, {
+          name: 'Finished',
+          color: '#a6ed9d',
+          data: finished
+        }],
+        chart: {
+          type: 'bar',
+          height: chartHeight,
+          width: "100%",
+          stacked: true,
+          toolbar: {
+            show: true
+          },
+          zoom: {
+            enabled: true
+          }
+        },
+        title: {
+          floating: false,
+          text: chart_title,
+          align: 'middle',
+          offsetY: -5,
+          style: {
+            fontSize: '18px'
+          }
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0
+            }
+          }
+        }],
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            barHeight: '80%',
+            borderRadius: 10,
+            borderRadiusApplication: 'end', // 'around', 'end'
+            borderRadiusWhenStacked: 'last', // 'all', 'last'
+            dataLabels: {
+              total: {
+                enabled: true,
+                style: {
+                  fontSize: '13px',
+                  fontWeight: 900
+                }
+              }
+            }
+          },
+        },
+        xaxis: {
+          categories: names
+        },
+        legend: {
+          show: true,
+          position: 'top',
+          offsetY: 0
+        },
+        fill: {
+          opacity: 1
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#" + id), options);
+        chart.render();
+  }
+
+  function test_severity(id, dict, names){
+    var not_stablished = [];
+    var very_low = [];
+    var low = [];
+    var medium = [];
+    var high = [];
+    var very_high = [];
+    const barWidth = 50;
+    let totalWidth= 0;
+
+    Object.entries(dict).forEach(([key, value]) => {
+      Object.entries(value).forEach(([key2, value2]) => {
+        if ( key2 == "Not stablished"){
+          not_stablished.push(value2);
+        } else if(key2 === "Very low"){
+          very_low.push(value2);
+        } else if ( key2 === "Low"){
+          low.push(value2);
+        } else if ( key2 === "Medium"){
+          medium.push(value2);
+        } else if ( key2 === "High"){
+          high.push(value2);
+        } else {
+          very_high.push(value2);
+        }
+      });
+    });
+
+    let chart_title;
+
+    if (id === "chart-5"){
+      chart_title= "Risk Test Inherent Severity per Evaluation";
+      const minWidth = document.getElementById('chart-5-container').offsetWidth;
+      totalWidth = Math.max(barWidth * names.length, minWidth-5);
+    } else {
+      chart_title= "Risk Test Residual Severity per Evaluation";
+      const minWidth = document.getElementById('chart-6-container').offsetWidth;
+      totalWidth = Math.max(barWidth * names.length, minWidth);
+    }
+
+    var options = {
+      series: [{
+        name: 'Not stablished',
+        color: '#d4d0c7',
+        data: not_stablished
+      }, {
+        name: 'Very low',
+        color: '#a6ed9d',
+        data: very_low
+      }, {
+        name: 'Low',
+        color: '#e6d68e',
+        data: low
+      }, {
+        name: 'Medium',
+        color: '#f4c39d',
+        data: medium
+      }, {
+        name: 'High',
+        color: '#ed9f7b',
+        data: high
+      }, {
+        name: 'Very high',
+        color: '#ea7d7e',
+        data : very_high
+      }
+      ],
+      chart: {
+        type: 'bar',
+        height: 400,
+        width: totalWidth,
+        stacked: true,
+        toolbar: {
+          show: true
+        },
+        zoom: {
+          enabled: true
+        }
+      },
+      title: {
+        floating: false,
+        text: chart_title,
+        align: 'middle',
+        offsetY: -5,
+        style: {
+          fontSize: '18px'
+        }
+      },
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          legend: {
+            position: 'bottom',
+            offsetX: -10,
+            offsetY: 0
+          }
+        }
+      }],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '80%',
+          borderRadius: 10,
+          borderRadiusApplication: 'end', // 'around', 'end'
+          borderRadiusWhenStacked: 'last', // 'all', 'last'
+          dataLabels: {
+            total: {
+              enabled: true,
+              style: {
+                fontSize: '13px',
+                fontWeight: 900
+              }
+            }
+          }
+        },
+      },
+      xaxis: {
+        categories: names
+      },
+      legend: {
+        show: true,
+        position: 'top',
+        offsetY: 0
+      },
+      fill: {
+        opacity: 1
+      },
+
+    };
+
+    var chart = new ApexCharts(document.querySelector("#" + id), options);
+    chart.render();
+  }
+
+  function bubble_chart(id, tests) {
+    let chart_title;
+    let chart_width;
+    let chart_height;
+
+    if (id === "chart-3") {
+      chart_title = "Heatmap - Inherent Risk Evaluations";
+      chart_width = document.getElementById("chart-3-container").offsetWidth;
+      chart_height = document.getElementById("chart-3-container").offsetHeight;
+    } else{
+      chart_title = "Heatmap - Residual Risk Evaluations";
+      chart_width = document.getElementById("chart-4-container").offsetWidth;
+      chart_height = document.getElementById("chart-4-container").offsetHeight;
+    }
+    const series = tests.map(item => {
+      const lista = [];
+
+      item.risk_tests.forEach(item2=> {
+        lista.push([item2[0], item2[1], Math.pow(item2[2], 2) * 5]);
+      });
+
+      return {
+        name: item.evaluation_name,
+        data: lista
+      };
+    });
+
+    const options = {
+      chart: {
+        height: chart_height,
+        width: chart_width,
+        type: 'bubble'
+      },
+      series: series,
+      fill: {
+        opacity: 0.6
+      },
+      xaxis: {
+        min: -1,
+        max: 7,
+        tickAmount: 7,
+        type: 'numeric',
+      },
+      yaxis :{
+        min: -1,
+        max: 7,
+        tickAmount: 7,
+        type: 'numeric',
+      },
+      title: {
+        floating: false,
+        text: chart_title,
+        align: 'middle',
+        offsetY: -5,
+        style: {
+          fontSize: '18px'
+        }
+      },
+      legend : {
+        show: true,
+      },
+      plotOptions: {
+        bubble: {
+          zScale: 100,
+          minBubbleRadius: 10, // o incluso 1
+        }
+      }
+    }
+
+    var chart = new ApexCharts(document.querySelector("#" + id), options);
+    chart.render();
+  }
+</script>
+
+<div class="card shadow-sm mb-4" style="border-radius: 1rem; overflow: hidden;">
+  <div class="card-header bg-primary d-flex justify-content-center align-items-center">
+    <h5 class="mb-0 fs-2 fw-bold text-white py-3">
+      {% trans "Seleccione el Dashboard que desea visualizar" %}
+    </h5>
+  </div>
+  <div class="card-body bg-light">
+    <form method="get" action="{% url 'users:ga_dashboard' %}">
+      <select name="dashboard" class="form-select" onchange="this.form.submit()">
+        <option value="default" {% if request.GET.dashboard == 'default' %}selected{% endif %}>
+          {% trans 'Dashboard de Controles' %}
+        </option>
+        <option value="KRM" {% if request.GET.dashboard == 'KRM' %}selected{% endif %}>
+          {% trans 'Dashboard de Riesgos' %}
+        </option>
+      </select>
+    </form>
+  </div>
+</div>
+
+<div class="accordion" id="kt_accordion_1">
+  <form method="get" class="kt-form kt-form--label-right" >
+    <input type="hidden" name="dashboard" value="{{ dashboard }}">
+    <div class="card">
+      <div class="accordion-item">
+        <div class="card-header" id="kt_accordion_1_header_1" style="padding: inherit">
+          <!--begin::Card header-->
+          <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_1" aria-expanded="false" aria-controls="kt_accordion_1_body_1">
+          {% trans 'Aplicar filtros' %}
+          </button>
+          <!--end::Card header-->
+        </div>
+        <div id="kt_accordion_1_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_1" data-bs-parent="#kt_accordion_1">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                {% include '_includes/FormErrors.html' %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-12">
+                <div class="row">
+                  <div class="col-12">
+                    {% include '_includes/FormErrors.html' %}
+                  </div>
+                  <div class="row mb-4 col-12 col-md-8">
+                    <fieldset>
+                      <div class="row">
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.evaluation_inherent|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.evaluation_residual|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.company|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_year|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_period|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.process_status|as_crispy_field }}</div>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <div class="row mb-4 col-12 col-md-4 align-items-start">
+                    <fieldset>
+                      <legend>{% trans 'Fecha de Evaluación' %}</legend>
+                      <div class="row">
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.date_evaluation_begin|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.date_evaluation_end|as_crispy_field }}</div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer py-6">
+            <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i>{% trans 'Buscar' %}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title fs-3 fw-bold">{% trans 'Gráficos' %}</div>
+  </div>
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col-xl-6">
+        <div id="chart-1-container" style="height: 400px; overflow-y: auto;">
+          <div id="chart-1"  style="width: 100%;"></div>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div id="chart-2-container" style="height: 400px; overflow-y: auto;">
+          <div id="chart-2" style="width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-xl-6">
+        <div id="chart-3-container" style="height: 400px;">
+          <div id="chart-3"></div>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div id="chart-4-container" style="height: 400px;">
+          <div id="chart-4"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-xl-6">
+        <div id="chart-5-container" style="overflow-x: auto; width: 100%;">
+          <div id="chart-5-wrapper" style="min-width: 100%;">
+            <div id="chart-5"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div id="chart-6-container" style="overflow-x: auto; width: 100%;">
+          <div id="chart-6-wrapper" style="min-width: 100%;">
+            <div id="chart-6"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% for e in evaluations_inherent %}
+      <script>
+        var ri_status = {"Awaiting Evaluator": 0, "Awaiting Administrator": 0, "Finished": 0};
+        var ri_severity = {"Not stablished": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
+        var ri_values = {evaluation_name: "{{e}}", risk_tests: []};
+      </script>
+      {% for ri in e.get_all_risk_tests %}
+      <script>
+        switch("{{ri.status}}"){
+          case "1":
+            ri_status["Awaiting Evaluator"] += 1;
+            break;
+          case "2":
+            ri_status["Awaiting Administrator"] += 1;
+            break;
+          case "3":
+            ri_status["Finished"] += 1;
+            break;
+        };
+        switch("{{ri.severity_administrator_qualitative}}"){
+          case "SE":
+            ri_severity["Not stablished"]+=1;
+            break;
+          case "MB":
+            ri_severity["Very low"]+=1;
+            break;
+          case "B":
+            ri_severity["Low"]+=1;
+            break;
+          case "M":
+            ri_severity["Medium"]+=1;
+            break;
+          case "A":
+            ri_severity["High"]+=1;
+            break;
+          case "MA":
+            ri_severity["Very high"]+=1;
+            break;
+        }
+        ri_values.risk_tests.push([Number("{{ ri.probability_level_administrator }}"), Number("{{ ri.impact_level_administrator }}"), Number("{{ ri.event_speed_level_administrator }}")]);
+      </script>
+      {% endfor %}
+      <script>
+        inherent_status["{{e}}"]= ri_status;
+        inherent_severity["{{e}}"]= ri_severity;
+        evaluations_inherent.push("{{e}}");
+        inherent_tests.push(ri_values);
+      </script>
+    {% endfor %}
+      <script>
+        console.log(Object.keys(inherent_severity).length);
+        console.log(evaluations_inherent);
+        console.log(ri_values)
+      </script>
+    {% for e in evaluations_residual %}
+      <script>
+        var rr_status = {"Awaiting Evaluator": 0, "Awaiting Administrator": 0, "Finished": 0};
+        var rr_severity = {"Not stablished": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
+        var rr_values = {evaluation_name : "{{e}}", risk_tests: []};
+      </script>
+      {% for rr in e.get_all_risk_tests %}
+        <script>
+          switch("{{rr.status}}"){
+            case "1":
+              rr_status["Awaiting Evaluator"] += 1;
+              break;
+            case "2":
+              rr_status["Awaiting Administrator"] += 1;
+              break;
+            case "3":
+              rr_status["Finished"] += 1;
+              break;
+          };
+          switch("{{rr.severity_administrator_qualitative}}"){
+            case "SE":
+              rr_severity["Not stablished"]+=1;
+              break;
+            case "MB":
+              rr_severity["Very low"]+=1;
+              break;
+            case "B":
+              rr_severity["Low"]+=1;
+              break;
+            case "M":
+              rr_severity["Medium"]+=1;
+              break;
+            case "A":
+              rr_severity["High"]+=1;
+              break;
+            case "MA":
+              rr_severity["Very high"]+=1;
+              break;
+          }
+          rr_values.risk_tests.push([Number("{{rr.probability_level_administrator}}"), Number("{{rr.impact_level_administrator}}"), Number("{{rr.event_speed_level_administrator}}")]);
+        </script>
+      {% endfor %}
+        <script>
+          residual_status["{{e}}"]= rr_status;
+          residual_severity["{{e}}"]= rr_severity;
+          evaluations_residual.push("{{e}}");
+          residual_tests.push(rr_values);
+        </script>
+    {% endfor %}
+    <script>
+      test_status("chart-1", inherent_status, evaluations_inherent);
+      test_status("chart-2", residual_status, evaluations_residual);
+      bubble_chart("chart-3", inherent_tests);
+      bubble_chart("chart-4", residual_tests);
+      test_severity("chart-5", inherent_severity, evaluations_inherent);
+      test_severity("chart-6", residual_severity, evaluations_residual);
+    </script>
+  </div>
+</div>
+
+<div class="accordion" id="kt_accordion_2">
+  <div class="card">
+    <div class="accordion-item">
+      <div class="card-header" id="kt_accordion_2_header_1" style="padding: inherit">
+        <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_2_body_1" aria-expanded="false" aria-controls="kt_accordion_2_body_1">
+        {% trans 'Resultados obtenidos para Evaluaciones de Riesgo Inherente' %}
+        </button>
+      </div>
+      <div id="kt_accordion_2_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_2_header_1" data-bs-parent="#kt_accordion_2">
+        <div class="card-body">
+          {% if evaluations_inherent.count %}
+            {% include '_includes/risk_test/risk_inherent_test_list.html' with evaluations=evaluations_inherent%}
+          {% else %}
+            <div class="alert alert-primary">{% trans 'No hay tests de riesgo inherente disponibles' %}.</div>
+          {% endif %}
+        </div>
+
+        <form method="POST" class="kt-form kt-form--label-right" novalidate style="padding: 15px;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="download_ri">
+          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar resultados' %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="accordion" id="kt_accordion_3">
+  <div class="card">
+    <div class="accordion-item">
+      <div class="card-header" id="kt_accordion_3_header_1" style="padding: inherit">
+        <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_3_body_1" aria-expanded="false" aria-controls="kt_accordion_3_body_1">
+        {% trans 'Resultados obtenidos para Evaluaciones de Riesgo Residual' %}
+        </button>
+      </div>
+      <div id="kt_accordion_3_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_3_header_1" data-bs-parent="#kt_accordion_3">
+        <div class="card-body">
+          {% if evaluations_residual.count %}
+            {% include '_includes/risk_test/risk_residual_test_list.html' with evaluations=evaluations_residual%}
+          {% else %}
+            <div class="alert alert-primary">{% trans 'No hay tests de riesgo residual disponibles' %}.</div>
+          {% endif %}
+        </div>
+
+        <form method="POST" class="kt-form kt-form--label-right" novalidate style="padding: 15px;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="download_rr">
+          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar resultados' %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

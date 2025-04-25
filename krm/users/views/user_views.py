@@ -432,156 +432,197 @@ class GaUserImportView(FormView):
         context['breadcrums'] = breadcrums
         return context
 
-    def form_valid(self, form):
-        input_excel = self.request.FILES['data_file'].read()
-        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
+    def checkExcelRep(self, name, elem, elems_to_create, form, index, field_key):
+        """
+        Función empleada para contrastar que no existe una instancia de un objeto con el mismo valor para
+        el atributo field_key en la importación de datos, que en este caso será el username o el mail, dado
+        que este funciona como identificador de la instancia (NMB). Es decir, se contrasta que no existen dos instancias en
+        una pestaña de importación que contengan el mismo valor como identificador, no se hace un checkeo con la base de datos
+        ya existente.
 
-        # Evaluaciones inherentes
-        users_to_create = []
+        Parameters
+        ----------
+        name: String.
+            Nombre del objeto del cual se quiere crear una instancia con una referencia repetida.
+        elem: dict.
+            Diccionario de python que contiene los valores de los atributos de la nueva instancia del objeto que queremos crear y para el cual
+            estamos realizando esta validación.
+        elems_to_create: list.
+            Lista que contiene diccionarios con los datos de las nuevas instancias a crear de la pestaña name.
+        form: form.
+            Formulario ya validado asociado a la vista.
+        index: int.
+            Número entero que nos indica la fila en la que se encuentra el error de referencia repetida que será la de número index+1.
+        field_key: String.
+            Nombre del atributo cuya repetición se quiere contrastar.
 
-        nrow = 0
-        rows = wb['USER IMPORT'].rows
-        for i, row in enumerate(rows):
-            if nrow < 1:
-                nrow += 1
-                continue
-
-            user = {}
-
-            if (row[0].value != '' and
-                    row[1].value != '' and
-                    row[2].value != '' and
-                    row[3].value != ''):
-                user['email'] = str(row[0].value).lower().replace(' ', '')
-                user['first_name'] = str(row[1].value).title()
-                user['last_name'] = str(row[2].value).title()
-                user['password'] = str(row[3].value)
-                user['welcome_email'] = str(row[4].value)
-                user['companies'] = [x.strip()
-                                     for x in str(row[5].value).split(',')]
-                user['notification_language'] = str(row[6].value).strip()
-                user['username'] = str(row[7].value).strip()
-
-                # Tenemos que comprobar que el email esté bien formado
-                if not re.match(
-                    '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
-                    user['email'].lower()
-                ):
-                    messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _(u'En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(
-                                i+1)
-                        )
-                    )
-                    return super(
-                        GaUserImportView,
-                        self
-                    ).form_invalid(form)
-                    break
-
-                # Tenemos que comprobar que no esté dado de alta
-                if User.objects.filter(email=user['email']).count() > 0:
-                    messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _(u'El email introducido en la fila %s ya está registrado por otro usuario') % str(
-                                i+1)
-                        )
-                    )
-                    return super(
-                        GaUserImportView,
-                        self
-                    ).form_invalid(form)
-                    break
-
-                # Tenemos que comprobar que las compañías especificadas existen
-                for c in user['companies']:
-                    if Company.objects.filter(ref=c).count() == 0:
-                        messages.add_message(
-                            self.request,
-                            messages.ERROR,
-                            (
-                                _(u'La compañía %s de la fila %s no existe!') % (
-                                    str(c), str(i+1))
-                            )
-                        )
-                        return super(
-                            GaUserImportView,
-                            self
-                        ).form_invalid(form)
-                        break
-
-                if user['notification_language'].lower() not in ['es', 'en']:
-                    messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _(u'El lenguaje de notificación %s de la fila %s no existe! (Use "en" o "es" para inlgés o español, respectivamente)') % (
-                                str(user['notification_language']), str(i+1))
-                        )
-                    )
-                    return super(
-                        GaUserImportView,
-                        self
-                    ).form_invalid(form)
-
-            else:
+        """
+        for e in elems_to_create:
+            if e[field_key] == elem[field_key]:
+                self.errors_found +=1
                 messages.add_message(
                     self.request,
                     messages.ERROR,
                     (
-                        _(u'En la fila %s falta algún campo obligatorio (columnas 1,2,3,4). Se ha abortado la importación') % str(
-                            i+1)
-                    )
+                        _('El campo %s se encuentra repetido en el importador: %s en la fila %d')
+                        % (name, e[field_key], index)
+                    ),
                 )
-                return super(
-                    GaUserImportView,
-                    self
-                ).form_invalid(form)
-                break
+                return super(GaUserImportView, self).form_invalid(form)
 
-            users_to_create.append(user)
+    def checkDB(self, name, elem, DBreference, form, field_key, index):
+        """
+        Función que contrasta si existen previamente en la base de datos instancias de un objeto con el mismo identificador que alguna
+        de las nuevas instancias que se pretende crear.
 
-        # Vamos a crear cosas =)
-        from krm.users.tasks import send_welcome_email
-        for c in users_to_create:
-            u = self.create_new_user( c)
+        Parameters
+        -----------
+        name: String.
+            Nombre del objeto del cual se quiere crear una instancia con una referencia repetida.
+        elem: dict.
+            Diccionario de python que contiene los valores de los atributos de la nueva instancia del objeto que queremos crear y para el cual
+            estamos realizando esta validación.
+        DBreference: Referencia a objeto.
+            Es la clase de Python que nos define el tipo de objeto que se está intentando crear.
+        form: form.
+            Formulario ya validado asociado a la vista.
+        field_key: String.
+            Nombre del atributo cuya repetición se quiere contrastar.
 
-            u.add_action('User created')            
+        """
+        if field_key == "email":
+            if DBreference.objects.filter(email=elem[field_key]).count() > 0:
+                self.errors_found +=1
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('El campo %s del usuario de la fila %s (%s) ya se encuentra registrado, por favor aporte un nuevo valor')
+                        % (name, index, elem[field_key])
+                    ),
+                )
+                return super(GaUserImportView, self).form_invalid(form)
+        else:
+            if DBreference.objects.filter(username=elem[field_key]).count() > 0:
+                self.errors_found +=1
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('El campo %s del usuario de la fila %s (%s) ya se encuentra registrado, por favor aporte un nuevo valor')
+                        % (name, index, elem[field_key])
+                    ),
+                )
+                return super(GaUserImportView, self).form_invalid(form)
 
-            if c['welcome_email'] == 'Y':
-                # send_welcome_email.delay(u.pk)
-                send_welcome_email(u.pk)
+    def form_valid(self, form):
+        input_excel = self.request.FILES['data_file'].read()
+        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
+        self.errors_found= 0
 
-        messages.add_message(
-            self.request,
-            messages.SUCCESS, 
-            (
-                _(u'Se han creado %s usuarios para la compañía') % str(
-                    len(users_to_create))
+        users_to_create = []
+
+        rows = [row for row in wb['Users'].iter_rows() if any(cell.value not in (None, '') for cell in row)]
+
+        for row in rows:
+            i= row[0].row
+            if not i == 1:
+                user = {}
+
+                if (row[0].value and row[1].value and row[2].value and row[4].value):
+                    user['email'] = str(row[0].value).strip().lower()
+                    user['first_name'] = str(row[1].value).title() #ponemos en mayúsuculas la primera letra
+                    user['last_name'] = str(row[2].value).title()
+                    user['password'] = str(row[3].value)
+                    user['username'] = str(row[4].value).strip()
+                    user['welcome_email'] = str(row[5].value)
+                    user['companies'] = [x.strip() for x in str(row[6].value).split(',')]
+                    user['notification_language'] = str(row[7].value).strip()
+
+                    if not re.match(
+                        '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
+                        user['email']
+                    ):
+                        self.errors_found+=1
+                        messages.add_message(
+                            self.request,
+                            messages.ERROR,
+                            (_(u'La dirección de correo introducida en la fila %s no cumple con el formato') % str(i+1))
+                        )
+                        return super(GaUserImportView, self).form_invalid(form)
+
+                    self.checkExcelRep("Email address", user, users_to_create, form, i, "email")
+                    self.checkExcelRep("Username", user, users_to_create, form, i, "username")
+                    self.checkDB("Email address", user, User, form, "email", i)
+                    self.checkDB("Username", user, User, form, "username", i)
+
+                    # Tenemos que comprobar que las compañías especificadas existen
+                    for c in user['companies']:
+                        if Company.objects.filter(ref=c).count() == 0:
+                            self.errors_found +=1
+                            messages.add_message(
+                                self.request,
+                                messages.ERROR,
+                                (_(u'La compañía %s de la fila %s no existe') % (str(c), str(i)))
+                            )
+                            return super(GaUserImportView, self).form_invalid(form)
+
+                    if user['notification_language'].lower() not in ['es', 'en']:
+                        self.errors_found +=1
+                        messages.add_message(
+                            self.request,
+                            messages.ERROR,
+                            (_(u'El lenguaje de notificación %s de la fila %s no existe. Introduzca bien "en" o "es" para inlgés o español, respectivamente') % (str(user['notification_language']), str(i+1)))
+                        )
+                        return super(GaUserImportView, self).form_invalid(form)
+
+                else:
+                    self.errors_found +=1
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        ( _(u'Uno de los campos obligatorios (*) se ha dejado sin completar en la fila %s') % str(i+1))
+                    )
+                    return super(GaUserImportView, self).form_invalid(form)
+
+                users_to_create.append(user)
+
+        if self.errors_found == 0:
+            from krm.users.tasks import send_welcome_email
+
+            for c in users_to_create:
+                u = self.create_new_user(c)
+                u.add_action('User created')
+
+                if c['welcome_email'] == 'Y':
+                    send_welcome_email(u.pk)
+
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                (
+                    _(u'Se han creado %s usuarios para la compañía') % str(
+                        len(users_to_create))
+                )
             )
-        )
 
         return super(GaUserImportView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("users:ga_import_users")
-    
-    def create_new_user(self,  newUser:list ):
+
+    def create_new_user(self,  newUser:dict ):
 
         user = User.objects.create_user(newUser["username"], newUser["email"])
         user.first_name = newUser["first_name"]
         user.last_name = newUser["last_name"]
         user.notification_language = newUser["notification_language"]
-        
+
         if newUser["password"] != '':
             user.set_password(newUser["password"])
 
         for comp in newUser["companies"]:
-            company_obj = Company.objects.filter(ref=comp).first()
+            company_obj = Company.objects.get(ref=comp)
             user.companies.add(company_obj)
 
         user.save()

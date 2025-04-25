@@ -129,19 +129,34 @@ class EvaluationKrmResidual(AuditModel):
     def nrisk_test_residuals_by_severity(self, qualitative, user= None):
         """
         Método de la clase Evaluación de Riesgo Residual que nos devuelve el número de tests de riesgo residual que poseen
-        una severidad cualitativa indicada por el evaluador introducida como parámetro qualitative. Además, para poder acceder únicamente a aquellos
-        datos que nos corresponde visualizar como usuario regular cuando somos evaluadores de riesgos, se puede
-        filtrar por evaluador.
+        una severidad cualitativa determinada. En el caso de que se aporte un usuario evaluador como parámetro de entrada
+        se entenderá que se quiere mostrar esta información a un usuario regular, y se filtrarán los tests de riesgo por aquellos
+        que poseen a dicho usuario como evaluador.
+
+        Se mostrará la severidad cualitativa aportada por el Evaluador en caso de que la evaluación no haya sido finalizada, es decir,
+        el administrador todavía no haya supervisado los tests de riesgo y, por tanto, no haya aportado un valor definitivo de
+        severidad.
         """
         if user:
-            return self.risk_test_residuals.filter(
-                severity_evaluator_qualitative= qualitative,
-                evaluator= user
-            ).distinct().count()
+            if self.status == 'EP':
+                return self.risk_test_residuals.filter(
+                    severity_evaluator_qualitative= qualitative,
+                    evaluator= user
+                ).distinct().count()
+            else:
+                return self.risk_test_residuals.filter(
+                    severity_administrator_qualitative= qualitative,
+                    evaluator= user
+                ).distinct().count()
         else:
-            return self.risk_test_residuals.filter(
-                severity_evaluator_qualitative= qualitative
-            ).distinct().count()
+            if self.status == 'EP':
+                return self.risk_test_residuals.filter(
+                    severity_evaluator_qualitative= qualitative
+                ).distinct().count()
+            else:
+                return self.risk_test_residuals.filter(
+                    severity_administrator_qualitative= qualitative
+                ).distinct().count()
 
     # def create_risk_company_residual(self): Este método era empleado para crear instancias de RisksCompanyResidual
     #     from krm.evaluations_krm.models import RiskCompanyResidual
@@ -157,10 +172,13 @@ class EvaluationKrmResidual(AuditModel):
     #                 risk_company=rt.risk
     #             )
 
-    # RETURN number of risks by state in evaluation
-    # OPTIONAL ARG: Filter by user
-    def nrisk_test_residuals_by_state(self, status, user=None):
 
+    def nrisk_test_residuals_by_state(self, status, user=None):
+        """
+        Método de la clase evaluación de riesgo residual, el cual nos aporta el número de tests de riesgo por status insertado.
+        En el caso de que se pase por parámetro de entrada el usuario evaluador que quiere acceder a esta información, se filtrará
+        por los tests de riesgo de los que es evaluador.
+        """
         if user:
             return self.risk_test_residuals.filter(
                 status=status,
@@ -170,6 +188,9 @@ class EvaluationKrmResidual(AuditModel):
             return self.risk_test_residuals.filter(
                 status=status,
             ).distinct().count()
+
+    def get_all_risk_tests(self):
+        return self.risk_test_residuals.all()
 
     # RETURN experts by state of risks in evaluation
     def get_evaluators_by_rrt_state(self, status = None):

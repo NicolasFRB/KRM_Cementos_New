@@ -87,7 +87,7 @@ function CaRiskTestResidual({ pk, initialImpact, initialProbability, initialEven
         <div className="row mb-5">
           <div className="col col-12 col-xl-5 mb-5 mb-xl-0">
             <h5 className="mb-7">{t('krmInherent.probability')}</h5>
-            <div className="row">
+            <div className="d-flex flex-nowrap justify-content-between">
 
               <div className="col">
                 <div className="form-check form-check-custom form-check-solid mb-4">
@@ -162,7 +162,7 @@ function CaRiskTestResidual({ pk, initialImpact, initialProbability, initialEven
             </div>
 
             <h5 className="mb-7">{t('krmInherent.event-speed')}</h5>
-            <div className="row">
+            <div className="d-flex flex-nowrap justify-content-between">
 
               <div className="col">
                 <div className="form-check form-check-custom form-check-solid mb-4">
@@ -239,7 +239,7 @@ function CaRiskTestResidual({ pk, initialImpact, initialProbability, initialEven
 
           <div className="col col-12 col-xl-5 offset-xl-1">
             <h5 className="mb-7">{t('krmInherent.impact')}</h5>
-            <div className="row">
+            <div className="d-flex flex-nowrap justify-content-between">
 
               <div className="col">
                 <div className="form-check form-check-custom form-check-solid mb-4">

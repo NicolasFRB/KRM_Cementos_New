@@ -25,45 +25,47 @@
 
   .badge.badge-success.n1 {
     margin: 5px;
-    background-color: #ed9f7b !important;
+    background-color: #a6ed9d !important;
   }
+
   .badge.badge-success.n2 {
     margin: 5px;
     background-color: #e6d68e !important;
   }
+
   .badge.badge-success.n3 {
     margin: 5px;
-    background-color: #a6ed9d !important;
+    background-color: #ed9f7b !important;
   }
 
   .severidad-muy-baja {
     margin: 5px;
-    background-color: #09EF0D; /* Verde claro */
+    background-color: #a6ed9d;
   }
 
   .severidad-baja {
     margin: 5px;
-    background-color: #E8EE0B; /* Verde más fuerte */
+    background-color: #e6d68e;
   }
 
   .severidad-media {
     margin: 5px;
-    background-color: #FEA227; /* Amarillo */
+    background-color: #f4c39d;
   }
 
   .severidad-alta {
     margin: 5px;
-    background-color: #FF6E56; /* Naranja */
+    background-color: #ed9f7b;
   }
 
   .severidad-muy-alta {
     margin: 5px;
-    background-color: #F10606; /* Rojo */
+    background-color: #ea7d7e;
   }
 
   .severidad-desconocida {
     margin: 5px;
-    background-color: #D9D3D2; /* Gris */
+    background-color: #d4d0c7;
   }
 
   #risk_eval_table tr > td:nth-child(n+9){
@@ -311,22 +313,22 @@ function color_severity_dynamic(val, id){
   var arrow_dot = $("#"+id);
 
   if (val == 'Sin establecer' || val == 'Not stablished') {
-    arrow_dot.css('color',"#d9d3d2");
+    arrow_dot.css('color',"#d4d0c7");
     arrow_dot.attr('class','bi-x-circle-fill');
   } else if (val == 'Muy baja' || val == 'Very low') {
-    arrow_dot.css('color',"#09ef0d");
+    arrow_dot.css('color',"#a6ed9d");
     arrow_dot.attr('class','bi-arrow-down-circle-fill');
   } else if (val == 'Baja' || val == 'Low') {
-    arrow_dot.css('color',"#e8ee0b");
+    arrow_dot.css('color',"#e6d68e");
     arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
   } else if (val == 'Media' || val == 'Medium') {
-    arrow_dot.css('color',"#fea227");
+    arrow_dot.css('color',"#f4c39d");
     arrow_dot.attr('class','bi-arrow-right-circle-fill');
   } else if (val == 'Alta' || val == 'High') {
-    arrow_dot.css('color',"#ff6e56");
+    arrow_dot.css('color',"#ed9f7b");
     arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
   } else if (val == 'Muy alta' || val == 'Very high') {
-    arrow_dot.css('color', "#f10606");
+    arrow_dot.css('color', "#ea7d7e");
     arrow_dot.attr('class', 'bi-arrow-up-circle-fill');
   }
 }
@@ -345,22 +347,22 @@ function color_severity(val, id){
   );
 
   if (val == 'Sin establecer' || val =='Not stablished') {
-  arrow_dot.style.color = "#d9d3d2";
+  arrow_dot.style.color = "#d4d0c7";
   arrow_dot.classList.add('bi-x-circle-fill');
   } else if (val == 'Muy baja' || val == 'Very low') {
-  arrow_dot.style.color = "#09ef0d";
+  arrow_dot.style.color = "#a6ed9d";
   arrow_dot.classList.add('bi-arrow-down-circle-fill');
   } else if (val == 'Baja' || val == 'Low') {
-  arrow_dot.style.color = "#e8ee0b";
+  arrow_dot.style.color = "#e6d68e";
   arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
   } else if (val == 'Media' || val == 'Medium') {
-  arrow_dot.style.color = "#fea227";
+  arrow_dot.style.color = "#f4c39d";
   arrow_dot.classList.add('bi-arrow-right-circle-fill');
   } else if (val == 'Alta' || val == 'High') {
-  arrow_dot.style.color = "#ff6e56";
+  arrow_dot.style.color = "#ed9f7b";
   arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
   } else if (val == 'Muy alta' || val == 'Very high') {
-  arrow_dot.style.color = "#f10606";
+  arrow_dot.style.color = "#ea7d7e";
   arrow_dot.classList.add('bi-arrow-up-circle-fill');
   }
 }
@@ -523,12 +525,12 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
 
   if (title== 'Tests status') {
     data = {
-    labels: ['Waiting Evaluator', 'Waiting Administrator', 'Finalized'],
+    labels: ['Awaiting Evaluator', 'Awaiting Administrator', 'Finished'],
     datasets: [
       {
         label: '',
         data: [arg1, arg2, arg3],
-        backgroundColor: ["#a6ed9d", "#e6d68e", "#ed9f7b"],
+        backgroundColor: ["#ed9f7b", "#e6d68e", "#a6ed9d"],
       }
     ]
     };
@@ -539,7 +541,8 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
       {
         label: '',
         data: [arg1, arg2, arg3, arg4, arg5, arg6],
-        backgroundColor: ["#d9d3d2", "#09ef0d", "#e8ee0b", "#fea227", "#ff6e56", "#f10606"],
+        backgroundColor: ["#d4d0c7", "#a6ed9d", "#e6d68e", "#f4c39d", "#ed9f7b", "#ea7d7e"],
+        // backgroundColor: ["#d9d3d2", "#09ef0d", "#e8ee0b", "#fea227", "#ff6e56", "#f10606"],
       }
     ]
     };
@@ -873,8 +876,8 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
-            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Esperando al Evaluador' %}">WE</span>
-            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Esperando al Administrador' %}">WA</span>
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Evaluador' %}">WE</span>
+            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
           </div>
         </div>
@@ -898,6 +901,24 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
         </div>
       </div>
     </div>
+    <div class="row">
+      {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
+        <div>
+          <div id="bar-main"></div>
+        </div>
+        <script>
+            var rrt = JSON.parse(clean_specialchars("{{ rrt_json }}"));
+            load_bar("bar-main", rrt);
+        </script>
+      {% else %}
+        <div class="row mt-2 mb-2">
+          <div class="col-sm">
+            <div class="alert alert-primary">{% trans 'Aún no se ha evaluado ningún riesgo' %}.</div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
   </div>
   <!--end::Card body-->
 
@@ -939,11 +960,11 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
         <form>
           <div class="form-check 1">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_experto" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-              <label class="form-check-label" for="flexRadioDefault1">Evaluador</label>
+              <label class="form-check-label" for="flexRadioDefault1">{% trans 'Evaluador' %}</label>
           </div>
           <div class="form-check 1" style="margin-top: 10px;">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
-              <label class="form-check-label" for="flexRadioDefault2">Administrador</label>
+              <label class="form-check-label" for="flexRadioDefault2">{% trans 'Administrador' %}</label>
           </div>
         </form>
       </div>
@@ -951,11 +972,11 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
         <form>
           <div class="form-check 2">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cualitativo" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-              <label class="form-check-label" for="flexRadioDefault3">Cualitativo</label>
+              <label class="form-check-label" for="flexRadioDefault3">{% trans 'Cualitativo' %}</label>
           </div>
           <div class="form-check 2" style="margin-top: 10px;">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
-              <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label>
+              <label class="form-check-label" for="flexRadioDefault4">{% trans 'Cuantitativo' %}</label>
           </div>
         </form>
       </div>
@@ -966,20 +987,6 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
   <!--begin::Card body-->
   <div class="card-body">
     {% if evaluation.risk_test_residuals.all %}
-
-      <!--  Código donde insertábamos el gráfico 1 de Evaluaciones de Riesgo Residual
-        <div class="row">
-        {% if evaluation.nrisk_test_residuals_delivered != 0 or evaluation.nrisk_test_residuals_finished != 0 %}
-          <div>
-            <div id="heat-main"></div>
-          </div>
-          <script>
-              var rrt = JSON.parse(clean_specialchars("{{ rrt_json }}"));
-              load_heat("heat-main", rrt);
-          </script>
-        {% endif %}
-      </div> -->
-
       <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable" id="risk_eval_table">
         <thead>
           <tr>
@@ -1000,9 +1007,9 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
           <tr>
             <td class="text-center align-middle">
               {% if rt.status == 1 %}
-                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">P</span>
+                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">WE</span>
               {% elif rt.status == 2 %}
-                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">WA</span>
               {% elif rt.status == 3 %}
                 <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
               {% endif %}
@@ -1032,7 +1039,7 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
             </td>
 
             <td class="text-center align-middle">
-                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} ({{ rt.evaluator.position }})">{{ rt.evaluator.username_no_domain }}</span>
+                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} {% if rt.evaluator.position %} ({{ rt.evaluator.position }}) {% endif %}">{{ rt.evaluator.username_no_domain }}</span>
             </td>
 
             <td class="text-center align-middle">

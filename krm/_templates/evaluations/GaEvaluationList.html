@@ -82,7 +82,7 @@
   function load_chart(id, n_si, n_wo, n_ws, n_wa, n_fi) {
 
     const data = {
-      labels: ['Not started', 'Waiting Control Owner', 'Waiting Control Supervisor', 'Waiting Administrator', 'Finalized'],
+      labels: ['Not started', 'Awaiting Control Owner', 'Awsaiting Control Supervisor', 'Awaiting Administrator', 'Finalized'],
       datasets: [
         {
           label: '',
@@ -156,8 +156,8 @@
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th>{% trans 'REF' %}</th>
-          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'REF' %}</th>
+          <th class="text-center">{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
@@ -230,15 +230,15 @@
 
     <div style="float: right;display: flex; margin-right: 15px !important;">
       <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'Sin empezar' %}">NS</span>
       <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Owner' %}">WO</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Control Owner' %}">WO</span>
       <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Supervisor' %}">WS</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Control Supervisor' %}">WS</span>
       <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Administrator' %}">WA</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
       <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Finalized' %}">FI</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizado' %}">FI</span>
     </div>
     {% else %}
     <div class="row mt-2 mb-2">
@@ -275,8 +275,8 @@
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th>{% trans 'REF' %}</th>
-          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'REF' %}</th>
+          <th class="text-center">{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
@@ -349,15 +349,15 @@
 
     <div style="float: right;display: flex; margin-right: 15px !important;">
       <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'Sin empezar' %}">NS</span>
       <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Owner' %}">WC</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Control Owner' %}">WC</span>
       <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Supervisor' %}">WS</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Control Supervisor' %}">WS</span>
       <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Administrator' %}">WA</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
       <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-custom-class="custom-tooltip" title="{% trans 'Finalized' %}">F</span>
+        data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizado' %}">F</span>
     </div>
     {% else %}
     <div class="row mt-2 mb-2">

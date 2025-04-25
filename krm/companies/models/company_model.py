@@ -94,14 +94,6 @@ class Company(AuditModel):
     class Meta:
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
-        ordering = ["name"]
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _("Compañía")
-        verbose_name_plural = _("Compañía")
         ordering = ["ref", "name"]
 
     @property
@@ -113,7 +105,7 @@ class Company(AuditModel):
     def evaluators_domain_risk(self):
         from krm.companies.models import CompanyDomainRiskEvaluator
         return CompanyDomainRiskEvaluator.objects.filter(company=self)
-    
+
     @property
     def experts_risk(self):
         from krm.companies.models import CompanyRiskExperts
@@ -136,7 +128,7 @@ class Company(AuditModel):
             return ''
 
     def save(self, *args, **kwargs):
-        self.ref = self.ref.upper()
+        self.ref = self.ref
         super().save(*args, **kwargs)
 
         from krm.companies.models import CompanyDomainRiskExperts, CompanyDomainRiskEvaluator, CompanyControls

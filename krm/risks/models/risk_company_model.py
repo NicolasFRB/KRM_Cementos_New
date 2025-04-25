@@ -29,7 +29,9 @@ class RiskCompany(AuditModel):
 
     name = models.CharField(
         verbose_name=_("Nombre"),
-        max_length=500
+        max_length=500,
+        blank= True,
+        null= True
     )
 
     description = RichTextField(
@@ -79,7 +81,7 @@ class RiskCompany(AuditModel):
 
     evaluator = models.ForeignKey(
         'users.User',
-        verbose_name=_('Evaluador asignado'),
+        verbose_name=_('Evaluador de riesgo residual asignado'),
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -88,7 +90,7 @@ class RiskCompany(AuditModel):
 
     expert = models.ForeignKey(
         'users.User',
-        verbose_name=_('Evaluador asignado'), # Para no cambiar todas las variables que hacen referencia a expert
+        verbose_name=_('Evaluador de riesgo inherente asignado'),
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

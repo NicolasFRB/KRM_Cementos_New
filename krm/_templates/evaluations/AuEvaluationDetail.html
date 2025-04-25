@@ -181,7 +181,7 @@
 
     if (title== 'Controles por estado') {
       data = {
-        labels: ['Not started', 'Waiting Control Owner', 'Waiting Control Supervisor', 'Waiting Administrator', 'Finalized'],
+        labels: ['Not started', 'Awaiting Control Owner', 'Awaiting Control Supervisor', 'Awaiting Administrator', 'Finalized'],
         datasets: [
           {
             label: '',
@@ -463,15 +463,15 @@
           <div
             style="float: right;display: flex; flex-direction: row;flex-wrap: wrap;justify-content: flex-end;margin-top: -15px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Sin empezar' %}">NS</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Owner' %}">WO</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Control Owner' %}">WO</span>
             <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Supervisor' %}">WS</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Control Supervisor' %}">WS</span>
             <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Administrator' %}">WA</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
             <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Finalized' %}">FI</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizado' %}">FI</span>
           </div>
         </div>
         <div class="row mb-8">
@@ -486,13 +486,13 @@
           <div
             style="float: right;display: flex; flex-direction: row;flex-wrap: wrap;justify-content: flex-end;margin-top: -15px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'No empezado' %}">NS</span>
             <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Effective' %}">EF</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Efectivo' %}">EF</span>
             <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Effective with recommendations' %}">EFR</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Efectivo con recomendación' %}">EFR</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Not effective' %}">NE</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'No efectivo' %}">NE</span>
             <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-custom-class="custom-tooltip" title="{% trans 'N/A' %}">NA</span>
           </div>

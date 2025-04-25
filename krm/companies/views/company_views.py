@@ -312,135 +312,192 @@ class GaCompanyImportView(FormView):
         context['breadcrums'] = breadcrums
         return context
 
-    def form_valid(self, form):
-        companies_to_create = []
+    def checkDB(self, name, elem, DBreference, form, field_key, index):
+        """
+        Función que contrasta si existen previamente en la base de datos instancias de un objeto con el mismo identificador (ref) o atributo único (vat)
+        que alguna de las nuevas instancias que se pretende crear.
 
-        input_excel = self.request.FILES['companies_file'].read()
-        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
-        sheet = wb.active
+        Parameters
+        -----------
+        name: String.
+            Nombre del objeto del cual se quiere crear una instancia con una referencia repetida.
+        elem: dict.
+            Diccionario de python que contiene los valores de los atributos de la nueva instancia del objeto que queremos crear y para el cual
+            estamos realizando esta validación.
+        DBreference: Referencia a objeto.
+            Es la clase de Python que nos define el tipo de objeto que se está intentando crear.
+        form: form.
+            Formulario ya validado asociado a la vista.
+        field_key: String.
+            Nombre del atributo cuya repetición se quiere contrastar.
 
-        nrow = 0
-        rows = sheet.rows
-        for row in rows:
-            if nrow < 2:
-                nrow += 1
-                continue
-
-            company = {}
-            # Comprobamos que hay contenido en todas las celdas obligatorias
-            if row[0].value is None:
-                break
-
-            if row[0].value is not None or row[1].value is not None:
-                company['ref'] = str(row[0].value).title()
-                company['name'] = str(row[1].value).title()
-                company['vat'] = str(row[2].value).title()
-                company['address'] = str(row[3].value)
-                company['state'] = str(row[4].value).upper()
-                cell = row[5]
-                cell_value = cell.value
-                try:
-                    cell_value = int(cell_value)
-                except:
-                    cell_value = None
-                company['cp'] = cell_value
-                if row[6].value is not None:
-                    company['country'] = str(row[6].value).upper()
-                else:
-                    company['country'] = None
-                company['email'] = str(
-                    row[7].value).lower().replace(' ', '')
-                company['type_company'] = str(row[8].value)
-                company['companies_in_scope'] = str(row[9].value)
-
-                # Tenemos que comprobar que el email esté bien formado
-                if company['email'] != '':
-                    if not re.match(
-                        '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
-                        company['email'].lower()
-                    ):
-                        messages.add_message(
-                            self.request,
-                            messages.ERROR,
-                            (
-                                _('En la fila %s el email introducido no es correcto. Se ha abortado la importación') % str(
-                                    nrow+1)
-                            )
-                        )
-                        return super(
-                            GaCompanyImportView,
-                            self
-                        ).form_invalid(form)
-                        break
-
-                if Company.objects.filter(ref=company['ref']).count() > 0:
-                    messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _('La REF introducida en la fila %s ya está registrado por otra compañía') % str(
-                                nrow+1)
-                        )
-                    )
-                    return super(
-                        GaCompanyImportView,
-                        self
-                    ).form_invalid(form)
-                    break
-
-                if Company.objects.filter(vat=company['vat']).count() > 0:
-                    messages.add_message(
-                        self.request,
-                        messages.ERROR,
-                        (
-                            _('El VAT introducido en la fila %s ya está registrado por otra compañía') % str(
-                                nrow+1)
-                        )
-                    )
-                    return super(
-                        GaCompanyImportView,
-                        self
-                    ).form_invalid(form)
-                    break
-
-            else:
+        """
+        if field_key == "ref":
+            if DBreference.objects.filter(ref=elem[field_key]).count() > 0:
+                self.errors_found +=1
                 messages.add_message(
                     self.request,
                     messages.ERROR,
                     (
-                        _('En la fila %s falta algún campo obligatorio. Se ha abortado la importación') % str(
-                            nrow+1)
-                    )
+                        _('El campo %s del usuario de la fila %s (%s) ya se encuentra registrado, por favor aporte un nuevo valor')
+                        % (name, index, elem[field_key])
+                    ),
                 )
-                return super(
-                    GaCompanyImportView,
-                    self
-                ).form_invalid(form)
-                break
+                return super(GaCompanyImportView, self).form_invalid(form)
+        else:
+            if DBreference.objects.filter(vat=elem[field_key]).count() > 0:
+                self.errors_found +=1
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('El campo %s del usuario de la fila %s (%s) ya se encuentra registrado, por favor aporte un nuevo valor')
+                        % (name, index, elem[field_key])
+                    ),
+                )
+                return super(GaCompanyImportView, self).form_invalid(form)
 
-            nrow += 1
+    def checkExcelRep(self, name, elem, elems_to_create, form, index, field_key):
+        """
+        Función empleada para contrastar que no existe una instancia de un objeto con el mismo valor para
+        el atributo field_key en la importación de datos, que en este caso será la referencia o el VAT, dado
+        que este funciona como identificador de la instancia (NMB). Es decir, se contrasta que no existen dos instancias en
+        una pestaña de importación que contengan el mismo valor para dichos atributos únicos.
 
-            companies_to_create.append(company)
+        Parameters
+        ----------
+        name: String.
+            Nombre del objeto del cual se quiere crear una instancia con una referencia repetida.
+        elem: dict.
+            Diccionario de python que contiene los valores de los atributos de la nueva instancia del objeto que queremos crear y para el cual
+            estamos realizando esta validación.
+        elems_to_create: list.
+            Lista que contiene diccionarios con los datos de las nuevas instancias a crear de la pestaña name.
+        form: form.
+            Formulario ya validado asociado a la vista.
+        index: int.
+            Número entero que nos indica la fila en la que se encuentra el error de referencia repetida que será la de número index+1.
+        field_key: String.
+            Nombre del atributo cuya repetición se quiere contrastar.
 
-        for c in companies_to_create:
-            Company.objects.create(
-                ref=c['ref'],
-                name=c['name'],
-                vat=c['vat'],
-                address=c['address'],
-                cp=c['cp'],
-                email=c['email'],
-                state=c['state'],
-                country=c['country'],
-                type_company=c['type_company'],
-                companies_in_scope=c['companies_in_scope'],
+        """
+        for e in elems_to_create:
+            if e[field_key] == elem[field_key]:
+                self.errors_found +=1
+                messages.add_message(
+                    self.request,
+                    messages.ERROR,
+                    (
+                        _('El campo %s se encuentra repetido en el importador: %s en la fila %d')
+                        % (name, e[field_key], index)
+                    ),
+                )
+                return super(GaCompanyImportView, self).form_invalid(form)
+
+    def form_valid(self, form):
+        companies_to_create = []
+        self.errors_found= 0
+
+        input_excel = self.request.FILES['companies_file'].read()
+        wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
+        rows = [row for row in wb['Companies'].iter_rows() if any(cell.value not in (None, '') for cell in row)]
+        pais_codigos = [
+        'AF', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AQ', 'AG', 'AR', 'AM', 'AW', 'AU', 'AT', 'AZ',
+        'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BM', 'BT', 'BO', 'BQ', 'BA', 'BW', 'BV', 'BR',
+        'IO', 'BN', 'BG', 'BF', 'BI', 'CI', 'CV', 'KH', 'CM', 'CA', 'KY', 'CF', 'TD', 'CL', 'CN', 'CX',
+        'CC', 'CO', 'KM', 'CG', 'CD', 'CK', 'CR', 'HR', 'CU', 'CW', 'CY', 'CZ', 'DK', 'DJ', 'DM', 'DO',
+        'EC', 'EG', 'SV', 'GQ', 'ER', 'EE', 'SZ', 'ET', 'FK', 'FO', 'FJ', 'FI', 'FR', 'GF', 'PF', 'TF',
+        'GA', 'GM', 'GE', 'DE', 'GH', 'GI', 'GR', 'GL', 'GD', 'GP', 'GU', 'GT', 'GG', 'GN', 'GW', 'GY',
+        'HT', 'HM', 'VA', 'HN', 'HK', 'HU', 'IS', 'IN', 'ID', 'IR', 'IQ', 'IE', 'IM', 'IL', 'IT', 'JM',
+        'JP', 'JE', 'JO', 'KZ', 'KE', 'KI', 'KP', 'KR', 'KW', 'KG', 'LA', 'LV', 'LB', 'LS', 'LR', 'LY',
+        'LI', 'LT', 'LU', 'MO', 'MG', 'MW', 'MY', 'MV', 'ML', 'MT', 'MH', 'MQ', 'MR', 'MU', 'YT', 'MX',
+        'FM', 'MD', 'MC', 'MN', 'ME', 'MS', 'MA', 'MZ', 'MM', 'NA', 'NR', 'NP', 'NL', 'NC', 'NZ', 'NI',
+        'NE', 'NG', 'NU', 'NF', 'MK', 'MP', 'NO', 'OM', 'PK', 'PW', 'PS', 'PA', 'PG', 'PY', 'PE', 'PH',
+        'PN', 'PL', 'PT', 'PR', 'QA', 'RE', 'RO', 'RU', 'RW', 'BL', 'SH', 'KN', 'LC', 'MF', 'PM', 'VC',
+        'WS', 'SM', 'ST', 'SA', 'SN', 'RS', 'SC', 'SL', 'SG', 'SX', 'SK', 'SI', 'SB', 'SO', 'ZA', 'GS',
+        'SS', 'ES', 'LK', 'SD', 'SR', 'SJ', 'SE', 'CH', 'SY', 'TW', 'TJ', 'TZ', 'TH', 'TL', 'TG', 'TK',
+        'TO', 'TT', 'TN', 'TR', 'TM', 'TC', 'TV', 'UG', 'UA', 'AE', 'GB', 'UM', 'US', 'UY', 'UZ', 'VU',
+        'VE', 'VN', 'VG', 'VI', 'WF', 'EH', 'YE', 'ZM', 'ZW'
+        ]
+
+        for row in rows:
+            i= row[0].row
+            if not i == 1:
+                company = {}
+
+                if row[0].value and row[1].value:
+                    company['ref'] = str(row[0].value)
+                    company['name'] = str(row[1].value)
+                    company['vat'] = str(row[2].value)
+                    company['address'] = str(row[3].value)
+                    company['state'] = str(row[4].value)
+                    cell = row[5]
+                    cell_value = cell.value
+                    try:
+                        cell_value = int(cell_value)
+                    except:
+                        cell_value = None
+                    company['cp'] = cell_value
+                    if row[6].value is not None:
+                        company['country'] = str(row[6].value)
+                    else:
+                        company['country'] = None
+                    company['email'] = str(row[7].value).lower().strip() if row[7].value else None
+                    company['type_company'] = str(row[8].value)
+                    company['companies_in_scope'] = str(row[9].value)
+
+                    if company['email']:
+                        if not re.match(
+                            '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
+                            company['email']
+                        ):
+                            self.errors_found +=1
+                            messages.add_message(self.request, messages.ERROR, (_('La dirección de correo introducida en la fila %s no cumple con el formato válido') % str(i)))
+                            return super(GaCompanyImportView, self).form_invalid(form)
+
+
+                    if company['country'] not in pais_codigos:
+                        self.errors_found +=1
+                        messages.add_message(self.request, messages.ERROR, (_('En la fila %s el código de país introducido no tiene formato correcto, por favor aporte uno nuevo') % str(i)))
+                        return super(GaCompanyImportView, self).form_invalid(form)
+
+                    self.checkDB("Referencia", company, Company, form, "ref", i)
+                    self.checkExcelRep("Referencia", company, companies_to_create, form, i, "ref")
+                    self.checkDB("VAT", company, Company, form, "ref", i)
+                    self.checkExcelRep("VAT", company, companies_to_create, form, i, "vat")
+
+                else:
+                    self.errors_found +=1
+                    messages.add_message(
+                        self.request,
+                        messages.ERROR,
+                        ( _(u'Uno de los campos obligatorios (*) se ha dejado sin completar en la fila %s') % str(i))
+                    )
+                    return super(GaCompanyImportView, self).form_invalid(form)
+
+                companies_to_create.append(company)
+
+        if self.errors_found == 0:
+
+            for c in companies_to_create:
+                Company.objects.create(
+                    ref=c['ref'],
+                    name=c['name'],
+                    vat=c['vat'],
+                    address=c['address'],
+                    cp=c['cp'],
+                    email=c['email'],
+                    state=c['state'],
+                    country=c['country'],
+                    type_company=c['type_company'],
+                    companies_in_scope=c['companies_in_scope'],
+                )
+
+            messages.add_message(
+                self.request,
+                messages.SUCCESS, (
+                    _('Se han importado %s compañías') % str(len(companies_to_create)))
             )
-
-        messages.add_message(
-            self.request,
-            messages.SUCCESS, (
-                _('Se han importado %s compañías') % str(len(companies_to_create)))
-        )
 
         return super(GaCompanyImportView, self).form_valid(form)
 

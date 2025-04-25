@@ -162,23 +162,20 @@ class AuEvaluationResidualDetailView(DetailView):
         context['page_title'] = f"{_('Evaluación de Riesgo Residual KRM')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        context['evaluation'].nrisk_test_residuals_pending = context['evaluation'].nrisk_test_residuals_by_state(
-            1)
-        context['evaluation'].nrisk_test_residuals_delivered = context['evaluation'].nrisk_test_residuals_by_state(
-            2)
-        context['evaluation'].nrisk_test_residuals_finished = context['evaluation'].nrisk_test_residuals_by_state(
-            3)
-
-        context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_rrt_state(
-            1)
-        context['evaluation'].evaluators_delivered = context['evaluation'].get_evaluators_by_rrt_state(
-            2)
-        context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_rrt_state(
-            3)
-
+        context['evaluation'].nrisk_test_residuals_pending = context['evaluation'].nrisk_test_residuals_by_state(1)
+        context['evaluation'].nrisk_test_residuals_delivered = context['evaluation'].nrisk_test_residuals_by_state(2)
+        context['evaluation'].nrisk_test_residuals_finished = context['evaluation'].nrisk_test_residuals_by_state(3)
+        context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_rrt_state(1)
+        context['evaluation'].evaluators_delivered = context['evaluation'].get_evaluators_by_rrt_state(2)
+        context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_rrt_state(3)
+        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_residuals_by_severity('SE')
+        context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_residuals_by_severity('MB')
+        context['evaluation'].sev_low = context['evaluation'].nrisk_test_residuals_by_severity('B')
+        context['evaluation'].sev_medium = context['evaluation'].nrisk_test_residuals_by_severity('M')
+        context['evaluation'].sev_high = context['evaluation'].nrisk_test_residuals_by_severity('A')
+        context['evaluation'].sev_very_high = context['evaluation'].nrisk_test_residuals_by_severity('MA')
         context['evaluation'].total_evaluators = context['evaluation'].evaluators_pending.count(
         ) + context['evaluation'].evaluators_delivered.count() + context['evaluation'].evaluators_finished.count()
-
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
         # Serializar Evaluation no incluye sus hijos :(

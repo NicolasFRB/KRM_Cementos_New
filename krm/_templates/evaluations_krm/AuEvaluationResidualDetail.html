@@ -23,25 +23,57 @@
   }
 
   .badge.badge-success.n1 {
-  margin: 5px;
-  background-color: #ed9f7b !important;
-}
-.badge.badge-success.n2 {
-  margin: 5px;
-  background-color: #e6d68e !important;
-}
-.badge.badge-success.n3 {
-  margin: 5px;
-  background-color: #a6ed9d !important;
-}
+    margin: 5px;
+    background-color: #ed9f7b !important;
+  }
 
-#risk_eval_table tr > td:nth-child(n+9){
-  display: table-cell !important;
-}
+  .badge.badge-success.n2 {
+    margin: 5px;
+    background-color: #e6d68e !important;
+  }
 
-#risk_eval_table tr > th:nth-child(n+9){
-  display: table-cell !important;
-}
+  .badge.badge-success.n3 {
+    margin: 5px;
+    background-color: #a6ed9d !important;
+  }
+
+  .severidad-muy-baja {
+    margin: 5px;
+    background-color: #a6ed9d;
+  }
+
+  .severidad-baja {
+    margin: 5px;
+    background-color: #e6d68e;
+  }
+
+  .severidad-media {
+    margin: 5px;
+    background-color: #f4c39d;
+  }
+
+  .severidad-alta {
+    margin: 5px;
+    background-color: #ed9f7b;
+  }
+
+  .severidad-muy-alta {
+    margin: 5px;
+    background-color: #ea7d7e;
+  }
+
+  .severidad-desconocida {
+    margin: 5px;
+    background-color: #d4d0c7;
+  }
+
+  #risk_eval_table tr > td:nth-child(n+9){
+    display: table-cell !important;
+  }
+
+  #risk_eval_table tr > th:nth-child(n+9){
+    display: table-cell !important;
+  }
 
 </style>
 
@@ -278,22 +310,22 @@ function color_severity_dynamic(val, id){
   var arrow_dot = $("#"+id);
 
   if (val == 'Sin establecer' || val == 'Not stablished') {
-    arrow_dot.css('color',"#d9d3d2");
+    arrow_dot.css('color',"#d4d0c7");
     arrow_dot.attr('class','bi-x-circle-fill');
   } else if (val == 'Muy baja' || val == 'Very low') {
-    arrow_dot.css('color',"#09ef0d");
+    arrow_dot.css('color',"#a6ed9d");
     arrow_dot.attr('class','bi-arrow-down-circle-fill');
   } else if (val == 'Baja' || val == 'Low') {
-    arrow_dot.css('color',"#e8ee0b");
+    arrow_dot.css('color',"#e6d68e");
     arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
   } else if (val == 'Media' || val == 'Medium') {
-    arrow_dot.css('color',"#fea227");
+    arrow_dot.css('color',"#f4c39d");
     arrow_dot.attr('class','bi-arrow-right-circle-fill');
   } else if (val == 'Alta' || val == 'High') {
-    arrow_dot.css('color',"#ff6e56");
+    arrow_dot.css('color',"#ed9f7b");
     arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
   } else if (val == 'Muy alta' || val == 'Very high') {
-    arrow_dot.css('color', "#f10606");
+    arrow_dot.css('color', "#ea7d7e");
     arrow_dot.attr('class', 'bi-arrow-up-circle-fill');
   }
 }
@@ -312,22 +344,22 @@ function color_severity(val, id){
   );
 
   if (val == 'Sin establecer' || val =='Not stablished') {
-  arrow_dot.style.color = "#d9d3d2";
+  arrow_dot.style.color = "#d4d0c7";
   arrow_dot.classList.add('bi-x-circle-fill');
   } else if (val == 'Muy baja' || val == 'Very low') {
-  arrow_dot.style.color = "#09ef0d";
+  arrow_dot.style.color = "#a6ed9d";
   arrow_dot.classList.add('bi-arrow-down-circle-fill');
   } else if (val == 'Baja' || val == 'Low') {
-  arrow_dot.style.color = "#e8ee0b";
+  arrow_dot.style.color = "#e6d68e";
   arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
   } else if (val == 'Media' || val == 'Medium') {
-  arrow_dot.style.color = "#fea227";
+  arrow_dot.style.color = "#f4c39d";
   arrow_dot.classList.add('bi-arrow-right-circle-fill');
   } else if (val == 'Alta' || val == 'High') {
-  arrow_dot.style.color = "#ff6e56";
+  arrow_dot.style.color = "#ed9f7b";
   arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
   } else if (val == 'Muy alta' || val == 'Very high') {
-  arrow_dot.style.color = "#f10606";
+  arrow_dot.style.color = "#ea7d7e";
   arrow_dot.classList.add('bi-arrow-up-circle-fill');
   }
 }
@@ -485,133 +517,149 @@ function swap_columns(id, datatable_id) {
     }
   }
 
-  function load_chart(id, n_pending, n_delivered, n_finished, title) {
+  function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined", arg6 = "undefined") {
+  let data;
 
-    const data = {
-      labels: ['Pending', 'Delivered', 'Finished'],
-      datasets: [
-        {
-          label: '',
-          data: [n_pending, n_delivered, n_finished],
-          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
-        }
-      ]
+  if (title== 'Tests status') {
+    data = {
+    labels: ['Awaiting Evaluator', 'Awaiting Administrator', 'Finished'],
+    datasets: [
+      {
+        label: '',
+        data: [arg1, arg2, arg3],
+        backgroundColor: ["#ed9f7b", "#e6d68e", "#a6ed9d"],
+      }
+    ]
     };
-    const config = {
-      type: 'pie',
-      data: data,
-      fill: {
-          type: 'gradient',
-        },
-      options: {
-        animation : {
-          duration: 5000,
-        },
-        responsive: true,
-        plugins: {
-          legend: {
-            display:false,
-          },
-          title: {
-            display: true,
-            text: title,
-            font: {
-                size: 11,
-                family: 'Helvetica, Inter, sans-serif',
-            },
-          },
-
-        },
-      },
+  } else {
+    data = {
+    labels: ['Not stablished', 'Very low', 'Low', 'Medium', 'High', 'Very high'],
+    datasets: [
+      {
+        label: '',
+        data: [arg1, arg2, arg3, arg4, arg5, arg6],
+        backgroundColor: ["#d4d0c7", "#a6ed9d", "#e6d68e", "#f4c39d", "#ed9f7b", "#ea7d7e"],
+        // backgroundColor: ["#d9d3d2", "#09ef0d", "#e8ee0b", "#fea227", "#ff6e56", "#f10606"],
+      }
+    ]
     };
-    const myChart = new Chart(document.querySelector('#'+id), config);
   }
 
-  function load_heat(id, rrt) {
-    var series_key_idx = {};
-    var series = [];
-
-    rrt.forEach(function(r) {
-
-      evaluator = r.evaluator;
-      if (!(evaluator in series_key_idx)) {
-        series_key_idx[evaluator] = Object.keys(series_key_idx).length;
-        series.push({
-          "name": evaluator,
-          "data": [],
-        });
-      }
-
-      series[series_key_idx[evaluator]]["data"].push({'x': r.risk_ref, 'y': r.probability_level_residual_evaluator});
-    })
-
-
-    var options = {
-      series: series,
-      chart: {
-      height: 120+40*series.length,
-      type: 'heatmap',
-    },
-    plotOptions: {
-      heatmap: {
-        shadeIntensity: 0.5,
-        radius: 0,
-        useFillColorAsStroke: true,
-        colorScale: {
-          ranges: [
-            {
-              from: 1,
-              to: 1,
-              name: 'Optimizado',
-              color: '#a6ed9d'
-            },
-            {
-              from: 2,
-              to: 2,
-              name: 'Aceptable',
-              color: '#7dedf5'
-            },
-            {
-              from: 3,
-              to: 3,
-              name: 'Inadecuado',
-              color: '#e6d68e'
-            },
-            {
-              from: 4,
-              to: 4,
-              name: 'No controlado',
-              color: '#ed9f7b'
-            },
-            {
-              from: 5,
-              to: 5,
-              name: 'N/A',
-              color: '#d4d0c7'
-            }
-          ]
-        }
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      width: 1
-    },
-    title: {
-      display: false,
-    },
-    legend: {
-      show: true,
-      showForSingleSeries: true,
+  const config = {
+    type: 'pie',
+    data: data,
+    fill: {
+        type: 'gradient',
       },
-    };
+    options: {
+      animation : {
+        duration: 5000,
+      },
+      responsive: true,
+      plugins: {
+        legend: {
+          display:false,
+        },
+        title: {
+          display: true,
+          text: title,
+          font: {
+              size: 11,
+              family: 'Helvetica, Inter, sans-serif',
+          },
+        },
 
-    var chart = new ApexCharts(document.querySelector("#"+id), options);
-    chart.render();
+      },
+    },
+  };
+  const myChart = new Chart(document.querySelector('#'+id), config);
+}
 
-  }
+function load_heat(id, rrt) {
+  var series_key_idx = {};
+  var series = [];
+
+  rrt.forEach(function(r) {
+
+    evaluator = r.evaluator;
+    if (!(evaluator in series_key_idx)) {
+      series_key_idx[evaluator] = Object.keys(series_key_idx).length;
+      series.push({
+        "name": evaluator,
+        "data": [],
+      });
+    }
+
+    series[series_key_idx[evaluator]]["data"].push({'x': r.risk_ref, 'y': r.probability_level_residual_evaluator});
+  })
+
+
+  var options = {
+    series: series,
+    chart: {
+    height: 120+40*series.length,
+    type: 'heatmap',
+  },
+  plotOptions: {
+    heatmap: {
+      shadeIntensity: 0.5,
+      radius: 0,
+      useFillColorAsStroke: true,
+      colorScale: {
+        ranges: [
+          {
+            from: 1,
+            to: 1,
+            name: 'Optimizado',
+            color: '#a6ed9d'
+          },
+          {
+            from: 2,
+            to: 2,
+            name: 'Aceptable',
+            color: '#7dedf5'
+          },
+          {
+            from: 3,
+            to: 3,
+            name: 'Inadecuado',
+            color: '#e6d68e'
+          },
+          {
+            from: 4,
+            to: 4,
+            name: 'No controlado',
+            color: '#ed9f7b'
+          },
+          {
+            from: 5,
+            to: 5,
+            name: 'N/A',
+            color: '#d4d0c7'
+          }
+        ]
+      }
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    width: 1
+  },
+  title: {
+    display: false,
+  },
+  legend: {
+    show: true,
+    showForSingleSeries: true,
+    },
+  };
+
+  var chart = new ApexCharts(document.querySelector("#"+id), options);
+  chart.render();
+
+}
 
 </script>
 
@@ -819,21 +867,31 @@ function swap_columns(id, datatable_id) {
           </div>
         </div>
         <script>
-          load_chart('pie-main','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}', 'Riesgos evaluados');
+          load_chart('pie-main', 'Tests status', '{{evaluation.nrisk_test_residuals_pending}}', '{{evaluation.nrisk_test_residuals_delivered}}', '{{evaluation.nrisk_test_residuals_finished}}');
         </script>
+        <div class="row mb-8">
+          <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
+            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Evaluador' %}">WE</span>
+            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
+            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
+          </div>
+        </div>
         <div class="row mb-8">
           <div>
             <canvas id="pie-main-evaluators"></canvas>
           </div>
         </div>
         <script>
-          load_chart('pie-main-evaluators','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}', 'Evaluadores');
+          load_chart('pie-main-evaluators', 'Severity status', '{{evaluation.sev_not_stablished}}', '{{evaluation.sev_very_low}}', '{{evaluation.sev_low}}', '{{evaluation.sev_medium}}', '{{evaluation.sev_high}}', '{{evaluation.sev_very_high}}');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
-            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
-            <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
+            <span class="badge severidad-desconocida" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Sin establecer' %}">NS</span>
+            <span class="badge severidad-muy-baja" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Muy baja' %}">VL</span>
+            <span class="badge severidad-baja" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Baja' %}">L</span>
+            <span class="badge severidad-media" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Media' %}">M</span>
+            <span class="badge severidad-alta" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Alta' %}">H</span>
+            <span class="badge severidad-muy-alta" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Muy alta' %}">VH</span>
           </div>
         </div>
       </div>
@@ -924,9 +982,9 @@ function swap_columns(id, datatable_id) {
           <tr>
             <td class="text-center align-middle">
               {% if rt.status == 1 %}
-                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">P</span>
+                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">WE</span>
               {% elif rt.status == 2 %}
-                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">WA</span>
               {% elif rt.status == 3 %}
                 <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
               {% endif %}
@@ -952,7 +1010,7 @@ function swap_columns(id, datatable_id) {
             </td>
 
             <td class="text-center align-middle">
-                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} ({{ rt.evaluator.position }})">{{ rt.evaluator.username_no_domain }}</span>
+                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.evaluator.full_name }} {% if rt.evaluator.position %} ({{ rt.evaluator.position }}) {% endif %}">{{ rt.evaluator.username_no_domain }}</span>
             </td>
 
             <td class="text-center align-middle">
@@ -987,7 +1045,7 @@ function swap_columns(id, datatable_id) {
                 <span class="sev-expert-num" style="display:none;">{{ rt.severity_level_evaluator }}</span>
                 <span class="sev-admin-num" style="display:none;">{{ rt.severity_level_administrator }}</span>
                 <span class="sev-expert-qual">{{ rt.get_severity_evaluator_qualitative_display }}</span>
-                <span class="sev-admin-qual" style="display:none;">{{ rt.get_severity_level_admin_qualitative_display }}</span>
+                <span class="sev-admin-qual" style="display:none;">{{ rt.get_severity_administrator_qualitative_display }}</span>
               </div>
             </td>
           </tr>

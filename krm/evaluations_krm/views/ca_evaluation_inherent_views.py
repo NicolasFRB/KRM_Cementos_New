@@ -59,6 +59,7 @@ from krm.evaluations_krm.forms import (
     EvaluationInherentNotificationForm
 )
 
+from krm.utils.utils import pluralize
 
 @method_decorator([login_required, is_company_admin, ], name='dispatch')
 class CaEvaluationInherentListView(ListView):
@@ -231,14 +232,7 @@ class CaEvaluationInherentCreateView(FormView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _("%s Evaluaciones creadas correctamente") % str(evaluations_created),
-        )
-
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            _("%s Test de Riesgos creados correctamente") % str(
-                risk_tests__created),
+            _(f"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')} y {pluralize(risk_tests__created, 'test')} de riesgo inherente correctamente"),
         )
         return super().form_valid(form)
 
@@ -275,19 +269,18 @@ class CaEvaluationInherentDetailView(FormView):
         #     },
         # ]
 
-        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(
-            1)
-        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(
-            2)
-        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(
-            3)
-
-        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(
-            1)
-        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(
-            2)
-        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(
-            3)
+        context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(1)
+        context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2)
+        context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(3)
+        context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(1)
+        context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(2)
+        context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(3)
+        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_inherents_by_severity('SE')
+        context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_inherents_by_severity('MB')
+        context['evaluation'].sev_low = context['evaluation'].nrisk_test_inherents_by_severity('B')
+        context['evaluation'].sev_medium = context['evaluation'].nrisk_test_inherents_by_severity('M')
+        context['evaluation'].sev_high = context['evaluation'].nrisk_test_inherents_by_severity('A')
+        context['evaluation'].sev_very_high = context['evaluation'].nrisk_test_inherents_by_severity('MA')
 
         context['evaluation'].total_experts = context['evaluation'].experts_pending.count(
         ) + context['evaluation'].experts_delivered.count() + context['evaluation'].experts_finished.count()
@@ -347,6 +340,7 @@ class CaEvaluationInherentDetailView(FormView):
 
         if action == 'download':
             import io
+            from django.utils.html import strip_tags
 
             filename = f'inherent_evaluation_{evaluation.ref}.xlsx'
 
@@ -432,7 +426,7 @@ class CaEvaluationInherentDetailView(FormView):
             worksheet.write(1, 0, evaluation.ref, text_wrap)
             worksheet.write(1, 1, evaluation.company.name +' (' + evaluation.company.ref+')' , text_wrap)
             worksheet.write(1, 2, evaluation.company.type_company if evaluation.company.type_company else "Not specified", text_wrap)
-            worksheet.write(1, 3, evaluation.description if evaluation.description else "Not specified", text_wrap)
+            worksheet.write(1, 3, strip_tags(evaluation.description) if evaluation.description else "Not specified", text_wrap)
             worksheet.write(1, 4, evaluation.date_begin.strftime("%d/%m/%Y"), text_wrap)
             worksheet.write(1, 5, evaluation.date_end.strftime("%d/%m/%Y"), text_wrap)
             worksheet.write(1, 6, evaluation.certification_year, text_wrap)
@@ -449,11 +443,11 @@ class CaEvaluationInherentDetailView(FormView):
                 worksheet_2.write(row, 0, rr.risk.risk.name + ' ('+ rr.risk.risk.ref + ')', text_wrap)
                 worksheet_2.write(row, 1, rr.risk.risk.risk_master.name + ' ('+ rr.risk.risk.risk_master.ref + ')', text_wrap)
                 worksheet_2.write(row, 2, rr.risk.risk.risk_master.domain_risk.name + ' ('+ rr.risk.risk.risk_master.domain_risk.ref + ')', text_wrap)
-                worksheet_2.write(row, 3, rr.risk.risk.description if rr.risk.risk.description else "Not specified", text_wrap)
-                worksheet_2.write(row, 4, rr.risk.risk.krm_main_elements if rr.risk.risk.krm_main_elements!= '' else "N/A", text_wrap)
-                worksheet_2.write(row, 5, rr.risk.risk.krm_main_events if  rr.risk.risk.krm_main_events!='' else "N/A", text_wrap)
-                worksheet_2.write(row, 6, rr.risk.risk.krm_activity_affected if rr.risk.risk.krm_activity_affected!='' else "N/A", text_wrap)
-                worksheet_2.write(row, 7, rr.risk.risk.krm_exposed_staff if rr.risk.risk.krm_exposed_staff!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 3, strip_tags(rr.risk.risk.description) if rr.risk.risk.description else "Not specified", text_wrap)
+                worksheet_2.write(row, 4, strip_tags(rr.risk.risk.krm_main_elements) if rr.risk.risk.krm_main_elements!= '' else "N/A", text_wrap)
+                worksheet_2.write(row, 5, strip_tags(rr.risk.risk.krm_main_events) if  rr.risk.risk.krm_main_events!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 6, strip_tags(rr.risk.risk.krm_activity_affected) if rr.risk.risk.krm_activity_affected!='' else "N/A", text_wrap)
+                worksheet_2.write(row, 7, strip_tags(rr.risk.risk.krm_exposed_staff) if rr.risk.risk.krm_exposed_staff!='' else "N/A", text_wrap)
                 worksheet_2.write(row, 8, rr.risk.expert.full_name if rr.risk.evaluator else "Evaluator not assigned ", text_wrap)
                 worksheet_2.write(row, 9, rr.impact_level_expert if rr.impact_level_expert!=0 else "Awaiting evaluation", text_wrap)
                 worksheet_2.write(row, 10, rr.translation_values(rr.impact_level_expert), text_wrap)

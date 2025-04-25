@@ -31,12 +31,7 @@
           <div class="col-12 mb-4">
               <legend>{% trans 'Instrucciones' %}</legend>
               <ol>
-                {% get_current_language as LANGUAGE_CODE %}
-                {% if LANGUAGE_CODE == 'es' %}
-                  <li><strong><a href="{% static 'files/import_companies.xlsx' %}">{% trans 'Descarga la plantilla de importación' %}</a></strong></li>
-                {% else %}
-                  <li><strong><a href="{% static 'files/import_companies_en.xlsx' %}">{% trans 'Descarga la plantilla de importación' %}</a></strong></li>
-                {% endif %}
+                <li><strong><a href="{% static 'files/import_companies.xlsx' %}">{% trans 'Descarga la plantilla de importación' %}</a></strong></li>
                 <li>{% trans 'Rellenar la plantilla de importación sin modificar el orden de las columnas' %}</li>
                 <li>{% trans 'Adjuntar el archivo' %}</li>
                 <li>{% trans 'Comprobar los posibles mensajes de error' %}</li>
@@ -46,7 +41,7 @@
           </div>
         </div>
       </div>
-    
+
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Importar' %}</button>
         <a href="{% url 'companies:ga_company_list' %}"

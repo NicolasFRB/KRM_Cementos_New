@@ -38,7 +38,7 @@ canvas#race{position:relative; z-index:100;}
   function load_chart(id, n_pending, n_delivered, n_finished) {
 
     const data = {
-      labels: ['Pending', 'Delivered', 'Finished'],
+      labels: ['Waiting Evaluator', 'Waiting Administrator', 'Finished'],
       datasets: [
         {
           label: '',
@@ -96,14 +96,13 @@ canvas#race{position:relative; z-index:100;}
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th>{% trans 'REF' %}</th>
-          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'REF' %}</th>
+          <th class="text-center">{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
           <th class="text-center">{% trans 'Nº Riesgos' %}</th>
-          <th class="text-center">{% trans 'Nº Evaluadores' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -118,7 +117,7 @@ canvas#race{position:relative; z-index:100;}
                   {{ evaluation.description|default_if_none:""|striptags|truncatechars:100 }}
                 </div>
                 <div style="width:10%">
-                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags }}" style="margin-right:5px;"></i>
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ evaluation.description|striptags|safe }}" style="margin-right:5px;"></i>
                 </div>
               </div>
             </td>
@@ -143,17 +142,6 @@ canvas#race{position:relative; z-index:100;}
               load_chart('pie-ep-{{ forloop.counter }}','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
             </script>
             <td class="text-center align-middle">
-              <div>
-                <span class="badge badge-info">{{ evaluation.total_evaluators }}</span>
-              </div>
-              <div>
-                <canvas id="pie-ep-evs-{{ forloop.counter }}"></canvas>
-              </div>
-            </td>
-            <script>
-              load_chart('pie-ep-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}');
-            </script>
-            <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
                 <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
               {% else %}
@@ -165,8 +153,8 @@ canvas#race{position:relative; z-index:100;}
       </tbody>
     </table>
     <div style="float: right;display: flex; margin-right: 15px !important;">
-      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Evaluador' %}">WE</span>
+      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
       <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
     </div>
     {% else %}
@@ -195,14 +183,13 @@ canvas#race{position:relative; z-index:100;}
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center">{% trans 'Acción' %}</th>
-          <th>{% trans 'REF' %}</th>
-          <th>{% trans 'Descripción' %}</th>
+          <th class="text-center">{% trans 'REF' %}</th>
+          <th class="text-center">{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
           <th class="text-center">{% trans 'Nº Riesgos' %}</th>
-          <th class="text-center">{% trans 'Nº Evaluadores' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -242,17 +229,6 @@ canvas#race{position:relative; z-index:100;}
               load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
             </script>
             <td class="text-center align-middle">
-              <div>
-                <span class="badge badge-info">{{ evaluation.total_evaluators }}</span>
-              </div>
-              <div>
-                <canvas id="pie-fi-evs-{{ forloop.counter }}"></canvas>
-              </div>
-            </td>
-            <script>
-              load_chart('pie-fi-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}');
-            </script>
-            <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
                 <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
               {% else %}
@@ -264,8 +240,8 @@ canvas#race{position:relative; z-index:100;}
       </tbody>
     </table>
     <div style="float: right;display: flex; margin-right: 15px !important;">
-      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Evaluador' %}">WE</span>
+      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
       <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
     </div>
     {% else %}

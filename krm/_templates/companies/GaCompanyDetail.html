@@ -398,7 +398,7 @@
                       </td>
                       <td class="text-center align-middle">{{ risk.risk.ref }}</td>
                       <td class="align-middle">{{ risk.risk.name|striptags|safe|truncatechars:200 }}</td>
-                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.description|striptags }}"></i></td>
+                      <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description|striptags }}"></i></td>
                       <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.krm_main_elements|striptags }}"></i></td>
                       <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.krm_main_events|striptags }}"></i></td>
                       <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk.krm_activity_affected|striptags }}"></i></td>

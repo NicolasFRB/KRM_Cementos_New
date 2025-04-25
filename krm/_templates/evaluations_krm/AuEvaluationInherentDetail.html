@@ -22,25 +22,57 @@
   }
 
   .badge.badge-success.n1 {
-  margin: 5px;
-  background-color: #ed9f7b !important;
-}
-.badge.badge-success.n2 {
-  margin: 5px;
-  background-color: #e6d68e !important;
-}
-.badge.badge-success.n3 {
-  margin: 5px;
-  background-color: #a6ed9d !important;
-}
+    margin: 5px;
+    background-color: #ed9f7b !important;
+  }
 
-#risk_eval_table tr > td:nth-child(n+9){
-  display: table-cell !important;
-}
+  .badge.badge-success.n2 {
+    margin: 5px;
+    background-color: #e6d68e !important;
+  }
 
-#risk_eval_table tr > th:nth-child(n+9){
-  display: table-cell !important;
-}
+  .badge.badge-success.n3 {
+    margin: 5px;
+    background-color: #a6ed9d !important;
+  }
+
+  .severidad-muy-baja {
+    margin: 5px;
+    background-color: #a6ed9d;
+  }
+
+  .severidad-baja {
+    margin: 5px;
+    background-color: #e6d68e;
+  }
+
+  .severidad-media {
+    margin: 5px;
+    background-color: #f4c39d;
+  }
+
+  .severidad-alta {
+    margin: 5px;
+    background-color: #ed9f7b;
+  }
+
+  .severidad-muy-alta {
+    margin: 5px;
+    background-color: #ea7d7e;
+  }
+
+  .severidad-desconocida {
+    margin: 5px;
+    background-color: #d4d0c7;
+  }
+
+  #risk_eval_table tr > td:nth-child(n+9){
+    display: table-cell !important;
+  }
+
+  #risk_eval_table tr > th:nth-child(n+9){
+    display: table-cell !important;
+  }
 
 </style>
 <script>
@@ -56,22 +88,22 @@ function color_severity_dynamic(val, id){
   var arrow_dot = $("#"+id);
 
   if (val == 'Sin establecer' || val == 'Not stablished') {
-    arrow_dot.css('color',"#d9d3d2");
+    arrow_dot.css('color',"#d4d0c7");
     arrow_dot.attr('class','bi-x-circle-fill');
   } else if (val == 'Muy baja' || val == 'Very low') {
-    arrow_dot.css('color',"#09ef0d");
+    arrow_dot.css('color',"#a6ed9d");
     arrow_dot.attr('class','bi-arrow-down-circle-fill');
   } else if (val == 'Baja' || val == 'Low') {
-    arrow_dot.css('color',"#e8ee0b");
+    arrow_dot.css('color',"#e6d68e");
     arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
   } else if (val == 'Media' || val == 'Medium') {
-    arrow_dot.css('color',"#fea227");
+    arrow_dot.css('color',"#f4c39d");
     arrow_dot.attr('class','bi-arrow-right-circle-fill');
   } else if (val == 'Alta' || val == 'High') {
-    arrow_dot.css('color',"#ff6e56");
+    arrow_dot.css('color',"#ed9f7b");
     arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
   } else if (val == 'Muy alta' || val == 'Very high') {
-    arrow_dot.css('color', "#f10606");
+    arrow_dot.css('color', "#ea7d7e");
     arrow_dot.attr('class', 'bi-arrow-up-circle-fill');
   }
 }
@@ -90,351 +122,367 @@ function color_severity(val, id){
   );
 
   if (val == 'Sin establecer' || val =='Not stablished') {
-  arrow_dot.style.color = "#d9d3d2";
+  arrow_dot.style.color = "#d4d0c7";
   arrow_dot.classList.add('bi-x-circle-fill');
   } else if (val == 'Muy baja' || val == 'Very low') {
-  arrow_dot.style.color = "#09ef0d";
+  arrow_dot.style.color = "#a6ed9d";
   arrow_dot.classList.add('bi-arrow-down-circle-fill');
   } else if (val == 'Baja' || val == 'Low') {
-  arrow_dot.style.color = "#e8ee0b";
+  arrow_dot.style.color = "#e6d68e";
   arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
   } else if (val == 'Media' || val == 'Medium') {
-  arrow_dot.style.color = "#fea227";
+  arrow_dot.style.color = "#f4c39d";
   arrow_dot.classList.add('bi-arrow-right-circle-fill');
   } else if (val == 'Alta' || val == 'High') {
-  arrow_dot.style.color = "#ff6e56";
+  arrow_dot.style.color = "#ed9f7b";
   arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
   } else if (val == 'Muy alta' || val == 'Very high') {
-  arrow_dot.style.color = "#f10606";
+  arrow_dot.style.color = "#ea7d7e";
   arrow_dot.classList.add('bi-arrow-up-circle-fill');
   }
 }
 
-  function load_bar(id, rit) {
-    r_impacto = [];
-    r_prob = [];
-    rit.forEach(function(r) {
 
-      var r_i = {x: '', y: '', name: ''}
-      var r_p = {x: '', y: '', name: ''}
+function load_bar(id, rit) {
+  r_impacto = [];
+  r_prob = [];
+  rit.forEach(function(r) {
 
-      if (r.status < 2) {
-        r_i.x = r.risk_ref
-        r_i.y = 0
-        r_i.name = r.risk_name
-        r_i.expert = r.expert
+    var r_i = {x: '', y: '', name: ''}
+    var r_p = {x: '', y: '', name: ''}
 
-        r_p.x = r.risk_ref
-        r_p.y = 0
-        r_p.name = r.risk_name
-        r_p.expert = r.expert
+    if (r.status < 2) {
+      r_i.x = r.risk_ref
+      r_i.y = 0
+      r_i.name = r.risk_name
+      r_i.expert = r.expert
 
-      } else {
-        r_i.x = r.risk_ref
-        r_i.y = r.impact_level_expert
-        r_i.name = r.risk_name
-        r_i.expert = r.expert
+      r_p.x = r.risk_ref
+      r_p.y = 0
+      r_p.name = r.risk_name
+      r_p.expert = r.expert
 
-        r_p.x = r.risk_ref
-        r_p.y = r.probability_level_expert
-        r_p.name = r.risk_name
-        r_p.expert = r.expert
+    } else {
+      r_i.x = r.risk_ref
+      r_i.y = r.impact_level_expert
+      r_i.name = r.risk_name
+      r_i.expert = r.expert
+
+      r_p.x = r.risk_ref
+      r_p.y = r.probability_level_expert
+      r_p.name = r.risk_name
+      r_p.expert = r.expert
+    }
+    r_prob.push(r_i)
+    r_impacto.push(r_p)
+  });
+
+  var options = {
+        series: [
+      {
+        name: 'Impacto',
+        data: r_impacto
+      },
+      {
+        name: 'Probabilidad',
+        data: r_prob
       }
-      r_prob.push(r_i)
-      r_impacto.push(r_p)
-    });
-
-    var options = {
-          series: [
-        {
-          name: 'Impacto',
-          data: r_impacto
+    ],
+        chart: {
+          height: 250,
+          type: 'bar',
+          stacked: true,
+          toolbar: {
+            show:false,
+          }
         },
-        {
-          name: 'Probabilidad',
-          data: r_prob
+      plotOptions: {
+        bar: {
+          borderRadius: 5,
+          borderRadiusApplication: 'end',
+          borderRadiusWhenStacked: 'last',
+          dataLabels: {
+            position: 'center', // top, center, bottom
+          },
         }
-      ],
-          chart: {
-            height: 250,
-            type: 'bar',
-            stacked: true,
-            toolbar: {
-              show:false,
-            }
-          },
-        plotOptions: {
-          bar: {
-            borderRadius: 5,
-            borderRadiusApplication: 'end',
-            borderRadiusWhenStacked: 'last',
-            dataLabels: {
-              position: 'center', // top, center, bottom
-            },
-          }
-        },
+      },
 
-        dataLabels: {
-          enabled: true,
-          formatter: function (val) {
-            return val;
-          },
-          style: {
-            fontSize: '10px',
-            colors: ["#304758"]
-          }
+      dataLabels: {
+        enabled: true,
+        formatter: function (val) {
+          return val;
         },
-        tooltip:{
-          custom: function({series, seriesIndex, dataPointIndex, w}) {
-            var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-            markerColor = w.globals.markers.colors[seriesIndex];
-            return '<div style="margin:10px;">' +
-            '<br>' +
-            '<div style="font-size: 11px;">'+
-              '<b>'+data.x+'</b>'+
-            '</div>'+
-            '<div style="font-size: 11px;">'+
-              data.name+
-            '</div>'+
-            '<div style="font-size: 11px;">'+
-              'Evaluador: ' + data.expert+
-            '</div>'+
-            '<br>' +
-              '<div class="apexcharts-legend-series">' +
-                '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
-                '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
-              '</div>'
-            +'</div>';
-          },
-        },
-        xaxis: {
-          position: 'bottom',
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false
-          },
-          crosshairs: {
-            enabled:false,
-          },
-          tooltip: {
-            enabled: false,
-          }
-        },
-        yaxis: {
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: false,
-            formatter: function (val) {
-              return val;
-            }
-          }
-
-        },
-      };
-
-        var chart = new ApexCharts(document.querySelector("#"+id), options);
-        chart.render();
-  }
-
-  function load_chart(id, n_pending, n_delivered, n_finished, title) {
-
-    const data = {
-      labels: ['Pending', 'Delivered', 'Finished'],
-      datasets: [
-        {
-          label: '',
-          data: [n_pending, n_delivered, n_finished],
-          backgroundColor: ["#ed9f7b", "#e6d68e","#a6ed9d"],
+        style: {
+          fontSize: '10px',
+          colors: ["#304758"]
         }
-      ]
-    };
-    const config = {
-      type: 'pie',
-      data: data,
-      fill: {
-          type: 'gradient',
-        },
-      options: {
-        animation : {
-          duration: 5000,
-        },
-        responsive: true,
-        plugins: {
-          legend: {
-            display:false,
-          },
-          title: {
-            display: true,
-            text: title,
-            font: {
-                size: 11,
-                family: 'Helvetica, Inter, sans-serif',
-            },
-          },
-
+      },
+      tooltip:{
+        custom: function({series, seriesIndex, dataPointIndex, w}) {
+          var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+          markerColor = w.globals.markers.colors[seriesIndex];
+          return '<div style="margin:10px;">' +
+          '<br>' +
+          '<div style="font-size: 11px;">'+
+            '<b>'+data.x+'</b>'+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+            data.name+
+          '</div>'+
+          '<div style="font-size: 11px;">'+
+            'Evaluador: ' + data.expert+
+          '</div>'+
+          '<br>' +
+            '<div class="apexcharts-legend-series">' +
+              '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
+              '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
+            '</div>'
+          +'</div>';
         },
       },
+      xaxis: {
+        position: 'bottom',
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        crosshairs: {
+          enabled:false,
+        },
+        tooltip: {
+          enabled: false,
+        }
+      },
+      yaxis: {
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          show: false,
+          formatter: function (val) {
+            return val;
+          }
+        }
+
+      },
     };
-    const myChart = new Chart(document.querySelector('#'+id), config);
+
+      var chart = new ApexCharts(document.querySelector("#"+id), options);
+      chart.render();
+}
+
+function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined", arg6 = "undefined") {
+  let data;
+
+  if (title== 'Tests status') {
+    data = {
+    labels: ['Awaiting Evaluator', 'Awaiting Administrator', 'Finished'],
+    datasets: [
+      {
+        label: '',
+        data: [arg1, arg2, arg3],
+        backgroundColor: ["#ed9f7b", "#e6d68e", "#a6ed9d"],
+      }
+    ]
+    };
+  } else {
+    data = {
+    labels: ['Not stablished', 'Very low', 'Low', 'Medium', 'High', 'Very high'],
+    datasets: [
+      {
+        label: '',
+        data: [arg1, arg2, arg3, arg4, arg5, arg6],
+        backgroundColor: ["#d4d0c7", "#a6ed9d", "#e6d68e", "#f4c39d", "#ed9f7b", "#ea7d7e"],
+      }
+    ]
+    };
   }
 
-  function swap_columns(id, datatable_id) {
-    var flexRadio_cualitativo = $('#'+"flexRadio_cualitativo").is(':checked');
-    var flexRadio_cuantitativo = $('#'+"flexRadio_cuantitativo").is(':checked');
-    var flexRadio_admin = $('#'+"flexRadio_admin").is(':checked');
-    var flexRadio_experto = $('#'+"flexRadio_experto").is(':checked');
+  const config = {
+    type: 'pie',
+    data: data,
+    fill: {
+        type: 'gradient',
+      },
+    options: {
+      animation : {
+        duration: 5000,
+      },
+      responsive: true,
+      plugins: {
+        legend: {
+          display:false,
+        },
+        title: {
+          display: true,
+          text: title,
+          font: {
+              size: 11,
+              family: 'Helvetica, Inter, sans-serif',
+          },
+        },
 
-    var dt = $('#risk_eval_table').DataTable();
+      },
+    },
+  };
+  const myChart = new Chart(document.querySelector('#'+id), config);
+}
 
-    var j_exp = dt.$(".justif-expert");
-    var j_adm = dt.$(".justif-admin");
+function swap_columns(id, datatable_id) {
+  var flexRadio_cualitativo = $('#'+"flexRadio_cualitativo").is(':checked');
+  var flexRadio_cuantitativo = $('#'+"flexRadio_cuantitativo").is(':checked');
+  var flexRadio_admin = $('#'+"flexRadio_admin").is(':checked');
+  var flexRadio_experto = $('#'+"flexRadio_experto").is(':checked');
 
-    var s_exp_num = dt.$(".sev-expert-num");
-    var s_adm_num = dt.$(".sev-admin-num");
-    var s_exp_qual = dt.$(".sev-expert-qual");
-    var s_adm_qual = dt.$(".sev-admin-qual");
+  var dt = $('#risk_eval_table').DataTable();
 
-    var i_exp_num = dt.$(".imp-expert-num");
-    var i_adm_num = dt.$(".imp-admin-num");
-    var i_exp_qual = dt.$(".imp-expert-qual");
-    var i_adm_qual = dt.$(".imp-admin-qual");
+  var j_exp = dt.$(".justif-expert");
+  var j_adm = dt.$(".justif-admin");
 
-    var p_exp_num = dt.$(".prob-expert-num");
-    var p_adm_num = dt.$(".prob-admin-num");
-    var p_exp_qual = dt.$(".prob-expert-qual");
-    var p_adm_qual = dt.$(".prob-admin-qual");
+  var s_exp_num = dt.$(".sev-expert-num");
+  var s_adm_num = dt.$(".sev-admin-num");
+  var s_exp_qual = dt.$(".sev-expert-qual");
+  var s_adm_qual = dt.$(".sev-admin-qual");
 
-    var speed_exp_num = dt.$(".speed-expert-num");
-    var speed_adm_num= dt.$(".speed-admin-num");
-    var speed_exp_qual= dt.$(".speed-expert-qual");
-    var speed_adm_qual= dt.$(".speed-admin-qual");
+  var i_exp_num = dt.$(".imp-expert-num");
+  var i_adm_num = dt.$(".imp-admin-num");
+  var i_exp_qual = dt.$(".imp-expert-qual");
+  var i_adm_qual = dt.$(".imp-admin-qual");
 
-    if (flexRadio_cualitativo && flexRadio_experto) {
+  var p_exp_num = dt.$(".prob-expert-num");
+  var p_adm_num = dt.$(".prob-admin-num");
+  var p_exp_qual = dt.$(".prob-expert-qual");
+  var p_adm_qual = dt.$(".prob-admin-qual");
 
-      for(var i = 0; i < j_exp.length; i++) {
-        j_exp[i].style.display = "inline-block";
-        j_adm[i].style.display = "none";
+  var speed_exp_num = dt.$(".speed-expert-num");
+  var speed_adm_num= dt.$(".speed-admin-num");
+  var speed_exp_qual= dt.$(".speed-expert-qual");
+  var speed_adm_qual= dt.$(".speed-admin-qual");
 
-        s_exp_num[i].style.display = "none";
-        s_adm_num[i].style.display = "none";
-        s_exp_qual[i].style.display = "inline-block";
-        s_adm_qual[i].style.display = "none";
+  if (flexRadio_cualitativo && flexRadio_experto) {
 
-        i_exp_num[i].style.display = "none";
-        i_adm_num[i].style.display = "none";
-        i_exp_qual[i].style.display = "inline-block";
-        i_adm_qual[i].style.display = "none";
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "inline-block";
+      j_adm[i].style.display = "none";
 
-        p_exp_num[i].style.display = "none";
-        p_adm_num[i].style.display = "none";
-        p_exp_qual[i].style.display = "inline-block";
-        p_adm_qual[i].style.display = "none";
+      s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "none";
+      s_exp_qual[i].style.display = "inline-block";
+      s_adm_qual[i].style.display = "none";
 
-        speed_exp_num[i].style.display = "none";
-        speed_adm_num[i].style.display = "none";
-        speed_exp_qual[i].style.display = "inline-block";
-        speed_adm_qual[i].style.display = "none";
+      i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "none";
+      i_exp_qual[i].style.display = "inline-block";
+      i_adm_qual[i].style.display = "none";
 
-        $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
-        color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
-      }
+      p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "none";
+      p_exp_qual[i].style.display = "inline-block";
+      p_adm_qual[i].style.display = "none";
 
-    } else if (flexRadio_cuantitativo && flexRadio_experto) {
+      speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "none";
+      speed_exp_qual[i].style.display = "inline-block";
+      speed_adm_qual[i].style.display = "none";
 
-      for(var i = 0; i < j_exp.length; i++) {
-        j_exp[i].style.display = "inline-block";
-        j_adm[i].style.display = "none";
+      $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
+      color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
+    }
 
-        s_exp_num[i].style.display = "inline-block";
-        s_adm_num[i].style.display = "none";
-        s_exp_qual[i].style.display = "none";
-        s_adm_qual[i].style.display = "none";
+  } else if (flexRadio_cuantitativo && flexRadio_experto) {
 
-        i_exp_num[i].style.display = "inline-block";
-        i_adm_num[i].style.display = "none";
-        i_exp_qual[i].style.display = "none";
-        i_adm_qual[i].style.display = "none";
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "inline-block";
+      j_adm[i].style.display = "none";
 
-        p_exp_num[i].style.display = "inline-block";
-        p_adm_num[i].style.display = "none";
-        p_exp_qual[i].style.display = "none";
-        p_adm_qual[i].style.display = "none";
+      s_exp_num[i].style.display = "inline-block";
+      s_adm_num[i].style.display = "none";
+      s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "none";
 
-        speed_exp_num[i].style.display = "inline-block";
-        speed_adm_num[i].style.display = "none";
-        speed_exp_qual[i].style.display = "none";
-        speed_adm_qual[i].style.display = "none";
+      i_exp_num[i].style.display = "inline-block";
+      i_adm_num[i].style.display = "none";
+      i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "none";
 
-        $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
-        color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
-      }
+      p_exp_num[i].style.display = "inline-block";
+      p_adm_num[i].style.display = "none";
+      p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "none";
 
-    } else if (flexRadio_cualitativo && flexRadio_admin) {
+      speed_exp_num[i].style.display = "inline-block";
+      speed_adm_num[i].style.display = "none";
+      speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "none";
 
-      for(var i = 0; i < j_exp.length; i++) {
-        j_exp[i].style.display = "none";
-        j_adm[i].style.display = "inline-block";
+      $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
+      color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
+    }
 
-        s_exp_num[i].style.display = "none";
-        s_adm_num[i].style.display = "none";
-        s_exp_qual[i].style.display = "none";
-        s_adm_qual[i].style.display = "inline-block";
+  } else if (flexRadio_cualitativo && flexRadio_admin) {
 
-        i_exp_num[i].style.display = "none";
-        i_adm_num[i].style.display = "none";
-        i_exp_qual[i].style.display = "none";
-        i_adm_qual[i].style.display = "inline-block";
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "none";
+      j_adm[i].style.display = "inline-block";
 
-        p_exp_num[i].style.display = "none";
-        p_adm_num[i].style.display = "none";
-        p_exp_qual[i].style.display = "none";
-        p_adm_qual[i].style.display = "inline-block";
+      s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "none";
+      s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "inline-block";
 
-        speed_exp_num[i].style.display = "none";
-        speed_adm_num[i].style.display = "none";
-        speed_exp_qual[i].style.display = "none";
-        speed_adm_qual[i].style.display = "inline-block";
+      i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "none";
+      i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "inline-block";
 
-        $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
-        color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
-      }
+      p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "none";
+      p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "inline-block";
 
-    } else if (flexRadio_cuantitativo && flexRadio_admin) {
+      speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "none";
+      speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "inline-block";
 
-      for(var i = 0; i < j_exp.length; i++) {
-        j_exp[i].style.display = "none";
-        j_adm[i].style.display = "inline-block";
+      $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
+      color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
+    }
 
-        s_exp_num[i].style.display = "none";
-        s_adm_num[i].style.display = "inline-block";
-        s_exp_qual[i].style.display = "none";
-        s_adm_qual[i].style.display = "none";
+  } else if (flexRadio_cuantitativo && flexRadio_admin) {
 
-        i_exp_num[i].style.display = "none";
-        i_adm_num[i].style.display = "inline-block";
-        i_exp_qual[i].style.display = "none";
-        i_adm_qual[i].style.display = "none";
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "none";
+      j_adm[i].style.display = "inline-block";
 
-        p_exp_num[i].style.display = "none";
-        p_adm_num[i].style.display = "inline-block";
-        p_exp_qual[i].style.display = "none";
-        p_adm_qual[i].style.display = "none";
+      s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "inline-block";
+      s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "none";
 
-        speed_exp_num[i].style.display = "none";
-        speed_adm_num[i].style.display = "inline-block";
-        speed_exp_qual[i].style.display = "none";
-        speed_adm_qual[i].style.display = "none";
+      i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "inline-block";
+      i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "none";
 
-        $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
-        color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
-      }
+      p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "inline-block";
+      p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "none";
+
+      speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "inline-block";
+      speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "none";
+
+      $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
+      color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
+    }
   }
 }
 </script>
@@ -643,21 +691,31 @@ function color_severity(val, id){
           </div>
         </div>
         <script>
-          load_chart('pie-main','{{evaluation.nrisk_test_inherents_pending}}','{{evaluation.nrisk_test_inherents_delivered}}','{{evaluation.nrisk_test_inherents_finished}}', 'Riesgos evaluados');
-        </script>
-        <div class="row mb-8">
-          <div>
-            <canvas id="pie-main-experts"></canvas>
-          </div>
-        </div>
-        <script>
-          load_chart('pie-main-experts','{{evaluation.experts_pending.count}}','{{evaluation.experts_delivered.count}}','{{evaluation.experts_finished.count}}', 'Expertos');
+          load_chart('pie-main', 'Tests status', '{{evaluation.nrisk_test_inherents_pending}}', '{{evaluation.nrisk_test_inherents_delivered}}', '{{evaluation.nrisk_test_inherents_finished}}');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
-            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+            <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Evaluador' %}">WE</span>
+            <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
             <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
+          </div>
+        </div>
+        <div class="row mb-8">
+          <div>
+            <canvas id="pie-main-evaluators"></canvas>
+          </div>
+        </div>
+        <script>
+          load_chart('pie-main-evaluators', 'Severity status', '{{evaluation.sev_not_stablished}}', '{{evaluation.sev_very_low}}', '{{evaluation.sev_low}}', '{{evaluation.sev_medium}}', '{{evaluation.sev_high}}', '{{evaluation.sev_very_high}}');
+        </script>
+        <div class="row mb-8">
+          <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
+            <span class="badge severidad-desconocida" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Sin establecer' %}">NS</span>
+            <span class="badge severidad-muy-baja" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Muy baja' %}">VL</span>
+            <span class="badge severidad-baja" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Baja' %}">L</span>
+            <span class="badge severidad-media" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Media' %}">M</span>
+            <span class="badge severidad-alta" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Alta' %}">H</span>
+            <span class="badge severidad-muy-alta" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Muy alta' %}">VH</span>
           </div>
         </div>
       </div>
@@ -681,9 +739,10 @@ function color_severity(val, id){
     </div>
   </div>
   <!--end::Card body-->
+
   <!--begin::Card footer-->
   <div class="card-footer py-6" style="display:flex;">
-    <a href="{% url 'evaluations_krm:au_evaluation_residual_list' %}" class="btn btn-sm btn-secondary mr-2"><i
+    <a href="{% url 'evaluations_krm:au_evaluation_inherent_list' %}" class="btn btn-sm btn-secondary mr-2"><i
       class="bi bi-arrow-bar-left"></i>{% trans 'Atrás' %}</a>
   </div>
   <!--end::Card footer-->
@@ -693,18 +752,18 @@ function color_severity(val, id){
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{% trans 'Test de Riesgo Inherente de la Evaluación' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Tests de Riesgo Inherente de la Evaluación' %}</div>
     <!--end::Card header-->
     <div style="display:flex;">
       <div style="position:relative; margin-right: 5em; top: 10px;">
         <form>
           <div class="form-check 1">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_experto" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-              <label class="form-check-label" for="flexRadioDefault1">Experto</label>
+              <label class="form-check-label" for="flexRadioDefault1">{% trans 'Evaluador' %}</label>
           </div>
           <div class="form-check 1" style="margin-top: 10px;">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
-              <label class="form-check-label" for="flexRadioDefault2">Admin</label>
+              <label class="form-check-label" for="flexRadioDefault2">{% trans 'Administrador' %}</label>
           </div>
         </form>
       </div>
@@ -712,20 +771,19 @@ function color_severity(val, id){
         <form>
           <div class="form-check 2">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cualitativo" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
-              <label class="form-check-label" for="flexRadioDefault3">Cualitativo</label>
+              <label class="form-check-label" for="flexRadioDefault3">{% trans 'Cualitativo' %}</label>
           </div>
           <div class="form-check 2" style="margin-top: 10px;">
             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_cuantitativo" onclick="swap_columns(this.id, 'risk_eval_table')">
-              <label class="form-check-label" for="flexRadioDefault4">Cuantitativo</label>
+              <label class="form-check-label" for="flexRadioDefault4">{% trans 'Cuantitativo' %}</label>
           </div>
         </form>
       </div>
     </div>
   </div>
-
   <!--end::Card header-->
-  <!--begin::Card body-->
 
+  <!--begin::Card body-->
   <div class="card-body">
     {% if evaluation.risk_test_inherents.all %}
       <table class="table table-striped table-row-bordered gy-5 gs-7 customDatatable" id="risk_eval_table">
@@ -748,25 +806,25 @@ function color_severity(val, id){
           <tr>
             <td class="text-center align-middle">
               {% if rt.status == 1 %}
-                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">P</span>
+                <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">WE</span>
               {% elif rt.status == 2 %}
-                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">E</span>
+                <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">WA</span>
               {% elif rt.status == 3 %}
                 <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{rt.get_status_display}}">F</span>
               {% endif %}
             </td>
 
             <td class="text-center align-middle">
-              <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.name }}">{{ rt.risk.risk.ref }}</span>
+              <span class="badge badge-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.risk.name }}">{{ rt.risk.risk.ref }}</span>
             </td>
 
             <td class="text-center align-middle">
               <div style="display:flex;">
                 <div style="width:90%">
-                  {{ rt.risk.description|striptags|truncatechars:80 }}
+                  {{ rt.risk.risk.description|striptags|truncatechars:80 }}
                 </div>
                 <div style="width:10%">
-                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.description }}" style="margin-right:5px;"></i>
+                  <i class="bi bi-file-earmark-text fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rt.risk.risk.description|striptags|safe }}" style="margin-right:5px;"></i>
                 </div>
               </div>
             </td>
@@ -776,7 +834,7 @@ function color_severity(val, id){
             </td>
 
             <td class="text-center align-middle">
-                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.expert.full_name }} ({{ rt.expert.position }})">{{ rt.expert.username_no_domain }}</span>
+                <span class="badge badge-success"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ rt.expert.full_name }} {% if rt.expert.postion %} ({{ rt.expert.position }}) {% endif %}">{{ rt.expert.username_no_domain }}</span>
             </td>
 
             <td class="text-center align-middle">
@@ -833,7 +891,7 @@ function color_severity(val, id){
   <!--begin::Card footer-->
 
   <div class="card-footer py-6">
-    <a href="{% url 'evaluations_krm:ca_evaluation_inherent_list' %}" class="btn btn-sm btn-secondary">
+    <a href="{% url 'evaluations_krm:au_evaluation_inherent_list' %}" class="btn btn-sm btn-secondary">
       <i class="bi bi-arrow-bar-left"></i>
       {% trans 'Volver' %}</a>
   </div>

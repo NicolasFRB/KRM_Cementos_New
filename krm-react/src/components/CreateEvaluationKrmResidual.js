@@ -34,19 +34,32 @@ function CreateEvaluationKrmInherent(props) {
     let newFormData = {};
     newFormData.ref = $('#e_ref').val();
     newFormData.date_begin = $('#e_date_begin').val();
-    newFormData.date_intermediate = $('#e_date_intermediate').val();
     newFormData.date_end = $('#e_date_end').val();
     newFormData.description = $('#e_description').val();
-    newFormData.completed = newFormData.ref !== '' && newFormData.date_begin !== '' && newFormData.date_intermediate !== '' && newFormData.date_end !== '';
-    if (newFormData.date_begin && newFormData.date_end) {
-      const beginDate = new Date(newFormData.date_begin);
-      const endDate = new Date(newFormData.date_end);
-      if (beginDate > endDate) {
-        setError("La fecha de inicio no puede ser posterior a la fecha de fin.");
-      } else {
-        setError(null); // reseteamos el error si ya no hay fallo
-      }
+    $('#error-e-date-begin, #error-e-date-end').addClass('d-none');
+    const beginDate = new Date(newFormData.date_begin);
+    const endDate = new Date(newFormData.date_end);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const datesOk = !isNaN(beginDate) && !isNaN(endDate) && beginDate <= endDate && beginDate >= today;
+
+    if (beginDate> endDate) {
+      $('#error-e-date-end').text("La fecha de inicio no puede ser posterior a la fecha de fin.").removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_end').offset().top - 100
+      }, 1000);
+    } else if (beginDate< today) {
+      $('#error-e-date-begin').text("La fecha de inicio no puede ser previa al día actual.").removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_begin').offset().top - 100
+      }, 1000);
+    } else {
+      $('#error-e-date-begin, #error-e-date-end').text('').addClass('d-none');
     }
+    newFormData.completed = newFormData.ref !== '' &&
+                            newFormData.date_begin !== '' &&
+                            newFormData.date_end !== '' &&
+                            datesOk;
     setFormData(newFormData);
   }
 
@@ -200,7 +213,7 @@ function CreateEvaluationKrmInherent(props) {
       );
   }
 
-  const selectEvaluator = (selected_riskCompany,selected_risk, selected_evaluator_data) => {
+  const selectEvaluator = (selected_riskCompany, selected_risk, selected_evaluator_data) => {
     // console.log("Risk")
     // console.log(riskCompany)
 
@@ -247,11 +260,6 @@ function CreateEvaluationKrmInherent(props) {
 
   return (
     <div className="App">
-      {error && (
-      <div className="alert alert-danger">
-        {error}
-      </div>
-      )}
       <div className="row">
         <div className="col-12">
           <h3 className="mb-6">{t('krmResidual.step-2')}</h3>
@@ -267,7 +275,7 @@ function CreateEvaluationKrmInherent(props) {
         <div className="separator my-10"></div>
 
         <div className="col-12">
-          <h3 className="mb-6">{t('krmResidualstep-3')}</h3>
+          <h3 className="mb-6">{t('krmResidual.step-3')}</h3>
           {selectedCompanies.length === 0 && (
             <>
               <div className="alert alert-primary">{t('krmInherent.select-company')}</div>
@@ -347,7 +355,7 @@ function CreateEvaluationKrmInherent(props) {
                                   )}
                                 </td>
                                 <td><label htmlFor={'ri' + risk.pk}>{risk.risk_ref}</label></td>
-                                <td><span className="fw-semibold ps-2 fs-6">{risk.name}</span></td>
+                                <td><span className="fw-semibold ps-2 fs-6">{risk.risk.name}</span></td>
                                 <td className="text-center">
                                   {risk.evaluated && (
                                     <span className="badge badge-primary">Sí</span>

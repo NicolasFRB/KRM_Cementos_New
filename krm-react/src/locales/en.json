@@ -32,6 +32,7 @@
     "calc-risk-tests": "Calculate Risk Tests to be launched",
     "evaluation": "Evaluation",
     "risk-test-inherent": "Inherent Risk Tests to be launched",
+    "ref": "Reference",
     "name": "NAME",
     "expert": "ASSIGNED EXPERT",
     "no-posible-launch-without-expert": "It is not possible to launch this test without having previously assigned an expert for that risk domain",
@@ -75,7 +76,7 @@
     "step-4": "Step 4: Select Risks to be assessed ",
     "step-5": "Step 5: Launch summary",
     "calc-tests": "Calculate risk tests to be performed",
-    "loading": "Calculating",
+    "loading": "Loading",
     "evaluation": "Evaluation",
     "tests-inherent-to-launch": "Risk Tests to be launched",
     "ref": "Reference",
@@ -112,22 +113,23 @@
   },
   "selectcompanies": {
     "loading-companies": "Loading companies",
-    "name": "NAME"
+    "name": "Name"
   },
   "general": {
     "loading": "Loading",
-    "description": "DESCRIPTION",
+    "description": "Description",
     "yes": "Yes",
     "no": "No",
     "loading-scope": "Select Scope",
     "loading-process": "Select Process",
     "loading-questionnaires": "Loading questionnaires",
-    "title": "TITLE",
-    "evaluators": "EVALUATOR/S",
+    "title": "Title",
+    "evaluators": "Evaluator(s)",
     "select-risk": "Select Risk",
     "loading-risks": "Loading risks",
-    "name": "NAME",
-    "risk-master": "MASTER RISK"
+    "name": "Name",
+    "ref": "Reference",
+    "risk-master": "Master Risk"
   },
   "selectcontrols": {
     "step-2": "Step 2: Select companies to evaluate",

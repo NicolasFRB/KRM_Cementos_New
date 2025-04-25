@@ -139,7 +139,7 @@ class Risk(AuditModel):
         return self.risk_master.name
 
     def save(self, *args, **kwargs):
-        self.ref = self.ref.upper()
+        self.ref = self.ref
         super().save(*args, **kwargs)
 
         from krm.companies.models import Company
@@ -152,11 +152,11 @@ class Risk(AuditModel):
             ).count() == 0:
                 RiskCompany.objects.create(
                     company=company,
-                    risk=self,
-                    name=self.name,
-                    description=self.description,
-                    krm_activity_affected=self.krm_activity_affected,
-                    krm_main_events=self.krm_main_events,
-                    krm_exposed_staff=self.krm_exposed_staff,
-                    krm_main_elements=self.krm_main_elements
+                    risk=self
+                    #name=self.name,
+                    #description=self.description,
+                    #krm_activity_affected=self.krm_activity_affected,
+                    #krm_main_events=self.krm_main_events,
+                    #krm_exposed_staff=self.krm_exposed_staff,
+                    #krm_main_elements=self.krm_main_elements
                 )

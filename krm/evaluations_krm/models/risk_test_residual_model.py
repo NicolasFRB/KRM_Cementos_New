@@ -157,8 +157,8 @@ class RiskTestResidual(AuditModel):
 
     STATUS_CHOICES = (
         (0, _('Sin iniciar')),
-        (1, _('Esperando al Evaluador de Riesgo Residual')),
-        (2, _('Esperando al Administrador de compañía')),
+        (1, _('En espera del Evaluador')),
+        (2, _('En espera del Administrador')),
         (3, _('Finalizado')),
     )
 

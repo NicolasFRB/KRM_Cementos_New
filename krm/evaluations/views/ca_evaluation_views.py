@@ -55,7 +55,7 @@ from krm.users.decorators import (
     user_can_view_evaluation
 )
 
-from krm.utils.utils import clean_html
+from krm.utils.utils import clean_html, pluralize
 
 from krm.evaluations.forms import EvaluationFilterForm
 
@@ -948,14 +948,9 @@ class CaEvaluationCreateView(FormView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _("%s Evaluaciones creadas correctamente") % str(evaluations_created),
+            _(f"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')} y {pluralize(controls_created, 'test')} de control correctamente"),
         )
 
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            _("%s Test de Control creados correctamente") % str(controls_created),
-        )
         return super().form_valid(form)
 
 

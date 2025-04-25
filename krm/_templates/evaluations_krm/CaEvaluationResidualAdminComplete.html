@@ -19,6 +19,7 @@
       if(!document.getElementById('clone').checked){
         let errorFound = false;
         $('#buttonSend').attr('data-kt-indicator', 'on');
+        $('#form-error-message').addClass('d-none');
         $('.card').removeClass('danger');
 
         if (!errorFound) {
@@ -71,7 +72,7 @@
 
         if (!errorFound) {
           $("textarea[name^='descriptionAdmin-']").each(function (index) {
-            if ($(this).val() == 0) {
+            if ($(this).val() == '') {
               let parent = $(this).closest('div.card');
               $(parent).addClass('danger');
               $('html, body').animate({
@@ -85,8 +86,48 @@
           });
         }
       }
-      return true;
+      else {
+        let errorFound = false;
+        $('#form-error-message').addClass('d-none');
+        $('#buttonSend').attr('data-kt-indicator', 'on');
+        $('.card').removeClass('danger');
+
+        if (!errorFound) {
+          $('.card.evaluable').each(function() {
+            const checkedProbability= $(this).find('.probability-clone:checked').length !== 0;
+            const checkedImpactEconomic = $(this).find('.impact-economic-clone:checked').length !== 0;
+            const checkedImpactObjectives = $(this).find('.impact-objectives-clone:checked').length !== 0;
+            const checkedEventSpeed = $(this).find('.event-speed-clone:checked').length !== 0;
+            const checkedImpactReputational = $(this).find('.impact-reputational-clone:checked').length !== 0;
+            const checkedImpactRegulatory = $(this).find('.impact-regulatory-clone:checked').length !== 0;
+            const checkedImpactDedication = $(this).find('.impact-dedication-clone:checked').length !== 0;
+            const checkedDescription = $(this).find('.description-evaluator').data('empty')  === false;
+
+            const adminImpactEmpty = $(this).find("input[name^='impact-']").val() == 0;
+            const adminProbabilityEmpty = $(this).find("input[name^='probability-']").val() == 0;
+            const adminSpeedEmpty = $(this).find("input[name^='event-speed-']").val() == 0;
+            const value = $(this).find("input[name^='description-']").val();
+            const adminDescriptionEmpty = !value || value === '';
+
+            const adminEmpty = adminImpactEmpty || adminProbabilityEmpty || adminSpeedEmpty || adminDescriptionEmpty;
+            const evaluatorEmpty = !checkedProbability || !checkedImpactEconomic || !checkedImpactObjectives || !checkedEventSpeed || !checkedImpactReputational || !checkedImpactRegulatory || !checkedImpactDedication || !checkedDescription;
+
+            if (adminEmpty && evaluatorEmpty) {
+              $(this).addClass('danger');
+              $('html, body').animate({
+                scrollTop: $(this).offset().top - 100
+                }, 1000);
+              $('#buttonSend').attr('data-kt-indicator', 'off');
+              $('#form-error-message').removeClass('d-none');
+              e.preventDefault();
+              errorFound = true;
+              return false;
+            }
+          });
+        }
+      }
     })
+    return true;
   });
 </script>
 
@@ -111,27 +152,33 @@
   }
 
   .severidad-muy-baja {
-  background-color: #09EF0D; /* Verde claro */
+    margin: 5px;
+    background-color: #a6ed9d;
   }
 
   .severidad-baja {
-    background-color: #E8EE0B; /* Verde más fuerte */
+    margin: 5px;
+    background-color: #e6d68e;
   }
 
   .severidad-media {
-    background-color: #FEA227; /* Amarillo */
+    margin: 5px;
+    background-color: #f4c39d;
   }
 
   .severidad-alta {
-    background-color: #FF6E56; /* Naranja */
+    margin: 5px;
+    background-color: #ed9f7b;
   }
 
   .severidad-muy-alta {
-    background-color: #F10606; /* Rojo */
+    margin: 5px;
+    background-color: #ea7d7e;
   }
 
   .severidad-desconocida {
-    background-color: #D9D3D2; /* Gris */
+    margin: 5px;
+    background-color: #d4d0c7;
   }
 
 </style>
@@ -329,8 +376,11 @@
 
 {% if tests %}
     {% for rt in tests %}
+    <div id="form-error-message" class="alert alert-danger d-none" role="alert">
+      {% trans 'Algún riesgo no ha sido evaluado todavía por su evaluador asignado, no puede recuperar su valoración' %}
+    </div>
     <div class="accordion" id="kt_accordion_2">
-      <div class="card  mb-5">
+      <div class="card  mb-5 evaluable">
         <div class="accordion-item">
           <!--begin::Card header-->
           <div class="card-header" id="kt_accordion_1_header_{{ forloop.counter }}" style="padding: inherit">
@@ -345,7 +395,7 @@
               <div class="row">
                 <div class="col-xl-5">
                   <div class="bg-light p-3 rounded" style="margin-bottom:15px">
-                    <h5 class="fs-4 fw-bold text-primary"> Datos del riesgo </h5>
+                    <h5 class="fs-4 fw-bold text-primary m-0">Datos del riesgo </h5>
                   </div>
 
                   <fieldset>
@@ -476,7 +526,7 @@
                   <div class="row">
                     <div class="col-xl-6">
                       <div class="bg-light p-3 rounded" style="margin-bottom:15px">
-                        <h5 class="fs-4 fw-bold text-primary"> Última valoración de Riesgo Inherente </h5>
+                        <h5 class="fs-4 fw-bold text-primary m-0">{% trans 'Última valoración de Riesgo Inherente' %}</h5>
                       </div>
                     </div>
 
@@ -506,31 +556,31 @@
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-1-5" {% if rt.get_latest_impact_inherent == 1 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 1 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-1-5">1<br>Muy bajo</label>
+                            <label class="form-check-label" for="i-pk-1-5">1<br>{% trans 'Muy bajo' %}</label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-2-5" {% if rt.get_latest_impact_inherent == 2 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 2 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-2-5">2<br>Bajo</label>
+                            <label class="form-check-label" for="i-pk-2-5">2<br>{% trans 'Bajo' %}</label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-3-5" {% if rt.get_latest_impact_inherent == 3 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 3 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-3-5">3<br>Medio</label>
+                            <label class="form-check-label" for="i-pk-3-5">3<br>{% trans 'Medio' %}</label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-4-5" {% if rt.get_latest_impact_inherent == 4 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 4 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-4-5">4<br>Alto</label>
+                            <label class="form-check-label" for="i-pk-4-5">4<br>{% trans 'Alto' %}</label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-4-5" {% if rt.get_latest_impact_inherent == 5 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 5 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-5-5">5<br>Muy alto</label>
+                            <label class="form-check-label" for="i-pk-5-5">5<br>{% trans 'Muy alto' %}</label>
                           </div>
                         </div>
                       </div>
@@ -545,31 +595,31 @@
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-1-5" {% if rt.get_latest_probability_inherent == 1 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 1 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-1-5">1<br>Remoto</label>
+                            <label class="form-check-label" for="p-pk-1-5">1<br>{% trans 'Remoto' %}</label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-2-5" {% if rt.get_latest_probability_inherent == 2 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 2 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-2-5">2<br>Posible</label>
+                            <label class="form-check-label" for="p-pk-2-5">2<br>{% trans 'Posible' %}</label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-3-5" {% if rt.get_latest_probability_inherent == 3 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 3 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-3-5">3<br>Probable</label>
+                            <label class="form-check-label" for="p-pk-3-5">3<br>{% trans 'Probable' %}</label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-4-5" {% if rt.get_latest_probability_inherent == 4 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 4 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-4-5">4<br>Muy probable</label>
+                            <label class="form-check-label" for="p-pk-4-5">4<br>{% trans 'Muy probable' %}</label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-check form-check-custom form-check-solid mb-4">
                             <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-5-5" {% if rt.get_latest_probability_inherent == 5 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 5 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-5-5">5<br>Prácticamente cierto</label>
+                            <label class="form-check-label" for="p-pk-5-5">5<br>{% trans 'Prácticamente cierto' %}</label>
                           </div>
                         </div>
                       </div>
@@ -629,45 +679,40 @@
               <div class="valoration-evaluator">
                 <div class="row mb-10">
                   <div class="col col-12">
-                    <h4 class="mb-7">Valoración aportada por el Evaluador de Riesgo Residual del Riesgo N2</h4>
+                    <h4 class="mb-7">{% trans 'Valoración aportada por el Evaluador de Riesgo Residual del Riesgo N2' %}</h4>
                   </div>
                   <div class="row">
                     <div class="col col-12 col-xl-5 mb-5 mb-xl-0">
                       <div class="mb-5">
-                        <h5 class="mb-7">Probabilidad</h5>
+                        <h5 class="mb-7">{% trans 'Probabilidad' %}</h5>
                         <div class="row">
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.probability_level_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input probability-clone" type="radio" {% if rt.probability_level_evaluator == 1 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Remoto' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.probability_level_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input probability-clone" type="radio" {% if rt.probability_level_evaluator == 2 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Posible' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.probability_level_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input probability-clone" type="radio" {% if rt.probability_level_evaluator == 3 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Probable' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.probability_level_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input probability-clone" type="radio" {% if rt.probability_level_evaluator == 4 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy probable' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.probability_level_evaluator == 5 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input probability-clone" type="radio" {% if rt.probability_level_evaluator == 5 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Prácticamente cierto' %}</label>
                             </div>
                           </div>
@@ -675,40 +720,35 @@
                       </div>
 
                       <div class="mb-5">
-                        <h5 class="mb-7">Impacto económico</h5>
+                        <h5 class="mb-7">{% trans 'Impacto económico' %}</h5>
                         <div class="row">
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_economic_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-economic-clone" type="radio" {% if rt.impact_economic_evaluator == 1 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_economic_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-economic-clone" type="radio" {% if rt.impact_economic_evaluator == 2 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_economic_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-economic-clone" type="radio" {% if rt.impact_economic_evaluator == 3 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Medio' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_economic_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-economic-clone" type="radio" {% if rt.impact_economic_evaluator == 4 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Alto' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_economic_evaluator == 5 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-economic-clone" type="radio" {% if rt.impact_economic_evaluator == 5 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy alto' %}</label>
                             </div>
                           </div>
@@ -716,40 +756,35 @@
                       </div>
 
                       <div class="mb-5">
-                        <h5 class="mb-7">Impacto en los Objetivos Estratégicos</h5>
+                        <h5 class="mb-7">{% trans 'Impacto en los Objetivos Estratégicos' %}</h5>
                         <div class="row">
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_objectives_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-objectives-clone" type="radio" {% if rt.impact_objectives_evaluator == 1 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_objectives_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-objectives-clone" type="radio" {% if rt.impact_objectives_evaluator == 2 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_objectives_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-objectives-clone" type="radio" {% if rt.impact_objectives_evaluator == 3 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Medio' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_objectives_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-objectives-clone" type="radio" {% if rt.impact_objectives_evaluator == 4 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Alto' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_objectives_evaluator == 5 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input impact-objectives-clone" type="radio" {% if rt.impact_objectives_evaluator == 5 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy alto' %}</label>
                             </div>
                           </div>
@@ -757,40 +792,35 @@
                       </div>
 
                       <div class="mb-5">
-                        <h5 class="mb-7">Velocidad de ocurrencia</h5>
+                        <h5 class="mb-7">{% trans 'Velocidad de ocurrencia' %}</h5>
                         <div class="row">
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.event_speed_level_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input event-speed-clone" type="radio" {% if rt.event_speed_level_evaluator == 1 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy baja' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.event_speed_level_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input event-speed-clone" type="radio" {% if rt.event_speed_level_evaluator == 2 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Baja' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.event_speed_level_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input event-speed-clone" type="radio" {% if rt.event_speed_level_evaluator == 3 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Media' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.event_speed_level_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input event-speed-clone" type="radio" {% if rt.event_speed_level_evaluator == 4 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Alta' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.event_speed_level_evaluator == 5 %} checked="checked" {% endif %} class="form-check-input"
-                                type="radio" disabled>
+                              <input class="form-check-input event-speed-clone" type="radio" {% if rt.event_speed_level_evaluator == 5 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy alta' %}</label>
                             </div>
                           </div>
@@ -801,40 +831,35 @@
                     <div class="col col-12 col-xl-6 mb-5 offset-xl-1">
 
                       <div class="mb-5">
-                        <h5 class="mb-7">Impacto Reputacional</h5>
+                        <h5 class="mb-7">{% trans 'Impacto Reputacional' %}</h5>
                         <div class="row">
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_reputational_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-reputational-clone" type="radio" {% if rt.impact_reputational_evaluator == 1 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_reputational_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-reputational-clone" type="radio" {% if rt.impact_reputational_evaluator == 2 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_reputational_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-reputational-clone" type="radio" {% if rt.impact_reputational_evaluator == 3 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Medio' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_reputational_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-reputational-clone" type="radio" {% if rt.impact_reputational_evaluator == 4 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Alto' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_reputational_evaluator == 5 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-reputational-clone" type="radio" {% if rt.impact_reputational_evaluator == 5 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy alto' %}</label>
                             </div>
                           </div>
@@ -842,40 +867,35 @@
                       </div>
 
                       <div class="mb-5">
-                        <h5 class="mb-7">Impacto Regulatorio</h5>
+                        <h5 class="mb-7">{% trans 'Impacto Regulatorio' %}</h5>
                         <div class="row">
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_regulatory_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-regulatory-clone" type="radio" {% if rt.impact_regulatory_evaluator == 1 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_regulatory_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-regulatory-clone" type="radio" {% if rt.impact_regulatory_evaluator == 2 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_regulatory_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-regulatory-clone" type="radio" {% if rt.impact_regulatory_evaluator == 3 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Medio' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_regulatory_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-regulatory-clone" type="radio" {% if rt.impact_regulatory_evaluator == 4 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Alto' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_regulatory_evaluator == 5 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-regulatory-clone" type="radio" {% if rt.impact_regulatory_evaluator == 5 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy alto' %}</label>
                             </div>
                           </div>
@@ -883,40 +903,35 @@
                       </div>
 
                       <div class="mb-5">
-                        <h5 class="mb-7">Impacto en el Tiempo de dedicación</h5>
+                        <h5 class="mb-7">{% trans 'Impacto en el Tiempo de dedicación' %}</h5>
                         <div class="row">
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_dedication_evaluator == 1 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-dedication-clone" type="radio" {% if rt.impact_dedication_evaluator == 1 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_dedication_evaluator == 2 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-dedication-clone" type="radio" {% if rt.impact_dedication_evaluator == 2 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Bajo' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_dedication_evaluator == 3 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-dedication-clone" type="radio" {% if rt.impact_dedication_evaluator == 3 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Medio' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_dedication_evaluator == 4 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-dedication-clone" type="radio" {% if rt.impact_dedication_evaluator == 4 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Alto' %}</label>
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-check form-check-custom form-check-solid mb-4">
-                              <input {% if rt.impact_dedication_evaluator == 5 %} checked="checked" {% endif %} class="form-check-input" type="radio"
-                                disabled>
+                              <input class="form-check-input impact-dedication-clone" type="radio" {% if rt.impact_dedication_evaluator == 5 %} checked="checked" {% endif %} disabled>
                               <label class="form-check-label">{% trans 'Muy alto' %}</label>
                             </div>
                           </div>
@@ -924,9 +939,10 @@
                       </div>
 
                       <div class="mb-5">
-                        <h5 class="mb-7">Descripción de la valoración del Evaluador de Riesgo Residual del Riesgo N2</h5>
+                        <h5 class="mb-7">{% trans 'Descripción de la valoración del Evaluador de Riesgo Residual del Riesgo N2' %}</h5>
                         <div class="row">
-                          <p>{{ rt.description_evaluator|default_if_none:'No se ha aportado todavía valoración por parte del Evaluador todavía' }}</p>
+                          <p class="description-evaluator" data-empty="{{ rt.description_evaluator|yesno:'false,true' }}">{{ rt.description_evaluator|default_if_none:_('No se ha aportado todavía valoración por parte del Evaluador') }}
+                          </p>
                         </div>
                       </div>
                     </div>

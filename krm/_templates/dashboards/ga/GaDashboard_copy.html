@@ -4,12 +4,22 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
+
+<!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/es.js"></script>
+<script src="{% static 'js/flatpickr_es.js' %}"></script>
+
 <script>
   {% get_current_language as LANGUAGE_CODE %}
   {% if LANGUAGE_CODE == 'es' %}
     $(".datepicker").flatpickr({
-      "locale": "es",
-      dateFormat: "d/m/Y",
+      locale: "es",
+      dateFormat: "Y-m-d",        // formato interno (para .val())
+      altInput: true,             // lo que ve el usuario
+      altFormat: "d/m/Y",
     });
   {% else %}
     $(".datepicker").flatpickr({
@@ -54,12 +64,7 @@
 
 {% include '_includes/Messages.html' %}
 
-<!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
-
 <script src="{% static 'js/apexcharts.js' %}"></script>
-<script src="{% static 'js/flatpickr_es.js' %}"></script>
-
 
 <script>
   var control_tests = {};
@@ -516,14 +521,35 @@
   }
 </script>
 
+<div class="card shadow-sm mb-4" style="border-radius: 1rem; overflow: hidden;">
+  <div class="card-header bg-primary d-flex justify-content-center align-items-center">
+    <h5 class="mb-0 fs-2 fw-bold text-white py-3">
+      {% trans "Seleccione el Dashboard que desea visualizar" %}
+    </h5>
+  </div>
+  <div class="card-body bg-light">
+    <form method="get" action="{% url 'users:ga_dashboard' %}">
+      <select name="dashboard" class="form-select" onchange="this.form.submit()">
+        <option value="default" {% if request.GET.dashboard == 'default' %}selected{% endif %}>
+          {% trans 'Dashboard de Controles' %}
+        </option>
+        <option value="KRM" {% if request.GET.dashboard == 'KRM' %}selected{% endif %}>
+          {% trans 'Dashboard de Riesgos' %}
+        </option>
+      </select>
+    </form>
+  </div>
+</div>
+
 <div class="accordion" id="kt_accordion_2">
-  <form method="get" class="kt-form kt-form--label-right" >
+  <form method="get" class="kt-form kt-form--label-right">
+    <input type="hidden" name="dashboard" value="{{ dashboard }}">
     <div class="card">
       <div class="accordion-item">
         <div class="card-header" id="kt_accordion_1_header_3" style="padding: inherit">
           <!--begin::Card header-->
           <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_3" aria-expanded="false" aria-controls="kt_accordion_1_body_3">
-          {% trans 'Search filters' %}
+          {% trans 'Aplicar filtros' %}
           </button>
           <!--end::Card header-->
         </div>
@@ -548,13 +574,12 @@
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_year|as_crispy_field }}</div>
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_period|as_crispy_field }}</div>
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.process_status|as_crispy_field }}</div>
-                        <!-- <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.control_status|as_crispy_field }}</div> -->
                       </div>
                     </fieldset>
                   </div>
                   <div class="row mb-4 col-12 col-md-4 align-items-start">
                     <fieldset>
-                      <legend>Date of evaluation</legend>
+                      <legend>{% trans 'Fecha de Evaluación' %}</legend>
                       <div class="row">
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.date_evaluation_begin|as_crispy_field }}</div>
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.date_evaluation_end|as_crispy_field }}</div>
@@ -566,7 +591,7 @@
             </div>
           </div>
           <div class="card-footer py-6">
-            <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i>Search</button>
+            <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i>{% trans 'Buscar' %}</button>
           </div>
         </div>
       </div>
@@ -576,7 +601,7 @@
 
 <div class="card">
   <div class="card-header">
-    <div class="card-title fs-3 fw-bold">{% trans 'Charts' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Gráficos' %}</div>
   </div>
   <div class="card-body">
     <div class="row mb-4">
@@ -788,7 +813,7 @@
     <div class="accordion-item">
       <div class="card-header" id="kt_accordion_1_header_2" style="padding: inherit">
         <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_2" aria-expanded="false" aria-controls="kt_accordion_1_body_2">
-        {% trans 'Results obtained' %}
+        {% trans 'Resultados obtenidos' %}
         </button>
       </div>
       <div id="kt_accordion_1_body_2" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_2" data-bs-parent="#kt_accordion_1">
@@ -796,14 +821,14 @@
           {% if evaluations.count %}
             {% include '_includes/control_test/_control_test_list.html' with evaluations=evaluations%}
           {% else %}
-            <div class="alert alert-primary">{% trans 'No results' %}.</div>
+            <div class="alert alert-primary">{% trans 'No hay tests de control disponibles' %}.</div>
           {% endif %}
         </div>
 
         <form method="POST" class="kt-form kt-form--label-right" novalidate style="padding: 15px;">
           {% csrf_token %}
           <input type="hidden" name="action" value="download">
-          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>Download results</button>
+          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar resultados' %}</button>
         </form>
       </div>
     </div>

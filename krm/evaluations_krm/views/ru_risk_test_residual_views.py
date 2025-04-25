@@ -182,6 +182,12 @@ class RuEvaluationRiskResidualDetail(FormView):
         context['evaluation'].nrisk_test_residuals_pending = context['evaluation'].nrisk_test_residuals_by_state(1, user=self.request.user)
         context['evaluation'].nrisk_test_residuals_delivered = context['evaluation'].nrisk_test_residuals_by_state(2, user=self.request.user)
         context['evaluation'].nrisk_test_residuals_finished = context['evaluation'].nrisk_test_residuals_by_state(3, user=self.request.user)
+        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_residuals_by_severity('SE', user= self.request.user)
+        context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_residuals_by_severity('MB', user= self.request.user)
+        context['evaluation'].sev_low = context['evaluation'].nrisk_test_residuals_by_severity('B', user= self.request.user)
+        context['evaluation'].sev_medium = context['evaluation'].nrisk_test_residuals_by_severity('M', user= self.request.user)
+        context['evaluation'].sev_high = context['evaluation'].nrisk_test_residuals_by_severity('A', user= self.request.user)
+        context['evaluation'].sev_very_high = context['evaluation'].nrisk_test_residuals_by_severity('MA', user= self.request.user)
 
         # Serializar Evaluation no incluye sus hijos :(
         # Busco los hijos
