@@ -34,6 +34,8 @@ from krm.evaluations.models.control_test_model import ControlTest
 from krm.evaluations.models.evaluation_model import Evaluation
 from krm.evaluations_krm.models.evaluation_krm_inherent_model import EvaluationKrmInherent
 from krm.evaluations_krm.models.evaluation_krm_residual_model import EvaluationKrmResidual
+from krm.evaluations_krm.models.risk_test_inherent_model import RiskTestInherent
+from krm.evaluations_krm.models.risk_test_residual_model import RiskTestResidual
 
 from krm.users.forms import LoginForm, RememberForm, PasswordForm, LoginCodeForm
 from krm.users.models import User
@@ -87,11 +89,15 @@ class GaDashboardView(TemplateView, FormView):
                 context['search_evaluation_form'] = form
                 context['evaluations_inherent'] = EvaluationKrmInherent.objects.all()
                 context['evaluations_residual'] = EvaluationKrmResidual.objects.all()
+                context['risk_test_inherent'] = RiskTestInherent.objects.all()
+                context['risk_test_residual'] = RiskTestResidual.objects.all()
 
             if form.is_valid():
                 cd= form.cleaned_data
                 qs_inherent= EvaluationKrmInherent.objects.all()
                 qs_residual= EvaluationKrmResidual.objects.all()
+                test_inherent= RiskTestInherent.objects.all()
+                test_residual= RiskTestResidual.objects.all()
                 date_evaluation_begin = cd.get('date_evaluation_begin')
                 date_evaluation_end = cd.get('date_evaluation_end')
                 evaluation_inherent = cd.get('evaluation_inherent')
@@ -100,6 +106,7 @@ class GaDashboardView(TemplateView, FormView):
                 certification_year = cd.get('certification_year')
                 certification_period = cd.get('certification_period')
                 status = cd.get('process_status')
+                domain_risk= cd.get('domain_risk')
 
                 if date_evaluation_begin != '' and date_evaluation_begin is not None:
                     date_evaluation_begin = datetime.strptime(date_evaluation_begin, '%d/%m/%Y')
@@ -132,8 +139,19 @@ class GaDashboardView(TemplateView, FormView):
                     qs_inherent = qs_inherent.filter(status__in=status)
                     qs_residual = qs_residual.filter(status__in=status)
 
+                if len(domain_risk) > 0:
+                    qs_inherent = qs_inherent.filter(risk_test_inherents__risk__risk__risk_master__domain_risk__pk__in = domain_risk).distinct()
+                    qs_residual = qs_residual.filter(risk_test_residuals__risk__risk__risk_master__domain_risk__pk__in = domain_risk).distinct()
+                    test_inherent = test_inherent.filter(risk__risk__risk_master__domain_risk__pk__in=domain_risk, evaluation__in= qs_inherent)
+                    test_residual = test_residual.filter(risk__risk__risk_master__domain_risk__pk__in=domain_risk, evaluation__in= qs_residual)
+                else:
+                    test_inherent = test_inherent.filter(evaluation__in= qs_inherent)
+                    test_residual = test_residual.filter(evaluation__in= qs_residual)
+
                 context['evaluations_inherent']= qs_inherent
                 context['evaluations_residual']= qs_residual
+                context['risk_test_inherent']= test_inherent
+                context['risk_test_residual']= test_residual
 
         else:
             context['page_title'] = _('Dashboard de Controles para el Administrador Global')

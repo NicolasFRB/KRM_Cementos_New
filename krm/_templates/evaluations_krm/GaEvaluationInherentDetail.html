@@ -10,8 +10,8 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
-<!-- <script src="{% static 'js/apexcharts.js' %}"></script> -->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
+<script src="{% static 'js/apexcharts.js' %}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script> -->
 <script src="{% static 'js/chart.js' %}"></script>
 
 <style>
@@ -145,83 +145,53 @@ function color_severity(val, id){
 
 function load_bar(id, rit, grouped) {
 
-  let impact_evaluator = [];
-  let impact_evaluator_percentage = [];
-  let probability_evaluator = [];
-  let probability_evaluator_percentage = [];
-  let impact_administrator = [];
-  let impact_administrator_percentage= [];
-  let probability_administrator = [];
-  let probability_administrator_percentage = [];
+  let impact_assessment = [];
+  let probability_assessment = [];
   let names= [];
   let ref = [];
-  let evaluator= [];
-  let administrator = [];
+  let users_assessment= [];
 
-  rit.forEach(function(r) {
-    let evaluator_sum = r.impact_evaluator + r.probability_evaluator;
-    let administrator_sum = r.impact_administrator + r.probability_administrator;
-    if (evaluator_sum !== 0){
-      impact_evaluator_percentage.push((r.impact_evaluator*r.severity_evaluator)/evaluator_sum);
-      probability_evaluator_percentage.push((r.probability_evaluator*r.severity_evaluator)/evaluator_sum);
-    } else {
-      impact_evaluator_percentage.push(0);
-      probability_evaluator_percentage.push(0);
-    }
-    impact_evaluator.push(r.impact_evaluator);
-    probability_evaluator.push(r.probability_evaluator);
-    if (administrator_sum !== 0) {
-      impact_administrator_percentage.push((r.impact_administrator*r.severity_administrator)/administrator_sum);
-      probability_administrator_percentage.push((r.probability_administrator*r.severity_administrator)/administrator_sum);
-    } else {
-      impact_administrator_percentage.push(0);
-      probability_administrator_percentage.push(0);
-    }
-    impact_administrator.push(r.impact_administrator);
-    probability_administrator.push(r.probability_administrator);
-    names.push(r.name);
-    ref.push(r.ref);
-    evaluator.push(r.evaluator);
-    administrator.push(r.administrator)
-  });
+  if (grouped) {
+    rit.forEach(function(r) {
+      impact_assessment.push(r.impact_administrator);
+      probability_assessment.push(r.probability_administrator);
+      users_assessment.push(r.administrator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  } else {
+    rit.forEach(function(r) {
+      impact_assessment.push(r.impact_evaluator);
+      probability_assessment.push(r.probability_evaluator);
+      users_assessment.push(r.evaluator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  }
 
   let built_series = grouped ?
   [
     {
-      name: "Evaluator's impact assessment",
-      group: 'Evaluator',
-      color: '#80c7fd',
-      data: impact_evaluator_percentage
-    },
-    {
-      name: "Evaluator's probability assessment",
-      group: 'Evaluator',
-      color: '#80f1cb',
-      data: probability_evaluator_percentage
-    },
-    {
       name: "Administrator's impact assessment",
-      group: 'Administrator',
       color: '#008ffb',
-      data: impact_administrator_percentage
+      data: impact_assessment
     },
     {
       name: "Administrator's probability assessment",
-      group: 'Administrator',
       color: '#00e396',
-      data: probability_administrator_percentage
+      data: probability_assessment
     }
   ]
   : [
     {
       name: "Evaluator's impact assessment",
       color: '#008ffb',
-      data: impact_evaluator_percentage
+      data: impact_assessment
     },
     {
       name: "Evaluator's probability assessment",
       color: '#00e396',
-      data: probability_evaluator_percentage
+      data: probability_assessment
     }
   ]
 
@@ -251,26 +221,6 @@ function load_bar(id, rit, grouped) {
       },
       dataLabels: {
         enabled: true,
-        formatter: function (val, opts) {
-          const index = opts.dataPointIndex;
-          const seriesIndex = opts.seriesIndex;
-
-          if (grouped) {
-            switch (seriesIndex) {
-              case 0: return impact_evaluator[index]; // Evaluator's impact
-              case 1: return probability_evaluator[index]; // Evaluator's probability
-              case 2: return impact_administrator[index]; // Admin's impact
-              case 3: return probability_administrator[index]; // Admin's probability
-              default: return val;
-            }
-          } else {
-            switch (seriesIndex) {
-              case 0: return impact_evaluator[index];
-              case 1: return probability_evaluator[index];
-              default: return val;
-            }
-          }
-        },
         style: {
           fontSize: '10px',
           colors: ["#304758"]
@@ -279,12 +229,12 @@ function load_bar(id, rit, grouped) {
       tooltip:{
         custom: function({ series, seriesIndex, dataPointIndex, w }) {
         let content ='<div style="font-size: 12px; padding: 10px; border-radius: 5px; background: #fff; border: 1px solid #ddd;">';
-
-        if (seriesIndex === 0 || seriesIndex === 1) {
-        const impact = impact_evaluator[dataPointIndex];
-        const probability = probability_evaluator[dataPointIndex];
-        const person = evaluator[dataPointIndex];
+        const impact = impact_assessment[dataPointIndex];
+        const probability = probability_assessment[dataPointIndex];
+        const person = users_assessment[dataPointIndex];
         const severity= impact*probability
+
+        if (!grouped) {
 
         content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
         content += `<strong>Evaluator's assesment</strong><br/></div>`;
@@ -293,22 +243,17 @@ function load_bar(id, rit, grouped) {
                     <strong>Probability</strong>: ${probability}<br/>
                     <strong>Severity</strong>: ${severity}<br/>
                     <strong>Assigned user</strong>: @${person}</div>`;
+        } else {
+
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Administrator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
         }
 
-        if (seriesIndex === 2 || seriesIndex === 3) {
-          const impact = impact_administrator[dataPointIndex];
-          const probability = probability_administrator[dataPointIndex];
-          const person = administrator[dataPointIndex];
-          const severity= impact*probability
-
-          content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
-          content += `<strong>Administrator's assesment</strong><br/></div>`;
-          content += '<div style="font-size: 12px; color: #333; text-align: left;">';
-          content +=  `<strong>Impact</strong>: ${impact}<br/>
-                      <strong>Probability</strong>: ${probability}<br/>
-                      <strong>Severity</strong>: ${severity}<br/>
-                      <strong>Company admin</strong>: @${person}</div>`;
-        }
         content += '</div>';
         return content;
       }
@@ -658,7 +603,7 @@ function swap_columns(id, datatable_id) {
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -794,7 +739,6 @@ function swap_columns(id, datatable_id) {
           <div id="bar-main" style="width: 100%"></div>
         </div>
         <script>
-            // var rit = JSON.parse(clean_specialchars("{{ rit_json }}"));
             var rit = JSON.parse("{{ rit_json|escapejs }}");
             var grouped = "{{ evaluation.status }}" !== "EP";
             load_bar("bar-main", rit, grouped);

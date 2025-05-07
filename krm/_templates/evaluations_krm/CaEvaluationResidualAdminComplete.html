@@ -106,8 +106,8 @@
             const adminImpactEmpty = $(this).find("input[name^='impact-']").val() == 0;
             const adminProbabilityEmpty = $(this).find("input[name^='probability-']").val() == 0;
             const adminSpeedEmpty = $(this).find("input[name^='event-speed-']").val() == 0;
-            const value = $(this).find("input[name^='description-']").val();
-            const adminDescriptionEmpty = !value || value === '';
+            const value = $(this).find("textarea[name^='descriptionAdmin-']").val();
+            const adminDescriptionEmpty = !value || value?.trim() === '';
 
             const adminEmpty = adminImpactEmpty || adminProbabilityEmpty || adminSpeedEmpty || adminDescriptionEmpty;
             const evaluatorEmpty = !checkedProbability || !checkedImpactEconomic || !checkedImpactObjectives || !checkedEventSpeed || !checkedImpactReputational || !checkedImpactRegulatory || !checkedImpactDedication || !checkedDescription;
@@ -295,7 +295,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -395,7 +395,7 @@
               <div class="row">
                 <div class="col-xl-5">
                   <div class="bg-light p-3 rounded" style="margin-bottom:15px">
-                    <h5 class="fs-4 fw-bold text-primary m-0">Datos del riesgo </h5>
+                    <h5 class="fs-4 fw-bold text-primary m-0">{% trans 'Datos del riesgo' %}</h5>
                   </div>
 
                   <fieldset>
@@ -469,7 +469,7 @@
                                   <th class="text-center">{% trans 'Descripción' %}</th>
                                   <th class="text-center">{% trans 'Evidencia' %}</th>
                                   <th class="text-center">{% trans 'Frecuencia' %}</th>
-                                  <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+                                  <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -535,7 +535,7 @@
                     <div class="col-xl-6">
                       <div class="d-flex justify-content-end">
 
-                        <span class="text-muted" style="font-size: 14px; margin-right: 10px;"><strong>Severidad:</strong></span>
+                        <span class="text-muted" style="font-size: 14px; margin-right: 10px;"><strong>{% trans 'Severidad' %}:</strong></span>
 
                         <span class="badge text-wrap {% if rt.get_latest_severity_inherent_qualitative == 'Muy baja' %}severidad-muy-baja{% elif rt.get_latest_severity_inherent_qualitative == 'Baja' %}severidad-baja{% elif rt.get_latest_severity_inherent_qualitative == 'Media' %}severidad-media{% elif rt.get_latest_severity_inherent_qualitative == 'Alta' %}severidad-alta{% elif rt.get_latest_severity_inherent_qualitative == 'Muy alta' %}severidad-muy-alta{% else %}severidad-desconocida{% endif %}" style="font-size: 14px;">
                           {{ rt.get_latest_severity_inherent_qualitative }} ({{ rt.get_latest_severity_inherent }})
@@ -952,16 +952,19 @@
               </div>
             </div>
 
-      <div class="card-footer py-6">
-        <div class="admin_risk_test_residual"
-          data-risktestpk="{{ rt.pk }}"
-          data-impact="{{ rt.impact_level_administrator }}"
-          data-probability="{{ rt.probability_level_administrator }}"
-          data-event-speed="{{ rt.event_speed_level_administrator }}"
-          data-description="{{ rt.description_administrator|default_if_none:'' }}"></div>
+            <div class="card-footer py-6">
+              <div class="admin_risk_test_residual"
+                data-risktestpk="{{ rt.pk }}"
+                data-impact="{{ rt.impact_level_administrator }}"
+                data-probability="{{ rt.probability_level_administrator }}"
+                data-event-speed="{{ rt.event_speed_level_administrator }}"
+                data-description="{{ rt.description_administrator|default_if_none:'' }}"></div>
+            </div>
+            <!--end::Card footer-->
+          </div>
+        </div>
       </div>
-        <!--end::Card footer-->
-      </div>
+    </div>
     {% endfor %}
 
     <!-- ELCs -->

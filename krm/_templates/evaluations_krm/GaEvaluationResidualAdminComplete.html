@@ -105,8 +105,8 @@
             const adminImpactEmpty = $(this).find("input[name^='impact-']").val() == 0;
             const adminProbabilityEmpty = $(this).find("input[name^='probability-']").val() == 0;
             const adminSpeedEmpty = $(this).find("input[name^='event-speed-']").val() == 0;
-            const value = $(this).find("input[name^='description-']").val();
-            const adminDescriptionEmpty = !value || value === '';
+            const value = $(this).find("textarea[name^='descriptionAdmin-']").val();
+            const adminDescriptionEmpty = !value || value?.trim() === '';
 
             const adminEmpty = adminImpactEmpty || adminProbabilityEmpty || adminSpeedEmpty || adminDescriptionEmpty;
             const evaluatorEmpty = !checkedProbability || !checkedImpactEconomic || !checkedImpactObjectives || !checkedEventSpeed || !checkedImpactReputational || !checkedImpactRegulatory || !checkedImpactDedication || !checkedDescription;
@@ -299,7 +299,7 @@
               <div class="row mb-8">
                 <!--begin::Col-->
                 <div class="col-xl-5">
-                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->
@@ -476,7 +476,7 @@
                                   <th class="text-center">{% trans 'Descripción' %}</th>
                                   <th class="text-center">{% trans 'Evidencia' %}</th>
                                   <th class="text-center">{% trans 'Frecuencia' %}</th>
-                                  <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+                                  <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -948,8 +948,7 @@
                       <div class="mb-5">
                         <h5 class="mb-7">{% trans 'Descripción de la valoración del Evaluador de Riesgo Residual del Riesgo N2' %}</h5>
                         <div class="row">
-                          <p class="description-evaluator" data-empty="{{ rt.description_evaluator|yesno:'false,true' }}">{{ rt.description_evaluator|default_if_none:_('No se ha aportado todavía valoración por parte del Evaluador') }}
-                          </p>
+                          <p class="description-evaluator" data-empty="{{ rt.description_evaluator|yesno:'false,true' }}">{{ rt.description_evaluator|default_if_none:_('No se ha aportado todavía valoración por parte del Evaluador') }}</p>
                         </div>
                       </div>
                     </div>

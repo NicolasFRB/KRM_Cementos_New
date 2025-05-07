@@ -165,7 +165,9 @@ class GaEvaluationInherentCreateView(FormView):
         evaluations = []
 
         risk_companies = json.loads(form.cleaned_data["risk_companies"])
+        print("Voy a imprimir lo que nos viene en risk_companies para cada riesgo seleccionado:")
         for rc in risk_companies:
+            print(rc)
             company = Company.objects.get(pk=rc['company_pk'])
             riskcompany_pks = []
 
@@ -241,6 +243,14 @@ class GaEvaluationInherentDetailView(FormView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        """
+        Función empleada para mandar datos del Backend a la template de HTML y poder visualizar así
+        los datos por pantalla, a través de los gráficos del detalle de una Evaluación de Riesgo. Puesto que
+        queremos enviar los datos particulares de cada test de riesgo para realizar el gráfico de barras, crearemos
+        un orden en el listado de tests de riesgo para representar aquellos con menor severidad los primeros, y
+        que la severidad, equivalente a la altura vaya aumentando conforme avanzamos hacia la derecha del gráfico.
+
+        """
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
         context['evaluation'] = self.evaluation
@@ -279,8 +289,7 @@ class GaEvaluationInherentDetailView(FormView):
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
-        context['rit'] = RiskTestInherent.objects.filter(
-            evaluation=self.evaluation)
+        context['rit'] = RiskTestInherent.objects.filter(evaluation=self.evaluation)
 
         context['rit_dict']= []
         for risk_test in context['rit']:
@@ -297,7 +306,10 @@ class GaEvaluationInherentDetailView(FormView):
             information['severity_administrator']= risk_test.severity_level_administrator
             context['rit_dict'].append(information)
 
-        context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (x['severity_evaluator'], x['ref']), reverse=True)
+        if self.evaluation.admin_supervisor:
+            context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: x['severity_administrator'], reverse=False)
+        else:
+            context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: x['severity_evaluator'], reverse=False)
 
         # Errores de encoding caracteres portugueses y españoles
         # for i, m in enumerate(context['rit_dict']):
@@ -306,14 +318,7 @@ class GaEvaluationInherentDetailView(FormView):
         #             context['rit_dict'][i][k] = context['rit_dict'][i][k].encode(
         #                 'utf-8').decode('utf-8')
 
-        context['rit_json'] = json.dumps(
-            context['rit_dict'],
-            default=str,
-            ensure_ascii=True,
-        )
-
-        print(context['rit_json'])
-
+        context['rit_json'] = json.dumps(context['rit_dict'], default=str, ensure_ascii=True)
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -495,7 +500,7 @@ class GaEvaluationInherentAdminComplete(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Riesgo Inherente')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        context['risks_test_inherent'] = self.object.risk_test_inherents.filter()
+        context['tests'] = self.object.risk_test_inherents.all()
 
         return context
 
@@ -515,6 +520,7 @@ class GaEvaluationInherentAdminComplete(DetailView, FormView):
             if ri.description_administrator == '' or ri.description_administrator== None:
                 ri.description_administrator = ri.description_expert
             ri.save()
+
         evaluation.status = 'FI'
         evaluation.admin_supervisor = self.request.user
         evaluation.save()

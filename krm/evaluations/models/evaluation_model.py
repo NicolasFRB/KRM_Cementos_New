@@ -108,7 +108,7 @@ class Evaluation(AuditModel):
     )
 
     def __str__(self):
-        return self.ref
+        return str(self.ref)
 
     class Meta:
         verbose_name = _("Evaluación KRC")

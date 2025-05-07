@@ -432,7 +432,7 @@ class GaUserImportView(FormView):
         context['breadcrums'] = breadcrums
         return context
 
-    def checkExcelRep(self, name, elem, elems_to_create, form, index, field_key):
+    def checkExcelRep(self, name, elem, elems_to_create, index, field_key):
         """
         Función empleada para contrastar que no existe una instancia de un objeto con el mismo valor para
         el atributo field_key en la importación de datos, que en este caso será el username o el mail, dado
@@ -457,6 +457,7 @@ class GaUserImportView(FormView):
             Nombre del atributo cuya repetición se quiere contrastar.
 
         """
+        problem = False
         for e in elems_to_create:
             if e[field_key] == elem[field_key]:
                 self.errors_found +=1
@@ -464,13 +465,14 @@ class GaUserImportView(FormView):
                     self.request,
                     messages.ERROR,
                     (
-                        _('El campo %s se encuentra repetido en el importador: %s en la fila %d')
-                        % (name, e[field_key], index)
+                        _('El campo %(name)s se encuentra repetido en el importador: %(value)s en la fila %(index)d') % {
+                            "name": name, "value": e[field_key], "index": index}
                     ),
                 )
-                return super(GaUserImportView, self).form_invalid(form)
+                problem= True
+        return problem
 
-    def checkDB(self, name, elem, DBreference, form, field_key, index):
+    def checkDB(self, name, elem, DBreference, field_key, index):
         """
         Función que contrasta si existen previamente en la base de datos instancias de un objeto con el mismo identificador que alguna
         de las nuevas instancias que se pretende crear.
@@ -490,6 +492,7 @@ class GaUserImportView(FormView):
             Nombre del atributo cuya repetición se quiere contrastar.
 
         """
+        problem= False
         if field_key == "email":
             if DBreference.objects.filter(email=elem[field_key]).count() > 0:
                 self.errors_found +=1
@@ -497,11 +500,13 @@ class GaUserImportView(FormView):
                     self.request,
                     messages.ERROR,
                     (
-                        _('El campo %s del usuario de la fila %s (%s) ya se encuentra registrado, por favor aporte un nuevo valor')
-                        % (name, index, elem[field_key])
+                        _('El campo %(name)s del usuario de la fila %(index)d (%(value)s) ya se encuentra registrado, por favor aporte un nuevo valor') %{
+                            "name": name,
+                            "value": elem[field_key]
+                        }
                     ),
                 )
-                return super(GaUserImportView, self).form_invalid(form)
+                problem= True
         else:
             if DBreference.objects.filter(username=elem[field_key]).count() > 0:
                 self.errors_found +=1
@@ -509,11 +514,15 @@ class GaUserImportView(FormView):
                     self.request,
                     messages.ERROR,
                     (
-                        _('El campo %s del usuario de la fila %s (%s) ya se encuentra registrado, por favor aporte un nuevo valor')
-                        % (name, index, elem[field_key])
+                        _('El campo %(name)s del usuario de la fila %(index)d (%(value)s) ya se encuentra registrado, por favor aporte un nuevo valor') % {
+                            "name": name,
+                            "index": index,
+                            "value": elem[field_key]
+                        }
                     ),
                 )
-                return super(GaUserImportView, self).form_invalid(form)
+                problem= True
+        return problem
 
     def form_valid(self, form):
         input_excel = self.request.FILES['data_file'].read()
@@ -522,14 +531,16 @@ class GaUserImportView(FormView):
 
         users_to_create = []
 
-        rows = [row for row in wb['Users'].iter_rows() if any(cell.value not in (None, '') for cell in row)]
+        rows = [row for row in wb['Users'].iter_rows() if any(cell.value and str(cell.value).strip()!= '' for cell in row)]
 
         for row in rows:
             i= row[0].row
             if not i == 1:
                 user = {}
 
-                if (row[0].value and row[1].value and row[2].value and row[4].value):
+                #comprobación correspondiente de los campos obligatorios
+                mandatory= row[0].value and str(row[0].value).strip()!= '' and row[1].value and str(row[1].value).strip()!= '' and row[2].value and str(row[2].value).strip()!= '' and row[3].value and str(row[3].value).strip() != '' and row[4].value and str(row[4].value).strip() != ''
+                if mandatory:
                     user['email'] = str(row[0].value).strip().lower()
                     user['first_name'] = str(row[1].value).title() #ponemos en mayúsuculas la primera letra
                     user['last_name'] = str(row[2].value).title()
@@ -539,8 +550,9 @@ class GaUserImportView(FormView):
                     user['companies'] = [x.strip() for x in str(row[6].value).split(',')]
                     user['notification_language'] = str(row[7].value).strip()
 
+                    #comprobaciones correspondientes a la dirección de correo electrónico del usuario:
                     if not re.match(
-                        '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
+                        '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]c+\.[(a-z)]{2,4}$',
                         user['email']
                     ):
                         self.errors_found+=1
@@ -551,12 +563,18 @@ class GaUserImportView(FormView):
                         )
                         return super(GaUserImportView, self).form_invalid(form)
 
-                    self.checkExcelRep("Email address", user, users_to_create, form, i, "email")
-                    self.checkExcelRep("Username", user, users_to_create, form, i, "username")
-                    self.checkDB("Email address", user, User, form, "email", i)
-                    self.checkDB("Username", user, User, form, "username", i)
+                    if self.checkExcelRep("Email address", user, users_to_create, i, "email"):
+                        return super(GaUserImportView, self).form_invalid(form)
+                    if self.checkDB("Email address", user, User, "email", i):
+                        return super(GaUserImportView, self).form_invalid(form)
 
-                    # Tenemos que comprobar que las compañías especificadas existen
+                    #comprobaciones con respecto al nombre de usuario insertado:
+                    if self.checkExcelRep("Username", user, users_to_create, i, "username"):
+                        return super(GaUserImportView, self).form_invalid(form)
+                    if self.checkDB("Username", user, User, "username", i):
+                        return super(GaUserImportView, self).form_invalid(form)
+
+                    #comprobación correspondiente de las compañías insertadas para el usuario
                     for c in user['companies']:
                         if Company.objects.filter(ref=c).count() == 0:
                             self.errors_found +=1
@@ -567,6 +585,7 @@ class GaUserImportView(FormView):
                             )
                             return super(GaUserImportView, self).form_invalid(form)
 
+                    #comprobación correspondiente del idioma de notificación
                     if user['notification_language'].lower() not in ['es', 'en']:
                         self.errors_found +=1
                         messages.add_message(

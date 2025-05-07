@@ -287,49 +287,37 @@ class CaEvaluationInherentDetailView(FormView):
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
-        # Serializar Evaluation no incluye sus hijos :(
-        # Busco los hijos
-        context['rit'] = RiskTestInherent.objects.filter(
-            evaluation=self.evaluation)
+        context['rit'] = RiskTestInherent.objects.filter(evaluation=self.evaluation)
 
-        # Paso a dict para json
-        context['rit_dict'] = [model_to_dict(m) for m in context['rit']]
+        context['rit_dict'] = []
+        for risk_test in context['rit']:
+            information = {}
+            information['ref']= risk_test.risk.risk.ref
+            information['name']= risk_test.risk.risk.name
+            information['evaluator']= risk_test.expert.username_no_domain
+            information['impact_evaluator']= risk_test.impact_level_expert
+            information['probability_evaluator']= risk_test.probability_level_expert
+            information['severity_evaluator']= risk_test.severity_level_expert
+            information['administrator']= self.evaluation.admin_supervisor.username_no_domain if self.evaluation.admin_supervisor else ''
+            information['impact_administrator']= risk_test.impact_level_administrator
+            information['probability_administrator']= risk_test.probability_level_administrator
+            information['severity_administrator']= risk_test.severity_level_administrator
+            context['rit_dict'].append(information)
 
-        # MODEL_TO_DICT not getting properties :(
-        # Get .severity_level_expert
-        # TBI for cuadratico :/
-        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
-        for i, r1 in enumerate(context['rit']):
-            context['rit_dict'][i]['risk_ref'] = r1.risk.risk.ref
-            context['rit_dict'][i]['risk_name'] = r1.risk.risk.name
-            for r2 in context['rit_dict']:
-                if r1.id == r2['id']:
-                    r2['severity_level_expert'] = r1.severity_level_expert
-
-        # QUITAR RESTO DE ATTRIBUTES (solo dan problemas con el encoding)
-        for i, r1 in enumerate(context['rit']):
-            for k in context['rit_dict'][i].copy():
-                if k not in ['risk_ref', 'risk_name', 'expert', 'impact_level_expert', 'probability_level_expert', 'severity_level_expert']:
-                    del context['rit_dict'][i][k]
-
-        # Sort by severity for a nice plot
-        context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: (
-            x['severity_level_expert'], x['risk_ref']), reverse=True)
+        if self.evaluation.admin_supervisor:
+            context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: x['severity_administrator'], reverse=False)
+        else:
+            context['rit_dict'] = sorted(context['rit_dict'], key=lambda x: x['severity_evaluator'], reverse=False)
 
         # Errores de encoding caracteres portugueses y españoles
-        for i, m in enumerate(context['rit_dict']):
-            for k in m:
-                if type(context['rit_dict'][i][k]) == str:
-                    context['rit_dict'][i][k] = context['rit_dict'][i][k].encode(
-                        'utf-8').decode('utf-8')
+        # for i, m in enumerate(context['rit_dict']):
+        #     for k in m:
+        #         if type(context['rit_dict'][i][k]) == str:
+        #             context['rit_dict'][i][k] = context['rit_dict'][i][k].encode(
+        #                 'utf-8').decode('utf-8')
 
         # JSON DUMP
-        context['rit_json'] = json.dumps(
-            context['rit_dict'],
-            default=str,
-            ensure_ascii=True,
-        )
-
+        context['rit_json'] = json.dumps(context['rit_dict'], default=str, ensure_ascii=True)
         context['js_template'] = ['js/custom/datatables.js']
 
         return context
@@ -510,7 +498,7 @@ class CaEvaluationInherentAdminComplete(DetailView, FormView):
         context['page_title'] = f"{_('Evaluación de Riesgo Inherente')} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
-        context['risks_test_inherent'] = self.object.risk_test_inherents.filter()
+        context['tests'] = self.object.risk_test_inherents.all()
 
         return context
 

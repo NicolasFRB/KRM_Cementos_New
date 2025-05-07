@@ -12,7 +12,9 @@
 {% include '_includes/Messages.html' %}
 
 <script src="{% static 'js/chart.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'js/apexcharts.js' %}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+
 
 <style>
   canvas{
@@ -79,187 +81,152 @@
 
 <script>
 
-function load_bar(id, rcr) {
-    r_impacto_inherente = [];
-    r_prob_inherente = [];
-    r_prob_residual = [];
-    nivel_de_control = [];
-    rcr.forEach(function(r) {
+function load_bar(id, rrt, grouped) {
+  let impact_assessment = [];
+  let probability_assessment = [];
+  let names= [];
+  let ref = [];
+  let users_assessment= [];
 
-      var r_i_inh = {x: '', y: '', name: ''}
-      var r_p_inh = {x: '', y: '', name: ''}
-      var r_p_res = {x: '', y: '', name: ''}
-      var nc = {x: '', y: '', name: ''}
-
-      r_i_inh.x = r.risk_ref
-      r_i_inh.y = r.impact_inherent
-      r_i_inh.name = r.risk_name
-
-      r_p_inh.x = r.risk_ref
-      r_p_inh.y = r.probability_inherent-r.probability_residual_eval
-      r_p_inh.name = r.risk_name
-
-      r_p_res.x = r.risk_ref
-      r_p_res.y = r.probability_residual_eval
-      r_p_res.name = r.risk_name
-
-      nc.x = r.risk_ref
-      nc.y = -1-(r.nivel_de_control)
-      nc.name = r.risk_name
-      nc.nivel_de_control = r.nivel_de_control
-
-      r_impacto_inherente.push(r_i_inh)
-      r_prob_inherente.push(r_p_inh)
-      r_prob_residual.push(r_p_res)
-      nivel_de_control.push(nc)
+  if (grouped) {
+    rrt.forEach(function(r) {
+      impact_assessment.push(r.impact_administrator);
+      probability_assessment.push(r.probability_administrator);
+      users_assessment.push(r.administrator);
+      names.push(r.name);
+      ref.push(r.ref);
     });
+  } else {
+    rrt.forEach(function(r) {
+      impact_assessment.push(r.impact_evaluator);
+      probability_assessment.push(r.probability_evaluator);
+      users_assessment.push(r.evaluator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  }
 
-    var options = {
-          series: [
-            {
-              name: 'Impacto inherente',
-              data: r_impacto_inherente,
-              type: 'column',
-            },
-            {
-              name: 'Probabilidad residual',
-              data: r_prob_residual,
-              type: 'column',
-            },
-            {
-              name: 'Probabilidad inherente',
-              data: r_prob_inherente,
-              type: 'column',
-            },
-            {
-              name: 'Nivel de contol',
-              data: nivel_de_control,
-              type: 'line',
-            },
+  let built_series = grouped ?
+  [
+    {
+      name: "Administrator's impact assessment",
+      color: '#008ffb',
+      data: impact_assessment
+    },
+    {
+      name: "Administrator's probability assessment",
+      color: '#00e396',
+      data: probability_assessment
+    }
+  ]
+  : [
+    {
+      name: "Evaluator's impact assessment",
+      color: '#008ffb',
+      data: impact_assessment
+    },
+    {
+      name: "Evaluator's probability assessment",
+      color: '#00e396',
+      data: probability_assessment
+    }
+  ]
 
-        ],
+  var options = {
+        series: built_series,
         chart: {
           height: 250,
-          type: 'line',
+          type: 'bar',
           stacked: true,
           toolbar: {
-            show:false,
+            show: false,
           }
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 5,
-            borderRadiusApplication: 'end',
-            borderRadiusWhenStacked: 'last',
-            dataLabels: {
-              position: 'center', // top, center, bottom
-            },
-          }
-        },
-        markers: {
-          size: 1
         },
         stroke: {
-          curve: 'stepline'
+          width: 0.5,
+          colors: ['#fff']
         },
-        title: {
-            text: 'Valoración residual evaluadores',
-            align: 'left',
-            margin: 10,
-            offsetX: 0,
-            offsetY: 0,
-            floating: false,
-            style: {
-              fontSize:  '14px',
-              fontWeight:  'bold',
-              fontFamily:  'Helvetica, Inter, sans-serif',
-              color:  '#263238'
-            },
-        },
-        dataLabels: {
-          enabled: true,
-          enabledOnSeries: [0,1,3],
-          offsetY:10,
-          formatter: function (val, opts) {
-            var seriesIndex = opts.seriesIndex;
-            var dataPointIndex = opts.dataPointIndex;
-            var data = opts.w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+      plotOptions: {
+        bar: {
+          borderRadius: 5,
+          borderRadiusApplication: 'end',
+          borderRadiusWhenStacked: 'last',
+          dataLabels: {
+            position: 'center',
+          },
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: '10px',
+          colors: ["#304758"]
+        }
+      },
+      tooltip:{
+        custom: function({ series, seriesIndex, dataPointIndex, w }) {
+        let content ='<div style="font-size: 12px; padding: 10px; border-radius: 5px; background: #fff; border: 1px solid #ddd;">';
+        const impact = impact_assessment[dataPointIndex];
+        const probability = probability_assessment[dataPointIndex];
+        const person = users_assessment[dataPointIndex];
+        const severity= impact*probability
 
-            if (seriesIndex == 3) {
-              return data.nivel_de_control;
+        if (!grouped) {
 
-            } else {
-              return data.y;
-            }
-          },
-          style: {
-            fontSize: '10px',
-            colors: ["#304758"]
-          },
-          background: {
-            enabled: false,
-          },
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Evaluator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
+        } else {
+
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Administrator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
+        }
+
+        content += '</div>';
+        return content;
+      }
+      },
+      xaxis: {
+        position: 'bottom',
+        categories: names,
+        axisBorder: {
+          show: false
         },
-        tooltip:{
-          custom: function({series, seriesIndex, dataPointIndex, w}) {
-            var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-            markerColor = w.globals.markers.colors[seriesIndex];
-            return '<div style="margin:10px;">' +
-            '<br>' +
-            '<div style="font-size: 11px;">'+
-              '<b>'+data.x+'</b>'+
-            '</div>'+
-            '<div style="font-size: 11px;">'+
-              data.name+
-            '</div>'+
-            '<br>' +
-              '<div class="apexcharts-legend-series">' +
-                '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
-                '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
-              '</div>'
-            +'</div>';
-          },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        axisTicks: {
+          show: true,
         },
-        xaxis: {
-          position: 'bottom',
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false
-          },
-          crosshairs: {
-            enabled:false,
-          },
-          tooltip: {
-            enabled: false,
+        labels: {
+          show: true,
+          formatter: function (val) {
+            return val;
           }
-        },
-        yaxis: {
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: false,
-            formatter: function (val) {
-              return val;
-            }
-          }
-        },
-      };
+        }
+      },
+    };
 
-        var chart = new ApexCharts(document.querySelector("#"+id), options);
-        chart.render();
-  }
+  var chart = new ApexCharts(document.querySelector("#"+id), options);
+  chart.render();
+}
 
 function clean_specialchars(s) {
 
     return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
 
-  }
+}
 
 function color_nc_dynamic(val, id){
 
@@ -769,7 +736,7 @@ function load_heat(id, rrt) {
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -902,8 +869,9 @@ function load_heat(id, rrt) {
           <div id="bar-main"></div>
         </div>
         <script>
-            var rit = JSON.parse(clean_specialchars("{{ rit_json }}"));
-            load_bar("bar-main", rit);
+            var rrt = JSON.parse(clean_specialchars("{{ rrt_json }}"));
+            var grouped = "{{ evaluation.status }}" !== "EP";
+            load_bar("bar-main", rrt, grouped);
         </script>
       {% else %}
         <div class="row mt-2 mb-2">

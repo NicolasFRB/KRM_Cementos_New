@@ -71,10 +71,10 @@
   var evidences = {};
   var frequency_evaluation = {};
   var evals = [];
-  var control_type_evaluation = {'Preventivo': {}, 'Detectivo': {}};
+  var control_type_evaluation = {'Preventive': {}, 'Detective': {}};
   var key_controls_evaluation = {"Key": {}, "Non-key": {}};
   var ct_status_evaluation = {};
-  var ct_result_evaluation = {"Efectivo": {}, "Sin establecer": {}, "Efectivo con recomendación": {}, "No efectivo": {}, "N/A": {}};
+  var ct_result_evaluation = {"Effective": {}, "Not stablished": {}, "Effective with recommendations": {}, "Not effective": {}, "N/A": {}};
   var subprocesses = {};
   var risks = {};
 
@@ -211,7 +211,7 @@
         }
       },
       chart: {
-        height: 350,
+        height: 400,
         type: 'treemap'
       },
     };
@@ -220,28 +220,60 @@
     chart.render();
   }
 
-  function ct_frequency (id, dict, labels, title){
-    var keys = [];
-    var values = [];
-    var series = [];
+  function ct_frequency (id, dict, title){
+    var evaluations = [];
+    var not_started = [];
+    var aw_owner = [];
+    var aw_supervisor = [];
+    var aw_administrator = [];
+    var finished= [];
+    var barHeight= 50;
 
     Object.entries(dict).forEach(([key, value]) => {
-      keys.push(key);
-      values = [];
+      evaluations.push(key);
       Object.entries(value).forEach(([key2, value2]) => {
-        values.push(value2);
-      });
-      series.push({
-        "name": key,
-        "data": values,
+        if (key2 == "Not started"){
+          not_started.push(value2);
+        } else if (key2 == "Awaiting Control Owner") {
+          aw_owner.push(value2);
+        } else if (key2 == "Awaiting Control Supervisor") {
+          aw_supervisor.push(value2);
+        } else if (key2 == "Awaiting Control Administrator") {
+          aw_administrator.push(value2);
+        } else if (key2 == "Finished") {
+          finished.push(value2);
+        }
       });
     });
 
+    const minHeight= document.getElementById("chart-6-container").offsetHeight;
+    chartHeight = Math.max(barHeight*evaluations.length, minHeight);
+
     var options = {
-      series: series,
+      series: [{
+        name: "Not started",
+        data: not_started,
+        color: '#d4d0c7'
+      }, {
+        name: "Awaiting Control Onwer",
+        data: aw_owner,
+        color: '#a6ed9d'
+      }, {
+        name: "Awaiting Control Supervisor",
+        data: aw_supervisor,
+        color: '#e6d68e'
+      }, {
+        name: "Awaiting Control Administrator",
+        data: aw_administrator,
+        color: '#ed9f7b'
+      }, {
+        name: "Finished",
+        data: finished,
+        color: '#ea7d7e'
+      }],
       chart: {
         type: 'bar',
-        height: 350,
+        height: chartHeight,
         stacked: true,
       },
       noData: {
@@ -259,6 +291,7 @@
       plotOptions: {
         bar: {
           horizontal: true,
+          barHeight: '80%',
           dataLabels: {
             total: {
               enabled: true,
@@ -284,7 +317,7 @@
         }
       },
       xaxis: {
-        categories: labels,
+        categories: evaluations,
         labels: {
           formatter: function (val) {
             return val
@@ -308,6 +341,7 @@
       },
       legend: {
         position: 'top',
+        offsetY: -17,
       }
     };
 
@@ -319,8 +353,8 @@
     var keys = [];
     var values = [];
     var series = [];
-
-    // console.log(dict);
+    var barWidth= 50;
+    let totalWidth= 0;
 
     Object.entries(dict).forEach(([key, value]) => {
       keys.push(key);
@@ -334,13 +368,31 @@
       });
     });
 
-    // console.log(series);
+    if (id === "chart-3"){
+      const minWidth = document.getElementById('chart-3-container').offsetWidth;
+      totalWidth = Math.max(barWidth * labels.length, minWidth-5);
+    } else if (id === "chart-4"){
+      const minWidth = document.getElementById('chart-4-container').offsetWidth;
+      totalWidth = Math.max(barWidth * labels.length, minWidth-5);
+    } else if (id === "chart-7"){
+      const minWidth = document.getElementById('chart-7-container').offsetWidth;
+      totalWidth = Math.max(barWidth * labels.length, minWidth-5);
+    }
+
+    if (title == "Control Test Result per Evaluation") {
+      var colors_code= ["#a6ed9d", "#d4d0c7", "#e6d68e", "#ed9f7b", "#7dedf5"];
+    } else if (title == "Control Test Types per Evaluation") {
+      var colors_code= ["#e6d68e", "#ed9f7b"]
+    } else {
+      var colors_code= ["#a6ed9d", "#d4d0c7"]
+    }
 
     var options = {
         series: series,
         chart: {
           type: 'bar',
-          height: 350,
+          height: 400,
+          width: totalWidth,
           stacked: true,
           toolbar: {
             show: true
@@ -361,7 +413,7 @@
           fontFamily: undefined
         }
       },
-        colors: ['#02e397', '#bdbac1', '#ffaa1e', '#e85065', '#0090ff'],
+        colors: colors_code,
         responsive: [{
           breakpoint: 480,
           options: {
@@ -373,7 +425,7 @@
         plotOptions: {
           bar: {
             horizontal: false,
-            borderRadius: 10,
+            columnWidth: '80%',
             dataLabels: {
               total: {
                 enabled: true,
@@ -395,6 +447,11 @@
         },
         xaxis: {
           categories: labels,
+          labels: {
+          maxHeight: 100,
+          hideOverlappingLabels: false,
+          trim: true,
+          },
         },
         yaxis: {
           labels: {
@@ -405,6 +462,7 @@
         },
         legend: {
           position: 'top',
+          offsetY: -17,
         },
         fill: {
           opacity: 1
@@ -466,7 +524,7 @@
         show: true,
       },
       chart: {
-        height: 350,
+        height: 400,
         type: 'scatter',
         width: '100%'
       },
@@ -606,87 +664,97 @@
   <div class="card-body">
     <div class="row mb-4">
       <div class="col-xl-6">
-        <div id="chart-6"></div>
+        <div id="chart-6-container" style="height: 400px; overflow-y: auto;">
+          <div id="chart-6" style="width: 100%;"></div>
+        </div>
       </div>
       <div class="col-xl-6">
-        <div id="chart-7"></div>
+        <div id="chart-7-container" style="height: 400px; overflow-x: auto;">
+          <div id="chart-7"></div>
+        </div>
       </div>
     </div>
 
-    <div class="row mb-4">
+    <!-- <div class="row mb-4">
       <div class="col-xl-6">
         <div id="chart-1"></div>
       </div>
       <div class="col-xl-6">
         <div id="chart-2"></div>
       </div>
-    </div>
+    </div> -->
 
     <div class="row mb-4">
       <div class="col-xl-6">
-        <div id="chart-3"></div>
+        <div id="chart-3-container" style="height: 400px; overflow-x: auto;">
+          <div id="chart-3"></div>
+        </div>
       </div>
       <div class="col-xl-6">
-        <div id="chart-4"></div>
+        <div id="chart-4-container" style="height: 400px; overflow-x: auto;">
+          <div id="chart-4"></div>
+        </div>
       </div>
     </div>
-    <div class="row mb-4">
+    <!-- <div class="row mb-4">
       <div id="chart-5"></div>
-    </div>
+    </div> -->
     <!-- <div class="row mb-4">
       <div id="chart-8"></div>
     </div> -->
 
     {% for e in evaluations %}
       <script>
-        var frequencies = {"Bajo demanda": 0, "Constante": 0, "Diario": 0, "Semanal": 0, "Quincenal": 0, "Mensual": 0, "Bimensual": 0, "Trimestral": 0, "Cuatrimestral": 0, "Semestral": 0, "Anual": 0, "Bienal": 0, "Trienal": 0, "Quinquenal": 0};
-        var ct_types = {"Preventivo": 0, "Detectivo": 0};
+        var frequencies = {"On demand": 0, "Constant": 0, "Daily": 0, "Weekly": 0, "Biweekly": 0, "Monthly": 0, "Bimonthly": 0, "Quarterly": 0, "Four-monthly": 0, "Semiannual": 0, "Annual": 0, "Biennial": 0, "Triennial": 0, "Quadrennial": 0, "Quinquenal": 0};
+        var ct_types = {"Preventive": 0, "Detective": 0};
         var key_controls = {"Key": 0, "Non-key": 0};
-        var ct_status = {"Sin iniciar": 0, "En espera de respuesta del Control Owner": 0, "En espera de respuesta del Control Supervisor": 0, "En espera de respuesta del Control Administrator": 0, "Finalizado": 0};
-        var ct_result = {"Efectivo": 0, "Sin establecer": 0, "Efectivo con recomendación": 0, "No efectivo": 0, "N/A": 0};
+        var ct_status = {"Not started": 0, "Awaiting Control Owner": 0, "Awaiting Control Supervisor": 0, "Awaiting Control Administrator": 0, "Finished": 0};
+        var ct_result = {"Effective": 0, "Not stablished": 0, "Effective with recommendations": 0, "Not effective": 0, "N/A": 0};
       </script>
       {% for ct in e.get_all_control_test_in_evaluation %}
       <script>
         switch("{{ct.control.control_frequency}}"){
           case 'BD':
-            frequencies['Bajo demanda'] += 1;
+            frequencies['On demand'] += 1;
             break;
           case 'CO':
-            frequencies['Constante'] += 1;
+            frequencies['Constant'] += 1;
             break;
           case 'DI':
-            frequencies['Diario'] += 1;
+            frequencies['Daily'] += 1;
             break;
           case '1W':
-            frequencies['Semanal'] += 1;
+            frequencies['Weekly'] += 1;
             break;
           case '2W':
-            frequencies['Quincenal'] += 1;
+            frequencies['Biweekly'] += 1;
             break;
           case '1M':
-            frequencies['Mensual'] += 1;
+            frequencies['Monthly'] += 1;
             break;
           case '2M':
-            frequencies['Bimensual'] += 1;
+            frequencies['Bimonthly'] += 1;
             break;
           case '3T':
-            frequencies['Trimestral'] += 1;
+            frequencies['Quarterly'] += 1;
             break;
           case '4T':
-            frequencies['Cuatrimestral'] += 1;
+            frequencies['Four-monthly'] += 1;
             break;
           case '6M':
-            frequencies['Semestral'] += 1;
+            frequencies['Semiannual'] += 1;
             break;
           case '1Y':
-            frequencies['Anual'] += 1;
+            frequencies['Annual'] += 1;
             break;
           case '2Y':
-            frequencies['Bienal'] += 1;
+            frequencies['Biennial'] += 1;
             break;
           case '3Y':
-            frequencies['Trienal'] += 1;
+            frequencies['Triennial'] += 1;
             break;
+          case '4Y':
+            frequencies['Quadrennial'] += 1;
           case '5Y':
             frequencies['Quinquenal'] += 1;
             break;
@@ -694,10 +762,10 @@
 
         switch ("{{ct.control.control_type}}"){
           case 'P':
-            ct_types['Preventivo'] += 1;
+            ct_types['Preventive'] += 1;
             break;
           case 'D':
-            ct_types['Detectivo'] += 1;
+            ct_types['Detective'] += 1;
             break;
         }
 
@@ -712,34 +780,34 @@
 
         switch("{{ct.status}}"){
           case 'SI':
-            ct_status['Sin iniciar'] += 1;
+            ct_status['Not started'] += 1;
             break;
           case 'WO':
-            ct_status['En espera de respuesta del Control Owner'] += 1;
+            ct_status['Awaiting Control Owner'] += 1;
             break;
           case 'WS':
-            ct_status['En espera de respuesta del Control Supervisor'] += 1;
+            ct_status['Awaiting Control Supervisor'] += 1;
             break;
           case 'WA':
-            ct_status['En espera de respuesta del Control Administrator'] += 1;
+            ct_status['Awaiting Control Administrator'] += 1;
             break;
           case 'FI':
-            ct_status['Finalizado'] += 1;
+            ct_status['Finished'] += 1;
             break;
         }
 
         switch ("{{ct.result}}"){
           case "EF":
-            ct_result["Efectivo"] += 1;
+            ct_result["Effective"] += 1;
             break;
           case "SE":
-            ct_result["Sin establecer"] += 1;
+            ct_result["Not stablished"] += 1;
             break;
           case "NE":
-            ct_result["No efectivo"] += 1;
+            ct_result["Not effective"] += 1;
             break;
           case "EFR":
-            ct_result["Efectivo con recomendación"]+=1;
+            ct_result["Effective with recommedations"]+=1;
             break;
           case "NA":
             ct_result["N/A"] += 1;
@@ -772,18 +840,18 @@
       <script>
         frequency_evaluation["{{e}}"] =  frequencies;
 
-        control_type_evaluation["Preventivo"]["{{e}}"] = ct_types['Preventivo'];
-        control_type_evaluation["Detectivo"]["{{e}}"] = ct_types['Detectivo'];
+        control_type_evaluation["Preventive"]["{{e}}"] = ct_types['Preventive'];
+        control_type_evaluation["Detective"]["{{e}}"] = ct_types['Detective'];
 
         key_controls_evaluation["Key"]["{{e}}"] = key_controls["Key"];
         key_controls_evaluation["Non-key"]["{{e}}"] = key_controls["Non-key"];
 
         ct_status_evaluation["{{e}}"] = ct_status;
 
-        ct_result_evaluation["Efectivo"]["{{e}}"] = ct_result["Efectivo"];
-        ct_result_evaluation["Sin establecer"]["{{e}}"] = ct_result["Sin establecer"];
-        ct_result_evaluation["No efectivo"]["{{e}}"] = ct_result["No efectivo"];
-        ct_result_evaluation["Efectivo con recomendación"]["{{e}}"]= ct_result["Efectivo con recomendación"]
+        ct_result_evaluation["Effective"]["{{e}}"] = ct_result["Effective"];
+        ct_result_evaluation["Not stablished"]["{{e}}"] = ct_result["Not stablished"];
+        ct_result_evaluation["Not effective"]["{{e}}"] = ct_result["Not effective"];
+        ct_result_evaluation["Effective with recommendations"]["{{e}}"]= ct_result["Effective with recommendations"]
         ct_result_evaluation["N/A"]["{{e}}"] = ct_result["N/A"];
 
         evals.push("{{e}}");
@@ -792,17 +860,17 @@
     <script>
       // var l_control_type = ["Preventivo", "Detectivo"];
       // var l_key_control = ["Key", "Non-key"];
-      var l_status = ["Sin iniciar", ["En espera de respuesta", "del Control Owner"], ["En espera de respuesta", "del Control Supervisor"], ["En espera de respuesta", "del Control Administrator"], "Finalizado"];
-      var l_frequencies = ["Bajo demanda", "Constante", "Diario", "Semanal", "Quincenal", "Mensual", "Bimensual", "Trimestral", "Cuatrimestral", "Semestral", "Anual", "Bienal", "Trienal", "Quinquenal"];
+      // var l_status = [["Not started", "Awaiting Control Owner", "Awaiting Control Supervisor", "Awaiting Control Administrator", "Finished"], ["No empezado", "En espera del Control Owner", "En espera del Control Supervisor", "En espera del Administrador", "Finalizado"]];
+      // var l_frequencies = ["On demand", "Constante", "Diario", "Semanal", "Quincenal", "Mensual", "Bimensual", "Trimestral", "Cuatrimestral", "Semestral", "Anual", "Bienal", "Trienal", "Quinquenal"];
       // var l_result = ["Efectivo", "Sin establecer", "No efectivo", "N/A"];
 
-      evidence_percentage("chart-1");
-      ct_frequency("chart-2", frequency_evaluation, l_frequencies, 'Control Tests Frequency per evaluation');
-      ct_control_type("chart-3", control_type_evaluation, evals, "Control Test Types per evaluation");
-      ct_control_type("chart-4", key_controls_evaluation, evals, "Key Control Test per evaluation");
-      ct_subprocesses("chart-5");
-      ct_frequency("chart-6", ct_status_evaluation, l_status, "Control Test Status per evaluation");
-      ct_control_type("chart-7", ct_result_evaluation, evals, "Control Test Result per evaluation");
+      // evidence_percentage("chart-1");
+      // ct_frequency("chart-2", frequency_evaluation, l_frequencies, 'Control Tests Frequency per evaluation');
+      ct_control_type("chart-3", control_type_evaluation, evals, "Control Test Types per Evaluation");
+      ct_control_type("chart-4", key_controls_evaluation, evals, "Key Control Test per Evaluation");
+      // ct_subprocesses("chart-5");
+      ct_frequency("chart-6", ct_status_evaluation, "Control Test Status per Evaluation");
+      ct_control_type("chart-7", ct_result_evaluation, evals, "Control Test Result per Evaluation");
       // ct_risks("chart-8");
     </script>
   </div>

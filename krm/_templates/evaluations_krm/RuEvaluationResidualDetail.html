@@ -76,6 +76,31 @@
 </style>
 <script>
 
+function color_severity_dynamic(val, id){
+
+var arrow_dot = $("#"+id);
+
+if (val == 'Sin establecer' || val == 'Not stablished') {
+  arrow_dot.css('color',"#d4d0c7");
+  arrow_dot.attr('class','bi-x-circle-fill');
+} else if (val == 'Muy baja' || val == 'Very low') {
+  arrow_dot.css('color',"#a6ed9d");
+  arrow_dot.attr('class','bi-arrow-down-circle-fill');
+} else if (val == 'Baja' || val == 'Low') {
+  arrow_dot.css('color',"#e6d68e");
+  arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
+} else if (val == 'Media' || val == 'Medium') {
+  arrow_dot.css('color',"#f4c39d");
+  arrow_dot.attr('class','bi-arrow-right-circle-fill');
+} else if (val == 'Alta' || val == 'High') {
+  arrow_dot.css('color',"#ed9f7b");
+  arrow_dot.attr('class','bi-arrow-up-right-circle-fill');
+} else if (val == 'Muy alta' || val == 'Very high') {
+  arrow_dot.css('color', "#ea7d7e");
+  arrow_dot.attr('class', 'bi-arrow-up-circle-fill');
+}
+}
+
 function color_severity(val, id){
 
   var arrow_dot = document.querySelector("#"+id)
@@ -110,112 +135,151 @@ function color_severity(val, id){
   }
 }
 
-function load_bar(id, rit) {
-  r_prob = [];
-  rit.forEach(function(r) {
-    var r_p = {x: '', y: '', name: ''}
+function clean_specialchars(s) {
 
-    if (r.status < 2) {
-      r_p.x = r.risk_ref
-      r_p.y = 0
-      r_p.name = r.risk_name
+  return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
 
-    } else {
-      r_p.x = r.risk_ref
-      r_p.y = r.probability_level_residual_evaluator
-      r_p.name = r.risk_name
+}
+
+function load_bar(id, rrt, grouped) {
+  let impact_assessment = [];
+  let probability_assessment = [];
+  let names= [];
+  let ref = [];
+  let users_assessment= [];
+
+  if (grouped) {
+    rrt.forEach(function(r) {
+      impact_assessment.push(r.impact_administrator);
+      probability_assessment.push(r.probability_administrator);
+      users_assessment.push(r.administrator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  } else {
+    rrt.forEach(function(r) {
+      impact_assessment.push(r.impact_evaluator);
+      probability_assessment.push(r.probability_evaluator);
+      users_assessment.push(r.evaluator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  }
+
+  let built_series = grouped ?
+  [
+    {
+      name: "Administrator's impact assessment",
+      color: '#008ffb',
+      data: impact_assessment
+    },
+    {
+      name: "Administrator's probability assessment",
+      color: '#00e396',
+      data: probability_assessment
     }
-    r_prob.push(r_p)
-  });
+  ]
+  : [
+    {
+      name: "Evaluator's impact assessment",
+      color: '#008ffb',
+      data: impact_assessment
+    },
+    {
+      name: "Evaluator's probability assessment",
+      color: '#00e396',
+      data: probability_assessment
+    }
+  ]
 
   var options = {
-        series: [
-      {
-        name: 'Nivel de control',
-        data: r_prob
-      }
-    ],
+        series: built_series,
         chart: {
           height: 250,
           type: 'bar',
           stacked: true,
           toolbar: {
-            show:false,
+            show: false,
           }
+        },
+        stroke: {
+          width: 0.5,
+          colors: ['#fff']
         },
       plotOptions: {
         bar: {
-          borderRadius: 10,
+          borderRadius: 5,
+          borderRadiusApplication: 'end',
+          borderRadiusWhenStacked: 'last',
           dataLabels: {
-            position: 'center', // top, center, bottom
+            position: 'center',
           },
         }
       },
-
       dataLabels: {
         enabled: true,
-        formatter: function (val) {
-          return val;
-        },
         style: {
           fontSize: '10px',
           colors: ["#304758"]
         }
       },
       tooltip:{
-        custom: function({series, seriesIndex, dataPointIndex, w}) {
-          var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-          markerColor = w.globals.markers.colors[seriesIndex];
-          return '<div style="margin:10px;">' +
-          '<br>' +
-          '<div style="font-size: 11px;">'+
-            '<b>'+data.x+'</b>'+
-          '</div>'+
-          '<div style="font-size: 11px;">'+
-            data.name+
-          '</div>'+
-          '<br>' +
-            '<div class="apexcharts-legend-series">' +
-              '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
-              '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
-            '</div>'
-          +'</div>';
-        },
+        custom: function({ series, seriesIndex, dataPointIndex, w }) {
+        let content ='<div style="font-size: 12px; padding: 10px; border-radius: 5px; background: #fff; border: 1px solid #ddd;">';
+        const impact = impact_assessment[dataPointIndex];
+        const probability = probability_assessment[dataPointIndex];
+        const person = users_assessment[dataPointIndex];
+        const severity= impact*probability
+
+        if (!grouped) {
+
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Evaluator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
+        } else {
+
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Administrator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
+        }
+
+        content += '</div>';
+        return content;
+      }
       },
       xaxis: {
         position: 'bottom',
+        categories: names,
         axisBorder: {
           show: false
         },
         axisTicks: {
           show: false
-        },
-        crosshairs: {
-          enabled:false,
-        },
-        tooltip: {
-          enabled: false,
         }
       },
       yaxis: {
-        axisBorder: {
-          show: false
-        },
         axisTicks: {
-          show: false,
+          show: true,
         },
         labels: {
-          show: false,
+          show: true,
           formatter: function (val) {
             return val;
           }
         }
-
       },
     };
 
-      var chart = new ApexCharts(document.querySelector("#"+id), options);
-      chart.render();
+  var chart = new ApexCharts(document.querySelector("#"+id), options);
+  chart.render();
 }
 
 function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined", arg6 = "undefined") {
@@ -277,58 +341,152 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
 }
 
 function swap_columns(id, datatable_id) {
-  var flexRadio_cualitativo = $('#'+"flexRadio_cualitativo").is(':checked');
-  var flexRadio_cuantitativo = $('#'+"flexRadio_cuantitativo").is(':checked');
+  var flexRadio_cualitativo = $("#flexRadio_cualitativo").is(':checked');
+  var flexRadio_cuantitativo = $("#flexRadio_cuantitativo").is(':checked');
+  var flexRadio_admin = $("#flexRadio_admin").is(':checked');
+  var flexRadio_experto = $("#flexRadio_experto").is(':checked');
 
   var dt = $('#risk_eval_table').DataTable();
 
   var j_exp = dt.$(".justif-expert");
+  var j_adm = dt.$(".justif-admin");
 
   var s_exp_num = dt.$(".sev-expert-num");
+  var s_adm_num = dt.$(".sev-admin-num");
   var s_exp_qual = dt.$(".sev-expert-qual");
+  var s_adm_qual = dt.$(".sev-admin-qual");
 
   var i_exp_num = dt.$(".imp-expert-num");
+  var i_adm_num = dt.$(".imp-admin-num");
   var i_exp_qual = dt.$(".imp-expert-qual");
+  var i_adm_qual = dt.$(".imp-admin-qual");
 
   var p_exp_num = dt.$(".prob-expert-num");
+  var p_adm_num = dt.$(".prob-admin-num");
   var p_exp_qual = dt.$(".prob-expert-qual");
+  var p_adm_qual = dt.$(".prob-admin-qual");
 
   var speed_exp_num= dt.$(".speed-expert-num");
+  var speed_adm_num= dt.$(".speed-admin-num");
   var speed_exp_qual= dt.$(".speed-expert-qual");
+  var speed_adm_qual= dt.$(".speed-admin-qual");
 
-  if (flexRadio_cualitativo) {
+  if (flexRadio_cualitativo && flexRadio_experto) {
 
     for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "inline-block";
+      j_adm[i].style.display = "none";
 
       s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "none";
       s_exp_qual[i].style.display = "inline-block";
+      s_adm_qual[i].style.display = "none";
 
       i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "none";
       i_exp_qual[i].style.display = "inline-block";
+      i_adm_qual[i].style.display = "none";
 
       p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "none";
       p_exp_qual[i].style.display = "inline-block";
+      p_adm_qual[i].style.display = "none";
 
       speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "none";
       speed_exp_qual[i].style.display = "inline-block";
+      speed_adm_qual[i].style.display = "none";
+
+      $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
+      color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
     }
 
-  } else if (flexRadio_cuantitativo) {
+  } else if (flexRadio_cuantitativo && flexRadio_experto) {
 
     for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "inline-block";
+      j_adm[i].style.display = "none";
 
       s_exp_num[i].style.display = "inline-block";
+      s_adm_num[i].style.display = "none";
       s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "none";
 
       i_exp_num[i].style.display = "inline-block";
+      i_adm_num[i].style.display = "none";
       i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "none";
 
       p_exp_num[i].style.display = "inline-block";
+      p_adm_num[i].style.display = "none";
       p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "none";
 
       speed_exp_num[i].style.display = "inline-block";
+      speed_adm_num[i].style.display = "none";
       speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "none";
 
+      $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
+      color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
+    }
+  } else if (flexRadio_cualitativo && flexRadio_admin) {
+
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "none";
+      j_adm[i].style.display = "inline-block";
+
+      s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "none";
+      s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "inline-block";
+
+      i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "none";
+      i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "inline-block";
+
+      p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "none";
+      p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "inline-block";
+
+      speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "none";
+      speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "inline-block";
+
+      $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
+      color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
+    }
+  } else if (flexRadio_cuantitativo && flexRadio_admin) {
+
+    for(var i = 0; i < j_exp.length; i++) {
+      j_exp[i].style.display = "none";
+      j_adm[i].style.display = "inline-block";
+
+      s_exp_num[i].style.display = "none";
+      s_adm_num[i].style.display = "inline-block";
+      s_exp_qual[i].style.display = "none";
+      s_adm_qual[i].style.display = "none";
+
+      i_exp_num[i].style.display = "none";
+      i_adm_num[i].style.display = "inline-block";
+      i_exp_qual[i].style.display = "none";
+      i_adm_qual[i].style.display = "none";
+
+      p_exp_num[i].style.display = "none";
+      p_adm_num[i].style.display = "inline-block";
+      p_exp_qual[i].style.display = "none";
+      p_adm_qual[i].style.display = "none";
+
+      speed_exp_num[i].style.display = "none";
+      speed_adm_num[i].style.display = "inline-block";
+      speed_exp_qual[i].style.display = "none";
+      speed_adm_qual[i].style.display = "none";
+
+      $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
+      color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
     }
   }
 }
@@ -539,8 +697,9 @@ function swap_columns(id, datatable_id) {
           <div id="bar-main"></div>
         </div>
         <script>
-            var rit = JSON.parse("{{ rrt_json }}".replace(/&quot;/g,'"'));
-            load_bar("bar-main", rit);
+            var rrt = JSON.parse(clean_specialchars("{{ rrt_json }}"));
+            var grouped = "{{ evaluation.status }}" !== "EP";
+            load_bar("bar-main", rrt, grouped);
         </script>
       {% else %}
         <div class="row mt-2 mb-2">
@@ -561,6 +720,18 @@ function swap_columns(id, datatable_id) {
     <div class="card-title fs-3 fw-bold">{% trans 'Tests de Riesgo Residual de la Evaluación' %}</div>
     <!--end::Card header-->
     <div style="display:flex;">
+      <div style="position:relative; margin-right: 5em; top: 10px;">
+        <form>
+          <div class="form-check 1">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_experto" onclick="swap_columns(this.id, 'risk_eval_table')" checked>
+              <label class="form-check-label" for="flexRadioDefault1">{% trans 'Evaluador' %}</label>
+          </div>
+          <div class="form-check 1" style="margin-top: 10px;">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio_admin" onclick="swap_columns(this.id, 'risk_eval_table')">
+              <label class="form-check-label" for="flexRadioDefault2">{% trans 'Administrador' %}</label>
+          </div>
+        </form>
+      </div>
       <div style="position:relative; right: 25px; top: 10px;">
         <form>
           <div class="form-check 2">
@@ -633,28 +804,37 @@ function swap_columns(id, datatable_id) {
 
             <td class="text-center align-middle">
               <span class="justif-expert"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_expert }}"></i></span>
+              <span class="justif-admin" style="display:none;"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-custom-class="custom-tooltip" title="{{ rt.description_administrator }}"></i></span>
             </td>
 
             <td class="text-center align-middle" data-order="{{ rt.event_speed_level_expert }}">
               <span class="speed-expert-num" style="display:none;">{{ rt.event_speed_level_evaluator }}</span>
+              <span class="speed-admin-num" style="display:none;">{{ rt.event_speed_level_administrator }}</span>
               <span class="speed-expert-qual">{{ rt.get_event_speed_level_evaluator_display }}</span>
+              <span class="speed-admin-qual" style="display:none;">{{ rt.get_event_speed_level_administrator_display }}</span>
             </td>
 
             <td class="text-center align-middle" data-order="{{ rt.impact_level_expert }}">
               <span class="imp-expert-num" style="display:none;">{{ rt.impact_level_evaluator }}</span>
+              <span class="imp-admin-num" style="display:none;">{{ rt.impact_level_administrator }}</span>
               <span class="imp-expert-qual">{{ rt.get_impact_level_evaluator_display }}</span>
+              <span class="imp-admin-qual" style="display:none;">{{ rt.get_impact_level_administrator_display }}</span>
             </td>
 
             <td class="text-center align-middle" data-order="{{ rt.probability_level_expert }}">
               <span class="prob-expert-num" style="display:none;">{{ rt.probability_level_evaluator }}</span>
+              <span class="prob-admin-num" style="display:none;">{{ rt.probability_level_administrator }}</span>
               <span class="prob-expert-qual">{{ rt.get_probability_level_evaluator_display }}</span>
+              <span class="prob-admin-qual" style="display:none;">{{ rt.get_probability_level_administrator_display }}</span>
             </td>
 
             <td class="text-center align-middle" data-order="{{ rt.severity_level_expert }}" id="sev-row-{{ forloop.counter0 }}">
               <div style="display:flex; gap:10px;">
                 <span><i class="bi bi-arrow-right-circle-fill" id = "sev-dot-{{ forloop.counter0 }}"></i></span>
                 <span class="sev-expert-num" style="display:none;">{{ rt.severity_level_evaluator }}</span>
+                <span class="sev-admin-num" style="display:none;">{{ rt.severity_level_administrator }}</span>
                 <span class="sev-expert-qual">{{ rt.get_severity_evaluator_qualitative_display }}</span>
+                <span class="sev-admin-qual" style="display:none;">{{ rt.get_severity_administrator_qualitative_display }}</span>
               </div>
             </td>
           </tr>

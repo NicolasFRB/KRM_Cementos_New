@@ -77,7 +77,7 @@ class EvaluationQuestionnaire(AuditModel):
     )
 
     def __str__(self):
-        return self.ref
+        return str(self.ref)
 
     class Meta:
         verbose_name = _("Evaluación de Cuestionario")
@@ -112,7 +112,7 @@ class EvaluationQuestionnaire(AuditModel):
     def evaluated_scopes(self):
 
         from krm.questionnaires.models import Scope
-        
+
         scopes_id = set([qt.scope.pk for qt in self.question_tests.all()])
 
         return Scope.objects.filter(id__in = scopes_id)
@@ -125,7 +125,7 @@ class EvaluationQuestionnaire(AuditModel):
         ev_pk_found = {}
 
         for evaluator in evaluators_all_states:
-            
+
             notifications = [[n.action_description, n.created] for n in evaluator.actions_log.all() if self.ref in n.action_description]
 
             if evaluator.pk not in ev_pk_found:

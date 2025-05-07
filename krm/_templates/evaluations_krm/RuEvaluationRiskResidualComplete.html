@@ -68,7 +68,8 @@
       }
       if (!errorFound) {
         $("textarea[name^='description-']").each(function(index) {
-          if ($(this).val() == '') {
+          const value = $(this).val();
+          if (!value || value?.trim() === '') {
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -106,27 +107,27 @@
   }
 
   .severidad-muy-baja {
-  background-color: #09EF0D; /* Verde claro */
+  background-color: #a6ed9d; /* Verde claro */
   }
 
   .severidad-baja {
-    background-color: #E8EE0B; /* Verde más fuerte */
+    background-color: #e6d68e; /* Verde más fuerte */
   }
 
   .severidad-media {
-    background-color: #FEA227; /* Amarillo */
+    background-color: #f4c39d; /* Amarillo */
   }
 
   .severidad-alta {
-    background-color: #FF6E56; /* Naranja */
+    background-color: #ed9f7b; /* Naranja */
   }
 
   .severidad-muy-alta {
-    background-color: #F10606; /* Rojo */
+    background-color: #ea7d7e; /* Rojo */
   }
 
   .severidad-desconocida {
-    background-color: #D9D3D2; /* Gris */
+    background-color: #d4d0c7; /* Gris */
   }
 
 </style>
@@ -248,7 +249,7 @@
               <div class="row mb-8">
                 <!--begin::Col-->
                 <div class="col-xl-5">
-                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+                  <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->
@@ -351,7 +352,7 @@
               <div class="row">
                 <div class="col-xl-5">
                   <div class="bg-light p-3 rounded" style="margin-bottom:15px">
-                    <h5 class="fs-4 fw-bold text-primary m-0">Datos del riesgo </h5>
+                    <h5 class="fs-4 fw-bold text-primary m-0">{% trans 'Datos del riesgo' %}</h5>
                   </div>
 
                   <fieldset>
@@ -425,7 +426,7 @@
                                   <th class="text-center">{% trans 'Descripción' %}</th>
                                   <th class="text-center">{% trans 'Evidencia' %}</th>
                                   <th class="text-center">{% trans 'Frecuencia' %}</th>
-                                  <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+                                  <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -482,7 +483,7 @@
                   <div class="row">
                     <div class="col-xl-6">
                       <div class="bg-light p-3 rounded" style="margin-bottom:15px">
-                        <h5 class="fs-4 fw-bold text-primary m-0"> Última valoración de Riesgo Inherente </h5>
+                        <h5 class="fs-4 fw-bold text-primary m-0">{% trans 'Última valoración de Riesgo Inherente' %}</h5>
                       </div>
                     </div>
 
@@ -491,7 +492,7 @@
                     <div class="col-xl-6">
                       <div class="d-flex justify-content-end">
 
-                        <span class="text-muted" style="font-size: 14px; margin-right: 10px;"><strong>Severidad:</strong></span>
+                        <span class="text-muted" style="font-size: 14px; margin-right: 10px;"><strong>{% trans 'Severidad' %}:</strong></span>
 
                         <span class="badge text-wrap {% if rt.get_latest_severity_inherent_qualitative == 'Muy baja' %}severidad-muy-baja{% elif rt.get_latest_severity_inherent_qualitative == 'Baja' %}severidad-baja{% elif rt.get_latest_severity_inherent_qualitative == 'Media' %}severidad-media{% elif rt.get_latest_severity_inherent_qualitative == 'Alta' %}severidad-alta{% elif rt.get_latest_severity_inherent_qualitative == 'Muy alta' %}severidad-muy-alta{% else %}severidad-desconocida{% endif %}" style="font-size: 14px;">
                           {{ rt.get_latest_severity_inherent_qualitative }} ({{ rt.get_latest_severity_inherent }})
@@ -667,7 +668,7 @@
               <th class="text-center">{% trans 'Evidencia' %}</th>
               <th class="text-center">{% trans 'Frecuencia' %}</th>
               <th class="text-center">{% trans 'ELC' %}</th>
-              <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+              <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
             </tr>
           </thead>
           <tbody>

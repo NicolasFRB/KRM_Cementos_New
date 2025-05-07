@@ -293,7 +293,7 @@
               <tbody>
                 {% for risk_company in company.krm_risks_active %}
                   <tr>
-                    <td class="text-center">
+                    <td class="text-center align-middle">
                       <a href="{% url 'companies:ga_company_assign_expert_update' risk_company.pk %}">
                         <i class="bi bi-pencil-fill fs-1x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Asignar"></i>
                       </a>
@@ -303,8 +303,8 @@
                         <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk_company.risk.name|striptags }}">{{ risk_company.risk.ref }}</span>
                       </a>
                     </td>
-                    <td>{{ risk_company.risk.name }}</td>
-                    <td>
+                    <td class="align-middle">{{ risk_company.risk.name }}</td>
+                    <td class="align-middle">
                       {% if not risk_company.expert %}
                         <span class="badge badge-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="Sin asignar">Sin asignar</span></a>
                       {% else %}

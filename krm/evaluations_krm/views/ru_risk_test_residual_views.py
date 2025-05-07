@@ -189,42 +189,36 @@ class RuEvaluationRiskResidualDetail(FormView):
         context['evaluation'].sev_high = context['evaluation'].nrisk_test_residuals_by_severity('A', user= self.request.user)
         context['evaluation'].sev_very_high = context['evaluation'].nrisk_test_residuals_by_severity('MA', user= self.request.user)
 
-        # Serializar Evaluation no incluye sus hijos :(
-        # Busco los hijos
-        context['rrt'] = RiskTestResidual.objects.filter(
-            evaluation = self.evaluation,
-            evaluator = self.request.user,
-        )
+        context['rrt'] = RiskTestResidual.objects.filter(evaluation = self.evaluation, evaluator = self.request.user)
 
-        # Paso a dict para json
-        context['rrt_dict'] = [model_to_dict(m) for m in context['rrt']]
+        context['rrt_dict'] = []
+        for risk_test in context['rrt']:
+            information = {}
+            information['ref']= risk_test.risk.risk.ref
+            information['name']= risk_test.risk.risk.name
+            information['evaluator']= risk_test.evaluator.username_no_domain
+            information['impact_evaluator']= risk_test.impact_level_evaluator
+            information['probability_evaluator']= risk_test.probability_level_evaluator
+            information['severity_evaluator']= risk_test.severity_level_evaluator
+            information['administrator']= self.evaluation.admin_supervisor.username_no_domain if self.evaluation.admin_supervisor else ''
+            information['impact_administrator']= risk_test.impact_level_administrator
+            information['probability_administrator']= risk_test.probability_level_administrator
+            information['severity_administrator']= risk_test.severity_level_administrator
+            context['rrt_dict'].append(information)
 
-        # MODEL_TO_DICT not getting properties :(
-        # Get .probability_level_residual_evaluator
-        # TBI for cuadratico :/
-        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
-        for i, r1 in enumerate(context['rrt']):
-            context['rrt_dict'][i]['risk_ref'] = r1.risk.risk.ref
-            context['rrt_dict'][i]['risk_name'] = r1.risk.risk.name
-            for r2 in context['rrt_dict']:
-                if r1.id == r2['id']: r2['probability_level_evaluator'] = r1.probability_level_evaluator
-
-        # Sort by severity for a nice plot
-        context['rrt_dict'] = sorted(context['rrt_dict'], key= lambda x: (x['probability_level_evaluator'], x['risk_ref']))
+        if self.evaluation.admin_supervisor:
+            context['rrt_dict'] = sorted(context['rrt_dict'], key=lambda x: x['severity_administrator'], reverse=False)
+        else:
+            context['rrt_dict'] = sorted(context['rrt_dict'], key=lambda x: x['severity_evaluator'], reverse=False)
 
         # Errores de encoding caracteres portugueses y españoles
-        for i,m in enumerate(context['rrt_dict']):
-            for k in m:
-                if type(context['rrt_dict'][i][k]) == str:
-                    context['rrt_dict'][i][k] = context['rrt_dict'][i][k].encode('utf-8').decode('utf-8')
+        # for i,m in enumerate(context['rrt_dict']):
+        #     for k in m:
+        #         if type(context['rrt_dict'][i][k]) == str:
+        #             context['rrt_dict'][i][k] = context['rrt_dict'][i][k].encode('utf-8').decode('utf-8')
 
         # JSON DUMP
-        context['rrt_json'] = json.dumps(
-            context['rrt_dict'],
-            default=str,
-            ensure_ascii=True,
-            )
-
+        context['rrt_json'] = json.dumps(context['rrt_dict'], default=str, ensure_ascii=True)
         context['js_template'] = ['js/custom/datatables.js']
 
         return context

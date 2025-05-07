@@ -87,7 +87,7 @@ class EvaluationKrmInherent(AuditModel):
     )
 
     def __str__(self):
-        return self.ref
+        return str(self.ref)
 
     def nrisk_test_inherents_by_state(self, status, user=None):
         """

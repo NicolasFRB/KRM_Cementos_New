@@ -98,7 +98,7 @@ class RiskCompany(AuditModel):
     )
 
     def __str__(self):
-        return self.name
+        return str(self.risk.name)
 
     class Meta:
         verbose_name = _("Riesgo-Compañía")

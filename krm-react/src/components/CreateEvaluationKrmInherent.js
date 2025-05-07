@@ -215,50 +215,53 @@ function CreateEvaluationKrmInherent(props) {
       );
   }
 
-  const selectExpert = (selected_riskCompany,selected_risk, selected_expert_data) => {
-    // console.log("Risk")
-    // console.log(riskCompany)
-
-    // console.log("Expert")
-    // console.log(expert_data)
-
-    setRiskCompanies((riskCompanies) =>
-      riskCompanies.map((riskCompany) => {
-        console.log(riskCompany);
-        if(riskCompany.company.pk === selected_riskCompany.company.pk)
-          return { ...riskCompany,
-            risks: riskCompany.risks.map( (risk) => {
-                if (risk.pk === selected_risk.pk) {
-                  console.log(risk);
-                  console.log({
-                    ...risk,
-                    original_expert: risk.hasOwnProperty("original_expert")? risk.original_expert: risk.expert,
-                    expert: selected_expert_data.pk,
-                    expert_data: {
-                      pk:selected_expert_data.pk,
-                      email:selected_expert_data.label,
-                    },
-                    save_expert: selected_expert_data.pk != risk.expert
-                  });
-                  return {
-                    ...risk,
-                    original_expert: risk.hasOwnProperty("original_expert")? risk.original_expert: risk.expert,
-                    expert: selected_expert_data.pk,
-                    expert_data: {
-                      pk:selected_expert_data.pk,
-                      email:selected_expert_data.label,
-                    },
-                    save_expert: selected_expert_data.pk != risk.expert
-                  };
-
-                }
-                else return risk;
-              })
+  const selectExpert = (selected_riskCompany, selected_risk, selected_expert_data) => {
+    const newRiskCompanies = riskCompanies.map(c => {
+      if (c.company.pk === selected_riskCompany.company.pk) {
+        const updatedRisks = c.risks.map(risk => {
+          if (risk.pk === selected_risk.pk) {
+            return {
+              ...risk,
+              original_expert: risk.hasOwnProperty("original_expert") ? risk.original_expert : risk.expert,
+              expert: selected_expert_data.pk,
+              expert_data: {
+                pk: selected_expert_data.pk,
+                email: selected_expert_data.label,
+              },
+              save_expert: selected_expert_data.pk !== risk.expert
+            };
           }
-        else return riskCompany;
-      })
-    )
-  }
+          return risk;
+        });
+
+        return { ...c, risks: updatedRisks };
+      }
+      return c;
+    });
+
+    setRiskCompanies(newRiskCompanies);
+
+    let riskSelect = [];
+
+    newRiskCompanies.forEach(c => {
+      let rs = {
+        company_pk: c.company.pk,
+        risks: []
+      };
+
+      c.risks.forEach(risk => {
+        if (risk.checked) {
+          rs.risks.push([risk.pk, risk.expert]);
+        }
+      });
+
+      if (rs.risks.length > 0) {
+        riskSelect.push(rs);
+      }
+    });
+
+    setRiskCompaniesToEvaluate(riskSelect);
+  };
 
   return (
     <div className="App">
@@ -355,12 +358,14 @@ function CreateEvaluationKrmInherent(props) {
                                   )}
                                 </td>
                                 <td><label htmlFor={'ri' + risk.pk}>{risk.risk_ref}</label></td>
-                                <td><span className="fw-semibold ps-2 fs-6">{risk.risk.name}</span></td>
+                                <td><span className="fw-semibold ps-2 fs-6">{risk.risk_name}</span></td>
                                 <td>
                                   {risk.expert && (
                                     <>
                                       <Select
-                                        onChange={(expert) => selectExpert(company, risk, expert)}
+                                        onChange={(expert) => {
+                                          selectExpert(company, risk, expert);
+                                        }}
                                         getOptionValue={(option) => `${option['pk']}`}
                                         options={company.company.employees.map((employee) => {
                                           // console.log(employee)
@@ -377,7 +382,9 @@ function CreateEvaluationKrmInherent(props) {
                                   {!risk.expert && (
                                     <>
                                       <Select
-                                        onChange={(expert) => selectExpert(company, risk, expert)}
+                                        onChange={(expert) => {
+                                          selectExpert(company, risk, expert);
+                                        }}
                                         getOptionValue={(option) => `${option['pk']}`}
                                         options={company.company.employees.map((employee) => {
                                           // console.log(employee)

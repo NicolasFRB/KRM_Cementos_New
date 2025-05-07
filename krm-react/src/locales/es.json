@@ -144,6 +144,10 @@
     "loading-risks": "Cargando riesgos",
     "name": "Nombre",
     "ref": "Referencia",
+    "key": "Key Control",
+    "elc": "ELC Control",
+    "owner": "Responsables",
+    "supervisor": "Supervisores",
     "risk-master": "Riesgo Maestro",
     "n-a": "N/A"
   },

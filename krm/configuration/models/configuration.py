@@ -37,7 +37,7 @@ class Configuration(SingletonModel):
     )
 
     def __str__(self):
-        return self.app_name
+        return str(self.app_name)
 
     class Meta:
         verbose_name = _("Configuración")

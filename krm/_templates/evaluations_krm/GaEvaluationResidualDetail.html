@@ -79,10 +79,152 @@
 </style>
 
 
-<!-- A continuación insertamos las funciones JavaScript que nos permiten graficar datos -->
+<!-- A continuación insertamos las funciones JavaScript que nos permiten graficar datos. Aquella que se llama load bar antigua es la función
+ que usábamos antes para los gráficos de barra de evaluaciones de riesgo residual.  -->
 <script>
 
-function load_bar(id, rcr) {
+function load_bar(id, rrt, grouped) {
+  let impact_assessment = [];
+  let probability_assessment = [];
+  let names= [];
+  let ref = [];
+  let users_assessment= [];
+
+  if (grouped) {
+    rrt.forEach(function(r) {
+      impact_assessment.push(r.impact_administrator);
+      probability_assessment.push(r.probability_administrator);
+      users_assessment.push(r.administrator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  } else {
+    rrt.forEach(function(r) {
+      impact_assessment.push(r.impact_evaluator);
+      probability_assessment.push(r.probability_evaluator);
+      users_assessment.push(r.evaluator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  }
+
+  let built_series = grouped ?
+  [
+    {
+      name: "Administrator's impact assessment",
+      color: '#008ffb',
+      data: impact_assessment
+    },
+    {
+      name: "Administrator's probability assessment",
+      color: '#00e396',
+      data: probability_assessment
+    }
+  ]
+  : [
+    {
+      name: "Evaluator's impact assessment",
+      color: '#008ffb',
+      data: impact_assessment
+    },
+    {
+      name: "Evaluator's probability assessment",
+      color: '#00e396',
+      data: probability_assessment
+    }
+  ]
+
+  var options = {
+        series: built_series,
+        chart: {
+          height: 250,
+          type: 'bar',
+          stacked: true,
+          toolbar: {
+            show: false,
+          }
+        },
+        stroke: {
+          width: 0.5,
+          colors: ['#fff']
+        },
+      plotOptions: {
+        bar: {
+          borderRadius: 5,
+          borderRadiusApplication: 'end',
+          borderRadiusWhenStacked: 'last',
+          dataLabels: {
+            position: 'center',
+          },
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: '10px',
+          colors: ["#304758"]
+        }
+      },
+      tooltip:{
+        custom: function({ series, seriesIndex, dataPointIndex, w }) {
+        let content ='<div style="font-size: 12px; padding: 10px; border-radius: 5px; background: #fff; border: 1px solid #ddd;">';
+        const impact = impact_assessment[dataPointIndex];
+        const probability = probability_assessment[dataPointIndex];
+        const person = users_assessment[dataPointIndex];
+        const severity= impact*probability
+
+        if (!grouped) {
+
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Evaluator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
+        } else {
+
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Administrator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
+        }
+
+        content += '</div>';
+        return content;
+      }
+      },
+      xaxis: {
+        position: 'bottom',
+        categories: names,
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        axisTicks: {
+          show: true,
+        },
+        labels: {
+          show: true,
+          formatter: function (val) {
+            return val;
+          }
+        }
+      },
+    };
+
+  var chart = new ApexCharts(document.querySelector("#"+id), options);
+  chart.render();
+}
+
+function load_bar_antigua(id, rcr) {
     r_impacto_inherente = [];
     r_prob_inherente = [];
     r_prob_residual = [];
@@ -259,10 +401,8 @@ function load_bar(id, rcr) {
   }
 
 function clean_specialchars(s) {
-
     return s.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/&quot;/g,'"');
-
-  }
+}
 
 function color_nc_dynamic(val, id){
 
@@ -772,7 +912,7 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -908,7 +1048,8 @@ function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "u
         </div>
         <script>
             var rrt = JSON.parse(clean_specialchars("{{ rrt_json }}"));
-            load_bar("bar-main", rrt);
+            var grouped = "{{ evaluation.status }}" !== "EP";
+            load_bar("bar-main", rrt, grouped);
         </script>
       {% else %}
         <div class="row mt-2 mb-2">

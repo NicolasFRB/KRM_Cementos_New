@@ -68,7 +68,8 @@
       }
       if (!errorFound) {
         $("textarea[name^='description-']").each(function(index) {
-          if ($(this).val() == '') {
+          const value = $(this).val();
+          if (!value || value?.trim() === '') {
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({

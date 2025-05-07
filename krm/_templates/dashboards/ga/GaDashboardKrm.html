@@ -76,6 +76,14 @@
   var residual_severity = {};
   var inherent_tests = [];
   var residual_tests = [];
+  const severityTranslation = {
+    "Sin establecer": "Not stablished",
+    "Muy baja": "Very low",
+    "Baja": "Low",
+    "Media": "Medium",
+    "Alta": "High",
+    "Muy alta": "Very high"
+};
 
   function test_status(id, dict, names) {
     var pending = [];
@@ -158,9 +166,6 @@
           bar: {
             horizontal: true,
             barHeight: '80%',
-            borderRadius: 10,
-            borderRadiusApplication: 'end', // 'around', 'end'
-            borderRadiusWhenStacked: 'last', // 'all', 'last'
             dataLabels: {
               total: {
                 enabled: true,
@@ -173,12 +178,17 @@
           },
         },
         xaxis: {
-          categories: names
+          categories: names,
+          labels: {
+            formatter: function (val) {
+                return parseInt(val);
+            }
+          },
         },
         legend: {
           show: true,
           position: 'top',
-          offsetY: 0
+          offsetY: -17
         },
         fill: {
           opacity: 1
@@ -291,9 +301,6 @@
         bar: {
           horizontal: false,
           columnWidth: '80%',
-          borderRadius: 10,
-          borderRadiusApplication: 'end', // 'around', 'end'
-          borderRadiusWhenStacked: 'last', // 'all', 'last'
           dataLabels: {
             total: {
               enabled: true,
@@ -306,12 +313,29 @@
         },
       },
       xaxis: {
-        categories: names
+        categories: names,
+        labels: {
+          maxHeight: 100,
+          hideOverlappingLabels: false,
+          trim: true,
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return val
+          }
+        },
+        stepSize: 1,
+        type: 'numeric',
       },
       legend: {
         show: true,
         position: 'top',
-        offsetY: 0
+        offsetY: -17
       },
       fill: {
         opacity: 1
@@ -323,37 +347,65 @@
     chart.render();
   }
 
+  function randomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
   function bubble_chart(id, tests) {
     let chart_title;
     let chart_width;
     let chart_height;
+    let chart_names = [];
+    let chart_severities = [];
+    let chart_assessments = [];
 
     if (id === "chart-3") {
       chart_title = "Heatmap - Inherent Risk Evaluations";
-      chart_width = document.getElementById("chart-3-container").offsetWidth;
-      chart_height = document.getElementById("chart-3-container").offsetHeight;
     } else{
       chart_title = "Heatmap - Residual Risk Evaluations";
-      chart_width = document.getElementById("chart-4-container").offsetWidth;
-      chart_height = document.getElementById("chart-4-container").offsetHeight;
     }
     const series = tests.map(item => {
       const lista = [];
 
       item.risk_tests.forEach(item2=> {
-        lista.push([item2[0], item2[1], Math.pow(item2[2], 2) * 5]);
+        lista.push([item2[0], item2[1], ((item2[2]-1)*15)+1]);
       });
+      console.log("Voy a imprimir la lista");
+      console.log(lista);
+
+      chart_names.push(item.test_ref)
+      chart_severities.push(item.test_severity)
+      chart_assessments.push(item.assessment)
 
       return {
         name: item.evaluation_name,
-        data: lista
+        data: lista,
       };
     });
 
     const options = {
       chart: {
-        height: chart_height,
-        width: chart_width,
+        toolbar: {
+          show: true,
+          tools: {
+            download: true,
+            selection: true,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true
+          },
+        },
+        zoom: {
+          enabled: false,
+        },
+        height: 400,
         type: 'bubble'
       },
       series: series,
@@ -361,16 +413,37 @@
         opacity: 0.6
       },
       xaxis: {
-        min: -1,
-        max: 7,
-        tickAmount: 7,
-        type: 'numeric',
+        min: 0,
+        max: 6,
+        tickAmount: 6,
+        title: {
+          text: 'Probability Assessment',
+          style: {
+            color: undefined,
+            fontSize: '12px',
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 700,
+            cssClass: 'apexcharts-xaxis-title',
+          },
+        },
       },
       yaxis :{
-        min: -1,
-        max: 7,
-        tickAmount: 7,
-        type: 'numeric',
+        min: 0,
+        max: 6,
+        tickAmount: 6,
+        title: {
+          text: 'Impact Assessment',
+          style: {
+            color: undefined,
+            fontSize: '12px',
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 700,
+            cssClass: 'apexcharts-yaxis-title',
+          },
+        }
+      },
+      dataLabels: {
+        enabled: false
       },
       title: {
         floating: false,
@@ -381,13 +454,37 @@
           fontSize: '18px'
         }
       },
+      tooltip: {
+        enabled: true,
+        custom: function({series, seriesIndex, dataPointIndex, w}) {
+          const data = w.config.series[seriesIndex].data[dataPointIndex];
+          const nombre = chart_names[seriesIndex][dataPointIndex];
+          const severidad = chart_severities[seriesIndex][dataPointIndex];
+          const assessment = chart_assessments[seriesIndex][dataPointIndex];
+          return `' <div style="font-size: 12px; padding: 8px; border-radius: 5px; background: #fff;">
+                    <div style="font-size: 14px; font-weight: bold; margin-top: 0px; text-align: center; background: #f1f1f1; padding: 5px; color: #333;">
+                    <strong>${nombre}</strong><br/></div>
+                    <div style="font-size: 12px; color: #333; text-align: left;">
+                    <strong>Assessment</strong>: ${assessment}<br/>
+                    <strong>Severity</strong>: ${severidad}<br/>
+                    <strong>Impact</strong>: ${data[1]}<br/>
+                    <strong>Probability</strong>: ${data[0]}<br/>
+                    <strong>Speed of ocurrence</strong>: ${parseInt((data[2]-15)/15)+1}</div>
+          `;
+        }
+      },
       legend : {
         show: true,
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetY: -17,
+        floating: false,
       },
       plotOptions: {
         bubble: {
           zScale: 100,
           minBubbleRadius: 10, // o incluso 1
+          maxBubbleRadius: 1000
         }
       }
     }
@@ -451,6 +548,7 @@
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_year|as_crispy_field }}</div>
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_period|as_crispy_field }}</div>
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.process_status|as_crispy_field }}</div>
+                        <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.domain_risk|as_crispy_field }}</div>
                       </div>
                     </fieldset>
                   </div>
@@ -507,15 +605,15 @@
     </div>
     <div class="row mb-4">
       <div class="col-xl-6">
-        <div id="chart-5-container" style="overflow-x: auto; width: 100%;">
-          <div id="chart-5-wrapper" style="min-width: 100%;">
+        <div id="chart-5-container" style="height: 400px; overflow-x: auto">
+          <div id="chart-5-wrapper">
             <div id="chart-5"></div>
           </div>
         </div>
       </div>
       <div class="col-xl-6">
-        <div id="chart-6-container" style="overflow-x: auto; width: 100%;">
-          <div id="chart-6-wrapper" style="min-width: 100%;">
+        <div id="chart-6-container" style="height: 400px; overflow-x: auto">
+          <div id="chart-6-wrapper">
             <div id="chart-6"></div>
           </div>
         </div>
@@ -526,103 +624,176 @@
       <script>
         var ri_status = {"Awaiting Evaluator": 0, "Awaiting Administrator": 0, "Finished": 0};
         var ri_severity = {"Not stablished": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
-        var ri_values = {evaluation_name: "{{e}}", risk_tests: []};
+        var ri_values = {evaluation_name: "{{e}}", risk_tests: [], test_ref: [], test_severity: [], assessment: []};
       </script>
       {% for ri in e.get_all_risk_tests %}
-      <script>
-        switch("{{ri.status}}"){
-          case "1":
-            ri_status["Awaiting Evaluator"] += 1;
-            break;
-          case "2":
-            ri_status["Awaiting Administrator"] += 1;
-            break;
-          case "3":
-            ri_status["Finished"] += 1;
-            break;
-        };
-        switch("{{ri.severity_administrator_qualitative}}"){
-          case "SE":
-            ri_severity["Not stablished"]+=1;
-            break;
-          case "MB":
-            ri_severity["Very low"]+=1;
-            break;
-          case "B":
-            ri_severity["Low"]+=1;
-            break;
-          case "M":
-            ri_severity["Medium"]+=1;
-            break;
-          case "A":
-            ri_severity["High"]+=1;
-            break;
-          case "MA":
-            ri_severity["Very high"]+=1;
-            break;
-        }
-        ri_values.risk_tests.push([Number("{{ ri.probability_level_administrator }}"), Number("{{ ri.impact_level_administrator }}"), Number("{{ ri.event_speed_level_administrator }}")]);
-      </script>
+        {% if ri in risk_test_inherent %}
+          <script>
+            switch("{{ri.status}}"){
+              case "1":
+                ri_status["Awaiting Evaluator"] += 1;
+                break;
+              case "2":
+                ri_status["Awaiting Administrator"] += 1;
+                break;
+              case "3":
+                ri_status["Finished"] += 1;
+                break;
+            };
+            // En caso de que la evaluación se encuentre finalizada, tomamos la valoración del administrador
+            if ("{{e.status}}" == 'FI') {
+              switch("{{ri.severity_administrator_qualitative}}"){
+              case "SE":
+                ri_severity["Not stablished"]+=1;
+                break;
+              case "MB":
+                ri_severity["Very low"]+=1;
+                break;
+              case "B":
+                ri_severity["Low"]+=1;
+                break;
+              case "M":
+                ri_severity["Medium"]+=1;
+                break;
+              case "A":
+                ri_severity["High"]+=1;
+                break;
+              case "MA":
+                ri_severity["Very high"]+=1;
+                break;
+              };
+              ri_values.risk_tests.push([Number("{{ri.probability_level_administrator}}"), Number("{{ri.impact_level_administrator}}"), Number("{{ri.event_speed_level_administrator}}")]);
+              ri_values.test_ref.push("{{ ri.risk.risk.ref}}");
+              ri_values.test_severity.push(severityTranslation["{{ ri.get_severity_administrator_qualitative_display }}"]);
+              ri_values.assessment.push("Administrator's");
+            } else {
+              switch("{{ri.severity_expert_qualitative}}"){
+              case "SE":
+                ri_severity["Not stablished"]+=1;
+                break;
+              case "MB":
+                ri_severity["Very low"]+=1;
+                break;
+              case "B":
+                ri_severity["Low"]+=1;
+                break;
+              case "M":
+                ri_severity["Medium"]+=1;
+                break;
+              case "A":
+                ri_severity["High"]+=1;
+                break;
+              case "MA":
+                ri_severity["Very high"]+=1;
+                break;
+              };
+              // En caso de que esté en proceso tomamos la del evaluador en caso de haberla dado
+              if ("{{ri.status}}" == 2) {
+                ri_values.risk_tests.push([Number("{{ri.probability_level_expert}}"), Number("{{ri.impact_level_expert}}"), Number("{{ri.event_speed_level_expert}}")]);
+                ri_values.test_ref.push("{{ ri.risk.risk.ref}}");
+                ri_values.test_severity.push(severityTranslation["{{ ri.get_severity_expert_qualitative_display }}"]);
+                ri_values.assessment.push("Evaluator's");
+              }
+            }
+          </script>
+        {% endif %}
       {% endfor %}
       <script>
         inherent_status["{{e}}"]= ri_status;
         inherent_severity["{{e}}"]= ri_severity;
         evaluations_inherent.push("{{e}}");
-        inherent_tests.push(ri_values);
+        if (ri_values.test_ref != []){
+          inherent_tests.push(ri_values);
+        }
       </script>
     {% endfor %}
-      <script>
-        console.log(Object.keys(inherent_severity).length);
-        console.log(evaluations_inherent);
-        console.log(ri_values)
-      </script>
+
     {% for e in evaluations_residual %}
       <script>
         var rr_status = {"Awaiting Evaluator": 0, "Awaiting Administrator": 0, "Finished": 0};
         var rr_severity = {"Not stablished": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
-        var rr_values = {evaluation_name : "{{e}}", risk_tests: []};
+        var rr_values = {evaluation_name : "{{e}}", risk_tests: [], test_ref : [], test_severity: [], assessment: []};
       </script>
       {% for rr in e.get_all_risk_tests %}
-        <script>
-          switch("{{rr.status}}"){
-            case "1":
-              rr_status["Awaiting Evaluator"] += 1;
-              break;
-            case "2":
-              rr_status["Awaiting Administrator"] += 1;
-              break;
-            case "3":
-              rr_status["Finished"] += 1;
-              break;
-          };
-          switch("{{rr.severity_administrator_qualitative}}"){
-            case "SE":
-              rr_severity["Not stablished"]+=1;
-              break;
-            case "MB":
-              rr_severity["Very low"]+=1;
-              break;
-            case "B":
-              rr_severity["Low"]+=1;
-              break;
-            case "M":
-              rr_severity["Medium"]+=1;
-              break;
-            case "A":
-              rr_severity["High"]+=1;
-              break;
-            case "MA":
-              rr_severity["Very high"]+=1;
-              break;
-          }
-          rr_values.risk_tests.push([Number("{{rr.probability_level_administrator}}"), Number("{{rr.impact_level_administrator}}"), Number("{{rr.event_speed_level_administrator}}")]);
-        </script>
+        {% if rr in risk_test_residual %}
+          <script>
+            switch("{{rr.status}}"){
+              case "1":
+                rr_status["Awaiting Evaluator"] += 1;
+                break;
+              case "2":
+                rr_status["Awaiting Administrator"] += 1;
+                break;
+              case "3":
+                rr_status["Finished"] += 1;
+                break;
+            };
+            // En caso de que la evaluación se encuentre finalizada, tomamos la valoración del administrador
+            if ("{{e.status}}" == 'FI') {
+              switch("{{rr.severity_administrator_qualitative}}"){
+              case "SE":
+                rr_severity["Not stablished"]+=1;
+                break;
+              case "MB":
+                rr_severity["Very low"]+=1;
+                break;
+              case "B":
+                rr_severity["Low"]+=1;
+                break;
+              case "M":
+                rr_severity["Medium"]+=1;
+                break;
+              case "A":
+                rr_severity["High"]+=1;
+                break;
+              case "MA":
+                rr_severity["Very high"]+=1;
+                break;
+              }
+              rr_values.risk_tests.push([Number("{{rr.probability_level_administrator}}"), Number("{{rr.impact_level_administrator}}"), Number("{{rr.event_speed_level_administrator}}")]);
+              rr_values.test_ref.push("{{ rr.risk.risk.ref}}");
+              rr_values.test_severity.push(severityTranslation["{{ rr.get_severity_administrator_qualitative_display }}"]);
+              rr_values.assessment.push("Administrator's");
+            } else {
+              switch("{{rr.severity_evaluator_qualitative}}"){
+              case "SE":
+                rr_severity["Not stablished"]+=1;
+                break;
+              case "MB":
+                rr_severity["Very low"]+=1;
+                break;
+              case "B":
+                rr_severity["Low"]+=1;
+                break;
+              case "M":
+                rr_severity["Medium"]+=1;
+                break;
+              case "A":
+                rr_severity["High"]+=1;
+                break;
+              case "MA":
+                rr_severity["Very high"]+=1;
+                break;
+              }
+              // En caso de que esté en proceso tomamos la del evaluador en caso de haberla dado
+              if ("{{rr.status}}" == 2) {
+                rr_values.risk_tests.push([Number("{{rr.probability_level_evaluator}}"), Number("{{rr.impact_level_evaluator}}"), Number("{{rr.event_speed_level_evaluator}}")]);
+                rr_values.test_ref.push("{{ rr.risk.risk.ref}}");
+                rr_values.test_severity.push(severityTranslation["{{ rr.get_severity_evaluator_qualitative_display }}"]);
+                rr_values.assessment.push("Evaluator's");
+              }
+            }
+          </script>
+        {% endif %}
       {% endfor %}
         <script>
           residual_status["{{e}}"]= rr_status;
           residual_severity["{{e}}"]= rr_severity;
           evaluations_residual.push("{{e}}");
-          residual_tests.push(rr_values);
+          // Si no existe ningún test de riesgo que haya sido valorado por el Evaluador entonces no añadimos el diccionario que defina la evaluación a la lista general
+          if (rr_values.test_ref != []) {
+            residual_tests.push(rr_values);
+          }
         </script>
     {% endfor %}
     <script>
@@ -647,7 +818,7 @@
       <div id="kt_accordion_2_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_2_header_1" data-bs-parent="#kt_accordion_2">
         <div class="card-body">
           {% if evaluations_inherent.count %}
-            {% include '_includes/risk_test/risk_inherent_test_list.html' with evaluations=evaluations_inherent%}
+            {% include '_includes/risk_test/risk_inherent_test_list.html' with risk_test_inherent=risk_test_inherent %}
           {% else %}
             <div class="alert alert-primary">{% trans 'No hay tests de riesgo inherente disponibles' %}.</div>
           {% endif %}
@@ -674,7 +845,7 @@
       <div id="kt_accordion_3_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_3_header_1" data-bs-parent="#kt_accordion_3">
         <div class="card-body">
           {% if evaluations_residual.count %}
-            {% include '_includes/risk_test/risk_residual_test_list.html' with evaluations=evaluations_residual%}
+            {% include '_includes/risk_test/risk_residual_test_list.html' with risk_test_residual=risk_test_residual %}
           {% else %}
             <div class="alert alert-primary">{% trans 'No hay tests de riesgo residual disponibles' %}.</div>
           {% endif %}

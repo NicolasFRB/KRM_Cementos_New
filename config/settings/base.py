@@ -37,13 +37,10 @@ USE_TZ = True
 prefix_default_language = False
 
 
-def gettext(s):
-    return s
-
 
 LANGUAGES = (
-    ("en", gettext("English")),
-    ("es", gettext("Spanish")),
+    ("en", "English"),
+    ("es", "Spanish"),
 )
 
 # Application definition
@@ -566,7 +563,7 @@ HEALTH_CHECK = {
         # .....
         "SUBSETS": {
             "startup-probe": ["MigrationsHealthCheck", "KrmToolSimpleCheck"],
-            "liveness-probe": ["KrmToolSimpleCheck"]        
+            "liveness-probe": ["KrmToolSimpleCheck"]
         },
         # .....
     }

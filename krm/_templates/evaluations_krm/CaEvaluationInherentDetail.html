@@ -142,58 +142,70 @@ function color_severity(val, id){
   }
 }
 
-function load_bar(id, rit) {
-  r_impacto = [];
-  r_prob = [];
-  rit.forEach(function(r) {
+function load_bar(id, rit, grouped) {
+  let impact_assessment = [];
+  let probability_assessment = [];
+  let names= [];
+  let ref = [];
+  let users_assessment= [];
 
-    var r_i = {x: '', y: '', name: ''}
-    var r_p = {x: '', y: '', name: ''}
+  if (grouped) {
+    rit.forEach(function(r) {
+      impact_assessment.push(r.impact_administrator);
+      probability_assessment.push(r.probability_administrator);
+      users_assessment.push(r.administrator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  } else {
+    rit.forEach(function(r) {
+      impact_assessment.push(r.impact_evaluator);
+      probability_assessment.push(r.probability_evaluator);
+      users_assessment.push(r.evaluator);
+      names.push(r.name);
+      ref.push(r.ref);
+    });
+  }
 
-    if (r.status < 2) {
-      r_i.x = r.risk_ref
-      r_i.y = 0
-      r_i.name = r.risk_name
-      r_i.expert = r.expert
-
-      r_p.x = r.risk_ref
-      r_p.y = 0
-      r_p.name = r.risk_name
-      r_p.expert = r.expert
-
-    } else {
-      r_i.x = r.risk_ref
-      r_i.y = r.impact_level_expert
-      r_i.name = r.risk_name
-      r_i.expert = r.expert
-
-      r_p.x = r.risk_ref
-      r_p.y = r.probability_level_expert
-      r_p.name = r.risk_name
-      r_p.expert = r.expert
+  let built_series = grouped ?
+  [
+    {
+      name: "Administrator's impact assessment",
+      color: '#008ffb',
+      data: impact_assessment
+    },
+    {
+      name: "Administrator's probability assessment",
+      color: '#00e396',
+      data: probability_assessment
     }
-    r_prob.push(r_i)
-    r_impacto.push(r_p)
-  });
+  ]
+  : [
+    {
+      name: "Evaluator's impact assessment",
+      color: '#008ffb',
+      data: impact_assessment
+    },
+    {
+      name: "Evaluator's probability assessment",
+      color: '#00e396',
+      data: probability_assessment
+    }
+  ]
 
   var options = {
-        series: [
-      {
-        name: 'Impacto',
-        data: r_impacto
-      },
-      {
-        name: 'Probabilidad',
-        data: r_prob
-      }
-    ],
+        series: built_series,
         chart: {
           height: 250,
           type: 'bar',
           stacked: true,
           toolbar: {
-            show:false,
+            show: false,
           }
+        },
+        stroke: {
+          width: 0.5,
+          colors: ['#fff']
         },
       plotOptions: {
         bar: {
@@ -201,78 +213,74 @@ function load_bar(id, rit) {
           borderRadiusApplication: 'end',
           borderRadiusWhenStacked: 'last',
           dataLabels: {
-            position: 'center', // top, center, bottom
+            position: 'center',
           },
         }
       },
-
       dataLabels: {
         enabled: true,
-        formatter: function (val) {
-          return val;
-        },
         style: {
           fontSize: '10px',
           colors: ["#304758"]
         }
       },
       tooltip:{
-        custom: function({series, seriesIndex, dataPointIndex, w}) {
-          var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-          markerColor = w.globals.markers.colors[seriesIndex];
-          return '<div style="margin:10px;">' +
-          '<br>' +
-          '<div style="font-size: 11px;">'+
-            '<b>'+data.x+'</b>'+
-          '</div>'+
-          '<div style="font-size: 11px;">'+
-            data.name+
-          '</div>'+
-          '<div style="font-size: 11px;">'+
-            'Evaluador: ' + data.expert+
-          '</div>'+
-          '<br>' +
-            '<div class="apexcharts-legend-series">' +
-              '<span class="apexcharts-legend-marker" rel="1" style="background: '+markerColor+' !important; color: '+markerColor+'; height: 14px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 2px;"></span>'+
-              '<span class="apexcharts-legend-text" rel="1" i="0" data:default-text="'+w.globals.initialSeries[seriesIndex].name+'" style="color: rgb(55, 61, 63); font-size: 10px; font-weight: 400; font-family: Helvetica, Inter, sans-serif;">'+w.globals.initialSeries[seriesIndex].name+': ' + data.y.toString() +'</span>'+
-            '</div>'
-          +'</div>';
-        },
+        custom: function({ series, seriesIndex, dataPointIndex, w }) {
+        let content ='<div style="font-size: 12px; padding: 10px; border-radius: 5px; background: #fff; border: 1px solid #ddd;">';
+        const impact = impact_assessment[dataPointIndex];
+        const probability = probability_assessment[dataPointIndex];
+        const person = users_assessment[dataPointIndex];
+        const severity= impact*probability
+
+        if (!grouped) {
+
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Evaluator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
+        } else {
+
+        content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
+        content += `<strong>Administrator's assesment</strong><br/></div>`;
+        content += '<div style="font-size: 12px; color: #333; text-align: left;">';
+        content +=  `<strong>Impact</strong>: ${impact}<br/>
+                    <strong>Probability</strong>: ${probability}<br/>
+                    <strong>Severity</strong>: ${severity}<br/>
+                    <strong>Assigned user</strong>: @${person}</div>`;
+        }
+
+        content += '</div>';
+        return content;
+      }
       },
       xaxis: {
         position: 'bottom',
+        categories: names,
         axisBorder: {
           show: false
         },
         axisTicks: {
           show: false
-        },
-        crosshairs: {
-          enabled:false,
-        },
-        tooltip: {
-          enabled: false,
         }
       },
       yaxis: {
-        axisBorder: {
-          show: false
-        },
         axisTicks: {
-          show: false,
+          show: true,
         },
         labels: {
-          show: false,
+          show: true,
           formatter: function (val) {
             return val;
           }
         }
-
       },
     };
 
-      var chart = new ApexCharts(document.querySelector("#"+id), options);
-      chart.render();
+  var chart = new ApexCharts(document.querySelector("#"+id), options);
+  chart.render();
 }
 
 function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined", arg6 = "undefined") {
@@ -594,7 +602,7 @@ function swap_columns(id, datatable_id) {
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -728,7 +736,8 @@ function swap_columns(id, datatable_id) {
         </div>
         <script>
             var rit = JSON.parse(clean_specialchars("{{ rit_json }}"));
-            load_bar("bar-main", rit);
+            var grouped = "{{ evaluation.status }}" !== "EP";
+            load_bar("bar-main", rit, grouped);
         </script>
       {% else %}
         <div class="row mt-2 mb-2">
@@ -746,8 +755,12 @@ function swap_columns(id, datatable_id) {
 
     <a href="{% url 'evaluations_krm:ca_evaluation_inherent_notifications' evaluation.pk %}" class="btn btn-sm  btn-primary mr-2" style="margin-left:1em; margin-right:1em;"><i class="bi bi-arrow-bar-right"></i>{% trans 'Notificaciones' %}</a>
 
-    <a href="{% url 'evaluations_krm:ca_evaluation_inherent_complete' evaluation.pk %}" class="btn btn-sm btn-primary me-2">
-      {% trans 'Completar evaluación (Admin)' %}</a>
+    {% if evaluation.status != 'FI' %}
+
+      <a href="{% url 'evaluations_krm:ca_evaluation_inherent_complete' evaluation.pk %}" class="btn btn-sm btn-primary me-2">
+        {% trans 'Completar evaluación como administrador' %}</a>
+
+    {% endif %}
 
     <form method="post" class="kt-form kt-form--label-right" novalidate>
       {% include '_includes/FormErrors.html' %}

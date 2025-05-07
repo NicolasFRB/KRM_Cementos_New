@@ -39,10 +39,9 @@ class CompanyControls(AuditModel):
     )
 
     def __str__(self):
-        return f'{self.company} - {self.control}'
+        return f'{self.company.name} - {self.control.ref}'
 
     class Meta:
         verbose_name = _("Control para Compañías")
-        verbose_name_plural = _(
-            "Controles para compañías")
+        verbose_name_plural = _("Controles para compañías")
         ordering = ["company", "control"]

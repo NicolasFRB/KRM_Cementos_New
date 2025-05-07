@@ -119,6 +119,7 @@ class RiskCompanyApiView(APIView):
 
                 if risk["evaluator"]:
                     risk["evaluator_data"] = UserSerializer(User.objects.get(pk=risk["evaluator"])).data
+                risk['risk_name'] = krm_risk.risk.name
 
                 data_item['risks'].append(risk)
 
@@ -165,8 +166,8 @@ class RiskCompanyResidualApiView(APIView):
                         status=3,
                         evaluation__status='FI'
                     ).order_by('evaluation__date_begin').first()
-                    print("Puedo acceder al parámetro")
-                    print(last_evaluate_risk_inherent.get_severity_expert_qualitative_display)
+
+
                     risk['severity_evaluator_qualitative'] = last_evaluate_risk_inherent.get_severity_expert_qualitative_display()
                     risk['severity_administrator_qualitative'] = last_evaluate_risk_inherent.get_severity_administrator_qualitative_display()
 
@@ -175,6 +176,8 @@ class RiskCompanyResidualApiView(APIView):
 
                 if risk["evaluator"]:
                     risk["evaluator_data"] = UserSerializer(User.objects.get(pk=risk["evaluator"])).data
+
+                risk["risk_name"] = krm_risk.risk.name
 
                 # company_domain_risk_evaluator = CompanyDomainRiskEvaluator.objects.get(
                 #     company=c,

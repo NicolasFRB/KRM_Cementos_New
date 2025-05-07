@@ -14,10 +14,9 @@
       </tr>
     </thead>
     <tbody>
-    {% for e in evaluations %}
-      {% for rt in e.get_all_risk_tests %}
+    {% for rt in risk_test_residual %}
       <tr>
-        <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ga_evaluation_krm_residual_detail' e.pk %}">{{ rt.evaluation }}</a></td>
+        <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ga_evaluation_krm_residual_detail' rt.evaluation.pk %}">{{ rt.evaluation }}</a></td>
         <td class="text-center align-middle">{{ rt.risk.risk.ref }}</td>
         <td class="text-center align-middle">{{ rt.evaluation.date_begin|date:'d/m/Y' }}</td>
         <td class="text-center align-middle">{{ rt.evaluator.full_name }}</td>
@@ -25,7 +24,6 @@
         <td class="text-center align-middle">{{ rt.get_status_display }}</td>
         <td class="text-center align-middle">{% if e.status == 'FI' %} {{ rt.get_severity_administrator_qualitative_display }} {% else %} {{ rt.get_severity_evaluator_qualitative_display }} {% endif %}</td>
       </tr>
-      {% endfor %}
     {% endfor %}
     </tbody>
   </table>

@@ -190,7 +190,7 @@
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
-          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+          <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
           <th class="text-center">{% trans 'Nº Riesgos' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
@@ -198,7 +198,7 @@
       <tbody>
           {% for evaluation in evaluations_finished %}
           <tr>
-            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:ca_evaluation_inherent_detail' evaluation.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
+            <td class="text-center align-middle"><a href="{% url 'evaluations_krm:au_evaluation_inherent_detail' evaluation.pk %}"><i class="bi bi-hand-index-thumb fs-1x text-primary"></i></a></i></td>
             <td class="align-middle">{{ evaluation.ref }}</td>
             <td class="align-middle">
               <div style="display:flex;">

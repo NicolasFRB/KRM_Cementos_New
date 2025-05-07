@@ -467,7 +467,7 @@ class RiskTestResidual(AuditModel):
         msg.content_subtype = "html"
 
         self.evaluator.add_action(
-            _("[%s] Envío de email de Test de Riesgos Residuales pendientes de valorar (%s)" % (notif_type.upper(), self.evaluation.ref)))
+            _("[%s] Email de Tests de Riesgo Residual pendientes de valorar enviado (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
             return msg.send(fail_silently=False)

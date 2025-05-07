@@ -242,6 +242,14 @@ class GaEvaluationResidualDetailView(FormView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        """
+        Función empleada para mandar datos del Backend a la template de HTML y poder visualizar así
+        los datos por pantalla, a través de los gráficos del detalle de una Evaluación de Riesgo. Puesto que
+        queremos enviar los datos particulares de cada test de riesgo para realizar el gráfico de barras, crearemos
+        un orden en el listado de tests de riesgo para representar aquellos con menor severidad los primeros, y
+        que la severidad, equivalente a la altura vaya aumentando conforme avanzamos hacia la derecha del gráfico.
+
+        """
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
         context['evaluation'] = self.evaluation
@@ -272,72 +280,69 @@ class GaEvaluationResidualDetailView(FormView):
 
         context['evaluation'].domain_risks = context['evaluation'].get_domain_risk_in_evaluation()
 
-        # Serializar Evaluation no incluye sus hijos :(
-        # Busco los hijos
         context['rrt'] = RiskTestResidual.objects.filter(
             evaluation=self.evaluation)
 
-        # Paso a dict para json
-        context['rrt_dict'] = [model_to_dict(m) for m in context['rrt']]
+        context['rrt_dict'] = []
 
-        # MODEL_TO_DICT not getting properties :(
-        # Get .severity_level_expert
-        # TBI for cuadratico :/
-        # Los risk_inherent_test no tienen ref ni name, es heredado del risk_company
-        for i, r1 in enumerate(context['rrt']):
-            context['rrt_dict'][i]['risk_ref'] = r1.risk.risk.ref
-            context['rrt_dict'][i]['risk_name'] = r1.risk.risk.name
-            context['rrt_dict'][i]['evaluator'] = r1.evaluator.username_no_domain
+        for risk_test in context['rrt']:
+            information= {}
+            information['ref']= risk_test.risk.risk.ref
+            information['name']= risk_test.risk.risk.name
+            information['evaluator']= risk_test.evaluator.username_no_domain
+            information['impact_evaluator']= risk_test.impact_level_evaluator
+            information['probability_evaluator']= risk_test.probability_level_evaluator
+            information['severity_evaluator']= risk_test.severity_level_evaluator
+            information['administrator']= self.evaluation.admin_supervisor.username_no_domain if self.evaluation.admin_supervisor else ''
+            information['impact_administrator']= risk_test.impact_level_administrator
+            information['probability_administrator']= risk_test.probability_level_administrator
+            information['severity_administrator']= risk_test.severity_level_administrator
+            context['rrt_dict'].append(information)
 
-        # Sort by severity for a nice plot
-        context['rrt_dict'] = sorted(
-            context['rrt_dict'], key=lambda x: (x['risk_ref']), reverse=False)
+        if self.evaluation.admin_supervisor:
+            context['rrt_dict'] = sorted(context['rrt_dict'], key=lambda x: x['severity_administrator'], reverse=False)
+        else:
+            context['rrt_dict'] = sorted(context['rrt_dict'], key=lambda x: x['severity_evaluator'], reverse=False)
 
         # Errores de encoding caracteres portugueses y españoles
-        for i, m in enumerate(context['rrt_dict']):
-            for k in m:
-                if type(context['rrt_dict'][i][k]) == str:
-                    context['rrt_dict'][i][k] = context['rrt_dict'][i][k].encode(
-                        'utf-8').decode('utf-8')
+        # for i, m in enumerate(context['rrt_dict']):
+        #     for k in m:
+        #         if type(context['rrt_dict'][i][k]) == str:
+        #             context['rrt_dict'][i][k] = context['rrt_dict'][i][k].encode(
+        #                 'utf-8').decode('utf-8')
 
-        # JSON DUMP
-        context['rrt_json'] = json.dumps(
-            context['rrt_dict'],
-            default=str,
-            ensure_ascii=True,
-        )
+        context['rrt_json'] = json.dumps(context['rrt_dict'], default=str, ensure_ascii=True)
 
-        # REPEAT FOR RISK COMPANY RESIDUAL (AGGREGATES)
-        context['rcr'] = RiskCompanyResidual.objects.filter(
-            evaluation=self.evaluation)
-        context['rcr_dict'] = [model_to_dict(m) for m in context['rcr']]
-        for i, r1 in enumerate(context['rcr']):
-            context['rcr_dict'][i]['risk_ref'] = r1.risk_company.risk.ref
-            context['rcr_dict'][i]['risk_name'] = r1.risk_company.risk.name
+        # Código antiguo correspondiente a los riesgos de compañía residuales
+        # context['rcr'] = RiskCompanyResidual.objects.filter(
+        #     evaluation=self.evaluation)
+        # context['rcr_dict'] = [model_to_dict(m) for m in context['rcr']]
+        # for i, r1 in enumerate(context['rcr']):
+        #     context['rcr_dict'][i]['risk_ref'] = r1.risk_company.risk.ref
+        #     context['rcr_dict'][i]['risk_name'] = r1.risk_company.risk.name
 
-            context['rcr_dict'][i]['impact_inherent'] = r1.get_latest_impact_inherent
-            context['rcr_dict'][i]['probability_inherent'] = r1.get_latest_probability_inherent
-            context['rcr_dict'][i]['severity_inherent'] = r1.get_latest_severity_inherent
-            context['rcr_dict'][i]['probability_residual_eval'] = r1.probability_level_result_evaluator
-            context['rcr_dict'][i]['probability_residual_admin'] = r1.probability_level_result_admin
-            context['rcr_dict'][i]['nivel_de_control'] = r1.probability_level_residual_evaluator_aggregate_rounded
+        #     context['rcr_dict'][i]['impact_inherent'] = r1.get_latest_impact_inherent
+        #     context['rcr_dict'][i]['probability_inherent'] = r1.get_latest_probability_inherent
+        #     context['rcr_dict'][i]['severity_inherent'] = r1.get_latest_severity_inherent
+        #     context['rcr_dict'][i]['probability_residual_eval'] = r1.probability_level_result_evaluator
+        #     context['rcr_dict'][i]['probability_residual_admin'] = r1.probability_level_result_admin
+        #     context['rcr_dict'][i]['nivel_de_control'] = r1.probability_level_residual_evaluator_aggregate_rounded
 
-        context['rcr_dict'] = context['rcr_dict']
+        # context['rcr_dict'] = context['rcr_dict']
         # sorted(
         #     context['rcr_dict'], key=lambda x: (x['severity_inherent'] + x['probability_residual_eval']), reverse=True)
 
-        for i, m in enumerate(context['rcr_dict']):
-            for k in m:
-                if type(context['rcr_dict'][i][k]) == str:
-                    context['rcr_dict'][i][k] = context['rcr_dict'][i][k].encode(
-                        'utf-8').decode('utf-8')
+        # for i, m in enumerate(context['rcr_dict']):
+        #     for k in m:
+        #         if type(context['rcr_dict'][i][k]) == str:
+        #             context['rcr_dict'][i][k] = context['rcr_dict'][i][k].encode(
+        #                 'utf-8').decode('utf-8')
 
-        context['rcr_json'] = json.dumps(
-            context['rcr_dict'],
-            default=str,
-            ensure_ascii=True,
-        )
-
+        # context['rcr_json'] = json.dumps(
+        #     context['rcr_dict'],
+        #     default=str,
+        #     ensure_ascii=True,
+        # )
 
         context['js_template'] = ['js/custom/datatables.js']
 

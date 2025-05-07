@@ -214,49 +214,92 @@ function CreateEvaluationKrmInherent(props) {
   }
 
   const selectEvaluator = (selected_riskCompany, selected_risk, selected_evaluator_data) => {
-    // console.log("Risk")
-    // console.log(riskCompany)
-
-    // console.log("Expert")
-    // console.log(expert_data)
-
-    setRiskCompanies((riskCompanies) =>
-      riskCompanies.map((riskCompany) => {
-        console.log(riskCompany);
-        if(riskCompany.company.pk === selected_riskCompany.company.pk)
-          return { ...riskCompany,
-            risks: riskCompany.risks.map( (risk) => {
-                if (risk.pk === selected_risk.pk) {
-                  console.log(risk);
-                  console.log({
-                    ...risk,
-                    original_evaluator: risk.hasOwnProperty("original_evaluator")? risk.original_evaluator: risk.evaluator,
-                    evaluator: selected_evaluator_data.pk,
-                    evaluator_data: {
-                      pk:selected_evaluator_data.pk,
-                      email:selected_evaluator_data.label,
-                    },
-                    save_evaluator: selected_evaluator_data.pk != risk.evaluator
-                  });
-                  return {
-                    ...risk,
-                    original_evaluator: risk.hasOwnProperty("original_evaluator")? risk.original_evaluator: risk.evaluator,
-                    evaluator: selected_evaluator_data.pk,
-                    evaluator_data: {
-                      pk:selected_evaluator_data.pk,
-                      email:selected_evaluator_data.label,
-                    },
-                    save_evaluator: selected_evaluator_data.pk != risk.evaluator
-                  };
-
-                }
-                else return risk;
-              })
+    const newRiskCompanies = riskCompanies.map(c => {
+      if (c.company.pk === selected_riskCompany.company.pk) {
+        const updatedRisks = c.risks.map(risk => {
+          if (risk.pk === selected_risk.pk) {
+            return {
+              ...risk,
+              original_evaluator: risk.hasOwnProperty("original_evaluator") ? risk.original_evaluator : risk.evaluator,
+              evaluator: selected_evaluator_data.pk,
+              evaluator_data: {
+                pk: selected_evaluator_data.pk,
+                email: selected_evaluator_data.label,
+              },
+              save_evaluator: selected_evaluator_data.pk !== risk.evaluator
+            };
           }
-        else return riskCompany;
-      })
-    )
-  }
+          return risk;
+        });
+
+        return { ...c, risks: updatedRisks };
+      }
+      return c;
+    });
+
+    setRiskCompanies(newRiskCompanies);
+
+    let riskSelect = [];
+
+    newRiskCompanies.forEach(c => {
+      let rs = {
+        company_pk: c.company.pk,
+        risks: []
+      };
+
+      c.risks.forEach(risk => {
+        if (risk.checked) {
+          rs.risks.push([risk.pk, risk.evaluator]);
+        }
+      });
+
+      if (rs.risks.length > 0) {
+        riskSelect.push(rs);
+      }
+    });
+
+    setRiskCompaniesToEvaluate(riskSelect);
+  };
+
+  // const selectEvaluator = (selected_riskCompany, selected_risk, selected_evaluator_data) => {
+
+  //   setRiskCompanies((riskCompanies) =>
+  //     riskCompanies.map((riskCompany) => {
+  //       console.log(riskCompany);
+  //       if(riskCompany.company.pk === selected_riskCompany.company.pk)
+  //         return { ...riskCompany,
+  //           risks: riskCompany.risks.map( (risk) => {
+  //               if (risk.pk === selected_risk.pk) {
+  //                 console.log(risk);
+  //                 console.log({
+  //                   ...risk,
+  //                   original_evaluator: risk.hasOwnProperty("original_evaluator")? risk.original_evaluator: risk.evaluator,
+  //                   evaluator: selected_evaluator_data.pk,
+  //                   evaluator_data: {
+  //                     pk:selected_evaluator_data.pk,
+  //                     email:selected_evaluator_data.label,
+  //                   },
+  //                   save_evaluator: selected_evaluator_data.pk != risk.evaluator
+  //                 });
+  //                 return {
+  //                   ...risk,
+  //                   original_evaluator: risk.hasOwnProperty("original_evaluator")? risk.original_evaluator: risk.evaluator,
+  //                   evaluator: selected_evaluator_data.pk,
+  //                   evaluator_data: {
+  //                     pk:selected_evaluator_data.pk,
+  //                     email:selected_evaluator_data.label,
+  //                   },
+  //                   save_evaluator: selected_evaluator_data.pk != risk.evaluator
+  //                 };
+
+  //               }
+  //               else return risk;
+  //             })
+  //         }
+  //       else return riskCompany;
+  //     })
+  //   )
+  // }
 
   return (
     <div className="App">
@@ -355,7 +398,7 @@ function CreateEvaluationKrmInherent(props) {
                                   )}
                                 </td>
                                 <td><label htmlFor={'ri' + risk.pk}>{risk.risk_ref}</label></td>
-                                <td><span className="fw-semibold ps-2 fs-6">{risk.risk.name}</span></td>
+                                <td><span className="fw-semibold ps-2 fs-6">{risk.risk_name}</span></td>
                                 <td className="text-center">
                                   {risk.evaluated && (
                                     <span className="badge badge-primary">Sí</span>

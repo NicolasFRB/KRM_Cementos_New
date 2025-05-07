@@ -312,7 +312,7 @@ class GaCompanyImportView(FormView):
         context['breadcrums'] = breadcrums
         return context
 
-    def checkDB(self, name, elem, DBreference, form, field_key, index):
+    def checkDB(self, name, elem, DBreference, field_key, index):
         """
         Función que contrasta si existen previamente en la base de datos instancias de un objeto con el mismo identificador (ref) o atributo único (vat)
         que alguna de las nuevas instancias que se pretende crear.
@@ -332,6 +332,7 @@ class GaCompanyImportView(FormView):
             Nombre del atributo cuya repetición se quiere contrastar.
 
         """
+        problem= False
         if field_key == "ref":
             if DBreference.objects.filter(ref=elem[field_key]).count() > 0:
                 self.errors_found +=1
@@ -343,7 +344,7 @@ class GaCompanyImportView(FormView):
                         % (name, index, elem[field_key])
                     ),
                 )
-                return super(GaCompanyImportView, self).form_invalid(form)
+                problem= True
         else:
             if DBreference.objects.filter(vat=elem[field_key]).count() > 0:
                 self.errors_found +=1
@@ -351,13 +352,17 @@ class GaCompanyImportView(FormView):
                     self.request,
                     messages.ERROR,
                     (
-                        _('El campo %s del usuario de la fila %s (%s) ya se encuentra registrado, por favor aporte un nuevo valor')
-                        % (name, index, elem[field_key])
+                        _('El campo %(name)s del usuario de la fila %(index)s (%(value)s) ya se encuentra registrado, por favor aporte un nuevo valor') % {
+                            "name": name,
+                            "index": index,
+                            "value": elem[field_key]
+                        }
                     ),
                 )
-                return super(GaCompanyImportView, self).form_invalid(form)
+                problem= True
+        return problem
 
-    def checkExcelRep(self, name, elem, elems_to_create, form, index, field_key):
+    def checkExcelRep(self, name, elem, elems_to_create, index, field_key):
         """
         Función empleada para contrastar que no existe una instancia de un objeto con el mismo valor para
         el atributo field_key en la importación de datos, que en este caso será la referencia o el VAT, dado
@@ -381,6 +386,7 @@ class GaCompanyImportView(FormView):
             Nombre del atributo cuya repetición se quiere contrastar.
 
         """
+        problem= False
         for e in elems_to_create:
             if e[field_key] == elem[field_key]:
                 self.errors_found +=1
@@ -392,7 +398,8 @@ class GaCompanyImportView(FormView):
                         % (name, e[field_key], index)
                     ),
                 )
-                return super(GaCompanyImportView, self).form_invalid(form)
+                problem= True
+        return problem
 
     def form_valid(self, form):
         companies_to_create = []
@@ -400,7 +407,7 @@ class GaCompanyImportView(FormView):
 
         input_excel = self.request.FILES['companies_file'].read()
         wb = load_workbook(filename=BytesIO(input_excel), data_only=True)
-        rows = [row for row in wb['Companies'].iter_rows() if any(cell.value not in (None, '') for cell in row)]
+        rows = [row for row in wb['Companies'].iter_rows() if any(cell.value and str(cell.value).strip()!= '' for cell in row)]
         pais_codigos = [
         'AF', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AQ', 'AG', 'AR', 'AM', 'AW', 'AU', 'AT', 'AZ',
         'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BM', 'BT', 'BO', 'BQ', 'BA', 'BW', 'BV', 'BR',
@@ -425,14 +432,15 @@ class GaCompanyImportView(FormView):
             if not i == 1:
                 company = {}
 
-                if row[0].value and row[1].value:
+                #comprobación de obligatoriedad de campos
+                mandatory= row[0].value and str(row[0].value).strip()!= '' and row[1].value and str(row[1].value).strip()!= ''
+                if mandatory:
                     company['ref'] = str(row[0].value)
                     company['name'] = str(row[1].value)
                     company['vat'] = str(row[2].value)
                     company['address'] = str(row[3].value)
                     company['state'] = str(row[4].value)
-                    cell = row[5]
-                    cell_value = cell.value
+                    cell_value = row[5].value
                     try:
                         cell_value = int(cell_value)
                     except:
@@ -446,6 +454,19 @@ class GaCompanyImportView(FormView):
                     company['type_company'] = str(row[8].value)
                     company['companies_in_scope'] = str(row[9].value)
 
+                    #comprobaciones correspondientes a la referencia de la compañía
+                    if self.checkDB("Referencia", company, Company, "ref", i):
+                        return super(GaCompanyImportView, self).form_invalid(form)
+                    if self.checkExcelRep("Referencia", company, companies_to_create, i, "ref"):
+                        return super(GaCompanyImportView, self).form_invalid(form)
+
+                    #comprobaciones correspondientes a la unicidad del VAT de la compañía
+                    if self.checkDB("VAT", company, Company, "ref", i):
+                        return super(GaCompanyImportView, self).form_invalid(form)
+                    if self.checkExcelRep("VAT", company, companies_to_create, i, "vat"):
+                        return super(GaCompanyImportView, self).form_invalid(form)
+
+                    #comprobaciones con respecto a la dirección de email del usuario
                     if company['email']:
                         if not re.match(
                             '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
@@ -455,16 +476,11 @@ class GaCompanyImportView(FormView):
                             messages.add_message(self.request, messages.ERROR, (_('La dirección de correo introducida en la fila %s no cumple con el formato válido') % str(i)))
                             return super(GaCompanyImportView, self).form_invalid(form)
 
-
+                    #comprobación correspondiente al país de la compañía
                     if company['country'] not in pais_codigos:
                         self.errors_found +=1
                         messages.add_message(self.request, messages.ERROR, (_('En la fila %s el código de país introducido no tiene formato correcto, por favor aporte uno nuevo') % str(i)))
                         return super(GaCompanyImportView, self).form_invalid(form)
-
-                    self.checkDB("Referencia", company, Company, form, "ref", i)
-                    self.checkExcelRep("Referencia", company, companies_to_create, form, i, "ref")
-                    self.checkDB("VAT", company, Company, form, "ref", i)
-                    self.checkExcelRep("VAT", company, companies_to_create, form, i, "vat")
 
                 else:
                     self.errors_found +=1

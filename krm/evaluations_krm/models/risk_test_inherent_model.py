@@ -135,7 +135,7 @@ class RiskTestInherent(AuditModel):
     STATUS_CHOICES = (
         (0, _('Sin iniciar')),
         (1, _('En espera del Evaluador')),
-        (2, _('En esperal del Administrador')),
+        (2, _('En espera del Administrador')),
         (3, _('Finalizado')),
     )
 
@@ -334,7 +334,7 @@ class RiskTestInherent(AuditModel):
             bcc = ""
 
         subject, from_email, to = (
-            _("{} - Test de Riesgos pendientes de valorar".format(configuration.app_name)),
+            _("{} - Tests de Riesgo pendientes de valorar".format(configuration.app_name)),
             from_email,
             self.expert.email,
         )
@@ -343,7 +343,7 @@ class RiskTestInherent(AuditModel):
         msg.content_subtype = "html"
 
         self.expert.add_action(
-            _("[%s] Envío de email de Test de Riesgos Inherentes pendientes de valorar (%s)" % (notif_type.upper(), self.evaluation.ref)))
+            _("[%s] Email de Tests de Riesgo Inherente pendientes de valorar enviado (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
             msg.send(fail_silently=False)

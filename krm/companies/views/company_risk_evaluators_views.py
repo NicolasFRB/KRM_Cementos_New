@@ -54,10 +54,10 @@ class GaCompanyRiskEvaluatorUpdateView(UpdateView):
                 'companies:ga_company_list')},
             {'title': self.object.company, 'url': reverse(
                 'companies:ga_company_detail', kwargs={'pk': self.object.company.pk})},
-            {'title': _('Asignar evaluadores')},
+            {'title': _('Asignar evaluador')},
         ]
         context['page_title'] = _(
-            'Asignar Evaluadores de Riesgo Residual (RR)')
+            'Asignar un Evaluador de Riesgo Residual (RR)')
         context['breadcrums'] = breadcrums
 
         return context
@@ -67,7 +67,7 @@ class GaCompanyRiskEvaluatorUpdateView(UpdateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Evaluadores asignados correctamente')
+            _('Evaluador asignado correctamente')
         )
         return reverse_lazy(
             'companies:ga_company_detail',
