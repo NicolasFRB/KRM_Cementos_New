@@ -237,7 +237,7 @@
 {% if KRM_ACTIVATE and CONFIGURATION.enable_questionnaires %}
   <div class="card mb-8">
     <div class="card-header">
-      <div class="card-title fs-3 fw-bold">{% trans 'Usuarios evaluadores de Cuestionarios' %}&nbsp&nbsp<span
+      <div class="card-title fs-3 fw-bold">{% trans 'Evaluadores de Cuestionarios' %}&nbsp&nbsp<span
           class="badge badge-primary text-wrap">{{ company.name }}</span></div>
     </div>
     <div class="card-body">
@@ -384,7 +384,7 @@
                     <th width="5%">{% trans 'Personal expuesto' %}</th>
                     <th>{% trans 'Dominio de Riesgo' %}</th>
                     <th>{% trans 'Riesgo Maestro (N1)' %}</th>
-                    <th class="text-center">{% trans 'Nº de Controles' %}</th>
+                    <th class="text-center">{% trans 'Número de Controles' %}</th>
                     <!-- <th>{% trans 'Experto asignado (RI)' %}</th>
                     <th>{% trans 'Evaluadores de Riesgo (RR)' %}</th> -->
                   </tr>
@@ -472,7 +472,7 @@
       <div class="card-body">
         <div class="row">
           <div class="mb-4 col-12">
-            <div><h5>Controles activos de la compañía</h5></div>
+            <div><h5>{% trans 'Controles activos de la compañía' %}</h5></div>
               <table id="controls_active" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
                 <thead>
                   <tr class="fw-semibold fs-6">
@@ -480,7 +480,7 @@
                     <th class="text-center">{% trans 'REF' %}</th>
                     <th class="text-center">{% trans 'Descripción' %}</th>
                     <th class="text-center">{% trans '¿Aplica?' %}</th>
-                    <th class="text-center">{% trans 'Owners' %}</th>
+                    <th class="text-center">{% trans 'Responsables' %}</th>
                     <th class="text-center">{% trans 'Supervisores' %}</th>
                   </tr>
                 </thead>
@@ -524,7 +524,7 @@
               </table>
 
               <div class="kt-divider"></div>
-              <div style= "margin-top: 25px;"><h5>Controles inactivos de la compañía</h5></div>
+              <div style= "margin-top: 25px;"><h5>{% trans 'Controles inactivos de la compañía' %}</h5></div>
               <table id="controls_inactive" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
                 <thead>
                   <tr class="fw-semibold fs-6">

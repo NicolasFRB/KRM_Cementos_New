@@ -1,5 +1,5 @@
 
-import json
+import json, os
 from django.shortcuts import render
 
 # Create your views here.
@@ -171,6 +171,28 @@ class RuEvaluationRiskInherentDetail(FormView):
         ]
         context['page_title'] = f"{_('Evaluación KRM Inherent')} : {self.evaluation.ref}"
         context['breadcrums'] = breadcrums
+
+        json_path_es = os.path.join('krm', 'static', 'lang', 'es.json')
+        json_path_en = os.path.join('krm', 'static', 'lang', 'en.json')
+
+        try:
+            with open(json_path_es, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_es= json.dumps(translations_data)
+        except FileNotFoundError:
+            print("No se ha encontrado ese archivo")
+            translations_es= {}
+
+        try:
+            with open(json_path_en, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_en= json.dumps(translations_data)
+        except FileNotFoundError:
+            translations_en= {}
+
+        context['translations_es']= translations_es
+        context['translations_en']= translations_en
+
 
         context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(1, user=self.request.user)
         context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2, user=self.request.user)

@@ -43,11 +43,11 @@
                         <th width="5%">{% trans 'Descripción' %}</th>
                         <th width="5%">{% trans 'Principales elementos' %}</th>
                         <th width="5%">{% trans 'Principales eventos' %}</th>
-                        <th width="5%">{% trans 'Actividad afectada' %}</th>                                                
+                        <th width="5%">{% trans 'Actividad afectada' %}</th>
                         <th width="5%">{% trans 'Personal expuesto' %}</th>
-               
-                        <th>{% trans 'Riesgo Maestro (N1)' %}</th>          
-                        <th class="text-center">{% trans 'Nº de Controles' %}</th>
+
+                        <th>{% trans 'Riesgo Maestro (N1)' %}</th>
+                        <th class="text-center">{% trans 'Número de Controles' %}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -60,7 +60,7 @@
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.description|striptags }}"></i></td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_elements|striptags }}"></i></td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_main_events|striptags }}"></i></td>
-                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_activity_affected|striptags }}"></i></td>                          
+                          <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_activity_affected|striptags }}"></i></td>
                           <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ rc.krm_exposed_staff|striptags }}"></i></td>
                           <td class="align-middle">{{ rc.risk.risk_master.ref }}</td>
                           <td class="text-center align-middle"><span class="badge badge-info">{{ rc.risk.controls.count }}</span></td>
@@ -75,7 +75,7 @@
         </div>
       </div>
       <!--end::Body-->
-    
+
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Guardar' %}</button>
         <a href="{% url 'companies:ga_company_detail' company.pk %}"

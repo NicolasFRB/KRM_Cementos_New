@@ -4,6 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
@@ -13,20 +14,20 @@
 <script src="{% static 'js/flatpickr_es.js' %}"></script>
 
 <script>
-  {% get_current_language as LANGUAGE_CODE %}
-  {% if LANGUAGE_CODE == 'es' %}
+  if (LANGUAGE_CODE == 'es') {
     $(".datepicker").flatpickr({
       locale: "es",
       dateFormat: "Y-m-d",        // formato interno (para .val())
       altInput: true,             // lo que ve el usuario
       altFormat: "d/m/Y",
     });
-  {% else %}
+  }
+  else {
     $(".datepicker").flatpickr({
           "locale": "en",
           dateFormat: "Y-m-d",
     });
-  {% endif %}
+  }
 
   $(document).ready(function(){
 
@@ -76,16 +77,8 @@
   var residual_severity = {};
   var inherent_tests = [];
   var residual_tests = [];
-  const severityTranslation = {
-    "Sin establecer": "Not stablished",
-    "Muy baja": "Very low",
-    "Baja": "Low",
-    "Media": "Medium",
-    "Alta": "High",
-    "Muy alta": "Very high"
-};
 
-  function test_status(id, dict, names) {
+  function test_status(id, dict, names, translations) {
     var pending = [];
     var evaluated = [];
     var finished = [];
@@ -108,26 +101,26 @@
     let chart_title;
 
     if (id === "chart-1"){
-      chart_title= "Risk Test Inherent Status per Evaluation";
+      chart_title= translations["riskdashboard"]["inherent-status"];
       const minHeight= document.getElementById("chart-1-container").offsetHeight;
       chartHeight = Math.max(barHeight*names.length, minHeight);
     } else {
-      chart_title= "Risk Test Residual Status per Evaluation";
+      chart_title= translations["riskdashboard"]["residual-status"];
       const minHeight= document.getElementById("chart-2-container").offsetHeight;
       chartHeight = Math.max(barHeight*names.length, minHeight);
     }
 
     var options = {
         series: [{
-          name: 'Awaiting Evaluator',
+          name: translations["riskdashboard"]["test-awev"],
           color: '#ed9f7b',
           data: pending
         }, {
-          name: 'Awaiting Administrator',
+          name: translations["riskdashboard"]["test-awca"],
           color: '#e6d68e',
           data: evaluated
         }, {
-          name: 'Finished',
+          name: translations["riskdashboard"]["test-fi"],
           color: '#a6ed9d',
           data: finished
         }],
@@ -199,7 +192,7 @@
         chart.render();
   }
 
-  function test_severity(id, dict, names){
+  function test_severity(id, dict, names, translations){
     var not_stablished = [];
     var very_low = [];
     var low = [];
@@ -230,38 +223,38 @@
     let chart_title;
 
     if (id === "chart-5"){
-      chart_title= "Risk Test Inherent Severity per Evaluation";
+      chart_title= translations["riskdashboard"]["inherent-severity"];
       const minWidth = document.getElementById('chart-5-container').offsetWidth;
       totalWidth = Math.max(barWidth * names.length, minWidth-5);
     } else {
-      chart_title= "Risk Test Residual Severity per Evaluation";
+      chart_title= translations["riskdashboard"]["residual-severity"];
       const minWidth = document.getElementById('chart-6-container').offsetWidth;
       totalWidth = Math.max(barWidth * names.length, minWidth);
     }
 
     var options = {
       series: [{
-        name: 'Not stablished',
+        name: translations["riskdashboard"]["sev-ns"],
         color: '#d4d0c7',
         data: not_stablished
       }, {
-        name: 'Very low',
-        color: '#a6ed9d',
+        name: translations["riskdashboard"]["sev-vl"],
+        color: '#77bd6b',
         data: very_low
       }, {
-        name: 'Low',
-        color: '#e6d68e',
+        name: translations["riskdashboard"]["sev-l"],
+        color: '#a6ed9d',
         data: low
       }, {
-        name: 'Medium',
-        color: '#f4c39d',
+        name: translations["riskdashboard"]["sev-m"],
+        color: '#e6d68e',
         data: medium
       }, {
-        name: 'High',
+        name: translations["riskdashboard"]["sev-h"],
         color: '#ed9f7b',
         data: high
       }, {
-        name: 'Very high',
+        name: translations["riskdashboard"]["sev-vh"],
         color: '#ea7d7e',
         data : very_high
       }
@@ -356,7 +349,7 @@
     return color;
   }
 
-  function bubble_chart(id, tests) {
+  function bubble_chart(id, tests, translations) {
     let chart_title;
     let chart_width;
     let chart_height;
@@ -365,9 +358,9 @@
     let chart_assessments = [];
 
     if (id === "chart-3") {
-      chart_title = "Heatmap - Inherent Risk Evaluations";
+      chart_title = translations["riskdashboard"]["inherent-heatmap"];
     } else{
-      chart_title = "Heatmap - Residual Risk Evaluations";
+      chart_title = translations["riskdashboard"]["residual-heatmap"];
     }
     const series = tests.map(item => {
       const lista = [];
@@ -375,10 +368,8 @@
       item.risk_tests.forEach(item2=> {
         lista.push([item2[0], item2[1], ((item2[2]-1)*15)+1]);
       });
-      console.log("Voy a imprimir la lista");
-      console.log(lista);
 
-      chart_names.push(item.test_ref)
+      chart_names.push(item.test_name)
       chart_severities.push(item.test_severity)
       chart_assessments.push(item.assessment)
 
@@ -417,7 +408,7 @@
         max: 6,
         tickAmount: 6,
         title: {
-          text: 'Probability Assessment',
+          text: translations["riskdashboard"]["pr-assessment"],
           style: {
             color: undefined,
             fontSize: '12px',
@@ -432,7 +423,7 @@
         max: 6,
         tickAmount: 6,
         title: {
-          text: 'Impact Assessment',
+          text: translations["riskdashboard"]["im-assessment"],
           style: {
             color: undefined,
             fontSize: '12px',
@@ -459,18 +450,26 @@
         custom: function({series, seriesIndex, dataPointIndex, w}) {
           const data = w.config.series[seriesIndex].data[dataPointIndex];
           const nombre = chart_names[seriesIndex][dataPointIndex];
-          const severidad = chart_severities[seriesIndex][dataPointIndex];
+          const severity = chart_severities[seriesIndex][dataPointIndex];
           const assessment = chart_assessments[seriesIndex][dataPointIndex];
-          return `' <div style="font-size: 12px; padding: 8px; border-radius: 5px; background: #fff;">
-                    <div style="font-size: 14px; font-weight: bold; margin-top: 0px; text-align: center; background: #f1f1f1; padding: 5px; color: #333;">
-                    <strong>${nombre}</strong><br/></div>
-                    <div style="font-size: 12px; color: #333; text-align: left;">
-                    <strong>Assessment</strong>: ${assessment}<br/>
-                    <strong>Severity</strong>: ${severidad}<br/>
-                    <strong>Impact</strong>: ${data[1]}<br/>
-                    <strong>Probability</strong>: ${data[0]}<br/>
-                    <strong>Speed of ocurrence</strong>: ${parseInt((data[2]-15)/15)+1}</div>
-          `;
+          return `
+          <div style="background: #fff; border-radius: 5px; font-family: Arial, sans-serif; color: #333; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+
+            <!-- Título con fondo gris -->
+            <div style="background: #f1f1f1; font-size: 14px; font-weight: bold; text-align: center; padding: 8px; margin: 8px; border-radius: 5px; max-width: 400px; white-space: normal; overflow-wrap: break-word; word-break: break-word;">
+              ${nombre}
+            </div>
+
+            <!-- Datos individuales -->
+            <div style="font-size: 12px; line-height: 1.4; margin:8px;">
+              <div><strong style="font-size: 12px;">${translations["riskdashboard"]["assessment"]}</strong>: ${translations["riskdashboard"][assessment]}</div>
+              <div><strong style="font-size: 12px;">${translations["riskdashboard"]["severity"]}</strong>: ${severity}</div>
+              <div><strong style="font-size: 12px;">${translations["riskdashboard"]["impact"]}</strong>: ${data[1]}</div>
+              <div><strong style="font-size: 12px;">${translations["riskdashboard"]["probability"]}</strong>: ${data[0]}</div>
+              <div><strong style="font-size: 12px;">${translations["riskdashboard"]["speed"]}</strong>: ${parseInt((data[2] - 15) / 15) + 1}</div>
+            </div>
+          </div>
+        `;
         }
       },
       legend : {
@@ -624,7 +623,7 @@
       <script>
         var ri_status = {"Awaiting Evaluator": 0, "Awaiting Administrator": 0, "Finished": 0};
         var ri_severity = {"Not stablished": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
-        var ri_values = {evaluation_name: "{{e}}", risk_tests: [], test_ref: [], test_severity: [], assessment: []};
+        var ri_values = {evaluation_name: "{{e}}", risk_tests: [], test_name: [], test_severity: [], assessment: []};
       </script>
       {% for ri in e.get_all_risk_tests %}
         {% if ri in risk_test_inherent %}
@@ -663,9 +662,9 @@
                 break;
               };
               ri_values.risk_tests.push([Number("{{ri.probability_level_administrator}}"), Number("{{ri.impact_level_administrator}}"), Number("{{ri.event_speed_level_administrator}}")]);
-              ri_values.test_ref.push("{{ ri.risk.risk.ref}}");
-              ri_values.test_severity.push(severityTranslation["{{ ri.get_severity_administrator_qualitative_display }}"]);
-              ri_values.assessment.push("Administrator's");
+              ri_values.test_name.push("{{ ri.risk.risk.name}}");
+              ri_values.test_severity.push("{{ ri.get_severity_administrator_qualitative_display }}");
+              ri_values.assessment.push("ass-administrator");
             } else {
               switch("{{ri.severity_expert_qualitative}}"){
               case "SE":
@@ -690,9 +689,9 @@
               // En caso de que esté en proceso tomamos la del evaluador en caso de haberla dado
               if ("{{ri.status}}" == 2) {
                 ri_values.risk_tests.push([Number("{{ri.probability_level_expert}}"), Number("{{ri.impact_level_expert}}"), Number("{{ri.event_speed_level_expert}}")]);
-                ri_values.test_ref.push("{{ ri.risk.risk.ref}}");
-                ri_values.test_severity.push(severityTranslation["{{ ri.get_severity_expert_qualitative_display }}"]);
-                ri_values.assessment.push("Evaluator's");
+                ri_values.test_name.push("{{ ri.risk.risk.name}}");
+                ri_values.test_severity.push("{{ ri.get_severity_expert_qualitative_display }}");
+                ri_values.assessment.push("ass-evaluator");
               }
             }
           </script>
@@ -702,7 +701,7 @@
         inherent_status["{{e}}"]= ri_status;
         inherent_severity["{{e}}"]= ri_severity;
         evaluations_inherent.push("{{e}}");
-        if (ri_values.test_ref != []){
+        if (ri_values.test_name.length > 0){
           inherent_tests.push(ri_values);
         }
       </script>
@@ -712,7 +711,7 @@
       <script>
         var rr_status = {"Awaiting Evaluator": 0, "Awaiting Administrator": 0, "Finished": 0};
         var rr_severity = {"Not stablished": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
-        var rr_values = {evaluation_name : "{{e}}", risk_tests: [], test_ref : [], test_severity: [], assessment: []};
+        var rr_values = {evaluation_name : "{{e}}", risk_tests: [], test_name : [], test_severity: [], assessment: []};
       </script>
       {% for rr in e.get_all_risk_tests %}
         {% if rr in risk_test_residual %}
@@ -751,9 +750,9 @@
                 break;
               }
               rr_values.risk_tests.push([Number("{{rr.probability_level_administrator}}"), Number("{{rr.impact_level_administrator}}"), Number("{{rr.event_speed_level_administrator}}")]);
-              rr_values.test_ref.push("{{ rr.risk.risk.ref}}");
-              rr_values.test_severity.push(severityTranslation["{{ rr.get_severity_administrator_qualitative_display }}"]);
-              rr_values.assessment.push("Administrator's");
+              rr_values.test_name.push("{{ rr.risk.risk.name}}");
+              rr_values.test_severity.push("{{ rr.get_severity_administrator_qualitative_display }}");
+              rr_values.assessment.push("ass-administrator");
             } else {
               switch("{{rr.severity_evaluator_qualitative}}"){
               case "SE":
@@ -778,9 +777,9 @@
               // En caso de que esté en proceso tomamos la del evaluador en caso de haberla dado
               if ("{{rr.status}}" == 2) {
                 rr_values.risk_tests.push([Number("{{rr.probability_level_evaluator}}"), Number("{{rr.impact_level_evaluator}}"), Number("{{rr.event_speed_level_evaluator}}")]);
-                rr_values.test_ref.push("{{ rr.risk.risk.ref}}");
-                rr_values.test_severity.push(severityTranslation["{{ rr.get_severity_evaluator_qualitative_display }}"]);
-                rr_values.assessment.push("Evaluator's");
+                rr_values.test_name.push("{{ rr.risk.risk.name }}");
+                rr_values.test_severity.push("{{ rr.get_severity_evaluator_qualitative_display }}");
+                rr_values.assessment.push("ass-evaluator");
               }
             }
           </script>
@@ -791,18 +790,28 @@
           residual_severity["{{e}}"]= rr_severity;
           evaluations_residual.push("{{e}}");
           // Si no existe ningún test de riesgo que haya sido valorado por el Evaluador entonces no añadimos el diccionario que defina la evaluación a la lista general
-          if (rr_values.test_ref != []) {
+          if (rr_values.test_name.length > 0) {
             residual_tests.push(rr_values);
           }
         </script>
     {% endfor %}
     <script>
-      test_status("chart-1", inherent_status, evaluations_inherent);
-      test_status("chart-2", residual_status, evaluations_residual);
-      bubble_chart("chart-3", inherent_tests);
-      bubble_chart("chart-4", residual_tests);
-      test_severity("chart-5", inherent_severity, evaluations_inherent);
-      test_severity("chart-6", residual_severity, evaluations_residual);
+      let translations= {};
+      const lang= "{{ LANGUAGE_CODE }}";
+      if (lang == 'es') {
+        translations= JSON.parse('{{ translations_es|escapejs }}');
+      } else if (lang == 'en') {
+        translations= JSON.parse('{{ translations_en|escapejs }}');
+      }
+      console.log(translations);
+      test_status("chart-1", inherent_status, evaluations_inherent, translations);
+      test_status("chart-2", residual_status, evaluations_residual, translations);
+      bubble_chart("chart-3", inherent_tests, translations);
+      bubble_chart("chart-4", residual_tests, translations);
+      test_severity("chart-5", inherent_severity, evaluations_inherent, translations);
+      test_severity("chart-6", residual_severity, evaluations_residual, translations);
+
+
     </script>
   </div>
 </div>

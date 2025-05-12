@@ -68,7 +68,7 @@ class GaCompanyListView(ListView):
             {'title': _('Compañías'), 'url': reverse(
                 'companies:ga_company_list')},
         ]
-        context['page_title'] = _('Companías')
+        context['page_title'] = _('Compañías')
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {

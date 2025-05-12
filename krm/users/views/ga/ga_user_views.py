@@ -6,8 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
+from django.conf import settings
 
-import xlsxwriter
+import json
+import xlsxwriter, os
 from django.http import HttpResponse
 
 from django.contrib import messages
@@ -79,6 +81,27 @@ class GaDashboardView(TemplateView, FormView):
         get_data= self.request.GET.copy()
         get_data.pop('dashboard', None)
 
+        # print(f"LOGIN_URL: {settings.LOGIN_URL}, type: {type(settings.LOGIN_URL)}")
+        json_path_es = os.path.join('krm', 'static', 'lang', 'es.json')
+        json_path_en = os.path.join('krm', 'static', 'lang', 'en.json')
+
+        try:
+            with open(json_path_es, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_es= json.dumps(translations_data)
+        except FileNotFoundError:
+            print("No se ha encontrado ese archivo")
+            translations_es= {}
+
+        try:
+            with open(json_path_en, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_en= json.dumps(translations_data)
+        except FileNotFoundError:
+            translations_en= {}
+
+        context['translations_es']= translations_es
+        context['translations_en']= translations_en
         if dashboard_type == 'KRM':
             context['page_title'] = _('Dashboard de Riesgos para el Administrador Global')
             if get_data:

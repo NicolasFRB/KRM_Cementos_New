@@ -35,10 +35,18 @@ canvas#race{position:relative; z-index:100;}
 
 </style>
 <script>
-  function load_chart(id, n_pending, n_delivered, n_finished) {
+  let translations= {};
+  const lang= "{{ LANGUAGE_CODE }}";
+  if (lang == 'es') {
+    translations= JSON.parse('{{ translations_es|escapejs }}');
+  } else if (lang == 'en') {
+    translations= JSON.parse('{{ translations_en|escapejs }}');
+  }
+
+  function load_chart(id, translations, n_pending, n_delivered, n_finished) {
 
     const data = {
-      labels: ['Waiting Evaluator', 'Waiting Administrator', 'Finished'],
+      labels:  [translations["riskdetail"]["test-awev"], translations["riskdetail"]["test-awca"], translations["riskdetail"]["test-fi"]],
       datasets: [
         {
           label: '',
@@ -102,7 +110,7 @@ canvas#race{position:relative; z-index:100;}
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
-          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Número de Riesgos' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -139,7 +147,7 @@ canvas#race{position:relative; z-index:100;}
               </div>
             </td>
             <script>
-              load_chart('pie-ep-{{ forloop.counter }}','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
+              load_chart('pie-ep-{{ forloop.counter }}', translations, '{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
             </script>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
@@ -189,7 +197,7 @@ canvas#race{position:relative; z-index:100;}
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
-          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center">{% trans 'Número de Riesgos' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -226,7 +234,7 @@ canvas#race{position:relative; z-index:100;}
               </div>
             </td>
             <script>
-              load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
+              load_chart('pie-fi-{{ forloop.counter }}', translations, '{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
             </script>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}

@@ -10,6 +10,8 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
+{% get_current_language as LANGUAGE_CODE %}
+
 <script src="{% static 'js/chart.js' %}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
 <script src="{% static 'js/apexcharts.js' %}"></script>
@@ -38,17 +40,17 @@
 
   .severidad-muy-baja {
       margin: 5px;
-      background-color: #a6ed9d;
+      background-color: #77bd6b;
     }
 
   .severidad-baja {
     margin: 5px;
-    background-color: #e6d68e;
+    background-color: #a6ed9d;
   }
 
   .severidad-media {
     margin: 5px;
-    background-color: #f4c39d;
+    background-color: #e6d68e;
   }
 
   .severidad-alta {
@@ -84,13 +86,13 @@ if (val == 'Sin establecer' || val == 'Not stablished') {
   arrow_dot.css('color',"#d4d0c7");
   arrow_dot.attr('class','bi-x-circle-fill');
 } else if (val == 'Muy baja' || val == 'Very low') {
-  arrow_dot.css('color',"#a6ed9d");
+  arrow_dot.css('color', "#77bd6b");
   arrow_dot.attr('class','bi-arrow-down-circle-fill');
 } else if (val == 'Baja' || val == 'Low') {
-  arrow_dot.css('color',"#e6d68e");
+  arrow_dot.css('color', "#a6ed9d");
   arrow_dot.attr('class','bi-arrow-down-right-circle-fill');
 } else if (val == 'Media' || val == 'Medium') {
-  arrow_dot.css('color',"#f4c39d");
+  arrow_dot.css('color', "#e6d68e");
   arrow_dot.attr('class','bi-arrow-right-circle-fill');
 } else if (val == 'Alta' || val == 'High') {
   arrow_dot.css('color',"#ed9f7b");
@@ -118,13 +120,13 @@ function color_severity(val, id){
   arrow_dot.style.color = "#d4d0c7";
   arrow_dot.classList.add('bi-x-circle-fill');
   } else if (val == 'Muy baja') {
-  arrow_dot.style.color = "#a6ed9d";
+  arrow_dot.style.color = "#77bd6b";
   arrow_dot.classList.add('bi-arrow-down-circle-fill');
   } else if (val == 'Baja') {
-  arrow_dot.style.color = "#e6d68e";
+  arrow_dot.style.color = "#a6ed9d";
   arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
   } else if (val == 'Media') {
-  arrow_dot.style.color = "#f4c39d";
+  arrow_dot.style.color = "#e6d68e";
   arrow_dot.classList.add('bi-arrow-right-circle-fill');
   } else if (val == 'Alta') {
   arrow_dot.style.color = "#ed9f7b";
@@ -141,7 +143,7 @@ function clean_specialchars(s) {
 
 }
 
-function load_bar(id, rrt, grouped) {
+function load_bar(id, rrt, grouped, translations) {
   let impact_assessment = [];
   let probability_assessment = [];
   let names= [];
@@ -169,24 +171,24 @@ function load_bar(id, rrt, grouped) {
   let built_series = grouped ?
   [
     {
-      name: "Administrator's impact assessment",
+      name: translations["riskdetail"]["ad-imp-assessment"],
       color: '#008ffb',
       data: impact_assessment
     },
     {
-      name: "Administrator's probability assessment",
+      name: translations["riskdetail"]["ad-prob-assessment"],
       color: '#00e396',
       data: probability_assessment
     }
   ]
   : [
     {
-      name: "Evaluator's impact assessment",
+      name: translations["riskdetail"]["ev-imp-assessment"],
       color: '#008ffb',
       data: impact_assessment
     },
     {
-      name: "Evaluator's probability assessment",
+      name: translations["riskdetail"]["ev-prob-assessment"],
       color: '#00e396',
       data: probability_assessment
     }
@@ -234,21 +236,21 @@ function load_bar(id, rrt, grouped) {
         if (!grouped) {
 
         content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
-        content += `<strong>Evaluator's assesment</strong><br/></div>`;
+        content += `<strong>${translations["riskdetail"]["ev-assessment"]}</strong><br/></div>`;
         content += '<div style="font-size: 12px; color: #333; text-align: left;">';
-        content +=  `<strong>Impact</strong>: ${impact}<br/>
-                    <strong>Probability</strong>: ${probability}<br/>
-                    <strong>Severity</strong>: ${severity}<br/>
-                    <strong>Assigned user</strong>: @${person}</div>`;
+        content +=  `<strong>${translations["riskdetail"]["impact"]}</strong>: ${impact}<br/>
+                    <strong>${translations["riskdetail"]["probability"]}</strong>: ${probability}<br/>
+                    <strong>${translations["riskdetail"]["severity"]}</strong>: ${severity}<br/>
+                    <strong>${translations["riskdetail"]["user"]}</strong>: @${person}</div>`;
         } else {
 
         content += '<div style="font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center; background: #f1f1f1; padding: 5px 0; color: #333;">';
-        content += `<strong>Administrator's assesment</strong><br/></div>`;
+        content += `<strong>${translations["riskdetail"]["ad-assessment"]}</strong><br/></div>`;
         content += '<div style="font-size: 12px; color: #333; text-align: left;">';
-        content +=  `<strong>Impact</strong>: ${impact}<br/>
-                    <strong>Probability</strong>: ${probability}<br/>
-                    <strong>Severity</strong>: ${severity}<br/>
-                    <strong>Assigned user</strong>: @${person}</div>`;
+        content +=  `<strong>${translations["riskdetail"]["impact"]}</strong>: ${impact}<br/>
+                    <strong>${translations["riskdetail"]["probability"]}</strong>: ${probability}<br/>
+                    <strong>${translations["riskdetail"]["severity"]}</strong>: ${severity}<br/>
+                    <strong>${translations["riskdetail"]["user"]}</strong>: @${person}</div>`;
         }
 
         content += '</div>';
@@ -282,31 +284,34 @@ function load_bar(id, rrt, grouped) {
   chart.render();
 }
 
-function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined", arg6 = "undefined") {
+function load_chart(id, translations, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined", arg6 = "undefined") {
   let data;
+  let title;
 
-  if (title== 'Tests status') {
+  if (id== 'pie-main') {
+    title= translations["riskdetail"]["test-status"],
     data = {
-    labels: ['Awaiting Evaluator', 'Awaiting Administrator', 'Finished'],
-    datasets: [
-      {
-        label: '',
-        data: [arg1, arg2, arg3],
-        backgroundColor: ["#ed9f7b", "#e6d68e", "#a6ed9d"],
-      }
+      labels: [translations["riskdetail"]["test-awev"], translations["riskdetail"]["test-awca"], translations["riskdetail"]["test-fi"]],
+      datasets: [
+        {
+          label: '',
+          data: [arg1, arg2, arg3],
+          backgroundColor: ["#ed9f7b", "#e6d68e", "#a6ed9d"],
+        }
     ]
     };
-  } else {
+  } else if (id== 'pie-main-evaluators') {
+    title= translations["riskdetail"]["test-severity"],
     data = {
-    labels: ['Not stablished', 'Very low', 'Low', 'Medium', 'High', 'Very high'],
-    datasets: [
-      {
-        label: '',
-        data: [arg1, arg2, arg3, arg4, arg5, arg6],
-        backgroundColor: ["#d4d0c7", "#a6ed9d", "#e6d68e", "#f4c39d", "#ed9f7b", "#ea7d7e"],
-        // backgroundColor: ["#d9d3d2", "#09ef0d", "#e8ee0b", "#fea227", "#ff6e56", "#f10606"],
-      }
-    ]
+      labels: [translations["riskdetail"]["sev-ns"], translations["riskdetail"]["sev-vl"], translations["riskdetail"]["sev-l"], translations["riskdetail"]["sev-m"], translations["riskdetail"]["sev-h"], translations["riskdetail"]["sev-vh"]],
+      datasets: [
+        {
+          label: '',
+          data: [arg1, arg2, arg3, arg4, arg5, arg6],
+          backgroundColor: ["#d4d0c7", "#77bd6b", "#a6ed9d", "#e6d68e", "#ed9f7b", "#ea7d7e"],
+          // backgroundColor: ["#d9d3d2", "#09ef0d", "#e8ee0b", "#fea227", "#ff6e56", "#f10606"],
+        }
+      ]
     };
   }
 
@@ -661,7 +666,14 @@ function swap_columns(id, datatable_id) {
             </div>
         </div>
         <script>
-          load_chart('pie-main', 'Tests status', '{{evaluation.nrisk_test_residuals_pending}}', '{{evaluation.nrisk_test_residuals_delivered}}', '{{evaluation.nrisk_test_residuals_finished}}');
+          let translations= {};
+          const lang= "{{ LANGUAGE_CODE }}";
+          if (lang == 'es') {
+            translations= JSON.parse('{{ translations_es|escapejs }}');
+          } else if (lang == 'en') {
+            translations= JSON.parse('{{ translations_en|escapejs }}');
+          }
+          load_chart('pie-main', translations, '{{evaluation.nrisk_test_residuals_pending}}', '{{evaluation.nrisk_test_residuals_delivered}}', '{{evaluation.nrisk_test_residuals_finished}}');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
@@ -676,7 +688,7 @@ function swap_columns(id, datatable_id) {
           </div>
         </div>
         <script>
-          load_chart('pie-main-evaluators', 'Severity status', '{{evaluation.sev_not_stablished}}', '{{evaluation.sev_very_low}}', '{{evaluation.sev_low}}', '{{evaluation.sev_medium}}', '{{evaluation.sev_high}}', '{{evaluation.sev_very_high}}');
+          load_chart('pie-main-evaluators', translations, '{{evaluation.sev_not_stablished}}', '{{evaluation.sev_very_low}}', '{{evaluation.sev_low}}', '{{evaluation.sev_medium}}', '{{evaluation.sev_high}}', '{{evaluation.sev_very_high}}');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
@@ -699,7 +711,7 @@ function swap_columns(id, datatable_id) {
         <script>
             var rrt = JSON.parse(clean_specialchars("{{ rrt_json }}"));
             var grouped = "{{ evaluation.status }}" !== "EP";
-            load_bar("bar-main", rrt, grouped);
+            load_bar("bar-main", rrt, grouped, translations);
         </script>
       {% else %}
         <div class="row mt-2 mb-2">

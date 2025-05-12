@@ -3,7 +3,7 @@ from django.conf import settings
 import json
 import uuid
 import xlsxwriter
-import re
+import re, os
 
 # Create your views here.
 from django.shortcuts import render
@@ -72,10 +72,10 @@ class GaEvaluationInherentListView(ListView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Riesgo Inherente KRM'), 'url': reverse(
+            {'title': _('Evaluaciones de Riesgo Inherente'), 'url': reverse(
                 'evaluations_krm:ga_evaluation_inherent_list')},
         ]
-        context['page_title'] = _('Evaluaciones de Riesgo Inherente KRM')
+        context['page_title'] = _('Evaluaciones de Riesgo Inherente')
         context['breadcrums'] = breadcrums
         context['actions'] = [
             {
@@ -85,6 +85,27 @@ class GaEvaluationInherentListView(ListView):
                 'icon': '<i class="bi bi-plus-lg"></i>'
             },
         ]
+
+        json_path_es = os.path.join('krm', 'static', 'lang', 'es.json')
+        json_path_en = os.path.join('krm', 'static', 'lang', 'en.json')
+
+        try:
+            with open(json_path_es, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_es= json.dumps(translations_data)
+        except FileNotFoundError:
+            print("No se ha encontrado ese archivo")
+            translations_es= {}
+
+        try:
+            with open(json_path_en, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_en= json.dumps(translations_data)
+        except FileNotFoundError:
+            translations_en= {}
+
+        context['translations_es']= translations_es
+        context['translations_en']= translations_en
 
         ev_pending = EvaluationKrmInherent.objects.filter(status="EP")
         ev_finished = EvaluationKrmInherent.objects.filter(status="FI")
@@ -141,13 +162,13 @@ class GaEvaluationInherentCreateView(FormView):
 
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones de Riesgo Inherente KRM'), 'url': reverse(
+            {'title': _('Evaluaciones de Riesgo Inherente'), 'url': reverse(
                 'evaluations:ga_evaluation_list')},
             {'title': _('Nuevo'), 'url': reverse(
                 'evaluations_krm:ga_evaluation_inherent_create')},
         ]
 
-        context['page_title'] = _('Nueva Evaluación de Riesgo Inherente [KRM]')
+        context['page_title'] = _('Nueva Evaluación de Riesgo Inherente')
         context['breadcrums'] = breadcrums
         context['js_template'] = ['js/custom/datatables.js']
 
@@ -256,11 +277,12 @@ class GaEvaluationInherentDetailView(FormView):
         context['evaluation'] = self.evaluation
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones KRM'), 'url': reverse(
+            {'title': _('Evaluaciones de Riesgo Inherente'), 'url': reverse(
                 'evaluations_krm:ga_evaluation_inherent_list')},
             {'title': self.evaluation.ref}
         ]
-        context['page_title'] = f"{_('Evaluación de Riesgo Inherente')} : {self.evaluation.ref}"
+        title= _('Evaluación de Riesgo Inherente')
+        context['page_title'] = f"{title} : {self.evaluation.ref}"
         context['breadcrums'] = breadcrums
         # context['actions'] = [
         #     {
@@ -270,6 +292,27 @@ class GaEvaluationInherentDetailView(FormView):
         #         'icon': '<i class="bi bi-pencil"></i>'
         #     },
         # ]
+
+        json_path_es = os.path.join('krm', 'static', 'lang', 'es.json')
+        json_path_en = os.path.join('krm', 'static', 'lang', 'en.json')
+
+        try:
+            with open(json_path_es, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_es= json.dumps(translations_data)
+        except FileNotFoundError:
+            print("No se ha encontrado ese archivo")
+            translations_es= {}
+
+        try:
+            with open(json_path_en, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_en= json.dumps(translations_data)
+        except FileNotFoundError:
+            translations_en= {}
+
+        context['translations_es']= translations_es
+        context['translations_en']= translations_en
 
         context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(1)
         context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2)
@@ -497,7 +540,8 @@ class GaEvaluationInherentAdminComplete(DetailView, FormView):
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
             {'title': _('Evaluaciones de Riesgo Inherente')}
         ]
-        context['page_title'] = f"{_('Evaluación de Riesgo Inherente')} : {self.object.ref}"
+        title= _('Evaluación de Riesgo Inherente')
+        context['page_title'] = f"{title} : {self.object.ref}"
         context['breadcrums'] = breadcrums
 
         context['tests'] = self.object.risk_test_inherents.all()
@@ -556,7 +600,7 @@ class GaEvaluationInherentNotificationsView(DetailView, FormView):
         context = KTLayout.init(context)
         breadcrums = [
             {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
-            {'title': _('Evaluaciones KRM'), 'url': reverse(
+            {'title': _('Evaluaciones de Riesgo Inherente'), 'url': reverse(
                 'evaluations_krm:ga_evaluation_inherent_list')},
             {'title': self.object.ref, 'url': reverse(
                 "evaluations_krm:ga_evaluation_krm_inherent_detail", kwargs={'pk': self.object.pk})}

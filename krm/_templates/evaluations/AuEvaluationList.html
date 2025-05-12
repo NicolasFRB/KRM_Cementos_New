@@ -79,10 +79,18 @@
   }
 </style>
 <script>
-  function load_chart(id, n_si, n_wo, n_ws, n_wa, n_fi) {
+  let translations= {};
+  const lang= "{{ LANGUAGE_CODE }}";
+  if (lang == 'es') {
+    translations= JSON.parse('{{ translations_es|escapejs }}');
+  } else if (lang == 'en') {
+    translations= JSON.parse('{{ translations_en|escapejs }}');
+  }
+
+  function load_chart(id, translations, n_si, n_wo, n_ws, n_wa, n_fi) {
 
     const data = {
-      labels: ['Not started', 'Awaiting Control Owner', 'Awaiting Control Supervisor', 'Awaiting Administrator', 'Finalized'],
+      labels: [translations["controldetail"]["status-ns"], translations["controldetail"]["status-awco"], translations["controldetail"]["status-awcs"], translations["controldetail"]["status-awca"], translations["controldetail"]["status-fi"]],
       datasets: [
         {
           label: '',
@@ -162,7 +170,7 @@
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
-          <th class="text-center">{% trans 'Nº Controles' %}</th>
+          <th class="text-center">{% trans 'Número de Controles' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -207,7 +215,7 @@
             </div>
           </td>
           <script>
-            load_chart('pie-ep-{{ forloop.counter }}', '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
+            load_chart('pie-ep-{{ forloop.counter }}', translations, '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
           </script>
           <td class="text-center align-middle">
             {% if evaluation.status == "FI" %}
@@ -272,7 +280,7 @@
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
           <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
-          <th class="text-center">{% trans 'Nº Controles' %}</th>
+          <th class="text-center">{% trans 'Número de Controles' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -319,7 +327,7 @@
             </div>
           </td>
           <script>
-            load_chart('pie-fi-{{ forloop.counter }}', '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
+            load_chart('pie-fi-{{ forloop.counter }}', translations, '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
           </script>
           <td class="text-center align-middle">
             {% if evaluation.status == "FI" %}

@@ -1,6 +1,6 @@
 import json
 import uuid
-import xlwt
+import xlwt, os
 
 
 from django.shortcuts import render
@@ -82,6 +82,27 @@ class GaEvaluationListView(ListView):
             },
         ]
 
+        json_path_es = os.path.join('krm', 'static', 'lang', 'es.json')
+        json_path_en = os.path.join('krm', 'static', 'lang', 'en.json')
+
+        try:
+            with open(json_path_es, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_es= json.dumps(translations_data)
+        except FileNotFoundError:
+            print("No se ha encontrado ese archivo")
+            translations_es= {}
+
+        try:
+            with open(json_path_en, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_en= json.dumps(translations_data)
+        except FileNotFoundError:
+            translations_en= {}
+
+        context['translations_es']= translations_es
+        context['translations_en']= translations_en
+
         ev_pending = Evaluation.objects.filter(status__in=["SI", "EP"])
         ev_finished = Evaluation.objects.filter(status="FI")
 
@@ -152,6 +173,27 @@ class GaEvaluationDetailView(FormView):
                 'icon': '<i class="bi bi-pencil"></i>'
             },
         ]
+
+        json_path_es = os.path.join('krm', 'static', 'lang', 'es.json')
+        json_path_en = os.path.join('krm', 'static', 'lang', 'en.json')
+
+        try:
+            with open(json_path_es, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_es= json.dumps(translations_data)
+        except FileNotFoundError:
+            print("No se ha encontrado ese archivo")
+            translations_es= {}
+
+        try:
+            with open(json_path_en, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_en= json.dumps(translations_data)
+        except FileNotFoundError:
+            translations_en= {}
+
+        context['translations_es']= translations_es
+        context['translations_en']= translations_en
 
         context['evaluation'].ncontrols_test_by_state_si = context['evaluation'].ncontrols_test_by_state(
             "SI")

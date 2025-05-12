@@ -96,7 +96,7 @@ class GaEvaluationInherentCreateView(FormView):
             {'title': _('Nuevo'), 'url': reverse(
                 'evaluations:ga_evaluation_inherent_create')},
         ]
-        context['page_title'] = _('Nueva Evaluación de Riesgo Inherente [KRM]')
+        context['page_title'] = _('Nueva Evaluación de Riesgo Inherente')
         context['breadcrums'] = breadcrums
         context['js_template'] = ['js/custom/datatables.js']
 

@@ -4,6 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
@@ -12,21 +13,22 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/es.js"></script>
 <script src="{% static 'js/flatpickr_es.js' %}"></script>
 
+
 <script>
-  {% get_current_language as LANGUAGE_CODE %}
-  {% if LANGUAGE_CODE == 'es' %}
+  if (LANGUAGE_CODE == 'es') {
     $(".datepicker").flatpickr({
       locale: "es",
       dateFormat: "Y-m-d",        // formato interno (para .val())
       altInput: true,             // lo que ve el usuario
       altFormat: "d/m/Y",
     });
-  {% else %}
+  }
+  else {
     $(".datepicker").flatpickr({
           "locale": "en",
           dateFormat: "Y-m-d",
     });
-  {% endif %}
+  }
 
   $(document).ready(function(){
 
@@ -71,10 +73,10 @@
   var evidences = {};
   var frequency_evaluation = {};
   var evals = [];
-  var control_type_evaluation = {'Preventive': {}, 'Detective': {}};
-  var key_controls_evaluation = {"Key": {}, "Non-key": {}};
+  var control_type_evaluation = {'preventive': {}, 'detective': {}};
+  var key_controls_evaluation = {"key": {}, "non-key": {}};
   var ct_status_evaluation = {};
-  var ct_result_evaluation = {"Effective": {}, "Not stablished": {}, "Effective with recommendations": {}, "Not effective": {}, "N/A": {}};
+  var ct_result_evaluation = {"effective": {}, "not-stablished": {}, "effective-recommendations": {}, "not-effective": {}, "not-applicable": {}};
   var subprocesses = {};
   var risks = {};
 
@@ -220,7 +222,7 @@
     chart.render();
   }
 
-  function ct_frequency (id, dict, title){
+  function ct_control_status (id, dict, translations){
     var evaluations = [];
     var not_started = [];
     var aw_owner = [];
@@ -251,23 +253,23 @@
 
     var options = {
       series: [{
-        name: "Not started",
+        name: translations["controldashboard"]["status-ns"],
         data: not_started,
         color: '#d4d0c7'
       }, {
-        name: "Awaiting Control Onwer",
+        name: translations["controldashboard"]["status-awco"],
         data: aw_owner,
         color: '#a6ed9d'
       }, {
-        name: "Awaiting Control Supervisor",
+        name: translations["controldashboard"]["status-awcs"],
         data: aw_supervisor,
         color: '#e6d68e'
       }, {
-        name: "Awaiting Control Administrator",
+        name: translations["controldashboard"]["status-awca"],
         data: aw_administrator,
         color: '#ed9f7b'
       }, {
-        name: "Finished",
+        name: translations["controldashboard"]["status-fi"],
         data: finished,
         color: '#ea7d7e'
       }],
@@ -309,7 +311,7 @@
         colors: ['#fff']
       },
       title: {
-        text: title,
+        text: translations["controldashboard"]["test-status"],
         align: 'middle',
         offsetY: -5,
         style: {
@@ -349,12 +351,14 @@
     chart.render();
   }
 
-  function ct_control_type (id, dict, labels, title){
+  function ct_control_type (id, dict, labels, translations){
     var keys = [];
     var values = [];
     var series = [];
     var barWidth= 50;
     let totalWidth= 0;
+    let title= "";
+    var colors_code= [];
 
     Object.entries(dict).forEach(([key, value]) => {
       keys.push(key);
@@ -363,28 +367,26 @@
         values.push(value2);
       });
       series.push({
-        "name": key,
+        "name": translations["controldashboard"][key],
         "data": values,
       });
     });
 
-    if (id === "chart-3"){
-      const minWidth = document.getElementById('chart-3-container').offsetWidth;
-      totalWidth = Math.max(barWidth * labels.length, minWidth-5);
-    } else if (id === "chart-4"){
+    if (id === "chart-4"){
+      title = translations["controldashboard"]["test-type"];
       const minWidth = document.getElementById('chart-4-container').offsetWidth;
       totalWidth = Math.max(barWidth * labels.length, minWidth-5);
+      colors_code= ["#a6ed9d", "#d4d0c7"]
+    } else if (id === "chart-3"){
+      title = translations["controldashboard"]["test-key"];
+      const minWidth = document.getElementById('chart-3-container').offsetWidth;
+      totalWidth = Math.max(barWidth * labels.length, minWidth-5);
+      colors_code= ["#e6d68e", "#ed9f7b"]
     } else if (id === "chart-7"){
+      title = translations["controldashboard"]["test-result"];
       const minWidth = document.getElementById('chart-7-container').offsetWidth;
       totalWidth = Math.max(barWidth * labels.length, minWidth-5);
-    }
-
-    if (title == "Control Test Result per Evaluation") {
-      var colors_code= ["#a6ed9d", "#d4d0c7", "#e6d68e", "#ed9f7b", "#7dedf5"];
-    } else if (title == "Control Test Types per Evaluation") {
-      var colors_code= ["#e6d68e", "#ed9f7b"]
-    } else {
-      var colors_code= ["#a6ed9d", "#d4d0c7"]
+      colors_code= ["#a6ed9d", "#d4d0c7", "#e6d68e", "#ed9f7b", "#7dedf5"];
     }
 
     var options = {
@@ -706,10 +708,10 @@
     {% for e in evaluations %}
       <script>
         var frequencies = {"On demand": 0, "Constant": 0, "Daily": 0, "Weekly": 0, "Biweekly": 0, "Monthly": 0, "Bimonthly": 0, "Quarterly": 0, "Four-monthly": 0, "Semiannual": 0, "Annual": 0, "Biennial": 0, "Triennial": 0, "Quadrennial": 0, "Quinquenal": 0};
-        var ct_types = {"Preventive": 0, "Detective": 0};
-        var key_controls = {"Key": 0, "Non-key": 0};
+        var ct_types = {"preventive": 0, "detective": 0};
+        var key_controls = {"key": 0, "non-key": 0};
         var ct_status = {"Not started": 0, "Awaiting Control Owner": 0, "Awaiting Control Supervisor": 0, "Awaiting Control Administrator": 0, "Finished": 0};
-        var ct_result = {"Effective": 0, "Not stablished": 0, "Effective with recommendations": 0, "Not effective": 0, "N/A": 0};
+        var ct_result = {"effective": 0, "not-stablished": 0, "effective-recommendations": 0, "not-effective": 0, "not-applicable": 0};
       </script>
       {% for ct in e.get_all_control_test_in_evaluation %}
       <script>
@@ -762,19 +764,19 @@
 
         switch ("{{ct.control.control_type}}"){
           case 'P':
-            ct_types['Preventive'] += 1;
+            ct_types['preventive'] += 1;
             break;
           case 'D':
-            ct_types['Detective'] += 1;
+            ct_types['detective'] += 1;
             break;
         }
 
         switch ("{{ct.control.key_control}}"){
           case 'True':
-            key_controls['Key'] += 1;
+            key_controls['key'] += 1;
             break;
           case 'False':
-            key_controls['Non-key'] += 1;
+            key_controls['non-key'] += 1;
             break;
         }
 
@@ -798,19 +800,19 @@
 
         switch ("{{ct.result}}"){
           case "EF":
-            ct_result["Effective"] += 1;
+            ct_result["effective"] += 1;
             break;
           case "SE":
-            ct_result["Not stablished"] += 1;
+            ct_result["not-stablished"] += 1;
             break;
           case "NE":
-            ct_result["Not effective"] += 1;
+            ct_result["not-effective"] += 1;
             break;
           case "EFR":
-            ct_result["Effective with recommedations"]+=1;
+            ct_result["effective-recommedations"]+=1;
             break;
           case "NA":
-            ct_result["N/A"] += 1;
+            ct_result["not-applicable"] += 1;
             break;
         }
 
@@ -840,24 +842,38 @@
       <script>
         frequency_evaluation["{{e}}"] =  frequencies;
 
-        control_type_evaluation["Preventive"]["{{e}}"] = ct_types['Preventive'];
-        control_type_evaluation["Detective"]["{{e}}"] = ct_types['Detective'];
+        control_type_evaluation["preventive"]["{{e}}"] = ct_types['preventive'];
+        control_type_evaluation["detective"]["{{e}}"] = ct_types['detective'];
 
-        key_controls_evaluation["Key"]["{{e}}"] = key_controls["Key"];
-        key_controls_evaluation["Non-key"]["{{e}}"] = key_controls["Non-key"];
+        key_controls_evaluation["key"]["{{e}}"] = key_controls["key"];
+        key_controls_evaluation["non-key"]["{{e}}"] = key_controls["non-key"];
 
         ct_status_evaluation["{{e}}"] = ct_status;
 
-        ct_result_evaluation["Effective"]["{{e}}"] = ct_result["Effective"];
-        ct_result_evaluation["Not stablished"]["{{e}}"] = ct_result["Not stablished"];
-        ct_result_evaluation["Not effective"]["{{e}}"] = ct_result["Not effective"];
-        ct_result_evaluation["Effective with recommendations"]["{{e}}"]= ct_result["Effective with recommendations"]
-        ct_result_evaluation["N/A"]["{{e}}"] = ct_result["N/A"];
+        ct_result_evaluation["effective"]["{{e}}"] = ct_result["effective"];
+        ct_result_evaluation["not-stablished"]["{{e}}"] = ct_result["not-stablished"];
+        ct_result_evaluation["not-effective"]["{{e}}"] = ct_result["not-effective"];
+        ct_result_evaluation["effective-recommendations"]["{{e}}"]= ct_result["effective-recommendations"]
+        ct_result_evaluation["not-applicable"]["{{e}}"] = ct_result["not-applicable"];
 
         evals.push("{{e}}");
       </script>
     {% endfor %}
+
     <script>
+      let translations= {};
+      const lang= "{{ LANGUAGE_CODE }}";
+      if (lang == 'es') {
+        translations= JSON.parse('{{ translations_es|escapejs }}');
+      } else if (lang == 'en') {
+        translations= JSON.parse('{{ translations_en|escapejs }}');
+      }
+      console.log(translations);
+      ct_control_type("chart-3", control_type_evaluation, evals, translations);
+      ct_control_type("chart-4", key_controls_evaluation, evals, translations);
+      ct_control_status("chart-6", ct_status_evaluation, translations);
+      ct_control_type("chart-7", ct_result_evaluation, evals, translations);
+
       // var l_control_type = ["Preventivo", "Detectivo"];
       // var l_key_control = ["Key", "Non-key"];
       // var l_status = [["Not started", "Awaiting Control Owner", "Awaiting Control Supervisor", "Awaiting Control Administrator", "Finished"], ["No empezado", "En espera del Control Owner", "En espera del Control Supervisor", "En espera del Administrador", "Finalizado"]];
@@ -866,11 +882,11 @@
 
       // evidence_percentage("chart-1");
       // ct_frequency("chart-2", frequency_evaluation, l_frequencies, 'Control Tests Frequency per evaluation');
-      ct_control_type("chart-3", control_type_evaluation, evals, "Control Test Types per Evaluation");
-      ct_control_type("chart-4", key_controls_evaluation, evals, "Key Control Test per Evaluation");
+      // ct_control_type("chart-3", control_type_evaluation, evals, t("dashboards.test-type"));
+      // ct_control_type("chart-4", key_controls_evaluation, evals, t("dashboards.test-key"));
       // ct_subprocesses("chart-5");
-      ct_frequency("chart-6", ct_status_evaluation, "Control Test Status per Evaluation");
-      ct_control_type("chart-7", ct_result_evaluation, evals, "Control Test Result per Evaluation");
+      // ct_frequency("chart-6", ct_status_evaluation, t("dashboards.test-status"));
+      // ct_control_type("chart-7", ct_result_evaluation, evals, t("dashboards.test-result"));
       // ct_risks("chart-8");
     </script>
   </div>

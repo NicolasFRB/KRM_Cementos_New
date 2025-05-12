@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-07 17:21+0200\n"
-"PO-Revision-Date: 2025-05-07 18:01+0200\n"
+"POT-Creation-Date: 2025-05-09 11:40+0200\n"
+"PO-Revision-Date: 2025-05-09 11:41+0200\n"
 "Last-Translator: Natalia Monsalve Baeza <nataliamonsalve@kpmg.es>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -215,6 +215,8 @@ msgstr "Name"
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:426
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:667
 #: krm/_templates/process/GaProcessDetail.html:57
+#: krm/_templates/process/GaProcessDetail.html:101
+#: krm/_templates/process/GaProcessList.html:30
 #: krm/_templates/remediation_plans/AuRemediationPlanDetail.html:184
 #: krm/_templates/remediation_plans/GaRemediationPlanDetail.html:211
 #: krm/_templates/remediation_plans/RuRemediationPlanDetail.html:243
@@ -225,6 +227,7 @@ msgstr "Name"
 #: krm/_templates/risks_masters/GaRiskMasterList.html:37
 #: krm/_templates/subprocess/GaSubProcessDetail.html:72
 #: krm/_templates/subprocess/GaSubProcessDetail.html:115
+#: krm/_templates/subprocess/GaSubProcessList.html:30
 #: krm/evaluations/models/_evaluation_krm_inherent_model.py:38
 #: krm/evaluations/models/evaluation_model.py:41
 #: krm/evaluations_krm/models/evaluation_krm_inherent_model.py:41
@@ -710,7 +713,7 @@ msgstr "Cancel"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:11
 msgid "Datos de la evaluación"
-msgstr "Evaluation data"
+msgstr "Evaluation details"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:38
 #: krm/_templates/companies/CaCompanyControlUpdate.html:30
@@ -916,7 +919,7 @@ msgstr "Companies in scope"
 #: krm/remediation_plans/models/remediation_plan.py:60
 #: krm/remediation_plans/models/remediation_plan_answer.py:71
 msgid "Estado"
-msgstr "State"
+msgstr "Status"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:104
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:355
@@ -1041,11 +1044,11 @@ msgstr "End date"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:188
 msgid "Datos generales del control"
-msgstr "General control data"
+msgstr "General control details"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:200
-msgid "Control ref"
-msgstr "Control ref"
+msgid "Referencia del Control"
+msgstr "Control Reference"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:203
 #: krm/_templates/controls/GaControlDetail.html:103
@@ -1058,8 +1061,8 @@ msgid "Alcance"
 msgstr "Scope"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:226
-msgid "Riesgos mitigados por el control"
-msgstr "Riesgos mitigados por el control"
+msgid "Número de riesgos mitigados por el Control"
+msgstr "Number of Control-mitigated risks"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:235
 msgid "Subprocesos del control"
@@ -1197,7 +1200,7 @@ msgstr "(Path: Documentos > 2022 > Sociedad > Área)"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:380
 msgid "Datos del control"
-msgstr "Control data"
+msgstr "Control details"
 
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:406
 #: krm/_templates/controls/GaControlDetail.html:44
@@ -1606,8 +1609,8 @@ msgstr "Risk Domains"
 #: krm/_templates/evaluations/AuEvaluationDetail.html:570
 #: krm/_templates/evaluations/CaEvaluationDetail.html:615
 #: krm/_templates/evaluations/GaEvaluationDetail.html:631
-msgid "Nº de riesgos"
-msgstr "Nº of risks"
+msgid "Número de riesgos"
+msgstr "Number of Risks"
 
 #: krm/_templates/_includes/control_test/ru/_control_test_table.html:51
 #: krm/_templates/evaluations/AuEvaluationDetail.html:571
@@ -1645,7 +1648,7 @@ msgstr "Attachment"
 
 #: krm/_templates/_includes/remediation_plan/ga/_remediation_plan_answer.html:78
 msgid "Sin evidencia"
-msgstr ""
+msgstr "No evidence"
 
 #: krm/_templates/_includes/remediation_plan/ru/_remediation_plan_table.html:10
 #: krm/_templates/_includes/remediation_plan_v2/au/_au_remediation_plan_table.html:10
@@ -1701,7 +1704,7 @@ msgstr "No results "
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:28
 #: krm/_templates/risks_masters/GaRiskMasterUpdate.html:62
 msgid "Datos del Riesgo"
-msgstr "Risk Data"
+msgstr "Risk details"
 
 #: krm/_templates/_includes/risk/__age/_risk_detail.html:21
 #: krm/_templates/_includes/risk/__au/_risk_detail.html:21
@@ -1885,7 +1888,7 @@ msgstr "Go Back"
 #: krm/_templates/companies/CaCompanyCreate.html:53
 #: krm/_templates/companies/GaCompanyCreate.html:53
 msgid "Datos de la Compañía"
-msgstr "Company Information"
+msgstr "Company details"
 
 #: krm/_templates/companies/CaCompanyCreate.html:105
 #: krm/_templates/companies/CaCompanyRiskKrmSelect.html:130
@@ -1933,7 +1936,7 @@ msgstr "Save"
 #: krm/_templates/companies/CaCompanyDetail.html:18
 #: krm/_templates/companies/GaCompanyDetail.html:18
 msgid "Datos de la compañía"
-msgstr "Company information"
+msgstr "Company details "
 
 #: krm/_templates/companies/CaCompanyDetail.html:87
 #: krm/_templates/companies/GaCompanyDetail.html:89
@@ -2014,8 +2017,9 @@ msgstr "No users in the company"
 
 #: krm/_templates/companies/CaCompanyDetail.html:232
 #: krm/_templates/companies/GaCompanyDetail.html:240
-msgid "Usuarios evaluadores de Cuestionarios"
-msgstr "Questionnaire evaluator users"
+#: krm/companies/models/company_model.py:86
+msgid "Evaluadores de Cuestionarios"
+msgstr "Questionnaire Evaluators"
 
 #: krm/_templates/companies/CaCompanyDetail.html:271
 #: krm/_templates/companies/GaCompanyDetail.html:279
@@ -2025,7 +2029,7 @@ msgstr "Inherent Risk Evaluators (IR) of the Company"
 #: krm/_templates/companies/CaCompanyDetail.html:282
 #: krm/_templates/companies/GaCompanyDetail.html:290
 msgid "Evaluador (RI) asignado"
-msgstr "Inherent Risk Evaluator (IR) assigned"
+msgstr "Evaluator (IR) assigned"
 
 #: krm/_templates/companies/CaCompanyDetail.html:311
 #: krm/_templates/companies/GaCompanyDetail.html:325
@@ -2035,7 +2039,7 @@ msgstr "Residual Risk Evaluators (RR) of the Company"
 #: krm/_templates/companies/CaCompanyDetail.html:322
 #: krm/_templates/companies/GaCompanyDetail.html:336
 msgid "Evaluador (RR) asignado"
-msgstr "Residual Risk Evaluator assigned"
+msgstr "Evaluator (RR) assigned"
 
 #: krm/_templates/companies/CaCompanyDetail.html:353
 #: krm/_templates/companies/GaCompanyDetail.html:367
@@ -2043,17 +2047,25 @@ msgid "Riesgos que aplican en la compañía"
 msgstr "Risks applicable to the company"
 
 #: krm/_templates/companies/CaCompanyDetail.html:372
+#: krm/_templates/companies/CaCompanyList.html:34
 #: krm/_templates/companies/CaCompanyRiskKrmSelect.html:99
 #: krm/_templates/companies/GaCompanyControlSelect.html:50
 #: krm/_templates/companies/GaCompanyDetail.html:387
+#: krm/_templates/companies/GaCompanyList.html:34
 #: krm/_templates/companies/GaCompanyRiskKrmSelect.html:101
+#: krm/_templates/evaluations/AuEvaluationList.html:165
+#: krm/_templates/evaluations/AuEvaluationList.html:275
+#: krm/_templates/evaluations/CaEvaluationList.html:165
+#: krm/_templates/evaluations/CaEvaluationList.html:282
+#: krm/_templates/evaluations/GaEvaluationList.html:165
+#: krm/_templates/evaluations/GaEvaluationList.html:284
 #: krm/_templates/process/GaProcessDetail.html:103
 #: krm/_templates/process/GaProcessList.html:32
 #: krm/_templates/risks/GaRiskList.html:37
 #: krm/_templates/risks_masters/GaRiskMasterDetail.html:126
 #: krm/_templates/subprocess/GaSubProcessList.html:32
-msgid "Nº de Controles"
-msgstr "Nº of Controls"
+msgid "Número de Controles"
+msgstr "Number of Controls"
 
 #: krm/_templates/companies/CaCompanyDetail.html:393
 #: krm/_templates/companies/GaCompanyDetail.html:454
@@ -2068,7 +2080,12 @@ msgstr "Edit list of applicable risks"
 #: krm/_templates/companies/CaCompanyDetail.html:409
 #: krm/_templates/companies/GaCompanyDetail.html:470
 msgid "Controles y responsables que aplican en la compañía"
-msgstr "Controls and responsible persons that apply in the company"
+msgstr "Controls and their responsible users within the company"
+
+#: krm/_templates/companies/CaCompanyDetail.html:414
+#: krm/_templates/companies/GaCompanyDetail.html:475
+msgid "Controles activos de la compañía"
+msgstr "Company's active controls"
 
 #: krm/_templates/companies/CaCompanyDetail.html:421
 #: krm/_templates/companies/CaCompanyDetail.html:473
@@ -2079,8 +2096,8 @@ msgstr "Does it apply?"
 
 #: krm/_templates/companies/CaCompanyDetail.html:422
 #: krm/_templates/companies/GaCompanyDetail.html:483
-msgid "Owners"
-msgstr "Dueños"
+msgid "Responsables"
+msgstr "Owners"
 
 #: krm/_templates/companies/CaCompanyDetail.html:445
 #: krm/_templates/companies/CaCompanyDetail.html:495
@@ -2107,6 +2124,11 @@ msgstr "Yes"
 msgid "No"
 msgstr "No"
 
+#: krm/_templates/companies/CaCompanyDetail.html:466
+#: krm/_templates/companies/GaCompanyDetail.html:527
+msgid "Controles inactivos de la compañía"
+msgstr "Company's inactive controls"
+
 #: krm/_templates/companies/CaCompanyDomainRiskEvaluatorUpdate.html:56
 #: krm/_templates/companies/CaCompanyRiskExpertUpdate.html:56
 #: krm/_templates/companies/GaCompanyDomainRiskEvaluatorUpdate.html:56
@@ -2127,11 +2149,6 @@ msgstr "Number of users"
 #: krm/_templates/companies/GaCompanyList.html:33
 msgid "Número de Riesgos (N2)"
 msgstr "Number of Risks (N2)"
-
-#: krm/_templates/companies/CaCompanyList.html:34
-#: krm/_templates/companies/GaCompanyList.html:34
-msgid "Número de Controles"
-msgstr "Number of Controls"
 
 #: krm/_templates/companies/CaCompanyList.html:36
 msgid "Expertos de Dominio de Riesgo (RI)"
@@ -2255,13 +2272,18 @@ msgid ""
 msgstr ""
 "In this section, you can assign an Inherent Risk evaluator to the risk"
 
+#: krm/_templates/configuration/ConfigurationDetail.html:18
+#: krm/_templates/configuration/ConfigurationUpdate.html:15
+msgid "Configuración de la aplicación"
+msgstr "App's configuration"
+
 #: krm/_templates/configuration/ConfigurationDetail.html:29
 msgid "Nombre de la aplicación"
-msgstr "Evaluation Controls"
+msgstr "App's Name"
 
 #: krm/_templates/configuration/ConfigurationDetail.html:44
 msgid "Email para notificaciones"
-msgstr "Email for notificationsSend notification"
+msgstr "Email address for notifications"
 
 #: krm/_templates/configuration/ConfigurationDetail.html:59
 msgid "Envío de emails habilitado"
@@ -2307,7 +2329,7 @@ msgstr "Control Test:"
 #: krm/_templates/control_tests/_ControlTestUpdateAnswerControlOwner.html:47
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:79
 msgid "Datos del Test de Control"
-msgstr "Control Test Information"
+msgstr "Control Test details"
 
 #: krm/_templates/control_tests/_ControlTestCreateAnswerControlOwner.html:68
 #: krm/_templates/control_tests/_ControlTestCreateAnswerControlSupervisor.html:94
@@ -2540,7 +2562,7 @@ msgstr "NEW REMEDIATION PLAN"
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:184
 #: krm/_templates/control_tests/ga/ControlTestDetailUpdate.html:192
 msgid "Datos del plan de remediación"
-msgstr "Remediation plan information"
+msgstr "Remediation plan details"
 
 #: krm/_templates/control_tests/ga/ControlTestDetail.html:197
 msgid "Descripción del Plan de Remediación"
@@ -2561,7 +2583,7 @@ msgstr ""
 
 #: krm/_templates/control_tests/ga/ControlTestUpdate.html:28
 msgid "Datos del Control Test"
-msgstr "Control Test Information"
+msgstr "Control Test details"
 
 #: krm/_templates/control_tests/ru/RuControlTestAnswerUpdate.html:46
 msgid "Descargar"
@@ -2590,13 +2612,13 @@ msgstr "Controls to be supervised"
 
 #: krm/_templates/control_tests/ru/RuControlTestSupervisorList.html:41
 msgid "Controles en espera del Control Owner"
-msgstr "Control awaiting for control owner"
+msgstr "Controls awaiting Control Owner"
 
 #: krm/_templates/controls/GaControlCreate.html:71
 #: krm/_templates/controls/GaControlDetail.html:18
 #: krm/_templates/controls/GaControlUpdate.html:62
 msgid "Datos del Control"
-msgstr "Control Information"
+msgstr "Control details"
 
 #: krm/_templates/controls/GaControlCreate.html:96
 #: krm/_templates/controls/GaControlUpdate.html:83
@@ -2642,6 +2664,14 @@ msgstr "Testing plan"
 #: krm/_templates/controls/GaControlDetail.html:335
 msgid "Obligación"
 msgstr "Obligation"
+
+#: krm/_templates/controls/GaControlList.html:24
+msgid "Riesgos (N1) / Procesos"
+msgstr "Master Risks (N1) / Processes"
+
+#: krm/_templates/controls/GaControlList.html:30
+msgid "Riesgos (N2) / Subprocesos"
+msgstr "Risks (N2) / Subprocesses"
 
 #: krm/_templates/controls/GaControlList.html:47
 #: krm/_templates/risks/GaRiskDetail.html:169
@@ -2701,68 +2731,72 @@ msgstr "Ref"
 msgid "Severidad"
 msgstr "Severity"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:500
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:539
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:498
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:586
 msgid "Seleccione el Dashboard que desea visualizar"
 msgstr "Select the Dashboard to view"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:507
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:546
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:505
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:593
 msgid "Dashboard de Controles"
 msgstr "Controls Dashboard"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:510
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:549
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:508
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:596
 msgid "Dashboard de Riesgos"
 msgstr "Risks Dashboard"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:525
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:564
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:523
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:611
 msgid "Aplicar filtros"
 msgstr "Apply filters"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:557
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:594
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:555
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:642
 msgid "Fecha de Evaluación"
 msgstr "Evaluation dates"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:569
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:606
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:567
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:654
 msgid "Buscar"
 msgstr "Search"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:579
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:616
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:577
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:664
 msgid "Gráficos"
 msgstr "Charts"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:815
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:817
 msgid "Resultados obtenidos para Evaluaciones de Riesgo Inherente"
 msgstr "Inherent Risk Evaluation's obtained results"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:823
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:825
 msgid "No hay tests de riesgo inherente disponibles"
 msgstr "No Inherent Risk tests available"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:830
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:857
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:845
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:832
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:859
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:916
 msgid "Descargar resultados"
 msgstr "Download results"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:842
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:844
 msgid "Resultados obtenidos para Evaluaciones de Riesgo Residual"
 msgstr "Residual Risk Evaluations obtained results"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:850
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:852
 msgid "No hay tests de riesgo residual disponibles"
 msgstr "No residual risk tests available"
 
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:830
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:612
+msgid "Nuevo texto de prueba"
+msgstr "New testing test"
+
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:901
 msgid "Resultados obtenidos"
 msgstr "Obtained results"
 
-#: krm/_templates/dashboards/ga/GaDashboard_copy.html:838
+#: krm/_templates/dashboards/ga/GaDashboard_copy.html:909
 msgid "No hay tests de control disponibles"
 msgstr "No control tests available"
 
@@ -2824,7 +2858,7 @@ msgstr "New Risk Domain"
 #: krm/_templates/questionnaires/GaQuestionnaireCreate.html:26
 #: krm/_templates/questionnaires/GaQuestionnaireUpdate.html:53
 msgid "Datos del Dominio de Riesgo"
-msgstr "Risk Domain Information"
+msgstr "Risk Domain details"
 
 #: krm/_templates/domain_risks/GaDomainRiskDetail.html:88
 msgid "Riesgos Maestros (N1) asociados"
@@ -3268,8 +3302,8 @@ msgstr ""
 "Welcome to %(app_name)s.<br /><br />A user account has been created with your email address. In order to set a password to access the platform, please click on the following link to access the corresponding form.<br /><br /><a href=\"%(remember_url)s\">Set password on %(app_name)s</a>"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:321
-msgid "Nº de preguntas"
-msgstr "Nº of Questions"
+msgid "Número de preguntas"
+msgstr "Number of Questions"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:335
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:128
@@ -3392,6 +3426,16 @@ msgstr "Answer"
 msgid "No existen preguntas para esta evaluación"
 msgstr "There are no questions for this evaluation"
 
+#: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:113
+#: krm/_templates/evaluations/CaEvaluationList.html:148
+#: krm/_templates/evaluations/GaEvaluationList.html:148
+#: krm/_templates/evaluations_krm/AuEvaluationInherentList.html:88
+#: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:88
+#: krm/_templates/evaluations_krm/GaEvaluationInherentList.html:88
+#: krm/_templates/evaluations_krm/GaEvaluationResidualList.html:93
+msgid "en progreso"
+msgstr "in process"
+
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:126
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:239
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:34
@@ -3461,17 +3505,29 @@ msgstr "Evaluation dates"
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:33
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:106
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:177
-msgid "Nº Preguntas"
-msgstr "Nº of Questions"
+msgid "Número de Preguntas"
+msgstr "Number of Questions"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:130
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:243
-msgid "Nº Evaluadores"
-msgstr "Nº Evaluators"
+msgid "Número de Evaluadores"
+msgstr "Number of Evaluators"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:205
 msgid "No existen evaluaciones de cuestionarios en proceso"
 msgstr "No questionnaire evaluations in process"
+
+#: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:226
+#: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:163
+#: krm/_templates/evaluations/CaEvaluationList.html:265
+#: krm/_templates/evaluations/GaEvaluationList.html:267
+#: krm/_templates/evaluations_krm/AuEvaluationInherentList.html:177
+#: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:184
+#: krm/_templates/evaluations_krm/GaEvaluationInherentList.html:186
+#: krm/_templates/evaluations_krm/RuEvaluationKrmInherentList.html:170
+#: krm/_templates/evaluations_krm/RuEvaluationKrmResidualList.html:170
+msgid "finalizadas"
+msgstr "completed"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireList.html:318
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:219
@@ -3715,15 +3771,6 @@ msgstr "delivered"
 msgid "No existen evaluaciones de cuestionarios entregadas"
 msgstr "No evaluations of questionnaires submitted"
 
-#: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireList.html:163
-#: krm/_templates/evaluations_krm/AuEvaluationInherentList.html:177
-#: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:184
-#: krm/_templates/evaluations_krm/GaEvaluationInherentList.html:186
-#: krm/_templates/evaluations_krm/RuEvaluationKrmInherentList.html:170
-#: krm/_templates/evaluations_krm/RuEvaluationKrmResidualList.html:170
-msgid "finalizadas"
-msgstr "completed"
-
 #: krm/_templates/evaluations/AuEvaluationDetail.html:368
 #: krm/_templates/evaluations/CaEvaluationDetail.html:372
 #: krm/_templates/evaluations/GaEvaluationDetail.html:373
@@ -3910,15 +3957,6 @@ msgstr "There are no control tests for this evaluation"
 msgid "Filtrado de evaluaciones"
 msgstr "Evaluations filters"
 
-#: krm/_templates/evaluations/AuEvaluationList.html:165
-#: krm/_templates/evaluations/AuEvaluationList.html:275
-#: krm/_templates/evaluations/CaEvaluationList.html:165
-#: krm/_templates/evaluations/CaEvaluationList.html:282
-#: krm/_templates/evaluations/GaEvaluationList.html:165
-#: krm/_templates/evaluations/GaEvaluationList.html:284
-msgid "Nº Controles"
-msgstr "Nº Controls"
-
 #: krm/_templates/evaluations/AuEvaluationList.html:237
 #: krm/_templates/evaluations/AuEvaluationList.html:349
 msgid "En espera del Administrator"
@@ -3935,6 +3973,19 @@ msgstr "There are no evaluations of controls in process"
 #: krm/_templates/evaluations/GaEvaluationList.html:365
 msgid "No existen evaluaciones de controles finalizadas"
 msgstr "There are no completed control evaluations"
+
+#: krm/_templates/evaluations/CaEvaluationCreate.html:91
+#: krm/_templates/evaluations/GaEvaluationCreate.html:91
+msgid "Lanzamiento de Evaluaciones"
+msgstr "Evaluation launch"
+
+#: krm/_templates/evaluations/CaEvaluationCreate.html:104
+#: krm/_templates/evaluations/GaEvaluationCreate.html:104
+#: krm/_templates/evaluations_krm/CaEvaluationInherentCreate.html:104
+#: krm/_templates/evaluations_krm/CaEvaluationResidualCreate.html:104
+#: krm/_templates/evaluations_krm/GaEvaluationResidualCreate.html:104
+msgid "Paso 1: Datos de la Evaluación"
+msgstr "Step 1: Evaluation details"
 
 #: krm/_templates/evaluations/CaEvaluationDetail.html:527
 #: krm/_templates/evaluations/CaEvaluationDetail.html:542
@@ -4281,12 +4332,6 @@ msgstr "Speed of occurrence"
 msgid "No existen tests de riesgo inherente para esta Evaluación"
 msgstr "No existen tests de riesgo inherente para esta Evaluación"
 
-#: krm/_templates/evaluations_krm/AuEvaluationInherentList.html:88
-#: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:88
-#: krm/_templates/evaluations_krm/GaEvaluationInherentList.html:88
-msgid "en progreso"
-msgstr "in process"
-
 #: krm/_templates/evaluations_krm/AuEvaluationInherentList.html:105
 #: krm/_templates/evaluations_krm/AuEvaluationInherentList.html:194
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:105
@@ -4305,8 +4350,8 @@ msgstr "in process"
 #: krm/_templates/evaluations_krm/RuEvaluationKrmResidualList.html:47
 #: krm/_templates/evaluations_krm/RuEvaluationKrmResidualList.html:117
 #: krm/_templates/evaluations_krm/RuEvaluationKrmResidualList.html:187
-msgid "Nº Riesgos"
-msgstr "Nº Risks"
+msgid "Número de Riesgos"
+msgstr "Number of Risks (N2)"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentList.html:165
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:165
@@ -4608,6 +4653,11 @@ msgstr "Use the evaluator's ratings for the unfilled risk assessment fields"
 msgid "Actualizando..."
 msgstr "Updating..."
 
+#: krm/_templates/evaluations_krm/CaEvaluationInherentCreate.html:91
+#: krm/_templates/evaluations_krm/GaEvaluationInherentCreate.html:91
+msgid "Lanzamiento de Evaluaciones de Riesgo Inherente"
+msgstr "Inherent Risk Evaluation launch"
+
 #: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:761
 msgid "Completar evaluación como administrador"
 msgstr "Complete evaluation as Company Administrator"
@@ -4634,7 +4684,7 @@ msgstr "Pending risks"
 #: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:405
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:355
 msgid "Datos del riesgo"
-msgstr "Risk data"
+msgstr "Risk details"
 
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:459
 #: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:466
@@ -4738,13 +4788,8 @@ msgstr "There are no residual risk tests pending for this assessment"
 
 #: krm/_templates/evaluations_krm/CaEvaluationResidualCreate.html:91
 #: krm/_templates/evaluations_krm/GaEvaluationResidualCreate.html:91
-msgid "Lanzamiento de evaluaciones de riesgo residual"
-msgstr "Launching of residual risk evaluations"
-
-#: krm/_templates/evaluations_krm/CaEvaluationResidualCreate.html:104
-#: krm/_templates/evaluations_krm/GaEvaluationResidualCreate.html:104
-msgid "Paso 1: Datos de la evaluación"
-msgstr "Step 1: Evaluation data"
+msgid "Lanzamiento de Evaluaciones de Riesgo Residual"
+msgstr "Residual Risk Evaluation launch"
 
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:897
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:766
@@ -4921,24 +4966,24 @@ msgstr "GLOBAL ADMIN"
 #: krm/evaluations_krm/views/au_evaluation_residual_views.py:157
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:75
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:151
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:256
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:255
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:495
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:555
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:556
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:84
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:160
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:264
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:511
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:578
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:512
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:580
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:74
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:143
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:258
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:497
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:558
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:498
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:560
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:73
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:144
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:257
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:534
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:605
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:535
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:606
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:57
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:114
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:167
@@ -5000,7 +5045,7 @@ msgstr "GLOBAL ADMIN"
 #: krm/risks/views/risk_views.py:73 krm/risks/views/risk_views.py:113
 #: krm/risks/views/risk_views.py:147 krm/risks/views/risk_views.py:179
 #: krm/users/views/ca/ca_user_views.py:45
-#: krm/users/views/ga/ga_user_views.py:74
+#: krm/users/views/ga/ga_user_views.py:76
 #: krm/users/views/ru/ru_user_views.py:45 krm/users/views/user_views.py:64
 #: krm/users/views/user_views.py:211 krm/users/views/user_views.py:238
 #: krm/users/views/user_views.py:266 krm/users/views/user_views.py:295
@@ -5050,6 +5095,7 @@ msgstr "Sub Processes"
 #: krm/companies/views/company_risk_evaluators_views.py:53
 #: krm/companies/views/company_risk_experts_views.py:48
 #: krm/companies/views/company_views.py:68
+#: krm/companies/views/company_views.py:71
 #: krm/companies/views/company_views.py:96
 #: krm/companies/views/company_views.py:126
 #: krm/companies/views/company_views.py:168
@@ -5134,14 +5180,6 @@ msgstr "Create KRC evaluation"
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:65
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:68
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:94
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:556
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:161
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:579
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:259
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:559
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:145
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:258
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:606
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:168
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:175
 msgid "Evaluaciones KRM"
@@ -5280,12 +5318,6 @@ msgstr "Logout"
 msgid "Sub Procesos asociados"
 msgstr "Associated sub-processes"
 
-#: krm/_templates/process/GaProcessDetail.html:101
-#: krm/_templates/process/GaProcessList.html:30
-#: krm/_templates/subprocess/GaSubProcessList.html:30
-msgid "Description"
-msgstr "Description"
-
 #: krm/_templates/process/GaProcessDetail.html:102
 #: krm/_templates/subprocess/GaSubProcessDetail.html:57
 #: krm/_templates/subprocess/GaSubProcessList.html:31
@@ -5375,6 +5407,15 @@ msgstr "Next"
 #: krm/questionnaires/forms/evaluation_questionnaire_form.py:66
 msgid "Notificar"
 msgstr "Notify"
+
+#: krm/_templates/remediation_plans/GaRemediationPlanDetail.html:245
+#: krm/questionnaires/models/question_test_model.py:91
+msgid "Respuestas"
+msgstr "Responses"
+
+#: krm/_templates/remediation_plans/GaRemediationPlanDetail.html:278
+msgid "Nueva respuesta"
+msgstr "New response"
 
 #: krm/_templates/remediation_plans/GaRemediationPlanDetail.html:303
 #: krm/_templates/remediation_plans/RuRemediationPlanDetail.html:322
@@ -5480,6 +5521,7 @@ msgstr "It does not belong to any company"
 #: krm/_templates/users/GaUserDetail.html:227
 #: krm/_templates/users/GaUserUpdate.html:80
 #: krm/companies/views/ca_company_views.py:60
+#: krm/companies/views/ca_company_views.py:63
 msgid "Compañías que administra"
 msgstr "Companies managed"
 
@@ -5676,10 +5718,6 @@ msgstr "This Vat is already in use."
 msgid "Código Postal"
 msgstr "Postal Code"
 
-#: krm/companies/models/company_model.py:86
-msgid "Evaluadores de Cuestionarios"
-msgstr "Questionnaire Evaluators"
-
 #: krm/companies/models/company_model.py:95
 msgid "Company"
 msgstr "Company"
@@ -5755,7 +5793,7 @@ msgstr "Assign Residual Risk Evaluator"
 
 #: krm/companies/views/ca_company_risk_evaluator_views.py:67
 msgid "Evaluador (RR) asignado correctamente"
-msgstr "Residual Risk Evaluato"
+msgstr "Evaluator (RR) successfully assigned"
 
 #: krm/companies/views/ca_company_risk_expert_views.py:57
 msgid "Asignar un Evaluador de Riesgo Inherente"
@@ -5763,11 +5801,7 @@ msgstr "Assign Inherent Risk Evaluator"
 
 #: krm/companies/views/ca_company_risk_expert_views.py:67
 msgid "Evaluador (RI) asignado correctamente"
-msgstr "Inherent Risk Evaluator successfully assigned"
-
-#: krm/companies/views/ca_company_views.py:63
-msgid "Companías que administra"
-msgstr "Companías que administra"
+msgstr "Evaluator (IR) successfully assigned"
 
 #: krm/companies/views/ca_company_views.py:110
 #: krm/companies/views/company_views.py:172
@@ -5832,10 +5866,6 @@ msgstr "Evaluator successfully assigned"
 #: krm/companies/views/company_risk_experts_views.py:54
 msgid "Asignar un Evaluador de Riesgo Inherente (RI)"
 msgstr "Assign Inherent Risk (IR) Evaluator"
-
-#: krm/companies/views/company_views.py:71
-msgid "Companías"
-msgstr "Companies"
 
 #: krm/companies/views/company_views.py:128
 #: krm/companies/views/company_views.py:131
@@ -5968,7 +5998,7 @@ msgid ""
 "¿Seguro que desea <span class=\"kt-font-bold\">eliminar la Compañía "
 "%s</span>? Se borrarán todos los datos asociados a la misma."
 msgstr ""
-"are you sure you want to <span class=\"kt-font-bold\">delete the company "
+"Are you sure you want to <span class=\"kt-font-bold\">delete the company "
 "%s</span>? All associated data will be deleted."
 
 #: krm/companies_bck/views/age/business_group.py:326
@@ -6020,7 +6050,7 @@ msgid ""
 "¿Seguro que desea <span class=\"kt-font-bold\">eliminar el Grupo "
 "Empresarial</span>? Se borrarán todos los datos asociados al mismo."
 msgstr ""
-"are you sure you want to <span class=\"kt-font-bold\">eliminating the "
+"Are you sure you want to <span class=\"kt-font-bold\">eliminating the "
 "Business Group</span>? All data associated with it will be deleted."
 
 #: krm/companies_bck/views/ga/business_group.py:164
@@ -6033,7 +6063,7 @@ msgid ""
 "¿Seguro que desea <span class=\"kt-font-bold\">eliminar el Grupo Empresarial"
 " %s</span>? Se borrarán todos los datos asociados al mismo."
 msgstr ""
-"are you sure you want to <span class=\"kt-font-bold\">delete the Business "
+"Are you sure you want to <span class=\"kt-font-bold\">delete the Business "
 "Group %s</span>? All data associated with it will be deleted."
 
 #: krm/companies_bck/views/ga/business_group.py:281
@@ -6042,7 +6072,7 @@ msgid ""
 "¿Seguro que desea <span class=\"kt-font-bold\">eliminar la Región %s</span>?"
 " Se borrarán todos los datos asociados a la misma."
 msgstr ""
-"are you sure you want to <span class=\"kt-font-bold\">delete the region "
+"Are you sure you want to <span class=\"kt-font-bold\">delete the region "
 "%s</span>? All data associated with it will be deleted."
 
 #: krm/configuration/models/configuration.py:14
@@ -7042,8 +7072,7 @@ msgstr "Description of control follow-up"
 msgid ""
 "Debe establecer un nuevo estado del control para finalizar la revisión del "
 "control test"
-msgstr ""
-"You must set a new control status to finalize the test control review."
+msgstr "You must set a new control status to finalize the test control review"
 
 #: krm/evaluations/forms/control_test_forms.py:252
 #: krm/evaluations/models/control_test_answer.py:67
@@ -7288,10 +7317,10 @@ msgid "El tamaño máximo de archivo es de 50MB"
 msgstr "Maximum file size is 50MB"
 
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:99
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:158
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:157
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:150
-msgid "Nueva Evaluación de Riesgo Inherente [KRM]"
-msgstr "New Inherent Risk Assessment [KRM]."
+msgid "Nueva Evaluación de Riesgo Inherente"
+msgstr "New Inherent Risk Evaluation"
 
 #: krm/evaluations/views/_ga_evaluation_krm_views.py:148
 #, python-format
@@ -7437,10 +7466,10 @@ msgstr "Controls successfully assigned"
 #: krm/evaluations/views/ca_evaluation_views.py:1243
 #: krm/evaluations/views/ga_evaluation_views.py:1182
 #: krm/evaluations/views/ga_evaluation_views.py:1192
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:583
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:606
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:586
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:633
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:584
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:608
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:588
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:634
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:453
 #, python-format
 msgid "Enviadas notificaciones a %d usuarios!"
@@ -7512,7 +7541,7 @@ msgstr "Residuals Evaluations KRM"
 #: krm/evaluations_krm/models/risk_company_residual_model.py:24
 #: krm/evaluations_krm/models/risk_test_residual_model.py:25
 msgid "Evaluación de riesgo residual"
-msgstr "Residual risk assessment"
+msgstr "Residual Risk Evaluation"
 
 #: krm/evaluations_krm/models/risk_company_residual_model.py:37
 msgid "Optimizado"
@@ -7548,7 +7577,7 @@ msgstr "Aggregate Residual Risk Evaluations"
 
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:24
 msgid "Evaluación de riesgo inherente"
-msgstr "Inherent risk assessment"
+msgstr "Inherent Risk Evaluation"
 
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:37
 msgid "Experto"
@@ -7667,7 +7696,7 @@ msgstr "[%s] Email of Inherent Risk tests pending assessment sent (%s)"
 
 #: krm/evaluations_krm/models/risk_test_residual_model.py:107
 msgid "Nivel de Probabilidad residual indicado por el Evaluador"
-msgstr "Evaluator's Residual Probability assessment"
+msgstr "Evaluator's Residual assessment"
 
 #: krm/evaluations_krm/models/risk_test_residual_model.py:386
 msgid "Test de Riesgo Residual"
@@ -7690,28 +7719,36 @@ msgstr "[%s] Email Residual Risk Tests pending assessment sent (%s)"
 #: krm/evaluations_krm/views/au_evaluation_inherent_views.py:75
 #: krm/evaluations_krm/views/au_evaluation_inherent_views.py:78
 #: krm/evaluations_krm/views/au_evaluation_inherent_views.py:148
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:76
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:79
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:152
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:257
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:75
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:78
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:144
 msgid "Evaluaciones de Riesgo Inherente KRM"
-msgstr "Inherent Risk Evaluations KRM"
+msgstr "Inherent Risk Evaluations"
 
 #: krm/evaluations_krm/views/au_evaluation_residual_views.py:84
 #: krm/evaluations_krm/views/au_evaluation_residual_views.py:87
 #: krm/evaluations_krm/views/au_evaluation_residual_views.py:158
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:85
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:88
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:265
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:74
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:77
 msgid "Evaluaciones de Riesgo Residual KRM"
-msgstr "Residual Risk Evaluations KRM"
+msgstr "Residual Risk Evaluations"
 
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:235
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:76
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:79
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:152
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:256
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:496
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:557
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:161
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:581
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:75
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:78
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:144
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:259
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:499
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:561
+#: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:58
+#: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:60
+#: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:115
+msgid "Evaluaciones de Riesgo Inherente"
+msgstr "Inherent Risk Evaluations"
+
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:234
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:228
 msgid ""
 "Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')}"
@@ -7719,25 +7756,40 @@ msgid ""
 "correctamente"
 msgstr ""
 
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:496
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:498
-#: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:58
-#: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:60
-#: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:115
-msgid "Evaluaciones de Riesgo Inherente"
-msgstr "Inherent Risk Evaluations"
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:260
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:498
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:263
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:501
+msgid "Evaluación de Riesgo Inherente"
+msgstr "Inherent Risk Evaluation"
 
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:530
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:553
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:533
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:580
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:531
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:555
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:535
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:581
 msgid "Evaluación supervisada correctamente como administrador de compañía"
 msgstr "Evaluation successfully supervised as company Administrator"
 
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:85
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:88
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:265
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:513
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:74
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:77
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:145
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:258
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:536
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:607
+#: krm/evaluations_krm/views/ru_risk_test_residual_views.py:57
+#: krm/evaluations_krm/views/ru_risk_test_residual_views.py:59
+#: krm/evaluations_krm/views/ru_risk_test_residual_views.py:117
+msgid "Evaluaciones de Riesgo Residual"
+msgstr "Residual Risk Evaluations"
+
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:166
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:150
-msgid "Nueva Evaluación de Riesgo Residual [KRM]"
-msgstr "New Residual Risk Assessment [KRM]."
+msgid "Nueva Evaluación de Riesgo Residual"
+msgstr "New Residual Risk Evaluation"
 
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:243
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:228
@@ -7746,13 +7798,11 @@ msgid ""
 " y {pluralize(risk_tests__created, 'test')} de riesgo residual correctamente"
 msgstr ""
 
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:512
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:535
-#: krm/evaluations_krm/views/ru_risk_test_residual_views.py:57
-#: krm/evaluations_krm/views/ru_risk_test_residual_views.py:59
-#: krm/evaluations_krm/views/ru_risk_test_residual_views.py:117
-msgid "Evaluaciones de Riesgo Residual"
-msgstr "Residual Risk Evaluations"
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:269
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:515
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:262
+msgid "Evaluación de Riesgo Residual"
+msgstr "Residual Risk Evaluation"
 
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:143
 msgid "Valoración de tests de Riesgo Inherente enviada correctamente"
@@ -7875,10 +7925,6 @@ msgstr "Awaiting response from the evaluator"
 #: krm/questionnaires/models/question_test_model.py:70
 msgid "Texto complementario a la respuesta"
 msgstr "Complementary text to the answer"
-
-#: krm/questionnaires/models/question_test_model.py:91
-msgid "Respuestas"
-msgstr "Answers"
 
 #: krm/questionnaires/models/question_test_model.py:125
 msgid "Cuestionario pendiente de completar"
@@ -8130,7 +8176,7 @@ msgstr ""
 
 #: krm/remediation_plans/forms/remediation_plan_forms.py:90
 msgid "Seleccione la Compañía"
-msgstr "Select Company"
+msgstr "Select a Company"
 
 #: krm/remediation_plans/models/remediation_plan.py:27
 msgid "Usuario responsable"
@@ -8523,11 +8569,11 @@ msgstr "Reset password email"
 msgid "Dashboard para el Administrador de Compañía"
 msgstr "Dashboard for Company Administrator"
 
-#: krm/users/views/ga/ga_user_views.py:83
+#: krm/users/views/ga/ga_user_views.py:106
 msgid "Dashboard de Riesgos para el Administrador Global"
 msgstr "Global Administrator's Risks Dashboard"
 
-#: krm/users/views/ga/ga_user_views.py:157
+#: krm/users/views/ga/ga_user_views.py:180
 msgid "Dashboard de Controles para el Administrador Global"
 msgstr "Global Administrator's Controls Dashboard"
 
@@ -8636,6 +8682,51 @@ msgstr "Link expired, request password reminder again"
 #: krm/users/views/users_login_views.py:539
 msgid "Password cambiado correctamente"
 msgstr "Password successfully changed"
+
+#~ msgid "Lanzamiento de evaluaciones de riesgo residual"
+#~ msgstr "Launching of residual risk evaluations"
+
+#~ msgid "Paso 1: Datos de la evaluación"
+#~ msgstr "Step 1: Evaluation data"
+
+#~ msgid "Control ref"
+#~ msgstr "Control ref"
+
+#~ msgid "Companías que administra"
+#~ msgstr "Companies you manage"
+
+#~ msgid "Companías"
+#~ msgstr "Companies"
+
+#~ msgid "Nueva Evaluación de Riesgo Inherente [KRM]"
+#~ msgstr "New Inherent Risk Evaluation"
+
+#~ msgid "Nueva Evaluación de Riesgo Residual [KRM]"
+#~ msgstr "New Residual Risk Assessment [KRM]."
+
+#~ msgid "Nº de riesgos"
+#~ msgstr "Nº of risks"
+
+#~ msgid "Usuarios evaluadores de Cuestionarios"
+#~ msgstr "Questionnaire Evaluators"
+
+#~ msgid "Nº de Controles"
+#~ msgstr "Nº of Controls"
+
+#~ msgid "Owners"
+#~ msgstr "Dueños"
+
+#~ msgid "Nº Preguntas"
+#~ msgstr "Nº of Questions"
+
+#~ msgid "Nº Controles"
+#~ msgstr "Nº Controls"
+
+#~ msgid "Nº Riesgos"
+#~ msgstr "Nº Risks"
+
+#~ msgid "Description"
+#~ msgstr "Description"
 
 #~ msgid "Dominios de riesgo"
 #~ msgstr "Risk domains"
