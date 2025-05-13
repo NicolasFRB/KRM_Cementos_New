@@ -563,15 +563,15 @@ class GaUserImportView(FormView):
                         )
                         return super(GaUserImportView, self).form_invalid(form)
 
-                    if self.checkExcelRep("Email address", user, users_to_create, i, "email"):
+                    if self.checkExcelRep(_("dirección de correo"), user, users_to_create, i, "email"):
                         return super(GaUserImportView, self).form_invalid(form)
-                    if self.checkDB("Email address", user, User, "email", i):
+                    if self.checkDB(_("dirección de correo"), user, User, "email", i):
                         return super(GaUserImportView, self).form_invalid(form)
 
                     #comprobaciones con respecto al nombre de usuario insertado:
-                    if self.checkExcelRep("Username", user, users_to_create, i, "username"):
+                    if self.checkExcelRep(_("nombre de usuario"), user, users_to_create, i, "username"):
                         return super(GaUserImportView, self).form_invalid(form)
-                    if self.checkDB("Username", user, User, "username", i):
+                    if self.checkDB(_("nombre de usuario"), user, User, "username", i):
                         return super(GaUserImportView, self).form_invalid(form)
 
                     #comprobación correspondiente de las compañías insertadas para el usuario

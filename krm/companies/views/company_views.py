@@ -455,9 +455,9 @@ class GaCompanyImportView(FormView):
                     company['companies_in_scope'] = str(row[9].value)
 
                     #comprobaciones correspondientes a la referencia de la compañía
-                    if self.checkDB("Referencia", company, Company, "ref", i):
+                    if self.checkDB(_("referencia"), company, Company, "ref", i):
                         return super(GaCompanyImportView, self).form_invalid(form)
-                    if self.checkExcelRep("Referencia", company, companies_to_create, i, "ref"):
+                    if self.checkExcelRep(_("referencia"), company, companies_to_create, i, "ref"):
                         return super(GaCompanyImportView, self).form_invalid(form)
 
                     #comprobaciones correspondientes a la unicidad del VAT de la compañía

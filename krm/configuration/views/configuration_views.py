@@ -199,7 +199,7 @@ class GaImportEvalView(FormView):
                         self.request,
                         messages.ERROR,
                         (
-                            _('En la hoja de %s hay una Referencia repetida: %s en la fila %d')
+                            _('En la hoja de %s hay una referencia repetida: %s en la fila %d')
                             % (name, e[field_key], index)
                         ),
                     )
@@ -233,7 +233,7 @@ class GaImportEvalView(FormView):
                 self.request,
                 messages.ERROR,
                 (
-                    _('En la hoja de %s hay una Referencia que ya existe: %s')
+                    _('En la hoja de %s hay una referencia que ya existe: %s')
                     % (name, elem[field_key])
                 ),
             )
@@ -250,7 +250,7 @@ class GaImportEvalView(FormView):
               self.request,
               messages.ERROR,
               (
-                  _('En la hoja de %s la Referencia %s de %s no existe') % (name, elem[master], master_name)
+                  _('En la hoja de %s la referencia %s de %s no existe') % (name, elem[master], master_name)
               ),
             )
         problem = not exist
@@ -364,17 +364,17 @@ class GaImportEvalView(FormView):
                 ev_inherent['admin_supervisor'] = row[7].value
 
                 #comprobaciones correspondientes a la referencia de la evaluación
-                if self.checkMandatory("evaluaciones de riesgo inherente", ev_inherent, i, "ref"):
+                if self.checkMandatory(_("evaluaciones de riesgo inherente"), ev_inherent, i, "ref"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkExcelRep("evaluaciones de riesgo inherente", ev_inherent, evaluation_krm_inherent_to_create, i, "ref"):
+                if self.checkExcelRep(_("evaluaciones de riesgo inherente"), ev_inherent, evaluation_krm_inherent_to_create, i, "ref"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkDB("evaluaciones de riesgo inherente", ev_inherent, EvaluationKrmInherent, "ref"):
+                if self.checkDB(_("evaluaciones de riesgo inherente"), ev_inherent, EvaluationKrmInherent, "ref"):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobaciones correspondientes a la compañía de la evaluación
-                if self.checkMandatory("evaluaciones de riesgo inherente", ev_inherent, i, "company"):
+                if self.checkMandatory(_("evaluaciones de riesgo inherente"), ev_inherent, i, "company"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkMaster("evaluaciones de riesgo inherente", "compañía", ev_inherent, Company, "company"):
+                if self.checkMaster(_("evaluaciones de riesgo inherente"), _("compañía"), ev_inherent, Company, "company"):
                     return super(GaImportEvalView, self).form_invalid(form)
                 inherent_company[ev_inherent['ref']] = ev_inherent['company'] #una vez se han comprobado evaluación-compañía añadimos al diccionario
 
@@ -410,9 +410,9 @@ class GaImportEvalView(FormView):
                         return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobación del administrador de compañía
-                if self.checkMandatory("evaluaciones de riesgo inherente", ev_inherent, i, "admin_supervisor"):
+                if self.checkMandatory(_("evaluaciones de riesgo inherente"), ev_inherent, i, "admin_supervisor"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkAdministrator("evaluaciones de riesgo residual", ev_inherent['company'], ev_inherent['admin_supervisor']):
+                if self.checkAdministrator(_("evaluaciones de riesgo residual"), ev_inherent['company'], ev_inherent['admin_supervisor']):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 evaluation_krm_inherent_to_create.append(ev_inherent)
@@ -444,7 +444,7 @@ class GaImportEvalView(FormView):
                 risk_inherent['description_administrator'] = row[14].value
 
                 #comprobaciones de la evaluación del test de riesgo
-                if self.checkMandatory("tests de riesgo inherente", risk_inherent, i, "evaluation"):
+                if self.checkMandatory(_("tests de riesgo inherente"), risk_inherent, i, "evaluation"):
                     return super(GaImportEvalView, self).form_invalid(form)
                 if risk_inherent['evaluation'] not in inherent_company.keys():
                     self.errors_found +=1
@@ -460,19 +460,19 @@ class GaImportEvalView(FormView):
                     inherentes_testpage.append(risk_inherent['evaluation'])
 
                 #comprobaciones correspondientes al riesgo N2 introducido:
-                if self.checkMandatory("tests de riesgo inherente", risk_inherent, i, "risk"):
+                if self.checkMandatory(_("tests de riesgo inherente"), risk_inherent, i, "risk"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkRiskCompany("tests de riesgo inherente", risk_inherent['risk'], inherent_company[risk_inherent['evaluation']], i):
+                if self.checkRiskCompany(_("tests de riesgo inherente"), risk_inherent['risk'], inherent_company[risk_inherent['evaluation']], i):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobación de repetición:
-                if self.checkExcelRep("tests de riesgo inherente", risk_inherent, risk_test_inherent_to_create, i, "evaluation", "risk"):
+                if self.checkExcelRep(_("tests de riesgo inherente"), risk_inherent, risk_test_inherent_to_create, i, "evaluation", "risk"):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobaciones correspondientes al evaluador del riesgo:
-                if self.checkMandatory("tests de riesgo inherente", risk_inherent, i, "expert"):
+                if self.checkMandatory(_("tests de riesgo inherente"), risk_inherent, i, "expert"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkEvaluator("tests de riesgo inherente", inherent_company[risk_inherent['evaluation']], risk_inherent['expert']):
+                if self.checkEvaluator(_("tests de riesgo inherente"), inherent_company[risk_inherent['evaluation']], risk_inherent['expert']):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobaciones valoraciones evaluador
@@ -535,17 +535,17 @@ class GaImportEvalView(FormView):
                 ev_residual['admin_supervisor'] = row[7].value
 
                 #comprobaciones correspondientes a la referencia de la evaluación
-                if self.checkMandatory("evaluaciones de riesgo residual", ev_residual, i, "ref"):
+                if self.checkMandatory(_("evaluaciones de riesgo residual"), ev_residual, i, "ref"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkExcelRep("evaluaciones de riesgo residual", ev_residual, evaluation_krm_residual_to_create, i, "ref"):
+                if self.checkExcelRep(_("evaluaciones de riesgo residual"), ev_residual, evaluation_krm_residual_to_create, i, "ref"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkDB("evaluaciones de riesgo residual", ev_residual, EvaluationKrmResidual, "ref"):
+                if self.checkDB(_("evaluaciones de riesgo residual"), ev_residual, EvaluationKrmResidual, "ref"):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobaciones correspondientes a la compañía de la evaluación
-                if self.checkMandatory("evaluaciones de riesgo residual", ev_residual, i, "company"):
+                if self.checkMandatory(_("evaluaciones de riesgo residual"), ev_residual, i, "company"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkMaster("compañía", "evaluaciones de riesgo residual", ev_residual, Company, "company"):
+                if self.checkMaster(_("compañía"), _("evaluaciones de riesgo residual"), ev_residual, Company, "company"):
                     return super(GaImportEvalView, self).form_invalid(form)
                 residual_company[ev_residual['ref']] = ev_residual['company']
 
@@ -581,9 +581,9 @@ class GaImportEvalView(FormView):
                         return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobaciones del administrador de compañía:
-                if self.checkMandatory("evaluaciones de riesgo residual", ev_residual, i, "admin_supervisor"):
+                if self.checkMandatory(_("evaluaciones de riesgo residual"), ev_residual, i, "admin_supervisor"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkAdministrator("evaluaciones de riesgo residual", ev_residual['company'], ev_residual['admin_supervisor']):
+                if self.checkAdministrator(_("evaluaciones de riesgo residual"), ev_residual['company'], ev_residual['admin_supervisor']):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 evaluation_krm_residual_to_create.append(ev_residual)
@@ -615,7 +615,7 @@ class GaImportEvalView(FormView):
                 risk_residual['description_administrator'] = row[14].value
 
                 #comprobaciones de la evaluación del test de riesgo:
-                if self.checkMandatory("tests de riesgo residual", risk_residual, i, "evaluation"):
+                if self.checkMandatory(_("tests de riesgo residual"), risk_residual, i, "evaluation"):
                     return super(GaImportEvalView, self).form_invalid(form)
                 if risk_residual['evaluation'] not in residual_company.keys():
                     self.errors_found +=1
@@ -632,19 +632,19 @@ class GaImportEvalView(FormView):
                     residuales_testpage.append(risk_residual['evaluation'])
 
                 #comprobaciones correspondientes al riesgo N2 introducido:
-                if self.checkMandatory("tests de riesgo residual", risk_residual, i, "risk"):
+                if self.checkMandatory(_("tests de riesgo residual"), risk_residual, i, "risk"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkRiskCompany("tests de riesgo residual", risk_residual['risk'], residual_company[risk_residual['evaluation']], i):
+                if self.checkRiskCompany(_("tests de riesgo residual"), risk_residual['risk'], residual_company[risk_residual['evaluation']], i):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobación de repetición:
-                if self.checkExcelRep("tests de riesgo residual", risk_residual, risk_test_residual_to_create, i, "evaluation", "risk"):
+                if self.checkExcelRep(_("tests de riesgo residual"), risk_residual, risk_test_residual_to_create, i, "evaluation", "risk"):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobaciones correspondientes al evaluador de riesgo:
-                if self.checkMandatory("tests de riesgo residual", risk_residual, i, "evaluator"):
+                if self.checkMandatory(_("tests de riesgo residual"), risk_residual, i, "evaluator"):
                     return super(GaImportEvalView, self).form_invalid(form)
-                if self.checkEvaluator("tests de riesgo residual", residual_company[risk_residual['evaluation']], risk_residual['evaluator']):
+                if self.checkEvaluator(_("tests de riesgo residual"), residual_company[risk_residual['evaluation']], risk_residual['evaluator']):
                     return super(GaImportEvalView, self).form_invalid(form)
 
                 #comprobaciones valoraciones evaluador
@@ -770,7 +770,7 @@ class GaImportEvalView(FormView):
             for rt in risk_test_residual_to_create:
                 RiskTestResidual.objects.create(
                     evaluation=EvaluationKrmInherent.objects.get(ref = rt['evaluation']),
-                    risk=RiskCompany.objects.get(company__ref= inherent_company[rt['evaluation']], risk__ref= rt['risk']),
+                    risk=RiskCompany.objects.get(company__ref= residual_company[rt['evaluation']], risk__ref= rt['risk']),
                     expert=User.objects.get(email = rt['evaluator']),
                     impact_economic_evaluator= int(rt['impact_economic_level_evaluator']),
                     impact_objectives_evaluator= int(rt['impact_objectives_level_evaluator']),
@@ -889,7 +889,7 @@ class GaImportView(FormView):
                     self.request,
                     messages.ERROR,
                     (
-                        _('En la hoja de %(name)s hay una Referencia repetida: %(value)s en la fila %(index)d') % {
+                        _('En la hoja de %(name)s hay una referencia repetida: %(value)s en la fila %(index)d') % {
                             "name": name,
                             "value": e[field_key],
                             "index": index
@@ -926,7 +926,7 @@ class GaImportView(FormView):
                 self.request,
                 messages.ERROR,
                 (
-                    _('En la hoja de %(name)s hay una Referencia que ya existe: %(value)s') % {
+                    _('En la hoja de %(name)s hay una referencia que ya existe: %(value)s') % {
                         "name": name,
                         "value": elem[field_key]
                     }
@@ -1032,7 +1032,7 @@ class GaImportView(FormView):
                 self.request,
                 messages.ERROR,
                 (
-                    _('En la hoja de %(name)s la Referencia %(value)s de %(master)s no existe') % {
+                    _('En la hoja de %(name)s la referencia %(value)s de %(master)s no existe') % {
                         "name": name,
                         "value": elem[master],
                         "master": master_name
@@ -1119,18 +1119,18 @@ class GaImportView(FormView):
                 domain_risk['description'] = row[2].value
 
                 #comprobaciones correspondientes a la referencia
-                if self.checkMandatory("dominios de riesgo", domain_risk, i, "ref"):
+                if self.checkMandatory(_("dominios de riesgo"), domain_risk, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkExcelRep("dominios de riesgo", domain_risk, domain_risk_to_create, i, "ref"):
+                if self.checkExcelRep(_("dominios de riesgo"), domain_risk, domain_risk_to_create, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkDB("dominios de riesgo", domain_risk, DomainRisk, "ref"):
+                if self.checkDB(_("dominios de riesgo"), domain_risk, DomainRisk, "ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobaciones correspondientes al nombre:
-                if self.checkMandatory("dominios de riesgo", domain_risk, i, "name"):
+                if self.checkMandatory(_("dominios de riesgo"), domain_risk, i, "name"):
                     return super(GaImportView, self).form_invalid(form)
                 #comprobaciones correspondientes a la descripción
-                if self.checkMandatory("dominios de riesgo", domain_risk, i, "description"):
+                if self.checkMandatory(_("dominios de riesgo"), domain_risk, i, "description"):
                     return super(GaImportView, self).form_invalid(form)
 
                 domain_risk_to_create.append(domain_risk)
@@ -1151,25 +1151,25 @@ class GaImportView(FormView):
                 risk_master['description'] = row[3].value
 
                 #comprobaciones correspondientes a la referencia de dominio de riesgo:
-                if self.checkMandatory("riesgos maestros", risk_master, i, "domain_risk_ref"):
+                if self.checkMandatory(_("riesgos maestros"), risk_master, i, "domain_risk_ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkMaster("riesgos maestros", "dominios de riesgo", risk_master, domain_risk_to_create, DomainRisk, "domain_risk_ref"):
+                if self.checkMaster(_("riesgos maestros"), _("dominios de riesgo"), risk_master, domain_risk_to_create, DomainRisk, "domain_risk_ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobaciones correspondientes a la referencia del riesgo maestro:
-                if self.checkMandatory("riesgos maestros", risk_master, i, "ref"):
+                if self.checkMandatory(_("riesgos maestros"), risk_master, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkExcelRep("riesgos maestros", risk_master, risk_master_to_create, i, "ref"):
+                if self.checkExcelRep(_("riesgos maestros"), risk_master, risk_master_to_create, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkDB("riesgos maestros", risk_master, RiskMaster, "ref"):
+                if self.checkDB(_("riesgos maestros"), risk_master, RiskMaster, "ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobación correspondiente al nombre del riesgo maestro:
-                if self.checkMandatory("riesgos maestros", risk_master, i, "name"):
+                if self.checkMandatory(_("riesgos maestros"), risk_master, i, "name"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobación correspondiente a la descripción del riesgo maestro:
-                if self.checkMandatory("riesgos maestros", risk_master, i, "description"):
+                if self.checkMandatory(_("riesgos maestros"), risk_master, i, "description"):
                     return super(GaImportView, self).form_invalid(form)
 
                 risk_master_to_create.append(risk_master)
@@ -1199,21 +1199,21 @@ class GaImportView(FormView):
                 risk['krm_main_elements'] = row[12].value
 
                 #comprobaciones de la referencia del riesgo maestro asociado:
-                if self.checkMandatory("riesgos", risk, i, "risk_master_ref"):
+                if self.checkMandatory(_("riesgos"), risk, i, "risk_master_ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkMaster("riesgos", "riesgo maestro", risk, risk_master_to_create, RiskMaster, "risk_master_ref"):
+                if self.checkMaster(_("riesgos"), _("riesgo maestro"), risk, risk_master_to_create, RiskMaster, "risk_master_ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobaciones de la referencia del riesgo N2:
-                if self.checkMandatory("riesgos", risk, i, "ref"):
+                if self.checkMandatory(_("riesgos"), risk, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkExcelRep("riesgos", risk, risk_to_create, i, "ref"):
+                if self.checkExcelRep(_("riesgos"), risk, risk_to_create, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkDB("riesgos", risk, Risk, "ref"):
+                if self.checkDB(_("riesgos"), risk, Risk, "ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobación del nombre del riesgo N2:
-                if self.checkMandatory("riesgos", risk, i, "name"):
+                if self.checkMandatory(_("riesgos"), risk, i, "name"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobamos los campos de valores inherentes/residuales:
@@ -1243,15 +1243,15 @@ class GaImportView(FormView):
                 process['description'] = row[2].value
 
                 #comprobaciones de la referencia del proceso:
-                if self.checkMandatory("procesos", process, i, "ref"):
+                if self.checkMandatory(_("procesos"), process, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkExcelRep("procesos", process, process_to_create, i, "ref"):
+                if self.checkExcelRep(_("procesos"), process, process_to_create, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkDB("procesos", process, Process, "ref"):
+                if self.checkDB(_("procesos"), process, Process, "ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobación del nombre del proceso:
-                if self.checkMandatory("procesos", process, i, "name"):
+                if self.checkMandatory(_("procesos"), process, i, "name"):
                     return super(GaImportView, self).form_invalid(form)
 
                 process_to_create.append(process)
@@ -1272,21 +1272,21 @@ class GaImportView(FormView):
                 subprocess['description'] = row[3].value
 
                 #comprobaciones correspondientes a la referencia del proceso:
-                if self.checkMandatory("subprocesos", process, i, "process_master_ref"):
+                if self.checkMandatory(_("subprocesos"), process, i, "process_master_ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkMaster("subprocesos", "procesos", subprocess, process_to_create, Process, "process_master_ref"):
+                if self.checkMaster(_("subprocesos"), "procesos", subprocess, process_to_create, Process, "process_master_ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobaciones correspondientes a la referencia del subproceso:
-                if self.checkMandatory("subprocesos", subprocess, i, "ref"):
+                if self.checkMandatory(_("subprocesos"), subprocess, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkExcelRep("subprocesos", subprocess, subprocess_to_create, i, "ref"):
+                if self.checkExcelRep(_("subprocesos"), subprocess, subprocess_to_create, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkDB("subprocesos", subprocess, SubProcess, "ref"):
+                if self.checkDB(_("subprocesos"), subprocess, SubProcess, "ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobación del nombre del subproceso:
-                if self.checkMandatory("subprocesos", subprocess, i, "name"):
+                if self.checkMandatory(_("subprocesos"), subprocess, i, "name"):
                     return super(GaImportView, self).form_invalid(form)
 
                 subprocess_to_create.append(subprocess)
@@ -1373,11 +1373,11 @@ class GaImportView(FormView):
                         return super(GaImportView, self).form_invalid(form)
 
                 #comprobaciones correspondientes a la referencia del control:
-                if self.checkMandatory("controles", control, i, "ref"):
+                if self.checkMandatory(_("controles"), control, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkExcelRep("controles", control, control_to_create, i, "ref"):
+                if self.checkExcelRep(_("controles"), control, control_to_create, i, "ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkDB("controles", control, Control, "ref"):
+                if self.checkDB(_("controles"), control, Control, "ref"):
                     return super(GaImportView, self).form_invalid(form)
 
                 if control['control_type'] not in ('P', 'D'):
@@ -1467,11 +1467,11 @@ class GaImportView(FormView):
                 risk_company['evaluator'] = [row[9].value] if row[9].value else []
 
                 #comprobaciones correspondientes a las referencias de los maestros asociados:
-                if self.checkMandatory("riesgos de compañía", risk_company, i, "risk_ref"):
+                if self.checkMandatory(_("riesgos de compañía"), risk_company, i, "risk_ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkMandatory("riesgos de compañía", risk_company, i, "company_ref"):
+                if self.checkMandatory(_("riesgos de compañía"), risk_company, i, "company_ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkCompanyObjects("riesgos de compañía", risk_company, risk_to_create):
+                if self.checkCompanyObjects(_("riesgos de compañía"), risk_company, risk_to_create):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobaciones correspondientes a los evaluadores/expertos:
@@ -1508,11 +1508,11 @@ class GaImportView(FormView):
                     control_company['control_supervisors'] = []
 
                 #comprobaciones correspondientes a las referencias a los maestros asociados:
-                if self.checkMandatory("controles de compañía", control_company, i, "control_ref"):
+                if self.checkMandatory(_("controles de compañía"), control_company, i, "control_ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkMandatory("controles de compañía", control_company, i, "company_ref"):
+                if self.checkMandatory(_("controles de compañía"), control_company, i, "company_ref"):
                     return super(GaImportView, self).form_invalid(form)
-                if self.checkCompanyObjects("controles de compañía", control_company, control_to_create):
+                if self.checkCompanyObjects(_("controles de compañía"), control_company, control_to_create):
                     return super(GaImportView, self).form_invalid(form)
 
                 #comprobaciones de los usuarios owners/supervisors
