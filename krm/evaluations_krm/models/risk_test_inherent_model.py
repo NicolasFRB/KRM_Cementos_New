@@ -145,6 +145,11 @@ class RiskTestInherent(AuditModel):
         default=0
     )
 
+    finalized_at= models.DateTimeField(
+        _('Fecha de finalización'),
+        null= True,
+        blank= True)
+
     description_expert = models.TextField(
         verbose_name=_(
             "Descripción de la valoración del Evaluador"),
@@ -218,7 +223,7 @@ class RiskTestInherent(AuditModel):
         else:
             return None
         if severity == 0:
-            value= ["Sin establecer", "Not stablished", "SE"]
+            value= ["Sin establecer", "Not established", "SE"]
         elif 1 <= severity <= 4:
             if self.severity_level_expert==4 and (self.impact_level_expert==1 or self.probability_level_expert==1):
                 value= ["Baja", "Low", "B"]

@@ -197,7 +197,7 @@ class RuEvaluationRiskInherentDetail(FormView):
         context['evaluation'].nrisk_test_inherents_pending = context['evaluation'].nrisk_test_inherents_by_state(1, user=self.request.user)
         context['evaluation'].nrisk_test_inherents_delivered = context['evaluation'].nrisk_test_inherents_by_state(2, user=self.request.user)
         context['evaluation'].nrisk_test_inherents_finished = context['evaluation'].nrisk_test_inherents_by_state(3, user=self.request.user)
-        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_inherents_by_severity('SE', user= self.request.user)
+        context['evaluation'].sev_not_established = context['evaluation'].nrisk_test_inherents_by_severity('SE', user= self.request.user)
         context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_inherents_by_severity('MB', user= self.request.user)
         context['evaluation'].sev_low = context['evaluation'].nrisk_test_inherents_by_severity('B', user= self.request.user)
         context['evaluation'].sev_medium = context['evaluation'].nrisk_test_inherents_by_severity('M', user= self.request.user)

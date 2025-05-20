@@ -210,7 +210,7 @@ class AuEvaluationResidualDetailView(DetailView):
         context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_rrt_state(1)
         context['evaluation'].evaluators_delivered = context['evaluation'].get_evaluators_by_rrt_state(2)
         context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_rrt_state(3)
-        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_residuals_by_severity('SE')
+        context['evaluation'].sev_not_established = context['evaluation'].nrisk_test_residuals_by_severity('SE')
         context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_residuals_by_severity('MB')
         context['evaluation'].sev_low = context['evaluation'].nrisk_test_residuals_by_severity('B')
         context['evaluation'].sev_medium = context['evaluation'].nrisk_test_residuals_by_severity('M')

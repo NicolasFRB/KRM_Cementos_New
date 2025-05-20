@@ -87,10 +87,11 @@ function clean_specialchars(s) {
   }
 
 function color_severity_dynamic(val, id){
+  console.log(val, id);
 
   var arrow_dot = $("#"+id);
 
-  if (val == 'Sin establecer' || val == 'Not stablished') {
+  if (val == 'Sin establecer' || val == 'Not established') {
     arrow_dot.css('color',"#d4d0c7");
     arrow_dot.attr('class','bi-x-circle-fill');
   } else if (val == 'Muy baja' || val == 'Very low') {
@@ -124,22 +125,22 @@ function color_severity(val, id){
     'bi-arrow-up-circle-fill'
   );
 
-  if (val == 'Sin establecer' || val =='Not stablished') {
+  if (val == 'SE') {
   arrow_dot.style.color = "#d4d0c7";
   arrow_dot.classList.add('bi-x-circle-fill');
-  } else if (val == 'Muy baja' || val == 'Very low') {
+  } else if (val == 'MB') {
   arrow_dot.style.color = "#77bd6b";
   arrow_dot.classList.add('bi-arrow-down-circle-fill');
-  } else if (val == 'Baja' || val == 'Low') {
+  } else if (val == 'B') {
   arrow_dot.style.color = "#a6ed9d";
   arrow_dot.classList.add('bi-arrow-down-right-circle-fill');
-  } else if (val == 'Media' || val == 'Medium') {
+  } else if (val == 'M') {
   arrow_dot.style.color = "#e6d68e";
   arrow_dot.classList.add('bi-arrow-right-circle-fill');
-  } else if (val == 'Alta' || val == 'High') {
+  } else if (val == 'A') {
   arrow_dot.style.color = "#ed9f7b";
   arrow_dot.classList.add('bi-arrow-up-right-circle-fill');
-  } else if (val == 'Muy alta' || val == 'Very high') {
+  } else if (val == 'MA') {
   arrow_dot.style.color = "#ea7d7e";
   arrow_dot.classList.add('bi-arrow-up-circle-fill');
   }
@@ -289,7 +290,6 @@ function load_bar(id, rit, grouped, translations) {
 function load_chart(id, translations, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined", arg6 = "undefined") {
   let data;
   let title;
-  console.log(translations)
 
   if (id== 'pie-main') {
     title= translations["riskdetail"]["test-status"],
@@ -404,7 +404,6 @@ function swap_columns(id, datatable_id) {
       speed_exp_qual[i].style.display = "inline-block";
       speed_adm_qual[i].style.display = "none";
 
-      $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
       color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
     }
 
@@ -434,7 +433,6 @@ function swap_columns(id, datatable_id) {
       speed_exp_qual[i].style.display = "none";
       speed_adm_qual[i].style.display = "none";
 
-      $("#sev-row-" + i).attr( "data-order", s_exp_num[i].innerHTML );
       color_severity_dynamic(s_exp_qual[i].innerHTML, "sev-dot-" + i);
     }
 
@@ -464,7 +462,6 @@ function swap_columns(id, datatable_id) {
       speed_exp_qual[i].style.display = "none";
       speed_adm_qual[i].style.display = "inline-block";
 
-      $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
       color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
     }
 
@@ -494,7 +491,6 @@ function swap_columns(id, datatable_id) {
       speed_exp_qual[i].style.display = "none";
       speed_adm_qual[i].style.display = "none";
 
-      $("#sev-row-" + i).attr( "data-order", s_adm_num[i].innerHTML );
       color_severity_dynamic(s_adm_qual[i].innerHTML, "sev-dot-" + i);
     }
   }
@@ -730,8 +726,7 @@ function swap_columns(id, datatable_id) {
           </div>
         </div>
         <script>
-          console.log(translations)
-          load_chart('pie-main-evaluators', translations, '{{evaluation.sev_not_stablished}}', '{{evaluation.sev_very_low}}', '{{evaluation.sev_low}}', '{{evaluation.sev_medium}}', '{{evaluation.sev_high}}', '{{evaluation.sev_very_high}}');
+          load_chart('pie-main-evaluators', translations, '{{evaluation.sev_not_established}}', '{{evaluation.sev_very_low}}', '{{evaluation.sev_low}}', '{{evaluation.sev_medium}}', '{{evaluation.sev_high}}', '{{evaluation.sev_very_high}}');
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
@@ -921,7 +916,7 @@ function swap_columns(id, datatable_id) {
               </div>
             </td>
           </tr>
-          <script>color_severity("{{ rt.get_severity_expert_qualitative_display }}", "sev-dot-{{ forloop.counter0 }}");</script>
+          <script>color_severity("{{ rt.severity_expert_qualitative }}", "sev-dot-{{ forloop.counter0 }}");</script>
           {% endfor %}
         </tbody>
       </table>

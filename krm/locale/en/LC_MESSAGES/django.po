@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-13 19:08+0200\n"
-"PO-Revision-Date: 2025-05-13 19:10+0200\n"
+"POT-Creation-Date: 2025-05-16 09:21+0200\n"
+"PO-Revision-Date: 2025-05-16 09:28+0200\n"
 "Last-Translator: Natalia Monsalve Baeza <nataliamonsalve@kpmg.es>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -66,7 +66,7 @@ msgstr "Risk Domain"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:518
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:653
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:178
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:519
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:521
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:208
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:650
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:179
@@ -193,7 +193,7 @@ msgstr "Name"
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:204
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:443
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:469
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:985
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:990
 #: krm/_templates/evaluations_krm/CaEvaluationResidualList.html:108
 #: krm/_templates/evaluations_krm/CaEvaluationResidualList.html:204
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:401
@@ -213,7 +213,7 @@ msgstr "Name"
 #: krm/_templates/evaluations_krm/RuEvaluationRiskInherentComplete.html:357
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:400
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:426
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:667
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:672
 #: krm/_templates/process/GaProcessDetail.html:57
 #: krm/_templates/process/GaProcessDetail.html:101
 #: krm/_templates/process/GaProcessList.html:30
@@ -267,9 +267,9 @@ msgstr "Description"
 #: krm/configuration/views/repo.py:87 krm/controls/views/control_views.py:253
 #: krm/controls/views/control_views.py:381
 #: krm/evaluations/views/ca_evaluation_views.py:195
-#: krm/evaluations/views/ca_evaluation_views.py:1014
+#: krm/evaluations/views/ca_evaluation_views.py:1018
 #: krm/evaluations/views/ga_evaluation_views.py:170
-#: krm/evaluations/views/ga_evaluation_views.py:961
+#: krm/evaluations/views/ga_evaluation_views.py:965
 #: krm/process/views/process_views.py:85
 #: krm/process/views/process_views.py:143
 #: krm/process/views/sub_process_views.py:84
@@ -313,8 +313,8 @@ msgstr "Edit"
 #: krm/_templates/users/GaUserDetail.html:164
 #: krm/companies/views/company_views.py:203
 #: krm/controls/views/control_views.py:414
-#: krm/evaluations/views/ca_evaluation_views.py:1047
-#: krm/evaluations/views/ga_evaluation_views.py:994
+#: krm/evaluations/views/ca_evaluation_views.py:1051
+#: krm/evaluations/views/ga_evaluation_views.py:998
 #: krm/process/views/process_views.py:175
 #: krm/process/views/sub_process_views.py:185
 #: krm/questionnaires/views/ga_question_views.py:191
@@ -348,7 +348,7 @@ msgstr "Delete"
 #: krm/_templates/evaluations/GaEvaluationImportAssign.html:65
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:766
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:900
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:765
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:767
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:900
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:772
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1080
@@ -484,7 +484,7 @@ msgstr "Action"
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:107
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:203
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:468
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:984
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:989
 #: krm/_templates/evaluations_krm/CaEvaluationResidualList.html:107
 #: krm/_templates/evaluations_krm/CaEvaluationResidualList.html:203
 #: krm/_templates/evaluations_krm/GaEvaluationInherentList.html:107
@@ -499,7 +499,7 @@ msgstr "Action"
 #: krm/_templates/evaluations_krm/RuEvaluationKrmResidualList.html:112
 #: krm/_templates/evaluations_krm/RuEvaluationKrmResidualList.html:182
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:425
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:666
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:671
 #: krm/_templates/process/GaProcessDetail.html:27
 #: krm/_templates/process/GaProcessDetail.html:99
 #: krm/_templates/process/GaProcessList.html:28
@@ -743,7 +743,7 @@ msgstr "Evaluation details"
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:111
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:198
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:192
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:533
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:535
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:111
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:207
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:222
@@ -792,7 +792,7 @@ msgstr "Company"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:558
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:693
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:218
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:559
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:561
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:248
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:690
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:219
@@ -820,7 +820,7 @@ msgstr "Type"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:572
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:707
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:232
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:573
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:575
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:262
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:704
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:233
@@ -872,8 +872,8 @@ msgstr "Companies in scope"
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:114
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:201
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:248
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:589
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:838
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:591
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:840
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:114
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:210
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:278
@@ -931,7 +931,7 @@ msgstr "Status"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:645
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:780
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:270
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:646
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:648
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:318
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:777
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:271
@@ -962,7 +962,7 @@ msgstr "Certification year"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:659
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:794
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:284
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:660
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:662
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:332
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:791
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:285
@@ -997,7 +997,7 @@ msgstr "Certification period"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:673
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:808
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:298
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:674
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:676
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:346
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:805
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:299
@@ -1028,7 +1028,7 @@ msgstr "Deadline for Control Owners"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:687
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:822
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:312
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:688
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:690
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:360
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:819
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:313
@@ -1095,7 +1095,7 @@ msgstr "Risks associated with control"
 #: krm/_templates/dashboards/ga/GaDashboard.html:266
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:813
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:948
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:839
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:841
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:979
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:837
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1145
@@ -1212,10 +1212,10 @@ msgstr "Control type"
 #: krm/_templates/controls/GaControlDetail.html:58
 #: krm/_templates/controls/GaControlList.html:45
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:471
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:987
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:992
 #: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:478
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:428
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:669
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:674
 #: krm/_templates/risks/GaRiskDetail.html:167
 #: krm/_templates/subprocess/GaSubProcessDetail.html:117
 msgid "Frecuencia"
@@ -1236,8 +1236,8 @@ msgstr "Yes, No"
 #: krm/_templates/_includes/control_test/_control_test_info_head.html:449
 #: krm/_templates/controls/GaControlDetail.html:86
 #: krm/_templates/controls/GaControlList.html:48
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:988
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:670
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:993
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:675
 msgid "ELC"
 msgstr "ELC"
 
@@ -1271,10 +1271,10 @@ msgstr "Testing plan"
 #: krm/_templates/evaluations/CaEvaluationDetail.html:624
 #: krm/_templates/evaluations/GaEvaluationDetail.html:640
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:470
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:986
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:991
 #: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:477
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:427
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:668
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:673
 #: krm/_templates/risks/GaRiskDetail.html:166
 #: krm/_templates/subprocess/GaSubProcessDetail.html:116
 #: krm/controls/models/control_model.py:161
@@ -1571,12 +1571,12 @@ msgstr "Company"
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:743
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:112
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:199
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:609
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:611
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:112
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:208
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:298
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:472
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:989
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:994
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:740
 #: krm/_templates/evaluations_krm/CaEvaluationResidualList.html:112
 #: krm/_templates/evaluations_krm/CaEvaluationResidualList.html:208
@@ -1591,7 +1591,7 @@ msgstr "Company"
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:607
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:252
 #: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:429
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:671
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:676
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:75
 #: krm/_templates/subprocess/GaSubProcessDetail.html:120
 #: krm/evaluations/forms/evaluation_forms.py:271
@@ -1725,7 +1725,7 @@ msgstr "Category"
 #: krm/_templates/dashboards/ga/GaDashboard.html:268
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:819
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:954
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:845
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:847
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:985
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:843
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1151
@@ -1740,12 +1740,12 @@ msgstr "Impact"
 #: krm/_templates/dashboards/ga/GaDashboard.html:267
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:820
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:955
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:846
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:687
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:848
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:692
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:986
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:439
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:844
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:694
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:699
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1152
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:814
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:777
@@ -1814,7 +1814,9 @@ msgstr "Risk (N2)"
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:518
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:124
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:782
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:808
+#: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:916
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:810
+#: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:934
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:806
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1114
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:776
@@ -1827,13 +1829,15 @@ msgstr "Evaluator"
 #: krm/_templates/_includes/risk_test/risk_inherent_test_list.html:11
 #: krm/_templates/_includes/risk_test/risk_residual_test_list.html:11
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:786
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:812
+#: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:920
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:814
+#: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:938
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:810
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1118
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:780
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:743
 msgid "Administrador"
-msgstr "Awaiting Administrator"
+msgstr "Administrator"
 
 #: krm/_templates/_includes/risk_test/risk_inherent_test_list.html:13
 #: krm/_templates/_includes/risk_test/risk_residual_test_list.html:13
@@ -1874,7 +1878,7 @@ msgstr "Supervisors"
 #: krm/_templates/evaluations/GaEvaluationDetail.html:745
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:916
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:1049
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:945
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:947
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:1084
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:943
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1250
@@ -2719,7 +2723,7 @@ msgstr "Ref"
 #: krm/_templates/dashboards/ga/GaDashboard.html:269
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:821
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:956
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:847
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:849
 #: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:538
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:987
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:845
@@ -2731,60 +2735,60 @@ msgstr "Ref"
 msgid "Severidad"
 msgstr "Severity"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:499
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:535
 #: krm/_templates/dashboards/ga/GaDashboard_copy.html:587
 msgid "Seleccione el Dashboard que desea visualizar"
 msgstr "Select the Dashboard to view"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:506
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:542
 #: krm/_templates/dashboards/ga/GaDashboard_copy.html:594
 msgid "Dashboard de Controles"
 msgstr "Controls Dashboard"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:509
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:545
 #: krm/_templates/dashboards/ga/GaDashboard_copy.html:597
 msgid "Dashboard de Riesgos"
 msgstr "Risks Dashboard"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:524
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:560
 #: krm/_templates/dashboards/ga/GaDashboard_copy.html:612
 msgid "Aplicar filtros"
 msgstr "Apply filters"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:556
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:592
 #: krm/_templates/dashboards/ga/GaDashboard_copy.html:642
 msgid "Fecha de Evaluación"
 msgstr "Evaluation dates"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:568
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:604
 #: krm/_templates/dashboards/ga/GaDashboard_copy.html:654
 msgid "Buscar"
 msgstr "Search"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:578
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:614
 #: krm/_templates/dashboards/ga/GaDashboard_copy.html:664
 msgid "Gráficos"
 msgstr "Charts"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:824
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:860
 msgid "Resultados obtenidos para Evaluaciones de Riesgo Inherente"
 msgstr "Inherent Risk Evaluation's obtained results"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:832
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:868
 msgid "No hay tests de riesgo inherente disponibles"
 msgstr "No Inherent Risk tests available"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:839
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:866
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:875
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:902
 #: krm/_templates/dashboards/ga/GaDashboard_copy.html:915
 msgid "Descargar resultados"
 msgstr "Download results"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:851
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:887
 msgid "Resultados obtenidos para Evaluaciones de Riesgo Residual"
 msgstr "Residual Risk Evaluations obtained results"
 
-#: krm/_templates/dashboards/ga/GaDashboardKrm.html:859
+#: krm/_templates/dashboards/ga/GaDashboardKrm.html:895
 msgid "No hay tests de riesgo residual disponibles"
 msgstr "No residual risk tests available"
 
@@ -3330,7 +3334,7 @@ msgstr "Pending"
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:854
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:166
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:253
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:720
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:722
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:168
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:264
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:851
@@ -3350,7 +3354,7 @@ msgstr "Completed"
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:440
 #: krm/_templates/evaluations/CaEvaluationDetail.html:582
 #: krm/_templates/evaluations/GaEvaluationDetail.html:598
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:767
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:769
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:902
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:774
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1082
@@ -3363,17 +3367,17 @@ msgstr "Notifications"
 #: krm/_templates/evaluations/GaEvaluationDetail.html:591
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:724
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:755
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:789
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1039
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1071
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:791
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1044
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1076
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:725
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:756
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:981
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1013
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:986
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1018
 #: krm/_templates/evaluations_krm/RuEvaluationRiskInherentComplete.html:408
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:721
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:726
 msgid "Finalizar evaluación"
-msgstr "End evaluation"
+msgstr "Finish assessment"
 
 #: krm/_templates/evaluation_questionnaires/GaEvaluationQuestionnaireDetail.html:457
 #: krm/_templates/evaluations/AuEvaluationDetail.html:524
@@ -3385,7 +3389,7 @@ msgstr "End evaluation"
 #: krm/_templates/evaluations/GaEvaluationDetail.html:563
 #: krm/_templates/evaluations/GaEvaluationDetail.html:601
 #: krm/_templates/evaluations/GaEvaluationDetail.html:612
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:781
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:783
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:916
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:788
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1096
@@ -3726,8 +3730,10 @@ msgstr "There are no inherent risk tests pending for this assessment."
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:317
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:329
+#: krm/_templates/evaluations_krm/RuEvaluationRiskInherentComplete.html:418
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:736
 msgid "Finalizar y enviar evaluación para su validación"
-msgstr "Finalize and submit evaluation for validation"
+msgstr "Finish and submit the assessment for validation"
 
 #: krm/_templates/evaluation_questionnaires/RuEvaluationQuestionnaireComplete.html:324
 msgid "Una vez enviado no será posible modificar las respuestas"
@@ -3828,7 +3834,7 @@ msgstr "Awaiting Control Supervisor"
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:853
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:165
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:252
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:719
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:721
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:167
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:263
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:850
@@ -4060,7 +4066,7 @@ msgstr "Import Controls Assignment Template for Process Test"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:624
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:759
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:625
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:627
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:756
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:629
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:936
@@ -4070,7 +4076,7 @@ msgstr "Supervisión administrador"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:634
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:769
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:635
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:637
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:766
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:639
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:946
@@ -4084,7 +4090,7 @@ msgstr "Not completed"
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:852
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:164
 #: krm/_templates/evaluations_krm/AuEvaluationResidualList.html:251
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:718
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:720
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:166
 #: krm/_templates/evaluations_krm/CaEvaluationInherentList.html:262
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:849
@@ -4105,7 +4111,7 @@ msgstr "Awaiting Evaluator"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:732
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:867
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:733
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:735
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:864
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:738
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1044
@@ -4130,13 +4136,12 @@ msgstr "Not established"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:733
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:868
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:551
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:734
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:800
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:736
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:805
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:865
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:552
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:739
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:643
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:807
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:812
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1045
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:734
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:696
@@ -4151,13 +4156,12 @@ msgstr "Very low"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:734
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:869
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:557
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:735
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:806
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:737
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:811
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:866
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:558
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:740
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:649
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:813
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:818
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1046
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:735
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:697
@@ -4172,13 +4176,12 @@ msgstr "Low"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:735
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:870
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:563
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:736
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:812
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:738
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:817
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:867
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:564
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:741
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:655
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:819
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:824
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1047
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:736
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:698
@@ -4193,13 +4196,12 @@ msgstr "Medium"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:736
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:871
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:569
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:737
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:818
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:739
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:823
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:868
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:570
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:742
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:661
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:825
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:830
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1048
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:737
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:699
@@ -4214,13 +4216,12 @@ msgstr "High"
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:737
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:872
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:575
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:738
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:824
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:740
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:829
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:869
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:576
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:743
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:667
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:831
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:836
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1049
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:738
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:700
@@ -4234,7 +4235,7 @@ msgstr "Very high"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:755
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:890
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:756
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:758
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:888
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:762
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1067
@@ -4250,7 +4251,9 @@ msgid "Tests de Riesgo Inherente de la Evaluación"
 msgstr "Evaluation's Inherent Risk tests"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:794
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:820
+#: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:928
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:822
+#: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:946
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:818
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1126
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:788
@@ -4259,7 +4262,9 @@ msgid "Cualitativo"
 msgstr "Qualitative"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:798
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:824
+#: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:932
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:826
+#: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:950
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:822
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1130
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:792
@@ -4269,7 +4274,7 @@ msgstr "Quantitative"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:814
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:949
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:840
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:842
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:980
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:838
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1146
@@ -4280,7 +4285,7 @@ msgstr "Risk Description"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:815
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:950
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:841
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:843
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:981
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:839
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1147
@@ -4290,7 +4295,7 @@ msgid "Dominio del Riesgo N2"
 msgstr "Risk Domain"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:816
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:842
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:844
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:840
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:810
 msgid "Evaluador de R.Inherente"
@@ -4298,7 +4303,7 @@ msgstr "Inherent Risk Evaluator"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:817
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:952
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:843
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:845
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:983
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:841
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1149
@@ -4309,12 +4314,12 @@ msgstr "Justification"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:818
 #: krm/_templates/evaluations_krm/AuEvaluationResidualDetail.html:953
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:844
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:795
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:846
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:800
 #: krm/_templates/evaluations_krm/CaEvaluationResidualDetail.html:984
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:547
 #: krm/_templates/evaluations_krm/GaEvaluationInherentDetail.html:842
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:802
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:807
 #: krm/_templates/evaluations_krm/GaEvaluationResidualDetail.html:1150
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:812
 #: krm/_templates/evaluations_krm/RuEvaluationResidualDetail.html:775
@@ -4323,7 +4328,7 @@ msgid "Velocidad de ocurrencia"
 msgstr "Speed of occurrence"
 
 #: krm/_templates/evaluations_krm/AuEvaluationInherentDetail.html:903
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:933
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:935
 #: krm/_templates/evaluations_krm/RuEvaluationInherentDetail.html:897
 msgid "No existen tests de riesgo inherente para esta Evaluación"
 msgstr "No existen tests de riesgo inherente para esta Evaluación"
@@ -4418,11 +4423,12 @@ msgid "Riesgo Maestro"
 msgstr "Master Risk"
 
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:443
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:598
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:692
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:602
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:697
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:444
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:605
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:699
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:609
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:704
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:559
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:53
 #: krm/evaluations_krm/models/risk_test_residual_model.py:54
 #: krm/risks/models/risk_model.py:51
@@ -4430,11 +4436,12 @@ msgid "Remoto"
 msgstr "Remote"
 
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:449
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:604
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:698
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:608
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:703
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:450
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:611
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:705
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:615
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:710
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:565
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:54
 #: krm/evaluations_krm/models/risk_test_residual_model.py:55
 #: krm/risks/models/risk_model.py:52
@@ -4442,11 +4449,12 @@ msgid "Posible"
 msgstr "Possible"
 
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:455
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:610
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:704
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:614
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:709
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:456
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:617
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:711
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:621
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:716
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:571
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:55
 #: krm/evaluations_krm/models/risk_test_residual_model.py:56
 #: krm/risks/models/risk_model.py:53
@@ -4454,11 +4462,12 @@ msgid "Probable"
 msgstr "Probable"
 
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:461
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:616
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:710
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:620
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:715
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:462
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:623
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:717
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:627
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:722
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:577
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:56
 #: krm/evaluations_krm/models/risk_test_residual_model.py:57
 #: krm/risks/models/risk_model.py:54
@@ -4466,11 +4475,12 @@ msgid "Muy probable"
 msgstr "Very probable"
 
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:467
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:622
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:716
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:626
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:721
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:468
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:629
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:723
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:633
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:728
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:583
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:57
 #: krm/evaluations_krm/models/risk_test_residual_model.py:58
 #: krm/risks/models/risk_model.py:55
@@ -4482,23 +4492,24 @@ msgstr "Almost certain"
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:590
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:626
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:662
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:559
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:728
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:764
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:839
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:875
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:911
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:563
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:733
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:769
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:844
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:880
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:916
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:480
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:516
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:591
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:627
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:663
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:566
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:735
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:771
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:846
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:882
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:918
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:570
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:740
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:776
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:851
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:887
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:923
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:520
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:44
 #: krm/evaluations_krm/models/risk_test_residual_model.py:45
 #: krm/risks/models/risk_model.py:43
@@ -4510,23 +4521,24 @@ msgstr "Very low"
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:596
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:632
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:668
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:565
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:734
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:770
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:845
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:881
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:917
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:569
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:739
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:775
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:850
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:886
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:922
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:486
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:522
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:597
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:633
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:669
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:572
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:741
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:777
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:852
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:888
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:924
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:576
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:746
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:782
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:857
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:893
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:929
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:526
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:45
 #: krm/evaluations_krm/models/risk_test_residual_model.py:46
 #: krm/risks/models/risk_model.py:44
@@ -4538,23 +4550,24 @@ msgstr "Low"
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:602
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:638
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:674
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:571
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:740
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:776
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:851
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:887
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:923
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:575
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:745
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:781
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:856
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:892
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:928
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:492
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:528
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:603
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:639
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:675
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:578
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:747
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:783
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:858
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:894
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:930
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:582
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:752
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:788
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:863
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:899
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:935
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:532
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:46
 #: krm/evaluations_krm/models/risk_test_residual_model.py:47
 #: krm/risks/models/risk_model.py:45
@@ -4566,23 +4579,24 @@ msgstr "Medium"
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:608
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:644
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:680
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:577
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:746
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:782
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:857
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:893
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:929
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:581
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:751
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:787
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:862
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:898
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:934
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:498
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:534
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:609
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:645
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:681
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:584
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:753
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:789
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:864
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:900
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:936
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:588
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:758
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:794
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:869
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:905
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:941
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:538
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:47
 #: krm/evaluations_krm/models/risk_test_residual_model.py:48
 #: krm/risks/models/risk_model.py:46
@@ -4594,23 +4608,24 @@ msgstr "High"
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:614
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:650
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:686
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:583
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:752
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:788
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:863
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:899
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:935
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:587
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:757
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:793
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:868
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:904
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:940
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:504
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:540
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:615
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:651
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:687
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:590
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:759
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:795
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:870
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:906
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:942
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:594
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:764
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:800
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:875
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:911
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:947
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:544
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:48
 #: krm/evaluations_krm/models/risk_test_residual_model.py:49
 #: krm/risks/models/risk_model.py:47
@@ -4624,9 +4639,9 @@ msgid ""
 msgstr "Evaluator's description of the Inherent Risk assessment"
 
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:739
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1054
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1059
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:740
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:996
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1001
 msgid ""
 "Si, como administrador de compañía, deja algún campo de algún riesgo sin "
 "valorar, se tomarán en cuenta los valores dados por los usuarios "
@@ -4636,16 +4651,16 @@ msgstr ""
 "unfilled, the values provided by the evaluators will be used instead."
 
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:750
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1065
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1070
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:751
 msgid ""
 "Usar la valoración dada por los evaluadores para los campos no completados"
 msgstr "Use the evaluator's ratings for the unfilled risk assessment fields"
 
 #: krm/_templates/evaluations_krm/CaEvaluationInherentAdminComplete.html:757
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1073
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1078
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:758
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1015
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1020
 msgid "Actualizando..."
 msgstr "Updating..."
 
@@ -4654,11 +4669,11 @@ msgstr "Updating..."
 msgid "Lanzamiento de Evaluaciones de Riesgo Inherente"
 msgstr "Inherent Risk Evaluation launch"
 
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:772
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:774
 msgid "Completar evaluación como administrador"
 msgstr "Complete evaluation as Company Administrator"
 
-#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:801
+#: krm/_templates/evaluations_krm/CaEvaluationInherentDetail.html:803
 msgid "Test de Riesgo Inherente de la Evaluación"
 msgstr "Inherent Risk Test of the Evaluation"
 
@@ -4700,85 +4715,85 @@ msgstr "No active company controls mitigate this risk"
 msgid "Última valoración de Riesgo Inherente"
 msgstr "Latest Inherent Risk assessment"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:553
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:560
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:510
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:557
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:564
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:514
 msgid "Impacto Inherente"
 msgstr "Inherent Impact"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:591
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:598
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:548
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:595
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:602
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:552
 msgid "Probabilidad Inherente"
 msgstr "Inherent Probability"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:630
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:637
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:587
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:634
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:641
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:591
 msgid "Velocidad de ocurrencia Inherente"
 msgstr "Inherent speed of occurrence"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:668
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:675
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:625
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:673
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:680
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:630
 msgid "No existen tests de Riesgo Inherente asociados a este Riesgo N2"
 msgstr "This N2 Risk has no associated Inherent Risk Tests"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:682
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:689
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:687
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:694
 msgid "Valoración aportada por el Evaluador de Riesgo Residual del Riesgo N2"
 msgstr "Assessment provided by the residual risk evaluator"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:723
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:728
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:475
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:730
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:735
 msgid "Impacto económico"
 msgstr "Economic impact"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:759
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:764
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:511
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:766
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:771
 msgid "Impacto en los Objetivos Estratégicos"
 msgstr "Impact on strategic goals"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:834
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:839
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:586
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:841
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:846
 msgid "Impacto Reputacional"
 msgstr "Reputational impact"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:870
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:875
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:622
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:877
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:882
 msgid "Impacto Regulatorio"
 msgstr "Regulatory impact"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:906
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:911
 #: krm/_templates/evaluations_krm/GaEvaluationInherentAdminComplete.html:658
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:913
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:918
 msgid "Impacto en el Tiempo de dedicación"
 msgstr "Impact on the management committee's time commitment"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:942
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:949
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:947
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:954
 msgid ""
 "Descripción de la valoración del Evaluador de Riesgo Residual del Riesgo N2"
 msgstr "Evaluator's description of the Residual Risk assessment"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:944
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:951
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:949
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:956
 msgid "No se ha aportado todavía valoración por parte del Evaluador"
 msgstr "There's no evaluation assessment yet"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1010
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:692
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1015
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:697
 msgid "Yes, No"
 msgstr "Yes, No"
 
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1028
-#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1093
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1035
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:753
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1033
+#: krm/_templates/evaluations_krm/CaEvaluationResidualAdminComplete.html:1098
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1040
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:758
 msgid "No existen tests de riesgo residual pendientes para esta Evaluación"
 msgstr "There are no residual risk tests pending for this assessment"
 
@@ -4801,7 +4816,7 @@ msgstr "Assessment provided by the inherent risk evaluator"
 msgid "No existen tests de riesgo inherente en esta Evaluación"
 msgstr "No Inherent Risk tests available"
 
-#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1007
+#: krm/_templates/evaluations_krm/GaEvaluationResidualAdminComplete.html:1012
 msgid ""
 "Usar la valoración dada por los evaluadores para los riesgos no completados"
 msgstr "Use the valuation given by the evaluators for uncompleted risks."
@@ -4856,7 +4871,7 @@ msgstr "There are no pending Residual Risk Evaluations"
 msgid "No existen evaluaciones de riesgo residual entregadas"
 msgstr "There are no Residual Risk Evaluations submitted"
 
-#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:710
+#: krm/_templates/evaluations_krm/RuEvaluationRiskResidualComplete.html:715
 msgid ""
 "No existen Entity Level Controls (ELC) para mitigar los riesgos mostrados en"
 " esta evaluación"
@@ -4938,18 +4953,18 @@ msgstr "GLOBAL ADMIN"
 #: krm/evaluations/views/ca_evaluation_views.py:74
 #: krm/evaluations/views/ca_evaluation_views.py:186
 #: krm/evaluations/views/ca_evaluation_views.py:808
-#: krm/evaluations/views/ca_evaluation_views.py:1011
-#: krm/evaluations/views/ca_evaluation_views.py:1044
-#: krm/evaluations/views/ca_evaluation_views.py:1241
+#: krm/evaluations/views/ca_evaluation_views.py:1015
+#: krm/evaluations/views/ca_evaluation_views.py:1048
+#: krm/evaluations/views/ca_evaluation_views.py:1245
 #: krm/evaluations/views/ga_control_test_views.py:64
 #: krm/evaluations/views/ga_control_test_views.py:111
 #: krm/evaluations/views/ga_control_test_views.py:210
 #: krm/evaluations/views/ga_evaluation_views.py:70
 #: krm/evaluations/views/ga_evaluation_views.py:161
 #: krm/evaluations/views/ga_evaluation_views.py:756
-#: krm/evaluations/views/ga_evaluation_views.py:958
-#: krm/evaluations/views/ga_evaluation_views.py:991
-#: krm/evaluations/views/ga_evaluation_views.py:1189
+#: krm/evaluations/views/ga_evaluation_views.py:962
+#: krm/evaluations/views/ga_evaluation_views.py:995
+#: krm/evaluations/views/ga_evaluation_views.py:1193
 #: krm/evaluations/views/ru_control_test_views.py:96
 #: krm/evaluations/views/ru_control_test_views.py:255
 #: krm/evaluations/views/ru_control_test_views.py:307
@@ -4962,24 +4977,24 @@ msgstr "GLOBAL ADMIN"
 #: krm/evaluations_krm/views/au_evaluation_residual_views.py:178
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:75
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:173
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:277
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:538
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:599
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:281
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:542
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:603
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:84
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:181
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:285
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:554
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:622
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:290
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:560
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:628
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:74
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:164
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:279
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:540
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:602
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:282
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:543
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:605
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:73
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:165
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:278
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:577
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:648
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:283
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:583
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:654
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:57
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:114
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:167
@@ -5162,8 +5177,8 @@ msgstr "ev. risk Importer"
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:509
 #: krm/_templates/layout/partials/sidebar-layout/sidebar/menu/_menu_ga.html:673
 #: krm/evaluations/models/evaluation_model.py:115
-#: krm/evaluations/views/ca_evaluation_views.py:1242
-#: krm/evaluations/views/ga_evaluation_views.py:1190
+#: krm/evaluations/views/ca_evaluation_views.py:1246
+#: krm/evaluations/views/ga_evaluation_views.py:1194
 msgid "Evaluaciones KRC"
 msgstr "KRC Evaluations"
 
@@ -5212,14 +5227,14 @@ msgstr "Create RR evaluation"
 #: krm/evaluations/views/ca_evaluation_views.py:78
 #: krm/evaluations/views/ca_evaluation_views.py:187
 #: krm/evaluations/views/ca_evaluation_views.py:809
-#: krm/evaluations/views/ca_evaluation_views.py:1012
-#: krm/evaluations/views/ca_evaluation_views.py:1045
+#: krm/evaluations/views/ca_evaluation_views.py:1016
+#: krm/evaluations/views/ca_evaluation_views.py:1049
 #: krm/evaluations/views/ga_evaluation_views.py:71
 #: krm/evaluations/views/ga_evaluation_views.py:74
 #: krm/evaluations/views/ga_evaluation_views.py:162
 #: krm/evaluations/views/ga_evaluation_views.py:757
-#: krm/evaluations/views/ga_evaluation_views.py:959
-#: krm/evaluations/views/ga_evaluation_views.py:992
+#: krm/evaluations/views/ga_evaluation_views.py:963
+#: krm/evaluations/views/ga_evaluation_views.py:996
 msgid "Evaluaciones"
 msgstr "Evaluations"
 
@@ -5930,7 +5945,6 @@ msgstr "The %s field is repeated in the import template: %s in row %d"
 
 #: krm/companies/views/company_views.py:458
 #: krm/companies/views/company_views.py:460
-#| msgid "Referencia"
 msgid "referencia"
 msgstr "reference"
 
@@ -6130,18 +6144,18 @@ msgstr ""
 
 #: krm/configuration/views/configuration_views.py:202
 #, python-format
-msgid "En la hoja de %s hay una Referencia repetida: %s en la fila %d"
-msgstr "In the %s tab there is a repeated Reference: %s in row %d"
+msgid "En la hoja de %s hay una referencia repetida: %s en la fila %d"
+msgstr "In the %s tab there is a repeated reference: %s in row %d"
 
 #: krm/configuration/views/configuration_views.py:236
 #, python-format
-msgid "En la hoja de %s hay una Referencia que ya existe: %s"
-msgstr "In the %s tab there is a Reference that already exists: %s"
+msgid "En la hoja de %s hay una referencia que ya existe: %s"
+msgstr "In the %s tab there is a reference that already exists: %s"
 
 #: krm/configuration/views/configuration_views.py:253
 #, python-format
-msgid "En la hoja de %s la Referencia %s de %s no existe"
-msgstr "In the %s tab the Reference %s related to a %s does not exist"
+msgid "En la hoja de %s la referencia %s de %s no existe"
+msgstr "In the %s tab the reference %s related to a %s does not exist"
 
 #: krm/configuration/views/configuration_views.py:271
 #, python-format
@@ -6373,17 +6387,17 @@ msgstr ""
 #: krm/configuration/views/configuration_views.py:892
 #, python-format
 msgid ""
-"En la hoja de %(name)s hay una Referencia repetida: %(value)s en la fila "
+"En la hoja de %(name)s hay una referencia repetida: %(value)s en la fila "
 "%(index)d"
 msgstr ""
-"In the %(name)s tab there is a repeated Reference: %(value)s in row "
+"In the %(name)s tab there is a repeated reference: %(value)s in row "
 "%(index)d"
 
 #: krm/configuration/views/configuration_views.py:929
 #, python-format
-msgid "En la hoja de %(name)s hay una Referencia que ya existe: %(value)s"
+msgid "En la hoja de %(name)s hay una referencia que ya existe: %(value)s"
 msgstr ""
-"In the %(name)s tab there is a Reference that already exists: %(value)s"
+"In the %(name)s tab there is a reference that already exists: %(value)s"
 
 #: krm/configuration/views/configuration_views.py:971
 #, python-format
@@ -6405,8 +6419,8 @@ msgstr ""
 
 #: krm/configuration/views/configuration_views.py:1035
 #, python-format
-msgid "En la hoja de %(name)s la Referencia %(value)s de %(master)s no existe"
-msgstr "In %(name)s tab the %(master)s Reference %(value)s doesn't exist "
+msgid "En la hoja de %(name)s la referencia %(value)s de %(master)s no existe"
+msgstr "In %(name)s tab the %(master)s reference %(value)s doesn't exist "
 
 #: krm/configuration/views/configuration_views.py:1071
 #, python-format
@@ -6430,7 +6444,6 @@ msgstr "{0} %s imported"
 #: krm/configuration/views/configuration_views.py:1130
 #: krm/configuration/views/configuration_views.py:1133
 #: krm/configuration/views/configuration_views.py:1156
-#| msgid "Dominios de riesgo"
 msgid "dominios de riesgo"
 msgstr "risk domains"
 
@@ -6441,7 +6454,6 @@ msgstr "risk domains"
 #: krm/configuration/views/configuration_views.py:1164
 #: krm/configuration/views/configuration_views.py:1168
 #: krm/configuration/views/configuration_views.py:1172
-#| msgid "Riesgos Maestros"
 msgid "riesgos maestros"
 msgstr "master risks"
 
@@ -6451,12 +6463,10 @@ msgstr "master risks"
 #: krm/configuration/views/configuration_views.py:1210
 #: krm/configuration/views/configuration_views.py:1212
 #: krm/configuration/views/configuration_views.py:1216
-#| msgid "Riesgos"
 msgid "riesgos"
 msgstr "risks"
 
 #: krm/configuration/views/configuration_views.py:1204
-#| msgid "Riesgo Maestro"
 msgid "riesgo maestro"
 msgstr "master risk"
 
@@ -6473,7 +6483,6 @@ msgstr ""
 #: krm/configuration/views/configuration_views.py:1248
 #: krm/configuration/views/configuration_views.py:1250
 #: krm/configuration/views/configuration_views.py:1254
-#| msgid "Procesos"
 msgid "procesos"
 msgstr "processes"
 
@@ -6483,7 +6492,6 @@ msgstr "processes"
 #: krm/configuration/views/configuration_views.py:1283
 #: krm/configuration/views/configuration_views.py:1285
 #: krm/configuration/views/configuration_views.py:1289
-#| msgid "Subprocesos"
 msgid "subprocesos"
 msgstr "subprocesses"
 
@@ -6505,7 +6513,6 @@ msgstr ""
 #: krm/configuration/views/configuration_views.py:1376
 #: krm/configuration/views/configuration_views.py:1378
 #: krm/configuration/views/configuration_views.py:1380
-#| msgid "Controles"
 msgid "controles"
 msgstr "controls"
 
@@ -6568,14 +6575,12 @@ msgstr ""
 #: krm/configuration/views/configuration_views.py:1470
 #: krm/configuration/views/configuration_views.py:1472
 #: krm/configuration/views/configuration_views.py:1474
-#| msgid "Riesgos Compañía"
 msgid "riesgos de compañía"
 msgstr "company risks"
 
 #: krm/configuration/views/configuration_views.py:1511
 #: krm/configuration/views/configuration_views.py:1513
 #: krm/configuration/views/configuration_views.py:1515
-#| msgid "Controles para compañías"
 msgid "controles de compañía"
 msgstr "company controls"
 
@@ -7497,36 +7502,56 @@ msgstr "Control Tests to administer"
 msgid "Nueva Evaluación"
 msgstr "New Evaluation"
 
-#: krm/evaluations/views/ca_evaluation_views.py:994
-#: krm/evaluations/views/ga_evaluation_views.py:941
-msgid ""
-"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')}"
-" y {pluralize(controls_created, 'test')} de control correctamente"
-msgstr ""
+#: krm/evaluations/views/ca_evaluation_views.py:995
+#: krm/evaluations/views/ga_evaluation_views.py:942
+#, python-format
+#| msgid "%s Test de Control creados correctamente"
+msgid "Se han creado %s y %s de control correctamente"
+msgstr "%s and %s have been successfully created"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1016
-#: krm/evaluations/views/ga_evaluation_views.py:963
+#: krm/evaluations/views/ca_evaluation_views.py:997
+#: krm/evaluations/views/ga_evaluation_views.py:944
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:258
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:267
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:251
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:252
+#| msgid "Evaluación"
+msgid "evaluación"
+msgstr "evaluation"
+
+#: krm/evaluations/views/ca_evaluation_views.py:997
+#: krm/evaluations/views/ga_evaluation_views.py:944
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:258
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:267
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:251
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:252
+#| msgid "Evaluaciones"
+msgid "evaluaciones"
+msgstr "evaluations"
+
+#: krm/evaluations/views/ca_evaluation_views.py:1020
+#: krm/evaluations/views/ga_evaluation_views.py:967
 msgid "Editar Evaluación"
 msgstr "Edit Evaluation"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1026
-#: krm/evaluations/views/ga_evaluation_views.py:973
+#: krm/evaluations/views/ca_evaluation_views.py:1030
+#: krm/evaluations/views/ga_evaluation_views.py:977
 msgid "Evaluación actualizada correctamente"
 msgstr "Evaluation successfully updated"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1050
-#: krm/evaluations/views/ga_evaluation_views.py:997
+#: krm/evaluations/views/ca_evaluation_views.py:1054
+#: krm/evaluations/views/ga_evaluation_views.py:1001
 #, python-format
 msgid "Eliminar Evaluación: #%s"
 msgstr "Delete Evaluation: #%s"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1058
-#: krm/evaluations/views/ga_evaluation_views.py:1005
+#: krm/evaluations/views/ca_evaluation_views.py:1062
+#: krm/evaluations/views/ga_evaluation_views.py:1009
 msgid "Evaluación eliminada correctamente"
 msgstr "Evaluation successfully deleted"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1064
-#: krm/evaluations/views/ga_evaluation_views.py:1011
+#: krm/evaluations/views/ca_evaluation_views.py:1068
+#: krm/evaluations/views/ga_evaluation_views.py:1015
 #, python-brace-format
 msgid ""
 "<span class=\"kt-font-bold\">¿Seguro que desea eliminar la Evaluación y los "
@@ -7537,8 +7562,8 @@ msgstr ""
 "and associated data?: </span> {0}? <span class=\"kt-font-bold\">All "
 "associated risks and controls will be deleted.</span>"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1111
-#: krm/evaluations/views/ga_evaluation_views.py:1058
+#: krm/evaluations/views/ca_evaluation_views.py:1115
+#: krm/evaluations/views/ga_evaluation_views.py:1062
 #, python-format
 msgid ""
 "En la fila %s hay un control que no pertenece a dicho Test de Control. Se ha"
@@ -7547,18 +7572,18 @@ msgstr ""
 "In the row %s there is a control that does not belong to that Control Test. "
 "The import has been aborted"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1129
-#: krm/evaluations/views/ca_evaluation_views.py:1164
-#: krm/evaluations/views/ga_evaluation_views.py:1076
-#: krm/evaluations/views/ga_evaluation_views.py:1111
+#: krm/evaluations/views/ca_evaluation_views.py:1133
+#: krm/evaluations/views/ca_evaluation_views.py:1168
+#: krm/evaluations/views/ga_evaluation_views.py:1080
+#: krm/evaluations/views/ga_evaluation_views.py:1115
 #, python-format
 msgid "En la fila %s el control owner no existe"
 msgstr "In the row %s the control owner does not exist"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1143
-#: krm/evaluations/views/ca_evaluation_views.py:1178
-#: krm/evaluations/views/ga_evaluation_views.py:1090
-#: krm/evaluations/views/ga_evaluation_views.py:1125
+#: krm/evaluations/views/ca_evaluation_views.py:1147
+#: krm/evaluations/views/ca_evaluation_views.py:1182
+#: krm/evaluations/views/ga_evaluation_views.py:1094
+#: krm/evaluations/views/ga_evaluation_views.py:1129
 #, python-format
 msgid ""
 "En la fila %s el control owner no pertenece a la compañía sobre la que está "
@@ -7567,8 +7592,8 @@ msgstr ""
 "In the %s row the control owner does not belong to the company on which the "
 "evaluation is performed."
 
-#: krm/evaluations/views/ca_evaluation_views.py:1199
-#: krm/evaluations/views/ga_evaluation_views.py:1146
+#: krm/evaluations/views/ca_evaluation_views.py:1203
+#: krm/evaluations/views/ga_evaluation_views.py:1150
 #, python-format
 msgid ""
 "En la fila %s el control owner y el control supervisor son el mismo usuario."
@@ -7577,19 +7602,19 @@ msgstr ""
 "In the %s row the control owner and the control supervisor are the same "
 "user. The evaluation does not allow self-supervision"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1213
-#: krm/evaluations/views/ga_evaluation_views.py:1160
+#: krm/evaluations/views/ca_evaluation_views.py:1217
+#: krm/evaluations/views/ga_evaluation_views.py:1164
 msgid "Controles asignados correctamente"
 msgstr "Controls successfully assigned"
 
-#: krm/evaluations/views/ca_evaluation_views.py:1276
-#: krm/evaluations/views/ca_evaluation_views.py:1286
-#: krm/evaluations/views/ga_evaluation_views.py:1224
-#: krm/evaluations/views/ga_evaluation_views.py:1234
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:627
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:650
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:630
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:676
+#: krm/evaluations/views/ca_evaluation_views.py:1280
+#: krm/evaluations/views/ca_evaluation_views.py:1290
+#: krm/evaluations/views/ga_evaluation_views.py:1228
+#: krm/evaluations/views/ga_evaluation_views.py:1238
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:631
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:656
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:633
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:682
 #: krm/questionnaires/views/ga_evaluation_questionnaire_views.py:453
 #, python-format
 msgid "Enviadas notificaciones a %d usuarios!"
@@ -7800,7 +7825,7 @@ msgid "Tests de Riesgo Inherente"
 msgstr "Inherent Risk Tests"
 
 #: krm/evaluations_krm/models/risk_test_inherent_model.py:325
-#: krm/evaluations_krm/models/risk_test_residual_model.py:449
+#: krm/evaluations_krm/models/risk_test_residual_model.py:384
 msgid "Test de Riesgos pendientes de valorar"
 msgstr "Risk test to be assessed"
 
@@ -7818,19 +7843,19 @@ msgstr "[%s] Email of Inherent Risk tests pending assessment sent (%s)"
 msgid "Nivel de Probabilidad residual indicado por el Evaluador"
 msgstr "Evaluator's Residual assessment"
 
-#: krm/evaluations_krm/models/risk_test_residual_model.py:386
+#: krm/evaluations_krm/models/risk_test_residual_model.py:321
 msgid "Test de Riesgo Residual"
 msgstr "Residual Risk Test"
 
-#: krm/evaluations_krm/models/risk_test_residual_model.py:387
+#: krm/evaluations_krm/models/risk_test_residual_model.py:322
 msgid "Tests de Riesgo Residual"
 msgstr "Residual Risk Tests"
 
-#: krm/evaluations_krm/models/risk_test_residual_model.py:461
+#: krm/evaluations_krm/models/risk_test_residual_model.py:396
 msgid "{} - Test de Riesgos pendientes de valorar"
 msgstr "{} - Risk test pending evaluation"
 
-#: krm/evaluations_krm/models/risk_test_residual_model.py:470
+#: krm/evaluations_krm/models/risk_test_residual_model.py:405
 #, python-format
 msgid ""
 "[%s] Email de Tests de Riesgo Residual pendientes de valorar enviado (%s)"
@@ -7851,17 +7876,17 @@ msgstr "Residual Risk Evaluations"
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:76
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:79
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:174
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:278
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:539
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:600
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:282
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:543
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:604
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:182
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:623
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:629
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:75
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:78
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:165
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:280
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:541
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:603
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:283
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:544
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:606
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:58
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:60
 #: krm/evaluations_krm/views/ru_risk_test_inherent_views.py:115
@@ -7870,36 +7895,35 @@ msgstr "Inherent Risk Evaluations"
 
 #: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:256
 #: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:249
-msgid ""
-"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')}"
-" y {pluralize(risk_tests__created, 'test')} de riesgo inherente "
-"correctamente"
-msgstr ""
+#, python-format
+#| msgid "Valoración de tests de Riesgo Inherente enviada correctamente"
+msgid "Se han creado %s y %s de riesgo inherente correctamente"
+msgstr "%s (RI) and %s have been successfully created"
 
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:282
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:541
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:284
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:543
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:286
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:545
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:287
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:546
 msgid "Evaluación de Riesgo Inherente"
 msgstr "Inherent Risk Evaluation"
 
-#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:574
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:597
-#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:577
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:623
+#: krm/evaluations_krm/views/ca_evaluation_inherent_views.py:578
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:603
+#: krm/evaluations_krm/views/ga_evaluation_inherent_views.py:580
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:629
 msgid "Evaluación supervisada correctamente como administrador de compañía"
 msgstr "Evaluation successfully supervised as company Administrator"
 
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:85
 #: krm/evaluations_krm/views/ca_evaluation_residual_views.py:88
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:286
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:555
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:291
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:561
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:74
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:77
 #: krm/evaluations_krm/views/ga_evaluation_residual_views.py:166
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:279
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:578
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:649
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:284
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:584
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:655
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:57
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:59
 #: krm/evaluations_krm/views/ru_risk_test_residual_views.py:117
@@ -7911,16 +7935,16 @@ msgstr "Residual Risk Evaluations"
 msgid "Nueva Evaluación de Riesgo Residual"
 msgstr "New Residual Risk Evaluation"
 
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:264
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:249
-msgid ""
-"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')}"
-" y {pluralize(risk_tests__created, 'test')} de riesgo residual correctamente"
-msgstr ""
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:265
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:250
+#, python-format
+#| msgid "Valoración de tests de Riesgo Residual enviada correctamente"
+msgid "Se han creado %s y %s de riesgo residual correctamente"
+msgstr "%s (RR) and %s have been successfully created"
 
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:290
-#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:557
-#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:283
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:295
+#: krm/evaluations_krm/views/ca_evaluation_residual_views.py:563
+#: krm/evaluations_krm/views/ga_evaluation_residual_views.py:288
 msgid "Evaluación de Riesgo Residual"
 msgstr "Residual Risk Evaluation"
 
@@ -8769,12 +8793,10 @@ msgid ""
 msgstr "The email address entered in row %s does not fit the valid format"
 
 #: krm/users/views/user_views.py:566 krm/users/views/user_views.py:568
-#| msgid "Administración del Control"
 msgid "dirección de correo"
 msgstr "email address"
 
 #: krm/users/views/user_views.py:572 krm/users/views/user_views.py:574
-#| msgid "El nombre de usuario ya existe"
 msgid "nombre de usuario"
 msgstr "username"
 

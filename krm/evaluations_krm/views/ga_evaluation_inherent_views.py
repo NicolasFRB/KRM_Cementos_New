@@ -23,6 +23,7 @@ from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
+from django.utils import timezone
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
@@ -186,7 +187,6 @@ class GaEvaluationInherentCreateView(FormView):
         evaluations = []
 
         risk_companies = json.loads(form.cleaned_data["risk_companies"])
-        print("Voy a imprimir lo que nos viene en risk_companies para cada riesgo seleccionado:")
         for rc in risk_companies:
             print(rc)
             company = Company.objects.get(pk=rc['company_pk'])
@@ -246,7 +246,11 @@ class GaEvaluationInherentCreateView(FormView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _(f"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')} y {pluralize(risk_tests__created, 'test')} de riesgo inherente correctamente"),
+            _(
+                'Se han creado %s y %s de riesgo inherente correctamente'
+                ) % (
+                    pluralize(evaluations_created, _('evaluación'), _('evaluaciones')), pluralize(risk_tests__created, 'test')
+                )
         )
 
         return super().form_valid(form)
@@ -320,7 +324,7 @@ class GaEvaluationInherentDetailView(FormView):
         context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(1)
         context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(2)
         context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(3)
-        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_inherents_by_severity('SE')
+        context['evaluation'].sev_not_established = context['evaluation'].nrisk_test_inherents_by_severity('SE')
         context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_inherents_by_severity('MB')
         context['evaluation'].sev_low = context['evaluation'].nrisk_test_inherents_by_severity('B')
         context['evaluation'].sev_medium = context['evaluation'].nrisk_test_inherents_by_severity('M')
@@ -555,6 +559,8 @@ class GaEvaluationInherentAdminComplete(DetailView, FormView):
         )
         for ri in risk_tests:
             ri.status = 3
+            ri.finalized_at= timezone.now()
+
             if ri.probability_level_administrator == 0:
                 ri.probability_level_administrator = ri.probability_level_expert
             if ri.impact_level_administrator == 0:

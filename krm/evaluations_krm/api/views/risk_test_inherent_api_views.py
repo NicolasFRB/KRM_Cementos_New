@@ -13,11 +13,6 @@ from krm.evaluations_krm.models import RiskTestInherent
 class RiskTestInherentExpertApiView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    """ Función que recibe un trío:
-    - pk risk_test_inherent
-    - valor de probabilidad
-    - valor de impacto
-    """
 
     def get(self, request):
         risk_test_pk = int(request.GET['pk'])
@@ -66,26 +61,27 @@ class RiskTestInherentExpertApiView(APIView):
                 description = request.GET['description']
                 risk_test.description_expert = description
 
-        # if risk_test.status == 2:
+        if risk_test.status == 2:
 
-        if 'adminProbability' in request.GET:
-            probability = int(request.GET['adminProbability'])
-            if probability != 0:
-                risk_test.probability_level_administrator = probability
+            if 'adminProbability' in request.GET:
+                probability = int(request.GET['adminProbability'])
+                if probability != 0:
+                    risk_test.probability_level_administrator = probability
 
-        if 'adminImpact' in request.GET:
-            impact = int(request.GET['adminImpact'])
-            if impact != 0:
-                risk_test.impact_level_administrator = impact
+            if 'adminImpact' in request.GET:
+                impact = int(request.GET['adminImpact'])
+                if impact != 0:
+                    risk_test.impact_level_administrator = impact
 
-        if 'adminEventSpeed' in request.GET:
-            speed= int(request.GET['adminEventSpeed'])
-            if speed!=0:
-                risk_test.event_speed_level_administrator= speed
+            if 'adminEventSpeed' in request.GET:
+                speed= int(request.GET['adminEventSpeed'])
+                if speed!=0:
+                    risk_test.event_speed_level_administrator= speed
 
-        if 'descriptionAdmin' in request.GET:
-            description_admin = request.GET['descriptionAdmin']
-            risk_test.description_administrator = description_admin
+            if 'descriptionAdmin' in request.GET:
+                description_admin = request.GET['descriptionAdmin']
+                risk_test.description_administrator = description_admin
+
 
         risk_test.save()
 

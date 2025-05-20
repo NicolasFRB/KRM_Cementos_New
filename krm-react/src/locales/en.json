@@ -17,7 +17,10 @@
     "form-incomplete": "Some essential information is missing from the form.",
     "no-company": "No company has been selected",
     "no-controls": "No control has been selected for evaluation",
-    "periodicity" : "Periodicity"
+    "periodicity" : "Periodicity",
+    "error-start-date": "The start date cannot be before today",
+    "error-end-date": "The deadline cannot be after the end date",
+    "error-intermediate-date": "The deadline cannot be before the start date"
   },
   "krmInherent": {
     "data-required": "Some essential information is missing from the form",
@@ -63,7 +66,9 @@
     "high": "High",
     "very-high": "Very high",
     "description-value-expert": "Description of the assessment by the Inherent Risk Evaluator of the N2 Risk",
-    "description-value-admin": "Description of the assesment by the Company Administrator of the Evaluation"
+    "description-value-admin": "Description of the assesment by the Company Administrator of the Evaluation",
+    "error-start-date": "The start date cannot be before today",
+    "error-end-date": "The start date cannot be after the end date"
   },
   "krmResidual": {
     "form-incomplete": "Some essential information is missing from the form.",
@@ -90,7 +95,9 @@
     "select-risk": "Select at least one risk to launch the assessment",
     "launch-evaluation": "Launch evaluations",
     "launching": "Launching",
-    "description-value-evaluator": "Description of the assessment by the Residual Risk Evaluator of the N2 Risk"
+    "description-value-evaluator": "Description of the assessment by the Residual Risk Evaluator of the N2 Risk",
+    "error-start-date": "The start date cannot be before today",
+    "error-end-date": "The start date cannot be after the end date"
   },
   "q": {
     "step-2": "Step 2: Select the questionnaire to be evaluated",

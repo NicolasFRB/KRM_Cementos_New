@@ -991,7 +991,11 @@ class CaEvaluationCreateView(FormView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _(f"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')} y {pluralize(controls_created, 'test')} de control correctamente"),
+            _(
+                'Se han creado %s y %s de control correctamente'
+                ) % (
+                    pluralize(evaluations_created, _('evaluación'), _('evaluaciones')), pluralize(controls_created, 'test')
+                )
         )
 
         return super().form_valid(form)

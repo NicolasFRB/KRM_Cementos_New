@@ -246,8 +246,13 @@ class GaEvaluationResidualCreateView(FormView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _(f"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')} y {pluralize(risk_tests__created, 'test')} de riesgo residual correctamente"),
+            _(
+                'Se han creado %s y %s de riesgo residual correctamente'
+                ) % (
+                    pluralize(evaluations_created, _('evaluación'), _('evaluaciones')), pluralize(risk_tests__created, 'test')
+                )
         )
+
         return super().form_valid(form)
 
 
@@ -311,7 +316,7 @@ class GaEvaluationResidualDetailView(FormView):
         context['evaluation'].evaluators_pending = context['evaluation'].get_evaluators_by_rrt_state(1)
         context['evaluation'].evaluators_delivered = context['evaluation'].get_evaluators_by_rrt_state(2)
         context['evaluation'].evaluators_finished = context['evaluation'].get_evaluators_by_rrt_state(3)
-        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_residuals_by_severity('SE')
+        context['evaluation'].sev_not_established = context['evaluation'].nrisk_test_residuals_by_severity('SE')
         context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_residuals_by_severity('MB')
         context['evaluation'].sev_low = context['evaluation'].nrisk_test_residuals_by_severity('B')
         context['evaluation'].sev_medium = context['evaluation'].nrisk_test_residuals_by_severity('M')
@@ -504,6 +509,7 @@ class GaEvaluationResidualDetailView(FormView):
             row = 1
 
             for rr in evaluation.risk_test_residuals.all():
+                ri= rr.get_latest_inherent_test
                 worksheet_2.write(row, 0, rr.risk.risk.name + ' ('+ rr.risk.risk.ref + ')', text_wrap)
                 worksheet_2.write(row, 1, rr.risk.risk.risk_master.name + ' ('+ rr.risk.risk.risk_master.ref + ')', text_wrap)
                 worksheet_2.write(row, 2, rr.risk.risk.risk_master.domain_risk.name + ' ('+ rr.risk.risk.risk_master.domain_risk.ref + ')', text_wrap)
@@ -512,11 +518,11 @@ class GaEvaluationResidualDetailView(FormView):
                 worksheet_2.write(row, 5, strip_tags(rr.risk.risk.krm_main_events) if  rr.risk.risk.krm_main_events!='' else "N/A", text_wrap)
                 worksheet_2.write(row, 6, strip_tags(rr.risk.risk.krm_activity_affected) if rr.risk.risk.krm_activity_affected!='' else "N/A", text_wrap)
                 worksheet_2.write(row, 7, strip_tags(rr.risk.risk.krm_exposed_staff) if rr.risk.risk.krm_exposed_staff!='' else "N/A", text_wrap)
-                worksheet_2.write(row, 8, rr.get_latest_impact_inherent if rr.get_latest_impact_inherent else "No prior inherent risk assessment available", text_wrap)
-                worksheet_2.write(row, 9, rr.get_latest_probability_inherent if rr.get_latest_probability_inherent else "No prior inherent risk assessment available", text_wrap)
-                worksheet_2.write(row, 10, rr.get_latest_severity_inherent if rr.get_latest_severity_inherent else "No prior inherent risk assessment available", text_wrap)
-                worksheet_2.write(row, 11, rr.get_latest_event_speed_inherent if rr.get_latest_event_speed_inherent else "No prior inherent risk assessment available", text_wrap)
-                worksheet_2.write(row, 12, rr.get_latest_justification_inherent if rr.get_latest_justification_inherent else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 8, ri.impact_level_administrator if ri else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 9, ri.probability_level_administrator if ri else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 10, ri.severity_level_administrator if ri else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 11, ri.event_speed_level_administrator if ri else "No prior inherent risk assessment available", text_wrap)
+                worksheet_2.write(row, 12, ri.description_administrator if ri else "No prior inherent risk assessment available", text_wrap)
                 worksheet_2.write(row, 13, rr.risk.evaluator.full_name if rr.risk.evaluator else "Evaluator not assigned ", text_wrap)
                 worksheet_2.write(row, 14, rr.impact_level_evaluator if rr.impact_level_evaluator!=0 else "Awaiting evaluation", text_wrap)
                 worksheet_2.write(row, 15, rr.translation_values(rr.impact_level_evaluator), text_wrap)

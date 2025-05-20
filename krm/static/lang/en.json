@@ -15,9 +15,10 @@
     "non-key": "Non key",
     "effective": "Effective",
     "not-effective": "Not effective",
-    "not-stablished": "Not stablished",
+    "not-established": "Not established",
     "effective-recommendations": "Effective with recommendations",
-    "not-applicable": "N/A"
+    "not-applicable": "N/A",
+    "no-data": "No data available"
   },
   "riskdashboard": {
     "inherent-status": "Risk Test Inherent Status per Evaluation",
@@ -31,7 +32,7 @@
     "test-fi": "Finished",
     "im-assessment": "Impact assessment",
     "pr-assessment": "Probability assessment",
-    "sev-ns": "Not stablished",
+    "sev-ns": "Not established",
     "sev-vl": "Very low",
     "sev-l": "Low",
     "sev-m": "Medium",
@@ -43,7 +44,8 @@
     "severity": "Severity",
     "speed": "Speed of occurrence",
     "ass-evaluator": "Evaluator",
-    "ass-administrator": "Administrator"
+    "ass-administrator": "Administrator",
+    "no-data": "No data available"
   },
   "controldetail": {
     "control-status": "Controls by status",
@@ -55,7 +57,7 @@
     "status-fi": "Finished",
     "effective": "Effective",
     "not-effective": "Not effective",
-    "not-stablished": "Not stablished",
+    "not-established": "Not established",
     "effective-recommendations": "Effective with recommendations",
     "not-applicable": "N/A"
   },
@@ -65,7 +67,7 @@
     "test-awev": "Awaiting Evaluator",
     "test-awca": "Awaiting Administrator",
     "test-fi": "Finished",
-    "sev-ns": "Not stablished",
+    "sev-ns": "Not established",
     "sev-vl": "Very low",
     "sev-l": "Low",
     "sev-m": "Medium",

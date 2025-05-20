@@ -82,7 +82,7 @@
     var pending = [];
     var evaluated = [];
     var finished = [];
-    var stablished_width= 0;
+    var established_width= 0;
     var barHeight= 50;
     let chartHeight= 0;
 
@@ -134,6 +134,18 @@
           },
           zoom: {
             enabled: true
+          }
+        },
+        noData: {
+          text: translations["riskdashboard"]["no-data"],
+          align: 'center',
+          verticalAlign: 'middle',
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+            color: undefined,
+            fontSize: '14px',
+            fontFamily: undefined
           }
         },
         title: {
@@ -193,7 +205,7 @@
   }
 
   function test_severity(id, dict, names, translations){
-    var not_stablished = [];
+    var not_established = [];
     var very_low = [];
     var low = [];
     var medium = [];
@@ -204,8 +216,8 @@
 
     Object.entries(dict).forEach(([key, value]) => {
       Object.entries(value).forEach(([key2, value2]) => {
-        if ( key2 == "Not stablished"){
-          not_stablished.push(value2);
+        if ( key2 == "Not established"){
+          not_established.push(value2);
         } else if(key2 === "Very low"){
           very_low.push(value2);
         } else if ( key2 === "Low"){
@@ -236,7 +248,7 @@
       series: [{
         name: translations["riskdashboard"]["sev-ns"],
         color: '#d4d0c7',
-        data: not_stablished
+        data: not_established
       }, {
         name: translations["riskdashboard"]["sev-vl"],
         color: '#77bd6b',
@@ -269,6 +281,18 @@
         },
         zoom: {
           enabled: true
+        }
+      },
+      noData: {
+        text: translations["riskdashboard"]["no-data"],
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          color: undefined,
+          fontSize: '14px',
+          fontFamily: undefined
         }
       },
       title: {
@@ -402,6 +426,18 @@
       series: series,
       fill: {
         opacity: 0.6
+      },
+      noData: {
+        text: translations["riskdashboard"]["no-data"],
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+          color: undefined,
+          fontSize: '14px',
+          fontFamily: undefined
+        }
       },
       xaxis: {
         min: 0,
@@ -622,7 +658,7 @@
     {% for e in evaluations_inherent %}
       <script>
         var ri_status = {"Awaiting Evaluator": 0, "Awaiting Administrator": 0, "Finished": 0};
-        var ri_severity = {"Not stablished": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
+        var ri_severity = {"Not established": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
         var ri_values = {evaluation_name: "{{e}}", risk_tests: [], test_name: [], test_severity: [], assessment: []};
       </script>
       {% for ri in e.get_all_risk_tests %}
@@ -643,7 +679,7 @@
             if ("{{e.status}}" == 'FI') {
               switch("{{ri.severity_administrator_qualitative}}"){
               case "SE":
-                ri_severity["Not stablished"]+=1;
+                ri_severity["Not established"]+=1;
                 break;
               case "MB":
                 ri_severity["Very low"]+=1;
@@ -668,7 +704,7 @@
             } else {
               switch("{{ri.severity_expert_qualitative}}"){
               case "SE":
-                ri_severity["Not stablished"]+=1;
+                ri_severity["Not established"]+=1;
                 break;
               case "MB":
                 ri_severity["Very low"]+=1;
@@ -710,7 +746,7 @@
     {% for e in evaluations_residual %}
       <script>
         var rr_status = {"Awaiting Evaluator": 0, "Awaiting Administrator": 0, "Finished": 0};
-        var rr_severity = {"Not stablished": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
+        var rr_severity = {"Not established": 0, "Very low": 0, "Low": 0, "Medium": 0, "High": 0, "Very high": 0};
         var rr_values = {evaluation_name : "{{e}}", risk_tests: [], test_name : [], test_severity: [], assessment: []};
       </script>
       {% for rr in e.get_all_risk_tests %}
@@ -731,7 +767,7 @@
             if ("{{e.status}}" == 'FI') {
               switch("{{rr.severity_administrator_qualitative}}"){
               case "SE":
-                rr_severity["Not stablished"]+=1;
+                rr_severity["Not established"]+=1;
                 break;
               case "MB":
                 rr_severity["Very low"]+=1;
@@ -756,7 +792,7 @@
             } else {
               switch("{{rr.severity_evaluator_qualitative}}"){
               case "SE":
-                rr_severity["Not stablished"]+=1;
+                rr_severity["Not established"]+=1;
                 break;
               case "MB":
                 rr_severity["Very low"]+=1;

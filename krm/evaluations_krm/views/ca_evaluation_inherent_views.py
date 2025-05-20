@@ -23,6 +23,7 @@ from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
+from django.utils import timezone
 from django.forms.models import model_to_dict
 
 from django.shortcuts import get_object_or_404
@@ -193,7 +194,6 @@ class CaEvaluationInherentCreateView(FormView):
         evaluations_created = 0
         evaluations = []
 
-        print("POST data:", self.request.POST)
         risk_companies = json.loads(form.cleaned_data["risk_companies"])
         for rc in risk_companies:
             company = Company.objects.get(pk=rc['company_pk'])
@@ -253,8 +253,13 @@ class CaEvaluationInherentCreateView(FormView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _(f"Se han creado {pluralize(evaluations_created, 'evaluación', 'evaluaciones')} y {pluralize(risk_tests__created, 'test')} de riesgo inherente correctamente"),
+            _(
+                'Se han creado %s y %s de riesgo inherente correctamente'
+                ) % (
+                    pluralize(evaluations_created, _('evaluación'), _('evaluaciones')), pluralize(risk_tests__created, 'test')
+                )
         )
+
         return super().form_valid(form)
 
 
@@ -318,7 +323,7 @@ class CaEvaluationInherentDetailView(FormView):
         context['evaluation'].experts_pending = context['evaluation'].get_experts_by_rit_state(1)
         context['evaluation'].experts_delivered = context['evaluation'].get_experts_by_rit_state(2)
         context['evaluation'].experts_finished = context['evaluation'].get_experts_by_rit_state(3)
-        context['evaluation'].sev_not_stablished = context['evaluation'].nrisk_test_inherents_by_severity('SE')
+        context['evaluation'].sev_not_established = context['evaluation'].nrisk_test_inherents_by_severity('SE')
         context['evaluation'].sev_very_low = context['evaluation'].nrisk_test_inherents_by_severity('MB')
         context['evaluation'].sev_low = context['evaluation'].nrisk_test_inherents_by_severity('B')
         context['evaluation'].sev_medium = context['evaluation'].nrisk_test_inherents_by_severity('M')
@@ -553,6 +558,8 @@ class CaEvaluationInherentAdminComplete(DetailView, FormView):
         )
         for ri in risk_inherents:
             ri.status = 3
+            ri.finalized_at= timezone.now()
+
             if ri.probability_level_administrator == 0:
                 ri.probability_level_administrator = ri.probability_level_expert
             if ri.impact_level_administrator == 0:

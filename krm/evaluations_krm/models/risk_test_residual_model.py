@@ -219,7 +219,7 @@ class RiskTestResidual(AuditModel):
         else:
             return None
         if severity == 0:
-            value= ["Sin establecer", "Not stablished", "SE"]
+            value= ["Sin establecer", "Not established", "SE"]
         elif 1 <= severity <= 4:
             if self.severity_level_evaluator==4 and (self.impact_level_evaluator==1 or self.probability_level_evaluator==1):
                 value= ["Baja", "Low", "B"]
@@ -288,80 +288,19 @@ class RiskTestResidual(AuditModel):
         return None
 
     @property
-    def get_latest_impact_inherent(self):
+    def get_latest_inherent_test(self):
 
         last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
             risk=self.risk,
             evaluation__status='FI',
+            evaluation__company= self.evaluation.company,
         )
 
         if last_evaluate_risk_inherent.count() > 0:
-            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().impact_level_administrator
-
-        return None
-
-    @property
-    def get_latest_probability_inherent(self):
-
-        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk=self.risk,
-            evaluation__status='FI',
-        )
-
-        if last_evaluate_risk_inherent.count() > 0:
-            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().probability_level_administrator
-
-        return None
-
-    @property
-    def get_latest_event_speed_inherent(self):
-
-        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk=self.risk,
-            evaluation__status='FI',
-        )
-
-        if last_evaluate_risk_inherent.count() > 0:
-            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().event_speed_level_administrator
-
-        return None
-
-    @property
-    def get_latest_justification_inherent(self):
-
-        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk=self.risk,
-            evaluation__status='FI',
-        )
-
-        if last_evaluate_risk_inherent.count() > 0:
-            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().description_administrator
-
-        return None
-
-    @property
-    def get_latest_severity_inherent(self):
-
-        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk=self.risk,
-            evaluation__status='FI',
-        )
-
-        if last_evaluate_risk_inherent.count() > 0:
-            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().severity_level_administrator
-
-        return None
-
-    @property
-    def get_latest_severity_inherent_qualitative(self):
-
-        last_evaluate_risk_inherent = RiskTestInherent.objects.filter(
-            risk=self.risk,
-            evaluation__status='FI',
-        )
-
-        if last_evaluate_risk_inherent.count() > 0:
-            return last_evaluate_risk_inherent.order_by('evaluation__date_begin').first().get_severity_administrator_qualitative_display
+            print("Voy a imprimir las fechas de valoración de riesgo inherente de las que disponemos")
+            for risk_test in last_evaluate_risk_inherent:
+                print(risk_test.finalized_at)
+            return last_evaluate_risk_inherent.order_by('finalized_at').last()
 
         return None
 

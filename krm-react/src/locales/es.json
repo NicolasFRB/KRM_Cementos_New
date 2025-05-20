@@ -17,7 +17,10 @@
     "form-incomplete": "Falta algún dato imprescindible en el formulario",
     "no-company": "No se ha seleccionado ninguna empresa",
     "no-controls": "No se ha seleccionado ningún control a evaluar",
-    "periodicity" : "Periodicidad"
+    "periodicity" : "Periodicidad",
+    "error-start-date": "La fecha de inicio no puede ser previa al día actual",
+    "error-end-date": "La fecha límite no puede ser posterior a la fecha de finalización",
+    "error-intermediate-date": "La fecha límite no puede ser previa a la fecha de inicio"
   },
   "krmInherent": {
     "data-required": "Falta algún dato imprescindible en el formulario",
@@ -78,7 +81,9 @@
     "description-value-expert": "Descripción de la valoración del Evaluador de Riesgo Inherente del Riesgo N2",
     "description-value-admin": "Descripción de la valoración del Administrador de Compañía de la Evaluación",
     "level-control-evaluator-risk": "Indique su valoración como Evaluador de Riesgo Residual",
-    "value-evaluator-domain-ridk": "Descripción de la valoración del evaluador de Dominio de Riesgo"
+    "value-evaluator-domain-ridk": "Descripción de la valoración del evaluador de Dominio de Riesgo",
+    "error-start-date": "La fecha de inicio no puede ser previa al día actual",
+    "error-end-date": "La fecha de inicio no puede ser posterior a la fecha de fin"
   },
   "krmResidual": {
     "form-incomplete": "Falta algún dato imprescindible en el formulario",
@@ -105,7 +110,9 @@
     "select-risk": "Selecciona al menos un riesgo para poder lanzar la evaluación",
     "launch-evaluation": "Lanzar evaluaciones",
     "launching": "Lanzando",
-    "description-value-evaluator": "Descripción de la valoración del Evaluador de Riesgo Residual del Riesgo N2"
+    "description-value-evaluator": "Descripción de la valoración del Evaluador de Riesgo Residual del Riesgo N2",
+    "error-start-date": "La fecha de inicio no puede ser previa al día actual",
+    "error-end-date": "La fecha de inicio no puede ser posterior a la fecha de fin"
   },
   "q": {
     "step-2": "Paso 2: Seleccione el cuestionario a evaluar",

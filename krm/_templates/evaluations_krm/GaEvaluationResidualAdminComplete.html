@@ -544,9 +544,11 @@
 
                         <span class="text-muted" style="font-size: 14px; margin-right: 10px;"><strong>{% trans 'Severidad' %}:</strong></span>
 
-                        <span class="badge text-wrap {% if rt.get_latest_severity_inherent_qualitative == 'Muy baja' %}severidad-muy-baja{% elif rt.get_latest_severity_inherent_qualitative == 'Baja' %}severidad-baja{% elif rt.get_latest_severity_inherent_qualitative == 'Media' %}severidad-media{% elif rt.get_latest_severity_inherent_qualitative == 'Alta' %}severidad-alta{% elif rt.get_latest_severity_inherent_qualitative == 'Muy alta' %}severidad-muy-alta{% else %}severidad-desconocida{% endif %}" style="font-size: 14px;">
-                          {{ rt.get_latest_severity_inherent_qualitative }} ({{ rt.get_latest_severity_inherent }})
+                        {% with severity=rt.get_latest_inherent_test.severity_administrator_qualitative %}
+                          <span class="badge text-wrap {% if severity == 'MB' %}severidad-muy-baja{% elif severity == 'B' %}severidad-baja{% elif severity == 'M' %}severidad-media{% elif severity == 'A' %}severidad-alta{% elif severity == 'MA' %}severidad-muy-alta{% else %}severidad-desconocida{% endif %}" style="font-size: 14px;">
+                          {{ rt.get_latest_inherent_test.get_severity_administrator_qualitative_display }} ({{ rt.get_latest_inherent_test.severity_level_administrator }})
                         </span>
+                        {% endwith %}
                       </div>
                     </div>
 
@@ -555,119 +557,122 @@
                   </div>
 
                   {% if rt.get_inherent_risk_tests %}
-                    <div>
-                      <div class="row">
-                        <span class="badge badge-secondary">{% trans 'Impacto Inherente' %}</span>
-                      </div>
-                      <div class="row" style="font-size:14px;display:flex;">
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-1-5" {% if rt.get_latest_impact_inherent == 1 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 1 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-1-5">1<br>{% trans 'Muy bajo' %}</label>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-2-5" {% if rt.get_latest_impact_inherent == 2 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 2 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-2-5">2<br>{% trans 'Bajo' %}</label>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-3-5" {% if rt.get_latest_impact_inherent == 3 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 3 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-3-5">3<br>{% trans 'Medio' %}</label>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-4-5" {% if rt.get_latest_impact_inherent == 4 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 4 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-4-5">4<br>{% trans 'Alto' %}</label>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-4-5" {% if rt.get_latest_impact_inherent == 5 %} checked {% endif %} {% if not rt.get_latest_impact_inherent == 5 %} disabled {% endif %}>
-                            <label class="form-check-label" for="i-pk-5-5">5<br>{% trans 'Muy alto' %}</label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
-                    <div>
-                      <div class="row">
-                        <span class="badge badge-secondary">{% trans 'Probabilidad Inherente' %}</span>
+                    {% with ri=rt.get_latest_inherent_test %}
+                      <div>
+                        <div class="row">
+                          <span class="badge badge-secondary">{% trans 'Impacto Inherente' %}</span>
+                        </div>
+                        <div class="row" style="font-size:14px;display:flex;">
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-1-5" {% if ri.impact_level_administrator == 1 %} checked {% endif %} {% if not ri.impact_level_administrator == 1 %} disabled {% endif %}>
+                              <label class="form-check-label" for="i-pk-1-5">1<br>{% trans 'Muy bajo' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-2-5" {% if ri.impact_level_administrator == 2 %} checked {% endif %} {% if not ri.impact_level_administrator == 2 %} disabled {% endif %}>
+                              <label class="form-check-label" for="i-pk-2-5">2<br>{% trans 'Bajo' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-3-5" {% if ri.impact_level_administrator == 3 %} checked {% endif %} {% if not ri.impact_level_administrator == 3 %} disabled {% endif %}>
+                              <label class="form-check-label" for="i-pk-3-5">3<br>{% trans 'Medio' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-4-5" {% if ri.impact_level_administrator == 4 %} checked {% endif %} {% if not ri.impact_level_administrator == 4 %} disabled {% endif %}>
+                              <label class="form-check-label" for="i-pk-4-5">4<br>{% trans 'Alto' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="i-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="i-pk-4-5" {% if ri.impact_level_administrator == 5 %} checked {% endif %} {% if not ri.impact_level_administrator == 5 %} disabled {% endif %}>
+                              <label class="form-check-label" for="i-pk-5-5">5<br>{% trans 'Muy alto' %}</label>
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
-                      <div class="row" style="font-size:14px;display:flex;">
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-1-5" {% if rt.get_latest_probability_inherent == 1 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 1 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-1-5">1<br>{% trans 'Remoto' %}</label>
-                          </div>
+                      <div>
+                        <div class="row">
+                          <span class="badge badge-secondary">{% trans 'Probabilidad Inherente' %}</span>
                         </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-2-5" {% if rt.get_latest_probability_inherent == 2 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 2 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-2-5">2<br>{% trans 'Posible' %}</label>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-3-5" {% if rt.get_latest_probability_inherent == 3 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 3 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-3-5">3<br>{% trans 'Probable' %}</label>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-4-5" {% if rt.get_latest_probability_inherent == 4 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 4 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-4-5">4<br>{% trans 'Muy probable' %}</label>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-5-5" {% if rt.get_latest_probability_inherent == 5 %} checked {% endif %} {% if not rt.get_latest_probability_inherent == 5 %} disabled {% endif %}>
-                            <label class="form-check-label" for="p-pk-5-5">5<br>{% trans 'Prácticamente cierto' %}</label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
-                    <div>
-                      <div class="row">
-                        <span class="badge badge-secondary">{% trans 'Velocidad de ocurrencia Inherente' %}</span>
+                        <div class="row" style="font-size:14px;display:flex;">
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-1-5" {% if ri.probability_level_administrator == 1 %} checked {% endif %} {% if not ri.probability_level_administrator == 1 %} disabled {% endif %}>
+                              <label class="form-check-label" for="p-pk-1-5">1<br>{% trans 'Remoto' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-2-5" {% if ri.probability_level_administrator == 2 %} checked {% endif %} {% if not ri.probability_level_administrator == 2 %} disabled {% endif %}>
+                              <label class="form-check-label" for="p-pk-2-5">2<br>{% trans 'Posible' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-3-5" {% if ri.probability_level_administrator == 3 %} checked {% endif %} {% if not ri.probability_level_administrator == 3 %} disabled {% endif %}>
+                              <label class="form-check-label" for="p-pk-3-5">3<br>{% trans 'Probable' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-4-5" {% if ri.probability_level_administrator == 4 %} checked {% endif %} {% if not ri.probability_level_administrator == 4 %} disabled {% endif %}>
+                              <label class="form-check-label" for="p-pk-4-5">4<br>{% trans 'Muy probable' %}</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="p-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="p-pk-5-5" {% if ri.probability_level_administrator == 5 %} checked {% endif %} {% if not ri.probability_level_administrator == 5 %} disabled {% endif %}>
+                              <label class="form-check-label" for="p-pk-5-5">5<br>{% trans 'Prácticamente cierto' %}</label>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div class="row" style="font-size:14px;display:flex;">
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-1-5" {% if rt.get_latest_event_speed_inherent == 1 %} checked {% endif %} {% if not rt.get_latest_event_speed_inherent == 1 %} disabled {% endif %}>
-                            <label class="form-check-label" for="v-pk-1-5">1<br>{% trans 'Muy baja' %}</label>
-                          </div>
+
+                      <div>
+                        <div class="row">
+                          <span class="badge badge-secondary">{% trans 'Velocidad de ocurrencia Inherente' %}</span>
                         </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-2-5" {% if rt.get_latest_event_speed_inherent == 2 %} checked {% endif %} {% if not rt.get_latest_event_speed_inherent == 2 %} disabled {% endif %}>
-                            <label class="form-check-label" for="v-pk-2-5">2<br>{% trans 'Baja' %}</label>
+                        <div class="row" style="font-size:14px;display:flex;">
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-1-5" {% if ri.event_speed_level_administrator == 1 %} checked {% endif %} {% if not ri.event_speed_level_administrator == 1 %} disabled {% endif %}>
+                              <label class="form-check-label" for="v-pk-1-5">1<br>Muy baja</label>
+                            </div>
                           </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-3-5" {% if rt.get_latest_event_speed_inherent == 3 %} checked {% endif %} {% if not rt.get_latest_event_speed_inherent == 3 %} disabled {% endif %}>
-                            <label class="form-check-label" for="v-pk-3-5">3<br>{% trans 'Media' %}</label>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-2-5" {% if ri.event_speed_level_administrator == 2 %} checked {% endif %} {% if not ri.event_speed_level_administrator == 2 %} disabled {% endif %}>
+                              <label class="form-check-label" for="v-pk-2-5">2<br>Baja</label>
+                            </div>
                           </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-4-5" {% if rt.get_latest_event_speed_inherent == 4 %} checked {% endif %} {% if not rt.get_latest_event_speed_inherent == 4 %} disabled {% endif %}>
-                            <label class="form-check-label" for="v-pk-4-5">4<br>{% trans 'Alta' %}</label>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-3-5" {% if ri.event_speed_level_administrator == 3 %} checked {% endif %} {% if not ri.event_speed_level_administrator == 3 %} disabled {% endif %}>
+                              <label class="form-check-label" for="v-pk-3-5">3<br>Media</label>
+                            </div>
                           </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-check form-check-custom form-check-solid mb-4">
-                            <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-4-5" {% if rt.get_latest_event_speed_inherent == 5 %} checked {% endif %} {% if not rt.get_latest_event_speed_inherent == 5 %} disabled {% endif %}>
-                            <label class="form-check-label" for="v-pk-5-5">5<br>{% trans 'Muy alta' %}</label>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-4-5" {% if ri.event_speed_level_administrator == 4 %} checked {% endif %} {% if not ri.event_speed_level_administrator == 4 %} disabled {% endif %}>
+                              <label class="form-check-label" for="v-pk-4-5">4<br>Alta</label>
+                            </div>
                           </div>
-                        </div>
-                    </div>
+                          <div class="col">
+                            <div class="form-check form-check-custom form-check-solid mb-4">
+                              <input name="v-{{ forloop.counter0 }}" class="form-check-input" type="radio" id="v-pk-4-5" {% if ri.event_speed_level_administrator == 5 %} checked {% endif %} {% if not ri.event_speed_level_administrator == 5 %} disabled {% endif %}>
+                              <label class="form-check-label" for="v-pk-5-5">5<br>Muy alta</label>
+                            </div>
+                          </div>
+                      </div>
+                    {% endwith %}
 
                   {% else %}
 

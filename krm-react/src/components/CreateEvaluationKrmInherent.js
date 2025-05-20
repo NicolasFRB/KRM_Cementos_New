@@ -43,12 +43,12 @@ function CreateEvaluationKrmInherent(props) {
     const datesOk = !isNaN(beginDate) && !isNaN(endDate) && beginDate <= endDate && beginDate >= today;
 
     if (beginDate> endDate) {
-      $('#error-e-date-end').text("La fecha de inicio no puede ser posterior a la fecha de fin.").removeClass('d-none');
+      $('#error-e-date-end').text(t("krmInherent.error-end-date")).removeClass('d-none');
       $('html, body').animate({
         scrollTop: $('#e_date_end').offset().top - 100
       }, 1000);
     } else if (beginDate< today) {
-      $('#error-e-date-begin').text("La fecha de inicio no puede ser previa al día actual.").removeClass('d-none');
+      $('#error-e-date-begin').text(t("krmInherent.error-start-date")).removeClass('d-none');
       $('html, body').animate({
         scrollTop: $('#e_date_begin').offset().top - 100
       }, 1000);

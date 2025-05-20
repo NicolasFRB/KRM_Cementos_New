@@ -1,0 +1,845 @@
+BBBB BBBB
+
+BBB BBBBBBBBBBBBBBBBB BB BBBBBBBBBBBB
+
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBB
+BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+XXXXXXXXXXXXXXXXXX XXXXXXX
+XXXX XXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+    XXXXXXXXXXXXXXX XXXXXXXXXX
+    XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXX XXXXX XXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXX
+        XXXX XXXXXXXXXXX XXXXXXXXXXX XXXXXXXXXXXX XXXXXXXXXXXXXXXXXX XXXXX XXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+            XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            BB BBBBBBBBBBBBBBBBBBBBBBBBB
+              XXXX XXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXX XXXXXXXXXX
+                  XXXX XXXXXXXXXXXXXXXXXXXXX
+                      XXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX XXXXXXXXXXX XXXXXXXXXXXXXX XXXXXX gettext(u'GLOBAL ADMIN') XXXXXXX
+                  XXXXXX
+                  XXXXXXXXXXXX XXXXXXXXXX
+              XXXXXX
+
+              XXXX XXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBXXXXXXBBBBBX
+                      XXXXXXBBB BBBBBBBBBBBBBBBBBBBBXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Dashboard') XXXXXXX
+                  XXXX
+                  XXXXXXXXXXXX XXXXXXX
+              XXXXXX
+              XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBBBBBBBBB BB BBBBBBBBBBBB BB BBBBBBXXXXBBBBBXX
+
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XXXXX XXXXXXXXXXXXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Maestros') XXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+                  XXXXXXX
+                  XXXXXXXXXXXX XXXXXXX
+                  XXXXXXXXXXXXXX XXXXXX
+
+                  XXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX
+                      XXXX
+                          XXXX XXXXXXXXXXXXXXXXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                  XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXXX
+                                      XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                  XXXXXXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Dominios de Riesgo') XXXXXXX
+                              XXXX
+                              XXXXXXXXXXXX XXXXXXX
+                          XXXXXX
+                      XXXXX
+                      XXXX
+                          XXXX
+                              XXXX XXXXXXXXXXXXXXXXXX
+                                  XXXXXXXXXXXXXX XXXXXXX
+                                  XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                      XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                      XXXXX XXXXXXXXXXXXXXXXXXXX
+                                          XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                      XXXXXXX
+                                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Riesgos Maestros (N1)') XXXXXXX
+                                  XXXX
+                                  XXXXXXXXXXXX XXXXXXX
+                              XXXXXX
+                          XXXXX
+                          XXXX
+                              XXXX
+                                  XXXX XXXXXXXXXXXXXXXXXX
+                                      XXXXXXXXXXXXXX XXXXXXX
+                                      XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBXXXXXXBBBBBX
+                                          XXXXXXBBB BBBBBBBBBBBBBBBBBBBBXX
+                                          XXXXX XXXXXXXXXXXXXXXXXXXX
+                                              XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                          XXXXXXX
+                                          XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Riesgos (N2)') XXXXXXX
+                                      XXXX
+                                      XXXXXXXXXXXX XXXXXXX
+                                  XXXXXX
+                              XXXXX
+                          XXXXX
+                      XXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Controles') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX
+                          XXXX XXXXXXXXXXXXXXXXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBXXXXXXBBBBBX
+                                  XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXXX
+                                      XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                  XXXXXXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Procesos') XXXXXXX
+                              XXXX
+                              XXXXXXXXXXXX XXXXXXX
+                          XXXXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXX
+                      XXXX
+                          XXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XXXX XXXXXXXXXXXXXXXXXX
+                                  XXXXXXXXXXXXXX XXXXXXX
+                                  XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                      XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                      XXXXX XXXXXXXXXXXXXXXXXXXX
+                                          XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                      XXXXXXX
+                                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Sub Procesos') XXXXXXX
+                                  XXXX
+                                  XXXXXXXXXXXX XXXXXXX
+                              XXXXXX
+                              XXXXXXXXXXXX XXXXXXX
+                          XXXXX
+                      XXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX
+                          XXXX XXXXXXXXXXXXXXXXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBXXXXXXBBBBBX
+                                  XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXXX
+                                      XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                  XXXXXXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Compañías') XXXXXXX
+                              XXXX
+                              XXXXXXXXXXXX XXXXXXX
+                          XXXXXX
+                      XXXXX
+                      XXXX
+                          XXXX
+                              XXXXXXXXXXXX XXXXXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XXXX XXXXXXXXXXXXXXXXXX
+                                  XXXXXXXXXXXXXX XXXXXXX
+                                  XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBXXXXXXBBBBBX
+                                      XXXXXXBBB BBBBBBBBBBBBBBBBBBBBXX
+                                      XXXXX XXXXXXXXXXXXXXXXXXXX
+                                          XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                      XXXXXXX
+                                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Usuarios') XXXXXXX
+                                  XXXX
+                                  XXXXXXXXXXXX XXXXXXX
+                              XXXXXX
+                          XXXXX
+                      XXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                      BB BBBBBBBBBBBB BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Cuestionarios') XXXXXXX
+                          XXXX
+                          XXXX
+                              XXXX
+                                  XXXX XXXXXXXXXXXXXXXXXX
+                                      XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBXXXXXXBBBBBX
+                                          XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                          XXXXX XXXXXXXXXXXXXXXXXXXX
+                                              XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                          XXXXXXX
+                                          XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Preguntas') XXXXXXX
+                                      XXXX
+                                  XXXXXX
+                              XXXXX
+                          XXXXX
+                      XXXXXX
+                      BBBBB
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB  BBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Importador') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB  BBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Importador ev. riesgo') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                  XXXXXX
+                  XXXXXXXXXXXX XXXXXX
+              XXXXXX
+
+              XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBXXXXBBBBBXX
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XXXXX XXXXXXXXXXXXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones KRC') XXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+                  XXXXXXX
+                  XXXXXXXXXXXX XXXXXXX
+                  XXXXXXXXXXXXXX XXXXXX
+                  XXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones KRC') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear evaluación KRC') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                  XXXXXX
+                  XXXXXXXXXXXX XXXXXX
+              XXXXXX
+
+              BB  BBBBBBBBBBBB
+                XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBXXXXBBBBBXX
+                    XXXXXXXXXXXXXX XXXXXXX
+                    XXXXX XXXXXXXXXXXXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones KRM') XXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+                    XXXXXXX
+                    XXXXXXXXXXXX XXXXXXX
+                    XXXXXXXXXXXXXX XXXXXX
+                    XXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX
+                        XXXXXXXXXXXXXX XXXXXXX
+                        XXXX XXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXX XXXXXXX
+                            XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                XXXXX XXXXXXXXXXXXXXXXXXXX
+                                    XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                XXXXXXX
+                                XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones RI') XXXXXXX
+                            XXXX
+                            XXXXXXXXXXXX XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXX
+                        XXXXXXXXXXXXXX XXXXXXX
+                        XXXX XXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXX XXXXXXX
+                            XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                XXXXX XXXXXXXXXXXXXXXXXXXX
+                                    XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                XXXXXXX
+                                XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear evaluación RI') XXXXXXX
+                            XXXX
+                            XXXXXXXXXXXX XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXX
+
+                        XXXX XXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXX XXXXXXX
+
+                            XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                XXXXX XXXXXXXXXXXXXXXXXXXX
+                                    XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                XXXXXXX
+                                XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones RR') XXXXXXX
+                            XXXX
+                            XXXXXXXXXXXX XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXX
+
+                        XXXXXXXXXXXXXX XXXXXXX
+                        XXXX XXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXX XXXXXXX
+                            XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                XXXXX XXXXXXXXXXXXXXXXXXXX
+                                    XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                XXXXXXX
+                                XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear evaluación RR') XXXXXXX
+                            XXXX
+                            XXXXXXXXXXXX XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXX
+
+
+                    XXXXXX
+                    XXXXXXXXXXXX XXXXXX
+                XXXXXX
+              BBBBB
+
+              XXXXXXXXXXXXXXXXXXXX
+              BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+                XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXBBBBBXX
+                    XXXXXXXXXXXXXX XXXXXXX
+                    XXXXX XXXXXXXXXXXXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Cuestionarios') XXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+                    XXXXXXX
+                    XXXXXXXXXXXX XXXXXXX
+                    XXXXXXXXXXXXXX XXXXXX
+                    XXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX
+                        XXXXXXXXXXXXXX XXXXXXX
+                        XXXX XXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXX XXXXXXX
+
+                            XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                XXXXX XXXXXXXXXXXXXXXXXXXX
+                                    XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                XXXXXXX
+                                XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones') XXXXXXX
+                            XXXX
+                            XXXXXXXXXXXX XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXX
+                        XXXXXXXXXXXXXX XXXXXXX
+                        XXXX XXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXX XXXXXXX
+                            XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                XXXXX XXXXXXXXXXXXXXXXXXXX
+                                    XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                XXXXXXX
+                                XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear evaluación') XXXXXXX
+                            XXXX
+                            XXXXXXXXXXXX XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXX
+                    XXXXXX
+                    XXXXXXXXXXXX XXXXXX
+                XXXXXX
+              BBBBB
+              XXXXXXXXXXXXXXXXXXXX
+
+
+              XXXX XXXXXX XX XXXXXXXXXXX XXX
+              XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBXXXXBBBBBXX
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XXXXX XXXXXXXXXXXXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Planes de Remediación') XXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+                  XXXXXXX
+                  XXXXXXXXXXXX XXXXXXX
+                  XXXXXXXXXXXXXX XXXXXX
+                  XXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Planes de Remediación') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear Plan') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                  XXXXXX
+                  XXXXXXXXXXXX XXXXXX
+              XXXXXX
+              XXXX XXXXXX XX XXXXXXXXXXX XXX
+
+              XXXX XXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                      XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Configuración') XXXXXXX
+                  XXXX
+                  XXXXXXXXXXXX XXXXXXX
+              XXXXXX
+            BBBBB
+
+            XXXX XXXXXXX XXXXX XXX
+            BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+              XXXXXXXXXXXXXX XXXXXXX
+              XXXX XXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXX XXXXXXXXXX
+                  XXXX XXXXXXXXXXXXXXXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX XXXXXXXXXXX XXXXXXXXXXXXXX XXXXXX gettext(u'COMPANY ADMIN') XXXXXXX
+                  XXXXXX
+                  XXXXXXXXXXXX XXXXXXXXXX
+              XXXXXX
+              XXXXXXXXXXXX XXXXXXX
+
+              XXXX XXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBXXXXXXBBBBBX
+                      XXXXXXBBB BBBBBBBBBBBBBBBBBBBBXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Dashboard') XXXXXXX
+                  XXXX
+                  XXXXXXXXXXXX XXXXXXX
+              XXXXXX
+
+              XXXXXXXXXXXXXX XXXXXXX
+              XXXX XXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBXXXXXXBBBBBX
+                      XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Compañías') XXXXXXX
+                  XXXX
+                  XXXXXXXXXXXX XXXXXXX
+              XXXXXX
+              XXXXXXXXXXXX XXXXXXX
+
+              XXXXXXXXXXXXXX XXXXXXX
+              XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBXXXXBBBBBXX
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XXXXX XXXXXXXXXXXXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones KRC') XXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+                  XXXXXXX
+                  XXXXXXXXXXXX XXXXXXX
+                  XXXXXXXXXXXXXX XXXXXX
+                  XXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones KRC') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+
+
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                              XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                              XXXXX XXXXXXXXXXXXXXXXXXXX
+                                  XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                              XXXXXXX
+                              XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear evaluación') XXXXXXX
+                          XXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                  XXXXXX
+                  XXXXXXXXXXXX XXXXXX
+              XXXXXX
+              XXXXXXXXXXXX XXXXXXX
+              BB BBBBBBBBBBBB
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                      XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBXXXXBBBBBXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXX
+                          XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                          XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones KRM') XXXXXXX
+                          XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+                      XXXXXXX
+                      XXXXXXXXXXXX XXXXXXX
+                      XXXXXXXXXXXXXX XXXXXX
+                      XXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XXXX XXXXXXXXXXXXXXXXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                  XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXXX
+                                      XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                  XXXXXXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones RI') XXXXXXX
+                              XXXX
+                              XXXXXXXXXXXX XXXXXXX
+                          XXXXXX
+                          XXXXXXXXXXXX XXXXXXX
+
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XXXX XXXXXXXXXXXXXXXXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                  XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXXX
+                                      XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                  XXXXXXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear evaluación RI') XXXXXXX
+                              XXXX
+                              XXXXXXXXXXXX XXXXXXX
+                          XXXXXX
+                          XXXXXXXXXXXX XXXXXXX
+
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XXXX XXXXXXXXXXXXXXXXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                  XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXXX
+                                      XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                  XXXXXXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones RR') XXXXXXX
+                              XXXX
+                              XXXXXXXXXXXX XXXXXXX
+                          XXXXXX
+                          XXXXXXXXXXXX XXXXXXX
+
+
+                          XXXXXXXXXXXXXX XXXXXXX
+                          XXXX XXXXXXXXXXXXXXXXXX
+                              XXXXXXXXXXXXXX XXXXXXX
+                              XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                  XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXXX
+                                      XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                  XXXXXXX
+                                  XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear evaluación RR') XXXXXXX
+                              XXXX
+                              XXXXXXXXXXXX XXXXXXX
+                          XXXXXX
+                          XXXXXXXXXXXX XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXX
+                  XXXXXX
+                  XXXXXXXXXXXX XXXXXXX
+              BBBBB
+
+              XXXX XXXXXX XX XXXXXXXXXXX XXX
+                XXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBXXXXBBBBBXX
+                    XXXXXXXXXXXXXX XXXXXXX
+                    XXXXX XXXXXXXXXXXXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Planes de Remediación') XXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+                    XXXXXXX
+                    XXXXXXXXXXXX XXXXXXX
+                    XXXXXXXXXXXXXX XXXXXX
+                    XXXX XXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX
+                        XXXXXXXXXXXXXX XXXXXXX
+                        XXXX XXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXX XXXXXXX
+
+                            XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                XXXXX XXXXXXXXXXXXXXXXXXXX
+                                    XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                XXXXXXX
+                                XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Planes de Remediación') XXXXXXX
+                            XXXX
+                            XXXXXXXXXXXX XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXX
+                        XXXXXXXXXXXXXX XXXXXXX
+                        XXXX XXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXX XXXXXXX
+                            XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                                XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                                XXXXX XXXXXXXXXXXXXXXXXXXX
+                                    XXXXX XXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXX
+                                XXXXXXX
+                                XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Crear Plan') XXXXXXX
+                            XXXX
+                            XXXXXXXXXXXX XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXX
+                    XXXXXX
+                    XXXXXXXXXXXX XXXXXX
+                XXXXXX
+              XXXX XXXXXX XX XXXXXXXXXXX XXX
+
+            BBBBB
+            XXXX XXXXXXX XXXXX XXX
+
+            XXXX XXXXXXX XXX
+            BB BBBBBBBBBBBBBBBBBBBBBBB
+              XXXXXXXXXXXXXX XXXXXXX
+              XXXX XXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXX XXXXXXXXXX
+                  XXXX XXXXXXXXXXXXXXXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX XXXXXXXXXXX XXXXXXXXXXXXXX XXXXXX gettext(u'AUDITOR') XXXXXXX
+                  XXXXXX
+                  XXXXXXXXXXXX XXXXXXXXXX
+              XXXXXX
+              XXXXXXXXXXXX XXXXXXX
+
+
+              XXXX XXXXXXXXXXXXXXXXXX
+                  XXXXXXXXXXXXXX XXXXXXX
+                  XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                      XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones KRC') XXXXXXX
+                  XXXX
+                  XXXXXXXXXXXX XXXXXXX
+              XXXXXX
+
+              XXXX XXXXXXXXXXXXXXXXXX
+                XXXXXXXXXXXXXX XXXXXXX
+                XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                    XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                    XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                    XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones RI') XXXXXXX
+                XXXX
+                XXXXXXXXXXXX XXXXXXX
+              XXXXXX
+
+              XXXX XXXXXXXXXXXXXXXXXX
+                XXXXXXXXXXXXXX XXXXXXX
+                XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                    XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                    XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                    XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Evaluaciones RR') XXXXXXX
+                XXXX
+                XXXXXXXXXXXX XXXXXXX
+              XXXXXX
+
+
+              XXXX XXXXXXXXXXXXXXXXXX
+                XXXXXXXXXXXXXX XXXXXXX
+                XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBBBBBBBBBBBBBBBBXXXXXXBBBBBX
+                    XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                    XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                    XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Planes de Remediación') XXXXXXX
+                XXXX
+                XXXXXXXXXXXX XXXXXXX
+            XXXXXX
+            BBBBB
+            XXXX XXXXXXX XXX
+
+
+
+            XXXX XXXXXXX XXXX XXX
+             BB BBBBBBBBBBBBBBBBBBBBBBBBBBBB
+                XXXX XXXXXXXXXXXXXXXXXX
+                    XXXXXXXXXXXXXX XXXXXXXXXX
+                    XXXX XXXXXXXXXXXXXXXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXX XXXXXXXXXXX XXXXXXXXXXXXXX XXXXXX gettext(u'KRC R.U. ') XXXXXXX
+                    XXXXXX
+                    XXXXXXXXXXXX XXXXXXXXXX
+                XXXXXX
+                XXXXXXXXXXXX XXXXXXX
+                BB BBB BBBBBBBBBBBBBBBBBBBBBBBBB BBB BBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+                  XXXX XXXXXXXXXXXXXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XX XXXXXXXXXXXXXXXX BB BBBBBBBBBBBB BB BBBBBBBBBBBBXXXXXXBBBBBX
+                          XXXXXXBBB BBBBBBBBBBBBBBBBBBBBXX
+                          XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                          XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Dashboard') XXXXXXX
+                      XXXX
+                      XXXXXXXXXXXX XXXXXXX
+                  XXXXXX
+                BBBBB
+
+                XXXX XXXXXXXXXXXXXXXXXX
+                    XXXXXXXXXXXXXX XXXXXXX
+                    XX XXXXXXXXXXXXXXXXX XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                        XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Completar Controles') 
+                            BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB B B
+                            XXXXXXXXXXXXXXXXX XXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXX
+                            BBBBB
+                        XXXXXXX
+                    XXXX
+                    XXXXXXXXXXXX XXXXXXX
+                XXXXXX
+
+                XXXX XXXXXXXXXXXXXXXXXX
+                    XX XXXXXXXXXXXXXXXXX XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                        XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                        XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Supervisar Controles') 
+                            BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB B B
+                            XXXXXXXXXXXXXXXXX XXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXX
+                            BBBBB
+                        XXXXXXX
+                    XXXX
+                XXXXXX
+
+                XXXX XXXXXXXXXXXXXXXXXX
+                  XX XXXXXXXXXXXXXXXXX XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                      XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                      XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Planes de Remediación') 
+                          BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB B B
+                          XXXXXXXXXXXXXXXXX XXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXX
+                          BBBBB
+                      XXXXXXX
+                  XXXX
+                XXXXXX
+                BB BBBBBBBBBBBB
+                  XXXX XXXXXXXXXXXXXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXXXXX
+                      XXXX XXXXXXXXXXXXXXXXXXXXX
+                          XXXXX XXXXXXXXXXXXXXXXXXX XXXXXXXXXXX XXXXXXXXXXXXXX XXXXXX gettext(u'KRM R.U.') XXXXXXX
+                      XXXXXX
+                      XXXXXXXXXXXX XXXXXXXXXX
+                  XXXXXX
+
+                  XXXX XXXXXXXXXXXXXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XX XXXXXXXXXXXXXXXXX XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                          XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                          XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Completar Riesgos RI') 
+                              BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB B B
+                              XXXXXXXXXXXXXXXXX XXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXX
+                              BBBBB
+                          XXXXXXX
+                      XXXX
+                      XXXXXXXXXXXX XXXXXXX
+                  XXXXXX
+
+                  XXXX XXXXXXXXXXXXXXXXXX
+                      XXXXXXXXXXXXXX XXXXXXX
+                      XX XXXXXXXXXXXXXXXXX XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                          XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                          XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Completar Riesgos RR') 
+                              BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB B B
+                              XXXXXXXXXXXXXXXXX XXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXX
+                              BBBBB
+                          XXXXXXX
+                      XXXX
+                      XXXXXXXXXXXX XXXXXXX
+                  XXXXXX
+
+
+                  BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+                    XXXX XXXXXXXXXXXXXXXXXX
+                        XXXXXXXXXXXXXX XXXXXXXXXX
+                        XXXX XXXXXXXXXXXXXXXXXXXXX
+                            XXXXX XXXXXXXXXXXXXXXXXXX XXXXXXXXXXX XXXXXXXXXXXXXX XXXXXX gettext(u'Cuestionarios') XXXXXXX
+                        XXXXXX
+                        XXXXXXXXXXXX XXXXXXXXXX
+                    XXXXXX
+
+                    XXXX XXXXXXXXXXXXXXXXXX
+                        XXXXXXXXXXXXXX XXXXXXX
+                        XX XXXXXXXXXXXXXXXXX XXXXXXBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBXX
+                            XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                            XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Responder cuestionarios') 
+                                BB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB B B
+                                XXXXXXXXXXXXXXXXX XXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXX
+                                BBBBB
+                            XXXXXXX
+                        XXXX
+                        XXXXXXXXXXXX XXXXXXX
+                    XXXXXX
+                  BBBBB
+                BBBBB
+            BBBBB
+
+
+            XXXX XXXXXXXXXXXXXXXXXX
+                XXXXXXXXXXXXXX XXXXXXX
+                XX XXXXXXXXXXXXXXXXX XXXXXXBBB BBBBBBBBBBBBBXX
+                    XXXXX XXXXXXXXXXXXXXXXXXBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBB BBBBBBBBBBBXXXXXXX
+                    XXXXX XXXXXXXXXXXXXXXXXXX gettext(u'Cerrar Sesión') XXXXXXX
+                XXXX
+                XXXXXXXXXXXX XXXXXXX
+            XXXXXX
+
+        XXXXXX
+        XXXXXXXXXXXXXXXX
+    XXXXXX
+    XXXXXXXXXXXXX XXXXXXXXXX
+XXXXXX
+XXXXXXXXXXXXXXXX XXXXXXX

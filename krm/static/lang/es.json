@@ -15,9 +15,10 @@
     "non-key": "Non key",
     "effective": "Efectivo",
     "not-effective": "No efectivo",
-    "not-stablished": "No establecido",
+    "not-established": "No establecido",
     "effective-recommendations": "Efectivo con recomendación",
-    "not-applicable": "N/A"
+    "not-applicable": "N/A",
+    "no-data": "No hay datos disponibles"
   },
   "riskdashboard": {
     "inherent-status": "Estado de Test de Riesgo Inherente por Evaluación",
@@ -43,7 +44,8 @@
     "severity": "Severidad",
     "speed": "Velocidad de ocurrencia",
     "ass-evaluator": "Evaluador",
-    "ass-administrator": "Administrador"
+    "ass-administrator": "Administrador",
+    "no-data": "No hay datos disponibles"
   },
   "controldetail": {
     "control-status": "Controles por estado",
@@ -55,7 +57,7 @@
     "status-fi": "Finalizado",
     "effective": "Efectivo",
     "not-effective": "No efectivo",
-    "not-stablished": "No establecido",
+    "not-established": "No establecido",
     "effective-recommendations": "Efectivo con recomendación",
     "not-applicable": "N/A"
   },

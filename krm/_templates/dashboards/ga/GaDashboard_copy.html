@@ -76,7 +76,7 @@
   var control_type_evaluation = {'preventive': {}, 'detective': {}};
   var key_controls_evaluation = {"key": {}, "non-key": {}};
   var ct_status_evaluation = {};
-  var ct_result_evaluation = {"effective": {}, "not-stablished": {}, "effective-recommendations": {}, "not-effective": {}, "not-applicable": {}};
+  var ct_result_evaluation = {"effective": {}, "not-established": {}, "effective-recommendations": {}, "not-effective": {}, "not-applicable": {}};
   var subprocesses = {};
   var risks = {};
 
@@ -279,7 +279,7 @@
         stacked: true,
       },
       noData: {
-        text: "No data available",
+        text: translations["controldashboard"]["no-data"],
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,
@@ -404,7 +404,7 @@
           }
         },
         noData: {
-        text: "No data available",
+        text: translations["controldashboard"]["no-data"],
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,
@@ -711,7 +711,7 @@
         var ct_types = {"preventive": 0, "detective": 0};
         var key_controls = {"key": 0, "non-key": 0};
         var ct_status = {"Not started": 0, "Awaiting Control Owner": 0, "Awaiting Control Supervisor": 0, "Awaiting Control Administrator": 0, "Finished": 0};
-        var ct_result = {"effective": 0, "not-stablished": 0, "effective-recommendations": 0, "not-effective": 0, "not-applicable": 0};
+        var ct_result = {"effective": 0, "not-established": 0, "effective-recommendations": 0, "not-effective": 0, "not-applicable": 0};
       </script>
       {% for ct in e.get_all_control_test_in_evaluation %}
       <script>
@@ -803,7 +803,7 @@
             ct_result["effective"] += 1;
             break;
           case "SE":
-            ct_result["not-stablished"] += 1;
+            ct_result["not-established"] += 1;
             break;
           case "NE":
             ct_result["not-effective"] += 1;
@@ -851,7 +851,7 @@
         ct_status_evaluation["{{e}}"] = ct_status;
 
         ct_result_evaluation["effective"]["{{e}}"] = ct_result["effective"];
-        ct_result_evaluation["not-stablished"]["{{e}}"] = ct_result["not-stablished"];
+        ct_result_evaluation["not-established"]["{{e}}"] = ct_result["not-established"];
         ct_result_evaluation["not-effective"]["{{e}}"] = ct_result["not-effective"];
         ct_result_evaluation["effective-recommendations"]["{{e}}"]= ct_result["effective-recommendations"]
         ct_result_evaluation["not-applicable"]["{{e}}"] = ct_result["not-applicable"];
