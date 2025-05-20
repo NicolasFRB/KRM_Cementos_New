@@ -297,9 +297,6 @@ class RiskTestResidual(AuditModel):
         )
 
         if last_evaluate_risk_inherent.count() > 0:
-            print("Voy a imprimir las fechas de valoración de riesgo inherente de las que disponemos")
-            for risk_test in last_evaluate_risk_inherent:
-                print(risk_test.finalized_at)
             return last_evaluate_risk_inherent.order_by('finalized_at').last()
 
         return None
