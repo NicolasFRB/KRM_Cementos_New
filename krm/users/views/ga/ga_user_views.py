@@ -6,8 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
+from django.conf import settings
 
-import xlsxwriter
+import json
+import xlsxwriter, os
 from django.http import HttpResponse
 
 from django.contrib import messages
@@ -32,11 +34,15 @@ from krm.metronic.libs.theme import KTTheme
 
 from krm.evaluations.models.control_test_model import ControlTest
 from krm.evaluations.models.evaluation_model import Evaluation
+from krm.evaluations_krm.models.evaluation_krm_inherent_model import EvaluationKrmInherent
+from krm.evaluations_krm.models.evaluation_krm_residual_model import EvaluationKrmResidual
+from krm.evaluations_krm.models.risk_test_inherent_model import RiskTestInherent
+from krm.evaluations_krm.models.risk_test_residual_model import RiskTestResidual
 
 from krm.users.forms import LoginForm, RememberForm, PasswordForm, LoginCodeForm
 from krm.users.models import User
 
-from krm.evaluations.forms import EvaluationDashboardForm, DownloadEvaluationActionForm
+from krm.evaluations.forms import EvaluationDashboardForm, DownloadEvaluationActionForm, EvaluationKrmDashboardForm
 
 decorators = [
     csrf_protect,
@@ -45,107 +51,241 @@ decorators = [
 
 
 @method_decorator([login_required, is_global_admin], name='dispatch')
-class GaDashboardView(ListView, FormView):
-    template_name = 'dashboards/ga/GaDashboard_copy.html'
-    model = Evaluation
-    context_object_name = 'evaluations'
+class GaDashboardView(TemplateView, FormView):
     form_class = DownloadEvaluationActionForm
 
+    def get_template_names(self):
+        """
+        Método de la vista que nos devuelve el nombre del template a usar en función de la elección del usuario
+        a través de una request. Cada uno de los templates define un Dashboard diferente, conteniendo información
+        distinta para cada uno de los casos.
+        """
+        dashboard= self.request.GET.get('dashboard', 'default')
+        if dashboard == 'KRM':
+            return ['dashboards/ga/GaDashboardKrm.html']
+        else:
+            return ['dashboards/ga/GaDashboard_copy.html']
+
     def get_context_data(self, **kwargs):
+        """
+        Método de la vista que, en función del template elegido por el usuario, envía datos para su visualización
+        en gráficos.
+        """
         context = super().get_context_data(**kwargs)
         context = KTLayout.init(context)
-        breadcrums = [
-            {'title': _('Dashboard'), 'url': reverse('users:ga_dashboard')},
-        ]
-        context['page_title'] = _(
-            'Dashboard para el Administrador Global')
+        breadcrums = [{'title': _('Dashboard'), 'url': reverse('users:ga_dashboard')},]
         context['breadcrums'] = breadcrums
-        # df = pd.DataFrame(
-        #     [{'tipo': 'Autopista', 'info': 'Third-party screening and due diligence', 'ref': 'USA-R07', 'x': 4.0, 'y': 3.0}, {'tipo': 'Autopista', 'info': 'Liability arising from employees ', 'ref': 'USA-R05', 'x': 3.0, 'y': 3.0}, {'tipo': 'Autopista', 'info': 'Financiación ilegal de partidos políticos', 'ref': 'GRU-R11', 'x': 3.2, 'y': 2.0}, {'tipo': 'Autopista', 'info': 'Malversación', 'ref': 'GRU-R28', 'x': 2.7, 'y': 2.3}, {'tipo': 'Autopista', 'info': 'Corrupción en los negocios', 'ref': 'GRU-R02', 'x': 3.1, 'y': 1.9}, {'tipo': 'Corporación', 'info': 'Cohecho', 'ref': 'GRU-R01', 'x': 4.0, 'y': 3.0}, {'tipo': 'Corporación', 'info': 'Tráfico de Influencias', 'ref': 'GRU-R03', 'x': 4.0, 'y': 3.0}, {'tipo': 'Corporación', 'info': 'Estafa', 'ref': 'GRU-R05', 'x': 4.0, 'y': 3.0}, {'tipo': 'Corporación', 'info': 'Malversación', 'ref': 'GRU-R28', 'x': 4.0, 'y': 3.0}, {'tipo': 'Corporación', 'info': 'Mercado y Consumidores', 'ref': 'GRU-R07', 'x': 4.0, 'y': 2.0}, {'tipo': 'Corporación', 'info': 'Financiación ilegal de partidos políticos', 'ref': 'GRU-R11', 'x': 4.0, 'y': 2.0}, {'tipo': 'Corporación', 'info': 'Corrupción en los negocios', 'ref': 'GRU-R02', 'x': 2.5, 'y': 2.5}, {'tipo': 'Corporación', 'info': 'Descubrimiento y revelación de secretos', 'ref': 'GRU-R04', 'x': 2.0, 'y': 3.0}, {'tipo': 'Ferrocarril', 'info': 'Falsificación de tarjetas de crédito, débito y cheques de viaje', 'ref': 'GRU-R14', 'x': 4.0, 'y': 4.0}, {'tipo': 'Ferrocarril', 'info': 'Cohecho', 'ref': 'GRU-R01', 'x': 4.0, 'y': 3.0}, {'tipo': 'Ferrocarril', 'info': 'Tráfico de Influencias', 'ref': 'GRU-R03', 'x': 4.0, 'y': 3.0}, {'tipo': 'Ferrocarril', 'info': 'Financiación ilegal de partidos políticos', 'ref': 'GRU-R11', 'x': 4.0, 'y': 3.0}, {'tipo': 'Ferrocarril', 'info': 'Malversación', 'ref': 'GRU-R28', 'x': 4.0, 'y': 3.0}, {'tipo': 'Innovación', 'info': 'Propiedad Industrial e Intelectual', 'ref': 'GRU-R18', 'x': 3.7, 'y': 3.0}, {'tipo': 'Innovación', 'info': 'Corrupción en los negocios', 'ref': 'GRU-R02', 'x': 3.8, 'y': 2.5}, {'tipo': 'Innovación', 'info': 'Liability arising from employees ', 'ref': 'USA-R05', 'x': 3.0, 'y': 3.0}, {'tipo': 'Innovación', 'info': 'Descubrimiento y revelación de secretos', 'ref': 'GRU-R04', 'x': 3.4, 'y': 2.6}, {'tipo': 'Innovación', 'info': 'Blanqueo de capitales', 'ref': 'GRU-R10', 'x': 3.8, 'y': 2.2}]
-        # )
-        # df['severidad'] = df['x']*df['y']
-        # df = df.sort_values('severidad', ascending=False)
-        # context['df'] = df
         context['js_template'] = ['js/custom/datatables.js']
-        # df = pd.DataFrame(
-        #     [{'tipo': 'Autopista', 'info': 'Third-party screening and due diligence', 'ref': 'USA-R07', 'x': 4.0, 'y': 3.0}, {'tipo': 'Autopista', 'info': 'Liability arising from employees ', 'ref': 'USA-R05', 'x': 3.0, 'y': 3.0}, {'tipo': 'Autopista', 'info': 'Financiación ilegal de partidos políticos', 'ref': 'GRU-R11', 'x': 3.2, 'y': 2.0}, {'tipo': 'Autopista', 'info': 'Malversación', 'ref': 'GRU-R28', 'x': 2.7, 'y': 2.3}, {'tipo': 'Autopista', 'info': 'Corrupción en los negocios', 'ref': 'GRU-R02', 'x': 3.1, 'y': 1.9}, {'tipo': 'Corporación', 'info': 'Cohecho', 'ref': 'GRU-R01', 'x': 4.0, 'y': 3.0}, {'tipo': 'Corporación', 'info': 'Tráfico de Influencias', 'ref': 'GRU-R03', 'x': 4.0, 'y': 3.0}, {'tipo': 'Corporación', 'info': 'Estafa', 'ref': 'GRU-R05', 'x': 4.0, 'y': 3.0}, {'tipo': 'Corporación', 'info': 'Malversación', 'ref': 'GRU-R28', 'x': 4.0, 'y': 3.0}, {'tipo': 'Corporación', 'info': 'Mercado y Consumidores', 'ref': 'GRU-R07', 'x': 4.0, 'y': 2.0}, {'tipo': 'Corporación', 'info': 'Financiación ilegal de partidos políticos', 'ref': 'GRU-R11', 'x': 4.0, 'y': 2.0}, {'tipo': 'Corporación', 'info': 'Corrupción en los negocios', 'ref': 'GRU-R02', 'x': 2.5, 'y': 2.5}, {'tipo': 'Corporación', 'info': 'Descubrimiento y revelación de secretos', 'ref': 'GRU-R04', 'x': 2.0, 'y': 3.0}, {'tipo': 'Ferrocarril', 'info': 'Falsificación de tarjetas de crédito, débito y cheques de viaje', 'ref': 'GRU-R14', 'x': 4.0, 'y': 4.0}, {'tipo': 'Ferrocarril', 'info': 'Cohecho', 'ref': 'GRU-R01', 'x': 4.0, 'y': 3.0}, {'tipo': 'Ferrocarril', 'info': 'Tráfico de Influencias', 'ref': 'GRU-R03', 'x': 4.0, 'y': 3.0}, {'tipo': 'Ferrocarril', 'info': 'Financiación ilegal de partidos políticos', 'ref': 'GRU-R11', 'x': 4.0, 'y': 3.0}, {'tipo': 'Ferrocarril', 'info': 'Malversación', 'ref': 'GRU-R28', 'x': 4.0, 'y': 3.0}, {'tipo': 'Innovación', 'info': 'Propiedad Industrial e Intelectual', 'ref': 'GRU-R18', 'x': 3.7, 'y': 3.0}, {'tipo': 'Innovación', 'info': 'Corrupción en los negocios', 'ref': 'GRU-R02', 'x': 3.8, 'y': 2.5}, {'tipo': 'Innovación', 'info': 'Liability arising from employees ', 'ref': 'USA-R05', 'x': 3.0, 'y': 3.0}, {'tipo': 'Innovación', 'info': 'Descubrimiento y revelación de secretos', 'ref': 'GRU-R04', 'x': 3.4, 'y': 2.6}, {'tipo': 'Innovación', 'info': 'Blanqueo de capitales', 'ref': 'GRU-R10', 'x': 3.8, 'y': 2.2}]
-        # )
-        # df['severidad'] = df['x']*df['y']
-        # df = df.sort_values('severidad', ascending=False)
-        # context['df'] = df
+        dashboard_type= self.request.GET.get('dashboard', 'default')
+        context['dashboard']= dashboard_type
+        get_data= self.request.GET.copy()
+        get_data.pop('dashboard', None)
 
-        if self.request.GET:
-            context['search_evaluation_form'] = EvaluationDashboardForm(
-                self.request.GET)
+        # print(f"LOGIN_URL: {settings.LOGIN_URL}, type: {type(settings.LOGIN_URL)}")
+        json_path_es = os.path.join('krm', 'static', 'lang', 'es.json')
+        json_path_en = os.path.join('krm', 'static', 'lang', 'en.json')
+
+        try:
+            with open(json_path_es, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_es= json.dumps(translations_data)
+        except FileNotFoundError:
+            print("No se ha encontrado ese archivo")
+            translations_es= {}
+
+        try:
+            with open(json_path_en, 'r', encoding= 'utf-8') as file:
+                translations_data= json.load(file)
+                translations_en= json.dumps(translations_data)
+        except FileNotFoundError:
+            translations_en= {}
+
+        context['translations_es']= translations_es
+        context['translations_en']= translations_en
+        if dashboard_type == 'KRM':
+            context['page_title'] = _('Dashboard de Riesgos para el Administrador Global')
+            if get_data:
+               form = EvaluationKrmDashboardForm(get_data)
+               context['search_evaluation_form']= form
+            else:
+                form = EvaluationKrmDashboardForm()
+                context['search_evaluation_form'] = form
+                context['evaluations_inherent'] = EvaluationKrmInherent.objects.all()
+                context['evaluations_residual'] = EvaluationKrmResidual.objects.all()
+                context['risk_test_inherent'] = RiskTestInherent.objects.all()
+                context['risk_test_residual'] = RiskTestResidual.objects.all()
+
+            if form.is_valid():
+                cd= form.cleaned_data
+                qs_inherent= EvaluationKrmInherent.objects.all()
+                qs_residual= EvaluationKrmResidual.objects.all()
+                test_inherent= RiskTestInherent.objects.all()
+                test_residual= RiskTestResidual.objects.all()
+                date_evaluation_begin = cd.get('date_evaluation_begin')
+                date_evaluation_end = cd.get('date_evaluation_end')
+                evaluation_inherent = cd.get('evaluation_inherent')
+                evaluation_residual= cd.get('evaluation_residual')
+                company = cd.get('company')
+                certification_year = cd.get('certification_year')
+                certification_period = cd.get('certification_period')
+                status = cd.get('process_status')
+                domain_risk= cd.get('domain_risk')
+
+                if date_evaluation_begin != '' and date_evaluation_begin is not None:
+                    date_evaluation_begin = datetime.strptime(date_evaluation_begin, '%d/%m/%Y')
+                    qs_inherent = qs_inherent.filter(date_begin__gte=date_evaluation_begin)
+                    qs_residual = qs_residual.filter(date_begin__gte=date_evaluation_begin)
+
+                if date_evaluation_end != '' and date_evaluation_end is not None:
+                    date_evaluation_end = datetime.strptime(date_evaluation_end, '%d/%m/%Y')
+                    qs_inherent = qs_inherent.filter(date_end__lte=date_evaluation_end)
+                    qs_residual = qs_residual.filter(date_end__lte=date_evaluation_end)
+
+                if len(company) > 0:
+                    qs_inherent = qs_inherent.filter(company__pk__in=company)
+                    qs_residual = qs_residual.filter(company__pk__in=company)
+
+                if len(evaluation_inherent) > 0:
+                    qs_inherent = qs_inherent.filter(id__in=evaluation_inherent)
+                if len(evaluation_residual) > 0:
+                    qs_residual = qs_residual.filter(id__in=evaluation_residual)
+
+                if len(certification_year) > 0:
+                    qs_inherent = qs_inherent.filter(certification_year__in=certification_year)
+                    qs_residual = qs_residual.filter(certification_year__in=certification_year)
+
+                if len(certification_period) > 0:
+                    qs_inherent = qs_inherent.filter(certification_period__in=certification_period)
+                    qs_residual = qs_residual.filter(certification_period__in=certification_period)
+
+                if len(status) > 0:
+                    qs_inherent = qs_inherent.filter(status__in=status)
+                    qs_residual = qs_residual.filter(status__in=status)
+
+                if len(domain_risk) > 0:
+                    qs_inherent = qs_inherent.filter(risk_test_inherents__risk__risk__risk_master__domain_risk__pk__in = domain_risk).distinct()
+                    qs_residual = qs_residual.filter(risk_test_residuals__risk__risk__risk_master__domain_risk__pk__in = domain_risk).distinct()
+                    test_inherent = test_inherent.filter(risk__risk__risk_master__domain_risk__pk__in=domain_risk, evaluation__in= qs_inherent)
+                    test_residual = test_residual.filter(risk__risk__risk_master__domain_risk__pk__in=domain_risk, evaluation__in= qs_residual)
+                else:
+                    test_inherent = test_inherent.filter(evaluation__in= qs_inherent)
+                    test_residual = test_residual.filter(evaluation__in= qs_residual)
+
+                context['evaluations_inherent']= qs_inherent
+                context['evaluations_residual']= qs_residual
+                context['risk_test_inherent']= test_inherent
+                context['risk_test_residual']= test_residual
+
         else:
-            context['search_evaluation_form'] = EvaluationDashboardForm()
-            context['evaluations'] = Evaluation.objects.all()
+            context['page_title'] = _('Dashboard de Controles para el Administrador Global')
+            if get_data:
+               form = EvaluationDashboardForm(self.request.GET)
+               context['search_evaluation_form'] = form
+            else:
+                form = EvaluationDashboardForm()
+                context['search_evaluation_form'] = form
+                context['evaluations'] = Evaluation.objects.all()
+
+            if form.is_valid():
+                cd= form.cleaned_data
+                qs= Evaluation.objects.all()
+                date_evaluation_begin = cd.get('date_evaluation_begin')
+                date_evaluation_end = cd.get('date_evaluation_end')
+                evaluation = cd.get('evaluation')
+                company = cd.get('company')
+                certification_year = cd.get('certification_year')
+                certification_period = cd.get('certification_period')
+                status = cd.get('process_status')
+
+                if date_evaluation_begin != '' and date_evaluation_begin is not None:
+                    date_evaluation_begin = datetime.strptime(date_evaluation_begin, '%d/%m/%Y')
+                    qs = qs.filter(date_begin__gte=date_evaluation_begin)
+
+                if date_evaluation_end != '' and date_evaluation_end is not None:
+                    date_evaluation_end = datetime.strptime(date_evaluation_end, '%d/%m/%Y')
+                    qs = qs.filter(date_end__lte=date_evaluation_end)
+
+                if len(company) > 0:
+                    qs = qs.filter(company__pk__in=company)
+
+                if len(evaluation) > 0:
+                    qs = qs.filter(id__in=evaluation)
+
+                if len(certification_year) > 0:
+                    qs = qs.filter(certification_year__in=certification_year)
+
+                if len(certification_period) > 0:
+                    qs = qs.filter(certification_period__in=certification_period)
+
+                if len(status) > 0:
+                    qs = qs.filter(status__in=status)
+
+                context['evaluations']= qs
 
         return context
 
-    def get_queryset(self):
-        qs = Evaluation.objects.filter(pk=-1)
-        qs_control = ControlTest.objects.filter(pk=-1)
-        if self.request.GET:
-            qs = Evaluation.objects.all()
-            qs_control = ControlTest.objects.all()
+    # def get_queryset(self):
+    #     """
+    #     Método de la vista que nos devuelve el queryset obtenido tras aplicar los filtros introducidos por el usuario
+    #     desde la interfaz. En función del Dashboard que queramos visualizar nos encontraremos con unos filtros u otros.
+    #     """
+    #     qs = Evaluation.objects.filter(pk=-1)
+    #     qs_control = ControlTest.objects.filter(pk=-1)
+    #     if get_data:
+    #         qs = Evaluation.objects.all()
+    #         qs_control = ControlTest.objects.all()
 
-            date_evaluation_begin = self.request.GET.get('date_evaluation_begin')
-            date_evaluation_end = self.request.GET.get('date_evaluation_end')
-            # date_created_begin = self.request.GET.get('date_created_begin')
-            # date_created_end = self.request.GET.get('date_created_end')
+    #         date_evaluation_begin = self.request.GET.get('date_evaluation_begin')
+    #         date_evaluation_end = self.request.GET.get('date_evaluation_end')
 
-            evaluation = self.request.GET.getlist('evaluation')
-            company = self.request.GET.getlist('company')
-            certification_year = self.request.GET.getlist('certification_year')
-            certification_period = self.request.GET.getlist('certification_period')
-            # company = self.request.GET.getlist('company')
-            status = self.request.GET.getlist('process_status')
-            control_status = self.request.GET.getlist('control_status')
+    #         evaluation = self.request.GET.getlist('evaluation')
+    #         company = self.request.GET.getlist('company')
+    #         certification_year = self.request.GET.getlist('certification_year')
+    #         certification_period = self.request.GET.getlist('certification_period')
+    #         status = self.request.GET.getlist('process_status')
+    #         control_status = self.request.GET.getlist('control_status')
 
-            if date_evaluation_begin != '' and date_evaluation_begin is not None:
-                date_evaluation_begin = datetime.strptime(
-                    date_evaluation_begin, '%d/%m/%Y')
-                qs = qs.filter(date_begin__gte=date_evaluation_begin)
+    #         if date_evaluation_begin != '' and date_evaluation_begin is not None:
+    #             date_evaluation_begin = datetime.strptime(
+    #                 date_evaluation_begin, '%d/%m/%Y')
+    #             qs = qs.filter(date_begin__gte=date_evaluation_begin)
 
-            if date_evaluation_end != '' and date_evaluation_end is not None:
-                date_evaluation_end = datetime.strptime(date_evaluation_end, '%d/%m/%Y')
-                qs = qs.filter(date_end__lte=date_evaluation_end)
+    #         if date_evaluation_end != '' and date_evaluation_end is not None:
+    #             date_evaluation_end = datetime.strptime(date_evaluation_end, '%d/%m/%Y')
+    #             qs = qs.filter(date_end__lte=date_evaluation_end)
 
-            # if date_created_begin != '' and date_created_begin is not None:
-            #     date_created_begin = datetime.strptime(
-            #         date_created_begin, '%d/%m/%Y')
-            #     qs = qs.filter(created__gte=date_created_begin)
+    #         # if date_created_begin != '' and date_created_begin is not None:
+    #         #     date_created_begin = datetime.strptime(
+    #         #         date_created_begin, '%d/%m/%Y')
+    #         #     qs = qs.filter(created__gte=date_created_begin)
 
-            # if date_created_end != '' and date_created_end is not None:
-            #     date_created_end = datetime.strptime(
-            #         date_created_end, '%d/%m/%Y')
-            #     qs = qs.filter(created__lte=date_created_end)
+    #         # if date_created_end != '' and date_created_end is not None:
+    #         #     date_created_end = datetime.strptime(
+    #         #         date_created_end, '%d/%m/%Y')
+    #         #     qs = qs.filter(created__lte=date_created_end)
 
-            if len(company) > 0:
-                qs = qs.filter(company__pk__in=company)
+    #         if len(company) > 0:
+    #             qs = qs.filter(company__pk__in=company)
 
-            if len(evaluation) > 0:
-                qs = qs.filter(id__in=evaluation)
+    #         if len(evaluation) > 0:
+    #             qs = qs.filter(id__in=evaluation)
 
-            if len(certification_year) > 0:
-                qs = qs.filter(certification_year__in=certification_year)
+    #         if len(certification_year) > 0:
+    #             qs = qs.filter(certification_year__in=certification_year)
 
-            if len(certification_period) > 0:
-                qs = qs.filter(certification_period__in=certification_period)
+    #         if len(certification_period) > 0:
+    #             qs = qs.filter(certification_period__in=certification_period)
 
-            if len(status) > 0:
-                qs = qs.filter(status__in=status)
+    #         if len(status) > 0:
+    #             qs = qs.filter(status__in=status)
 
-            if len(control_status) > 0:
-                qs = qs_control.filter(status__in=control_status)
+    #         if len(control_status) > 0:
+    #             qs = qs_control.filter(status__in=control_status)
 
-            # if len(phase) > 0:
-            #     qs = qs.filter(phase__in=phase)
-        else:
-            qs = Evaluation.objects.all()
+    #     else:
+    #         qs = Evaluation.objects.all()
 
-        return qs
+    #     return qs
 
     def form_valid(self, form):
         action = form.cleaned_data["action"]

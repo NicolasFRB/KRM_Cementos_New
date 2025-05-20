@@ -7,7 +7,8 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
-from krm.evaluations_krm.models import RiskTestResidual, RiskCompanyResidual
+from krm.evaluations_krm.models import RiskTestResidual
+#RiskCompanyResidual
 
 
 class RiskTestResidualEvaluatorApiView(APIView):
@@ -21,7 +22,6 @@ class RiskTestResidualEvaluatorApiView(APIView):
 
     def get(self, request):
         risk_test_pk = int(request.GET['pk'])
-
         risk_test = get_object_or_404(
             RiskTestResidual,
             pk=risk_test_pk
@@ -31,7 +31,37 @@ class RiskTestResidualEvaluatorApiView(APIView):
             if 'probability' in request.GET:
                 probability = int(request.GET['probability'])
                 if probability != 0:
-                    risk_test.probability_level_residual_evaluator = probability
+                    risk_test.probability_level_evaluator = probability
+
+            if 'impactReputational' in request.GET:
+                impact = int(request.GET['impactReputational'])
+                if impact != 0:
+                    risk_test.impact_reputational_evaluator = impact
+
+            if 'impactEconomic' in request.GET:
+                impact = int(request.GET['impactEconomic'])
+                if impact != 0:
+                    risk_test.impact_economic_evaluator = impact
+
+            if 'impactRegulatory' in request.GET:
+                impact = int(request.GET['impactRegulatory'])
+                if impact != 0:
+                    risk_test.impact_regulatory_evaluator = impact
+
+            if 'impactObjectives' in request.GET:
+                impact = int(request.GET['impactObjectives'])
+                if impact != 0:
+                    risk_test.impact_objectives_evaluator = impact
+
+            if 'impactDedication' in request.GET:
+                impact = int(request.GET['impactDedication'])
+                if impact != 0:
+                    risk_test.impact_dedication_evaluator = impact
+
+            if 'eventSpeed' in request.GET:
+                speed= int(request.GET['eventSpeed'])
+                if speed!=0:
+                    risk_test.event_speed_level_evaluator= speed
 
             if 'description' in request.GET:
                 description = request.GET['description']
@@ -42,12 +72,21 @@ class RiskTestResidualEvaluatorApiView(APIView):
         if 'adminProbability' in request.GET:
             probability = int(request.GET['adminProbability'])
             if probability != 0:
-                risk_test.probability_level_residual_administrator = probability
+                risk_test.probability_level_administrator = probability
+
+        if 'adminImpact' in request.GET:
+            impact = int(request.GET['adminImpact'])
+            if impact != 0:
+                risk_test.impact_level_administrator = impact
+
+        if 'adminEventSpeed' in request.GET:
+            speed= int(request.GET['adminEventSpeed'])
+            if speed!=0:
+                risk_test.event_speed_level_administrator= speed
 
         if 'descriptionAdmin' in request.GET:
             description_admin = request.GET['descriptionAdmin']
             risk_test.description_administrator = description_admin
-
         risk_test.save()
 
         data = {
@@ -57,36 +96,36 @@ class RiskTestResidualEvaluatorApiView(APIView):
         return Response(data)
 
 
-class RiskCompanyResidualAdminApiView(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-    """ Función que recibe un trío:
-    - pk risk_test_inherent
-    - valor de probabilidad
-    - valor de impacto
-    """
+# class RiskCompanyResidualAdminApiView(APIView):
+#     authentication_classes = [SessionAuthentication, BasicAuthentication]
+#     permission_classes = [IsAuthenticated]
+#     """ Función que recibe un trío:
+#     - pk risk_test_inherent
+#     - valor de probabilidad
+#     - valor de impacto
+#     """
 
-    def get(self, request):
-        risk_test_pk = int(request.GET['pk'])
+#     def get(self, request):
+#         risk_test_pk = int(request.GET['pk'])
 
-        risk_company_residual = get_object_or_404(
-            RiskCompanyResidual,
-            pk=risk_test_pk
-        )
+#         risk_company_residual = get_object_or_404(
+#             RiskCompanyResidual,
+#             pk=risk_test_pk
+#         )
 
-        if 'adminProbability' in request.GET:
-            probability = int(request.GET['adminProbability'])
-            if probability != 0:
-                risk_company_residual.probability_level_residual_administrator = probability
+#         if 'adminProbability' in request.GET:
+#             probability = int(request.GET['adminProbability'])
+#             if probability != 0:
+#                 risk_company_residual.probability_level_residual_administrator = probability
 
-        if 'descriptionAdmin' in request.GET:
-            description_admin = request.GET['descriptionAdmin']
-            risk_company_residual.description_administrator = description_admin
+#         if 'descriptionAdmin' in request.GET:
+#             description_admin = request.GET['descriptionAdmin']
+#             risk_company_residual.description_administrator = description_admin
 
-        risk_company_residual.save()
+#         risk_company_residual.save()
 
-        data = {
-            'status': 'ok'
-        }
+#         data = {
+#             'status': 'ok'
+#         }
 
-        return Response(data)
+#         return Response(data)

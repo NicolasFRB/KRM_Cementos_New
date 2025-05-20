@@ -11,7 +11,7 @@
   <div class="card-header" style="display:block;">
     <!--begin::Card header-->
     <div class="card-title fs-3 fw-bold">{{ page_title }}</div>
-    <div class="card-subtitle mb-2 text-muted">En esta página es posible asignar un evaluador de Riesgo Inherente para el Riesgo <span class="badge badge-primary text-wrap">{{ object.domain_risk }}</span> en la compañía <span class="badge badge-primary text-wrap">{{ object.company.name }}</span>.</div>
+    <div class="card-subtitle mb-2 text-muted">{% trans 'En esta página es posible asignar un evaluador de Riesgo Inherente al Riesgo' %} <span class="badge badge-primary text-wrap">{{ object.risk.ref }}</span> {% trans 'de la compañía' %}<span class="badge badge-primary text-wrap">{{ object.company.name }}</span>.</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -45,7 +45,7 @@
               <!--begin::Col-->
               <div class="col-xl-8">
                 <div class="fs-6">
-                  <span>{{ object.risk }}</span>
+                  <span>{{ object.risk.name }}</span>
                 </div>
               </div>
               <!--end::Col-->
@@ -53,7 +53,7 @@
             <div class="row mb-8">
               <!--begin::Col-->
               <div class="col-xl-4">
-                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Evaluadores' %}</span></div>
+                <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Evaluador asignado' %}</span></div>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
@@ -68,7 +68,7 @@
         </div>
       </div>
       <!--end::Body-->
-    
+
       <div class="card-footer py-6">
         <button class="btn btn-sm btn-primary"><i class="bi bi-hdd"></i> {% trans 'Asignar' %}</button>
         <button class="btn btn-sm btn-secondary ms-2 backHistory"><i class="bi bi-arrow-bar-left"></i>{% trans 'Volver' %}</button>

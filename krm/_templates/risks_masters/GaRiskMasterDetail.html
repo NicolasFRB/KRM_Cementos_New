@@ -41,7 +41,7 @@
             <!--end::Col-->
           </div>
           <div class="row mb-8">
-  
+
             <!--begin::Col-->
             <div class="col-xl-5">
               <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Nombre' %}</span></div>
@@ -55,7 +55,7 @@
             </div>
             <!--end::Col-->
           </div>
-          
+
           <div class="row mb-8">
             <!--begin::Col-->
             <div class="col-xl-5">
@@ -80,7 +80,7 @@
           <!-- <legend class="mb-8">{% trans 'Descripción' %}</legend> -->
           <div class="fs-6 fw-semibold" style="margin-bottom: 10px"><span class="badge badge-secondary text-wrap">{% trans 'Descripción del Riesgo' %}</span></div>
           <div>{{ risk_master.description|safe }}</div>
-      </div> 
+      </div>
     {% endif %}
 
   </div>
@@ -119,11 +119,11 @@
           <th width="5%">{% trans 'Descripción' %}</th>
           <th width="5%">{% trans 'Principales elementos' %}</th>
           <th width="5%">{% trans 'Principales eventos' %}</th>
-          <th width="5%">{% trans 'Actividad afectada' %}</th>        
+          <th width="5%">{% trans 'Actividad afectada' %}</th>
           <th width="5%">{% trans 'Personal expuesto' %}</th>
-          <th>{% trans 'Dominio de Riesgo' %}</th>          
-          <th>{% trans 'Riesgo Maestro (N1)' %}</th>          
-          <th class="text-center">{% trans 'Nº de Controles' %}</th>
+          <th>{% trans 'Dominio de Riesgo' %}</th>
+          <th>{% trans 'Riesgo Maestro (N1)' %}</th>
+          <th class="text-center">{% trans 'Número de Controles' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -135,7 +135,7 @@
             <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.description|striptags }}"></i></td>
             <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_elements|striptags }}"></i></td>
             <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_main_events|striptags }}"></i></td>
-            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_activity_affected|striptags }}"></i></td>     
+            <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_activity_affected|striptags }}"></i></td>
             <td class="text-center align-middle"><i class="bi bi-file-earmark-text fs-2x text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.krm_exposed_staff|striptags }}"></i></td>
             <td class="align-middle"><a href="{% url 'domain_risks:ga_domain_risk_detail' risk_master.domain_risk.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.domain_risk.name }}">{{ risk.risk_master.domain_risk.ref }}</span></a></td>
             <td class="align-middle"><a href="{% url 'risks_masters:ga_risk_master_detail' risk.risk_master.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ risk.risk_master.name }}">{{ risk.risk_master.ref }}</span></a></td>

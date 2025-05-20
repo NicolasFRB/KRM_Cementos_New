@@ -213,7 +213,7 @@ class GaRemediationPlanCreateSelectCompanyView(FormView):
             {'title': _('Nuevo'), 'url': reverse(
                 'remediation_plans:ga_remediation_plan_create_select_company')},
         ]
-        context['page_title'] = _('Nueva Plan de Remediación')
+        context['page_title'] = _('Nuevo Plan de Remediación')
         context['breadcrums'] = breadcrums
         context['js_template'] = ['js/custom/datatables.js']
         return context
@@ -295,7 +295,7 @@ class GaRemediationPlanCreateView(CreateView):
             {'title': _('Nuevo'), 'url': reverse(
                 'remediation_plans:ga_remediation_plan_create_select_company')},
         ]
-        context['page_title'] = _('Nueva Plan de Remediación')
+        context['page_title'] = _('Nuevo Plan de Remediación')
         context['breadcrums'] = breadcrums
         context['js_template'] = ['js/custom/datatables.js']
         return context

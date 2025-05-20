@@ -33,12 +33,25 @@ canvas#race{position:relative; z-index:100;}
   background-color: #a6ed9d !important;
 }
 
+td.allow-tooltip-overflow {
+  overflow: visible !important;
+  position: relative; /* Necesario para el z-index y contexto de apilado */
+}
+
 </style>
 <script>
-  function load_chart(id, n_pending, n_delivered, n_finished) {
+  let translations= {};
+  const lang= "{{ LANGUAGE_CODE }}";
+  if (lang == 'es') {
+    translations= JSON.parse('{{ translations_es|escapejs }}');
+  } else if (lang == 'en') {
+    translations= JSON.parse('{{ translations_en|escapejs }}');
+  }
+
+  function load_chart(id, translations, n_pending, n_delivered, n_finished) {
 
     const data = {
-      labels: ['Pending', 'Delivered', 'Finished'],
+      labels: [translations["riskdetail"]["test-awev"], translations["riskdetail"]["test-awca"], translations["riskdetail"]["test-fi"]],
       datasets: [
         {
           label: '',
@@ -85,7 +98,7 @@ canvas#race{position:relative; z-index:100;}
   <!--begin::Card header-->
   <div class="card-header">
     <!--begin::Card header-->
-    <div class="card-title fs-3 fw-bold">{{ page_title }} en progreso</div>
+    <div class="card-title fs-3 fw-bold">{{ page_title }} {% trans 'en progreso' %}</div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -101,9 +114,8 @@ canvas#race{position:relative; z-index:100;}
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
-          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
-          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
-          <th class="text-center">{% trans 'Nº Evaluadores' %}</th>
+          <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
+          <th class="text-center">{% trans 'Número de Riesgos' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -133,7 +145,7 @@ canvas#race{position:relative; z-index:100;}
               </a>
               {% endfor %}
             </td>
-            <td class="text-center align-middle">
+            <td class="text-center align-middle allow-tooltip-overflow">
               <div>
                 <span class="badge badge-info">{{ evaluation.risk_test_residuals.count }}</span>
               </div>
@@ -142,18 +154,7 @@ canvas#race{position:relative; z-index:100;}
               </div>
             </td>
             <script>
-              load_chart('pie-ep-{{ forloop.counter }}','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
-            </script>
-            <td class="text-center align-middle">
-              <div>
-                <span class="badge badge-info">{{ evaluation.total_evaluators }}</span>
-              </div>
-              <div>
-                <canvas id="pie-ep-evs-{{ forloop.counter }}"></canvas>
-              </div>
-            </td>
-            <script>
-              load_chart('pie-ep-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}');
+              load_chart('pie-ep-{{ forloop.counter }}', translations, '{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
             </script>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
@@ -167,8 +168,8 @@ canvas#race{position:relative; z-index:100;}
       </tbody>
     </table>
     <div style="float: right;display: flex; margin-right: 15px !important;">
-      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Evaluador' %}">WE</span>
+      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
       <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
     </div>
     {% else %}
@@ -209,9 +210,8 @@ canvas#race{position:relative; z-index:100;}
           <th class="text-center">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center">{% trans 'Compañía' %}</th>
-          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
-          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
-          <th class="text-center">{% trans 'Nº Evaluadores' %}</th>
+          <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
+          <th class="text-center">{% trans 'Número de Riesgos' %}</th>
           <th class="text-center">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -241,7 +241,7 @@ canvas#race{position:relative; z-index:100;}
               </a>
               {% endfor %}
             </td>
-            <td class="text-center align-middle">
+            <td class="text-center align-middle allow-tooltip-overflow">
               <div>
                 <span class="badge badge-info">{{ evaluation.risk_test_residuals.count }}</span>
               </div>
@@ -250,18 +250,7 @@ canvas#race{position:relative; z-index:100;}
               </div>
             </td>
             <script>
-              load_chart('pie-fi-{{ forloop.counter }}','{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
-            </script>
-            <td class="text-center align-middle">
-              <div>
-                <span class="badge badge-info">{{ evaluation.total_evaluators }}</span>
-              </div>
-              <div>
-                <canvas id="pie-fi-evs-{{ forloop.counter }}"></canvas>
-              </div>
-            </td>
-            <script>
-              load_chart('pie-fi-evs-{{ forloop.counter }}','{{evaluation.evaluators_pending.count}}','{{evaluation.evaluators_delivered.count}}','{{evaluation.evaluators_finished.count}}');
+              load_chart('pie-fi-{{ forloop.counter }}', translations, '{{evaluation.nrisk_test_residuals_pending}}','{{evaluation.nrisk_test_residuals_delivered}}','{{evaluation.nrisk_test_residuals_finished}}');
             </script>
             <td class="text-center align-middle">
               {% if evaluation.status == "EP" %}
@@ -275,8 +264,8 @@ canvas#race{position:relative; z-index:100;}
       </tbody>
     </table>
     <div style="float: right;display: flex; margin-right: 15px !important;">
-      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Pendientes' %}">P</span>
-      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Evaluados' %}">E</span>
+      <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Evaluador' %}">WE</span>
+      <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
       <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizados' %}">F</span>
     </div>
     {% else %}

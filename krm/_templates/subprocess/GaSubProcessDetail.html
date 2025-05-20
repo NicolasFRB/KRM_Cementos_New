@@ -117,7 +117,7 @@
           <th class="text-center">{% trans 'Frecuencia' %}</th>
           <th class="text-center">{% trans 'Tipo' %}</th>
           <th class="text-center">{% trans 'Automático' %}</th>
-          <th class="text-center">{% trans 'Dominios de riesgo' %}</th>
+          <th class="text-center">{% trans 'Dominios de Riesgo' %}</th>
           <th class="text-center">{% trans 'Riesgos (N2)' %}</th>
           <th class="text-center">{% trans 'Subprocesos' %}</th>
         </tr>
@@ -149,10 +149,10 @@
                     <span class="badge badge-info" style="">{{ control.domain_risks_objects|length }}</span>
                 </div>
                 <div id = "box-container">
-                  {% for domain_risk in control.domain_risks_objects %}                                              
+                  {% for domain_risk in control.domain_risks_objects %}
                     <a href="{% url 'domain_risks:ga_domain_risk_detail' domain_risk.pk %}">
                       <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ domain_risk.name }}" id = "box-child">{{ domain_risk.ref }}</span>
-                    </a>                                               
+                    </a>
                   {% endfor %}
                 </div>
               </div>
@@ -163,13 +163,13 @@
                     <span class="badge badge-info" style="">{{ control.risks.count }}</span>
                 </div>
                 <div id = "box-container">
-                  {% for r1 in control.risks.all %}                                              
+                  {% for r1 in control.risks.all %}
                     <a href="{% url 'risks:ga_risk_detail' r1.pk %}">
                     <span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ r1.name }}" id = "box-child">{{ r1.ref }}
-                    </a>                                               
+                    </a>
                   {% endfor %}
-                </div>                                             
-              </div>                                             
+                </div>
+              </div>
             </td>
             <td class="align-middle">
               <div id = 'box' class="text-center">
@@ -177,12 +177,12 @@
                     <span class="badge badge-info" style="">{{ control.sub_processes.count }}</span>
                 </div>
                 <div id = "box-container">
-                {% for s1 in control.sub_processes.all %}                                              
-                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>                                                                       
+                {% for s1 in control.sub_processes.all %}
+                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>
                 {% endfor %}
-                </div>                                             
-              </div>                                             
-            </td>        
+                </div>
+              </div>
+            </td>
           </tr>
           {% endfor %}
       </tbody>

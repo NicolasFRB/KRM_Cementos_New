@@ -22,8 +22,7 @@
 
       if(!errorFound){
         $("input[name^='probability-']").each(function(index){
-          console.log("Validando probability:", $(this).attr("name"), $(this).prop("checked"));
-          if ($(this).val() == ''){
+          if ($(this).val() == 0){
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -39,8 +38,7 @@
       }
       if (!errorFound){
         $("input[name^='impact-']").each(function(index) {
-          console.log("Validando impacto:", $(this).attr("name"), $(this).prop("checked"));
-          if ($(this).val() == '') {
+          if ($(this).val() == 0) {
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -55,8 +53,7 @@
       }
       if (!errorFound) {
         $("input[name^='event-']").each(function(index) {
-          console.log("Validando evento:", $(this).attr("name"), $(this).prop("checked"));
-          if ($(this).val() == '') {
+          if ($(this).val() == 0) {
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -71,8 +68,8 @@
       }
       if (!errorFound) {
         $("textarea[name^='description-']").each(function(index) {
-          console.log("Validando descripción:", $(this).attr("name"), $(this).val());
-          if ($(this).val() == '') {
+          const value = $(this).val();
+          if (!value || value?.trim() === '') {
             let parent = $(this).closest('div.card');
             $(parent).addClass('danger');
             $('html, body').animate({
@@ -395,7 +392,7 @@
               data-impact-dedication="{{rt.impact_dedication_expert}}"
               data-probability="{{ rt.probability_level_expert }}"
               data-event-speed="{{rt.event_speed_level_expert}}"
-              data-description="{{ rt.description|default_if_none:'' }}" ></div>
+              data-description="{{ rt.description_expert|default_if_none:'' }}" ></div>
             </div>
             <!--end::Card footer-->
           </div>
@@ -418,7 +415,7 @@
               {% csrf_token %}
               {{ form.ref|as_crispy_field }}
               <button id="buttonSend" class="btn btn-primary btn-sm px-6 align-self-center text-nowrap" data-kt-indicator="off">
-                <span class="indicator-label">Finalizar y enviar evaluación para su validación</span>
+                <span class="indicator-label">{% trans 'Finalizar y enviar evaluación para su validación' %}</span>
                 <span class="indicator-progress">
                   Actualizando...<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                 </span>

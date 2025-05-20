@@ -10,6 +10,8 @@
 {% block content %}
 
 {% include '_includes/Messages.html' %}
+{% get_current_language as LANGUAGE_CODE %}
+
 <script src="{% static 'js/chart.js' %}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
 <script src="{% static 'js/apexcharts.js' %}"></script>
@@ -173,13 +175,14 @@
     chart.render();
   }
 
-  function load_chart(id, title, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined") {
-
+  function load_chart(id, translations, arg1 = "undefined", arg2 = "undefined", arg3 = "undefined", arg4 = "undefined", arg5 = "undefined") {
     let data;
+    let title;
 
-    if (title== 'Controles por estado') {
+    if (id== 'pie-main') {
+      title= translations["controldetail"]["control-status"],
       data = {
-        labels: ['Not started', 'Waiting Control Owner', 'Waiting Control Supervisor', 'Waiting Administrator', 'Finalized'],
+        labels: [translations["controldetail"]["status-ns"], translations["controldetail"]["status-awco"], translations["controldetail"]["status-awcs"], translations["controldetail"]["status-awca"], translations["controldetail"]["status-fi"]],
         datasets: [
           {
             label: '',
@@ -189,9 +192,10 @@
         ]
       };
 
-    } else {
+    } else if (id == 'pie-main2') {
+      title= translations["controldetail"]["control-effectiveness"],
       data = {
-        labels: ['Not started', 'Effective', 'Effective with recommendations', 'Not effective', "N/A"],
+        labels: [translations["controldetail"]["not-established"], translations["controldetail"]["effective"], translations["controldetail"]["effective-recommendations"], translations["controldetail"]["not-effective"], translations["controldetail"]["not-applicable"]],
         datasets: [
           {
             label: '',
@@ -351,7 +355,7 @@
         <div class="row mb-8">
           <!--begin::Col-->
           <div class="col-xl-5">
-            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de riesgo' %}</span></div>
+            <div class="fs-6 fw-semibold"><span class="badge badge-secondary text-wrap">{% trans 'Dominios de Riesgo' %}</span></div>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -477,21 +481,28 @@
           </div>
         </div>
         <script>
-          load_chart('pie-main', 'Controles por estado', '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
+          let translations= {};
+          const lang= "{{ LANGUAGE_CODE }}";
+          if (lang == 'es') {
+            translations= JSON.parse('{{ translations_es|escapejs }}');
+          } else if (lang == 'en') {
+            translations= JSON.parse('{{ translations_en|escapejs }}');
+          }
+          load_chart('pie-main', translations, '{{evaluation.ncontrols_test_by_state_si}}', '{{evaluation.ncontrols_test_by_state_wo}}', '{{evaluation.ncontrols_test_by_state_ws}}', '{{evaluation.ncontrols_test_by_state_wa}}', '{{evaluation.ncontrols_test_by_state_fi}}');
         </script>
         <div class="row mb-8">
           <div
             style="float: right;display: flex; flex-direction: row;flex-wrap: wrap;justify-content: flex-end;margin-top: -15px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Sin empezar' %}">NS</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Owner' %}">WO</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Control Owner' %}">WO</span>
             <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Control Supervisor' %}">WS</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Control Supervisor' %}">WS</span>
             <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Waiting Administrator' %}">WA</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'En espera del Administrador' %}">WA</span>
             <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Finalized' %}">FI</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Finalizado' %}">FI</span>
           </div>
         </div>
         <div class="row mb-8">
@@ -500,19 +511,19 @@
           </div>
         </div>
         <script>
-          load_chart('pie-main2', 'Controles por efectividad', '{{evaluation.ncontrols_test_by_result_se}}', '{{evaluation.ncontrols_test_by_result_ef}}', '{{evaluation.ncontrols_test_by_result_efr}}', '{{evaluation.ncontrols_test_by_result_ne}}', '{{evaluation.ncontrols_test_by_result_na}}');
+          load_chart('pie-main2', translations, '{{evaluation.ncontrols_test_by_result_se}}', '{{evaluation.ncontrols_test_by_result_ef}}', '{{evaluation.ncontrols_test_by_result_efr}}', '{{evaluation.ncontrols_test_by_result_ne}}', '{{evaluation.ncontrols_test_by_result_na}}');
         </script>
         <div class="row mb-8">
           <div
             style="float: right;display: flex; flex-direction: row;flex-wrap: wrap;justify-content: flex-end;margin-top: -15px !important; place-content:center;">
             <span class="badge badge-success n1" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Not started' %}">NS</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'No empezado' %}">NS</span>
             <span class="badge badge-success n5" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Effective' %}">EF</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Efectivo' %}">EF</span>
             <span class="badge badge-success n3" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Effective with recommendations' %}">EFR</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'Efectivo con recomendación' %}">EFR</span>
             <span class="badge badge-success n2" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip" title="{% trans 'Not effective' %}">NE</span>
+              data-bs-custom-class="custom-tooltip" title="{% trans 'No efectivo' %}">NE</span>
             <span class="badge badge-success n4" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-custom-class="custom-tooltip" title="{% trans 'N/A' %}">NA</span>
           </div>
@@ -627,8 +638,8 @@
           <th class="text-center align-middle">{% trans 'REF' %}</th>
           <th class="text-center align-middle">{% trans 'Descripción' %}</th>
           <th class="text-center align-middle">{% trans 'Evidencia' %}</th>
-          <th class="text-center align-middle">{% trans 'Dominios de riesgo' %}</th>
-          <th class="text-center align-middle">{% trans 'Nº de riesgos' %}</th>
+          <th class="text-center align-middle">{% trans 'Dominios de Riesgo' %}</th>
+          <th class="text-center align-middle">{% trans 'Número de riesgos' %}</th>
           <th class="text-center align-middle">{% trans 'Control Owner/Supervisor' %}</th>
           <th class="text-center align-middle">{% trans 'Efectividad' %}</th>
         </tr>

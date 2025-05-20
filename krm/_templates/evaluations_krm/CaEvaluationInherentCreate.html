@@ -5,7 +5,20 @@
 
 {% block js_footer %}
 <!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/es.js"></script>
 <script src="{% static 'js/flatpickr_es.js' %}"></script>
+
+<script>
+  $(document).ready(function () {
+  if ($('#e_date_begin').length && !$('#error-e-date-begin').length) {
+    $('<div id="error-e-date-begin" class="alert alert-danger d-none mt-2"></div>').insertAfter('#e_date_begin');
+  }
+  if ($('#e_date_end').length && !$('#error-e-date-end').length) {
+    $('<div id="error-e-date-end" class="alert alert-danger d-none mt-2"></div>').insertAfter('#e_date_end');
+  }
+  });
+</script>
 
 <script>
   $(document).ready(function () {
@@ -30,8 +43,10 @@
     {% get_current_language as LANGUAGE_CODE %}
     {% if LANGUAGE_CODE == 'es' %}
       $(".datepicker").flatpickr({
-        "locale": "es",
-        dateFormat: "d/m/Y",
+        locale: "es",
+        dateFormat: "Y-m-d",        // formato interno (para .val())
+        altInput: true,             // lo que ve el usuario
+        altFormat: "d/m/Y",
       });
     {% else %}
       $(".datepicker").flatpickr({
@@ -46,7 +61,7 @@
 {% if DEVJS %}
   <script defer src="http://localhost:3000/static/js/bundle.js"></script>
 {% else %}
-  <script defer src="{% static 'main.react.js' %}?v=20241219"></script>
+  <script defer src="{% static 'main.react.js' %}?v=20250409"></script>
 {% endif %}
 
 {% endblock js_footer %}
@@ -73,7 +88,7 @@
         <div class="col-12">
           <div class="mb-15">
             <!--begin::Title-->
-            <h1 class="fs-2x text-dark mb-6">Lanzamiento de evaluaciones de riesgo inherente</h1>
+            <h1 class="fs-2x text-dark mb-6">{% trans 'Lanzamiento de Evaluaciones de Riesgo Inherente' %}</h1>
           </div>
         </div>
       </div>
@@ -86,7 +101,7 @@
           <div class="flex-row-fluid col col-12 col-xl-10">
             <div class="row">
               <div class="col-12">
-                <h3 class="mb-6">Paso 1: Datos de la evaluación</h3>
+                <h3 class="mb-6">{% trans 'Paso 1: Datos de la Evaluación' %}</h3>
               </div>
               <div class="mb-4 col-12 col-md-7">
                 <div class="row">

@@ -28,9 +28,9 @@ class CompanyRiskExperts(AuditModel):
 
     def __str__(self):
         if self.expert:
-            return f'{self.company} - {self.risk} - {self.expert.email}'
+            return f'{self.company.name} - {self.risk.ref} - {self.expert.email}'
         else:
-            return f'{self.company} - {self.risk}'
+            return f'{self.company.name} - {self.risk.ref}'
 
     class Meta:
         verbose_name = _("Experto de Riesgo para Compañía")

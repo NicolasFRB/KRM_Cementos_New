@@ -142,13 +142,25 @@ if (evaluationQuesqionnaireElement) {
 for (let i = 0; i < risksTestResidual.length; i++) {
   let riskTestResidual = ReactDOM.createRoot(risksTestResidual.item(i));
   let pk = parseInt(risksTestResidual.item(i).getAttribute('data-risktestpk'));
+  let impactReputational = parseInt(risksTestResidual.item(i).getAttribute('data-impact-reputational'));
+  let impactEconomic = parseInt(risksTestResidual.item(i).getAttribute('data-impact-economic'));
+  let impactRegulatory = parseInt(risksTestResidual.item(i).getAttribute('data-impact-regulatory'));
+  let impactObjectives = parseInt(risksTestResidual.item(i).getAttribute('data-impact-objectives'));
+  let impactDedication = parseInt(risksTestResidual.item(i).getAttribute('data-impact-dedication'));
   let probability = parseInt(risksTestResidual.item(i).getAttribute('data-probability'));
+  let eventSpeed = parseInt(risksTestResidual.item(i).getAttribute('data-event-speed'));
   let description = risksTestResidual.item(i).getAttribute('data-description');
   riskTestResidual.render(
     <I18nextProvider i18n={i18next}>
       <RuRiskTestResidual
         pk={pk}
+        initialImpactReputational={impactReputational}
+        initialImpactEconomic={impactEconomic}
+        initialImpactRegulatory={impactRegulatory}
+        initialImpactObjectives={impactObjectives}
+        initialImpactDedication={impactDedication}
         initialProbability={probability}
+        initialEventSpeed={eventSpeed}
         initialDescription={description}
       />
     </I18nextProvider>
@@ -158,14 +170,20 @@ for (let i = 0; i < risksTestResidual.length; i++) {
 for (let i = 0; i < adminRisksTestResidual.length; i++) {
   let riskTestResidual = ReactDOM.createRoot(adminRisksTestResidual.item(i));
   let pk = parseInt(adminRisksTestResidual.item(i).getAttribute('data-risktestpk'));
+  let impact = parseInt(adminRisksTestResidual.item(i).getAttribute('data-impact'));
   let probability = parseInt(adminRisksTestResidual.item(i).getAttribute('data-probability'));
+  let eventSpeed= parseInt(adminRisksTestResidual.item(i).getAttribute('data-event-speed'));
   let description = adminRisksTestResidual.item(i).getAttribute('data-description');
   riskTestResidual.render(
     <I18nextProvider i18n={i18next}>
-      <CaRiskTestResidual pk={pk} initialProbability={probability} initialDescriptionAdmin={description} />
+      <CaRiskTestResidual
+       pk={pk}
+       initialImpact={impact}
+       initialProbability={probability}
+       initialEventSpeed={eventSpeed}
+       initialDescriptionAdmin={description} />
     </I18nextProvider>
   )
-
 }
 
 window.LANG = document.getElementsByTagName('html')[0].attributes[0].value;

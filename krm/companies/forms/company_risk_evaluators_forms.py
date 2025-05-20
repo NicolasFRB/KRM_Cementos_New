@@ -13,3 +13,4 @@ class CompanyRiskEvaluatorsForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["evaluator"].widget.attrs["class"] = "form-select"
         self.fields["evaluator"].widget.attrs["data-control"] = "select2"
+        self.fields["evaluator"].label= ""

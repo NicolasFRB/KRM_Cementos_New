@@ -44,7 +44,38 @@ function CreateEvaluationKrc(props) {
     newFormData.date_intermediate = $('#e_date_intermediate').val();
     newFormData.date_end = $('#e_date_end').val();
     newFormData.description = $('#e_description').val();
-    newFormData.completed = newFormData.ref !== '' && newFormData.date_begin !== '' && newFormData.date_intermediate !== '' && newFormData.date_end !== '';
+    $('#error-e-date-begin, #error-e-date-intermediate').addClass('d-none');
+    const beginDate = new Date(newFormData.date_begin);
+    const endDate = new Date(newFormData.date_end);
+    const intermediateDate = new Date(newFormData.date_intermediate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const datesOk = !isNaN(beginDate) && !isNaN(endDate) && !isNaN(intermediateDate) && beginDate >= today && beginDate <= intermediateDate && intermediateDate <= endDate;
+
+    if (intermediateDate< beginDate) {
+      $('#error-e-date-intermediate').text(t("krc.error-intermediate-date")).removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_intermediate').offset().top - 100
+      }, 1000);
+    } else if (beginDate< today) {
+      $('#error-e-date-begin').text(t("krc.error-start-date")).removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_begin').offset().top - 100
+      }, 1000);
+    } else if (endDate < intermediateDate) {
+      $('#error-e-date-intermediate').text(t("krc.error-end-date")).removeClass('d-none');
+      $('html, body').animate({
+        scrollTop: $('#e_date_intermediate').offset().top - 100
+      }, 1000);
+    } else {
+      $('#error-e-date-begin, #error-e-date-intermediate').text('').addClass('d-none');
+    }
+
+    newFormData.completed = newFormData.ref !== '' &&
+                            newFormData.date_begin !== '' &&
+                            newFormData.date_intermediate !== '' &&
+                            newFormData.date_end !== '' &&
+                            datesOk;
     setFormData(newFormData);
   }
 
@@ -85,48 +116,52 @@ function CreateEvaluationKrc(props) {
           <div className={(formData.completed ? '' : 'd-none')}>
             <SelectCompanies selectedCompanies={selectedCompanies} setSelectedCompanies={setSelectedCompanies} companies={companies} setCompanies={setCompanies} />
           </div>
-          <div className="separator my-10"></div>
         </div>
+
+        <div className="separator my-10"></div>
+
         <div className="col-12">
           <h3 className="mb-5">{t('krc.step-3-filters')}</h3>
+          {selectedCompanies.length === 0 && (
+            <>
+              <div className="alert alert-primary">{t('krc.select-companies')}</div>
+            </>
+          )
+          }
+          <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
+            <div className="col col-12 col-md-3">
+              <SelectDomainRisk selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
+            </div>
+            <div className="col col-12 col-md-3">
+              <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
+            </div>
+            <div className="col col-12 col-md-2">
+              {/* Hay que obtener las scopes a traves de algun endpoint */}
+              <SelectControlScopes selectedScopes={selectedScopes} setSelectedScopes={setSelectedScopes} />
+            </div>
+            <div className="col col-12 col-md-2">
+              {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}
+              <h5 className="mb-6">{t('krc.risk-types')}</h5>
+              <p>
+                <label className="form-check form-check-inline form-check-solid me-5">
+                  <input className="form-check-input" name="keycontrol" type="checkbox" checked={keyControl} onChange={() => setKeyControl(!keyControl)} /><span className="fw-semibold ps-2 fs-6">{t('krc.only-key-controls')}</span>
+                </label>
+              </p>
+              <p>
+                <label className="form-check form-check-inline form-check-solid me-5">
+                  <input className="form-check-input" name="elc" type="checkbox" checked={elc} onChange={() => setElc(!elc)} /><span className="fw-semibold ps-2 fs-6">{t('krc.add-elc')}</span>
+                </label>
+              </p>
+            </div>
+            <div className="col col-12 col-md-2">
+              <h5 className="mb-6">{t('krc.periodicity')}</h5>
+              <SelectPeriodicity selectedPeriodicity={selectedPeriodicity} setSelectedPeriodicity={setSelectedPeriodicity} />
+            </div>
+          </div>
         </div>
-        {selectedCompanies.length === 0 && (
-          <>
-            <div className="alert alert-primary">{t('krc.select-companies')}</div>
-          </>
-        )
-        }
-        <div className={"row " + (selectedCompanies.length ? '' : 'd-none')}>
-          <div className="col col-12 col-md-3">
-            <SelectDomainRisk selectedDomainRisks={selectedDomainRisks} setSelectedDomainRisks={setSelectedDomainRisks} />
-          </div>
-          <div className="col col-12 col-md-3">
-            <SelectProcess selectedProcesses={selectedProcesses} setSelectedProcesses={setSelectedProcesses} />
-          </div>
-          <div className="col col-12 col-md-2">
-            {/* Hay que obtener las scopes a traves de algun endpoint */}
-            <SelectControlScopes selectedScopes={selectedScopes} setSelectedScopes={setSelectedScopes} /> 
-          </div>
-          <div className="col col-12 col-md-2">
-            {/* <SelectRisk selectedRisks={selectedRisks} setSelectedRisks={setSelectedRisks} /> */}
-            <h5 className="mb-6">{t('krc.risk-types')}</h5>
-            <p>
-              <label className="form-check form-check-inline form-check-solid me-5">
-                <input className="form-check-input" name="keycontrol" type="checkbox" checked={keyControl} onChange={() => setKeyControl(!keyControl)} /><span className="fw-semibold ps-2 fs-6">{t('krc.only-key-controls')}</span>
-              </label>
-            </p>
-            <p>
-              <label className="form-check form-check-inline form-check-solid me-5">
-                <input className="form-check-input" name="elc" type="checkbox" checked={elc} onChange={() => setElc(!elc)} /><span className="fw-semibold ps-2 fs-6">{t('krc.add-elc')}</span>
-              </label>
-            </p>
-          </div>
-          <div className="col col-12 col-md-2">
-            <h5 className="mb-6">{t('krc.periodicity')}</h5>
-            <SelectPeriodicity selectedPeriodicity={selectedPeriodicity} setSelectedPeriodicity={setSelectedPeriodicity} />
-          </div>
-        </div>
+
         <div className="separator my-10"></div>
+
         <div className="col-12">
           <h3 className="mb-5">{t('krc.step-4-select-controls')}</h3>
           <SelectControlsCompanyKrc
@@ -144,6 +179,7 @@ function CreateEvaluationKrc(props) {
         </div>
 
         <div className="separator my-10"></div>
+
         <div className="col-12">
           <h3 className="mb-5">{t('krc.step-5-launch')}</h3>
           {nEvaluations > 0 && (

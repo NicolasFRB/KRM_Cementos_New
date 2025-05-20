@@ -84,7 +84,7 @@ class QuestionTest(AuditModel):
     )
 
     def __str__(self):
-        return f'{self.evaluation.ref} - {self.question.title}'
+        return f'{self.evaluation.ref}'
 
     class Meta:
         verbose_name = _("Respuesta")
@@ -144,7 +144,7 @@ class QuestionTest(AuditModel):
         msg.content_subtype = "html"
 
         self.evaluator.add_action(
-            _("[%s] Envío de email de Test de Pregunta (%s)" % (notif_type.upper(), self.evaluation.ref)))
+            _("[%s] Email de Test de Pregunta enviado (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
             return msg.send(fail_silently=False)

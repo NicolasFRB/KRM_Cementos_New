@@ -60,7 +60,7 @@ class CaCompanyListView(ListView):
             {'title': _('Compañías que administra'), 'url': reverse(
                 'companies:ca_company_list')},
         ]
-        context['page_title'] = _('Companías que administra')
+        context['page_title'] = _('Compañías que administra')
         context['breadcrums'] = breadcrums
         context['js_template'] = ['js/custom/datatables.js']
         return context

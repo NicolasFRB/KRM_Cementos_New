@@ -42,8 +42,8 @@ from krm.companies.api import (
 
 from krm.evaluations_krm.api import (
     RiskTestInherentExpertApiView,
-    RiskTestResidualEvaluatorApiView,
-    RiskCompanyResidualAdminApiView
+    RiskTestResidualEvaluatorApiView
+    #RiskCompanyResidualAdminApiView
 )
 
 from krm.questionnaires.api import (
@@ -95,9 +95,9 @@ urlpatterns = [
      path('api/risktestresidualevaluator/',
           RiskTestResidualEvaluatorApiView.as_view()
           ),
-     path('api/riskcompanyresidualadmin/',
-          RiskCompanyResidualAdminApiView.as_view()
-          ),
+    #  path('api/riskcompanyresidualadmin/',
+    #       RiskCompanyResidualAdminApiView.as_view()
+    #       ),
      path('api/controlscompany/',
           ControlCompanyApiView.as_view()),
      path('api/questiontest/',

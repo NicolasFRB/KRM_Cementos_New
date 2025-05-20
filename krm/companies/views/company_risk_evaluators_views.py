@@ -29,11 +29,13 @@ from krm.metronic.libs.theme import KTTheme
 from krm.companies.forms import CompanyDomainRiskEvaluatorsForm, CompanyRiskEvaluatorsForm
 from krm.risks.models import RiskCompany
 
-from krm.users.decorators import (
-    is_global_admin,
-    user_can_edit_company,
-    user_can_edit_domain_risk_evaluator
-)
+#from krm.users.decorators import (
+    #is_global_admin,
+    #user_can_edit_company,
+    #user_can_edit_domain_risk_evaluator
+#)
+from krm.users.decorators import is_global_admin
+from django.contrib.auth.decorators import login_required
 
 
 @method_decorator([login_required, is_global_admin], name='dispatch')
@@ -41,13 +43,6 @@ class GaCompanyRiskEvaluatorUpdateView(UpdateView):
     form_class = CompanyRiskEvaluatorsForm
     model = RiskCompany
     template_name = 'companies/GaCompanyRiskEvaluatorUpdate.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_company_admin:
-            return HttpResponseRedirect(reverse('companies:ca_company_assign_evaluator_update', kwargs={'pk': kwargs['pk']}))
-        if request.user.is_superuser:
-            return super().dispatch(request, *args, **kwargs)
-        raise PermissionDenied
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -59,10 +54,10 @@ class GaCompanyRiskEvaluatorUpdateView(UpdateView):
                 'companies:ga_company_list')},
             {'title': self.object.company, 'url': reverse(
                 'companies:ga_company_detail', kwargs={'pk': self.object.company.pk})},
-            {'title': _('Asignar evaluadores')},
+            {'title': _('Asignar evaluador')},
         ]
         context['page_title'] = _(
-            'Asignar Evaluadores de Riesgo Residual (RR)')
+            'Asignar un Evaluador de Riesgo Residual (RR)')
         context['breadcrums'] = breadcrums
 
         return context
@@ -72,7 +67,7 @@ class GaCompanyRiskEvaluatorUpdateView(UpdateView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Evaluadores asignados correctamente')
+            _('Evaluador asignado correctamente')
         )
         return reverse_lazy(
             'companies:ga_company_detail',

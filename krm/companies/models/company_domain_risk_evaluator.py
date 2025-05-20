@@ -26,7 +26,7 @@ class CompanyDomainRiskEvaluator(AuditModel):
     )
 
     def __str__(self):
-        return f'{self.company} - {self.domain_risk}'
+        return f'{self.company.name} - {self.domain_risk.ref}'
 
     class Meta:
         verbose_name = _("Evaluador de Dominio de Riesgo para Compañía")

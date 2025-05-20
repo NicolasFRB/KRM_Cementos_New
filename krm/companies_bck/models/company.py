@@ -52,7 +52,7 @@ class Company(KrcModel):
     email = models.EmailField(_("Email"), blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         verbose_name = _("Compañía")

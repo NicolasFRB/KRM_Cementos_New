@@ -213,7 +213,7 @@ class ControlTest(AuditModel):
         msg.content_subtype = "html"
 
         self.control_test_owner.add_action(
-            _("[%s] Envío de email de Controles pendientes de completar (COwner) (%s)" % (notif_type.upper(), self.evaluation.ref)))
+            _("[%s] Email de Controles pendientes de completar como Control Owner enviado (%s)" % (notif_type.upper(), self.evaluation.ref)))
 
         if configuration.enable_emails:
             print("SUBJECT: ")
@@ -281,7 +281,7 @@ class ControlTest(AuditModel):
         msg.content_subtype = "html"
 
         self.control_test_supervisor.add_action(
-            _("[%s] Envío de email de Controles pendientes de supervisar (CSupervisor) (%s)" % (notif_type.upper(), self.evaluation.ref)))
+            _("[%s] Email de Controles pendientes de supervisar como Control Supervisor enviado (%s)" % (notif_type.upper(), self.evaluation.ref)))
         if configuration.enable_emails:
             print("SUBJECT: ")
             print(subject)

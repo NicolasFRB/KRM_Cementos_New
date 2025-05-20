@@ -4,7 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
-<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<!-- <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script> -->
 <script>
   $(document).ready(function () {
 
@@ -80,10 +80,14 @@
                 {{ form.is_elc|as_crispy_field }}
               </div>
               <div class="mb-4 col-12">
+                <fieldset>
                 {{ form.risks|as_crispy_field }}
+                </fieldset>
               </div>
               <div class="mb-4 col-12">
+                <fieldset>
                 {{ form.sub_processes|as_crispy_field }}
+                </fieldset>
               </div>
             </div>
 

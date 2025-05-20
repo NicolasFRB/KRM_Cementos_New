@@ -13,3 +13,4 @@ class CompanyRiskExpertsForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["expert"].widget.attrs["class"] = "form-select"
         self.fields["expert"].widget.attrs["data-control"] = "select2"
+        self.fields["expert"].label= ""

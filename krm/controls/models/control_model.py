@@ -107,7 +107,7 @@ class Control(AuditModel):
 
     systems = models.CharField(
         _("Sistemas"), max_length=140, blank=True, null=True)
-    
+
     plant = models.CharField(
         _("Planta"), max_length=140, blank=True, null=True)
 
@@ -190,7 +190,7 @@ class Control(AuditModel):
         ordering = ["ref", ]
 
     def save(self, *args, **kwargs):
-        self.ref = self.ref.upper()
+        self.ref = self.ref
         super().save(*args, **kwargs)
 
         from krm.companies.models import Company, CompanyControls

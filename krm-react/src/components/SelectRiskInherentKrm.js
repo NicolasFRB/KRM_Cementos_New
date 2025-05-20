@@ -46,7 +46,7 @@ function SelectRisk({ selectedRisks, setSelectedRisks, selectedDomainRisks, sele
       .then((res) => res.json())
       .then(
         (res) => {
-          
+
           console.log("Filtered risks", res)
 
           let riskSet = [];
@@ -78,8 +78,8 @@ function SelectRisk({ selectedRisks, setSelectedRisks, selectedDomainRisks, sele
     if (risks.length) {
       window.CustomDatatables.initEvalRI(); //Error aqui
     }
-  }, []); 
-  // }, [risks]); 
+  }, []);
+  // }, [risks]);
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -97,7 +97,7 @@ function SelectRisk({ selectedRisks, setSelectedRisks, selectedDomainRisks, sele
                     <span onClick={() => selectAll()} className="me-5"><i className="bi bi-clipboard-check"></i></span>
                     <span onClick={() => unSelectAll()}><i className="bi bi-clipboard"></i></span>
                   </th>
-                  <th className="fw-semibold">REF</th>
+                  <th className="fw-semibold">{t('general.ref')}</th>
                   <th className="fw-semibold">{t('general.name')}</th>
                   <th className="fw-semibold">{t('general.risk-master')}</th>
                 </tr>

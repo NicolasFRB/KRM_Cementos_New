@@ -37,7 +37,7 @@ class RiskMaster(AuditModel):
     )
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         verbose_name = _("Riesgo Maestro")
@@ -45,5 +45,5 @@ class RiskMaster(AuditModel):
         ordering = ["domain_risk", "name"]
 
     def save(self, *args, **kwargs):
-        self.ref = self.ref.upper()
+        self.ref = self.ref
         super().save(*args, **kwargs)

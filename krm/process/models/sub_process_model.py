@@ -37,7 +37,7 @@ class SubProcess(AuditModel):
     )
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         verbose_name = _("Sub Proceso")

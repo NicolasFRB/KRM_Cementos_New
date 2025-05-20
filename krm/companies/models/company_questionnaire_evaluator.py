@@ -21,7 +21,7 @@ class CompanyQuestionnaireEvaluator(AuditModel):
     )
 
     def __str__(self):
-        return f'{self.company} - {self.evaluator}'
+        return f'{self.company.name} - {self.evaluator.email}'
 
     class Meta:
         verbose_name = _("Evaluador de Cuestionario para Compañía")

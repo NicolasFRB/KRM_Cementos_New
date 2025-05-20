@@ -30,7 +30,7 @@
         <th class="text-center align-middle">{% trans 'Cuestionario' %}</th>
           <th class="text-center align-middle">{% trans 'REF' %}</th>
           <th class="text-center align-middle">{% trans 'Descripción' %}</th>
-          <th class="text-center align-middle">{% trans 'Nº Preguntas' %}</th>
+          <th class="text-center align-middle">{% trans 'Número de Preguntas' %}</th>
           <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center align-middle">{% trans 'Estado' %}</th>
@@ -43,7 +43,7 @@
             <td class="align-middle">
               <a href="{% url 'evaluation_questionnaires:ru_evaluation_questionnaire_complete' evaluation.pk %}">
                 <span class="badge badge-primary">{{ evaluation.ref }}</span>
-              </a>  
+              </a>
             </td>
             <td class="align-middle">
               <div style="display:flex;">
@@ -56,7 +56,7 @@
               </div>
             </td>
             <td class="text-center align-middle">
-              <span class="badge badge-info">{{ evaluation.nquestion_test_pending_user }}</span>            
+              <span class="badge badge-info">{{ evaluation.nquestion_test_pending_user }}</span>
             </td>
             <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
             <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
@@ -103,7 +103,7 @@
         <th class="text-center align-middle">{% trans 'Cuestionario' %}</th>
           <th class="text-center align-middle">{% trans 'REF' %}</th>
           <th class="text-center align-middle">{% trans 'Descripción' %}</th>
-          <th class="text-center align-middle">{% trans 'Nº Preguntas' %}</th>
+          <th class="text-center align-middle">{% trans 'Número de Preguntas' %}</th>
           <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center align-middle">{% trans 'Estado' %}</th>
@@ -114,7 +114,7 @@
           <tr>
             <td class="text-center align-middle"><i class="bi bi-check-circle-fill fs-1x text-primary"></i></td>
             <td class="align-middle">
-                <span class="badge badge-primary">{{ evaluation.ref }}</span> 
+                <span class="badge badge-primary">{{ evaluation.ref }}</span>
             </td>
             <td class="align-middle">
               <div style="display:flex;">
@@ -127,7 +127,7 @@
               </div>
             </td>
             <td class="text-center align-middle">
-              <span class="badge badge-info">{{ evaluation.nquestion_test_delivered_user }}</span>            
+              <span class="badge badge-info">{{ evaluation.nquestion_test_delivered_user }}</span>
             </td>
             <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
             <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>
@@ -174,7 +174,7 @@
         <th class="text-center align-middle">{% trans 'Cuestionario' %}</th>
           <th class="text-center align-middle">{% trans 'REF' %}</th>
           <th class="text-center align-middle">{% trans 'Descripción' %}</th>
-          <th class="text-center align-middle">{% trans 'Nº Preguntas' %}</th>
+          <th class="text-center align-middle">{% trans 'Número de Preguntas' %}</th>
           <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center align-middle">{% trans 'Estado' %}</th>
@@ -185,7 +185,7 @@
           <tr>
             <td class="text-center align-middle"><i class="bi bi-check-circle-fill fs-1x text-primary"></i></td>
             <td class="align-middle">
-                <span class="badge badge-primary">{{ evaluation.ref }}</span> 
+                <span class="badge badge-primary">{{ evaluation.ref }}</span>
             </td>
             <td class="align-middle">
               <div style="display:flex;">
@@ -198,7 +198,7 @@
               </div>
             </td>
             <td class="text-center align-middle">
-              <span class="badge badge-info">{{ evaluation.nquestion_test_finished_user }}</span>            
+              <span class="badge badge-info">{{ evaluation.nquestion_test_finished_user }}</span>
             </td>
             <td class="text-center align-middle">{{ evaluation.certification_year }} ({{ evaluation.certification_period }})</td>
             <td class="text-center align-middle"><div>{{ evaluation.date_begin|date:'d/m/Y' }}</div><div>{{ evaluation.date_end|date:'d/m/Y' }}</div></td>

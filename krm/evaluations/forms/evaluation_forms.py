@@ -8,9 +8,12 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import FileExtensionValidator
 
 from krm.evaluations.models import Evaluation
+from krm.evaluations_krm.models.evaluation_krm_inherent_model import EvaluationKrmInherent
+from krm.evaluations_krm.models.evaluation_krm_residual_model import EvaluationKrmResidual
 from django.core.validators import FileExtensionValidator
 
 from krm.companies.models.company_model import Company
+from krm.risks.models.domain_risk_model import DomainRisk
 
 
 class EvaluationCreateForm(ModelForm):
@@ -144,37 +147,37 @@ class EvaluationDashboardForm(forms.Form):
         return datetime.date.today().year
 
     evaluation = forms.ModelMultipleChoiceField(
-        label=_("Evaluations"),
+        label=_("Evaluaciones"),
         required=False,
         queryset=Evaluation.objects.all(),
     )
 
     company = forms.ModelMultipleChoiceField(
-        label=_("Companies"),
+        label=_("Compañías"),
         required=False,
         queryset=Company.objects.all(),
     )
 
     date_evaluation_begin = forms.DateField(
-        label=_('From'),
+        label=_('Desde'),
         required=False,
         widget=forms.DateInput(attrs={'class': 'datepicker'})
     )
 
     date_evaluation_end = forms.DateField(
-        label=_('To'),
+        label=_('Hasta'),
         required=False,
         widget=forms.DateInput(attrs={'class': 'datepicker'})
     )
 
     certification_year = forms.MultipleChoiceField(
-        label=_("Certification year"),
+        label=_("Año de certificación"),
         required=False,
         choices=year_choices(),
     )
 
     certification_period = forms.ModelMultipleChoiceField(
-        label=_("Certification period"),
+        label=_("Periodo de certificación"),
         required=False,
         queryset=Evaluation.objects.all().values_list("certification_period", flat=True).distinct(),
     )
@@ -186,23 +189,9 @@ class EvaluationDashboardForm(forms.Form):
     )
 
     process_status = forms.MultipleChoiceField(
-        label=_("Status"),
+        label=_("Estado"),
         required=False,
         choices=PROCESS_STATUS_CHOICES,
-    )
-
-    CONTROL_STATUS_CHOICES = (
-        ("SI", _("Sin iniciar")),
-        ("WO", _("En espera de respuesta del Control Owner")),
-        ("WS", _("En espera de respuesta del Control Supervisor")),
-        ("WA", _("En espera de respuesta del Control Administrator")),
-        ("FI", _("Finalizado")),
-    )
-
-    control_status = forms.MultipleChoiceField(
-        label=_("Control Status"),
-        required=False,
-        choices=CONTROL_STATUS_CHOICES,
     )
 
     def __init__(self, *args, **kwargs):
@@ -217,10 +206,89 @@ class EvaluationDashboardForm(forms.Form):
         self.fields["certification_period"].widget.attrs["data-control"] = "select2"
         self.fields["process_status"].widget.attrs["class"] = "form-select"
         self.fields["process_status"].widget.attrs["data-control"] = "select2"
-        self.fields["control_status"].widget.attrs["class"] = "form-select"
-        self.fields["control_status"].widget.attrs["data-control"] = "select2"
 
+class EvaluationKrmDashboardForm(forms.Form):
+    def year_choices():
+        return [(r, r) for r in range(2000, datetime.date.today().year + 1)]
 
+    def current_year():
+        return datetime.date.today().year
+
+    evaluation_inherent = forms.ModelMultipleChoiceField(
+        label=_("Evaluaciones Inherentes"),
+        required=False,
+        queryset= EvaluationKrmInherent.objects.all(),
+    )
+
+    evaluation_residual =  forms.ModelMultipleChoiceField(
+        label=_("Evaluaciones Residuales"),
+        required=False,
+        queryset= EvaluationKrmResidual.objects.all(),
+    )
+
+    company = forms.ModelMultipleChoiceField(
+        label=_("Compañías"),
+        required=False,
+        queryset=Company.objects.all(),
+    )
+
+    date_evaluation_begin = forms.DateField(
+        label=_('Desde'),
+        required=False,
+        widget=forms.DateInput(attrs={'class': 'datepicker'})
+    )
+
+    date_evaluation_end = forms.DateField(
+        label=_('Hasta'),
+        required=False,
+        widget=forms.DateInput(attrs={'class': 'datepicker'})
+    )
+
+    certification_year = forms.MultipleChoiceField(
+        label=_("Año de certificación"),
+        required=False,
+        choices=year_choices(),
+    )
+
+    certification_period = forms.ModelMultipleChoiceField(
+        label=_("Periodo de certificación"),
+        required=False,
+        queryset=Evaluation.objects.all().values_list("certification_period", flat=True).distinct(),
+    )
+
+    PROCESS_STATUS_CHOICES = (
+        ("EP", _("En proceso")),
+        ("FI", _("Finalizado")),
+    )
+
+    process_status = forms.MultipleChoiceField(
+        label=_("Estado"),
+        required=False,
+        choices=PROCESS_STATUS_CHOICES,
+    )
+
+    domain_risk = forms.ModelMultipleChoiceField(
+        label=_("Dominios de Riesgo"),
+        required=False,
+        queryset= DomainRisk.objects.all(),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["evaluation_inherent"].widget.attrs["class"] = "form-select"
+        self.fields["evaluation_inherent"].widget.attrs["data-control"] = "select2"
+        self.fields["evaluation_residual"].widget.attrs["class"] = "form-select"
+        self.fields["evaluation_residual"].widget.attrs["data-control"] = "select2"
+        self.fields["company"].widget.attrs["class"] = "form-select"
+        self.fields["company"].widget.attrs["data-control"] = "select2"
+        self.fields["certification_year"].widget.attrs["class"] = "form-select"
+        self.fields["certification_year"].widget.attrs["data-control"] = "select2"
+        self.fields["certification_period"].widget.attrs["class"] = "form-select"
+        self.fields["certification_period"].widget.attrs["data-control"] = "select2"
+        self.fields["process_status"].widget.attrs["class"] = "form-select"
+        self.fields["process_status"].widget.attrs["data-control"] = "select2"
+        self.fields["domain_risk"].widget.attrs["class"] = "form-select"
+        self.fields["domain_risk"].widget.attrs["data-control"]= "select2"
 
 from krm.risks.models import DomainRisk
 from krm.evaluations.models import Evaluation

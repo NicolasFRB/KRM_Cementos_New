@@ -4,19 +4,31 @@
 {% load crispy_forms_tags %}
 
 {% block js_footer %}
+{% get_current_language as LANGUAGE_CODE %}
+
+<!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/es.js"></script>
+<script src="{% static 'js/flatpickr_es.js' %}"></script>
+
+
 <script>
-  {% get_current_language as LANGUAGE_CODE %}
-  {% if LANGUAGE_CODE == 'es' %}
+  if (LANGUAGE_CODE == 'es') {
     $(".datepicker").flatpickr({
-      "locale": "es",
-      dateFormat: "d/m/Y",
+      locale: "es",
+      dateFormat: "Y-m-d",        // formato interno (para .val())
+      altInput: true,             // lo que ve el usuario
+      altFormat: "d/m/Y",
     });
-  {% else %}
+  }
+  else {
     $(".datepicker").flatpickr({
           "locale": "en",
           dateFormat: "Y-m-d",
     });
-  {% endif %}
+  }
 
   $(document).ready(function(){
 
@@ -54,22 +66,17 @@
 
 {% include '_includes/Messages.html' %}
 
-<!-- <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
-
 <script src="{% static 'js/apexcharts.js' %}"></script>
-<script src="{% static 'js/flatpickr_es.js' %}"></script>
-
 
 <script>
   var control_tests = {};
   var evidences = {};
   var frequency_evaluation = {};
   var evals = [];
-  var control_type_evaluation = {'Preventivo': {}, 'Detectivo': {}};
-  var key_controls_evaluation = {"Key": {}, "Non-key": {}};
+  var control_type_evaluation = {'preventive': {}, 'detective': {}};
+  var key_controls_evaluation = {"key": {}, "non-key": {}};
   var ct_status_evaluation = {};
-  var ct_result_evaluation = {"Efectivo": {}, "Sin establecer": {}, "Efectivo con recomendación": {}, "No efectivo": {}, "N/A": {}};
+  var ct_result_evaluation = {"effective": {}, "not-established": {}, "effective-recommendations": {}, "not-effective": {}, "not-applicable": {}};
   var subprocesses = {};
   var risks = {};
 
@@ -206,7 +213,7 @@
         }
       },
       chart: {
-        height: 350,
+        height: 400,
         type: 'treemap'
       },
     };
@@ -215,32 +222,64 @@
     chart.render();
   }
 
-  function ct_frequency (id, dict, labels, title){
-    var keys = [];
-    var values = [];
-    var series = [];
+  function ct_control_status (id, dict, translations){
+    var evaluations = [];
+    var not_started = [];
+    var aw_owner = [];
+    var aw_supervisor = [];
+    var aw_administrator = [];
+    var finished= [];
+    var barHeight= 50;
 
     Object.entries(dict).forEach(([key, value]) => {
-      keys.push(key);
-      values = [];
+      evaluations.push(key);
       Object.entries(value).forEach(([key2, value2]) => {
-        values.push(value2);
-      });
-      series.push({
-        "name": key,
-        "data": values,
+        if (key2 == "Not started"){
+          not_started.push(value2);
+        } else if (key2 == "Awaiting Control Owner") {
+          aw_owner.push(value2);
+        } else if (key2 == "Awaiting Control Supervisor") {
+          aw_supervisor.push(value2);
+        } else if (key2 == "Awaiting Control Administrator") {
+          aw_administrator.push(value2);
+        } else if (key2 == "Finished") {
+          finished.push(value2);
+        }
       });
     });
 
+    const minHeight= document.getElementById("chart-6-container").offsetHeight;
+    chartHeight = Math.max(barHeight*evaluations.length, minHeight);
+
     var options = {
-      series: series,
+      series: [{
+        name: translations["controldashboard"]["status-ns"],
+        data: not_started,
+        color: '#d4d0c7'
+      }, {
+        name: translations["controldashboard"]["status-awco"],
+        data: aw_owner,
+        color: '#a6ed9d'
+      }, {
+        name: translations["controldashboard"]["status-awcs"],
+        data: aw_supervisor,
+        color: '#e6d68e'
+      }, {
+        name: translations["controldashboard"]["status-awca"],
+        data: aw_administrator,
+        color: '#ed9f7b'
+      }, {
+        name: translations["controldashboard"]["status-fi"],
+        data: finished,
+        color: '#ea7d7e'
+      }],
       chart: {
         type: 'bar',
-        height: 350,
+        height: chartHeight,
         stacked: true,
       },
       noData: {
-        text: "No data available",
+        text: translations["controldashboard"]["no-data"],
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,
@@ -254,6 +293,7 @@
       plotOptions: {
         bar: {
           horizontal: true,
+          barHeight: '80%',
           dataLabels: {
             total: {
               enabled: true,
@@ -271,7 +311,7 @@
         colors: ['#fff']
       },
       title: {
-        text: title,
+        text: translations["controldashboard"]["test-status"],
         align: 'middle',
         offsetY: -5,
         style: {
@@ -279,7 +319,7 @@
         }
       },
       xaxis: {
-        categories: labels,
+        categories: evaluations,
         labels: {
           formatter: function (val) {
             return val
@@ -303,6 +343,7 @@
       },
       legend: {
         position: 'top',
+        offsetY: -17,
       }
     };
 
@@ -310,12 +351,14 @@
     chart.render();
   }
 
-  function ct_control_type (id, dict, labels, title){
+  function ct_control_type (id, dict, labels, translations){
     var keys = [];
     var values = [];
     var series = [];
-
-    // console.log(dict);
+    var barWidth= 50;
+    let totalWidth= 0;
+    let title= "";
+    var colors_code= [];
 
     Object.entries(dict).forEach(([key, value]) => {
       keys.push(key);
@@ -324,18 +367,34 @@
         values.push(value2);
       });
       series.push({
-        "name": key,
+        "name": translations["controldashboard"][key],
         "data": values,
       });
     });
 
-    // console.log(series);
+    if (id === "chart-4"){
+      title = translations["controldashboard"]["test-type"];
+      const minWidth = document.getElementById('chart-4-container').offsetWidth;
+      totalWidth = Math.max(barWidth * labels.length, minWidth-5);
+      colors_code= ["#a6ed9d", "#d4d0c7"]
+    } else if (id === "chart-3"){
+      title = translations["controldashboard"]["test-key"];
+      const minWidth = document.getElementById('chart-3-container').offsetWidth;
+      totalWidth = Math.max(barWidth * labels.length, minWidth-5);
+      colors_code= ["#e6d68e", "#ed9f7b"]
+    } else if (id === "chart-7"){
+      title = translations["controldashboard"]["test-result"];
+      const minWidth = document.getElementById('chart-7-container').offsetWidth;
+      totalWidth = Math.max(barWidth * labels.length, minWidth-5);
+      colors_code= ["#a6ed9d", "#d4d0c7", "#e6d68e", "#ed9f7b", "#7dedf5"];
+    }
 
     var options = {
         series: series,
         chart: {
           type: 'bar',
-          height: 350,
+          height: 400,
+          width: totalWidth,
           stacked: true,
           toolbar: {
             show: true
@@ -345,7 +404,7 @@
           }
         },
         noData: {
-        text: "No data available",
+        text: translations["controldashboard"]["no-data"],
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,
@@ -356,7 +415,7 @@
           fontFamily: undefined
         }
       },
-        colors: ['#02e397', '#bdbac1', '#ffaa1e', '#e85065', '#0090ff'],
+        colors: colors_code,
         responsive: [{
           breakpoint: 480,
           options: {
@@ -368,7 +427,7 @@
         plotOptions: {
           bar: {
             horizontal: false,
-            borderRadius: 10,
+            columnWidth: '80%',
             dataLabels: {
               total: {
                 enabled: true,
@@ -390,6 +449,11 @@
         },
         xaxis: {
           categories: labels,
+          labels: {
+          maxHeight: 100,
+          hideOverlappingLabels: false,
+          trim: true,
+          },
         },
         yaxis: {
           labels: {
@@ -400,6 +464,7 @@
         },
         legend: {
           position: 'top',
+          offsetY: -17,
         },
         fill: {
           opacity: 1
@@ -461,7 +526,7 @@
         show: true,
       },
       chart: {
-        height: 350,
+        height: 400,
         type: 'scatter',
         width: '100%'
       },
@@ -516,14 +581,35 @@
   }
 </script>
 
+<div class="card shadow-sm mb-4" style="border-radius: 1rem; overflow: hidden;">
+  <div class="card-header bg-primary d-flex justify-content-center align-items-center">
+    <h5 class="mb-0 fs-2 fw-bold text-white py-3">
+      {% trans "Seleccione el Dashboard que desea visualizar" %}
+    </h5>
+  </div>
+  <div class="card-body bg-light">
+    <form method="get" action="{% url 'users:ga_dashboard' %}">
+      <select name="dashboard" class="form-select" onchange="this.form.submit()">
+        <option value="default" {% if request.GET.dashboard == 'default' %}selected{% endif %}>
+          {% trans 'Dashboard de Controles' %}
+        </option>
+        <option value="KRM" {% if request.GET.dashboard == 'KRM' %}selected{% endif %}>
+          {% trans 'Dashboard de Riesgos' %}
+        </option>
+      </select>
+    </form>
+  </div>
+</div>
+
 <div class="accordion" id="kt_accordion_2">
-  <form method="get" class="kt-form kt-form--label-right" >
+  <form method="get" class="kt-form kt-form--label-right">
+    <input type="hidden" name="dashboard" value="{{ dashboard }}">
     <div class="card">
       <div class="accordion-item">
         <div class="card-header" id="kt_accordion_1_header_3" style="padding: inherit">
           <!--begin::Card header-->
           <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_3" aria-expanded="false" aria-controls="kt_accordion_1_body_3">
-          {% trans 'Search filters' %}
+          {% trans 'Aplicar filtros' %}
           </button>
           <!--end::Card header-->
         </div>
@@ -548,13 +634,12 @@
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_year|as_crispy_field }}</div>
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.certification_period|as_crispy_field }}</div>
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.process_status|as_crispy_field }}</div>
-                        <!-- <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.control_status|as_crispy_field }}</div> -->
                       </div>
                     </fieldset>
                   </div>
                   <div class="row mb-4 col-12 col-md-4 align-items-start">
                     <fieldset>
-                      <legend>Date of evaluation</legend>
+                      <legend>{% trans 'Fecha de Evaluación' %}</legend>
                       <div class="row">
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.date_evaluation_begin|as_crispy_field }}</div>
                         <div class="col-12 col-md-6 mb-6">{{ search_evaluation_form.date_evaluation_end|as_crispy_field }}</div>
@@ -566,7 +651,7 @@
             </div>
           </div>
           <div class="card-footer py-6">
-            <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i>Search</button>
+            <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i>{% trans 'Buscar' %}</button>
           </div>
         </div>
       </div>
@@ -576,92 +661,102 @@
 
 <div class="card">
   <div class="card-header">
-    <div class="card-title fs-3 fw-bold">{% trans 'Charts' %}</div>
+    <div class="card-title fs-3 fw-bold">{% trans 'Gráficos' %}</div>
   </div>
   <div class="card-body">
     <div class="row mb-4">
       <div class="col-xl-6">
-        <div id="chart-6"></div>
+        <div id="chart-6-container" style="height: 400px; overflow-y: auto;">
+          <div id="chart-6" style="width: 100%;"></div>
+        </div>
       </div>
       <div class="col-xl-6">
-        <div id="chart-7"></div>
+        <div id="chart-7-container" style="height: 400px; overflow-x: auto;">
+          <div id="chart-7"></div>
+        </div>
       </div>
     </div>
 
-    <div class="row mb-4">
+    <!-- <div class="row mb-4">
       <div class="col-xl-6">
         <div id="chart-1"></div>
       </div>
       <div class="col-xl-6">
         <div id="chart-2"></div>
       </div>
-    </div>
+    </div> -->
 
     <div class="row mb-4">
       <div class="col-xl-6">
-        <div id="chart-3"></div>
+        <div id="chart-3-container" style="height: 400px; overflow-x: auto;">
+          <div id="chart-3"></div>
+        </div>
       </div>
       <div class="col-xl-6">
-        <div id="chart-4"></div>
+        <div id="chart-4-container" style="height: 400px; overflow-x: auto;">
+          <div id="chart-4"></div>
+        </div>
       </div>
     </div>
-    <div class="row mb-4">
+    <!-- <div class="row mb-4">
       <div id="chart-5"></div>
-    </div>
+    </div> -->
     <!-- <div class="row mb-4">
       <div id="chart-8"></div>
     </div> -->
 
     {% for e in evaluations %}
       <script>
-        var frequencies = {"Bajo demanda": 0, "Constante": 0, "Diario": 0, "Semanal": 0, "Quincenal": 0, "Mensual": 0, "Bimensual": 0, "Trimestral": 0, "Cuatrimestral": 0, "Semestral": 0, "Anual": 0, "Bienal": 0, "Trienal": 0, "Quinquenal": 0};
-        var ct_types = {"Preventivo": 0, "Detectivo": 0};
-        var key_controls = {"Key": 0, "Non-key": 0};
-        var ct_status = {"Sin iniciar": 0, "En espera de respuesta del Control Owner": 0, "En espera de respuesta del Control Supervisor": 0, "En espera de respuesta del Control Administrator": 0, "Finalizado": 0};
-        var ct_result = {"Efectivo": 0, "Sin establecer": 0, "Efectivo con recomendación": 0, "No efectivo": 0, "N/A": 0};
+        var frequencies = {"On demand": 0, "Constant": 0, "Daily": 0, "Weekly": 0, "Biweekly": 0, "Monthly": 0, "Bimonthly": 0, "Quarterly": 0, "Four-monthly": 0, "Semiannual": 0, "Annual": 0, "Biennial": 0, "Triennial": 0, "Quadrennial": 0, "Quinquenal": 0};
+        var ct_types = {"preventive": 0, "detective": 0};
+        var key_controls = {"key": 0, "non-key": 0};
+        var ct_status = {"Not started": 0, "Awaiting Control Owner": 0, "Awaiting Control Supervisor": 0, "Awaiting Control Administrator": 0, "Finished": 0};
+        var ct_result = {"effective": 0, "not-established": 0, "effective-recommendations": 0, "not-effective": 0, "not-applicable": 0};
       </script>
       {% for ct in e.get_all_control_test_in_evaluation %}
       <script>
         switch("{{ct.control.control_frequency}}"){
           case 'BD':
-            frequencies['Bajo demanda'] += 1;
+            frequencies['On demand'] += 1;
             break;
           case 'CO':
-            frequencies['Constante'] += 1;
+            frequencies['Constant'] += 1;
             break;
           case 'DI':
-            frequencies['Diario'] += 1;
+            frequencies['Daily'] += 1;
             break;
           case '1W':
-            frequencies['Semanal'] += 1;
+            frequencies['Weekly'] += 1;
             break;
           case '2W':
-            frequencies['Quincenal'] += 1;
+            frequencies['Biweekly'] += 1;
             break;
           case '1M':
-            frequencies['Mensual'] += 1;
+            frequencies['Monthly'] += 1;
             break;
           case '2M':
-            frequencies['Bimensual'] += 1;
+            frequencies['Bimonthly'] += 1;
             break;
           case '3T':
-            frequencies['Trimestral'] += 1;
+            frequencies['Quarterly'] += 1;
             break;
           case '4T':
-            frequencies['Cuatrimestral'] += 1;
+            frequencies['Four-monthly'] += 1;
             break;
           case '6M':
-            frequencies['Semestral'] += 1;
+            frequencies['Semiannual'] += 1;
             break;
           case '1Y':
-            frequencies['Anual'] += 1;
+            frequencies['Annual'] += 1;
             break;
           case '2Y':
-            frequencies['Bienal'] += 1;
+            frequencies['Biennial'] += 1;
             break;
           case '3Y':
-            frequencies['Trienal'] += 1;
+            frequencies['Triennial'] += 1;
             break;
+          case '4Y':
+            frequencies['Quadrennial'] += 1;
           case '5Y':
             frequencies['Quinquenal'] += 1;
             break;
@@ -669,55 +764,55 @@
 
         switch ("{{ct.control.control_type}}"){
           case 'P':
-            ct_types['Preventivo'] += 1;
+            ct_types['preventive'] += 1;
             break;
           case 'D':
-            ct_types['Detectivo'] += 1;
+            ct_types['detective'] += 1;
             break;
         }
 
         switch ("{{ct.control.key_control}}"){
           case 'True':
-            key_controls['Key'] += 1;
+            key_controls['key'] += 1;
             break;
           case 'False':
-            key_controls['Non-key'] += 1;
+            key_controls['non-key'] += 1;
             break;
         }
 
         switch("{{ct.status}}"){
           case 'SI':
-            ct_status['Sin iniciar'] += 1;
+            ct_status['Not started'] += 1;
             break;
           case 'WO':
-            ct_status['En espera de respuesta del Control Owner'] += 1;
+            ct_status['Awaiting Control Owner'] += 1;
             break;
           case 'WS':
-            ct_status['En espera de respuesta del Control Supervisor'] += 1;
+            ct_status['Awaiting Control Supervisor'] += 1;
             break;
           case 'WA':
-            ct_status['En espera de respuesta del Control Administrator'] += 1;
+            ct_status['Awaiting Control Administrator'] += 1;
             break;
           case 'FI':
-            ct_status['Finalizado'] += 1;
+            ct_status['Finished'] += 1;
             break;
         }
 
         switch ("{{ct.result}}"){
           case "EF":
-            ct_result["Efectivo"] += 1;
+            ct_result["effective"] += 1;
             break;
           case "SE":
-            ct_result["Sin establecer"] += 1;
+            ct_result["not-established"] += 1;
             break;
           case "NE":
-            ct_result["No efectivo"] += 1;
+            ct_result["not-effective"] += 1;
             break;
           case "EFR":
-            ct_result["Efectivo con recomendación"]+=1;
+            ct_result["effective-recommedations"]+=1;
             break;
           case "NA":
-            ct_result["N/A"] += 1;
+            ct_result["not-applicable"] += 1;
             break;
         }
 
@@ -747,37 +842,51 @@
       <script>
         frequency_evaluation["{{e}}"] =  frequencies;
 
-        control_type_evaluation["Preventivo"]["{{e}}"] = ct_types['Preventivo'];
-        control_type_evaluation["Detectivo"]["{{e}}"] = ct_types['Detectivo'];
+        control_type_evaluation["preventive"]["{{e}}"] = ct_types['preventive'];
+        control_type_evaluation["detective"]["{{e}}"] = ct_types['detective'];
 
-        key_controls_evaluation["Key"]["{{e}}"] = key_controls["Key"];
-        key_controls_evaluation["Non-key"]["{{e}}"] = key_controls["Non-key"];
+        key_controls_evaluation["key"]["{{e}}"] = key_controls["key"];
+        key_controls_evaluation["non-key"]["{{e}}"] = key_controls["non-key"];
 
         ct_status_evaluation["{{e}}"] = ct_status;
 
-        ct_result_evaluation["Efectivo"]["{{e}}"] = ct_result["Efectivo"];
-        ct_result_evaluation["Sin establecer"]["{{e}}"] = ct_result["Sin establecer"];
-        ct_result_evaluation["No efectivo"]["{{e}}"] = ct_result["No efectivo"];
-        ct_result_evaluation["Efectivo con recomendación"]["{{e}}"]= ct_result["Efectivo con recomendación"]
-        ct_result_evaluation["N/A"]["{{e}}"] = ct_result["N/A"];
+        ct_result_evaluation["effective"]["{{e}}"] = ct_result["effective"];
+        ct_result_evaluation["not-established"]["{{e}}"] = ct_result["not-established"];
+        ct_result_evaluation["not-effective"]["{{e}}"] = ct_result["not-effective"];
+        ct_result_evaluation["effective-recommendations"]["{{e}}"]= ct_result["effective-recommendations"]
+        ct_result_evaluation["not-applicable"]["{{e}}"] = ct_result["not-applicable"];
 
         evals.push("{{e}}");
       </script>
     {% endfor %}
+
     <script>
+      let translations= {};
+      const lang= "{{ LANGUAGE_CODE }}";
+      if (lang == 'es') {
+        translations= JSON.parse('{{ translations_es|escapejs }}');
+      } else if (lang == 'en') {
+        translations= JSON.parse('{{ translations_en|escapejs }}');
+      }
+      console.log(translations);
+      ct_control_type("chart-3", control_type_evaluation, evals, translations);
+      ct_control_type("chart-4", key_controls_evaluation, evals, translations);
+      ct_control_status("chart-6", ct_status_evaluation, translations);
+      ct_control_type("chart-7", ct_result_evaluation, evals, translations);
+
       // var l_control_type = ["Preventivo", "Detectivo"];
       // var l_key_control = ["Key", "Non-key"];
-      var l_status = ["Sin iniciar", ["En espera de respuesta", "del Control Owner"], ["En espera de respuesta", "del Control Supervisor"], ["En espera de respuesta", "del Control Administrator"], "Finalizado"];
-      var l_frequencies = ["Bajo demanda", "Constante", "Diario", "Semanal", "Quincenal", "Mensual", "Bimensual", "Trimestral", "Cuatrimestral", "Semestral", "Anual", "Bienal", "Trienal", "Quinquenal"];
+      // var l_status = [["Not started", "Awaiting Control Owner", "Awaiting Control Supervisor", "Awaiting Control Administrator", "Finished"], ["No empezado", "En espera del Control Owner", "En espera del Control Supervisor", "En espera del Administrador", "Finalizado"]];
+      // var l_frequencies = ["On demand", "Constante", "Diario", "Semanal", "Quincenal", "Mensual", "Bimensual", "Trimestral", "Cuatrimestral", "Semestral", "Anual", "Bienal", "Trienal", "Quinquenal"];
       // var l_result = ["Efectivo", "Sin establecer", "No efectivo", "N/A"];
 
-      evidence_percentage("chart-1");
-      ct_frequency("chart-2", frequency_evaluation, l_frequencies, 'Control Tests Frequency per evaluation');
-      ct_control_type("chart-3", control_type_evaluation, evals, "Control Test Types per evaluation");
-      ct_control_type("chart-4", key_controls_evaluation, evals, "Key Control Test per evaluation");
-      ct_subprocesses("chart-5");
-      ct_frequency("chart-6", ct_status_evaluation, l_status, "Control Test Status per evaluation");
-      ct_control_type("chart-7", ct_result_evaluation, evals, "Control Test Result per evaluation");
+      // evidence_percentage("chart-1");
+      // ct_frequency("chart-2", frequency_evaluation, l_frequencies, 'Control Tests Frequency per evaluation');
+      // ct_control_type("chart-3", control_type_evaluation, evals, t("dashboards.test-type"));
+      // ct_control_type("chart-4", key_controls_evaluation, evals, t("dashboards.test-key"));
+      // ct_subprocesses("chart-5");
+      // ct_frequency("chart-6", ct_status_evaluation, t("dashboards.test-status"));
+      // ct_control_type("chart-7", ct_result_evaluation, evals, t("dashboards.test-result"));
       // ct_risks("chart-8");
     </script>
   </div>
@@ -788,7 +897,7 @@
     <div class="accordion-item">
       <div class="card-header" id="kt_accordion_1_header_2" style="padding: inherit">
         <button class="accordion-button fs-3 fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_2" aria-expanded="false" aria-controls="kt_accordion_1_body_2">
-        {% trans 'Results obtained' %}
+        {% trans 'Resultados obtenidos' %}
         </button>
       </div>
       <div id="kt_accordion_1_body_2" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_2" data-bs-parent="#kt_accordion_1">
@@ -796,14 +905,14 @@
           {% if evaluations.count %}
             {% include '_includes/control_test/_control_test_list.html' with evaluations=evaluations%}
           {% else %}
-            <div class="alert alert-primary">{% trans 'No results' %}.</div>
+            <div class="alert alert-primary">{% trans 'No hay tests de control disponibles' %}.</div>
           {% endif %}
         </div>
 
         <form method="POST" class="kt-form kt-form--label-right" novalidate style="padding: 15px;">
           {% csrf_token %}
           <input type="hidden" name="action" value="download">
-          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>Download results</button>
+          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-download"></i>{% trans 'Descargar resultados' %}</button>
         </form>
       </div>
     </div>

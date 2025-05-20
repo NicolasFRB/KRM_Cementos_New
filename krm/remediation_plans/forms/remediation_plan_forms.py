@@ -87,7 +87,7 @@ class RemediationPlanUpdateForm(ModelForm):
 
 class RemediationPlanCreateSelectCompany(forms.Form):
     company = forms.ChoiceField(
-        label=_("Seleccione la Compañía"),
+        label= _("Seleccione la Compañía"),
         choices=[],
         widget=forms.Select(
             attrs={

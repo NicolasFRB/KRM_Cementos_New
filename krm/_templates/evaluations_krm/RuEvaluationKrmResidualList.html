@@ -28,7 +28,7 @@
             </div>
           </div>
         {% endif %}
-      </div>  
+      </div>
     <!--end::Card header-->
   </div>
   <!--end::Card header-->
@@ -39,12 +39,12 @@
       <thead>
         <tr class="fw-semibold fs-6">
         <th class="text-center align-middle">{% trans 'Acción' %}</th>
-          <th class="align-middle">{% trans 'REF' %}</th>
-          <th class="align-middle">{% trans 'Descripción' %}</th>
+          <th class="text-center align-middle">{% trans 'REF' %}</th>
+          <th class="text-center align-middle">{% trans 'Descripción' %}</th>
           <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center align-middle">{% trans 'Compañía' %}</th>
-          <th class="text-center align-middle">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center align-middle">{% trans 'Número de Riesgos' %}</th>
           <th class="text-center align-middle">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -73,7 +73,7 @@
                 <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
               {% else %}
               <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-              {% endif %}              
+              {% endif %}
             </td>
           </tr>
           {% endfor %}
@@ -109,12 +109,12 @@
       <thead>
         <tr class="fw-semibold fs-6">
           <th class="text-center align-middle">{% trans 'Acción' %}</th>
-          <th class="align-middle">{% trans 'REF' %}</th>
-          <th class="align-middle">{% trans 'Descripción' %}</th>
+          <th class="text-center align-middle">{% trans 'REF' %}</th>
+          <th class="text-center align-middle">{% trans 'Descripción' %}</th>
           <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
           <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
           <th class="text-center align-middle">{% trans 'Compañía' %}</th>
-          <th class="text-center align-middle">{% trans 'Nº Riesgos' %}</th>
+          <th class="text-center align-middle">{% trans 'Número de Riesgos' %}</th>
           <th class="text-center align-middle">{% trans 'Estado' %}</th>
         </tr>
       </thead>
@@ -143,7 +143,7 @@
                 <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
               {% else %}
               <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-              {% endif %}              
+              {% endif %}
             </td>
           </tr>
           {% endfor %}
@@ -178,14 +178,14 @@
     <table id="risk_master_table" class="table table-striped table-row-bordered gy-5 gs-7 customDatatable">
       <thead>
         <tr class="fw-semibold fs-6">
-          <th class="text-center">{% trans 'Acción' %}</th>
-          <th class="text-center">{% trans 'REF' %}</th>
-          <th>{% trans 'Descripción' %}</th>
-          <th class="text-center">{% trans 'Periodo evaluado' %}</th>
-          <th class="text-center">{% trans 'Fechas evaluación' %}</th>
-          <th class="text-center">{% trans 'Compañía' %}</th>
-          <th class="text-center">{% trans 'Nº Riesgos' %}</th>
-          <th class="text-center">{% trans 'Estado' %}</th>
+          <th class="text-center align-middle">{% trans 'Acción' %}</th>
+          <th class="text-center align-middle">{% trans 'REF' %}</th>
+          <th class="text-center align-middle">{% trans 'Descripción' %}</th>
+          <th class="text-center align-middle">{% trans 'Periodo evaluado' %}</th>
+          <th class="text-center align-middle">{% trans 'Fechas evaluación' %}</th>
+          <th class="text-center align-middle">{% trans 'Compañía' %}</th>
+          <th class="text-center align-middle">{% trans 'Número de Riesgos' %}</th>
+          <th class="text-center align-middle">{% trans 'Estado' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -213,7 +213,7 @@
                 <i class="bi bi-dot fs-3x text-success"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
               {% else %}
               <i class="bi bi-dot fs-3x text-danger"data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{evaluation.get_status_display}}"></i>
-              {% endif %}              
+              {% endif %}
             </td>
           </tr>
           {% endfor %}

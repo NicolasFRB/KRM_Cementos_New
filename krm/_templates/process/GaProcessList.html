@@ -27,9 +27,9 @@
           <th class="text-center">{% trans 'Acción' %}</th>
           <th class="text-center">{% trans 'REF' %}</th>
           <th class="text-center" width="20%">{% trans 'Nombre' %}</th>
-          <th  width="30%">{% trans 'Description' %}</th>
+          <th  width="30%">{% trans 'Descripción' %}</th>
           <th class="text-center">{% trans 'Subprocesos' %}</th>
-          <th class="text-center">{% trans 'Nº de Controles' %}</th>
+          <th class="text-center">{% trans 'Número de Controles' %}</th>
         </tr>
       </thead>
       <tbody>
@@ -45,12 +45,12 @@
                     <span class="badge badge-info" style="">{{ process.n_sub_processes }}</span>
                 </div>
                 <div id = "box-container">
-                {% for s1 in process.sub_processes.all %}                                              
-                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>                                                                       
+                {% for s1 in process.sub_processes.all %}
+                  <a href="{% url 'subprocess:ga_sub_process_detail' s1.pk %}"><span class="badge badge-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-delay-show="250" title="{{ s1.name }}" id = "box-child">{{ s1.ref }}</span></a>
                 {% endfor %}
-                </div>                                             
-              </div>                                             
-            </td>   
+                </div>
+              </div>
+            </td>
             <td class="text-center align-middle"><span class="badge badge-info">{{ process.n_controls }}</span></td>
           </tr>
           {% endfor %}

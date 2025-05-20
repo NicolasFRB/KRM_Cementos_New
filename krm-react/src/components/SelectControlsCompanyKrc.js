@@ -246,12 +246,12 @@ function SelectControlsCompanyKrc(
                         <th className="text-center">
                           <span onClick={() => selectAll(company.c.pk)} className=""><i className="bi bi-clipboard-check"></i></span>
                         </th>
-                        <th className="fw-semibold">REF</th>
+                        <th className="fw-semibold">{t('general.ref')}</th>
                         <th className="fw-semibold" width="30%">{t('general.description')}</th>
-                        <th className="fw-semibold text-center">KEY CONTROL</th>
-                        <th className="fw-semibold text-center">ELC</th>
-                        <th className="fw-semibold text-center" width="20%">OWNERS</th>
-                        <th className="fw-semibold text-center" width="20%">SUPERVISORS</th>
+                        <th className="fw-semibold text-center">{t('general.key')}</th>
+                        <th className="fw-semibold text-center">{t('general.elc')}</th>
+                        <th className="fw-semibold text-center" width="20%">{t('general.owner')}</th>
+                        <th className="fw-semibold text-center" width="20%">{t('general.supervisor')}</th>
                       </tr>
                     </thead>
                     <tbody>

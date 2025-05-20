@@ -23,6 +23,8 @@ from krm.companies.views import (
     CaCompanyRiskKrmSelectView,
     CaCompanyDomainRiskExpertsUpdateView,
     CaCompanyDomainRiskEvaluatorUpdateView,
+    CaCompanyRiskExpertUpdateView,
+    CaCompanyRiskEvaluatorUpdateView,
     CaCompanyControlUpdate
 )
 
@@ -66,7 +68,7 @@ urlpatterns = [
         GaCompanyRiskExpertsUpdateView.as_view(),
         name='ga_company_assign_expert_update'
     ),
-    
+
     # Asignar evaluadores
     path(
         'assign-evaluator/<pk>/',
@@ -110,12 +112,12 @@ urlpatterns = [
     ),
     path(
         'ca/assign-expert/<pk>/',
-        CaCompanyDomainRiskExpertsUpdateView.as_view(),
+        CaCompanyRiskExpertUpdateView.as_view(),
         name='ca_company_assign_expert_update'
     ),
     path(
         'ca/assign-evaluator/<pk>/',
-        CaCompanyDomainRiskEvaluatorUpdateView.as_view(),
+        CaCompanyRiskEvaluatorUpdateView.as_view(),
         name='ca_company_assign_evaluator_update'
     ),
 ]

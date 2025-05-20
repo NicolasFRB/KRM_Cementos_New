@@ -84,7 +84,7 @@ class RemediationPlanAnswer(AuditModel):
     )
 
     next_to_reply = models.CharField(
-        _("¿Quien debe responder?"),
+        _("¿Quién debe responder?"),
         max_length=2,
         choices=REMEDIATION_PLAN_STATUS_CHOICES,
         default="WR",
