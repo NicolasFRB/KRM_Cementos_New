@@ -21,7 +21,7 @@ SECRET_KEY = '9mgu=0t7adojsh2zgkfn2kw(a!@ob(t^3f6ebch3_q7(2=yn)v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("KRM_DJANGO_DEBUG")
-DEBUG_LOGIN = False
+DEBUG_LOGIN = True
 
 ALLOWED_HOSTS = []
 
