@@ -1,4 +1,4 @@
-let base = "http://localhost:8000";
+let base =  process.env.REACT_APP_API_BASE_URL; //"http://localhost:8000";
 
 // if (window.location.hostname.indexOf("krm-tool-uat") > -1) {
 //   base = "https://krm-tool-uat.des-onprem1.eci.geci";

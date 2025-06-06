@@ -3,7 +3,8 @@ FROM python:3.9-bullseye
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN apt-get update \
+RUN apt-get update  \
+  && apt-get upgrade -y \
   # dependencies for building Python packages
   && apt-get install -y build-essential \
   # psycopg2 dependencies
@@ -11,9 +12,14 @@ RUN apt-get update \
   # Translations dependencies
   && apt-get install -y gettext \
   && apt-get install -y telnet \
-  && apt-get install -y iputils-ping \
+  && apt-get install -y iputils-ping
+
   # cleaning up unused files
-  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -  
+
+RUN apt-get install -y nodejs 
+
+RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED 1
@@ -49,9 +55,14 @@ COPY ./compose/dev/django/celery/flower/start /start-flower
 RUN sed -i 's/\r//' /start-flower
 RUN chmod +x /start-flower
 
+COPY ./buildReact.sh /buildReact.sh 
+RUN sed -i 's/\r//' /buildReact.sh
+RUN chmod +x /buildReact.sh
+
 WORKDIR /app
 
 COPY . .
+#RUN ./buildReact.sh 
 RUN chmod -R 755 **/locale/en
 
 ENTRYPOINT ["/entrypoint"]
