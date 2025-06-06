@@ -24,8 +24,8 @@
   },
   "krmInherent": {
     "data-required": "Some essential information is missing from the form",
-    "no-companies": "No company has been selected",
-    "no-risk": "No risk to be assessed has been selected",
+    "no-company-selected": "No company has been selected",
+    "no-risks-to-evaluate": "No risk to be assessed has been selected",
     "step-2": "Step 2: Select companies to evaluate",
     "data-incompleted": "Complete all the required information about the evaluation",
     "step-3": "Step 3: Select filters",
@@ -71,7 +71,7 @@
     "error-end-date": "The start date cannot be after the end date"
   },
   "krmResidual": {
-    "form-incomplete": "Some essential information is missing from the form.",
+    "data-required": "Some essential information is missing from the form",
     "no-company-selected": "No company has been selected",
     "no-risks-to-evaluate": "No risk to be assessed has been selected",
     "step-2": "Step 2: Select companies to evaluate",

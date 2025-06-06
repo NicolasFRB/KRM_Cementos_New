@@ -221,7 +221,7 @@ class GaEvaluationInherentCreateView(FormView):
 
             evaluations.append(evaluation)
 
-            # Para cada evaluación hay que crear los test controls de los controles que se han pasado
+            # Para cada evaluación hay que crear los test de riesgo de los riesgos de compañía que se han pasado
             for risk in risks:
                 RiskTestInherent.objects.create(
                     evaluation=evaluation,

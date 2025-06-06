@@ -61,7 +61,8 @@ class RiskTestInherentExpertApiView(APIView):
                 description = request.GET['description']
                 risk_test.description_expert = description
 
-        if risk_test.status == 2:
+        #if risk_test.status == 2 quitamos esta condición dado que queremos permitir que un administrador
+        #pueda administrar la evaluación y aportar valoración sin que lo haya hecho el evaluador
 
             if 'adminProbability' in request.GET:
                 probability = int(request.GET['adminProbability'])
