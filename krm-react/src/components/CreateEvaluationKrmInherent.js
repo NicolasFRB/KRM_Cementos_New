@@ -87,7 +87,7 @@ function CreateEvaluationKrmInherent(props) {
           newRiskCompaniesToEvaluate.push(
             {
               company_pk: companyPk,
-              risks: risksChecked.map((risk) => risk.pk)
+              risks: risksChecked.map((risk) => [risk.pk, risk.expert])
             }
           )
         }
@@ -136,6 +136,7 @@ function CreateEvaluationKrmInherent(props) {
 
     let riskSelect = [];
     // este array dispondrá de una lista de objetos donde venga la clave primaria de la compañía y el array de riesgos a lanzar
+    // (definidos por su clave primaria y la del experto asociado)
     newRiskCompanies.forEach(c => {
       let rs = {
         'company_pk': c.company.pk,
@@ -160,11 +161,11 @@ function CreateEvaluationKrmInherent(props) {
       return false;
     }
     if (selectedCompanies.length === 0) {
-      alert(t('krmInherent.no-companies'));
+      alert(t('krmInherent.no-company-selected'));
       return false;
     }
     if (riskCompaniesToEvaluate.length === 0) {
-      alert(t('krmInherent.no-risk'));
+      alert(t('krmInherent.no-risks-to-evaluate'));
       return false;
     }
 
@@ -250,7 +251,7 @@ function CreateEvaluationKrmInherent(props) {
       };
 
       c.risks.forEach(risk => {
-        if (risk.checked) {
+        if (risk.checked && risk.expert) {
           rs.risks.push([risk.pk, risk.expert]);
         }
       });

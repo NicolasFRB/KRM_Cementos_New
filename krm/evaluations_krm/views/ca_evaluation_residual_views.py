@@ -586,7 +586,7 @@ class CaEvaluationResidualAdminComplete(DetailView, FormView):
                 rr.probability_level_administrator = rr.probability_level_evaluator
             if rr.impact_level_administrator == 0:
                 rr.impact_level_administrator = rr.impact_level_evaluator
-            if rr.event_speed_level_administrator==0:
+            if rr.event_speed_level_administrator == 0:
                 rr.event_speed_level_administrator = rr.event_speed_level_evaluator
             if rr.description_administrator == '' or rr.description_administrator == None:
                 rr.description_administrator = rr.description_evaluator

@@ -13,6 +13,15 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/es.js"></script>
 <script src="{% static 'js/flatpickr_es.js' %}"></script>
 
+<style>
+  #chart-3 .apexcharts-canvas, #chart-4 .apexcharts-canvas {
+  background-image: url('/static/fondo-heatmap.png');
+  background-repeat: no-repeat;
+  background-position: center; /* mantiene proporciones y deja margen automáticamente */
+  background-size: 97% 70%;
+}
+</style>
+
 <script>
   if (LANGUAGE_CODE == 'es') {
     $(".datepicker").flatpickr({
@@ -629,12 +638,12 @@
     <div class="row mb-4">
       <div class="col-xl-6">
         <div id="chart-3-container" style="height: 400px;">
-          <div id="chart-3"></div>
+          <div id="chart-3" class="chart-wrapper"></div>
         </div>
       </div>
       <div class="col-xl-6">
         <div id="chart-4-container" style="height: 400px;">
-          <div id="chart-4"></div>
+          <div id="chart-4" class="chart-wrapper"></div>
         </div>
       </div>
     </div>

@@ -202,7 +202,12 @@ function load_bar(id, rrt, grouped, translations) {
         },
         axisTicks: {
           show: false
-        }
+        },
+        labels: {
+          rotate: 0,
+          hideOverlappingLabels: false,
+          trim: true,
+        },
       },
       yaxis: {
         axisTicks: {
@@ -857,7 +862,7 @@ function load_heat(id, rrt) {
         </script>
         <div class="row mb-8">
           <div style="float: right;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-end; margin-top: -10px !important; place-content:center;">
-            <span class="badge severidad-desconocida" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Sin establecer' %}">NS</span>
+            <span class="badge severidad-desconocida" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Sin establecer' %}">NE</span>
             <span class="badge severidad-muy-baja" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Muy baja' %}">VL</span>
             <span class="badge severidad-baja" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Baja' %}">L</span>
             <span class="badge severidad-media" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{% trans 'Media' %}">M</span>
