@@ -1,0 +1,448 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="es" >
+    <!--begin::Head-->
+    <head>
+        <title>LoginKRM Tool</title>
+        <meta charset="utf-8"/>
+        <meta name="description" content=""/>
+        <meta name="keywords" content=""/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="" />
+        <link rel="canonical" href=""/>
+
+        
+            <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57x57-base.png">
+            <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60x60-base.png">
+            <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-icon-72x72-base.png">
+            <link rel="apple-touch-icon" sizes="76x76" href="/static/apple-icon-76x76-base.png">
+            <link rel="apple-touch-icon" sizes="114x114" href="/static/apple-icon-114x114-base.png">
+            <link rel="apple-touch-icon" sizes="120x120" href="/static/apple-icon-120x120-base.png">
+            <link rel="apple-touch-icon" sizes="144x144" href="/static/apple-icon-144x144-base.png">
+            <link rel="apple-touch-icon" sizes="152x152" href="/static/apple-icon-152x152-base.png">
+            <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-icon-180x180-base.png">
+            <link rel="icon" type="image/png" sizes="192x192" href="/static/android-icon-192x192-base.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32-base.png">
+            <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96x96-base.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16-base.png">
+            <meta name="msapplication-TileColor" content="#ffffff">
+            <meta name="msapplication-TileImage" content="/static/ms-icon-144x144-base.png">
+            <meta name="theme-color" content="#ffffff">
+        
+
+
+        
+        <!--begin::Fonts-->
+        
+        <!--end::Fonts-->
+
+        <!--begin::Vendor Stylesheets(optional)-->
+        
+        
+        <link href="/static/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+        
+        <!--end::Vendor Stylesheets-->
+
+        <!--begin::Custom Stylesheets(optional)-->
+        
+        
+        <!--end::Custom Stylesheets-->
+
+        <!--begin::Global Stylesheets(mandatory)-->
+        
+        
+        <link href="/static/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+        
+        <link href="/static/css/style.bundle.css" rel="stylesheet" type="text/css" />
+        
+        <!--end::Global Stylesheets-->
+        <style>
+
+          form .form-group label {
+            color: red;
+            --bs-badge-padding-x: 0.5rem;
+            --bs-badge-padding-y: 0.325rem;
+            --bs-badge-font-size: 0.85rem;
+            --bs-badge-font-weight: 600;
+            --bs-badge-color: #ffffff;
+            --bs-badge-border-radius: 0.425rem;
+            --bs-badge-color: var(--kt-badge-color);
+            display: inline-flex;
+            align-items: center;
+            padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+            font-size: var(--bs-badge-font-size);
+            font-weight: var(--bs-badge-font-weight);
+            line-height: 1;
+            color: var(--bs-badge-color);
+            text-align: center;
+            vertical-align: baseline;
+            border-radius: var(--bs-badge-border-radius, 0);
+            white-space: normal !important;
+            color: var(--kt-secondary-inverse);
+            background-color: var(--kt-secondary);
+            margin-bottom: 10px;
+          }
+          .django-ckeditor-widget {
+            width: 100%;
+          }
+          .tooltip-inner {
+            text-align: left;
+            max-width: 450px;
+          }
+          #box-container{
+            display: none;
+            flex-direction: column;
+            flex-wrap: wrap;
+            padding: 5px;
+            height: 100%;
+            resize: vertical;
+            gap: 5px;
+          }
+          #box-child{
+            display: grid;
+            margin: 3px;
+          }
+
+          .card {
+            margin-top: 10px;
+            margin-bottom: 10px;
+          }
+          /* FAKEBOARD */
+          span.select2-selection__choice__display {
+            font-size:11px !important;
+           }
+           span.select2-selection__rendered {
+            font-size:11px !important;
+           }
+           /* FAKEBOARD */
+
+        </style>
+        
+
+        <!--begin::Tracking-->
+        <!--end::Tracking-->
+    </head>
+    <!--end::Head-->
+
+    <!--begin::Body-->
+    <body class="app-default" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true">
+
+        <!--begin::Theme mode setup on page load-->
+<script>
+    if (document.documentElement) {
+        var defaultThemeMode = "light";
+
+        var name = document.body.getAttribute("data-kt-name");
+        var themeMode = localStorage.getItem("kt_" + (name !== null ? name + "_" : "") + "theme_mode_value");
+
+        if (themeMode === null) {
+            if (defaultThemeMode === "system") {
+                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            } else {
+                themeMode = defaultThemeMode;
+            }
+        }
+
+        document.documentElement.setAttribute("data-theme", themeMode);
+    }
+</script>
+<!--end::Theme mode setup on page load-->
+
+        
+
+<!--begin::Root-->
+<div class="d-flex flex-column flex-root" id="kt_app_root">
+	<!--begin::Wrapper-->
+	<div class="d-flex flex-column flex-lg-row flex-column-fluid">
+		<!--begin::Body-->
+		<div class="d-flex flex-column flex-lg-row-fluid w-lg-67 p-10 order-2 order-lg-1">
+			<!--begin::Form-->
+			<div class="d-flex flex-center flex-column flex-lg-row-fluid">
+				<!--begin::Wrapper-->
+				<div class="w-lg-500px p-10">
+					<!--begin::Page-->
+					
+<div class="text-center mb-12">
+  <a href="/" class="login-logo">
+    
+      <img style="max-width: 180px;" src="/static/media/logos/krm-logo.svg" alt="KRM Tool - Logo" />
+    
+  </a>
+</div>
+
+<!--begin::Form-->
+<form class="form w-100" action="" method="post">
+    <input type="hidden" name="csrfmiddlewaretoken" value="pheDZG2kAh5QS1tOEwlza7vEeapy1m4eBL9V9FUzNxDajcW6wvAIr0pNYHcs5KGA">
+    <!--begin::Heading-->
+    <div class="text-center mb-11">
+        <!--begin::Title-->
+        <h1 class="text-dark fw-bolder mb-3">
+            Iniciar sesión en KRM Tool
+        </h1>
+        <!--end::Title-->
+    </div>
+    <!--begin::Heading-->
+
+    
+
+    <!--begin::Input group--->
+    <div class="fv-row mb-8">
+        <!--begin::Email-->
+        
+
+
+    
+    <div id="div_id_username" class="form-group">
+        
+            
+        <label for="id_username" class=" requiredField">
+                Correo electrónico<span class="asteriskField">*</span>
+            </label>
+        
+
+        
+
+        
+
+        
+            
+                <div>
+                    
+                        
+                            <input type="text" name="username" class="textinput textInput form-control" required id="id_username">
+                        
+                    
+                    
+
+
+    
+
+
+
+
+    
+
+
+
+                </div>
+            
+        
+    </div>
+    
+
+
+        <!--end::Email-->
+    </div>
+
+    <!--end::Input group--->
+    <div class="fv-row mb-3">
+        <!--begin::Password-->
+        
+
+
+    
+    <div id="div_id_password" class="form-group">
+        
+            
+        <label for="id_password" class=" requiredField">
+                Contraseña<span class="asteriskField">*</span>
+            </label>
+        
+
+        
+
+        
+
+        
+            
+                <div>
+                    
+                        
+                            <input type="password" name="password" class="textinput textInput form-control" required id="id_password">
+                        
+                    
+                    
+
+
+    
+
+
+
+
+    
+
+
+
+                </div>
+            
+        
+    </div>
+    
+
+
+        <!--end::Password-->
+    </div>
+    <!--end::Input group--->
+
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
+        <div></div>
+
+        <!--begin::Link-->
+        <a href="/es/auth/reset-password/" class="link-primary">
+            He olvidado mi contraseña
+        </a>
+        <!--end::Link-->
+    </div>
+    <!--end::Wrapper-->
+
+    <!--begin::Submit button-->
+    <div class="d-grid mb-10">
+        <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
+            Iniciar sesión
+        </button>
+    </div>
+    <!--end::Submit button-->
+</form>
+<!--end::Form-->
+
+
+					<!--end::Page-->
+				</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Form-->       
+	
+			<!--begin::Footer-->  
+			<div class="d-flex flex-center flex-wrap px-5">
+				<!--begin::Links-->
+				<div class="d-flex fw-semibold text-primary fs-base">
+					<a href="#" class="px-5" target="_blank">Aviso legal</a>
+				</div>
+				<!--end::Links-->
+			</div>
+			<!--end::Footer-->
+		</div>
+		<!--end::Body-->
+		
+		<!--begin::Aside-->
+		<div class="d-flex flex-lg-row-fluid w-lg-33 bgi-size-cover bgi-position-bottom order-1 order-lg-2" style="background-image: url(/static/media/imgs/krm-login-bg.jpg)">
+			<!--begin::Content-->
+			<div class="d-flex flex-column flex-center py-15 px-5 px-md-15 w-100">          
+				<!--begin::Logo-->
+				<!-- <a href="/" class="mb-12">
+					<img alt="Logo" src="/static/media/logos/custom-1.png" class="h-75px"/>
+				</a>     -->
+				<!--end::Logo-->
+	
+				<!--begin::Image-->                
+				<!-- <img class="mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" src="/static/media/imgs/krm-login-bg.jpg" alt=""/>                  -->
+				<!--end::Image-->
+	
+				<!--begin::Title-->
+				<!-- <h1 class="text-white fs-2qx fw-bolder text-center mb-7"> 
+					KRM Tool
+				</h1>   -->
+				<!--end::Title-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Aside-->
+	</div>
+	<!--end::Wrapper-->
+</div>
+<!--end::Root-->
+
+
+
+        
+        <!--begin::Global Javascript(mandatory)-->
+        
+        
+            <script src="/static/plugins/global/plugins.bundle.js"></script>
+        
+            <script src="/static/js/scripts.bundle.js"></script>
+        
+        <!--end::Global Javascript-->
+
+        <!--begin::Vendors Javascript(optional)-->
+        
+        
+        <script src="/static/plugins/custom/datatables/datatables.bundle.js"></script>
+        
+        <script src="/static/js/custom/custom-ckeditor/ckeditor.js"></script>
+        
+        <!--end::Vendors Javascript-->
+
+        <!--begin::Custom Javascript(optional)-->
+        
+        
+        <script src="/static/js/widgets.bundle.js"></script>
+        
+        <!--end::Custom Javascript-->
+
+        
+
+        
+
+        <!--begin::Custom Javascript(optional)-->
+        
+        <!--end::Custom Javascript-->
+        
+
+        
+
+        
+
+        <script>
+          jQuery(document).ready(function() {
+            $('.backHistory').on('click', function(e){
+              e.preventDefault();
+              window.history.go(-1);
+              return false;
+            });
+          });
+
+          function toggle_item(clicked) {
+            $(clicked).siblings().fadeToggle().css('margin-bottom:5px;');
+          }
+
+
+
+          // FAKEBOARD
+          // Format options
+          var optionFormat = function(item) {
+              if ( !item.id ) {
+                  return item.text;
+              }
+
+              var span = document.createElement('span');
+              var imgUrl = item.element.getAttribute('data-kt-select2-country');
+              var template = '';
+
+              template += '<img src="' + imgUrl + '" class="rounded-circle h-20px me-2" alt="image"/>';
+              template += item.text;
+
+              span.innerHTML = template;
+
+              return $(span);
+          }
+
+          // Init Select2 --- more info: https://select2.org/
+          $('#kt_docs_select2_country').select2({
+              templateSelection: optionFormat,
+              templateResult: optionFormat
+          });
+
+
+        </script>
+
+    <div id="pk" data-pk="None" style="display: none;"></div>
+    </body>
+    <!--end::Body-->
+</html>

@@ -1,0 +1,15 @@
+REPOSITORY                   TAG            IMAGE ID       CREATED         SIZE
+<none>                       <none>         6ac2d67699b3   3 months ago    808 MB
+<none>                       <none>         43f7e0701db1   3 months ago    808 MB
+<none>                       <none>         393d63532e4c   3 months ago    808 MB
+<none>                       <none>         9c999ec05ad4   3 months ago    792 MB
+<none>                       <none>         b5e17776558e   3 months ago    858 MB
+<none>                       <none>         391f03ae04eb   3 months ago    1.02 GB
+<none>                       <none>         41e08052e895   3 months ago    1.02 GB
+docker.io/library/python     3.9-alpine     ff8b7ec5b703   7 months ago    51.8 MB
+docker.io/library/python     3.9            859d4a0f1fd8   7 months ago    1.02 GB
+docker.io/library/python     3.9-bullseye   d11094640d66   7 months ago    931 MB
+docker.io/library/python     3.8-alpine     cd39247b02f9   10 months ago   49.9 MB
+docker.io/library/python     3.8            3ea6eaad4f17   10 months ago   1.02 GB
+docker.io/library/centos     latest         5d0da3dc9764   3 years ago     239 MB
+docker.io/library/postgres   10.5           3fce051f5a48   6 years ago     236 MB

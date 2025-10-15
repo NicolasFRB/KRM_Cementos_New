@@ -1,0 +1,48 @@
+upstream hello_django {
+        server 10.89.0.42:8000;
+}
+
+server {
+
+        listen 80;
+#        listen 443 ssl;
+
+        listen [::]:80;
+#        listen [::]:443 ssl;
+
+
+        location / {
+
+                proxy_pass http://hello_django;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header Host $host;
+                proxy_set_header Referer $http_referer;
+                proxy_redirect off;
+        }
+}
+
+#server {
+#        listen 80 default_server;
+#
+#        server_name _;
+#
+#        location / {
+#
+#               return 301 https://$host$request_uri;
+#        }
+#
+#}
+
+# Temporal, 443 redirects to 80
+server {
+        listen 443 default_server;
+
+        server_name _;
+
+        location / {
+
+        	return 301 http://$host$request_uri;
+        }
+
+}
