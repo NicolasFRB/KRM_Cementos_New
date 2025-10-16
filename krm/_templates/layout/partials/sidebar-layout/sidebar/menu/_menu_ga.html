@@ -183,6 +183,20 @@
                               </div>
                           </li>
                       </ul>
+                      <li>
+                          <div class="menu-item">
+                              <!--begin:Menu link-->
+                              <a class="menu-link "
+                                  href="{% url 'configuration:historical_detail' %}">
+                                  <span class="menu-bullet">
+                                      <span class="bullet bullet-dot"></span>
+                                  </span>
+                                  <span class="menu-title">{% trans 'Historico' %}</span>
+                              </a>
+                              <!--end:Menu link-->
+                          </div>
+                      </li>
+
                       <!--end:Menu item-->
                       {% if KRM_ACTIVATE and CONFIGURATION.enable_questionnaires %}
                       <div class="menu-item">

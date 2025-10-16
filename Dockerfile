@@ -19,7 +19,11 @@ COPY ./setup_20.x /setup_20.x
 RUN chmod +x /setup_20.x
 
   # cleaning up unused files
-RUN curl -sL  file:///setup_20.x | bash -  
+# Original
+# RUN curl -sL  file:///setup_20.x | bash -  
+
+#Windows
+RUN curl -sL /setup_20.x | bash -
 
 RUN apt-get install -y nodejs 
 
@@ -66,10 +70,14 @@ RUN chmod +x /buildReact.sh
 WORKDIR /app
 
 COPY . .
+
+# RUN cd krm-react && npm i
+
+# RUN chmod -R 755 ./krm-react/node_modules/.bin/react-scripts*
 #RUN ./buildReact.sh 
 
 RUN chmod -R 755 **/locale/en
-RUN chmod -R 755 ./buildReact.sh
+RUN chmod -R 755 buildReact.sh
 
 ENTRYPOINT ["/entrypoint"]
 

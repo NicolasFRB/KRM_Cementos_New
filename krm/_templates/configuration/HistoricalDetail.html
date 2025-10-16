@@ -1,0 +1,117 @@
+{% extends layout %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% include '_includes/Messages.html' %}
+
+
+<!--begin::Container-->
+  <div class="card">
+    <!--begin::Card header-->
+    <div class="card-header">
+      <!--begin::Card header-->
+      <div class="card-title fs-3 fw-bold">
+        <span class="menu-icon">{% getSvgIcon 'duotune/coding/cod001.svg' 'svg-icon svg-icon-2' %}</span>
+        <span class="ms-3">{% trans 'Histórico' %}</span>
+      </div>
+      <!--end::Card header-->
+    </div>
+    <!--end::Card header-->
+    <!--begin::Card body-->
+    <div class="card-body">
+
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <!-- Si queremos traduccion del titulo del archivo, usamos la siguiente linea -->
+          <!-- <div class="fs-6 fw-semibold">{% trans 'Process Test ControlTest' %}</div> -->
+          <div class="fs-6 fw-semibold">Process Test - Control Test</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <!-- Si queremos traduccion del nombre del archivo, usamos la siguiente linea -->
+            <!-- <span><strong><a href="{% static 'files/import_companies.xlsx' %}">{% trans 'Descarga la plantilla de importación' %}</a></strong></span> -->
+
+            <span><strong><a href="{% static 'files/process_test_controltest.xlsx' %}">process_test_controltest</a></strong></span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+      
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">Process Test - Control Test Answer</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span><strong><a href="{% static 'files/process_test_controltestanswer.xlsx' %}">process_test_controltestanswer</a></strong></span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+      
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">Process Test - Process Test</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span><strong><a href="{% static 'files/process_test_processtest.xlsx' %}">process_test_processtest</a></strong></span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+      
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">Process Test - Process Test File</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span><strong><a href="{% static 'files/process_test_processtestfile.xlsx' %}">process_test_processtestfile</a></strong></span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+      
+      <div class="row mb-8">
+        <!--begin::Col-->
+        <div class="col-xl-3">
+          <div class="fs-6 fw-semibold">Process Test - Remediation Plan</div>
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-9">
+          <div class="fs-6">
+            <span><strong><a href="{% static 'files/process_test_remediationplan.xlsx' %}">process_test_remediationplan</a></strong></span>
+          </div>
+        </div>
+        <!--end::Col-->
+      </div>
+    </div>
+    <!--end::Body-->
+
+    <div class="card-footer py-6">
+      <!-- <a href="{% url 'configuration:configuration_update' %}" class="btn btn-sm btn-primary">{% trans 'Modificar' %}</a> -->
+      <a href="#" class="btn btn-sm btn-light btn-active-light-primary ms-2 backHistory">{% trans 'Atrás' %}</a>
+    </div>
+
+    <!--end::Card footer-->
+  </div>
+<!--end::Container-->
+
+{% endblock content %}

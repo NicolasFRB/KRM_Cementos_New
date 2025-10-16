@@ -68,6 +68,26 @@ class ConfigurationDetailView(DetailView):
     def get_object(self):
         return Configuration.objects.first()
 
+@method_decorator([login_required, is_global_admin], name='dispatch')
+class HistoricalDetailView(DetailView):
+    model = Configuration
+    template_name = 'configuration/HistoricalDetail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = KTLayout.init(context)
+        breadcrums = [
+            {'title': _('Dashboard'), 'url': reverse('users:dashboard')},
+            {'title': _('Histórico'), 'url': reverse(
+                'configuration:historical_detail')},
+        ]
+        context['page_title'] = _('Histórico')
+        context['breadcrums'] = breadcrums
+        return context
+
+    def get_object(self):
+        return Configuration.objects.first()
+
 
 @method_decorator([login_required, is_global_admin], name='dispatch')
 class ConfigurationUpdateView(UpdateView):
@@ -1272,7 +1292,7 @@ class GaImportView(FormView):
                 subprocess['description'] = row[3].value
 
                 #comprobaciones correspondientes a la referencia del proceso:
-                if self.checkMandatory(_("subprocesos"), process, i, "process_master_ref"):
+                if self.checkMandatory(_("subprocesos"), subprocess, i, "process_master_ref"):
                     return super(GaImportView, self).form_invalid(form)
                 if self.checkMaster(_("subprocesos"), "procesos", subprocess, process_to_create, Process, "process_master_ref"):
                     return super(GaImportView, self).form_invalid(form)

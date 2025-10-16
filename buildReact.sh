@@ -7,11 +7,8 @@ rm main.react.js.map ;
 cd ../..;
 
 cd krm-react;
-sudo chmod -R 755 ./krm-react/node_modules/.bin/react-scripts.*
-sudo chmod -R 755 ./krm-react/node_modules/.bin/react-scripts
-npm i;
-sudo chmod -R 755 ./krm-react/node_modules/.bin/react-scripts.*
-sudo chmod -R 755 ./krm-react/node_modules/.bin/react-scripts
+npm ci;
+chmod -R 755 ./krm-react/node_modules/.bin/react-scripts*
 npm run build; 
 mv build/static/js/main.*.js ../krm/static/main.react.js;
 mv build/static/js/main.*.js.map ../krm/static/main.react.js.map;
