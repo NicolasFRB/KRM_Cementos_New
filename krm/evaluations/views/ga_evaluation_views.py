@@ -774,8 +774,8 @@ class GaEvaluationCreateView(FormView):
         controls_created = 0
         evaluations_created = 0
 
-        controls_companies = json.loads(
-            form.cleaned_data["controls_companies_to_evaluate"])
+        controls_companies= form.cleaned_data["controls_companies_to_evaluate"]
+
 
         for cc in controls_companies:
             if len(cc['cs']) > 0:

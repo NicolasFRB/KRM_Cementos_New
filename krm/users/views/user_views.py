@@ -547,12 +547,12 @@ class GaUserImportView(FormView):
                     user['password'] = str(row[3].value)
                     user['username'] = str(row[4].value).strip()
                     user['welcome_email'] = str(row[5].value)
-                    user['companies'] = [x.strip() for x in str(row[6].value).split(',')]
+                    user['companies'] = [x.strip() for x in str(row[6].value).split(',')] if row[6].value else None
                     user['notification_language'] = str(row[7].value).strip()
 
                     #comprobaciones correspondientes a la dirección de correo electrónico del usuario:
                     if not re.match(
-                        '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]c+\.[(a-z)]{2,4}$',
+                        '^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$',
                         user['email']
                     ):
                         self.errors_found+=1

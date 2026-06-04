@@ -201,7 +201,7 @@ class CaEvaluationResidualCreateView(FormView):
         evaluations_created = 0
         evaluations = []
 
-        risk_companies = json.loads(form.cleaned_data["risk_companies"])
+        risk_companies=  form.cleaned_data["risk_companies"]
         for rc in risk_companies:
             company = Company.objects.get(pk=rc['company_pk'])
 

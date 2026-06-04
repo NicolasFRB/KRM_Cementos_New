@@ -13,8 +13,7 @@ from django.core.validators import FileExtensionValidator
 
 class EvaluationInherentCreateForm(ModelForm):
 
-    risk_companies = forms.CharField(
-        max_length=1000,
+    risk_companies = forms.JSONField(
         label=_('Riesgos Compañía')
     )
 

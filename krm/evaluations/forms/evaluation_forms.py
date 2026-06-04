@@ -18,9 +18,8 @@ from krm.risks.models.domain_risk_model import DomainRisk
 
 class EvaluationCreateForm(ModelForm):
 
-    controls_companies_to_evaluate = forms.CharField(
-        max_length=200000,
-        label=_('Controles a evaluar')
+    controls_companies_to_evaluate = forms.JSONField(
+	label=_('Controles a evaluar')
     )
 
     class Meta:
@@ -146,6 +145,10 @@ class EvaluationDashboardForm(forms.Form):
     def current_year():
         return datetime.date.today().year
 
+    def certification_period_choices():
+        choices= Evaluation.objects.all().values_list("certification_period", flat=True).order_by("certification_period").distinct()
+        return [(cp, cp) for cp in choices if cp]
+
     evaluation = forms.ModelMultipleChoiceField(
         label=_("Evaluaciones"),
         required=False,
@@ -176,10 +179,10 @@ class EvaluationDashboardForm(forms.Form):
         choices=year_choices(),
     )
 
-    certification_period = forms.ModelMultipleChoiceField(
+    certification_period = forms.MultipleChoiceField(
         label=_("Periodo de certificación"),
         required=False,
-        queryset=Evaluation.objects.all().values_list("certification_period", flat=True).distinct(),
+        choices=certification_period_choices(),
     )
 
     PROCESS_STATUS_CHOICES = (
@@ -213,6 +216,12 @@ class EvaluationKrmDashboardForm(forms.Form):
 
     def current_year():
         return datetime.date.today().year
+
+    def certification_period_choices():
+        choices=EvaluationKrmInherent.objects.all().values_list("certification_period", flat=True).distinct().union(
+            EvaluationKrmResidual.objects.all().values_list("certification_period", flat=True).distinct()
+        ).order_by("certification_period")
+        return [(cp, cp) for cp in choices if cp]
 
     evaluation_inherent = forms.ModelMultipleChoiceField(
         label=_("Evaluaciones Inherentes"),
@@ -250,10 +259,10 @@ class EvaluationKrmDashboardForm(forms.Form):
         choices=year_choices(),
     )
 
-    certification_period = forms.ModelMultipleChoiceField(
+    certification_period = forms.MultipleChoiceField(
         label=_("Periodo de certificación"),
         required=False,
-        queryset=Evaluation.objects.all().values_list("certification_period", flat=True).distinct(),
+        choices=certification_period_choices(),
     )
 
     PROCESS_STATUS_CHOICES = (

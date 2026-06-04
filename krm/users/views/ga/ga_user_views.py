@@ -131,13 +131,11 @@ class GaDashboardView(TemplateView, FormView):
                 status = cd.get('process_status')
                 domain_risk= cd.get('domain_risk')
 
-                if date_evaluation_begin != '' and date_evaluation_begin is not None:
-                    date_evaluation_begin = datetime.strptime(date_evaluation_begin, '%d/%m/%Y')
+                if date_evaluation_begin:
                     qs_inherent = qs_inherent.filter(date_begin__gte=date_evaluation_begin)
                     qs_residual = qs_residual.filter(date_begin__gte=date_evaluation_begin)
 
-                if date_evaluation_end != '' and date_evaluation_end is not None:
-                    date_evaluation_end = datetime.strptime(date_evaluation_end, '%d/%m/%Y')
+                if date_evaluation_end:
                     qs_inherent = qs_inherent.filter(date_end__lte=date_evaluation_end)
                     qs_residual = qs_residual.filter(date_end__lte=date_evaluation_end)
 
@@ -197,12 +195,10 @@ class GaDashboardView(TemplateView, FormView):
                 certification_period = cd.get('certification_period')
                 status = cd.get('process_status')
 
-                if date_evaluation_begin != '' and date_evaluation_begin is not None:
-                    date_evaluation_begin = datetime.strptime(date_evaluation_begin, '%d/%m/%Y')
+                if date_evaluation_begin:
                     qs = qs.filter(date_begin__gte=date_evaluation_begin)
 
-                if date_evaluation_end != '' and date_evaluation_end is not None:
-                    date_evaluation_end = datetime.strptime(date_evaluation_end, '%d/%m/%Y')
+                if date_evaluation_end:
                     qs = qs.filter(date_end__lte=date_evaluation_end)
 
                 if len(company) > 0:
