@@ -21,7 +21,7 @@ SECRET_KEY = '9mgu=0t7adojsh2zgkfn2kw(a!@ob(t^3f6ebch3_q7(2=yn)v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("KRM_DJANGO_DEBUG")
-DEBUG_LOGIN = True
+DEBUG_LOGIN = False
 
 ALLOWED_HOSTS = []
 
@@ -172,13 +172,12 @@ TEMPLATES = [
 
 # Email
 EMAIL_BACKEND = env("KRM_DJANGO_EMAIL_BACKEND")
-SERVER_EMAIL = "it@krctool.com"
+SERVER_EMAIL = "no-replay-krctool@gcpv.com"
 
 # Admin
 ADMIN_URL = "admin/"
-ADMINS = [
-    ("""Bienvenido Sáez Muelas""", "bienvenidosaez@baetica.com"),
-]
+# Para enviar errores 500
+ADMINS = [] 
 MANAGERS = ADMINS
 
 LOCALE_PATHS = (str(APPS_DIR.path("locale")),)

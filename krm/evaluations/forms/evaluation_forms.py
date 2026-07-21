@@ -182,7 +182,7 @@ class EvaluationDashboardForm(forms.Form):
     certification_period = forms.MultipleChoiceField(
         label=_("Periodo de certificación"),
         required=False,
-        choices=certification_period_choices(),
+        choices=(),
     )
 
     PROCESS_STATUS_CHOICES = (
@@ -205,6 +205,7 @@ class EvaluationDashboardForm(forms.Form):
         self.fields["company"].widget.attrs["data-control"] = "select2"
         self.fields["certification_year"].widget.attrs["class"] = "form-select"
         self.fields["certification_year"].widget.attrs["data-control"] = "select2"
+        self.fields["certification_period"].choices = EvaluationDashboardForm.certification_period_choices()
         self.fields["certification_period"].widget.attrs["class"] = "form-select"
         self.fields["certification_period"].widget.attrs["data-control"] = "select2"
         self.fields["process_status"].widget.attrs["class"] = "form-select"
@@ -262,7 +263,7 @@ class EvaluationKrmDashboardForm(forms.Form):
     certification_period = forms.MultipleChoiceField(
         label=_("Periodo de certificación"),
         required=False,
-        choices=certification_period_choices(),
+        choices=(),
     )
 
     PROCESS_STATUS_CHOICES = (
@@ -292,6 +293,7 @@ class EvaluationKrmDashboardForm(forms.Form):
         self.fields["company"].widget.attrs["data-control"] = "select2"
         self.fields["certification_year"].widget.attrs["class"] = "form-select"
         self.fields["certification_year"].widget.attrs["data-control"] = "select2"
+        self.fields["certification_period"].choices = EvaluationKrmDashboardForm.certification_period_choices()
         self.fields["certification_period"].widget.attrs["class"] = "form-select"
         self.fields["certification_period"].widget.attrs["data-control"] = "select2"
         self.fields["process_status"].widget.attrs["class"] = "form-select"

@@ -502,6 +502,7 @@ class GaUserImportView(FormView):
                     (
                         _('El campo %(name)s del usuario de la fila %(index)d (%(value)s) ya se encuentra registrado, por favor aporte un nuevo valor') %{
                             "name": name,
+                            "index": index,
                             "value": elem[field_key]
                         }
                     ),

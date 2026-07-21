@@ -119,14 +119,14 @@ var KTAppInboxReply = function () {
         var inputElm = el;
 
         const usersList = [
-            { value: 1, name: 'Emma Smith', avatar: 'avatars/300-6.jpg', email: 'e.smith@kpmg.com.au' },
-            { value: 2, name: 'Max Smith', avatar: 'avatars/300-1.jpg', email: 'max@kt.com' },
-            { value: 3, name: 'Sean Bean', avatar: 'avatars/300-5.jpg', email: 'sean@dellito.com' },
-            { value: 4, name: 'Brian Cox', avatar: 'avatars/300-25.jpg', email: 'brian@exchange.com' },
-            { value: 5, name: 'Francis Mitcham', avatar: 'avatars/300-9.jpg', email: 'f.mitcham@kpmg.com.au' },
-            { value: 6, name: 'Dan Wilson', avatar: 'avatars/300-23.jpg', email: 'dam@consilting.com' },
-            { value: 7, name: 'Ana Crown', avatar: 'avatars/300-12.jpg', email: 'ana.cf@limtel.com' },
-            { value: 8, name: 'John Miller', avatar: 'avatars/300-13.jpg', email: 'miller@mapple.com' }
+            { value: 1, name: 'Emma Smith', avatar: 'avatars/300-6.jpg', email: '' },
+            { value: 2, name: 'Max Smith', avatar: 'avatars/300-1.jpg', email: '' },
+            { value: 3, name: 'Sean Bean', avatar: 'avatars/300-5.jpg', email: '' },
+            { value: 4, name: 'Brian Cox', avatar: 'avatars/300-25.jpg', email: '' },
+            { value: 5, name: 'Francis Mitcham', avatar: 'avatars/300-9.jpg', email: '' },
+            { value: 6, name: 'Dan Wilson', avatar: 'avatars/300-23.jpg', email: '' },
+            { value: 7, name: 'Ana Crown', avatar: 'avatars/300-12.jpg', email: '' },
+            { value: 8, name: 'John Miller', avatar: 'avatars/300-13.jpg', email: '' }
         ];
 
         function tagTemplate(tagData) {

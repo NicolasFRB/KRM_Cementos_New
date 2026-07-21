@@ -855,38 +855,7 @@ class CaEvaluationCreateView(FormView):
                     notification_text=form.cleaned_data["notification_text"]
                 )
 
-                # Ahora en este array nos llegará también el control owner y el control supervisor
-
-                # [
-                #     {
-                #         "pk": 976,
-                #         "ownersSelected": [
-                #             {
-                #                 "pk": 98,
-                #                 "email": "39@39.com",
-                #                 "full_name": "Mario Ar"
-                #             },
-                #             {
-                #                 "pk": 106,
-                #                 "email": "bienvenidosaez@baetica.com",
-                #                 "full_name": "Bienvenido Sáez Muelas"
-                #             },
-                #             {
-                #                 "pk": 107,
-                #                 "email": "ru@baetica.com",
-                #                 "full_name": "ru@baetica.com "
-                #             }
-                #         ],
-                #         "supervisorsSelected": [
-                #             {
-                #                 "pk": 105,
-                #                 "email": "mrevuelta.deca@gmail.com",
-                #                 "full_name": "asd asd"
-                #             }
-                #         ]
-                #     }
-                # ]
-
+              
                 for control in cc['csData']:
                     control_owner = None
                     control_supervisor = None

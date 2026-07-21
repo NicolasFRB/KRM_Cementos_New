@@ -31,7 +31,7 @@ try:
 
     cur = conn.cursor()
 
-    # cur.execute('INSERT INTO "configuration_configuration" ("id", "app_name", "main_email", "enable_emails") VALUES (1, 'KRM KPMG', 'nicolasfernandorodri@kpmg.es', 'true') ON CONFLICT DO NOTHING;')
+    # cur.execute('INSERT INTO "configuration_configuration" ("id", "app_name", "main_email", "enable_emails") VALUES (1, 'KRM KPMG', 'no-replay-krctool@gcpv.com', 'true') ON CONFLICT DO NOTHING;')
 
     conn.commit()
     cur.close()

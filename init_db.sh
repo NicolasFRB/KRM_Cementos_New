@@ -9,7 +9,7 @@ done
 # Insertar la fila en la tabla cuando la base de datos esté lista
 psql -h 10.37.131.53 -U krm_admin -d krmpostgres_dev -c "
 INSERT INTO configuration_configuration (app_name, main_email, enable_emails)
-VALUES ('ECI KRM Tool', 'joseantonio.davilaperez@colaborador.elcorteingles.es', true)
+VALUES ('ECI KRM Tool', 'no-replay-krctool@gcpv.com', true)
 ON CONFLICT DO NOTHING;
 "
 

@@ -19,7 +19,7 @@ var KTUsersAddSchedule = function () {
         // Init tagify -- for more info: https://yaireo.github.io/tagify/
         const tagifyInput = form.querySelector('#kt_modal_add_schedule_tagify');
         new Tagify(tagifyInput, {
-            whitelist: ["sean@dellito.com", "brian@exchange.com", "mikaela@pexcom.com", "f.mitcham@kpmg.com.au", "olivia@corpmail.com", "owen.neil@gmail.com", "dam@consilting.com", "emma@intenso.com", "ana.cf@limtel.com", "robert@benko.com", "lucy.m@fentech.com", "ethan@loop.com.au"],
+            whitelist: [],
             maxTags: 10,
             dropdown: {
                 maxItems: 20,           // <- mixumum allowed rendered suggestions
